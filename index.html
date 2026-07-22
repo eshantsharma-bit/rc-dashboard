@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue Cloud Weekly Dashboard · Jul 12–18, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --red: #f85149; --yellow: #d29922; --orange: #f0883e;
+    --emea: #a371f7; --india: #f78166;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; }
+
+  .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 20px 28px; display: flex; align-items: center; justify-content: space-between; }
+  .header h1 { font-size: 18px; font-weight: 600; }
+  .header .meta { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: rgba(63,185,80,.15); color: var(--green); }
+  .badge-red   { background: rgba(248,81,73,.15);  color: var(--red); }
+  .badge-yellow{ background: rgba(210,153,34,.15); color: var(--yellow); }
+
+  .main { padding: 20px 28px; display: grid; gap: 16px; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 12px; text-align: center; }
+  .kpi .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; }
+  .kpi .val   { font-size: 24px; font-weight: 700; line-height: 1; }
+  .kpi .delta { font-size: 11px; margin-top: 5px; }
+  .up      { color: var(--red); }
+  .down    { color: var(--green); }
+  .neutral { color: var(--muted); }
+  .kpi.alert { border-color: var(--red); }
+  .kpi.warn  { border-color: var(--yellow); }
+  .kpi.good  { border-color: var(--green); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .card h3 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .card canvas { max-height: 220px; }
+
+  .backlog-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .backlog-table th { background: rgba(88,166,255,.08); color: var(--accent); font-weight: 600; text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--border); }
+  .backlog-table td { padding: 7px 10px; border-bottom: 1px solid rgba(48,54,61,.6); }
+  .backlog-table tr:last-child td { border-bottom: none; }
+  .backlog-table .highlight-row td { font-weight: 700; background: rgba(63,185,80,.06); }
+
+  .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .data-table th { color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+  .data-table td { padding: 7px 10px; border-bottom: 1px solid rgba(48,54,61,.5); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .pill { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; }
+  .pill-red    { background: rgba(248,81,73,.15); color: var(--red); }
+  .pill-blue   { background: rgba(88,166,255,.15); color: var(--accent); }
+  .pill-green  { background: rgba(63,185,80,.15); color: var(--green); }
+  .pill-orange { background: rgba(240,136,62,.15); color: var(--orange); }
+  .pill-purple { background: rgba(163,113,247,.15); color: #a371f7; }
+
+  .insights { display: flex; flex-direction: column; gap: 10px; }
+  .insight  { padding: 10px 14px; border-radius: 6px; border-left: 3px solid; font-size: 12px; line-height: 1.6; }
+  .insight.red    { border-color: var(--red);    background: rgba(248,81,73,.07); }
+  .insight.yellow { border-color: var(--yellow); background: rgba(210,153,34,.07); }
+  .insight.green  { border-color: var(--green);  background: rgba(63,185,80,.07); }
+  .insight.blue   { border-color: var(--accent); background: rgba(88,166,255,.07); }
+  .insight strong { display: block; margin-bottom: 2px; font-size: 12px; }
+
+  /* Region percent bar */
+  .pct-bar-wrap { display: flex; height: 22px; border-radius: 4px; overflow: hidden; margin: 4px 0; }
+  .pct-emea  { background: rgba(163,113,247,.7); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:#fff; }
+  .pct-india { background: rgba(247,129,102,.7); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:#fff; }
+
+  footer { padding: 16px 28px; color: var(--muted); font-size: 11px; border-top: 1px solid var(--border); margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>⚡ Revenue Cloud · Weekly Executive Dashboard</h1>
+    <div class="meta">Week of Jul 12–18, 2026 · EMEA + India · Source: OrgCS Inflow CSV + Mid-week Backlog Snapshot</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span class="badge badge-red">🚨 Sev1 +4</span>
+    <span class="badge badge-green">✅ Aged Backlog ★ −13</span>
+    <span class="badge badge-green">✅ Inflow Stable</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- KPI Row — removed Swarms & Red Accounts -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="label">Inflow</div>
+      <div class="val">252</div>
+      <div class="delta neutral">+1 vs prev</div>
+    </div>
+    <div class="kpi alert">
+      <div class="label">Sev1 🔴</div>
+      <div class="val" style="color:var(--red)">33</div>
+      <div class="delta up">+4 ↑</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Sev2</div>
+      <div class="val">104</div>
+      <div class="delta down">−9 ↓</div>
+    </div>
+    <div class="kpi">
+      <div class="label">GUS Filed</div>
+      <div class="val">2</div>
+      <div class="delta down">−10 ↓</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Bugs Filed</div>
+      <div class="val">3</div>
+      <div class="delta down">−3 ↓</div>
+    </div>
+    <div class="kpi good">
+      <div class="label">Backlog >15d ★</div>
+      <div class="val" style="color:var(--green)"><strong>41</strong></div>
+      <div class="delta down"><strong>−13 ↓ vs Jul 15</strong></div>
+    </div>
+  </div>
+
+  <!-- Executive Summary strip -->
+  <div class="card" style="border-color:var(--accent);background:rgba(88,166,255,.04);">
+    <h3 style="color:var(--accent);">📋 Executive Summary — Week of Jul 12–18, 2026</h3>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;font-size:12px;line-height:1.7;">
+      <div style="padding:10px 12px;border-radius:6px;background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.2);">
+        <div style="color:var(--green);font-weight:700;margin-bottom:4px;">✅ Positive</div>
+        Inflow flat at <strong>252 (+1)</strong> — within 4-week avg. <strong>Aged backlog ★ dropped −13</strong> to 41 (from 54), a 24% improvement week-on-week. GUS/Bug filings both down — fewer product defect signals.
+      </div>
+      <div style="padding:10px 12px;border-radius:6px;background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.2);">
+        <div style="color:var(--red);font-weight:700;margin-bottom:4px;">🚨 Watch</div>
+        <strong>33 Sev1 cases (+4)</strong> — YASH Tech alone filed 4 Sev1s on Configurator (see Flagged Challenge). Overall inflow: EMEA surged +14% (160→183) while India dropped −24% (91→69) — regional load imbalance needs monitoring.
+      </div>
+      <div style="padding:10px 12px;border-radius:6px;background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.2);">
+        <div style="color:var(--yellow);font-weight:700;margin-bottom:4px;">⚠ Trends</div>
+        RCA softening 3 consecutive weeks (183→166→157). CPQ rebounding +13% (78→88). <strong>CPQ remains #1 driver at 28%</strong> of inflow.
+      </div>
+      <div style="padding:10px 12px;border-radius:6px;background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.2);">
+        <div style="color:var(--accent);font-weight:700;margin-bottom:4px;">📌 Initiatives</div>
+        <strong>YASH escalated</strong> to Readiness + Partner POCs (Swapnil, Kaam, Mayurika, William). <strong>B2B × Revenue Cloud</strong> cross-cloud alignment initiated with Neha Porwal ahead of Summer '26 capability surge.
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Metrics Table -->
+  <div class="card">
+    <h3>📊 Key Metrics &amp; Trends — 4-Week View</h3>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:rgba(88,166,255,.08);">
+            <th style="padding:8px 12px;text-align:left;color:var(--accent);border-bottom:1px solid var(--border);font-weight:700;">KPI</th>
+            <th style="padding:8px 12px;text-align:center;color:var(--accent);border-bottom:1px solid var(--border);">Target</th>
+            <th style="padding:8px 12px;text-align:center;color:var(--text);border-bottom:1px solid var(--border);background:rgba(88,166,255,.06);">2026-07-12 ★</th>
+            <th style="padding:8px 12px;text-align:center;color:var(--muted);border-bottom:1px solid var(--border);">2026-07-05</th>
+            <th style="padding:8px 12px;text-align:center;color:var(--muted);border-bottom:1px solid var(--border);">2026-06-28</th>
+            <th style="padding:8px 12px;text-align:center;color:var(--muted);border-bottom:1px solid var(--border);">2026-06-21</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(48,54,61,.5)">
+            <td style="padding:7px 12px;font-weight:600;">Support Inflow</td><td style="text-align:center;color:var(--muted);">—</td>
+            <td style="text-align:center;font-weight:700;background:rgba(88,166,255,.04);">252 <span style="color:var(--muted);font-size:10px;">(+1)</span></td>
+            <td style="text-align:center;">251 <span style="color:var(--muted);font-size:10px;">(-37)</span></td><td style="text-align:center;">288 <span style="color:var(--muted);font-size:10px;">(+22)</span></td><td style="text-align:center;">266</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(48,54,61,.5)">
+            <td style="padding:7px 12px;font-weight:600;">Closures</td><td style="text-align:center;color:var(--muted);">—</td>
+            <td style="text-align:center;font-weight:700;background:rgba(88,166,255,.04);">275 <span style="color:var(--muted);font-size:10px;">(+10)</span></td>
+            <td style="text-align:center;">265 <span style="color:var(--muted);font-size:10px;">(-21)</span></td><td style="text-align:center;">286 <span style="color:var(--muted);font-size:10px;">(-42)</span></td><td style="text-align:center;">328</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(48,54,61,.5)">
+            <td style="padding:7px 12px;font-weight:600;">SLO Miss %</td><td style="text-align:center;color:var(--muted);">&lt;2%</td>
+            <td style="text-align:center;font-weight:700;background:rgba(88,166,255,.04);color:var(--yellow);">0.8% <span style="color:var(--muted);font-size:10px;">(+0.8)</span></td>
+            <td style="text-align:center;color:var(--green);">0.0%</td><td style="text-align:center;color:var(--green);">0.0%</td><td style="text-align:center;color:var(--green);">0.4%</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(48,54,61,.5)">
+            <td style="padding:7px 12px;font-weight:600;">Escalation %</td><td style="text-align:center;color:var(--muted);">&lt;2%</td>
+            <td style="text-align:center;font-weight:700;background:rgba(88,166,255,.04);color:var(--green);">1.2% <span style="color:var(--muted);font-size:10px;">(+0.8)</span></td>
+            <td style="text-align:center;color:var(--green);">0.4%</td><td style="text-align:center;color:var(--green);">0.3%</td><td style="text-align:center;color:var(--green);">0.8%</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(48,54,61,.5);background:rgba(63,185,80,.03)">
+            <td style="padding:7px 12px;font-weight:600;">TTR (days)</td><td style="text-align:center;color:var(--muted);">10d</td>
+            <td style="text-align:center;font-weight:700;background:rgba(88,166,255,.04);color:var(--green);">7.1 <span style="color:var(--muted);font-size:10px;">(-0.2)</span></td>
+            <td style="text-align:center;">7.3 <span style="color:var(--muted);font-size:10px;">(+0.7)</span></td><td style="text-align:center;">6.6 <span style="color:var(--muted);font-size:10px;">(-0.2)</span></td><td style="text-align:center;">6.8</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(48,54,61,.5);background:rgba(63,185,80,.03)">
+            <td style="padding:7px 12px;font-weight:600;">CSAT</td><td style="text-align:center;color:var(--muted);">4.5</td>
+            <td style="text-align:center;font-weight:700;background:rgba(88,166,255,.04);color:var(--green);">4.88 <span style="color:var(--muted);font-size:10px;">(-0.02)</span></td>
+            <td style="text-align:center;color:var(--green);">4.90 <span style="color:var(--muted);font-size:10px;">(+0.02)</span></td><td style="text-align:center;color:var(--green);">4.88 <span style="color:var(--muted);font-size:10px)">(+0.02)</span></td><td style="text-align:center;color:var(--green);">4.86</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(48,54,61,.5)">
+            <td style="padding:7px 12px;font-weight:600;">Reopen Rate</td><td style="text-align:center;color:var(--muted);">20%</td>
+            <td style="text-align:center;font-weight:700;background:rgba(88,166,255,.04);color:var(--yellow);">9.1% <span style="color:var(--muted);font-size:10px;">(+3.4)</span></td>
+            <td style="text-align:center;color:var(--green);">5.7% <span style="color:var(--muted);font-size:10px;">(-4.8)</span></td><td style="text-align:center;color:var(--yellow);">10.5% <span style="color:var(--muted);font-size:10px)">(+2.9)</span></td><td style="text-align:center;">7.6%</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(48,54,61,.5)">
+            <td style="padding:7px 12px;font-weight:600;">Investigations</td><td style="text-align:center;color:var(--muted);">—</td>
+            <td style="text-align:center;font-weight:700;background:rgba(88,166,255,.04);">2 <span style="color:var(--green);font-size:10px;">(-10)</span></td>
+            <td style="text-align:center;">12 <span style="color:var(--muted);font-size:10px;">(+3)</span></td><td style="text-align:center;">9 <span style="color:var(--muted);font-size:10px;">(+3)</span></td><td style="text-align:center;">6</td>
+          </tr>
+          <tr>
+            <td style="padding:7px 12px;font-weight:600;">Bugs</td><td style="text-align:center;color:var(--muted);">—</td>
+            <td style="text-align:center;font-weight:700;background:rgba(88,166,255,.04);">1 <span style="color:var(--green);font-size:10px;">(-5)</span></td>
+            <td style="text-align:center;">6 <span style="color:var(--muted);font-size:10px;">(+2)</span></td><td style="text-align:center;">4 <span style="color:var(--muted);font-size:10px;">(-1)</span></td><td style="text-align:center;">5</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Row 1: Inflow + CSAT/TTR + P&T -->
+  <div class="grid-3">
+    <div class="card">
+      <h3>📈 4-Week Inflow Trend</h3>
+      <canvas id="inflowChart"></canvas>
+    </div>
+    <div class="card">
+      <h3>⭐ CSAT &amp; TTR Trend</h3>
+      <canvas id="csatChart"></canvas>
+      <div style="margin-top:10px;display:grid;grid-template-columns:repeat(2,1fr);gap:6px;text-align:center;font-size:11px;">
+        <div style="padding:6px;background:rgba(63,185,80,.08);border-radius:4px;">
+          <div style="color:var(--green);font-size:18px;font-weight:700;">4.88</div>
+          <div style="color:var(--muted);">CSAT (−0.02)</div>
+        </div>
+        <div style="padding:6px;background:rgba(88,166,255,.08);border-radius:4px;">
+          <div style="color:var(--accent);font-size:18px;font-weight:700;">7.1d</div>
+          <div style="color:var(--muted);">TTR (−0.2)</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📦 P&T Grouping Trend</h3>
+      <canvas id="ptChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Row 2: Region % split + Backlog story -->
+  <div class="grid-2">
+
+    <!-- Region split — % bars + chart -->
+    <div class="card">
+      <h3>🌍 Region Split — % Trend</h3>
+      <canvas id="regionChart" style="max-height:180px;"></canvas>
+      <div style="margin-top:14px;">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;">% Split per Week</div>
+        <div style="display:grid;gap:6px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;"><span style="color:#a371f7;">EMEA</span><span style="color:var(--muted);">Jun 21–27</span><span style="color:#f78166;">India</span></div>
+            <div class="pct-bar-wrap"><div class="pct-emea" style="width:61%">61%</div><div class="pct-india" style="width:39%">39%</div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;"><span style="color:var(--muted);">Jun 28–Jul 4</span></div>
+            <div class="pct-bar-wrap"><div class="pct-emea" style="width:65%">65%</div><div class="pct-india" style="width:35%">35%</div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;"><span style="color:var(--muted);">Jul 5–11</span></div>
+            <div class="pct-bar-wrap"><div class="pct-emea" style="width:64%">64%</div><div class="pct-india" style="width:36%">36%</div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;"><span style="color:var(--text);font-weight:700;font-size:12px;">📍 Jul 12–18 — Latest</span></div>
+            <div class="pct-bar-wrap" style="height:26px;"><div class="pct-emea" style="width:73%;font-size:11px;font-weight:700;">73% ↑</div><div class="pct-india" style="width:27%;font-size:11px;font-weight:700;">27% ↓</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Backlog story — simplified: Inflow, >15d, Total only -->
+    <div class="card">
+      <h3>🗂 Backlog × Inflow — 4 Snapshots</h3>
+      <table class="backlog-table">
+        <thead>
+          <tr>
+            <th>Snapshot</th>
+            <th>Aged &gt;15 Days ★</th>
+            <th>Total Backlog</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Week of Jun 21</strong></td>
+            <td style="color:var(--red)"><strong>58</strong></td>
+            <td><strong>275</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Week of Jul 2</strong></td>
+            <td style="color:var(--red)"><strong>52</strong></td>
+            <td><strong>298</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Jul 15 (mid-wk)</strong></td>
+            <td style="color:var(--yellow)"><strong>54</strong></td>
+            <td><strong>259</strong></td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>★ Jul 22 (latest)</strong></td>
+            <td style="color:var(--green)"><strong>41 ↓ −13</strong></td>
+            <td><strong>256</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:14px;">
+        <canvas id="backlogChart" style="max-height:150px;"></canvas>
+      </div>
+      <div style="margin-top:10px;padding:8px 12px;background:rgba(63,185,80,.07);border-left:3px solid var(--green);border-radius:4px;font-size:12px;line-height:1.6;">
+        <strong style="color:var(--green);">★ Aged backlog down −13 to 41</strong> — EMEA 25→18, India 29→23. Inflow held flat at 252 while backlog cleared — teams are closing faster than cases age. Positive signal.
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: Sev1 Regional + Top Drivers + Success Plan -->
+  <div class="grid-3">
+
+    <!-- Sev1 only with regional split -->
+    <div class="card">
+      <h3>🚨 Sev1 Trend — Regional Split</h3>
+      <canvas id="sevChart"></canvas>
+      <table class="data-table" style="margin-top:12px;">
+        <thead><tr><th>Week</th><th>Total Sev1</th><th style="color:#a371f7;">EMEA</th><th style="color:#f78166;">India</th></tr></thead>
+        <tbody>
+          <tr><td>Jun 21–27</td><td>33</td><td>16</td><td>17</td></tr>
+          <tr><td>Jun 28–Jul 4</td><td>32</td><td>20</td><td>12</td></tr>
+          <tr><td>Jul 5–11</td><td>29</td><td>11</td><td>18</td></tr>
+          <tr><td><strong>Jul 12–18</strong></td><td><strong style="color:var(--red)">33</strong></td><td><strong>17</strong></td><td><strong>16</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Top Case Drivers 4-week line trend -->
+    <div class="card" style="grid-column:span 1">
+      <h3>🏆 Top 4 Case Drivers — 4-Week Trend</h3>
+      <canvas id="topicChart" style="max-height:220px;"></canvas>
+      <div style="margin-top:8px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;font-size:11px;">
+        <div style="padding:5px;background:rgba(63,185,80,.08);border-radius:4px;border-top:2px solid #3fb950;">
+          <div style="font-weight:700;color:var(--text);">70</div><div style="color:var(--muted);">CPQ (28%)</div>
+        </div>
+        <div style="padding:5px;background:rgba(88,166,255,.08);border-radius:4px;border-top:2px solid #58a6ff;">
+          <div style="font-weight:700;color:var(--text);">47</div><div style="color:var(--muted);">Configurator (19%)</div>
+        </div>
+        <div style="padding:5px;background:rgba(163,113,247,.08);border-radius:4px;border-top:2px solid #a371f7;">
+          <div style="font-weight:700;color:var(--text);">38</div><div style="color:var(--muted);">Txn Mgmt (15%)</div>
+        </div>
+        <div style="padding:5px;background:rgba(240,136,62,.08);border-radius:4px;border-top:2px solid #f0883e;">
+          <div style="font-weight:700;color:var(--text);">29</div><div style="color:var(--muted);">Price Mgmt (12%)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Plan -->
+    <div class="card">
+      <h3>💼 Success Plan Breakdown</h3>
+      <canvas id="spChart"></canvas>
+      <table class="data-table" style="margin-top:12px">
+        <thead><tr><th>Plan</th><th>Jul 5</th><th>Jul 12</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill pill-blue">Premier+</span></td><td>83</td><td><strong>101</strong></td><td class="up">+18 ↑</td></tr>
+          <tr><td><span class="pill pill-green">Standard</span></td><td>39</td><td><strong>54</strong></td><td class="up">+15 ↑</td></tr>
+          <tr><td><span class="pill pill-purple">Partner Premier</span></td><td>61</td><td><strong>43</strong></td><td class="down">−18 ↓</td></tr>
+          <tr><td><span class="pill pill-orange">Signature</span></td><td>53</td><td><strong>38</strong></td><td class="down">−15 ↓</td></tr>
+          <tr><td>Premier</td><td>15</td><td><strong>16</strong></td><td class="neutral">+1</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Row 4: Sev1 Accounts + Key Signals -->
+  <div class="grid-2">
+    <div class="card">
+      <h3>🔴 Sev1 Accounts — Jul 12–18</h3>
+      <table class="data-table">
+        <thead><tr><th>Account</th><th>Sev1</th><th>Total Cases</th><th>Region</th></tr></thead>
+        <tbody>
+          <tr><td><strong>YASH Technologies</strong> 🆘</td><td><span class="pill pill-red">4</span></td><td>4</td><td>India</td></tr>
+          <tr><td>ECi</td><td><span class="pill pill-red">2</span></td><td>2</td><td>EMEA</td></tr>
+          <tr><td>Numerix LLC</td><td><span class="pill pill-red">2</span></td><td>3</td><td>EMEA</td></tr>
+          <tr><td>TeamViewer Germany GmbH</td><td><span class="pill pill-red">2</span></td><td>3</td><td>EMEA</td></tr>
+          <tr><td>Imperva Inc. (Thales)</td><td><span class="pill pill-red">2</span></td><td>2</td><td>EMEA</td></tr>
+          <tr><td>Bluvium Inc</td><td><span class="pill pill-red">2</span></td><td>4</td><td>EMEA</td></tr>
+          <tr><td>Smarsh</td><td><span class="pill pill-red">1</span></td><td>2</td><td>EMEA</td></tr>
+          <tr><td>dunnhumby Limited 🆕</td><td><span class="pill pill-red">1</span></td><td>1</td><td>EMEA</td></tr>
+          <tr><td>Synthesia Limited 🆕</td><td><span class="pill pill-red">1</span></td><td>1</td><td>EMEA</td></tr>
+          <tr><td>Select Plant Hire 🆕</td><td><span class="pill pill-red">1</span></td><td>2</td><td>EMEA</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;padding:8px 10px;background:rgba(248,81,73,.07);border-radius:6px;border-left:3px solid var(--red);font-size:11px;line-height:1.6;">
+        <strong>YASH Technologies: 4 Sev1s — Configurator knowledge gap, not product defect. Escalated to Partner POC.</strong><br>
+        3 new accounts (dunnhumby, Synthesia, Select Plant Hire) with Sev1 on first appearance.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💡 Executive Story &amp; Key Signals</h3>
+      <div class="insights">
+        <div class="insight green">
+          <strong>★ Aged Backlog Best in 4 Weeks — 41 (was 54–58)</strong>
+          <strong>−13 drop</strong> from Jul 15 snapshot. EMEA cleared 25→18, India 29→23. Inflow held flat at 252 — teams are outpacing ageing. Strongest backlog signal in the reporting period.
+        </div>
+        <div class="insight green">
+          <strong>✅ Inflow Stable — 252 (+1)</strong>
+          Flat week-on-week, within 4-week average of 265. No volume spike. GUS −10, Bugs −3 — fewer product defect escalations.
+        </div>
+        <div class="insight red">
+          <strong>🚨 YASH Technologies — 4 Sev1s on Configurator</strong>
+          Module-by-module pattern confirmed (Billing → Price Mgmt → Configurator). 17 total cases, 88% Sev1. Escalated to Readiness + Partner Enablement POC.
+        </div>
+        <div class="insight yellow">
+          <strong>⚠ Overall Inflow: EMEA +14% · India −24% — Regional Load Imbalance</strong>
+          Overall inflow split: EMEA surged from 160 → 183 cases (+14%), India dropped from 91 → 69 cases (−24%). EMEA now carries 73% of total inflow. India drop likely holiday/capacity — monitor SLO compliance on EMEA load.
+        </div>
+        <div class="insight yellow">
+          <strong>⚠ RCA Softening 3 Weeks — 183→166→157</strong>
+          Revenue Cloud Core inflow declining. Validate against open case pipeline — may reflect absorption or a demand shift.
+        </div>
+        <div class="insight blue">
+          <strong>📌 CPQ Rebounding — +13% (78→88)</strong>
+          Remains #1 driver at 28% of inflow (70 cases). Configurator still #2 at 19% — watch for continued Configurator Sev1s.
+        </div>
+        <div class="insight blue">
+          <strong>📌 B2B × Revenue Cloud Initiative Underway</strong>
+          Summer '26 unlocked 4 new cross-cloud capabilities. Proactive alignment with B2B Commerce team initiated — POC nominations pending.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLAGGED CHALLENGES — YASH -->
+  <div class="card" style="border-color: var(--red);">
+    <h3 style="color:var(--red);">🚨 Flagged Challenge — YASH Technologies · Action Required</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.7;">
+          YASH Technologies Pvt Ltd is <strong style="color:var(--text)">systematically using Sev1 support cases as a substitute for structured partner training on Revenue Cloud Advanced</strong>. Pattern is confirmed across 3 modules — each time YASH begins a new product area in their implementation, they open Sev1s on fundamentals instead of consuming partner enablement.
+        </div>
+        <table class="data-table">
+          <thead><tr><th>Module Wave</th><th>Cases</th><th>Sev1</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Wave 1 — Billing &amp; Invoicing</td><td>4</td><td><span class="pill pill-red">4</span></td><td style="color:var(--muted)">Completed</td></tr>
+            <tr><td>Wave 2 — Price Management</td><td>3</td><td><span class="pill pill-red">3</span></td><td style="color:var(--muted)">Completed</td></tr>
+            <tr><td>Wave 3 — Configurator</td><td>8</td><td><span class="pill pill-red">7</span></td><td style="color:var(--yellow)">🔴 Active now</td></tr>
+            <tr style="font-weight:700"><td>Total (Jun 9–Jul 18)</td><td>17</td><td><span class="pill pill-red">15 (88%)</span></td><td style="color:var(--orange)">📋 Flagged to Readiness &amp; Partner POC</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted);">
+          Next expected wave: <strong style="color:var(--yellow)">Pricing Rules + Advanced Approvals</strong> — same pattern will repeat without intervention.
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px;">Open Asks — Readiness POC &amp; Partner Enablement POC</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="padding:10px 12px;border-radius:6px;border-left:3px solid var(--red);background:rgba(248,81,73,.07);font-size:12px;line-height:1.6;">
+            <strong style="color:var(--red);">① Enrolment Confirmation</strong><br>
+            Has YASH been enrolled in Revenue Cloud Advanced partner enablement track? Needs to happen before their next module.
+          </div>
+          <div style="padding:10px 12px;border-radius:6px;border-left:3px solid var(--yellow);background:rgba(210,153,34,.07);font-size:12px;line-height:1.6;">
+            <strong style="color:var(--yellow);">② Readiness Gate — Module Progression</strong><br>
+            Formal readiness checkpoint before YASH proceeds to Pricing Rules &amp; Advanced Approvals. No gate = same Sev1 wave, fourth time.
+          </div>
+          <div style="padding:10px 12px;border-radius:6px;border-left:3px solid var(--accent);background:rgba(88,166,255,.07);font-size:12px;line-height:1.6;">
+            <strong style="color:var(--accent);">③ Joint Message to YASH Delivery Lead</strong><br>
+            Sev1 must not be used for configuration how-tos. Redirect to PAA / Partner Learning Camp for module fundamentals.
+          </div>
+          <div style="padding:10px 12px;border-radius:6px;border-left:3px solid var(--accent);background:rgba(88,166,255,.07);font-size:12px;line-height:1.6;">
+            <strong style="color:var(--accent);">Flagged to Readiness &amp; Partner POC</strong><br>
+            Swapnil Kharche · Kaam Siddiqui · Mayurika Singh · William Pessoa — Jul 22, 2026
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBSERVATION & INITIATIVE -->
+  <div class="card" style="border-color: var(--green);">
+    <h3 style="color:var(--green);">💡 Observation &amp; Initiative — Revenue Cloud × B2B Commerce (Summer '26)</h3>
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:start;">
+      <div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.7;">
+          With the <strong style="color:var(--text)">Summer '26 release, Revenue Cloud unlocked four new capabilities directly in B2B Commerce</strong>: Product Variants, Pricing Procedure Plans, Contract-Based Pricing, and Tiered Pricing. Support cases will land across both teams — creating a cross-cloud routing and knowledge gap risk.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+          <div style="padding:10px;border-radius:6px;background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.2);font-size:12px;">
+            <div style="color:var(--green);font-weight:600;margin-bottom:4px;">New Capabilities Unlocked</div>
+            <div style="color:var(--muted);line-height:1.8;">• Product Variants<br>• Pricing Procedure Plans<br>• Contract-Based Pricing<br>• Tiered Pricing</div>
+          </div>
+          <div style="padding:10px;border-radius:6px;background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.2);font-size:12px;">
+            <div style="color:var(--accent);font-weight:600;margin-bottom:4px;">Initiative — Proactive Alignment</div>
+            <div style="color:var(--muted);line-height:1.8;">• Nominate POCs: B2B Commerce + Revenue Cloud<br>• Shared Slack channel for cross-cloud triage<br>• Joint walkthrough + case handling playbook</div>
+          </div>
+        </div>
+        <div style="padding:8px 12px;border-radius:6px;background:rgba(63,185,80,.06);border-left:3px solid var(--green);font-size:12px;color:var(--muted);line-height:1.6;">
+          <strong style="color:var(--text);">Action in Progress:</strong> Outreach to B2B Commerce team lead (Neha Porwal) — Jul 21, 2026. Pending POC nominations. <strong style="color:var(--green)">Proactive, manager-led initiative</strong> ahead of expected case surge.
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="padding:12px;border-radius:6px;background:var(--bg);border:1px solid var(--border);text-align:center;">
+          <div style="font-size:28px;font-weight:700;color:var(--green)">4</div>
+          <div style="color:var(--muted);font-size:11px;margin-top:2px;">New RCA × B2B<br>capabilities (Summer '26)</div>
+        </div>
+        <div style="padding:12px;border-radius:6px;background:var(--bg);border:1px solid var(--border);text-align:center;">
+          <div style="font-size:28px;font-weight:700;color:var(--yellow)">2</div>
+          <div style="color:var(--muted);font-size:11px;margin-top:2px;">Teams to align<br>(Rev Cloud + B2B)</div>
+        </div>
+        <div style="padding:12px;border-radius:6px;background:var(--bg);border:1px solid var(--border);text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:var(--accent)">Pending</div>
+          <div style="color:var(--muted);font-size:11px;margin-top:2px;">B2B POC nominations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Revenue Cloud Weekly Dashboard · Data: Rev Inflow EMEA IST.csv (1,707 rows, Jun 6–Jul 18, 2026) + Mid-week backlog snapshots
+  · KPIs validated against dashboard screenshot ✅ · Generated Jul 22, 2026
+</footer>
+
+<script>
+const WEEKS = ['Jun 21–27','Jun 28–Jul 4','Jul 5–11','Jul 12–18'];
+const gridLines = { color: 'rgba(48,54,61,0.8)' };
+const tickFont  = { size: 11, color: '#8b949e' };
+const baseOptions = () => ({
+  responsive: true,
+  animation: { duration: 600 },
+  plugins: {
+    legend: { labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 12, padding: 12 } },
+    tooltip: { backgroundColor: '#1c2128', titleColor: '#e6edf3', bodyColor: '#8b949e', borderColor: '#30363d', borderWidth: 1 }
+  },
+  scales: {
+    x: { grid: gridLines, ticks: tickFont },
+    y: { grid: gridLines, ticks: tickFont, beginAtZero: true }
+  }
+});
+
+// 1. Inflow
+new Chart(document.getElementById('inflowChart'), {
+  type: 'line',
+  data: {
+    labels: WEEKS,
+    datasets: [{
+      label: 'Total Inflow',
+      data: [265, 290, 251, 252],
+      borderColor: '#58a6ff', backgroundColor: 'rgba(88,166,255,.12)',
+      pointBackgroundColor: '#58a6ff', tension: 0.4, fill: true, pointRadius: 5
+    }]
+  },
+  options: baseOptions()
+});
+
+// 2. CSAT & TTR — exact values from screenshot
+// CSAT:  4.86 | 4.88 | 4.90 | 4.88  (Jun21→Jul12)
+// TTR:   6.8  | 6.6  | 7.3  | 7.1
+// Reopen: 7.6 | 10.5 | 5.7  | 9.1
+new Chart(document.getElementById('csatChart'), {
+  type: 'line',
+  data: {
+    labels: WEEKS,
+    datasets: [
+      {
+        label: 'CSAT',
+        data: [4.86, 4.88, 4.90, 4.88],
+        borderColor: '#3fb950', backgroundColor: 'rgba(63,185,80,.1)',
+        pointBackgroundColor: '#3fb950', tension: 0.4, fill: false, pointRadius: 5, borderWidth: 2, yAxisID: 'y'
+      },
+      {
+        label: 'TTR (days)',
+        data: [6.8, 6.6, 7.3, 7.1],
+        borderColor: '#58a6ff', backgroundColor: 'rgba(88,166,255,.08)',
+        tension: 0.4, pointRadius: 4, borderWidth: 2, fill: false, yAxisID: 'y2'
+      },
+    ]
+  },
+  options: {
+    responsive: true,
+    animation: { duration: 600 },
+    plugins: {
+      legend: { labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 12 } },
+      tooltip: { backgroundColor: '#1c2128', titleColor: '#e6edf3', bodyColor: '#8b949e', borderColor: '#30363d', borderWidth: 1 }
+    },
+    scales: {
+      x: { grid: gridLines, ticks: tickFont },
+      y:  { grid: gridLines, ticks: { ...tickFont, callback: v => v.toFixed(2) }, min: 4.7, max: 5.0,
+            title: { display: true, text: 'CSAT', color: '#3fb950', font: { size: 10 } }, position: 'left' },
+      y2: { grid: { display:false }, ticks: { ...tickFont, callback: v => v+'d' }, min: 5, max: 9,
+            title: { display: true, text: 'TTR', color: '#58a6ff', font: { size: 10 } }, position: 'right' }
+    }
+  }
+});
+
+// 3. P&T Trend
+new Chart(document.getElementById('ptChart'), {
+  type: 'line',
+  data: {
+    labels: WEEKS,
+    datasets: [
+      { label: 'RCA',     data: [174,183,166,157], borderColor:'#58a6ff', backgroundColor:'rgba(88,166,255,.08)', fill:true, tension:0.4, pointRadius:4 },
+      { label: 'CPQ',     data: [82,97,78,88],     borderColor:'#3fb950', backgroundColor:'rgba(63,185,80,.08)',  fill:true, tension:0.4, pointRadius:4 },
+      { label: 'Billing', data: [8,9,7,7],          borderColor:'#d29922', backgroundColor:'rgba(210,153,34,.08)',fill:true, tension:0.4, pointRadius:4 }
+    ]
+  },
+  options: baseOptions()
+});
+
+// 4. Region % split stacked 100%
+new Chart(document.getElementById('regionChart'), {
+  type: 'bar',
+  data: {
+    labels: WEEKS,
+    datasets: [
+      { label: 'EMEA %',  data: [61, 65, 64, 73], backgroundColor: 'rgba(163,113,247,.75)', borderRadius: 4 },
+      { label: 'India %', data: [39, 35, 36, 27], backgroundColor: 'rgba(247,129,102,.75)', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true,
+    animation: { duration: 600 },
+    plugins: {
+      legend: { labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 12 } },
+      tooltip: {
+        backgroundColor: '#1c2128', titleColor: '#e6edf3', bodyColor: '#8b949e',
+        borderColor: '#30363d', borderWidth: 1,
+        callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw}%` }
+      }
+    },
+    scales: {
+      x: { grid: gridLines, ticks: tickFont, stacked: true },
+      y: { grid: gridLines, ticks: { ...tickFont, callback: v => v+'%' }, stacked: true, max: 100 }
+    }
+  }
+});
+
+// 5. Backlog — 2 lines only: Total Backlog + Aged >15d
+new Chart(document.getElementById('backlogChart'), {
+  type: 'line',
+  data: {
+    labels: ['Jun 21','Jul 2','Jul 15','Jul 22'],
+    datasets: [
+      {
+        label: 'Total Backlog',
+        data: [275, 298, 259, 256],
+        borderColor: '#f0883e', backgroundColor: 'rgba(240,136,62,.1)',
+        tension: 0.4, pointRadius: 5, borderWidth: 2, fill: true,
+        pointBackgroundColor: '#f0883e'
+      },
+      {
+        label: 'Aged >15 Days ★',
+        data: [58, 52, 54, 41],
+        borderColor: '#f85149', backgroundColor: 'rgba(248,81,73,.1)',
+        tension: 0.4, pointRadius: 6, borderWidth: 2, borderDash: [5,3], fill: true,
+        pointBackgroundColor: '#f85149'
+      }
+    ]
+  },
+  options: {
+    ...baseOptions(),
+    plugins: {
+      ...baseOptions().plugins,
+      annotation: {}
+    }
+  }
+});
+
+// 6. Sev1 regional stacked bar
+new Chart(document.getElementById('sevChart'), {
+  type: 'bar',
+  data: {
+    labels: WEEKS,
+    datasets: [
+      { label: 'Sev1 EMEA',  data:[16,20,11,17], backgroundColor:'rgba(163,113,247,.8)', borderRadius:3 },
+      { label: 'Sev1 India', data:[17,12,18,16], backgroundColor:'rgba(248,81,73,.7)',   borderRadius:3 }
+    ]
+  },
+  options: {
+    responsive: true,
+    animation: { duration: 600 },
+    plugins: {
+      legend: { labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 12 } },
+      tooltip: {
+        backgroundColor: '#1c2128', titleColor: '#e6edf3', bodyColor: '#8b949e', borderColor: '#30363d', borderWidth: 1,
+        callbacks: { footer: items => 'Total: ' + items.reduce((s,i)=>s+i.raw,0) }
+      }
+    },
+    scales: {
+      x: { grid: gridLines, ticks: tickFont, stacked: true },
+      y: { grid: gridLines, ticks: tickFont, stacked: true, beginAtZero: true }
+    }
+  }
+});
+
+// 7. TCD — top 4 topics as line trend (exact 4-week data from screenshot)
+new Chart(document.getElementById('topicChart'), {
+  type: 'line',
+  data: {
+    labels: WEEKS,
+    datasets: [
+      {
+        label: 'SF CPQ',
+        data: [65, 76, 57, 70],
+        borderColor: '#3fb950', backgroundColor: 'rgba(63,185,80,.08)',
+        tension: 0.4, pointRadius: 5, borderWidth: 2, fill: false,
+        pointBackgroundColor: '#3fb950'
+      },
+      {
+        label: 'Configurator',
+        data: [63, 55, 60, 47],
+        borderColor: '#58a6ff', backgroundColor: 'rgba(88,166,255,.08)',
+        tension: 0.4, pointRadius: 5, borderWidth: 2, fill: false,
+        pointBackgroundColor: '#58a6ff'
+      },
+      {
+        label: 'Txn Mgmt',
+        data: [39, 39, 44, 38],
+        borderColor: '#a371f7', backgroundColor: 'rgba(163,113,247,.08)',
+        tension: 0.4, pointRadius: 5, borderWidth: 2, fill: false,
+        pointBackgroundColor: '#a371f7'
+      },
+      {
+        label: 'Price Mgmt',
+        data: [24, 22, 23, 29],
+        borderColor: '#f0883e', backgroundColor: 'rgba(240,136,62,.08)',
+        tension: 0.4, pointRadius: 5, borderWidth: 2, fill: false,
+        pointBackgroundColor: '#f0883e'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    animation: { duration: 600 },
+    plugins: {
+      legend: { labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 12, padding: 10 } },
+      tooltip: { backgroundColor: '#1c2128', titleColor: '#e6edf3', bodyColor: '#8b949e', borderColor: '#30363d', borderWidth: 1 }
+    },
+    scales: {
+      x: { grid: gridLines, ticks: tickFont },
+      y: { grid: gridLines, ticks: tickFont, beginAtZero: false }
+    }
+  }
+});
+
+// 8. Success Plan donut
+new Chart(document.getElementById('spChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Premier+ (40%)','Standard (21%)','Partner Premier (17%)','Signature (15%)','Premier (6%)'],
+    datasets: [{
+      data: [101,54,43,38,16],
+      backgroundColor: ['#58a6ff','#3fb950','#a371f7','#f0883e','#d29922'],
+      borderColor: '#161b22', borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'right', labels: { color: '#8b949e', font: { size: 10 }, boxWidth: 10, padding: 8 } },
+      tooltip: { backgroundColor: '#1c2128', titleColor: '#e6edf3', bodyColor: '#8b949e', borderColor: '#30363d', borderWidth: 1 }
+    },
+    cutout: '60%'
+  }
+});
+</script>
+</body>
+</html>
