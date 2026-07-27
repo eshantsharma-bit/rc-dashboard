@@ -132,42 +132,72 @@
     </div>
   </div>
 
-  <!-- ═══ SECTION 1: EXECUTIVE VIEW ═══ -->
-  <div class="section-divider">
-    <div class="label" style="color:var(--accent);">§1 · Executive View</div>
-    <div class="line"></div>
-  </div>
-
-  <!-- Executive Summary — better story -->
+  <!-- Executive Summary -->
   <div class="card" style="border-color:var(--accent);background:rgba(88,166,255,.03);">
     <h3 style="color:var(--accent);">📋 Executive Story — Week of Jul 19–25, 2026</h3>
+
+    <!-- 4 story panels -->
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;font-size:12px;line-height:1.75;">
 
       <!-- Panel 1: RCA Surge -->
       <div style="padding:12px 14px;border-radius:6px;background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.2);">
-        <div style="color:var(--red);font-weight:700;margin-bottom:6px;font-size:13px;">🚨 RCA Volume Surge</div>
-        Inflow hit <strong>301 (+18% WoW)</strong> — highest in 4 weeks, driven entirely by <strong>RCA +52 cases (+33%)</strong>. Configurator alone added +25 cases. CPQ held flat (77, −3). The surge is concentrated in EMEA, which added +33 of the 52 RCA cases this week.
+        <div style="color:var(--red);font-weight:700;margin-bottom:8px;font-size:13px;">🚨 RCA Volume Surge</div>
+        Inflow hit <strong>301 (+18% WoW)</strong> — 4-week high — driven entirely by <strong>RCA +52 (+33%)</strong>. Configurator alone added +25 cases. CPQ held flat at 77 (−3). EMEA led the surge, adding +33 of the 52 RCA gain this week.
       </div>
 
       <!-- Panel 2: SHIFTLOGIC -->
       <div style="padding:12px 14px;border-radius:6px;background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.2);">
-        <div style="color:var(--red);font-weight:700;margin-bottom:6px;font-size:13px;">🚨 SHIFTLOGIC.IO — Go-Live Risk</div>
-        <strong>16 cases TW (6×S1)</strong> from a Revenue Cloud partner executing a UAT migration for JTL. All 6 S1s filed Jul 24 within hours. AE escalated — risk of customer walk-away if unresolved. Team coordinating with AE and architect. Active Slack thread in progress.
+        <div style="color:var(--red);font-weight:700;margin-bottom:8px;font-size:13px;">🚨 SHIFTLOGIC.IO — Go-Live Risk</div>
+        <strong>16 cases TW including 6×S1</strong> — Revenue Cloud partner executing UAT migration for JTL customer. All 6 S1s raised within hours on Jul 24. AE escalated with walk-away risk. Team is coordinating with AE and architect; Slack swarm active.
       </div>
 
-      <!-- Panel 3: Backlog — positive story -->
-      <div style="padding:12px 14px;border-radius:6px;background:rgba(63,185,80,.07);border:1px solid rgba(63,185,80,.2);">
-        <div style="color:var(--green);font-weight:700;margin-bottom:6px;font-size:13px;">✅ Backlog Well Controlled</div>
-        Despite the inflow surge, the team held the backlog low. Open backlog at <strong>246 (−10 vs anchor)</strong>. Aged &gt;15d at <strong style="color:var(--green);font-size:14px;">38 ↓</strong> — down from <strong>58 in Jun</strong>, a <strong>35% reduction</strong> over 5 weeks. The team is absorbing higher volume without letting aged exposure grow.
+      <!-- Panel 3: Backlog positive story — prominent green -->
+      <div style="padding:12px 14px;border-radius:6px;background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.25);">
+        <div style="color:var(--green);font-weight:700;margin-bottom:8px;font-size:13px;">✅ Backlog Resilience</div>
+        Despite 4-week high inflow, the team held the line. Open backlog fell to <strong>246 (−10)</strong> and aged cases dropped to:
+        <div style="text-align:center;margin:8px 0;">
+          <span style="font-size:28px;font-weight:800;color:var(--green);">38 ↓</span>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;">−35% from Jun 21 peak of 58</div>
+        </div>
+        Five consecutive weeks of aged case reduction while absorbing higher volume.
       </div>
 
-      <!-- Panel 4: EMEA Sev1 Surge (replacing "Cases to Watch") -->
+      <!-- Panel 4: EMEA Sev1 trend -->
       <div style="padding:12px 14px;border-radius:6px;background:rgba(163,113,247,.08);border:1px solid rgba(163,113,247,.25);">
-        <div style="color:#a371f7;font-weight:700;margin-bottom:6px;font-size:13px;">📈 EMEA Sev1 Trending Up</div>
-        EMEA Sev1 has climbed <strong>3 weeks straight: 11 → 17 → 26</strong> — up <strong>+53% WoW</strong>, now driving <strong>63% of all Sev1</strong>. India Sev1 is stabilising (18→17→15 ↓). The EMEA acceleration warrants attention on high-severity account concentration and open investigation coverage.
+        <div style="color:#a371f7;font-weight:700;margin-bottom:8px;font-size:13px;">📈 EMEA Sev1 — 3-Week Climb</div>
+        EMEA Sev1 rising for 3 consecutive weeks:
+        <div style="display:flex;align-items:center;gap:6px;margin:8px 0;font-size:13px;font-weight:700;">
+          <span style="color:var(--muted);">11</span>
+          <span style="color:var(--muted);">→</span>
+          <span style="color:#a371f7;">17</span>
+          <span style="color:var(--muted);">→</span>
+          <span style="color:var(--red);font-size:18px;">26 ↑↑</span>
+        </div>
+        EMEA now drives <strong>63% of all Sev1</strong> vs 38% three weeks ago. India Sev1 trending opposite direction: 18 → 15 ↓.
       </div>
 
     </div>
+
+    <!-- Good news highlight strip -->
+    <div style="margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+      <div style="padding:8px 12px;background:rgba(63,185,80,.07);border-radius:6px;border:1px solid rgba(63,185,80,.15);text-align:center;">
+        <div style="color:var(--green);font-size:18px;font-weight:800;">4.73</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">CSAT · 85% Very Satisfied</div>
+      </div>
+      <div style="padding:8px 12px;background:rgba(63,185,80,.07);border-radius:6px;border:1px solid rgba(63,185,80,.15);text-align:center;">
+        <div style="color:var(--green);font-size:18px;font-weight:800;">CPQ Flat</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">77 cases · stable 4 weeks</div>
+      </div>
+      <div style="padding:8px 12px;background:rgba(63,185,80,.07);border-radius:6px;border:1px solid rgba(63,185,80,.15);text-align:center;">
+        <div style="color:var(--green);font-size:18px;font-weight:800;">India Sev1 ↓</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">18 → 17 → 15 · stabilising</div>
+      </div>
+      <div style="padding:8px 12px;background:rgba(63,185,80,.07);border-radius:6px;border:1px solid rgba(63,185,80,.15);text-align:center;">
+        <div style="color:var(--green);font-size:18px;font-weight:800;">73% / 27%</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">EMEA/India · stable 2nd week</div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Key Metrics 4-Week View -->
@@ -513,8 +543,50 @@
         </div>
         <div class="insight yellow">
           <strong>⚠ India aged disproportionate at 23% of India open</strong>
-          India aged: 20/87 = 23% vs EMEA: 18/159 = 11%. CPQ is the concentration area — see Section 2 for region-level aged breakdown.
+          India aged: 20/87 = 23% vs EMEA: 18/159 = 11%. CPQ is the concentration area — action items shared directly with managers.
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aged CPQ — No GUS / No Bug — Regional View -->
+  <div class="card" style="border-color:var(--orange);">
+    <h3 style="color:var(--orange);">📋 Aged CPQ Cases — No GUS / No Bug Filed · Regional View (14 of 16 aged CPQ)</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <!-- EMEA -->
+      <div>
+        <div style="font-size:12px;font-weight:700;color:#a371f7;margin-bottom:8px;padding:8px 12px;background:rgba(163,113,247,.08);border-radius:4px;border:1px solid rgba(163,113,247,.2);">
+          🌍 EMEA — 10 cases
+        </div>
+        <table class="data-table">
+          <thead><tr><th>Account</th><th>Sev</th><th>Age</th></tr></thead>
+          <tbody>
+            <tr><td>Rocket Software</td><td>S2</td><td style="color:var(--red);">31.3d</td></tr>
+            <tr><td>Cognizant</td><td>S3</td><td style="color:var(--red);">28.2d</td></tr>
+            <tr><td>Cision Group Ltd</td><td>S2</td><td style="color:var(--orange);">25.9d</td></tr>
+            <tr><td>IPC Systems</td><td>S3</td><td style="color:var(--orange);">24.0d</td></tr>
+            <tr><td>Mastercard Technologies</td><td>S2</td><td style="color:var(--orange);">23.9d</td></tr>
+            <tr><td>Lloyds List Intelligence</td><td>S2</td><td style="color:var(--yellow);">21.0d</td></tr>
+            <tr><td>OneAdvanced UK</td><td>S3</td><td style="color:var(--yellow);">20.8d</td></tr>
+            <tr><td>Engineering Ingegneria</td><td>S2</td><td style="color:var(--yellow);">20.0d</td></tr>
+            <tr><td>Demant Enterprise</td><td>S4</td><td style="color:var(--yellow);">18.0d</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- India -->
+      <div>
+        <div style="font-size:12px;font-weight:700;color:#f78166;margin-bottom:8px;padding:8px 12px;background:rgba(247,129,102,.08);border-radius:4px;border:1px solid rgba(247,129,102,.2);">
+          🇮🇳 India — 4 cases
+        </div>
+        <table class="data-table">
+          <thead><tr><th>Account</th><th>Sev</th><th>Age</th></tr></thead>
+          <tbody>
+            <tr><td>Carrier Corporation</td><td>S2</td><td style="color:var(--red);">31.1d</td></tr>
+            <tr><td>athenahealth Inc.</td><td>S3</td><td style="color:var(--yellow);">20.4d</td></tr>
+            <tr><td>Skytouch Technology</td><td>S2</td><td style="color:var(--yellow);">19.2d</td></tr>
+            <tr><td>Cytel Inc.</td><td>S2</td><td style="color:var(--yellow);">17.9d</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -558,127 +630,15 @@
       </tbody>
     </table>
     <div style="margin-top:10px;padding:8px 12px;background:rgba(210,153,34,.06);border-left:3px solid var(--yellow);border-radius:4px;font-size:12px;line-height:1.6;">
-      3 of 6 open S1s (&gt;14d) have no GUS filed — Fluido Oy, ECi, DE-CIX are RCA. Proofpoint (48.1d, CPQ) is the oldest. See Section 2 for manager-level action items.
+      3 of 6 open S1s (&gt;14d) have no GUS filed — Fluido Oy, ECi, DE-CIX (all RCA). Proofpoint (48.1d, CPQ) is the oldest open S1.
     </div>
   </div>
 
-  <!-- ═══ SECTION 2: INTERNAL ACTION ITEMS ═══ -->
-  <div class="section-divider" style="padding-top:20px;">
-    <div class="label" style="color:var(--orange);">§2 · Internal Action Items — Manager View</div>
-    <div class="line"></div>
-    <div style="font-size:11px;color:var(--muted);white-space:nowrap;">For manager use · not executive distribution</div>
-  </div>
-
-  <!-- Aged CPQ by REGION -->
-  <div class="card" style="border-color:var(--orange);">
-    <h3 style="color:var(--orange);">📋 Aged CPQ Cases — No GUS / No Bug Filed (14 of 16 aged CPQ cases)</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-
-      <!-- EMEA -->
-      <div>
-        <div style="font-size:12px;font-weight:700;color:#a371f7;margin-bottom:8px;padding:8px 12px;background:rgba(163,113,247,.08);border-radius:4px;border:1px solid rgba(163,113,247,.2);">
-          🌍 EMEA — 10 cases
-        </div>
-        <table class="data-table">
-          <thead><tr><th>Account</th><th>Sev</th><th>Age</th></tr></thead>
-          <tbody>
-            <tr><td>Rocket Software</td><td>S2</td><td style="color:var(--red);">31.3d</td></tr>
-            <tr><td>Cognizant</td><td>S3</td><td style="color:var(--red);">28.2d</td></tr>
-            <tr><td>Cision Group Ltd</td><td>S2</td><td style="color:var(--orange);">25.9d</td></tr>
-            <tr><td>IPC Systems</td><td>S3</td><td style="color:var(--orange);">24.0d</td></tr>
-            <tr><td>Mastercard Technologies</td><td>S2</td><td style="color:var(--orange);">23.9d</td></tr>
-            <tr><td>Lloyds List Intelligence</td><td>S2</td><td style="color:var(--yellow);">21.0d</td></tr>
-            <tr><td>OneAdvanced UK</td><td>S3</td><td style="color:var(--yellow);">20.8d</td></tr>
-            <tr><td>Engineering Ingegneria</td><td>S2</td><td style="color:var(--yellow);">20.0d</td></tr>
-            <tr><td>Demant Enterprise</td><td>S4</td><td style="color:var(--yellow);">18.0d</td></tr>
-          </tbody>
-        </table>
-        <div style="margin-top:8px;font-size:11px;color:var(--muted);line-height:1.6;padding:6px 10px;background:rgba(255,255,255,.03);border-radius:4px;">
-          No Slack swarm or engineering thread found for these accounts. Working/NMI status, no GUS linked.
-        </div>
-      </div>
-
-      <!-- India -->
-      <div>
-        <div style="font-size:12px;font-weight:700;color:#f78166;margin-bottom:8px;padding:8px 12px;background:rgba(247,129,102,.08);border-radius:4px;border:1px solid rgba(247,129,102,.2);">
-          🇮🇳 India — 4 cases
-        </div>
-        <table class="data-table">
-          <thead><tr><th>Account</th><th>Sev</th><th>Age</th></tr></thead>
-          <tbody>
-            <tr><td>Carrier Corporation</td><td>S2</td><td style="color:var(--red);">31.1d</td></tr>
-            <tr><td>athenahealth Inc.</td><td>S3</td><td style="color:var(--yellow);">20.4d</td></tr>
-            <tr><td>Skytouch Technology</td><td>S2</td><td style="color:var(--yellow);">19.2d</td></tr>
-            <tr><td>Cytel Inc.</td><td>S2</td><td style="color:var(--yellow);">17.9d</td></tr>
-          </tbody>
-        </table>
-        <div style="margin-top:8px;font-size:11px;color:var(--muted);line-height:1.6;padding:6px 10px;background:rgba(255,255,255,.03);border-radius:4px;">
-          Carrier Corp has a parallel open case under EMEA as well. No shared discussion found in Slack.
-        </div>
-        <!-- Action box -->
-        <div style="margin-top:12px;padding:10px 12px;background:rgba(248,81,73,.07);border-left:3px solid var(--red);border-radius:4px;font-size:12px;line-height:1.7;">
-          <strong style="color:var(--red);">Action (all 14 cases):</strong> Each manager to review case feed and confirm whether any engineering discussion exists outside OrgCS. File GUS investigation where none exists. Target: complete by end of this week.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Cases to Watch — with manager details (Section 2 copy) -->
-  <div class="card">
-    <h3 style="color:var(--yellow);">⏱ Cases to Watch — Manager Actions</h3>
-    <table class="data-table">
-      <thead><tr><th>Case #</th><th>Account</th><th>Age</th><th>P&T</th><th>Manager</th><th>GUS</th><th>Action Required</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><strong>473713985</strong></td><td>Proofpoint, Inc.</td>
-          <td style="color:var(--red);font-weight:700;">48.1d</td>
-          <td><span class="pill pill-orange">CPQ</span></td>
-          <td>Apurva Ajit</td><td>W-23400317</td>
-          <td style="color:var(--yellow);">Status review — 48d open</td>
-        </tr>
-        <tr>
-          <td><strong>474024809</strong></td><td>Imagine Learning LLC</td>
-          <td style="color:var(--orange);font-weight:700;">20.1d</td>
-          <td><span class="pill pill-orange">CPQ</span></td>
-          <td>Manu Ramamurthy</td><td>W-23557316</td>
-          <td style="color:var(--yellow);">NMI — check customer responsiveness</td>
-        </tr>
-        <tr>
-          <td><strong>474036584</strong></td><td>Fluido Oy</td>
-          <td style="color:var(--orange);font-weight:700;">19.0d</td>
-          <td><span class="pill pill-blue">RCA</span></td>
-          <td>Seamus Redmond</td><td><span style="color:var(--red);font-weight:700;">⚠ null</span></td>
-          <td style="color:var(--red);">File GUS immediately</td>
-        </tr>
-        <tr>
-          <td><strong>474069361</strong></td><td>Smarsh</td>
-          <td style="color:var(--yellow);font-weight:700;">14.2d</td>
-          <td><span class="pill pill-orange">CPQ</span></td>
-          <td>Seamus Redmond</td><td>W-23593730</td>
-          <td style="color:var(--muted);">GUS filed — monitor progress</td>
-        </tr>
-        <tr>
-          <td><strong>474069847</strong></td><td>ECi</td>
-          <td style="color:var(--yellow);font-weight:700;">14.1d</td>
-          <td><span class="pill pill-blue">RCA</span></td>
-          <td>Seamus Redmond</td><td><span style="color:var(--red);font-weight:700;">⚠ null</span></td>
-          <td style="color:var(--red);">File GUS immediately</td>
-        </tr>
-        <tr>
-          <td><strong>474070873</strong></td><td>DE-CIX Management GmbH</td>
-          <td style="color:var(--yellow);font-weight:700;">14.1d</td>
-          <td><span class="pill pill-blue">RCA</span></td>
-          <td>Seamus Redmond</td><td><span style="color:var(--red);font-weight:700;">⚠ null</span></td>
-          <td style="color:var(--red);">File GUS immediately</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
 
 </div><!-- end .main -->
 
 <footer>
-  Revenue Cloud Weekly Dashboard · Jul 19–25, 2026 · Data: OrgCS live query (Jul 27, 2026) · EMEA + India · Manager-filtered · §1 Executive View · §2 Internal Actions
+  Revenue Cloud Weekly Dashboard · Jul 19–25, 2026 · Data: OrgCS live query (Jul 27, 2026) · EMEA + India · Manager-filtered
 </footer>
 
 <script>
