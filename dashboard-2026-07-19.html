@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue Cloud — Weekly Dashboard | Jul 20–26, 2026</title>
+<style>
+  :root {
+    --blue: #0070d2; --blue-dark: #005fb2; --green: #04844b; --red: #c23934;
+    --orange: #ff9b00; --gray: #54698d; --bg: #f4f6f9; --card: #ffffff;
+    --border: #d8dde6; --text: #16325c; --muted: #54698d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Salesforce Sans', 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+  header { background: linear-gradient(135deg, #032d60 0%, #0070d2 100%); color: white; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; }
+  header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  header .meta { font-size: 12px; opacity: 0.8; margin-top: 4px; }
+  header .badge { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 16px; padding: 6px 16px; font-size: 12px; font-weight: 600; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 24px 32px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; position: relative; overflow: hidden; }
+  .kpi::after { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--blue); }
+  .kpi.warn::after { background: var(--orange); }
+  .kpi.ok::after { background: var(--green); }
+  .kpi.alert::after { background: var(--red); }
+  .kpi-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-val { font-size: 36px; font-weight: 700; color: var(--text); line-height: 1.1; margin: 6px 0 4px; }
+  .kpi-sub { font-size: 12px; color: var(--muted); }
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .section-title span { font-size: 11px; font-weight: 500; color: var(--muted); background: #eef2f8; padding: 2px 8px; border-radius: 10px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .card-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+  .bar-chart { display: flex; flex-direction: column; gap: 8px; }
+  .bar-row { display: flex; align-items: center; gap: 8px; }
+  .bar-label { width: 150px; font-size: 12px; color: var(--text); flex-shrink: 0; }
+  .bar-track { flex: 1; background: #eef2f8; border-radius: 3px; height: 18px; position: relative; }
+  .bar-fill { height: 100%; border-radius: 3px; position: relative; min-width: 2px; }
+  .bar-fill.blue { background: var(--blue); }
+  .bar-fill.orange { background: var(--orange); }
+  .bar-fill.red { background: var(--red); }
+  .bar-val { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 600; color: white; }
+  .bar-val-out { font-size: 12px; font-weight: 600; color: var(--text); width: 30px; text-align: right; }
+  .stacked-bar { display: flex; height: 24px; border-radius: 4px; overflow: hidden; gap: 1px; }
+  .stacked-seg { display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: #f4f6f9; font-weight: 600; color: var(--muted); text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; }
+  td { padding: 9px 10px; border-bottom: 1px solid #f0f2f6; color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8f9fb; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .pill.s1 { background: #fde8e7; color: var(--red); }
+  .pill.s2 { background: #fff3e0; color: #e06000; }
+  .pill.s3 { background: #e3f0fd; color: var(--blue); }
+  .pill.s4 { background: #eef2f8; color: var(--gray); }
+  .pill.emea { background: #e3f0fd; color: var(--blue-dark); }
+  .pill.india { background: #e8f5e9; color: var(--green); }
+  .geo-box { display: flex; gap: 16px; }
+  .geo-card { flex: 1; border-radius: 8px; padding: 16px; }
+  .geo-card.emea { background: #e8f0fe; border: 1px solid #c5d8fb; }
+  .geo-card.india { background: #e8f5e9; border: 1px solid #b5dfbb; }
+  .geo-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .geo-name.emea { color: #0050a0; }
+  .geo-name.india { color: #025b28; }
+  .geo-num { font-size: 28px; font-weight: 700; }
+  .geo-num.emea { color: #0050a0; }
+  .geo-num.india { color: #025b28; }
+  .geo-detail { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+  .insight { background: #fff8e1; border: 1px solid #ffe082; border-left: 4px solid var(--orange); border-radius: 6px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; line-height: 1.6; }
+  .insight strong { color: #8a5d00; }
+  .insight-green { background: #e8f5e9; border: 1px solid #b5dfbb; border-left: 4px solid var(--green); border-radius: 6px; padding: 12px 16px; margin-bottom: 0; font-size: 13px; line-height: 1.6; }
+  .insight-green strong { color: #025b28; }
+  footer { text-align: center; padding: 24px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Revenue Cloud — Weekly Dashboard</h1>
+    <div class="meta">Week of Jul 20–26, 2026 &nbsp;·&nbsp; All data as of Jul 27, 2026 &nbsp;·&nbsp; Executive Summary</div>
+  </div>
+  <div class="badge">Live Data · OrgCS</div>
+</header>
+
+<div class="container">
+
+  <!-- KPI Row -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Weekly Inflow</div>
+      <div class="kpi-val">298</div>
+      <div class="kpi-sub">Jul 20–26 &nbsp;·&nbsp; 40 Sev1 &nbsp;·&nbsp; 132 Sev2</div>
+    </div>
+    <div class="kpi warn">
+      <div class="kpi-label">Open Backlog</div>
+      <div class="kpi-val">229</div>
+      <div class="kpi-sub">Excl. Closed &amp; Solution Provided</div>
+    </div>
+    <div class="kpi alert">
+      <div class="kpi-label">Aged &gt;15 Days</div>
+      <div class="kpi-val">38</div>
+      <div class="kpi-sub">EMEA: 18 &nbsp;·&nbsp; India: 20 &nbsp;·&nbsp; 17% of backlog</div>
+    </div>
+    <div class="kpi ok">
+      <div class="kpi-label">Open Sev1</div>
+      <div class="kpi-val">24</div>
+      <div class="kpi-sub">EMEA: 18 &nbsp;·&nbsp; India: 6</div>
+    </div>
+  </div>
+
+  <!-- Inflow Section -->
+  <div class="section">
+    <div class="section-title">Inflow Analysis <span>Jul 20–26 · 298 cases</span></div>
+
+    <div class="insight">
+      <strong>Inflow story:</strong> 298 cases landed this week — <strong>73% EMEA, 27% India</strong>. Volume peaked mid-week (Wed Jul 22: 69) and declined into Friday (47), consistent with a normal Mon–Fri pattern. RCC (new product) accounts for <strong>72%</strong> of inflow; Legacy CPQ/Billing holds at 28%, signalling continued migration momentum. Configurator and Transaction Management dominate volume, together representing <strong>39%</strong> of all cases. India's Sev1 rate (20%) is nearly double EMEA's (11%), worth monitoring.
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Daily Inflow Trend</div>
+        <div style="display:flex; align-items:flex-end; gap:8px; height:100px; padding-bottom:4px;">
+          <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+            <div style="font-size:11px;font-weight:700;color:#16325c;">53</div>
+            <div style="width:100%;height:62px;background:var(--blue);border-radius:3px 3px 0 0;opacity:0.85;"></div>
+            <div style="font-size:10px;color:#54698d;">Mon 7/20</div>
+          </div>
+          <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+            <div style="font-size:11px;font-weight:700;color:#16325c;">65</div>
+            <div style="width:100%;height:76px;background:var(--blue);border-radius:3px 3px 0 0;"></div>
+            <div style="font-size:10px;color:#54698d;">Tue 7/21</div>
+          </div>
+          <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+            <div style="font-size:11px;font-weight:700;color:#c23934;font-size:12px;">69</div>
+            <div style="width:100%;height:81px;background:#c23934;border-radius:3px 3px 0 0;"></div>
+            <div style="font-size:10px;color:#54698d;">Wed 7/22</div>
+          </div>
+          <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+            <div style="font-size:11px;font-weight:700;color:#16325c;">58</div>
+            <div style="width:100%;height:68px;background:var(--blue);border-radius:3px 3px 0 0;"></div>
+            <div style="font-size:10px;color:#54698d;">Thu 7/23</div>
+          </div>
+          <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+            <div style="font-size:11px;font-weight:700;color:#16325c;">47</div>
+            <div style="width:100%;height:55px;background:var(--blue);border-radius:3px 3px 0 0;opacity:0.85;"></div>
+            <div style="font-size:10px;color:#54698d;">Fri 7/24</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:#54698d;margin-top:8px;">Avg 58/day (Mon–Fri). Weekend minimal (6 cases combined).</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Inflow by GEO &amp; Severity</div>
+        <div class="geo-box" style="margin-bottom:16px;">
+          <div class="geo-card emea">
+            <div class="geo-name emea">EMEA</div>
+            <div class="geo-num emea">217</div>
+            <div class="geo-detail">Sev1: 24 &nbsp;·&nbsp; Sev2: 85<br>Sev3: 36 &nbsp;·&nbsp; Sev4: 72</div>
+          </div>
+          <div class="geo-card india">
+            <div class="geo-name india">India</div>
+            <div class="geo-num india">81</div>
+            <div class="geo-detail">Sev1: 16 &nbsp;·&nbsp; Sev2: 47<br>Sev3: 10 &nbsp;·&nbsp; Sev4: 8</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:#54698d;">India Sev1 rate: <strong style="color:#c23934;">20%</strong> vs EMEA 11% — proportionally higher critical intake from India this week.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;" class="grid-2">
+      <div class="card">
+        <div class="card-title">Inflow by Product Area — Top 10</div>
+        <div class="bar-chart">
+          <div class="bar-row"><div class="bar-label">Configurator</div><div class="bar-track"><div class="bar-fill blue" style="width:100%;"><span class="bar-val">72</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">Salesforce CPQ</div><div class="bar-track"><div class="bar-fill orange" style="width:83%;"><span class="bar-val">60</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">Transaction Mgmt</div><div class="bar-track"><div class="bar-fill blue" style="width:61%;"><span class="bar-val">44</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">Price Management</div><div class="bar-track"><div class="bar-fill blue" style="width:42%;"><span class="bar-val">30</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">CPQ Dev Support</div><div class="bar-track"><div class="bar-fill orange" style="width:22%;"><span class="bar-val">16</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">Billing &amp; Invoicing</div><div class="bar-track"><div class="bar-fill blue" style="width:19%;"><span class="bar-val">14</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">Product Catalog</div><div class="bar-track"><div class="bar-fill blue" style="width:17%;"><span class="bar-val">12</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">CLM / DocGen</div><div class="bar-track"><div class="bar-fill blue" style="width:14%;"><span class="bar-val">10</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">Advanced Approvals</div><div class="bar-track"><div class="bar-fill blue" style="width:13%;"><span class="bar-val">9</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">Salesforce Billing</div><div class="bar-track"><div class="bar-fill orange" style="width:8%;"><span class="bar-val">6</span></div></div></div>
+        </div>
+        <div style="font-size:11px;color:#54698d;margin-top:10px;"><span style="display:inline-block;width:10px;height:10px;background:var(--orange);border-radius:2px;margin-right:4px;"></span>Legacy CPQ/Billing &nbsp;<span style="display:inline-block;width:10px;height:10px;background:var(--blue);border-radius:2px;margin-right:4px;"></span>Revenue Cloud Core</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">RCC vs Legacy CPQ Split</div>
+        <div style="margin-bottom:20px;">
+          <div style="font-size:12px;color:#54698d;margin-bottom:8px;font-weight:600;">Inflow (298 cases)</div>
+          <div class="stacked-bar">
+            <div class="stacked-seg" style="width:72%;background:var(--blue);">RCC 72%</div>
+            <div class="stacked-seg" style="width:28%;background:var(--orange);">CPQ 28%</div>
+          </div>
+        </div>
+        <div style="margin-bottom:20px;">
+          <div style="font-size:12px;color:#54698d;margin-bottom:8px;font-weight:600;">Open Backlog (229 cases)</div>
+          <div class="stacked-bar">
+            <div class="stacked-seg" style="width:68%;background:var(--blue);">RCC 68%</div>
+            <div class="stacked-seg" style="width:32%;background:var(--orange);">CPQ 32%</div>
+          </div>
+        </div>
+        <div class="insight-green">
+          <strong>Product mix healthy:</strong> RCC carries 72% of inflow and 68% of backlog. Legacy CPQ backlog share (32%) is slightly above inflow (28%) — some aging in the CPQ pipeline warrants monitoring.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Backlog Section -->
+  <div class="section">
+    <div class="section-title">Open Backlog <span>229 cases · excl. Closed &amp; Solution Provided</span></div>
+
+    <div class="insight">
+      <strong>Backlog story:</strong> 229 open cases = <strong>0.77x ratio vs weekly inflow</strong> — backlog is less than one week of volume, a healthy signal. However, <strong>38 cases are aged &gt;15 days (17%)</strong>. India's aging rate (23% of its backlog) is nearly double EMEA's (13%), despite lower absolute volume. Seamus carries the highest Sev1 concentration (10). Manu's team load (83 cases, 36% of all backlog) warrants attention. <strong>172 of 229 cases have no swarm/GUS/Bug</strong> — these are the immediate action priority.
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Backlog by GEO</div>
+        <div class="geo-box" style="margin-bottom:16px;">
+          <div class="geo-card emea">
+            <div class="geo-name emea">EMEA</div>
+            <div class="geo-num emea">143</div>
+            <div class="geo-detail">Sev1: 18 &nbsp;·&nbsp; Sev2: 78<br>Aged&gt;15: <strong style="color:#c23934;">18</strong> &nbsp;·&nbsp; 13% of EMEA backlog</div>
+          </div>
+          <div class="geo-card india">
+            <div class="geo-name india">India</div>
+            <div class="geo-num india">86</div>
+            <div class="geo-detail">Sev1: 6 &nbsp;·&nbsp; Sev2: 58<br>Aged&gt;15: <strong style="color:#c23934;">20</strong> &nbsp;·&nbsp; 23% of India backlog</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:#54698d;">India's aging rate (23%) is nearly double EMEA's (13%) — backlog accumulating faster relative to load in India.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Open Sev1 by Manager</div>
+        <div class="bar-chart">
+          <div class="bar-row"><div class="bar-label">Seamus Redmond</div><div class="bar-track"><div class="bar-fill red" style="width:100%;"><span class="bar-val">10</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">Manu Ramamurthy</div><div class="bar-track"><div class="bar-fill red" style="width:60%;"><span class="bar-val">6</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">Eshant Sharma</div><div class="bar-track"><div class="bar-fill red" style="width:50%;"><span class="bar-val">5</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">Apurva Ajit</div><div class="bar-track"><div class="bar-fill red" style="width:30%;"><span class="bar-val">3</span></div></div></div>
+          <div class="bar-row"><div class="bar-label">Darshan Jahagirdar</div><div class="bar-track"><div class="bar-fill red" style="width:1%;"></div></div><div class="bar-val-out">0</div></div>
+          <div class="bar-row"><div class="bar-label">Bhagat M</div><div class="bar-track"><div class="bar-fill red" style="width:1%;"></div></div><div class="bar-val-out">0</div></div>
+        </div>
+        <div style="font-size:11px;color:#54698d;margin-top:10px;">EMEA carries 75% of open Sev1 load (18 of 24 cases)</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;" class="card">
+      <div class="card-title">Backlog Summary by Manager</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Manager</th>
+            <th>GEO</th>
+            <th>Total</th>
+            <th>Sev1</th>
+            <th>Sev2</th>
+            <th>Aged &gt;15d</th>
+            <th>No-Action*</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Seamus Redmond</td><td><span class="pill emea">EMEA</span></td><td><strong>47</strong></td><td><span class="pill s1">10</span></td><td>25</td><td>3</td><td>26</td></tr>
+          <tr><td>Eshant Sharma</td><td><span class="pill emea">EMEA</span></td><td><strong>46</strong></td><td><span class="pill s1">5</span></td><td>23</td><td>4</td><td>33</td></tr>
+          <tr><td>Apurva Ajit</td><td><span class="pill emea">EMEA</span></td><td><strong>39</strong></td><td><span class="pill s1">3</span></td><td>24</td><td>9</td><td>33</td></tr>
+          <tr><td>Darshan Jahagirdar</td><td><span class="pill emea">EMEA</span></td><td><strong>11</strong></td><td>0</td><td>6</td><td>2</td><td>8</td></tr>
+          <tr><td>Manu Ramamurthy</td><td><span class="pill india">India</span></td><td><strong>83</strong></td><td><span class="pill s1">6</span></td><td>56</td><td>20</td><td>69</td></tr>
+          <tr><td>Bhagat M</td><td><span class="pill india">India</span></td><td><strong>2</strong></td><td>0</td><td>2</td><td>0</td><td>2</td></tr>
+          <tr><td>Naren Rajendran</td><td><span class="pill india">India</span></td><td><strong>1</strong></td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+          <tr style="background:#f4f6f9;font-weight:700;"><td>TOTAL</td><td></td><td>229</td><td>24</td><td>136</td><td>38</td><td>172</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:11px;color:#54698d;margin-top:8px;">* No-Action = no active swarm, no GUS investigation number, no Bug number attached</div>
+    </div>
+
+    <div style="margin-top:16px;" class="card">
+      <div class="card-title">Backlog by Product Area — Top 10</div>
+      <div class="bar-chart">
+        <div class="bar-row"><div class="bar-label">Salesforce CPQ</div><div class="bar-track"><div class="bar-fill orange" style="width:100%;"><span class="bar-val">51</span></div></div></div>
+        <div class="bar-row"><div class="bar-label">Configurator</div><div class="bar-track"><div class="bar-fill blue" style="width:94%;"><span class="bar-val">48</span></div></div></div>
+        <div class="bar-row"><div class="bar-label">Transaction Mgmt</div><div class="bar-track"><div class="bar-fill blue" style="width:65%;"><span class="bar-val">33</span></div></div></div>
+        <div class="bar-row"><div class="bar-label">Price Management</div><div class="bar-track"><div class="bar-fill blue" style="width:49%;"><span class="bar-val">25</span></div></div></div>
+        <div class="bar-row"><div class="bar-label">CPQ Dev Support</div><div class="bar-track"><div class="bar-fill orange" style="width:29%;"><span class="bar-val">15</span></div></div></div>
+        <div class="bar-row"><div class="bar-label">Billing &amp; Invoicing</div><div class="bar-track"><div class="bar-fill blue" style="width:22%;"><span class="bar-val">11</span></div></div></div>
+        <div class="bar-row"><div class="bar-label">Advanced Approvals</div><div class="bar-track"><div class="bar-fill blue" style="width:20%;"><span class="bar-val">10</span></div></div></div>
+        <div class="bar-row"><div class="bar-label">Usage &amp; Ratings</div><div class="bar-track"><div class="bar-fill blue" style="width:16%;"><span class="bar-val">8</span></div></div></div>
+        <div class="bar-row"><div class="bar-label">Salesforce Billing</div><div class="bar-track"><div class="bar-fill orange" style="width:16%;"><span class="bar-val">8</span></div></div></div>
+        <div class="bar-row"><div class="bar-label">Document Generation</div><div class="bar-track"><div class="bar-fill blue" style="width:12%;"><span class="bar-val">6</span></div></div></div>
+      </div>
+      <div style="font-size:11px;color:#54698d;margin-top:10px;"><span style="display:inline-block;width:10px;height:10px;background:var(--orange);border-radius:2px;margin-right:4px;"></span>Legacy CPQ/Billing &nbsp;<span style="display:inline-block;width:10px;height:10px;background:var(--blue);border-radius:2px;margin-right:4px;"></span>Revenue Cloud Core</div>
+    </div>
+  </div>
+
+  <!-- Aged Cases -->
+  <div class="section">
+    <div class="section-title">Critical Aged Cases <span>Top 10 · All &gt;20 days</span></div>
+    <div class="insight">
+      <strong>Oldest case 473713985 at 48.8 days</strong> — Sev1 CPQ Developer Support, EMEA, active swarm + GUS engaged. Five cases aged 28–40 days have <strong>no GUS/Bug linked</strong> and need immediate investigation assignment. India's oldest case (473832257, 41.9d) has a GUS + Bug but has been open 6 weeks.
+    </div>
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>Case #</th><th>Age</th><th>Sev</th><th>GEO</th><th>Product Area</th><th>Swarm</th><th>GUS / Bug</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>473713985</strong></td><td><strong style="color:#c23934;">48.8d</strong></td><td><span class="pill s1">Sev1</span></td><td><span class="pill emea">EMEA</span></td><td>CPQ Developer Support</td><td>✓</td><td>W-23400317</td></tr>
+          <tr><td>473832257</td><td style="color:#c23934;">41.9d</td><td><span class="pill s2">Sev2</span></td><td><span class="pill india">India</span></td><td>Salesforce Billing</td><td>—</td><td>W-23192293 + Bug</td></tr>
+          <tr><td>473884644</td><td style="color:#c23934;">39.5d</td><td><span class="pill s2">Sev2</span></td><td><span class="pill emea">EMEA</span></td><td>Transaction Management</td><td>✓</td><td><strong style="color:#c23934;">None ⚠</strong></td></tr>
+          <tr><td>473927422</td><td style="color:#e06000;">33.6d</td><td><span class="pill s3">Sev3</span></td><td><span class="pill emea">EMEA</span></td><td>Price Management</td><td>—</td><td><strong style="color:#c23934;">None ⚠</strong></td></tr>
+          <tr><td>473935431</td><td style="color:#e06000;">32.9d</td><td><span class="pill s2">Sev2</span></td><td><span class="pill emea">EMEA</span></td><td>Salesforce Billing</td><td>—</td><td><strong style="color:#c23934;">None ⚠</strong></td></tr>
+          <tr><td>473945347</td><td style="color:#e06000;">31.9d</td><td><span class="pill s2">Sev2</span></td><td><span class="pill emea">EMEA</span></td><td>Salesforce CPQ</td><td>—</td><td><strong style="color:#c23934;">None ⚠</strong></td></tr>
+          <tr><td>473947146</td><td style="color:#e06000;">31.7d</td><td><span class="pill s2">Sev2</span></td><td><span class="pill emea">EMEA</span></td><td>Salesforce CPQ</td><td>—</td><td><strong style="color:#c23934;">None ⚠</strong></td></tr>
+          <tr><td>473965057</td><td style="color:#e06000;">28.7d</td><td><span class="pill s2">Sev2</span></td><td><span class="pill emea">EMEA</span></td><td>Configurator</td><td>—</td><td><strong style="color:#c23934;">None ⚠</strong></td></tr>
+          <tr><td>473973770</td><td style="color:#e06000;">27.8d</td><td><span class="pill s3">Sev3</span></td><td><span class="pill emea">EMEA</span></td><td>Price Management</td><td>—</td><td>W-23524926</td></tr>
+          <tr><td>473975093</td><td style="color:#e06000;">27.7d</td><td><span class="pill s3">Sev3</span></td><td><span class="pill emea">EMEA</span></td><td>Usage &amp; Ratings</td><td>✓</td><td>W-23397005</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>Revenue Cloud Weekly Dashboard &nbsp;·&nbsp; Week Jul 20–26, 2026 &nbsp;·&nbsp; Data source: OrgCS live query &nbsp;·&nbsp; Generated Jul 28, 2026</footer>
+</body>
+</html>
