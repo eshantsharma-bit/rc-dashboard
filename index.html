@@ -307,36 +307,36 @@
         </div>
         <div style="margin-top:10px;display:flex;gap:12px;font-size:11px;color:var(--muted);">
           <span><span style="display:inline-block;width:8px;height:8px;background:var(--amber);border-radius:2px;margin-right:3px;"></span>Legacy CPQ/Billing</span>
-          <span><span style="display:inline-block;width:8px;height:8px;background:var(--blue);border-radius:2px;margin-right:3px;"></span>Revenue Cloud Core</span>
+          <span><span style="display:inline-block;width:8px;height:8px;background:var(--blue);border-radius:2px;margin-right:3px;"></span>Revenue Cloud (Core)</span>
         </div>
       </div>
       <div class="card">
-        <div class="card-title">RCC vs Legacy Split</div>
+        <div class="card-title">Revenue Cloud (Core) vs Legacy Split</div>
         <div style="margin-bottom:16px;">
           <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:6px;">Inflow · Jun 15 wk</div>
           <div style="display:flex;height:22px;border-radius:4px;overflow:hidden;">
-            <div style="width:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">RCC 50%</div>
+            <div style="width:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">RC Core 50%</div>
             <div style="width:50%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">CPQ 50%</div>
           </div>
         </div>
         <div style="margin-bottom:16px;">
           <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:6px;">Inflow · Jun 22 wk</div>
           <div style="display:flex;height:22px;border-radius:4px;overflow:hidden;">
-            <div style="width:58%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">RCC 58%</div>
+            <div style="width:58%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">RC Core 58%</div>
             <div style="width:42%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">CPQ 42%</div>
           </div>
         </div>
         <div style="margin-bottom:16px;">
           <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:6px;">Inflow · Jul 13 wk</div>
           <div style="display:flex;height:22px;border-radius:4px;overflow:hidden;">
-            <div style="width:62%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">RCC 62%</div>
+            <div style="width:62%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">RC Core 62%</div>
             <div style="width:38%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">CPQ 38%</div>
           </div>
         </div>
         <div style="margin-bottom:4px;">
           <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:6px;">Inflow · Jul 20–26</div>
           <div style="display:flex;height:22px;border-radius:4px;overflow:hidden;">
-            <div style="width:72%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">RCC 72%</div>
+            <div style="width:72%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">RC Core 72%</div>
             <div style="width:28%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">CPQ 28%</div>
           </div>
         </div>
@@ -437,7 +437,7 @@
             <td class="dot-red">Small BL, all stuck</td>
           </tr>
           <tr>
-            <td><strong>Rev-CPQ Developer Support</strong></td>
+            <td><strong>Revenue-CPQ Developer Support</strong></td>
             <td>18</td>
             <td>5</td>
             <td><span class="pill red">27.8%</span></td>
@@ -534,7 +534,7 @@
       </div>
       <div class="risk-card medium">
         <div class="risk-label medium">🔵 Monitor</div>
-        <div class="risk-pt">Rev-CPQ Dev Support</div>
+        <div class="risk-pt">Revenue-CPQ Dev Support</div>
         <div class="risk-pct medium">27.8%</div>
         <div class="risk-desc">Small BL (18 cases) but 27.8% aged. Possible skill specialisation gap. Engineers may not have deep-enough expertise to resolve complex CPQ developer queries independently.</div>
       </div>
@@ -552,7 +552,7 @@
       </div>
       <div class="risk-card low">
         <div class="risk-label low">✅ Healthy</div>
-        <div class="risk-pt">Revenue Cloud Core</div>
+        <div class="risk-pt">Revenue Cloud (Core)</div>
         <div class="risk-pct low">~20%</div>
         <div class="risk-desc">Strong execution. Hit 13.5% on Jul 24 — best in 5 weeks. Absorbed SHIFTLOGIC partner surge without BL degradation. Positive trajectory.</div>
       </div>
@@ -699,11 +699,11 @@ new Chart(document.getElementById('ptAgedPctChart'), {
   data: {
     labels: WEEKS5,
     datasets: [
-      {label:'Life Sciences',  data:[16.8,16.5,16.2,19.7,19.9], borderColor:'#0070d2', backgroundColor:'rgba(0,112,210,0.06)', borderWidth:2.5, pointRadius:5, tension:0.3, fill:true},
-      {label:'Retail & CG',    data:[41.7,36.2,27.8,41.8,42.5], borderColor:'#c23934', backgroundColor:'rgba(194,57,52,0.06)', borderWidth:2.5, pointRadius:5, tension:0.3, fill:true},
-      {label:'CPQ/OM/DC',      data:[27.4,24.0,28.9,27.7,29.7], borderColor:'#e06000', backgroundColor:'rgba(224,96,0,0.06)', borderWidth:2.5, pointRadius:5, tension:0.3, fill:true},
-      {label:'Omnistudio',     data:[19.7,22.2,25.4,21.1,18.5], borderColor:'#04844b', backgroundColor:'rgba(4,132,75,0.06)', borderWidth:2.5, pointRadius:5, tension:0.3, fill:true},
-      {label:'Revenue CPQ',    data:[16.9,23.7,null,null,17.9],  borderColor:'#7856ff', borderWidth:2, pointRadius:5, tension:0.3, fill:false, borderDash:[4,3], spanGaps:false}
+      {label:'Industry-Life Sciences',  data:[16.8,16.5,16.2,19.7,19.9], borderColor:'#0070d2', backgroundColor:'rgba(0,112,210,0.06)', borderWidth:2.5, pointRadius:5, tension:0.3, fill:true},
+      {label:'Industry-Retail & CG',    data:[41.7,36.2,27.8,41.8,42.5], borderColor:'#c23934', backgroundColor:'rgba(194,57,52,0.06)', borderWidth:2.5, pointRadius:5, tension:0.3, fill:true},
+      {label:'Industry-CPQ/OM/DC',      data:[27.4,24.0,28.9,27.7,29.7], borderColor:'#e06000', backgroundColor:'rgba(224,96,0,0.06)', borderWidth:2.5, pointRadius:5, tension:0.3, fill:true},
+      {label:'Industry-Omnistudio',     data:[19.7,22.2,25.4,21.1,18.5], borderColor:'#04844b', backgroundColor:'rgba(4,132,75,0.06)', borderWidth:2.5, pointRadius:5, tension:0.3, fill:true},
+      {label:'Revenue-Salesforce CPQ',  data:[16.9,23.7,null,null,17.9],  borderColor:'#7856ff', borderWidth:2, pointRadius:5, tension:0.3, fill:false, borderDash:[4,3], spanGaps:false}
     ]
   },
   options: {
@@ -723,11 +723,11 @@ new Chart(document.getElementById('ptBlChart'), {
   data: {
     labels: WEEKS5,
     datasets: [
-      {label:'Life Sciences',  data:[185,200,185,208,201], borderColor:'#0070d2', borderWidth:2.5, pointRadius:5, tension:0.3, fill:false},
-      {label:'CPQ/OM/DC',      data:[113,129,121,184,111], borderColor:'#e06000', borderWidth:2.5, pointRadius:5, tension:0.3, fill:false},
-      {label:'Omnistudio',     data:[61,72,67,76,81],      borderColor:'#04844b', borderWidth:2.5, pointRadius:5, tension:0.3, fill:false},
-      {label:'Retail & CG',    data:[72,80,72,79,80],      borderColor:'#c23934', borderWidth:2.5, pointRadius:5, tension:0.3, fill:false},
-      {label:'Revenue CPQ',    data:[59,59,null,null,56],  borderColor:'#7856ff', borderWidth:2, pointRadius:5, tension:0.3, fill:false, borderDash:[4,3], spanGaps:false}
+      {label:'Industry-Life Sciences',  data:[185,200,185,208,201], borderColor:'#0070d2', borderWidth:2.5, pointRadius:5, tension:0.3, fill:false},
+      {label:'Industry-CPQ/OM/DC',      data:[113,129,121,184,111], borderColor:'#e06000', borderWidth:2.5, pointRadius:5, tension:0.3, fill:false},
+      {label:'Industry-Omnistudio',     data:[61,72,67,76,81],      borderColor:'#04844b', borderWidth:2.5, pointRadius:5, tension:0.3, fill:false},
+      {label:'Industry-Retail & CG',    data:[72,80,72,79,80],      borderColor:'#c23934', borderWidth:2.5, pointRadius:5, tension:0.3, fill:false},
+      {label:'Revenue-Salesforce CPQ',  data:[59,59,null,null,56],  borderColor:'#7856ff', borderWidth:2, pointRadius:5, tension:0.3, fill:false, borderDash:[4,3], spanGaps:false}
     ]
   },
   options: {
@@ -746,11 +746,11 @@ new Chart(document.getElementById('ptAgedCountChart'), {
   data: {
     labels: WEEKS5,
     datasets: [
-      {label:'Life Sciences',  data:[31,33,30,41,40], backgroundColor:'#0070d2'},
-      {label:'CPQ/OM/DC',      data:[31,31,35,51,33], backgroundColor:'#e06000'},
-      {label:'Retail & CG',    data:[30,29,20,33,34], backgroundColor:'#c23934'},
-      {label:'Omnistudio',     data:[12,16,17,16,15], backgroundColor:'#04844b'},
-      {label:'Other',          data:[85,85,75,64,68], backgroundColor:'#d8dde6'}
+      {label:'Industry-Life Sciences',  data:[31,33,30,41,40], backgroundColor:'#0070d2'},
+      {label:'Industry-CPQ/OM/DC',      data:[31,31,35,51,33], backgroundColor:'#e06000'},
+      {label:'Industry-Retail & CG',    data:[30,29,20,33,34], backgroundColor:'#c23934'},
+      {label:'Industry-Omnistudio',     data:[12,16,17,16,15], backgroundColor:'#04844b'},
+      {label:'Other',                   data:[85,85,75,64,68], backgroundColor:'#d8dde6'}
     ]
   },
   options: {
