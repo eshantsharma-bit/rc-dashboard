@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue Cloud MBR — July 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #1c2333; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950;
+    --orange: #d29922; --red: #f85149; --purple: #bc8cff; --teal: #39d353;
+    --emea: #58a6ff; --india: #bc8cff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
+  .header { background: linear-gradient(135deg, #161b22 0%, #1c2333 100%); border-bottom: 1px solid var(--border); padding: 24px 32px; }
+  .header h1 { font-size: 22px; font-weight: 700; color: var(--text); }
+  .header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-blue { background: rgba(88,166,255,.15); color: var(--accent); border: 1px solid rgba(88,166,255,.3); }
+  .badge-orange { background: rgba(210,153,34,.15); color: var(--orange); border: 1px solid rgba(210,153,34,.3); }
+  .badge-green { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px 32px; }
+  .section-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin: 28px 0 14px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 8px; }
+  .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .kpi-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .kpi-value { font-size: 26px; font-weight: 700; margin: 6px 0 4px; }
+  .kpi-delta { font-size: 12px; color: var(--muted); }
+  .kpi-delta .up { color: var(--orange); } .kpi-delta .dn { color: var(--green); } .kpi-delta .up-bad { color: var(--red); }
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .charts-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .chart-card h3 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 16px; }
+  .chart-wrap { position: relative; height: 220px; }
+  .chart-wrap-tall { position: relative; height: 300px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--surface2); color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 8px 12px; border-bottom: 1px solid rgba(48,54,61,.5); color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+  .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+  .table-card h3 { font-size: 13px; font-weight: 600; color: var(--text); padding: 16px 20px 12px; border-bottom: 1px solid var(--border); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .s1 { color: var(--red); font-weight: 600; }
+  .s2 { color: var(--orange); font-weight: 600; }
+  .trend-up { color: var(--orange); } .trend-dn { color: var(--green); } .trend-warn { color: var(--red); font-weight: 700; }
+  .insight-box { background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 10px; font-size: 13px; line-height: 1.6; }
+  .insight-box.warn { border-left-color: var(--orange); }
+  .insight-box.crit { border-left-color: var(--red); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .highlight { color: var(--accent); font-weight: 600; }
+  .reg-pill { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .emea-pill { background: rgba(88,166,255,.15); color: var(--emea); }
+  .india-pill { background: rgba(188,140,255,.15); color: var(--india); }
+  footer { border-top: 1px solid var(--border); padding: 16px 32px; color: var(--muted); font-size: 12px; margin-top: 40px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <h1>Revenue Cloud &amp; Industry Cloud — Monthly Business Review</h1>
+    <span class="badge badge-blue">July 2026</span>
+    <span class="badge badge-orange">EMEA + India</span>
+  </div>
+  <p style="margin-top:8px">Full month analysis: 1 Jul – 31 Jul 2026 (IST) &nbsp;|&nbsp; MoM comparison: May → Jun → Jul &nbsp;|&nbsp; Data: Live OrgCS SOQL + Dashboard KPIs</p>
+</div>
+
+<div class="container">
+
+<!-- KPI HEADLINE ROW -->
+<div class="section-title">Executive KPIs — July 2026</div>
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-label">Total Inflow</div>
+    <div class="kpi-value" style="color:var(--accent)">3,353</div>
+    <div class="kpi-delta"><span class="up">▼ 125 vs Jun</span> &nbsp; May: 2,977</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Closures</div>
+    <div class="kpi-value" style="color:var(--green)">3,485</div>
+    <div class="kpi-delta"><span class="dn">▲ 32 vs Jun</span> &nbsp; May: 3,024</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">TTR (days)</div>
+    <div class="kpi-value" style="color:var(--orange)">8.3</div>
+    <div class="kpi-delta"><span class="dn">▼ 0.1 vs Jun</span> &nbsp; Target: 10</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">CSAT</div>
+    <div class="kpi-value" style="color:var(--green)">4.79</div>
+    <div class="kpi-delta"><span class="up">▼ 0.07 vs Jun</span> &nbsp; Target: 4.50</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Sev1 Cases</div>
+    <div class="kpi-value" style="color:var(--red)">333</div>
+    <div class="kpi-delta"><span class="dn">▼ 34 vs Jun (-9.3%)</span></div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">SLO Miss %</div>
+    <div class="kpi-value" style="color:var(--green)">0.15%</div>
+    <div class="kpi-delta">Target: &lt;2% &nbsp;✅</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Escalation %</div>
+    <div class="kpi-value" style="color:var(--green)">0.5%</div>
+    <div class="kpi-delta"><span class="dn">▼ 0.2pp vs Jun</span></div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Throughput</div>
+    <div class="kpi-value" style="color:var(--green)">1.93</div>
+    <div class="kpi-delta">May: 1.82 &nbsp; Jun: 1.92 &nbsp; ▲</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Chat Mix %</div>
+    <div class="kpi-value" style="color:var(--purple)">16.6%</div>
+    <div class="kpi-delta">May: 14.7% &nbsp; Jun: 15.8% &nbsp; ▲</div>
+  </div>
+</div>
+
+<!-- CHARTS ROW 1 -->
+<div class="section-title">Volume Trends — 3-Month View</div>
+<div class="charts-grid">
+  <div class="chart-card">
+    <h3>Total Monthly Inflow — May / Jun / Jul</h3>
+    <div class="chart-wrap">
+      <canvas id="inflowChart"></canvas>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>Inflow by Region — EMEA vs India</h3>
+    <div class="chart-wrap">
+      <canvas id="regionChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="charts-grid" style="margin-top:16px">
+  <div class="chart-card">
+    <h3>Sev1 Trend by Region</h3>
+    <div class="chart-wrap">
+      <canvas id="sev1Chart"></canvas>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>TTR by Engineer Geo (Monthly)</h3>
+    <div class="chart-wrap">
+      <canvas id="ttrChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- REGIONAL SNAPSHOT TABLE -->
+<div class="section-title">Regional Split — EMEA vs India</div>
+<div class="two-col">
+  <div class="table-card">
+    <h3><span class="emea-pill">EMEA</span> &nbsp; Monthly Breakdown</h3>
+    <table>
+      <tr><th>Metric</th><th class="num">May</th><th class="num">Jun</th><th class="num">Jul</th><th class="num">MoM</th></tr>
+      <tr><td>Total</td><td class="num">1,705</td><td class="num">2,019</td><td class="num">1,900</td><td class="num trend-dn">-119</td></tr>
+      <tr><td>Sev1</td><td class="num s1">144</td><td class="num s1">150</td><td class="num s1">149</td><td class="num trend-dn">-1</td></tr>
+      <tr><td>Sev2</td><td class="num">646</td><td class="num">844</td><td class="num">802</td><td class="num trend-dn">-42</td></tr>
+      <tr><td>Sev3</td><td class="num">300</td><td class="num">440</td><td class="num">360</td><td class="num trend-dn">-80</td></tr>
+      <tr><td>Sev4</td><td class="num">615</td><td class="num">585</td><td class="num">589</td><td class="num">+4</td></tr>
+      <tr><td>% Share</td><td class="num">57.4%</td><td class="num">58.1%</td><td class="num">56.3%</td><td class="num trend-dn">-1.8pp</td></tr>
+      <tr><td>TTR (days)</td><td class="num" style="color:var(--green)">7.76</td><td class="num" style="color:var(--green)">7.31</td><td class="num" style="color:var(--green)">6.94</td><td class="num trend-dn">-0.37</td></tr>
+    </table>
+  </div>
+  <div class="table-card">
+    <h3><span class="india-pill">India</span> &nbsp; Monthly Breakdown</h3>
+    <table>
+      <tr><th>Metric</th><th class="num">May</th><th class="num">Jun</th><th class="num">Jul</th><th class="num">MoM</th></tr>
+      <tr><td>Total</td><td class="num">1,264</td><td class="num">1,456</td><td class="num">1,473</td><td class="num trend-up">+17</td></tr>
+      <tr><td>Sev1</td><td class="num s1">168</td><td class="num s1">217</td><td class="num s1">184</td><td class="num trend-dn">-33</td></tr>
+      <tr><td>Sev2</td><td class="num">653</td><td class="num">794</td><td class="num">800</td><td class="num trend-up">+6</td></tr>
+      <tr><td>Sev3</td><td class="num">263</td><td class="num">319</td><td class="num">372</td><td class="num trend-up">+53</td></tr>
+      <tr><td>Sev4</td><td class="num">180</td><td class="num">126</td><td class="num">117</td><td class="num trend-dn">-9</td></tr>
+      <tr><td>% Share</td><td class="num">42.6%</td><td class="num">41.9%</td><td class="num">43.7%</td><td class="num trend-up">+1.8pp</td></tr>
+      <tr><td>TTR (days)</td><td class="num" style="color:var(--orange)">10.09</td><td class="num" style="color:var(--orange)">9.90</td><td class="num trend-warn">10.39</td><td class="num trend-warn">+0.49</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TTR INDIA INSIGHT -->
+<div class="insight-box warn">
+  <strong>India TTR: Why 10.39 days?</strong> Analysis of 200 open India S1/S2 cases shows 66% are aged 6–15 days, stalling in the mid-range rather than resolving at the 5-day mark. Two structural drivers: <strong>(1) Owner load concentration</strong> — top 20 owners hold 82% of open cases; Rajath Nagaraj carries 9 cases at avg 16.3 days, Abhishek Dixit 8 cases at avg 18.2 days; <strong>(2) Account complexity</strong> — Takeda (21 open), Deloitte (17 open) and Claro (8 open) represent 23% of all open India cases and are multi-case engagements requiring coordination across owners. 85% of cases are in "Working" or "Need More Info" status, indicating active handling, not neglect — the bottleneck is case complexity and owner bandwidth, not SLO adherence. All 7 cases aged 30+ days are S2 (not S1), confirming Sev1 triage is functioning.
+</div>
+
+<!-- PRODUCT VOLUME SECTION -->
+<div class="section-title">Top Case Drivers — 4-Month Product Volume Trend</div>
+<div class="chart-card" style="margin-bottom:16px">
+  <h3>Product Volume — Apr / May / Jun / Jul 2026 (Dashboard Data)</h3>
+  <div class="chart-wrap-tall">
+    <canvas id="productChart"></canvas>
+  </div>
+</div>
+
+<div class="table-card">
+  <h3>Product Volume Detail with % of Total July Inflow (3,353 cases)</h3>
+  <table>
+    <tr><th>Product &amp; Topic</th><th class="num">Apr</th><th class="num">May</th><th class="num">Jun</th><th class="num">Jul</th><th class="num">MoM Δ</th><th class="num">% Jul Total</th><th>Trend</th></tr>
+    <tr><td><strong>Industry-Life Sciences</strong></td><td class="num">320</td><td class="num">348</td><td class="num">460</td><td class="num"><strong>607</strong></td><td class="num trend-warn">+147 (+32%)</td><td class="num"><strong>18.1%</strong></td><td class="trend-warn">↑↑↑ Watch</td></tr>
+    <tr><td>Industry-OmniStudio</td><td class="num">446</td><td class="num">372</td><td class="num">346</td><td class="num">359</td><td class="num trend-up">+13 (+4%)</td><td class="num">10.7%</td><td class="trend-dn">→ Stable</td></tr>
+    <tr><td>Industry-CPQ / Order Mgmt</td><td class="num">336</td><td class="num">318</td><td class="num">387</td><td class="num">337</td><td class="num trend-dn">-50 (-13%)</td><td class="num">10.0%</td><td>→ Volatile</td></tr>
+    <tr><td>Revenue-Salesforce CPQ</td><td class="num">306</td><td class="num">280</td><td class="num">328</td><td class="num">285</td><td class="num trend-dn">-43 (-13%)</td><td class="num">8.5%</td><td>→ Volatile</td></tr>
+    <tr><td>RC (Core)-Product Catalogue</td><td class="num">206</td><td class="num">202</td><td class="num">258</td><td class="num">282</td><td class="num trend-up">+24 (+9%)</td><td class="num">8.4%</td><td class="trend-warn">↑ Rising</td></tr>
+    <tr><td>Industry-Retail &amp; Consumer</td><td class="num">204</td><td class="num">169</td><td class="num">207</td><td class="num">199</td><td class="num">-8 (-4%)</td><td class="num">5.9%</td><td>→ Stable</td></tr>
+    <tr><td>RC (Core)-Transactions</td><td class="num">214</td><td class="num">155</td><td class="num">206</td><td class="num">177</td><td class="num trend-dn">-29 (-14%)</td><td class="num">5.3%</td><td>→ Volatile</td></tr>
+    <tr><td>RC (Core)-Price Management</td><td class="num">175</td><td class="num">104</td><td class="num">123</td><td class="num">115</td><td class="num trend-dn">-8 (-7%)</td><td class="num">3.4%</td><td class="trend-dn">↓ Improving</td></tr>
+    <tr><td>Industry-Document Generation</td><td class="num">114</td><td class="num">76</td><td class="num">95</td><td class="num">102</td><td class="num trend-up">+7 (+7%)</td><td class="num">3.0%</td><td class="trend-up">↑ Rising</td></tr>
+    <tr><td>Industry-Financial Services</td><td class="num">65</td><td class="num">74</td><td class="num">84</td><td class="num">97</td><td class="num trend-up">+13 (+15%)</td><td class="num">2.9%</td><td class="trend-warn">↑↑ Watch</td></tr>
+    <tr><td>Revenue-CPQ Developer Support</td><td class="num">77</td><td class="num">62</td><td class="num">77</td><td class="num">62</td><td class="num trend-dn">-15 (-19%)</td><td class="num">1.8%</td><td class="trend-dn">→ Flat</td></tr>
+  </table>
+</div>
+
+<!-- LSC DEEP DIVE -->
+<div class="section-title">Industry-Life Sciences Deep Dive — 18.1% of Total July Volume</div>
+<div class="charts-grid">
+  <div class="chart-card">
+    <h3>LSC Bugs &amp; Investigation Rate vs Overall</h3>
+    <div class="chart-wrap">
+      <canvas id="lscRateChart"></canvas>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h3>Bugs by Product — July 2026 (Total: 124)</h3>
+    <div class="chart-wrap">
+      <canvas id="bugChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="insight-box crit" style="margin-top:16px">
+  <strong>Life Sciences — High Volume + High Bug Rate:</strong> Industry-Life Sciences generated <strong>607 cases in July (18.1% of total inflow)</strong>, a 32% MoM increase and 74% rise from April. It accounts for <strong>66 of 124 total bugs (53.2%)</strong> — a bug rate of <strong>10.9%</strong> vs the overall rate of 3.7%. It also drives <strong>51.2% of all investigations</strong> (129 of 251). This triple concentration — volume, bugs, investigations — points to a product-level issue, not a support handling issue. The dominant accounts are Takeda (103 LSC cases, 3.1% of all July inflow), Deloitte Global (66), Pfizer (64) and Mylan (38). Pfizer has 60 open S3 cases in LSC, suggesting a known issue being tracked. Engineering engagement should be verified for accounts with open LSC S3 clusters.
+</div>
+
+<div class="table-card" style="margin-top:16px">
+  <h3>Top LSC Accounts — July 2026 (607 total = 18.1% of Jul inflow)</h3>
+  <table>
+    <tr><th>Account</th><th class="num">Total</th><th class="num">% Jul</th><th class="num">S1</th><th class="num">S2</th><th class="num">S3</th><th class="num">S4</th><th class="num">Open</th></tr>
+    <tr><td>Takeda Pharmaceuticals Intl</td><td class="num"><strong>103</strong></td><td class="num">3.1%</td><td class="num s1">9</td><td class="num s2">66</td><td class="num">28</td><td class="num">0</td><td class="num">23</td></tr>
+    <tr><td>Deloitte Global Services Ltd</td><td class="num"><strong>66</strong></td><td class="num">2.0%</td><td class="num s1">20</td><td class="num s2">40</td><td class="num">3</td><td class="num">3</td><td class="num">16</td></tr>
+    <tr><td>Pfizer - Commercial LSC - EMEA</td><td class="num"><strong>64</strong></td><td class="num">1.9%</td><td class="num s1">0</td><td class="num s2">0</td><td class="num">60</td><td class="num">4</td><td class="num">19</td></tr>
+    <tr><td>Mylan Inc.</td><td class="num">38</td><td class="num">1.1%</td><td class="num s1">0</td><td class="num s2">26</td><td class="num">8</td><td class="num">4</td><td class="num">3</td></tr>
+    <tr><td>Deloitte Consulting LLP</td><td class="num">30</td><td class="num">0.9%</td><td class="num s1">0</td><td class="num s2">19</td><td class="num">11</td><td class="num">0</td><td class="num">3</td></tr>
+    <tr><td>IQVIA</td><td class="num">21</td><td class="num">0.6%</td><td class="num s1">0</td><td class="num s2">12</td><td class="num">0</td><td class="num">9</td><td class="num">3</td></tr>
+    <tr><td>Chiesi Farmaceutici Spa</td><td class="num">13</td><td class="num">0.4%</td><td class="num s1">0</td><td class="num s2">10</td><td class="num">3</td><td class="num">0</td><td class="num">0</td></tr>
+    <tr><td>SPIMACO</td><td class="num">13</td><td class="num">0.4%</td><td class="num s1">0</td><td class="num s2">0</td><td class="num">13</td><td class="num">0</td><td class="num">4</td></tr>
+    <tr><td>AstraZeneca</td><td class="num">13</td><td class="num">0.4%</td><td class="num s1">0</td><td class="num s2">8</td><td class="num">5</td><td class="num">0</td><td class="num">10</td></tr>
+    <tr><td>SCIAGEN PRIVATE LIMITED</td><td class="num">12</td><td class="num">0.4%</td><td class="num s1">0</td><td class="num s2">12</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+  </table>
+</div>
+
+<!-- INVESTIGATIONS & BUGS -->
+<div class="section-title">Investigations &amp; Bug Inflow — July 2026 (Dashboard Data)</div>
+<div class="two-col">
+  <div class="table-card">
+    <h3>Top Investigations by Product (Total: 251)</h3>
+    <table>
+      <tr><th>Product</th><th class="num">%</th><th class="num">Count</th></tr>
+      <tr><td><strong>Industry-Life Sciences</strong></td><td class="num trend-warn"><strong>51.2%</strong></td><td class="num"><strong>129</strong></td></tr>
+      <tr><td>Industry-Retail &amp; Consumer</td><td class="num">6.7%</td><td class="num">17</td></tr>
+      <tr><td>Revenue-Product Configurator</td><td class="num">6.4%</td><td class="num">16</td></tr>
+      <tr><td>Industry-CPQ / Order Mgmt</td><td class="num">4.8%</td><td class="num">12</td></tr>
+      <tr><td>Industry-OmniStudio</td><td class="num">4.2%</td><td class="num">11</td></tr>
+      <tr><td>Industry-Financial Services</td><td class="num">3.0%</td><td class="num">8</td></tr>
+      <tr><td>Revenue-Transaction Mgmt</td><td class="num">2.7%</td><td class="num">7</td></tr>
+      <tr><td>Industry-Loyalty Management</td><td class="num">2.7%</td><td class="num">7</td></tr>
+      <tr><td>Industry-Health Cloud</td><td class="num">2.4%</td><td class="num">6</td></tr>
+      <tr><td>Industry-Education Cloud</td><td class="num">1.8%</td><td class="num">5</td></tr>
+      <tr><td>Industry-Document Generation</td><td class="num">1.8%</td><td class="num">5</td></tr>
+    </table>
+  </div>
+  <div class="table-card">
+    <h3>Top Bug Inflow by Product (Total: 124)</h3>
+    <table>
+      <tr><th>Product</th><th class="num">Bugs</th><th class="num">Volume</th><th class="num">Bug%</th></tr>
+      <tr><td><strong>Industry-Life Sciences</strong></td><td class="num trend-warn"><strong>66</strong></td><td class="num">607</td><td class="num trend-warn"><strong>10.9%</strong></td></tr>
+      <tr><td>Industry-CPQ / Order Mgmt</td><td class="num">16</td><td class="num">337</td><td class="num">4.7%</td></tr>
+      <tr><td>Revenue-Product Configurator</td><td class="num">13</td><td class="num">—</td><td class="num">—</td></tr>
+      <tr><td>Industry-Retail &amp; Consumer</td><td class="num">8</td><td class="num">199</td><td class="num">4.0%</td></tr>
+      <tr><td>Industry-OmniStudio</td><td class="num">7</td><td class="num">359</td><td class="num">1.9%</td></tr>
+      <tr><td>Industry-Document Generation</td><td class="num">5</td><td class="num">102</td><td class="num">4.9%</td></tr>
+      <tr><td>Industry-Nonprofit Cloud</td><td class="num">4</td><td class="num">—</td><td class="num">—</td></tr>
+      <tr><td>Industry-Health Cloud</td><td class="num">4</td><td class="num">—</td><td class="num">—</td></tr>
+      <tr><td>Industry-Education Cloud</td><td class="num">4</td><td class="num">—</td><td class="num">—</td></tr>
+      <tr><td>RC-Transaction Management</td><td class="num">3</td><td class="num">177</td><td class="num">1.7%</td></tr>
+      <tr><td>RC-Product Catalog Mgmt</td><td class="num">2</td><td class="num">282</td><td class="num">0.7%</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- SEV1 TOP ACCOUNTS -->
+<div class="section-title">Sev1 Account Analysis — 3-Month Trend</div>
+<div class="table-card">
+  <h3>Top Sev1 Accounts — May / Jun / Jul (SOQL)</h3>
+  <table>
+    <tr><th>Account</th><th class="num">May S1</th><th class="num">Jun S1</th><th class="num">Jul S1</th><th class="num">Jul Total</th><th>Signal</th></tr>
+    <tr><td><strong>Deloitte Global Services Ltd</strong></td><td class="num">4</td><td class="num">10</td><td class="num s1"><strong>17</strong></td><td class="num">72</td><td class="trend-warn">↑↑↑ Steepest rise</td></tr>
+    <tr><td>Bluvium Inc</td><td class="num">4</td><td class="num">7</td><td class="num s1"><strong>10</strong></td><td class="num">20</td><td class="trend-warn">↑↑↑ Persistent climb</td></tr>
+    <tr><td>SHIFTLOGIC.IO LIMITED</td><td class="num">7</td><td class="num">—</td><td class="num s1"><strong>8</strong></td><td class="num">36</td><td class="trend-up">↑ Returning</td></tr>
+    <tr><td>Takeda Pharmaceuticals Intl</td><td class="num">12</td><td class="num">5</td><td class="num s1"><strong>8</strong></td><td class="num">144</td><td>→ Volatile (LSC)</td></tr>
+    <tr><td>Accenture LLP</td><td class="num">5</td><td class="num">10</td><td class="num s1"><strong>7</strong></td><td class="num">45</td><td>→ Volatile</td></tr>
+    <tr><td>McDonald's Corporation</td><td class="num">0</td><td class="num">0</td><td class="num s1"><strong>7</strong></td><td class="num">—</td><td class="trend-warn">⚑ New entrant</td></tr>
+    <tr><td>N28 Technologies</td><td class="num">0</td><td class="num">0</td><td class="num s1"><strong>6</strong></td><td class="num">—</td><td class="trend-warn">⚑ New entrant</td></tr>
+    <tr><td>YASH Technologies</td><td class="num">—</td><td class="num">11</td><td class="num s1"><strong>6</strong></td><td class="num">—</td><td class="trend-dn">↓ Improving</td></tr>
+    <tr><td>Cloudity</td><td class="num">3</td><td class="num">—</td><td class="num s1"><strong>4</strong></td><td class="num">29</td><td>→ Recurring</td></tr>
+    <tr><td>London Business School</td><td class="num">0</td><td class="num">0</td><td class="num s1"><strong>5</strong></td><td class="num">—</td><td class="trend-warn">⚑ New entrant</td></tr>
+    <tr><td>TATA Motors</td><td class="num">0</td><td class="num">0</td><td class="num s1"><strong>5</strong></td><td class="num">—</td><td class="trend-warn">⚑ New entrant</td></tr>
+  </table>
+</div>
+
+<!-- TOP VOLUME ACCOUNTS -->
+<div class="section-title">Top Accounts by July Inflow (SOQL)</div>
+<div class="table-card">
+  <h3>Top 15 Accounts — July Volume + MoM (3-month SOQL)</h3>
+  <table>
+    <tr><th>Account</th><th class="num">May</th><th class="num">Jun</th><th class="num">Jul</th><th class="num">S1</th><th class="num">S2</th><th class="num">S3</th><th class="num">% Jul</th></tr>
+    <tr><td><strong>Takeda Pharmaceuticals Intl</strong></td><td class="num">75</td><td class="num">73</td><td class="num"><strong>144</strong></td><td class="num s1">8</td><td class="num s2">102</td><td class="num">30</td><td class="num">4.3%</td></tr>
+    <tr><td>Deloitte Global Services Ltd</td><td class="num">52</td><td class="num">67</td><td class="num"><strong>72</strong></td><td class="num s1">17</td><td class="num s2">39</td><td class="num">6</td><td class="num">2.1%</td></tr>
+    <tr><td>Pfizer - Commercial LSC - EMEA</td><td class="num">45</td><td class="num">72</td><td class="num"><strong>69</strong></td><td class="num s1">0</td><td class="num s2">0</td><td class="num">52</td><td class="num">2.1%</td></tr>
+    <tr><td>Mylan Inc.</td><td class="num">—</td><td class="num">—</td><td class="num"><strong>62</strong></td><td class="num s1">0</td><td class="num s2">32</td><td class="num">9</td><td class="num">1.8%</td></tr>
+    <tr><td>Accenture LLP</td><td class="num">53</td><td class="num">52</td><td class="num"><strong>45</strong></td><td class="num s1">7</td><td class="num s2">11</td><td class="num">6</td><td class="num">1.3%</td></tr>
+    <tr><td>Deloitte Consulting LLP</td><td class="num">20</td><td class="num">28</td><td class="num"><strong>44</strong></td><td class="num s1">0</td><td class="num s2">17</td><td class="num">8</td><td class="num">1.3%</td></tr>
+    <tr><td>SHIFTLOGIC.IO LIMITED</td><td class="num">16</td><td class="num">—</td><td class="num"><strong>36</strong></td><td class="num s1">8</td><td class="num s2">11</td><td class="num">0</td><td class="num">1.1%</td></tr>
+    <tr><td>PwC</td><td class="num">19</td><td class="num">34</td><td class="num"><strong>33</strong></td><td class="num s1">0</td><td class="num s2">15</td><td class="num">4</td><td class="num">1.0%</td></tr>
+    <tr><td>Cloudity</td><td class="num">16</td><td class="num">27</td><td class="num"><strong>29</strong></td><td class="num s1">4</td><td class="num s2">9</td><td class="num">13</td><td class="num">0.9%</td></tr>
+    <tr><td>Metlen Energy &amp; Metals</td><td class="num">—</td><td class="num">—</td><td class="num"><strong>27</strong></td><td class="num s1">0</td><td class="num s2">13</td><td class="num">14</td><td class="num">0.8%</td></tr>
+    <tr><td>IQVIA</td><td class="num">—</td><td class="num">—</td><td class="num"><strong>23</strong></td><td class="num s1">0</td><td class="num s2">14</td><td class="num">0</td><td class="num">0.7%</td></tr>
+    <tr><td>British Telecom Consumer</td><td class="num">15</td><td class="num">—</td><td class="num"><strong>21</strong></td><td class="num s1">0</td><td class="num s2">11</td><td class="num">4</td><td class="num">0.6%</td></tr>
+  </table>
+</div>
+
+<!-- KEY OBSERVATIONS -->
+<div class="section-title">Key Observations for MBR</div>
+<div class="insight-box crit">
+  <strong>1. Industry-Life Sciences: 4-month unchecked climb (+74% from April).</strong> At 607 cases (18.1% of total), 10.9% bug rate, 53.2% of all bugs, and 51.2% of all investigations — this product needs a cross-functional review before August. Takeda (103), Deloitte (66), and Pfizer (64) are the anchor accounts.
+</div>
+<div class="insight-box warn">
+  <strong>2. India TTR back above 10 days (10.39) — an owner bandwidth and case complexity issue.</strong> India carries 200 open S1/S2 cases. Rajath Nagaraj (9 cases, avg 16.3 days) and Abhishek Dixit (8 cases, avg 18.2 days) are the highest-load owners. Takeda (21 open) and Deloitte (17 open) account clusters are driving elongated resolution cycles. Meanwhile EMEA TTR improved to 6.94 — a 3-month consecutive improvement.
+</div>
+<div class="insight-box">
+  <strong>3. Deloitte group (72 + 44 = 116 cases, 17 S1) — largest single-group risk.</strong> Deloitte Global Services S1 cases tripled over 3 months (4→10→17). Combined with Deloitte Consulting LLP, the group represents 3.5% of all July volume. This pattern indicates a platform or implementation-level issue, not isolated incidents.
+</div>
+<div class="insight-box warn">
+  <strong>4. Four new Sev1 account entrants in July.</strong> McDonald's (7 S1), N28 Technologies (6 S1), London Business School (5 S1), TATA Motors (5 S1) — all zero S1 in May and June. Four simultaneous first-time entrants suggests a common trigger, possibly a recent release or migration.
+</div>
+<div class="insight-box">
+  <strong>5. Sev1 improved MoM (-9.3%, 367→333), led by India recovery.</strong> India S1 fell from 217→184 (-15.3%), returning toward May levels. EMEA S1 has been structurally flat at ~149 for 3 months — no improvement trend. The overall improvement is India-driven.
+</div>
+<div class="insight-box" style="border-left-color:var(--green)">
+  <strong>6. Positive signals: EMEA TTR, Closures, Throughput, Escalation %.</strong> EMEA TTR at 6.94 (3-month best). Closures at 3,485 (highest in 3 months). Throughput at 1.93 (steady improvement). Escalation % dropped to 0.5% from 0.7%. EMEA operational engine is healthy.
+</div>
+<div class="insight-box" style="border-left-color:var(--purple)">
+  <strong>7. Chat Mix steady climb: 14.7% → 15.8% → 16.6%.</strong> Three consecutive monthly increases. At current pace (~0.9pp/month), the 30% target is an 18-month horizon — worth discussing if there's a plan to accelerate adoption.
+</div>
+<div class="insight-box warn">
+  <strong>8. Takeda volume doubled MoM (73→144).</strong> Predominantly S2 via India (102 of 144 cases). Not yet S1-heavy but the volume acceleration warrants proactive outreach. Specifically 13 open S2 cases still in "Working" or "Need More Info" status.
+</div>
+
+</div><!-- /container -->
+
+<footer>
+  <div style="max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+    <span>Revenue Cloud &amp; Industry Cloud MBR — July 2026 &nbsp;|&nbsp; Data: OrgCS SOQL + Dashboard KPIs &nbsp;|&nbsp; Generated: Aug 2026</span>
+    <span>EMEA + India &nbsp;|&nbsp; Vendor Manager: Eshant Sharma</span>
+  </div>
+</footer>
+
+<script>
+const months = ['May-26','Jun-26','Jul-26'];
+const EMEA_C = 'rgba(88,166,255,0.85)';
+const INDIA_C = 'rgba(188,140,255,0.85)';
+const EMEA_B = 'rgba(88,166,255,1)';
+const INDIA_B = 'rgba(188,140,255,1)';
+
+Chart.defaults.color = '#8b949e';
+Chart.defaults.borderColor = '#30363d';
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+
+// 1. Inflow bar
+new Chart(document.getElementById('inflowChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{
+      label: 'Total Inflow',
+      data: [2977, 3478, 3353],
+      backgroundColor: ['rgba(88,166,255,0.5)','rgba(188,140,255,0.5)','rgba(88,166,255,0.9)'],
+      borderColor: ['rgba(88,166,255,1)','rgba(188,140,255,1)','rgba(88,166,255,1)'],
+      borderWidth: 2, borderRadius: 4
+    }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: false, min: 2500, grid: { color: '#30363d' } }, x: { grid: { display: false } } }
+  }
+});
+
+// 2. Region stacked bar
+new Chart(document.getElementById('regionChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'EMEA', data: [1705, 2019, 1900], backgroundColor: EMEA_C, borderColor: EMEA_B, borderWidth: 2, borderRadius: 4 },
+      { label: 'India', data: [1264, 1456, 1473], backgroundColor: INDIA_C, borderColor: INDIA_B, borderWidth: 2, borderRadius: 4 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#e6edf3' } } },
+    scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, grid: { color: '#30363d' } } }
+  }
+});
+
+// 3. S1 line
+new Chart(document.getElementById('sev1Chart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'EMEA S1', data: [144, 150, 149], borderColor: EMEA_B, backgroundColor: 'rgba(88,166,255,0.1)', tension: 0.3, pointRadius: 5, fill: true },
+      { label: 'India S1', data: [168, 217, 184], borderColor: INDIA_B, backgroundColor: 'rgba(188,140,255,0.1)', tension: 0.3, pointRadius: 5, fill: true }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#e6edf3' } } },
+    scales: { y: { grid: { color: '#30363d' } }, x: { grid: { display: false } } }
+  }
+});
+
+// 4. TTR line
+new Chart(document.getElementById('ttrChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'EMEA TTR', data: [7.76, 7.31, 6.94], borderColor: 'rgba(63,185,80,1)', backgroundColor: 'rgba(63,185,80,0.1)', tension: 0.3, pointRadius: 6, fill: true },
+      { label: 'India TTR', data: [10.09, 9.90, 10.39], borderColor: 'rgba(248,81,73,1)', backgroundColor: 'rgba(248,81,73,0.1)', tension: 0.3, pointRadius: 6, fill: true },
+      { label: 'Target', data: [10, 10, 10], borderColor: '#8b949e', borderDash: [5,5], pointRadius: 0, fill: false }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#e6edf3' } } },
+    scales: { y: { min: 5, max: 12, grid: { color: '#30363d' } }, x: { grid: { display: false } } }
+  }
+});
+
+// 5. Product horizontal bar
+new Chart(document.getElementById('productChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Industry-Life Sciences','Industry-OmniStudio','Industry-CPQ/Order Mgmt','Revenue-SF CPQ','RC-Product Catalogue','Industry-Retail & CG','RC-Transactions','RC-Price Mgmt','Industry-Doc Gen','Industry-Fin Services'],
+    datasets: [
+      { label: 'Apr-26', data: [320,446,336,306,206,204,214,175,114,65], backgroundColor: 'rgba(139,148,158,0.4)', borderRadius: 2 },
+      { label: 'May-26', data: [348,372,318,280,202,169,155,104,76,74], backgroundColor: 'rgba(88,166,255,0.4)', borderRadius: 2 },
+      { label: 'Jun-26', data: [460,346,387,328,258,207,206,123,95,84], backgroundColor: 'rgba(188,140,255,0.5)', borderRadius: 2 },
+      { label: 'Jul-26', data: [607,359,337,285,282,199,177,115,102,97], backgroundColor: 'rgba(248,81,73,0.7)', borderRadius: 2 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    plugins: { legend: { labels: { color: '#e6edf3' } } },
+    scales: { x: { stacked: false, grid: { color: '#30363d' } }, y: { grid: { display: false } } }
+  }
+});
+
+// 6. LSC rates comparison
+new Chart(document.getElementById('lscRateChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Bug Rate','Investigation Rate'],
+    datasets: [
+      { label: 'Industry-Life Sciences', data: [10.9, 21.3], backgroundColor: 'rgba(248,81,73,0.75)', borderColor: 'rgba(248,81,73,1)', borderWidth: 2, borderRadius: 4 },
+      { label: 'Overall Average', data: [3.7, 7.4], backgroundColor: 'rgba(88,166,255,0.5)', borderColor: 'rgba(88,166,255,1)', borderWidth: 2, borderRadius: 4 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#e6edf3' } } },
+    scales: { y: { grid: { color: '#30363d' }, ticks: { callback: v => v+'%' } }, x: { grid: { display: false } } }
+  }
+});
+
+// 7. Bug bar
+new Chart(document.getElementById('bugChart'), {
+  type: 'bar',
+  data: {
+    labels: ['LSC','CPQ/OM','Prod Config','Retail/CG','OmniStudio','Doc Gen','Nonprofit','Health','Education','RC-Trans','Loyalty'],
+    datasets: [{
+      label: 'Bugs',
+      data: [66,16,13,8,7,5,4,4,4,3,3],
+      backgroundColor: ['rgba(248,81,73,0.8)','rgba(88,166,255,0.7)','rgba(88,166,255,0.7)','rgba(88,166,255,0.7)','rgba(88,166,255,0.7)','rgba(88,166,255,0.7)','rgba(88,166,255,0.5)','rgba(88,166,255,0.5)','rgba(88,166,255,0.5)','rgba(88,166,255,0.5)','rgba(88,166,255,0.5)'],
+      borderRadius: 4
+    }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { y: { grid: { color: '#30363d' } }, x: { grid: { display: false } } }
+  }
+});
+</script>
+</body>
+</html>
