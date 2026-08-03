@@ -80,7 +80,7 @@ canvas{max-height:180px}
   <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge badge-red">🚨 SHIFTLOGIC UAT — 11 cases, 4×S1, walk-away risk</span>
     <span class="badge badge-purple">📉 EMEA Sev1 streak broken: 22→17</span>
-    <span class="badge badge-green">✅ Backlog 214 ↓ vs 256 two weeks ago · CSAT 4.78 ★</span>
+    <span class="badge badge-green">✅ Backlog 214 ↓ vs 256 two weeks ago · CSAT 4.58 (Support Survey)</span>
   </div>
 </div>
 
@@ -112,9 +112,9 @@ canvas{max-height:180px}
     <div class="kpi-sub">↓ −4 vs anchor (38)</div>
   </div>
   <div class="kpi good">
-    <div class="kpi-label">CSAT</div>
-    <div class="kpi-val" style="color:var(--green)">4.78</div>
-    <div class="kpi-sub">32 responses · 88% ★</div>
+    <div class="kpi-label">CSAT (Support Survey)</div>
+    <div class="kpi-val" style="color:var(--green)">4.58</div>
+    <div class="kpi-sub">24 responses · 83% ★</div>
   </div>
 </div>
 
@@ -145,7 +145,7 @@ canvas{max-height:180px}
     </div>
   </div>
   <div class="good-strip">
-    <div class="good-cell"><div class="val">4.78</div><div class="lbl">CSAT · Best of 4 weeks</div></div>
+    <div class="good-cell"><div class="val">4.58</div><div class="lbl">CSAT · Support Survey (24)</div></div>
     <div class="good-cell"><div class="val">67%</div><div class="lbl">RCA share · Stable</div></div>
     <div class="good-cell"><div class="val">17→17</div><div class="lbl">EMEA Sev1 · Held flat</div></div>
     <div class="good-cell"><div class="val">−13%</div><div class="lbl">Backlog vs anchor</div></div>
@@ -171,7 +171,7 @@ canvas{max-height:180px}
       <tr><td>Sev2</td><td>—</td><td style="background:rgba(88,166,255,.07)"><strong>87</strong></td><td>129</td><td>109</td><td>116</td></tr>
       <tr><td>RCA Inflow (% share)</td><td>—</td><td style="background:rgba(88,166,255,.07)"><strong>154 (67%)</strong></td><td>197 (67%)</td><td>160 (63%)</td><td>172 (67%)</td></tr>
       <tr><td>CPQ Inflow (% share)</td><td>—</td><td style="background:rgba(88,166,255,.07)"><strong>69 (30%)</strong></td><td>85 (29%)</td><td>75 (30%)</td><td>72 (28%)</td></tr>
-      <tr style="background:rgba(63,185,80,.03)"><td>CSAT</td><td>≥4.5</td><td style="background:rgba(88,166,255,.07)"><strong>4.78</strong></td><td>4.68</td><td>4.73</td><td>4.77</td></tr>
+      <tr style="background:rgba(63,185,80,.03)"><td>CSAT (Support Survey)</td><td>≥4.5</td><td style="background:rgba(88,166,255,.07)"><strong>4.58</strong></td><td>4.78</td><td>4.88</td><td>4.90</td></tr>
       <tr style="background:rgba(63,185,80,.03)"><td>Aged &gt;15d</td><td>↓</td><td style="background:rgba(88,166,255,.07)"><strong>32</strong></td><td>—</td><td>—</td><td>—</td></tr>
       <tr style="background:rgba(63,185,80,.03)"><td>Open Backlog</td><td>↓</td><td style="background:rgba(88,166,255,.07)"><strong>193</strong></td><td>—</td><td>—</td><td>—</td></tr>
     </tbody>
@@ -185,12 +185,12 @@ canvas{max-height:180px}
     <canvas id="inflowChart"></canvas>
   </div>
   <div class="card">
-    <div class="card-title">⭐ CSAT Trend</div>
+    <div class="card-title">⭐ CSAT Trend (Support Survey only)</div>
     <canvas id="csatChart"></canvas>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px;text-align:center">
-      <div style="background:rgba(63,185,80,.08);border-radius:5px;padding:5px"><div style="font-size:14px;font-weight:700;color:var(--green)">4.78</div><div style="font-size:10px;color:var(--muted)">TW Avg</div></div>
-      <div style="background:rgba(63,185,80,.08);border-radius:5px;padding:5px"><div style="font-size:14px;font-weight:700;color:var(--green)">88%</div><div style="font-size:10px;color:var(--muted)">Very Sat</div></div>
-      <div style="background:rgba(248,81,73,.08);border-radius:5px;padding:5px"><div style="font-size:14px;font-weight:700;color:var(--red)">1</div><div style="font-size:10px;color:var(--muted)">Score &lt;3</div></div>
+      <div style="background:rgba(63,185,80,.08);border-radius:5px;padding:5px"><div style="font-size:14px;font-weight:700;color:var(--green)">4.58</div><div style="font-size:10px;color:var(--muted)">TW Avg (n=24)</div></div>
+      <div style="background:rgba(63,185,80,.08);border-radius:5px;padding:5px"><div style="font-size:14px;font-weight:700;color:var(--green)">83%</div><div style="font-size:10px;color:var(--muted)">Very Sat</div></div>
+      <div style="background:rgba(248,81,73,.08);border-radius:5px;padding:5px"><div style="font-size:14px;font-weight:700;color:var(--red)">2</div><div style="font-size:10px;color:var(--muted)">Score &lt;3</div></div>
     </div>
   </div>
   <div class="card">
@@ -346,21 +346,21 @@ canvas{max-height:180px}
     </div>
   </div>
   <div class="card">
-    <div class="card-title">⭐ CSAT Distribution TW (n=32)</div>
+    <div class="card-title">⭐ CSAT Distribution TW · Support Survey (n=24)</div>
     <table class="data-table">
       <thead><tr><th>Score</th><th>Label</th><th>Count</th><th>%</th></tr></thead>
       <tbody>
-        <tr><td>5</td><td>Very Satisfied</td><td style="color:var(--green)"><strong>28</strong></td><td style="color:var(--green)">88%</td></tr>
-        <tr><td>4</td><td>Satisfied</td><td>2</td><td>6%</td></tr>
-        <tr><td>3</td><td>Somewhat Satisfied</td><td>1</td><td>3%</td></tr>
-        <tr><td style="color:var(--red)">2</td><td style="color:var(--red)">Not Very Satisfied</td><td style="color:var(--red)">1</td><td style="color:var(--red)">3%</td></tr>
-        <tr><td>1</td><td>Not at All Satisfied</td><td>0</td><td>0%</td></tr>
+        <tr><td>5</td><td>Very Satisfied</td><td style="color:var(--green)"><strong>20</strong></td><td style="color:var(--green)">83%</td></tr>
+        <tr><td>4</td><td>Satisfied</td><td>1</td><td>4%</td></tr>
+        <tr><td>3</td><td>Somewhat Satisfied</td><td>1</td><td>4%</td></tr>
+        <tr><td style="color:var(--red)">2</td><td style="color:var(--red)">Not Very Satisfied</td><td style="color:var(--red)">1</td><td style="color:var(--red)">4%</td></tr>
+        <tr><td style="color:var(--red)">1</td><td style="color:var(--red)">Not at All Satisfied</td><td style="color:var(--red)">1</td><td style="color:var(--red)">4%</td></tr>
       </tbody>
     </table>
     <div class="insight red" style="margin-top:8px">
-      ⚠ <strong>Low CSAT Alert:</strong> Case 474144917 · Cloudity · Score 2 · RCA<br>
-      Comment: <em>"It took too long to understand/resolve the problem. In the end I was able to solve it myself."</em><br>
-      Signal: Delay in diagnosis — customer self-resolved. Cloudity (7 TW cases, recurring) suggests a response-time pattern to address.
+      ⚠ <strong>2 Low CSAT responses (Score &lt;3):</strong><br>
+      Case 474144917 · Cloudity · <strong>Score 2</strong> · RCA — <em>"Took too long to understand/resolve. Customer self-resolved."</em> Delay in diagnosis signal.<br>
+      Case 473989154 · Cision Group (UK) · <strong>Score 1</strong> · CPQ — <em>"I reopened the case. It has not been resolved."</em> Unresolved resolution signal.
     </div>
   </div>
 </div>
@@ -496,11 +496,11 @@ def('inflowChart',{type:'bar',data:{
   }]
 },options:{...baseOpts,plugins:{legend:{display:false}}}});
 
-// CSAT line
+// CSAT line — Support Survey only, Sun–Sat weeks, Manager_Of_Survey_Owner__c scope
 def('csatChart',{type:'line',data:{
-  labels:wks,
+  labels:['Jul 5–11','Jul 12–18','Jul 19–25','Jul 26–Aug 1'],
   datasets:[{
-    data:[4.77,4.73,4.68,4.78],
+    data:[4.90,4.88,4.78,4.58],
     borderColor:'#3fb950',fill:true,
     backgroundColor:'rgba(63,185,80,.08)',
     tension:.3,pointBackgroundColor:'#3fb950',pointRadius:4
