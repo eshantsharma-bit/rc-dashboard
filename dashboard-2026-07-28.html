@@ -80,7 +80,7 @@ canvas{max-height:180px}
   <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
     <span class="badge badge-red">🚨 SHIFTLOGIC UAT — 11 cases, 4×S1, walk-away risk</span>
     <span class="badge badge-purple">📉 EMEA Sev1 streak broken: 22→17</span>
-    <span class="badge badge-green">✅ Backlog −22% vs anchor · CSAT 4.78 ★</span>
+    <span class="badge badge-green">✅ Backlog 214 ↓ vs 256 two weeks ago · CSAT 4.78 ★</span>
   </div>
 </div>
 
@@ -103,13 +103,13 @@ canvas{max-height:180px}
   </div>
   <div class="kpi good">
     <div class="kpi-label">Open Backlog</div>
-    <div class="kpi-val" style="color:var(--green)">193</div>
-    <div class="kpi-sub">↓ −53 vs anchor (246)</div>
+    <div class="kpi-val" style="color:var(--green)">214</div>
+    <div class="kpi-sub">↓ −32 vs anchor (246)</div>
   </div>
   <div class="kpi good">
     <div class="kpi-label">Aged &gt;15d</div>
-    <div class="kpi-val" style="color:var(--green)">32</div>
-    <div class="kpi-sub">↓ −6 vs anchor (38)</div>
+    <div class="kpi-val" style="color:var(--green)">34</div>
+    <div class="kpi-sub">↓ −4 vs anchor (38)</div>
   </div>
   <div class="kpi good">
     <div class="kpi-label">CSAT</div>
@@ -135,8 +135,8 @@ canvas{max-height:180px}
     <div>
       <div class="insight green">
         <strong>✅ Backlog — Team Absorbed the Surge</strong><br>
-        Open backlog: <span class="big-num" style="color:var(--green)">193 ↓</span><br>
-        −53 cases vs anchor (246). Aged &gt;15d at 32 vs anchor 38. Both metrics heading in the right direction after last week's inflow peak.
+        Open backlog: <span class="big-num" style="color:var(--green)">214 ↓</span><br>
+        −32 cases vs anchor (246), down from 256 two weeks ago. Aged &gt;15d at 34 vs anchor 38. 9% in Solution Provided — closure sweep opportunity.
       </div>
       <div class="insight purple" style="margin-top:8px">
         <strong>📉 EMEA Sev1 Ascending Streak Broken</strong><br>
@@ -148,7 +148,7 @@ canvas{max-height:180px}
     <div class="good-cell"><div class="val">4.78</div><div class="lbl">CSAT · Best of 4 weeks</div></div>
     <div class="good-cell"><div class="val">67%</div><div class="lbl">RCA share · Stable</div></div>
     <div class="good-cell"><div class="val">17→17</div><div class="lbl">EMEA Sev1 · Held flat</div></div>
-    <div class="good-cell"><div class="val">−22%</div><div class="lbl">Backlog vs anchor</div></div>
+    <div class="good-cell"><div class="val">−13%</div><div class="lbl">Backlog vs anchor</div></div>
   </div>
 </div>
 
@@ -251,15 +251,22 @@ canvas{max-height:180px}
   <div class="card">
     <div class="card-title">📦 Backlog Trend vs Aged &gt;15d</div>
     <table class="backlog-table">
-      <thead><tr><th>Snapshot</th><th>Total Open</th><th>Aged &gt;15d</th><th>Aged %</th></tr></thead>
+      <thead><tr><th>Snapshot</th><th>Total Open</th><th>Aged &gt;15d</th><th>Aged %</th><th>Dashboard</th></tr></thead>
       <tbody>
-        <tr><td>Jun 21 (peak)</td><td>298</td><td>—</td><td>—</td></tr>
-        <tr><td>Jul 19–25 anchor</td><td>246</td><td>38</td><td>15%</td></tr>
-        <tr class="highlight-row"><td>★ Aug 4 (live)</td><td>193</td><td>32</td><td>17%</td></tr>
+        <tr><td>Jul 22 (mid-week)</td><td>256</td><td>41</td><td>16%</td><td><a href="https://eshantsharma-bit.github.io/rc-dashboard/dashboard-2026-07-19.html" style="color:var(--accent);font-size:10px">Jul 19–25 →</a></td></tr>
+        <tr><td>Jul 27 (mid-week)</td><td>246</td><td>38</td><td>15%</td><td><a href="https://eshantsharma-bit.github.io/rc-dashboard/dashboard-2026-07-27.html" style="color:var(--accent);font-size:10px">Jul 21–27 →</a></td></tr>
+        <tr class="highlight-row"><td>★ Aug 4 (live)</td><td>214</td><td>34</td><td>16%</td><td style="color:var(--accent);font-size:10px">This week</td></tr>
       </tbody>
     </table>
-    <div class="insight green">
-      Team absorbed the PW inflow surge and reduced total backlog to 193 — 35% below the Jun peak and 22% below the Jul 25 anchor. Aged &gt;15d at 32, down 6 from anchor.
+    <div style="margin-top:8px;padding:8px 10px;background:rgba(88,166,255,.07);border-radius:6px;font-size:11px">
+      <strong style="color:var(--muted)">Status split (214 open):</strong>
+      <span style="margin-left:8px">Working+New <strong style="color:var(--accent)">50%</strong> (108)</span>
+      <span style="margin-left:10px">Need More Info <strong style="color:var(--yellow)">37%</strong> (80)</span>
+      <span style="margin-left:10px">Solution Provided <strong style="color:var(--muted)">9%</strong> (19)</span>
+      <span style="margin-left:10px">Call/Mtg Scheduled <strong style="color:var(--green)">3%</strong> (7)</span>
+    </div>
+    <div class="insight green" style="margin-top:8px">
+      Backlog reduced to 214 — down from 256 (Jul 22) and 246 (Jul 27). Aged &gt;15d at 34, down from 41 two weeks ago. 9% sitting in Solution Provided status warrant a closure sweep.
     </div>
     <div style="margin-top:12px">
       <div class="card-title">Aged &gt;15d by P&T</div>
@@ -376,7 +383,7 @@ canvas{max-height:180px}
     </div>
     <div class="insight green" style="margin-top:8px">
       <strong>Backlog Momentum</strong><br>
-      193 open vs anchor 246 (−22%). Aged &gt;15d at 32 vs anchor 38 (−16%). Both regions contributing equally to aged reduction.
+      214 open vs anchor 246 (−13%). Aged &gt;15d at 34 vs anchor 38 (−11%). Down from 256 / 41d two weeks ago — sustained reduction.
     </div>
     <div class="insight yellow" style="margin-top:8px">
       <strong>India Share Shift</strong><br>
@@ -390,33 +397,36 @@ canvas{max-height:180px}
   <div class="card-title">⚠ Aged CPQ Cases — No GUS / No Bug Filed · Regional View</div>
   <div class="grid-2" style="margin-bottom:0">
     <div>
-      <div style="font-size:11px;font-weight:600;color:var(--emea);margin-bottom:6px">EMEA — 7 cases</div>
+      <div style="font-size:11px;font-weight:600;color:var(--emea);margin-bottom:6px">EMEA — 8 cases</div>
       <table class="data-table">
-        <thead><tr><th>Case #</th><th>Account</th><th>Sev</th><th>Age (d)</th></tr></thead>
+        <thead><tr><th>Case #</th><th>Account</th><th>Mgr</th><th>Sev</th><th>Age (d)</th></tr></thead>
         <tbody>
-          <tr><td style="color:var(--accent)">473963366</td><td>Cognizant Technology Solutions</td><td><span class="pill pill-blue">S3</span></td><td style="color:var(--red)">35.4</td></tr>
-          <tr><td style="color:var(--accent)">473989154</td><td>Cision Group Ltd (Cision UK)</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--red)">33.1</td></tr>
-          <tr><td style="color:var(--accent)">474015115</td><td>Lloyds List Intelligence</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--red)">28.3</td></tr>
-          <tr><td style="color:var(--accent)">474047500</td><td>Demant Enterprise A/S</td><td><span class="pill pill-blue">S4</span></td><td style="color:var(--yellow)">25.2</td></tr>
-          <tr><td style="color:var(--accent)">474081007</td><td>Synthesia Limited</td><td><span class="pill pill-red">S1</span></td><td style="color:var(--orange)">20.4</td></tr>
-          <tr><td style="color:var(--accent)">474102219</td><td>OneAdvanced UK</td><td><span class="pill pill-blue">S3</span></td><td style="color:var(--yellow)">18.4</td></tr>
-          <tr><td style="color:var(--accent)">474112991</td><td>Advanced Logic Technology</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--yellow)">17.3</td></tr>
+          <tr><td style="color:var(--accent)">473945347</td><td>Rocket Software</td><td style="color:var(--muted)">Apurva</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--red)">38.6</td></tr>
+          <tr><td style="color:var(--accent)">473963366</td><td>Cognizant Tech Solutions</td><td style="color:var(--muted)">Apurva</td><td><span class="pill pill-blue">S3</span></td><td style="color:var(--red)">35.5</td></tr>
+          <tr><td style="color:var(--accent)">473989154</td><td>Cision Group (UK)</td><td style="color:var(--muted)">Apurva</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--red)">33.2</td></tr>
+          <tr><td style="color:var(--accent)">474015115</td><td>Lloyds List Intelligence</td><td style="color:var(--muted)">Eshant</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--red)">28.3</td></tr>
+          <tr><td style="color:var(--accent)">474047500</td><td>Demant Enterprise A/S</td><td style="color:var(--muted)">Apurva</td><td><span class="pill pill-blue">S4</span></td><td style="color:var(--yellow)">25.3</td></tr>
+          <tr><td style="color:var(--accent)">474081007</td><td>Synthesia Limited</td><td style="color:var(--muted)">Seamus</td><td><span class="pill pill-red">S1</span></td><td style="color:var(--orange)">20.4</td></tr>
+          <tr><td style="color:var(--accent)">474102219</td><td>OneAdvanced UK</td><td style="color:var(--muted)">Apurva</td><td><span class="pill pill-blue">S3</span></td><td style="color:var(--yellow)">18.4</td></tr>
+          <tr><td style="color:var(--accent)">474112991</td><td>Advanced Logic Technology</td><td style="color:var(--muted)">Seamus</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--yellow)">17.4</td></tr>
         </tbody>
       </table>
     </div>
     <div>
-      <div style="font-size:11px;font-weight:600;color:var(--india);margin-bottom:6px">India — 4 cases</div>
+      <div style="font-size:11px;font-weight:600;color:var(--india);margin-bottom:6px">India — 6 cases</div>
       <table class="data-table">
-        <thead><tr><th>Case #</th><th>Account</th><th>Sev</th><th>Age (d)</th></tr></thead>
+        <thead><tr><th>Case #</th><th>Account</th><th>Mgr</th><th>Sev</th><th>Age (d)</th></tr></thead>
         <tbody>
-          <tr><td style="color:var(--accent)">473947146</td><td>Carrier Corporation</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--red)">38.3</td></tr>
-          <tr><td style="color:var(--accent)">474021398</td><td>athenahealth Inc.</td><td><span class="pill pill-blue">S3</span></td><td style="color:var(--red)">27.6</td></tr>
-          <tr><td style="color:var(--accent)">474033617</td><td>Skytouch Technology</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--red)">26.5</td></tr>
-          <tr><td style="color:var(--accent)">474091659</td><td>Wolters Kluwer India</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--yellow)">19.4</td></tr>
+          <tr><td style="color:var(--accent)">473947146</td><td>Carrier Corporation</td><td style="color:var(--muted)">Manu</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--red)">38.4</td></tr>
+          <tr><td style="color:var(--accent)">474007777</td><td>Equans</td><td style="color:var(--muted)">Manu</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--red)">31.1</td></tr>
+          <tr><td style="color:var(--accent)">474021398</td><td>athenahealth Inc.</td><td style="color:var(--muted)">Manu</td><td><span class="pill pill-blue">S3</span></td><td style="color:var(--red)">27.7</td></tr>
+          <tr><td style="color:var(--accent)">474033617</td><td>Skytouch Technology</td><td style="color:var(--muted)">Manu</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--red)">26.5</td></tr>
+          <tr><td style="color:var(--accent)">474048857</td><td>Cytel Inc.</td><td style="color:var(--muted)">Manu</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--yellow)">25.2</td></tr>
+          <tr><td style="color:var(--accent)">474091659</td><td>Wolters Kluwer India</td><td style="color:var(--muted)">Manu</td><td><span class="pill pill-orange">S2</span></td><td style="color:var(--yellow)">19.4</td></tr>
         </tbody>
       </table>
       <div class="insight yellow" style="margin-top:10px">
-        11 aged CPQ cases with no GUS/Bug filed. Carrier Corp (38d, S2 India) and Cision UK (33d, S2 EMEA) are the most time-critical. Synthesia (S1, 20d) needs immediate GUS as it also appears in Cases to Watch.
+        14 aged CPQ cases with no GUS/Bug. Rocket Software (38.6d, EMEA, Apurva) and Carrier Corp (38.4d, India, Manu) are oldest. India: Manu holds 5 of 6 cases. Synthesia (S1, 20.4d, Seamus) overlaps Cases to Watch — GUS needed immediately.
       </div>
     </div>
   </div>
