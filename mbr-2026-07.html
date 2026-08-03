@@ -204,31 +204,38 @@
 
 <div class="ttr-strip">
   <div class="ttr-cell">
-    <div class="ttr-label">All Closed Cases — India Avg</div>
-    <div class="ttr-val" style="color:#9a6700">7.5 days</div>
-    <div class="ttr-sub">1,107 cases closed in July</div>
+    <div class="ttr-label">India TTR — July Official</div>
+    <div class="ttr-val" style="color:#d1242f">10.4 days</div>
+    <div class="ttr-sub">1,479 cases closed in July · Target: 10d</div>
   </div>
   <div class="ttr-cell">
+    <div class="ttr-label">Closed WITHOUT Bug or GUS</div>
+    <div class="ttr-val" style="color:#9a6700">9.0 days</div>
+    <div class="ttr-sub">1,251 cases — standard handling</div>
+  </div>
+  <div class="ttr-cell" style="border-color:#fca5a5">
     <div class="ttr-label">Closed WITH Bug Attached</div>
-    <div class="ttr-val" style="color:#d1242f">11.8 days</div>
-    <div class="ttr-sub">45 cases — 1.6× slower to close</div>
+    <div class="ttr-val" style="color:#d1242f">21.6 days</div>
+    <div class="ttr-sub">111 cases — 2.4× slower · Wait for eng fix</div>
   </div>
-  <div class="ttr-cell">
+  <div class="ttr-cell" style="border-color:#fca5a5">
     <div class="ttr-label">Closed WITH GUS Work Item</div>
-    <div class="ttr-val" style="color:#d1242f">13.7 days</div>
-    <div class="ttr-sub">94 cases — 1.8× slower to close</div>
+    <div class="ttr-val" style="color:#d1242f">23.4 days</div>
+    <div class="ttr-sub">200 cases — 2.6× slower · Wait for investigation</div>
   </div>
 </div>
+<style>.ttr-strip { grid-template-columns: repeat(4, 1fr); }</style>
 
 <div class="two-col">
   <div class="table-card">
-    <h3>India — Avg Closed Age by Sev &amp; Work Item</h3>
+    <h3>India — Avg Closed Age by Sev &amp; Work Item (Live SOQL)</h3>
     <table>
-      <tr><th>Severity</th><th class="num">All Closed</th><th class="num">With Bug</th><th class="num">With GUS</th><th class="num">No Work Item</th></tr>
-      <tr><td>Sev1 (Critical)</td><td class="num">5.4 days</td><td class="num c-orange">8.0 days</td><td class="num c-red">10.7 days</td><td class="num c-green">~4.5 days</td></tr>
-      <tr><td>Sev2 (Urgent)</td><td class="num">7.7 days</td><td class="num c-orange">13.9 days</td><td class="num c-red">15.2 days</td><td class="num c-green">~6.5 days</td></tr>
-      <tr><td>Sev3 (High)</td><td class="num">8.2 days</td><td class="num c-orange">10.3 days</td><td class="num c-red">15.1 days</td><td class="num c-green">~7.0 days</td></tr>
-      <tr><td>Sev4 (Medium)</td><td class="num">7.3 days</td><td class="num c-orange">12.7 days</td><td class="num c-red">12.7 days</td><td class="num c-green">~6.8 days</td></tr>
+      <tr><th>Severity</th><th class="num">No Bug/GUS (cases)</th><th class="num">Avg Age</th><th class="num">With Bug (cases)</th><th class="num">Avg Age</th><th class="num">With GUS (cases)</th><th class="num">Avg Age</th></tr>
+      <tr><td>Sev1 (Critical)</td><td class="num">168</td><td class="num c-green">6.3 days</td><td class="num">10</td><td class="num c-orange">24.5 days</td><td class="num">21</td><td class="num c-red">25.8 days</td></tr>
+      <tr><td>Sev2 (Urgent)</td><td class="num">671</td><td class="num c-green">9.3 days</td><td class="num">56</td><td class="num c-red">23.9 days</td><td class="num">108</td><td class="num c-red">24.6 days</td></tr>
+      <tr><td>Sev3 (High)</td><td class="num">307</td><td class="num c-orange">10.1 days</td><td class="num">37</td><td class="num c-red">17.5 days</td><td class="num">57</td><td class="num c-red">21.0 days</td></tr>
+      <tr><td>Sev4 (Medium)</td><td class="num">105</td><td class="num c-green">8.1 days</td><td class="num">8</td><td class="num c-red">20.7 days</td><td class="num">14</td><td class="num c-red">20.8 days</td></tr>
+      <tr style="background:#eef1f5;font-weight:600"><td>Total</td><td class="num">1,251</td><td class="num">~9.0 days</td><td class="num">111</td><td class="num c-red">21.6 days</td><td class="num">200</td><td class="num c-red">23.4 days</td></tr>
     </table>
   </div>
   <div class="table-card">
@@ -244,7 +251,32 @@
 </div>
 
 <div class="box warn">
-  <strong>What the data tells us:</strong> Cases that close without any Bug or GUS work item resolve in <strong>4–7 days</strong> in India — well within target. It is the cases linked to Bugs (avg 11.8 days) and GUS investigations (avg 13.7 days) that pull the overall average above 10. These cases cannot be closed until engineering delivers a fix or acknowledges the investigation. India handles <strong>94 GUS-linked and 45 Bug-linked closed cases</strong> this month — proportionally more than EMEA because Industry-Life Sciences, which drives 51% of all investigations, routes heavily to India. This is a case complexity issue, not a handling speed issue. The fix requires faster engineering response on Life Sciences GUS items, not more pressure on the India support team.
+  <strong>What the data tells us:</strong> India TTR is <strong>10.4 days</strong> — just above the 10-day target. When we split by engineering engagement:<br><br>
+  <strong>With Bug# or GUS# (engineering formally engaged):</strong> A Bug# means the issue has been filed as a product defect. A GUS# means a formal investigation has been opened with engineering. Both mean the case is waiting on engineering to act — the support team cannot close it unilaterally. These 311 cases (111 Bug + 200 GUS) average <strong>21–23 days</strong> to close. That wait time is determined by engineering response speed, not support handling speed.<br><br>
+  <strong>Without Bug# or GUS# (1,251 standard cases):</strong> These close in <strong>9.0 days</strong> on average — within the 10-day target. This confirms India's handling time is fine. The problem is engineering turnaround on escalated cases.<br><br>
+  Industry-Life Sciences accounts for the largest share of engineering-engaged cases: 49 Bug-linked + 114 GUS-linked = <strong>163 engineering-dependent cases</strong>. Until engineering reduces the response time on LSC investigations, the India TTR will stay above 10.
+</div>
+
+<!-- TTR by Product — No Bug/GUS -->
+<div class="table-card" style="margin-top:16px">
+  <h3>India Closed Cases — Standard (No Bug / No GUS) · Avg Age by Product &amp; Topic (1,251 cases)</h3>
+  <table>
+    <tr><th>Product &amp; Topic</th><th class="num">Cases</th><th class="num">Avg Age</th><th class="num">% of 1,251</th><th>Signal</th></tr>
+    <tr><td>Industry-Life Sciences</td><td class="num">255</td><td class="num c-green">8.6 days</td><td class="num">20.4%</td><td>Within target — standard cases resolve well</td></tr>
+    <tr><td>Industry-CPQ / Order Management</td><td class="num">148</td><td class="num c-orange">11.3 days</td><td class="num">11.8%</td><td class="t-up">Elevated — watch for S3 backlog</td></tr>
+    <tr><td>Industry-OmniStudio</td><td class="num">147</td><td class="num c-green">6.9 days</td><td class="num">11.8%</td><td>Fast — no concern</td></tr>
+    <tr><td>RC (Core)-Product Configurator</td><td class="num">100</td><td class="num c-green">8.2 days</td><td class="num">8.0%</td><td>Within target</td></tr>
+    <tr><td>Revenue-Salesforce CPQ</td><td class="num">77</td><td class="num c-orange">10.2 days</td><td class="num">6.2%</td><td class="t-up">At threshold</td></tr>
+    <tr><td>Industry-Retail &amp; Consumer Goods</td><td class="num">72</td><td class="num c-orange">11.0 days</td><td class="num">5.8%</td><td class="t-up">Elevated</td></tr>
+    <tr><td>RC (Core)-Transaction Management</td><td class="num">54</td><td class="num c-green">9.0 days</td><td class="num">4.3%</td><td>Within target</td></tr>
+    <tr><td>Industry-Document Generation</td><td class="num">41</td><td class="num c-green">6.8 days</td><td class="num">3.3%</td><td>Fast</td></tr>
+    <tr><td>Industry-Financial Services</td><td class="num">36</td><td class="num c-green">8.2 days</td><td class="num">2.9%</td><td>Within target</td></tr>
+    <tr style="background:#fff0f0"><td><strong>Revenue-CPQ Developer Support</strong></td><td class="num"><b>24</b></td><td class="num t-warn"><b>14.1 days</b></td><td class="num">1.9%</td><td class="t-warn">Elevated even without Bug/GUS — review case complexity</td></tr>
+    <tr style="background:#fff0f0"><td><strong>Industry-Health &amp; Insurance</strong></td><td class="num"><b>10</b></td><td class="num t-warn"><b>13.8 days</b></td><td class="num">0.8%</td><td class="t-warn">Small volume but high avg age</td></tr>
+  </table>
+  <div style="padding:10px 14px;font-size:12px;color:#57606a;background:#f6f8fa;border-top:1px solid #d0d7de">
+    Note: All rows above are cases with NO Bug and NO GUS work item. Elevated age here reflects case complexity or S3 backlog — not engineering dependency.
+  </div>
 </div>
 
 <!-- ═══════════ PRODUCT VOLUME ═══════════ -->
@@ -290,7 +322,7 @@
 <div class="box crit" style="margin-top:16px">
   <strong>Life Sciences is the single biggest driver of July volume, bugs, and investigations.</strong>
   607 cases in July (18.1% of total), up 32% from June and 74% from April. It accounts for <strong>66 of 124 bugs (53%)</strong> — a bug rate of 10.9% versus the overall rate of 3.7%. It also drives <strong>129 of 251 investigations (51.2%)</strong>. These 129 investigation-linked cases are the main reason India TTR stays elevated — they take on average 13–15 days to close because the team has to wait for engineering to respond.
-  The top accounts inside LSC: Takeda Pharmaceuticals (103 cases, 3.1% of all July inflow — <strong>volume doubled from 73 in June</strong>), Deloitte Global (66 cases, 20 S1s), and Pfizer (64 cases, all S3, still open). This concentration points to a product-level problem that engineering needs to own, not just support.
+  Top accounts in LSC: Takeda Pharmaceuticals (<strong>115 LSC cases out of 120 total</strong> — <strong>volume roughly doubled MoM</strong>), Deloitte Global (66 cases, 20 S1s), and Pfizer (64 cases, all S3, still open). A Bug# or GUS# on a case means engineering has been formally engaged — the case sits waiting on engineering to respond before it can close. 163 of India's LSC cases this month have a Bug# or GUS# attached. This concentration of engineering-dependent cases in a single product is the root cause of elevated India TTR.
 </div>
 
 <div class="two-col" style="margin-top:16px">
@@ -330,10 +362,10 @@
 </div>
 
 <div class="table-card" style="margin-top:16px">
-  <h3>Top Life Sciences Accounts — July (607 total = 18.1% of Jul inflow)</h3>
+  <h3>Top Life Sciences Accounts — July (607 LSC cases = 18.1% of Jul inflow) · <span style="font-weight:400;color:#57606a">Account totals shown are LSC cases only</span></h3>
   <table>
-    <tr><th>Account</th><th class="num">Total</th><th class="num">% Jul All</th><th class="num">S1</th><th class="num">S2</th><th class="num">S3</th><th class="num">Open</th><th>Note</th></tr>
-    <tr style="background:#fff8e6"><td><strong>Takeda Pharmaceuticals Intl</strong></td><td class="num"><b>103</b></td><td class="num">3.1%</td><td class="num c-red">9</td><td class="num c-orange">66</td><td class="num">28</td><td class="num">23</td><td class="t-warn">Volume doubled (Jun: 73)</td></tr>
+    <tr><th>Account</th><th class="num">LSC Cases</th><th class="num">% Jul All</th><th class="num">S1</th><th class="num">S2</th><th class="num">S3</th><th class="num">Open</th><th>Note</th></tr>
+    <tr style="background:#fff8e6"><td><strong>Takeda Pharmaceuticals Intl</strong></td><td class="num"><b>115</b></td><td class="num">3.4%</td><td class="num c-red">9</td><td class="num c-orange">78</td><td class="num">28</td><td class="num">23</td><td class="t-warn">115 in LSC · 144 total all products · doubled MoM</td></tr>
     <tr><td>Deloitte Global Services Ltd</td><td class="num">66</td><td class="num">2.0%</td><td class="num c-red">20</td><td class="num c-orange">40</td><td class="num">3</td><td class="num">16</td><td>S1 tripled 3 months</td></tr>
     <tr><td>Pfizer - Commercial LSC EMEA</td><td class="num">64</td><td class="num">1.9%</td><td class="num">0</td><td class="num">0</td><td class="num">60</td><td class="num">19</td><td class="c-muted">All S3, cluster still open</td></tr>
     <tr><td>Mylan Inc.</td><td class="num">38</td><td class="num">1.1%</td><td class="num">0</td><td class="num c-orange">26</td><td class="num">8</td><td class="num">3</td><td>—</td></tr>
@@ -352,7 +384,7 @@
     <tr style="background:#fff0f0"><td><strong>Deloitte Global Services Ltd</strong></td><td class="num">4</td><td class="num">10</td><td class="num c-red"><b>17</b></td><td class="num">72</td><td class="t-warn">↑↑↑ Tripled in 3 months</td></tr>
     <tr><td>Bluvium Inc</td><td class="num">4</td><td class="num">7</td><td class="num c-red"><b>10</b></td><td class="num">20</td><td class="t-warn">↑↑↑ Persistent rise</td></tr>
     <tr><td>SHIFTLOGIC.IO LIMITED</td><td class="num">7</td><td class="num">—</td><td class="num c-red"><b>8</b></td><td class="num">36</td><td class="t-up">Returning</td></tr>
-    <tr><td>Takeda Pharmaceuticals Intl</td><td class="num">12</td><td class="num">5</td><td class="num c-red"><b>8</b></td><td class="num">144</td><td>Volatile</td></tr>
+    <tr><td>Takeda Pharmaceuticals Intl</td><td class="num">12</td><td class="num">5</td><td class="num c-red"><b>9</b></td><td class="num">120</td><td>Volatile · 115 in LSC</td></tr>
     <tr><td>Accenture LLP</td><td class="num">5</td><td class="num">10</td><td class="num c-red"><b>7</b></td><td class="num">45</td><td>Volatile</td></tr>
     <tr style="background:#fffbeb"><td>McDonald's Corporation</td><td class="num c-muted">0</td><td class="num c-muted">0</td><td class="num c-red"><b>7</b></td><td class="num">—</td><td class="t-warn">⚑ First time in July</td></tr>
     <tr style="background:#fffbeb"><td>N28 Technologies</td><td class="num c-muted">0</td><td class="num c-muted">0</td><td class="num c-red"><b>6</b></td><td class="num">—</td><td class="t-warn">⚑ First time in July</td></tr>
@@ -368,7 +400,7 @@
   <h3>Top 12 Accounts — Volume Comparison (SOQL, 3 months)</h3>
   <table>
     <tr><th>Account</th><th class="num">May</th><th class="num">Jun</th><th class="num">Jul</th><th class="num">% Jul</th><th class="num">S1</th><th class="num">S2</th><th class="num">S3</th></tr>
-    <tr style="background:#fff8e6"><td><strong>Takeda Pharmaceuticals Intl</strong></td><td class="num">75</td><td class="num">73</td><td class="num"><b>144</b></td><td class="num">4.3%</td><td class="num c-red">8</td><td class="num c-orange">102</td><td class="num">30</td></tr>
+    <tr style="background:#fff8e6"><td><strong>Takeda Pharmaceuticals Intl</strong></td><td class="num">75</td><td class="num">73</td><td class="num"><b>120</b></td><td class="num">3.6%</td><td class="num c-red">9</td><td class="num c-orange">83</td><td class="num">28</td></tr>
     <tr><td>Deloitte Global Services Ltd</td><td class="num">52</td><td class="num">67</td><td class="num"><b>72</b></td><td class="num">2.1%</td><td class="num c-red">17</td><td class="num c-orange">39</td><td class="num">6</td></tr>
     <tr><td>Pfizer - Commercial LSC EMEA</td><td class="num">45</td><td class="num">72</td><td class="num"><b>69</b></td><td class="num">2.1%</td><td class="num">0</td><td class="num">0</td><td class="num">52</td></tr>
     <tr><td>Mylan Inc.</td><td class="num">—</td><td class="num">—</td><td class="num"><b>62</b></td><td class="num">1.8%</td><td class="num">0</td><td class="num c-orange">32</td><td class="num">9</td></tr>
@@ -397,8 +429,8 @@
 </div>
 
 <div class="box warn">
-  <strong>3. India TTR is 10.39 days — the reason is engineering dependency, not slow handling.</strong><br>
-  Standard cases (no Bug, no GUS) close in 4–7 days in India — within target. But cases with a Bug attached take 11.8 days on average, and cases with a GUS work item take 13.7 days. India has 94 GUS-linked and 45 Bug-linked closed cases this month, mostly driven by Life Sciences. These cases wait on engineering response before they can close. The fix is faster engineering turnaround on Life Sciences investigations.
+  <strong>3. India TTR is 10.4 days — the cause is engineering dependency, not slow handling.</strong><br>
+  A Bug# or GUS# means the case has been formally reported to engineering (as a defect or investigation). The case cannot close until engineering responds. India's 1,251 standard cases (no Bug#, no GUS#) close in <strong>9.0 days</strong> — within target. But the 111 cases with a Bug# take <strong>21.6 days</strong> and the 200 cases with a GUS# take <strong>23.4 days</strong>. These 311 engineering-dependent cases pull the overall TTR above 10. Industry-Life Sciences accounts for 163 of these 311 cases. Until engineering reduces investigation response time on LSC cases, the India TTR will stay above 10.
 </div>
 
 <div class="box warn">
