@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Revenue Cloud MBR — July 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #ffffff; color: #1f2328; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
@@ -150,12 +151,12 @@
 
 <div class="two-col" style="margin-bottom:16px">
   <div class="chart-card">
-    <h3>Industries vs Revenue — Monthly Volume</h3>
-    <div class="chart-wrap"><canvas id="cloudFamilyChart"></canvas></div>
+    <h3>Industries vs Revenue — Monthly Volume (with % share)</h3>
+    <div class="chart-wrap-lg"><canvas id="cloudFamilyChart"></canvas></div>
   </div>
   <div class="chart-card">
-    <h3>Key Sub-Products — Life Sciences &amp; RCA</h3>
-    <div class="chart-wrap"><canvas id="subProductChart"></canvas></div>
+    <h3>Life Sciences &amp; RCA — Monthly Volume (with % of total)</h3>
+    <div class="chart-wrap-lg"><canvas id="subProductChart"></canvas></div>
   </div>
 </div>
 
@@ -301,34 +302,61 @@
 </div>
 <style>.ttr-strip { grid-template-columns: repeat(4, 1fr); }</style>
 
-<div class="two-col">
-  <div class="table-card">
-    <h3>India — Avg Closed Age by Sev &amp; Work Item (Live SOQL)</h3>
-    <table>
-      <tr><th>Severity</th><th class="num">No Bug/GUS (cases)</th><th class="num">Avg Age</th><th class="num">With Bug (cases)</th><th class="num">Avg Age</th><th class="num">With GUS (cases)</th><th class="num">Avg Age</th></tr>
-      <tr><td>Sev1 (Critical)</td><td class="num">168</td><td class="num c-green">6.3 days</td><td class="num">10</td><td class="num c-orange">24.5 days</td><td class="num">21</td><td class="num c-red">25.8 days</td></tr>
-      <tr><td>Sev2 (Urgent)</td><td class="num">671</td><td class="num c-green">9.3 days</td><td class="num">56</td><td class="num c-red">23.9 days</td><td class="num">108</td><td class="num c-red">24.6 days</td></tr>
-      <tr><td>Sev3 (High)</td><td class="num">307</td><td class="num c-orange">10.1 days</td><td class="num">37</td><td class="num c-red">17.5 days</td><td class="num">57</td><td class="num c-red">21.0 days</td></tr>
-      <tr><td>Sev4 (Medium)</td><td class="num">105</td><td class="num c-green">8.1 days</td><td class="num">8</td><td class="num c-red">20.7 days</td><td class="num">14</td><td class="num c-red">20.8 days</td></tr>
-      <tr style="background:#eef1f5;font-weight:600"><td>Total</td><td class="num">1,251</td><td class="num">~9.0 days</td><td class="num">111</td><td class="num c-red">21.6 days</td><td class="num">200</td><td class="num c-red">23.4 days</td></tr>
-    </table>
-  </div>
-  <div class="table-card">
-    <h3>EMEA — Avg Closed Age by Sev &amp; Work Item</h3>
-    <table>
-      <tr><th>Severity</th><th class="num">All Closed</th><th class="num">With Bug</th><th class="num">With GUS</th><th class="num">No Work Item</th></tr>
-      <tr><td>Sev1 (Critical)</td><td class="num">4.9 days</td><td class="num c-orange">10.2 days</td><td class="num c-orange">7.4 days</td><td class="num c-green">~4.1 days</td></tr>
-      <tr><td>Sev2 (Urgent)</td><td class="num">6.2 days</td><td class="num c-orange">10.0 days</td><td class="num c-red">13.3 days</td><td class="num c-green">~5.3 days</td></tr>
-      <tr><td>Sev3 (High)</td><td class="num">6.8 days</td><td class="num c-orange">10.5 days</td><td class="num c-red">13.4 days</td><td class="num c-green">~5.8 days</td></tr>
-      <tr><td>Sev4 (Medium)</td><td class="num">2.6 days</td><td class="num c-orange">8.8 days</td><td class="num c-orange">11.3 days</td><td class="num c-green">~2.2 days</td></tr>
-    </table>
+<div class="table-card">
+  <h3>India Closed Cases — Avg Age by Top Product &amp; Topic · No Work Item vs With Bug# or GUS# (July 2026, ClosedDate)</h3>
+  <table>
+    <tr>
+      <th>Product &amp; Topic</th>
+      <th class="num">No Bug# / No GUS#</th><th class="num">Cases</th>
+      <th class="num">With Bug# or GUS#</th><th class="num">Cases</th>
+      <th class="num">Δ (eng premium)</th>
+    </tr>
+    <tr><td><strong>Industry-Life Sciences</strong></td>
+      <td class="num c-green">8.6 days</td><td class="num c-muted">255</td>
+      <td class="num c-orange">18.4 days</td><td class="num c-muted">123</td>
+      <td class="num t-warn">+9.8d</td>
+    </tr>
+    <tr><td><strong>Industry-CPQ / Order Management</strong></td>
+      <td class="num c-orange">11.3 days</td><td class="num c-muted">148</td>
+      <td class="num t-warn">38.2 days</td><td class="num c-muted">16</td>
+      <td class="num t-warn">+26.9d ⚠️</td>
+    </tr>
+    <tr><td><strong>Industry-OmniStudio</strong></td>
+      <td class="num c-green">6.9 days</td><td class="num c-muted">147</td>
+      <td class="num t-warn">25.9 days</td><td class="num c-muted">12</td>
+      <td class="num t-warn">+19.0d ⚠️</td>
+    </tr>
+    <tr><td><strong>RC-Product Configurator</strong></td>
+      <td class="num c-green">8.2 days</td><td class="num c-muted">100</td>
+      <td class="num c-orange">18.4 days</td><td class="num c-muted">14</td>
+      <td class="num t-warn">+10.2d</td>
+    </tr>
+    <tr><td><strong>Revenue-Salesforce CPQ</strong></td>
+      <td class="num c-orange">10.2 days</td><td class="num c-muted">77</td>
+      <td class="num t-warn">50.0 days</td><td class="num c-muted">1</td>
+      <td class="num t-warn">+39.8d ⚠️</td>
+    </tr>
+    <tr><td><strong>Industry-Retail &amp; Consumer Goods</strong></td>
+      <td class="num c-orange">11.0 days</td><td class="num c-muted">72</td>
+      <td class="num t-warn">33.2 days</td><td class="num c-muted">22</td>
+      <td class="num t-warn">+22.2d ⚠️</td>
+    </tr>
+    <tr style="background:#eef1f5;font-weight:600">
+      <td>All India Closed (July)</td>
+      <td class="num">9.0 days</td><td class="num c-muted">1,251</td>
+      <td class="num c-red">22.5 days</td><td class="num c-muted">227</td>
+      <td class="num t-warn">+13.5d</td>
+    </tr>
+  </table>
+  <div style="padding:8px 14px;font-size:12px;color:#57606a;background:#f6f8fa;border-top:1px solid #d0d7de">
+    "With Bug# or GUS#" = either field has a value — engineering formally engaged on the case. Δ = difference in avg age between the two groups per product.
   </div>
 </div>
 
 <div class="box warn">
   <strong>What the data tells us:</strong> India TTR is <strong>10.4 days</strong> — just above the 10-day target. When we split by engineering engagement:<br><br>
   <strong>With Bug# or GUS# (engineering formally engaged):</strong> A Bug# means the issue has been filed as a product defect. A GUS# means a formal investigation has been opened with engineering. Both mean the case is waiting on engineering to act — the support team cannot close it unilaterally. These 311 cases (111 Bug + 200 GUS) average <strong>21–23 days</strong> to close. That wait time is determined by engineering response speed, not support handling speed.<br><br>
-  <strong>Without Bug# or GUS# (1,251 standard cases):</strong> These close in <strong>9.0 days</strong> on average — within the 10-day target. This confirms India's handling time is fine. The problem is engineering turnaround on escalated cases.<br><br>
+  <strong>Without Bug# or GUS# (1,251 standard cases):</strong> These close in <strong>9.0 days</strong> on average. There will always be cases requiring engineering engagement, so the goal is to keep the overall average as low as possible — which means driving down the engineering-linked age, not just the standard cases.<br><br>
   Industry-Life Sciences accounts for the largest share of engineering-engaged cases: 49 Bug-linked + 114 GUS-linked = <strong>163 engineering-dependent cases</strong>. Until engineering reduces the response time on LSC investigations, the India TTR will stay above 10.
 </div>
 
@@ -560,6 +588,7 @@
 </footer>
 
 <script>
+Chart.register(ChartDataLabels);
 Chart.defaults.color = '#57606a';
 Chart.defaults.borderColor = '#d0d7de';
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
@@ -573,19 +602,34 @@ const INDIA_FILL = 'rgba(109,40,217,0.7)';
 const INDIA_LINE = 'rgba(109,40,217,1)';
 const gridColor = '#e5e7eb';
 
-// 0a. Cloud Family — Industries vs Revenue stacked area
+// totals per month for % calc
+const cloudTotals4 = [3365, 2969, 3475, 3363];
+const indData  = [2027,1842,2123,2165];
+const revData  = [1338,1127,1352,1198];
+const indPct   = indData.map((v,i) => Math.round(v/cloudTotals4[i]*100));
+const revPct   = revData.map((v,i) => Math.round(v/cloudTotals4[i]*100));
+
+// 0a. Cloud Family line — volume + inline % labels on points
 new Chart(document.getElementById('cloudFamilyChart'), {
   type: 'line',
   data: {
     labels: months4,
     datasets: [
-      { label: 'Industries', data: [2027,1842,2123,2165], borderColor: 'rgba(9,105,218,1)', backgroundColor: 'rgba(9,105,218,0.15)', fill: true, tension: 0.3, pointRadius: 6, borderWidth: 2.5 },
-      { label: 'Revenue',    data: [1338,1127,1352,1198], borderColor: 'rgba(230,130,0,1)',  backgroundColor: 'rgba(230,130,0,0.12)', fill: true, tension: 0.3, pointRadius: 6, borderWidth: 2.5 }
+      { label: 'Industries', data: indData, borderColor: 'rgba(9,105,218,1)', backgroundColor: 'rgba(9,105,218,0.12)', fill: true, tension: 0.3, pointRadius: 7, borderWidth: 2.5,
+        datalabels: { align: 'top', anchor: 'end', color: 'rgba(9,105,218,1)', font: {weight:'bold', size:11},
+          formatter: (v,ctx) => v.toLocaleString() + '\n(' + indPct[ctx.dataIndex] + '%)' } },
+      { label: 'Revenue',    data: revData, borderColor: 'rgba(230,130,0,1)',  backgroundColor: 'rgba(230,130,0,0.10)', fill: true, tension: 0.3, pointRadius: 7, borderWidth: 2.5,
+        datalabels: { align: 'bottom', anchor: 'start', color: 'rgba(180,100,0,1)', font: {weight:'bold', size:11},
+          formatter: (v,ctx) => v.toLocaleString() + '\n(' + revPct[ctx.dataIndex] + '%)' } }
     ]
   },
   options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { color: '#1f2328', boxWidth: 12 } }, tooltip: { mode: 'index', intersect: false } },
+    responsive: true, maintainAspectRatio: false, layout: { padding: { top: 30, bottom: 24 } },
+    plugins: {
+      legend: { labels: { color: '#1f2328', boxWidth: 12 } },
+      tooltip: { mode: 'index', intersect: false,
+        callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString() + ' (' + (ctx.datasetIndex===0?indPct:revPct)[ctx.dataIndex] + '%)' } }
+    },
     scales: {
       y: { beginAtZero: false, min: 900, grid: { color: gridColor }, ticks: { color: '#57606a' } },
       x: { grid: { display: false }, ticks: { color: '#57606a' } }
@@ -593,19 +637,32 @@ new Chart(document.getElementById('cloudFamilyChart'), {
   }
 });
 
-// 0b. Sub-products — LSC and RCA
+// 0b. Sub-products bar — LSC and RCA with % labels on bars
+const lscData = [320,347,460,608];
+const rcaData = [881,722,870,787];
+const lscPct  = lscData.map((v,i) => Math.round(v/cloudTotals4[i]*100));
+const rcaPct  = rcaData.map((v,i) => Math.round(v/cloudTotals4[i]*100));
+
 new Chart(document.getElementById('subProductChart'), {
   type: 'bar',
   data: {
     labels: months4,
     datasets: [
-      { label: 'Life Sciences (Industries sub)', data: [320,347,460,608], backgroundColor: 'rgba(209,36,47,0.75)', borderColor: 'rgba(209,36,47,1)', borderWidth: 2, borderRadius: 4 },
-      { label: 'RCA — Revenue Cloud Core',        data: [881,722,870,787], backgroundColor: 'rgba(230,130,0,0.55)', borderColor: 'rgba(230,130,0,1)',  borderWidth: 2, borderRadius: 4 }
+      { label: 'Life Sciences', data: lscData, backgroundColor: 'rgba(209,36,47,0.75)', borderColor: 'rgba(209,36,47,1)', borderWidth: 2, borderRadius: 4,
+        datalabels: { anchor:'end', align:'end', color:'rgba(160,20,20,1)', font:{weight:'bold',size:11},
+          formatter: (v,ctx) => v + '\n(' + lscPct[ctx.dataIndex] + '%)' } },
+      { label: 'RCA — Revenue Cloud Core', data: rcaData, backgroundColor: 'rgba(230,130,0,0.55)', borderColor: 'rgba(230,130,0,1)', borderWidth: 2, borderRadius: 4,
+        datalabels: { anchor:'end', align:'end', color:'rgba(160,90,0,1)', font:{weight:'bold',size:11},
+          formatter: (v,ctx) => v + '\n(' + rcaPct[ctx.dataIndex] + '%)' } }
     ]
   },
   options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { color: '#1f2328', boxWidth: 12 } }, tooltip: { mode: 'index', intersect: false } },
+    responsive: true, maintainAspectRatio: false, layout: { padding: { top: 36 } },
+    plugins: {
+      legend: { labels: { color: '#1f2328', boxWidth: 12 } },
+      tooltip: { mode: 'index', intersect: false,
+        callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' (' + (ctx.datasetIndex===0?lscPct:rcaPct)[ctx.dataIndex] + '%)' } }
+    },
     scales: {
       y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: '#57606a' } },
       x: { grid: { display: false }, ticks: { color: '#57606a' } }
@@ -640,6 +697,8 @@ new Chart(document.getElementById('inflowChart'), {
     tooltip: { callbacks: { label: ctx => ' ' + ctx.parsed.y.toLocaleString() + ' cases' } } }
   }
 });
+// disable global datalabels for charts that don't use it
+Chart.defaults.set('plugins.datalabels', { display: false });
 
 // 2. Stacked region bar
 new Chart(document.getElementById('regionChart'), {
