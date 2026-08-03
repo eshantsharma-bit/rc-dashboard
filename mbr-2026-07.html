@@ -7,20 +7,20 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    --bg: #0d1117; --surface: #161b22; --surface2: #1c2333; --border: #30363d;
-    --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950;
-    --orange: #d29922; --red: #f85149; --purple: #bc8cff; --teal: #39d353;
-    --emea: #58a6ff; --india: #bc8cff;
+    --bg: #ffffff; --surface: #f6f8fa; --surface2: #eef1f5; --border: #d0d7de;
+    --text: #1f2328; --muted: #57606a; --accent: #0969da; --green: #1a7f37;
+    --orange: #9a6700; --red: #d1242f; --purple: #8250df; --teal: #1a7f37;
+    --emea: #0969da; --india: #8250df;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
-  .header { background: linear-gradient(135deg, #161b22 0%, #1c2333 100%); border-bottom: 1px solid var(--border); padding: 24px 32px; }
+  .header { background: linear-gradient(135deg, #f6f8fa 0%, #eef1f5 100%); border-bottom: 1px solid var(--border); padding: 24px 32px; }
   .header h1 { font-size: 22px; font-weight: 700; color: var(--text); }
   .header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
   .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-  .badge-blue { background: rgba(88,166,255,.15); color: var(--accent); border: 1px solid rgba(88,166,255,.3); }
-  .badge-orange { background: rgba(210,153,34,.15); color: var(--orange); border: 1px solid rgba(210,153,34,.3); }
-  .badge-green { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+  .badge-blue { background: #dbeafe; color: var(--accent); border: 1px solid #93c5fd; }
+  .badge-orange { background: #fef9c3; color: var(--orange); border: 1px solid #fde047; }
+  .badge-green { background: #dcfce7; color: var(--green); border: 1px solid #86efac; }
   .container { max-width: 1400px; margin: 0 auto; padding: 24px 32px; }
   .section-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin: 28px 0 14px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
   .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 8px; }
@@ -46,15 +46,15 @@
   .s1 { color: var(--red); font-weight: 600; }
   .s2 { color: var(--orange); font-weight: 600; }
   .trend-up { color: var(--orange); } .trend-dn { color: var(--green); } .trend-warn { color: var(--red); font-weight: 700; }
-  .insight-box { background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 10px; font-size: 13px; line-height: 1.6; }
-  .insight-box.warn { border-left-color: var(--orange); }
-  .insight-box.crit { border-left-color: var(--red); }
+  .insight-box { background: #f0f6ff; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 10px; font-size: 13px; line-height: 1.6; color: var(--text); }
+  .insight-box.warn { background: #fffbeb; border-left-color: var(--orange); }
+  .insight-box.crit { background: #fff0f0; border-left-color: var(--red); }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .highlight { color: var(--accent); font-weight: 600; }
   .reg-pill { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-  .emea-pill { background: rgba(88,166,255,.15); color: var(--emea); }
-  .india-pill { background: rgba(188,140,255,.15); color: var(--india); }
-  footer { border-top: 1px solid var(--border); padding: 16px 32px; color: var(--muted); font-size: 12px; margin-top: 40px; }
+  .emea-pill { background: #dbeafe; color: var(--emea); }
+  .india-pill { background: #ede9fe; color: var(--india); }
+  footer { border-top: 1px solid var(--border); background: var(--surface); padding: 16px 32px; color: var(--muted); font-size: 12px; margin-top: 40px; }
 </style>
 </head>
 <body>
@@ -370,13 +370,13 @@
 
 <script>
 const months = ['May-26','Jun-26','Jul-26'];
-const EMEA_C = 'rgba(88,166,255,0.85)';
-const INDIA_C = 'rgba(188,140,255,0.85)';
-const EMEA_B = 'rgba(88,166,255,1)';
-const INDIA_B = 'rgba(188,140,255,1)';
+const EMEA_C = 'rgba(9,105,218,0.75)';
+const INDIA_C = 'rgba(130,80,223,0.75)';
+const EMEA_B = 'rgba(9,105,218,1)';
+const INDIA_B = 'rgba(130,80,223,1)';
 
-Chart.defaults.color = '#8b949e';
-Chart.defaults.borderColor = '#30363d';
+Chart.defaults.color = '#57606a';
+Chart.defaults.borderColor = '#d0d7de';
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 
 // 1. Inflow bar
@@ -394,7 +394,7 @@ new Chart(document.getElementById('inflowChart'), {
   },
   options: { responsive: true, maintainAspectRatio: false,
     plugins: { legend: { display: false } },
-    scales: { y: { beginAtZero: false, min: 2500, grid: { color: '#30363d' } }, x: { grid: { display: false } } }
+    scales: { y: { beginAtZero: false, min: 2500, grid: { color: '#d0d7de' } }, x: { grid: { display: false } } }
   }
 });
 
@@ -409,8 +409,8 @@ new Chart(document.getElementById('regionChart'), {
     ]
   },
   options: { responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { color: '#e6edf3' } } },
-    scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, grid: { color: '#30363d' } } }
+    plugins: { legend: { labels: { color: '#1f2328' } } },
+    scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, grid: { color: '#d0d7de' } } }
   }
 });
 
@@ -425,8 +425,8 @@ new Chart(document.getElementById('sev1Chart'), {
     ]
   },
   options: { responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { color: '#e6edf3' } } },
-    scales: { y: { grid: { color: '#30363d' } }, x: { grid: { display: false } } }
+    plugins: { legend: { labels: { color: '#1f2328' } } },
+    scales: { y: { grid: { color: '#d0d7de' } }, x: { grid: { display: false } } }
   }
 });
 
@@ -442,8 +442,8 @@ new Chart(document.getElementById('ttrChart'), {
     ]
   },
   options: { responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { color: '#e6edf3' } } },
-    scales: { y: { min: 5, max: 12, grid: { color: '#30363d' } }, x: { grid: { display: false } } }
+    plugins: { legend: { labels: { color: '#1f2328' } } },
+    scales: { y: { min: 5, max: 12, grid: { color: '#d0d7de' } }, x: { grid: { display: false } } }
   }
 });
 
@@ -460,8 +460,8 @@ new Chart(document.getElementById('productChart'), {
     ]
   },
   options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y',
-    plugins: { legend: { labels: { color: '#e6edf3' } } },
-    scales: { x: { stacked: false, grid: { color: '#30363d' } }, y: { grid: { display: false } } }
+    plugins: { legend: { labels: { color: '#1f2328' } } },
+    scales: { x: { stacked: false, grid: { color: '#d0d7de' } }, y: { grid: { display: false } } }
   }
 });
 
@@ -476,8 +476,8 @@ new Chart(document.getElementById('lscRateChart'), {
     ]
   },
   options: { responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { color: '#e6edf3' } } },
-    scales: { y: { grid: { color: '#30363d' }, ticks: { callback: v => v+'%' } }, x: { grid: { display: false } } }
+    plugins: { legend: { labels: { color: '#1f2328' } } },
+    scales: { y: { grid: { color: '#d0d7de' }, ticks: { callback: v => v+'%' } }, x: { grid: { display: false } } }
   }
 });
 
@@ -495,7 +495,7 @@ new Chart(document.getElementById('bugChart'), {
   },
   options: { responsive: true, maintainAspectRatio: false,
     plugins: { legend: { display: false } },
-    scales: { y: { grid: { color: '#30363d' } }, x: { grid: { display: false } } }
+    scales: { y: { grid: { color: '#d0d7de' } }, x: { grid: { display: false } } }
   }
 });
 </script>
