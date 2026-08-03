@@ -145,6 +145,81 @@
   </div>
 </div>
 
+<!-- ═══════════ CLOUD FAMILY SPLIT ═══════════ -->
+<div class="section-title">Inflow by Cloud Family — Apr → Jul 2026</div>
+
+<div class="two-col" style="margin-bottom:16px">
+  <div class="chart-card">
+    <h3>Industries vs Revenue — Monthly Volume</h3>
+    <div class="chart-wrap"><canvas id="cloudFamilyChart"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h3>Key Sub-Products — Life Sciences &amp; RCA</h3>
+    <div class="chart-wrap"><canvas id="subProductChart"></canvas></div>
+  </div>
+</div>
+
+<div class="table-card">
+  <h3>Cloud Family Breakdown — Apr / May / Jun / Jul 2026 (EMEA + India combined)</h3>
+  <table>
+    <tr>
+      <th>Cloud Family</th>
+      <th class="num">Apr</th><th class="num">May</th><th class="num">Jun</th><th class="num">Jul</th>
+      <th class="num">Jul %</th><th class="num">MoM Δ</th><th style="min-width:140px">3-Month Signal</th>
+    </tr>
+    <tr style="background:#f0f6ff">
+      <td><strong>Industries</strong> <span style="font-weight:400;color:#57606a;font-size:11px">(all Industry- products)</span></td>
+      <td class="num">2,027</td><td class="num">1,842</td><td class="num">2,123</td><td class="num"><b>2,165</b></td>
+      <td class="num"><b>64.6%</b></td><td class="num t-up">+42 (+2%)</td>
+      <td class="t-up">↑ Growing</td>
+    </tr>
+    <tr style="padding-left:20px;background:#f8f0ff">
+      <td style="padding-left:28px">↳ <strong>Life Sciences</strong> <span style="font-weight:400;color:#d1242f;font-size:11px">(fastest growing sub)</span></td>
+      <td class="num c-muted">320</td><td class="num c-muted">347</td><td class="num c-muted">460</td><td class="num t-warn"><b>608</b></td>
+      <td class="num t-warn"><b>18.1%</b></td><td class="num t-warn">+148 (+32%)</td>
+      <td class="t-warn">↑↑↑ Accelerating — 90% of Industries growth</td>
+    </tr>
+    <tr style="background:#f0f6ff">
+      <td style="padding-left:28px">↳ Rest of Industries</td>
+      <td class="num c-muted">1,707</td><td class="num c-muted">1,495</td><td class="num c-muted">1,663</td><td class="num"><b>1,557</b></td>
+      <td class="num">46.4%</td><td class="num t-dn">−106 (−6%)</td>
+      <td>→ Stable / slight decline</td>
+    </tr>
+    <tr style="height:6px"><td colspan="8"></td></tr>
+    <tr style="background:#fff8e6">
+      <td><strong>Revenue</strong> <span style="font-weight:400;color:#57606a;font-size:11px">(all Revenue- products)</span></td>
+      <td class="num">1,338</td><td class="num">1,127</td><td class="num">1,352</td><td class="num"><b>1,198</b></td>
+      <td class="num"><b>35.7%</b></td><td class="num t-dn">−154 (−11%)</td>
+      <td class="t-dn">↓ Declining — losing share</td>
+    </tr>
+    <tr style="background:#fff8e6">
+      <td style="padding-left:28px">↳ <strong>RCA</strong> <span style="font-weight:400;color:#57606a;font-size:11px">(Revenue Cloud Core)</span></td>
+      <td class="num c-muted">881</td><td class="num c-muted">722</td><td class="num c-muted">870</td><td class="num"><b>787</b></td>
+      <td class="num">23.5%</td><td class="num t-dn">−83 (−10%)</td>
+      <td class="t-dn">↓ Volatile, declining</td>
+    </tr>
+    <tr style="background:#fff8e6">
+      <td style="padding-left:28px">↳ Legacy Revenue <span style="font-weight:400;color:#57606a;font-size:11px">(non-Core Revenue)</span></td>
+      <td class="num c-muted">457</td><td class="num c-muted">405</td><td class="num c-muted">482</td><td class="num"><b>411</b></td>
+      <td class="num">12.3%</td><td class="num t-dn">−71 (−15%)</td>
+      <td class="t-dn">↓ Declining steadily</td>
+    </tr>
+    <tr style="height:6px"><td colspan="8"></td></tr>
+    <tr style="background:#eef1f5;font-weight:600">
+      <td>Total</td>
+      <td class="num">3,365</td><td class="num">2,969</td><td class="num">3,475</td><td class="num">3,363</td>
+      <td class="num">100%</td><td class="num">—</td><td></td>
+    </tr>
+  </table>
+  <div style="padding:10px 14px;font-size:12px;color:#57606a;background:#f6f8fa;border-top:1px solid #d0d7de">
+    Industries share: Apr 60% → May 62% → Jun 61% → <strong>Jul 64%</strong> &nbsp;·&nbsp; Revenue share: Apr 40% → May 38% → Jun 39% → <strong>Jul 36%</strong> &nbsp;·&nbsp; Shift driven entirely by Life Sciences acceleration
+  </div>
+</div>
+
+<div class="box">
+  <strong>Cloud mix is shifting toward Industries.</strong> Industries has grown its share from 60% in April to 64% in July. The entire growth comes from Life Sciences (+288 cases since April, +90% in 4 months). The rest of Industries is flat or declining. Revenue Cloud (both RCA and Legacy) is losing share — down 11% MoM in July. Life Sciences is now <strong>18.1% of total inflow on its own</strong> — more than all Legacy Revenue products combined (12.3%).
+</div>
+
 <!-- ═══════════ VOLUME TRENDS ═══════════ -->
 <div class="section-title">Volume Trends — 3-Month View</div>
 <div class="two-col">
@@ -257,26 +332,53 @@
   Industry-Life Sciences accounts for the largest share of engineering-engaged cases: 49 Bug-linked + 114 GUS-linked = <strong>163 engineering-dependent cases</strong>. Until engineering reduces the response time on LSC investigations, the India TTR will stay above 10.
 </div>
 
-<!-- TTR by Product — No Bug/GUS -->
-<div class="table-card" style="margin-top:16px">
-  <h3>India Closed Cases — Standard (No Bug / No GUS) · Avg Age by Product &amp; Topic (1,251 cases)</h3>
-  <table>
-    <tr><th>Product &amp; Topic</th><th class="num">Cases</th><th class="num">Avg Age</th><th class="num">% of 1,251</th><th>Signal</th></tr>
-    <tr><td>Industry-Life Sciences</td><td class="num">255</td><td class="num c-green">8.6 days</td><td class="num">20.4%</td><td>Within target — standard cases resolve well</td></tr>
-    <tr><td>Industry-CPQ / Order Management</td><td class="num">148</td><td class="num c-orange">11.3 days</td><td class="num">11.8%</td><td class="t-up">Elevated — watch for S3 backlog</td></tr>
-    <tr><td>Industry-OmniStudio</td><td class="num">147</td><td class="num c-green">6.9 days</td><td class="num">11.8%</td><td>Fast — no concern</td></tr>
-    <tr><td>RC (Core)-Product Configurator</td><td class="num">100</td><td class="num c-green">8.2 days</td><td class="num">8.0%</td><td>Within target</td></tr>
-    <tr><td>Revenue-Salesforce CPQ</td><td class="num">77</td><td class="num c-orange">10.2 days</td><td class="num">6.2%</td><td class="t-up">At threshold</td></tr>
-    <tr><td>Industry-Retail &amp; Consumer Goods</td><td class="num">72</td><td class="num c-orange">11.0 days</td><td class="num">5.8%</td><td class="t-up">Elevated</td></tr>
-    <tr><td>RC (Core)-Transaction Management</td><td class="num">54</td><td class="num c-green">9.0 days</td><td class="num">4.3%</td><td>Within target</td></tr>
-    <tr><td>Industry-Document Generation</td><td class="num">41</td><td class="num c-green">6.8 days</td><td class="num">3.3%</td><td>Fast</td></tr>
-    <tr><td>Industry-Financial Services</td><td class="num">36</td><td class="num c-green">8.2 days</td><td class="num">2.9%</td><td>Within target</td></tr>
-    <tr style="background:#fff0f0"><td><strong>Revenue-CPQ Developer Support</strong></td><td class="num"><b>24</b></td><td class="num t-warn"><b>14.1 days</b></td><td class="num">1.9%</td><td class="t-warn">Elevated even without Bug/GUS — review case complexity</td></tr>
-    <tr style="background:#fff0f0"><td><strong>Industry-Health &amp; Insurance</strong></td><td class="num"><b>10</b></td><td class="num t-warn"><b>13.8 days</b></td><td class="num">0.8%</td><td class="t-warn">Small volume but high avg age</td></tr>
-  </table>
-  <div style="padding:10px 14px;font-size:12px;color:#57606a;background:#f6f8fa;border-top:1px solid #d0d7de">
-    Note: All rows above are cases with NO Bug and NO GUS work item. Elevated age here reflects case complexity or S3 backlog — not engineering dependency.
+<!-- TTR by Product — two splits side by side -->
+<div class="two-col" style="margin-top:16px">
+  <div class="table-card">
+    <h3>Standard Cases (No Bug# / No GUS#) · Avg Age by Product — 1,251 cases</h3>
+    <table>
+      <tr><th>Product &amp; Topic</th><th class="num">Cases</th><th class="num">Avg Age</th><th>Signal</th></tr>
+      <tr><td>Industry-Life Sciences</td><td class="num">255</td><td class="num c-green">8.6d</td><td>✓ Fast — no concern</td></tr>
+      <tr><td>Industry-CPQ / Order Mgmt</td><td class="num">148</td><td class="num c-orange">11.3d</td><td class="t-up">Elevated — S3 backlog</td></tr>
+      <tr><td>Industry-OmniStudio</td><td class="num">147</td><td class="num c-green">6.9d</td><td>✓ Fast</td></tr>
+      <tr><td>RC-Product Configurator</td><td class="num">100</td><td class="num c-green">8.2d</td><td>✓ Within target</td></tr>
+      <tr><td>Revenue-Salesforce CPQ</td><td class="num">77</td><td class="num c-orange">10.2d</td><td>At threshold</td></tr>
+      <tr><td>Industry-Retail &amp; CG</td><td class="num">72</td><td class="num c-orange">11.0d</td><td class="t-up">Elevated</td></tr>
+      <tr><td>RC-Transaction Mgmt</td><td class="num">54</td><td class="num c-green">9.0d</td><td>✓ Within target</td></tr>
+      <tr><td>Industry-Document Gen</td><td class="num">41</td><td class="num c-green">6.8d</td><td>✓ Fast</td></tr>
+      <tr><td>Industry-Financial Services</td><td class="num">36</td><td class="num c-green">8.2d</td><td>✓ Within target</td></tr>
+      <tr style="background:#fffbeb"><td>Rev-CPQ Developer Support</td><td class="num">24</td><td class="num c-orange">14.1d</td><td class="t-up">High even w/o eng</td></tr>
+      <tr style="background:#fffbeb"><td>Industry-Health &amp; Insurance</td><td class="num">10</td><td class="num c-orange">13.8d</td><td class="t-up">Watch</td></tr>
+    </table>
+    <div style="padding:8px 14px;font-size:12px;color:#57606a;background:#f6f8fa;border-top:1px solid #d0d7de">
+      No Bug# or GUS# — elevated age = case complexity, not engineering wait
+    </div>
   </div>
+  <div class="table-card">
+    <h3>Engineering-Engaged Cases (Bug# OR GUS#) · Avg Age by Product — 227 cases</h3>
+    <table>
+      <tr><th>Product &amp; Topic</th><th class="num">Cases</th><th class="num">Avg Age</th><th class="num">Max</th><th class="num">&gt;30d</th><th>Signal</th></tr>
+      <tr style="background:#fff0f0"><td><strong>Industry-Life Sciences</strong></td><td class="num"><b>123</b></td><td class="num c-orange"><b>18.4d</b></td><td class="num">61.9d</td><td class="num">14</td><td>Highest volume</td></tr>
+      <tr style="background:#fff0f0"><td><strong>Industry-Retail &amp; CG</strong></td><td class="num"><b>22</b></td><td class="num t-warn"><b>33.2d</b></td><td class="num">68.4d</td><td class="num c-red"><b>13</b></td><td class="t-warn">⚠️ Worst avg age</td></tr>
+      <tr style="background:#fff0f0"><td><strong>Industry-CPQ / Order Mgmt</strong></td><td class="num"><b>16</b></td><td class="num t-warn"><b>38.2d</b></td><td class="num c-red"><b>133d</b></td><td class="num c-red"><b>5</b></td><td class="t-warn">⚠️ 133d max case</td></tr>
+      <tr><td>RC-Product Configurator</td><td class="num">14</td><td class="num c-orange">18.4d</td><td class="num">46.6d</td><td class="num">3</td><td>Moderate</td></tr>
+      <tr style="background:#fff0f0"><td><strong>Industry-OmniStudio</strong></td><td class="num"><b>12</b></td><td class="num t-warn"><b>25.9d</b></td><td class="num">66.7d</td><td class="num">4</td><td class="t-warn">⚠️ High avg age</td></tr>
+      <tr style="background:#fff0f0"><td><strong>RC-Transaction Mgmt</strong></td><td class="num"><b>4</b></td><td class="num t-warn"><b>32.4d</b></td><td class="num">50.1d</td><td class="num">2</td><td class="t-warn">⚠️ All cases aged</td></tr>
+      <tr><td>Industry-Health Cloud</td><td class="num">4</td><td class="num c-orange">26.0d</td><td class="num">47.7d</td><td class="num">1</td><td>Watch</td></tr>
+      <tr><td>Industry-Financial Services</td><td class="num">4</td><td class="num c-orange">22.9d</td><td class="num">35.4d</td><td class="num">1</td><td>Watch</td></tr>
+      <tr><td>Industry-Education Cloud</td><td class="num">3</td><td class="num c-orange">27.3d</td><td class="num">34.6d</td><td class="num">2</td><td>Watch</td></tr>
+      <tr><td>RC-Usage &amp; Ratings</td><td class="num">2</td><td class="num c-orange">29.6d</td><td class="num">30.1d</td><td class="num">1</td><td>Watch</td></tr>
+      <tr><td>Industry-Document Gen</td><td class="num">5</td><td class="num c-green">9.3d</td><td class="num">21.7d</td><td class="num">0</td><td>✓ Fine</td></tr>
+      <tr><td>Industry-Loyalty Mgmt</td><td class="num">5</td><td class="num c-green">11.7d</td><td class="num">15.0d</td><td class="num">0</td><td>✓ Fine</td></tr>
+    </table>
+    <div style="padding:8px 14px;font-size:12px;color:#57606a;background:#f6f8fa;border-top:1px solid #d0d7de">
+      Bug# or GUS# filed = engineering formally engaged · Overall avg for this group: <strong>22.5 days</strong> · 49 cases &gt;30d
+    </div>
+  </div>
+</div>
+
+<div class="box crit" style="margin-top:10px">
+  <strong>TTR story across products:</strong> India's standard cases (no engineering dependency) resolve well — Life Sciences at 8.6d, OmniStudio at 6.9d, RC Product Configurator at 8.2d — all within target. The problem concentrates in the 227 cases where engineering has been formally engaged (Bug# or GUS# filed). Three products stand out: <strong>Industry-CPQ/Order Management</strong> (avg 38.2 days, one case open 133 days), <strong>Industry-Retail &amp; Consumer Goods</strong> (avg 33.2 days, 13 of 22 cases aged over 30 days), and <strong>RC-Transaction Management</strong> (avg 32.4 days). These are engineering response SLA failures — cases are sitting waiting for engineering to act. Life Sciences has the most volume (123 of 227 engineering-engaged cases) but a lower avg age (18.4d) — engineering is responding faster on LSC than on CPQ/OM or Retail. The 133-day CPQ/OM case is a priority escalation.
 </div>
 
 <!-- ═══════════ PRODUCT VOLUME ═══════════ -->
@@ -463,12 +565,53 @@ Chart.defaults.borderColor = '#d0d7de';
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 Chart.defaults.font.size = 12;
 
+const months4 = ['Apr-26','May-26','Jun-26','Jul-26'];
 const months3 = ['May-26','Jun-26','Jul-26'];
 const EMEA_FILL = 'rgba(9,105,218,0.7)';
 const EMEA_LINE = 'rgba(9,105,218,1)';
 const INDIA_FILL = 'rgba(109,40,217,0.7)';
 const INDIA_LINE = 'rgba(109,40,217,1)';
 const gridColor = '#e5e7eb';
+
+// 0a. Cloud Family — Industries vs Revenue stacked area
+new Chart(document.getElementById('cloudFamilyChart'), {
+  type: 'line',
+  data: {
+    labels: months4,
+    datasets: [
+      { label: 'Industries', data: [2027,1842,2123,2165], borderColor: 'rgba(9,105,218,1)', backgroundColor: 'rgba(9,105,218,0.15)', fill: true, tension: 0.3, pointRadius: 6, borderWidth: 2.5 },
+      { label: 'Revenue',    data: [1338,1127,1352,1198], borderColor: 'rgba(230,130,0,1)',  backgroundColor: 'rgba(230,130,0,0.12)', fill: true, tension: 0.3, pointRadius: 6, borderWidth: 2.5 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#1f2328', boxWidth: 12 } }, tooltip: { mode: 'index', intersect: false } },
+    scales: {
+      y: { beginAtZero: false, min: 900, grid: { color: gridColor }, ticks: { color: '#57606a' } },
+      x: { grid: { display: false }, ticks: { color: '#57606a' } }
+    }
+  }
+});
+
+// 0b. Sub-products — LSC and RCA
+new Chart(document.getElementById('subProductChart'), {
+  type: 'bar',
+  data: {
+    labels: months4,
+    datasets: [
+      { label: 'Life Sciences (Industries sub)', data: [320,347,460,608], backgroundColor: 'rgba(209,36,47,0.75)', borderColor: 'rgba(209,36,47,1)', borderWidth: 2, borderRadius: 4 },
+      { label: 'RCA — Revenue Cloud Core',        data: [881,722,870,787], backgroundColor: 'rgba(230,130,0,0.55)', borderColor: 'rgba(230,130,0,1)',  borderWidth: 2, borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#1f2328', boxWidth: 12 } }, tooltip: { mode: 'index', intersect: false } },
+    scales: {
+      y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: '#57606a' } },
+      x: { grid: { display: false }, ticks: { color: '#57606a' } }
+    }
+  }
+});
 
 const baseOpts = (yMin) => ({
   responsive: true, maintainAspectRatio: false,
