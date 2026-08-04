@@ -121,8 +121,8 @@
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Sev1 Cases</div>
-    <div class="kpi-value" style="color:#d1242f">333</div>
-    <div class="kpi-delta"><span class="pos">▼ 34 vs Jun (−9.3%)</span></div>
+    <div class="kpi-value" style="color:#d1242f">331</div>
+    <div class="kpi-delta"><span class="pos">▼ 36 vs Jun (−9.8%)</span></div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">SLO Miss %</div>
@@ -252,7 +252,7 @@
     <table>
       <tr><th>Metric</th><th class="num">May</th><th class="num">Jun</th><th class="num">Jul</th><th class="num">MoM</th></tr>
       <tr><td>Total</td><td class="num">1,705</td><td class="num">2,019</td><td class="num"><b>1,900</b></td><td class="num t-dn">−119</td></tr>
-      <tr><td>Sev1</td><td class="num c-red">144</td><td class="num c-red">150</td><td class="num c-red">149</td><td class="num t-dn">−1</td></tr>
+      <tr><td>Sev1</td><td class="num c-red">143</td><td class="num c-red">150</td><td class="num c-red">147</td><td class="num t-dn">−3</td></tr>
       <tr><td>Sev2</td><td class="num">646</td><td class="num">844</td><td class="num">802</td><td class="num t-dn">−42</td></tr>
       <tr><td>Sev3</td><td class="num">300</td><td class="num">440</td><td class="num">360</td><td class="num t-dn">−80</td></tr>
       <tr><td>Sev4</td><td class="num">615</td><td class="num">585</td><td class="num">589</td><td class="num">+4</td></tr>
@@ -569,7 +569,7 @@
 
 <div class="box good">
   <strong>6. Several metrics moved in the right direction in July.</strong><br>
-  EMEA TTR improved for the third straight month, reaching 6.94 days. Closures were the highest in three months at 3,485. Sev1 fell 9.3% overall, led by India recovering from June's spike. Escalation % dropped to 0.5%. Throughput reached 1.93. Chat Mix continued climbing (14.7% → 15.8% → 16.6%), showing steady adoption. The operational foundation is solid — the main risks are concentrated in Life Sciences and a handful of accounts.
+  EMEA TTR improved for the third straight month, reaching 6.94 days. Closures were the highest in three months at 3,485. Sev1 fell 9.8% overall (331 vs 367), led by India recovering from June's spike. Escalation % dropped to 0.5%. Throughput reached 1.93. Chat Mix continued climbing (14.7% → 15.8% → 16.6%), showing steady adoption. The operational foundation is solid — the main risks are concentrated in Life Sciences and a handful of accounts.
 </div>
 
 </div><!-- /container -->
@@ -716,7 +716,7 @@ new Chart(document.getElementById('sev1Chart'), {
   data: {
     labels: months3,
     datasets: [
-      { label: 'EMEA S1', data: [144,150,149], borderColor: EMEA_LINE, backgroundColor: 'rgba(9,105,218,0.08)', tension: 0.3, pointRadius: 6, pointHoverRadius: 8, fill: true, borderWidth: 2.5 },
+      { label: 'EMEA S1', data: [143,150,147], borderColor: EMEA_LINE, backgroundColor: 'rgba(9,105,218,0.08)', tension: 0.3, pointRadius: 6, pointHoverRadius: 8, fill: true, borderWidth: 2.5 },
       { label: 'India S1', data: [168,217,184], borderColor: INDIA_LINE, backgroundColor: 'rgba(109,40,217,0.08)', tension: 0.3, pointRadius: 6, pointHoverRadius: 8, fill: true, borderWidth: 2.5 }
     ]
   },
