@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RC &amp; Industry Cloud — Executive MBR — July 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F3F2F2; color: #181818; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+
+/* ── HEADER ── */
+.sf-header { background: #032D60; padding: 0 32px; display: flex; align-items: center; gap: 20px; height: 60px; }
+.sf-header .logo { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -.2px; }
+.sf-header .logo span { color: #4BC2F1; }
+.sf-header .meta { color: #8AB4D4; font-size: 12px; margin-left: auto; }
+.sf-subbar { background: #0176D3; padding: 8px 32px; display: flex; align-items: center; gap: 12px; }
+.sf-subbar .ttl { color: #fff; font-size: 15px; font-weight: 700; }
+.sf-subbar .bdg { background: rgba(255,255,255,.18); color: #fff; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 20px; }
+.sf-subbar .rt { color: #C5D9F1; font-size: 11px; margin-left: auto; }
+
+/* ── LAYOUT ── */
+.container { max-width: 1420px; margin: 0 auto; padding: 20px 28px; }
+.sec-lbl { font-size: 10px; font-weight: 700; color: #0176D3; text-transform: uppercase; letter-spacing: .1em; margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 2px solid #0176D3; }
+.two-col  { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.three-col{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.four-col { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+
+/* ── KPI STRIP ── */
+.kpi-strip { display: grid; grid-template-columns: repeat(8,1fr); gap: 10px; }
+.kpi-tile { background: #fff; border: 1px solid #DDDBDA; border-radius: 8px; padding: 14px 12px 12px; text-align: center; border-top: 3px solid #0176D3; }
+.kpi-tile .kl { font-size: 9px; color: #706E6B; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+.kpi-tile .kv { font-size: 26px; font-weight: 700; color: #032D60; line-height: 1.1; }
+.kpi-tile .kd { font-size: 11px; color: #3E3E3C; margin-top: 4px; }
+.kpi-tile.gt { border-top-color: #2E844A; }
+.kpi-tile.rt { border-top-color: #BA0517; }
+.kpi-tile.at { border-top-color: #E07B00; }
+
+/* ── CARDS ── */
+.card { background: #fff; border: 1px solid #DDDBDA; border-radius: 8px; padding: 18px; margin-bottom: 14px; }
+.card h3 { font-size: 12px; font-weight: 700; color: #032D60; margin-bottom: 12px; }
+.cw  { position: relative; height: 220px; }
+.cwm { position: relative; height: 200px; }
+.cwl { position: relative; height: 270px; }
+
+/* ── SECTION WRAPPER ── */
+.sec-wrap { border: 1px solid #DDDBDA; border-radius: 8px; overflow: hidden; margin-bottom: 18px; }
+.sec-band { background: #032D60; color: #fff; padding: 9px 18px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; display: flex; align-items: center; gap: 10px; }
+.sec-band.sig { background: #1B5E20; }
+.sec-band .sb { font-size: 10px; color: #8AB4D4; margin-left: auto; font-weight: 400; text-transform: none; letter-spacing: 0; }
+.sec-band.sig .sb { color: #A5D6A7; }
+.sec-inner { padding: 16px; background: #fff; }
+
+/* ── KPI COMPARISON TABLE ── */
+.kc { width: 100%; border-collapse: collapse; }
+.kc thead th { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 7px 10px; text-align: center; border-bottom: 2px solid #DDDBDA; color: #3E3E3C; }
+.kc thead th.h26 { background: #032D60; color: #fff; border-radius: 4px 4px 0 0; }
+.kc thead th.hj6 { background: #F3F2F2; }
+.kc thead th.hy5 { background: #F8F7F6; color: #706E6B; }
+.kc tbody tr { border-bottom: 1px solid #F3F2F2; }
+.kc tbody tr:hover { background: #F8F7F6; }
+.kc td { padding: 8px 10px; }
+.kc .mn { font-size: 10px; color: #706E6B; text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+.kc .vj { text-align: center; font-weight: 700; color: #032D60; font-size: 14px; }
+.kc .vo { text-align: center; color: #706E6B; font-size: 13px; }
+.kc .vy { text-align: center; color: #AAAAAA; font-size: 12px; }
+.dlt { font-size: 10px; font-weight: 600; display: block; margin-top: 1px; }
+.dlt.p { color: #2E844A; } .dlt.n { color: #BA0517; } .dlt.w { color: #E07B00; } .dlt.m { color: #706E6B; }
+
+/* ── TABLES ── */
+.tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tbl th { background: #F3F2F2; color: #3E3E3C; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 7px 12px; text-align: left; border-bottom: 2px solid #DDDBDA; }
+.tbl td { padding: 7px 12px; border-bottom: 1px solid #F3F2F2; }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: #F8F7F6; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.up  { color: #2E844A; font-weight: 600; }
+.dn  { color: #BA0517; font-weight: 600; }
+.wn  { color: #E07B00; font-weight: 600; }
+.mu  { color: #706E6B; }
+
+/* ── THROUGHPUT TILES ── */
+.tp-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.tp-cell { background: #fff; border-radius: 8px; padding: 16px; text-align: center; border: 1px solid #DDDBDA; }
+.tp-cell .tv { font-size: 32px; font-weight: 700; color: #032D60; }
+.tp-cell .tm { font-size: 12px; color: #706E6B; margin-top: 4px; }
+.tp-cell.act { background: #032D60; border-color: #032D60; }
+.tp-cell.act .tv { color: #fff; }
+.tp-cell.act .tm { color: #8AB4D4; }
+
+/* ── CHAT CONTEXT BOX ── */
+.chat-ctx { background: #EEF4FF; border-left: 4px solid #0176D3; border-radius: 0 6px 6px 0; padding: 10px 14px; font-size: 11px; color: #032D60; margin-bottom: 12px; }
+
+/* ── YoY CALLOUT TILES ── */
+.yoy-tile { background: #fff; border: 1px solid #DDDBDA; border-radius: 8px; padding: 18px; }
+.yoy-tile .yv { font-size: 38px; font-weight: 700; line-height: 1; margin: 6px 0 4px; }
+.yoy-tile .yl { font-size: 11px; color: #706E6B; }
+
+footer { background: #032D60; color: #8AB4D4; font-size: 12px; padding: 14px 32px; margin-top: 36px; display: flex; align-items: center; justify-content: space-between; }
+footer strong { color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="sf-header">
+  <div class="logo">Revenue Cloud &amp; <span>Industry Cloud</span></div>
+  <div class="meta">Executive MBR &nbsp;·&nbsp; July 2026 &nbsp;·&nbsp; EMEA + India</div>
+</div>
+<div class="sf-subbar">
+  <span class="ttl">Monthly Business Review — July 2026</span>
+  <span class="bdg">EMEA + India</span>
+  <span class="bdg">1 Jul – 31 Jul 2026</span>
+  <span class="rt">OrgCS · Live SOQL · Dashboard KPIs</span>
+</div>
+
+<div class="container">
+
+<!-- ═══ KPI STRIP ═══ -->
+<div class="sec-lbl">July 2026 — Key Performance Indicators</div>
+<div class="kpi-strip" style="margin-bottom:20px">
+  <div class="kpi-tile gt">
+    <div class="kl">CSAT</div>
+    <div class="kv">4.78</div>
+    <div class="kd"><span class="up">✓</span> Target 4.50</div>
+  </div>
+  <div class="kpi-tile at">
+    <div class="kl">Inflow</div>
+    <div class="kv">3,353</div>
+    <div class="kd"><span class="dn">▼ 125</span> vs Jun</div>
+  </div>
+  <div class="kpi-tile gt">
+    <div class="kl">Closures</div>
+    <div class="kv">3,485</div>
+    <div class="kd"><span class="up">▲ 32</span> vs Jun</div>
+  </div>
+  <div class="kpi-tile gt">
+    <div class="kl">Escalation</div>
+    <div class="kv">0.5%</div>
+    <div class="kd"><span class="up">▼ 0.3pp</span> vs Jun</div>
+  </div>
+  <div class="kpi-tile gt">
+    <div class="kl">TTR (days)</div>
+    <div class="kv">8.3d</div>
+    <div class="kd"><span class="up">▼ 0.1d</span> vs Jun</div>
+  </div>
+  <div class="kpi-tile gt">
+    <div class="kl">SLO Miss</div>
+    <div class="kv">0.15%</div>
+    <div class="kd"><span class="up">✓</span> Target &lt;2%</div>
+  </div>
+  <div class="kpi-tile gt">
+    <div class="kl">Sev1</div>
+    <div class="kv">331</div>
+    <div class="kd"><span class="up">▼ 36</span> −9.8%</div>
+  </div>
+  <div class="kpi-tile gt">
+    <div class="kl">Closure Prod.</div>
+    <div class="kv">91%</div>
+    <div class="kd">Throughput <span class="up">1.93 ▲</span></div>
+  </div>
+</div>
+
+<!-- ═══ OVERALL SECTION ═══ -->
+<div class="sec-wrap">
+  <div class="sec-band">
+    Overall &nbsp;—&nbsp; Jul '26 · Jun '26 · Jul '25
+    <span class="sb">EMEA + India · All Entitlements</span>
+  </div>
+  <div class="sec-inner">
+    <div class="two-col">
+      <div>
+        <table class="kc">
+          <thead>
+            <tr>
+              <th style="text-align:left;background:transparent;color:#3E3E3C;font-size:10px">Metric</th>
+              <th class="h26">Jul '26</th>
+              <th class="hj6">Jun '26</th>
+              <th class="hy5">Jul '25</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mn">Inflow</td>
+              <td class="vj">3,353<span class="dlt w">▼ 125 vs Jun</span></td>
+              <td class="vo">3,478</td>
+              <td class="vy">3,712</td>
+            </tr>
+            <tr>
+              <td class="mn">Closures</td>
+              <td class="vj">3,485<span class="dlt p">▲ 32 vs Jun</span></td>
+              <td class="vo">3,453</td>
+              <td class="vy">3,795</td>
+            </tr>
+            <tr>
+              <td class="mn">CSAT</td>
+              <td class="vj">4.78<span class="dlt w">▼ vs Jun</span></td>
+              <td class="vo">4.83</td>
+              <td class="vy">4.72</td>
+            </tr>
+            <tr>
+              <td class="mn">TTR (days)</td>
+              <td class="vj">8.3<span class="dlt p">▼ 0.1d ✓</span></td>
+              <td class="vo">8.4</td>
+              <td class="vy">8.8</td>
+            </tr>
+            <tr>
+              <td class="mn">SLO Miss %</td>
+              <td class="vj">0.15%<span class="dlt p">▼ ✓</span></td>
+              <td class="vo">0.21%</td>
+              <td class="vy">0.2%</td>
+            </tr>
+            <tr>
+              <td class="mn">Escalation %</td>
+              <td class="vj">0.5%<span class="dlt p">▼ 0.3pp ✓</span></td>
+              <td class="vo">0.8%</td>
+              <td class="vy">0.8%</td>
+            </tr>
+            <tr>
+              <td class="mn">Sev1</td>
+              <td class="vj">331<span class="dlt p">▼ 36 (−9.8%)</span></td>
+              <td class="vo">367</td>
+              <td class="vy">—</td>
+            </tr>
+            <tr>
+              <td class="mn">Bug Rate</td>
+              <td class="vj">3.7%<span class="dlt p">▼ vs Jun</span></td>
+              <td class="vo">7.0%</td>
+              <td class="vy">—</td>
+            </tr>
+            <tr>
+              <td class="mn">Invest Rate</td>
+              <td class="vj">7.5%<span class="dlt p">▼ vs Jun</span></td>
+              <td class="vo">9.3%</td>
+              <td class="vy">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h3>Top Product Volume — Jul '26 vs Jun '26 vs Jul '25 *</h3>
+        <div class="cwl"><canvas id="overallProdChart"></canvas></div>
+        <div style="font-size:10px;color:#AAAAAA;margin-top:6px">* Jul '25: partial SOQL result (2,000 of 3,739 records)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SIGNATURE SECTION ═══ -->
+<div class="sec-wrap">
+  <div class="sec-band sig">
+    Signature &nbsp;—&nbsp; Jul '26 · Jun '26 · Jul '25
+    <span class="sb">Signature Success Plan · EMEA + India</span>
+  </div>
+  <div class="sec-inner">
+    <div class="two-col">
+      <div>
+        <table class="kc">
+          <thead>
+            <tr>
+              <th style="text-align:left;background:transparent;color:#3E3E3C;font-size:10px">Metric</th>
+              <th class="h26">Jul '26</th>
+              <th class="hj6">Jun '26</th>
+              <th class="hy5">Jul '25</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mn">Inflow</td>
+              <td class="vj">1,022<span class="dlt p">▲ 35 vs Jun</span></td>
+              <td class="vo">987</td>
+              <td class="vy">822</td>
+            </tr>
+            <tr>
+              <td class="mn">Closures</td>
+              <td class="vj">1,054<span class="dlt p">▲ 100 vs Jun</span></td>
+              <td class="vo">954</td>
+              <td class="vy">800</td>
+            </tr>
+            <tr>
+              <td class="mn">CSAT</td>
+              <td class="vj">4.85<span class="dlt w">▼ vs Jun</span></td>
+              <td class="vo">4.88</td>
+              <td class="vy">4.84</td>
+            </tr>
+            <tr>
+              <td class="mn">TTR (days)</td>
+              <td class="vj">9.7<span class="dlt p">▼ 0.9d ✓</span></td>
+              <td class="vo">10.6</td>
+              <td class="vy">10.2</td>
+            </tr>
+            <tr>
+              <td class="mn">Escalation %</td>
+              <td class="vj">0.4%<span class="dlt p">▼ 0.1pp ✓</span></td>
+              <td class="vo">0.5%</td>
+              <td class="vy">—</td>
+            </tr>
+            <tr>
+              <td class="mn">Bug Rate</td>
+              <td class="vj">4.3%<span class="dlt m">—</span></td>
+              <td class="vo">—</td>
+              <td class="vy">—</td>
+            </tr>
+            <tr>
+              <td class="mn">Invest Rate</td>
+              <td class="vj">10.1%<span class="dlt m">—</span></td>
+              <td class="vo">—</td>
+              <td class="vy">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <h3>Top Signature Product Volume — Jul '26 vs Jun '26 vs Jul '25</h3>
+        <div class="cwl"><canvas id="sigProdChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CHAT MIX ═══ -->
+<div class="sec-lbl">Chat Mix — EMEA (Revenue Cloud vs Industries) Apr → Jul 2026</div>
+<div class="two-col" style="margin-bottom:14px">
+  <div class="card" style="margin-bottom:0">
+    <h3>Chat Mix % by Cloud Family — EMEA</h3>
+    <div class="chat-ctx">Chat handled exclusively by <strong>EMEA team</strong> · Revenue Cloud seeing accelerating uptake</div>
+    <div class="cw"><canvas id="chatMixChart"></canvas></div>
+  </div>
+  <div class="card" style="margin-bottom:0">
+    <h3>Overall EMEA Chat Mix % — Monthly Trend</h3>
+    <div class="cw"><canvas id="chatOverallChart"></canvas></div>
+    <div style="font-size:10px;color:#AAAAAA;margin-top:6px">Target: 30% · EMEA Jul '26: 26.7% · Industry Jul '26: 20.3%</div>
+  </div>
+</div>
+
+<!-- ═══ THROUGHPUT ═══ -->
+<div class="sec-lbl">Throughput — Cases Closed per Agent-Day</div>
+<div class="tp-strip" style="margin-bottom:20px">
+  <div class="tp-cell"><div class="tv">2.04</div><div class="tm">Apr-26</div></div>
+  <div class="tp-cell"><div class="tv">1.82</div><div class="tm">May-26</div></div>
+  <div class="tp-cell"><div class="tv">1.92</div><div class="tm">Jun-26</div></div>
+  <div class="tp-cell act"><div class="tv">1.93 ▲</div><div class="tm">Jul-26</div></div>
+</div>
+
+<!-- ═══ CLOUD FAMILY CHARTS ═══ -->
+<div class="sec-lbl">Inflow by Cloud Family — Apr → Jul 2026</div>
+<div class="two-col" style="margin-bottom:14px">
+  <div class="card" style="margin-bottom:0">
+    <h3>Industries vs Revenue — Monthly Volume</h3>
+    <div class="cwl"><canvas id="cloudFamilyChart"></canvas></div>
+  </div>
+  <div class="card" style="margin-bottom:0">
+    <h3>Life Sciences &amp; RCA — Monthly Volume (% of total)</h3>
+    <div class="cwl"><canvas id="subProductChart"></canvas></div>
+  </div>
+</div>
+
+<!-- Cloud Family Table -->
+<div style="background:#fff;border:1px solid #DDDBDA;border-radius:8px;overflow:hidden;margin-bottom:18px">
+  <div style="background:#032D60;padding:10px 16px">
+    <div style="font-size:12px;font-weight:700;color:#fff">Cloud Family Breakdown — Apr / May / Jun / Jul 2026 (EMEA + India)</div>
+  </div>
+  <table class="tbl">
+    <tr>
+      <th>Cloud Family</th>
+      <th class="num">Apr</th><th class="num">May</th><th class="num">Jun</th><th class="num">Jul</th>
+      <th class="num">Jul %</th><th class="num">MoM Δ</th>
+    </tr>
+    <tr style="background:#EEF4FF">
+      <td><strong>Industries</strong></td>
+      <td class="num">2,027</td><td class="num">1,842</td><td class="num">2,123</td><td class="num"><b>2,165</b></td>
+      <td class="num"><b>64.6%</b></td><td class="num up">+42 (+2%)</td>
+    </tr>
+    <tr>
+      <td style="padding-left:26px">↳ Life Sciences</td>
+      <td class="num mu">320</td><td class="num mu">347</td><td class="num mu">460</td><td class="num wn"><b>608</b></td>
+      <td class="num wn"><b>18.1%</b></td><td class="num wn">+148 (+32%)</td>
+    </tr>
+    <tr>
+      <td style="padding-left:26px">↳ Rest of Industries</td>
+      <td class="num mu">1,707</td><td class="num mu">1,495</td><td class="num mu">1,663</td><td class="num">1,557</td>
+      <td class="num">46.4%</td><td class="num dn">−106 (−6%)</td>
+    </tr>
+    <tr style="height:3px"><td colspan="7"></td></tr>
+    <tr style="background:#FFF8EE">
+      <td><strong>Revenue</strong></td>
+      <td class="num">1,338</td><td class="num">1,127</td><td class="num">1,352</td><td class="num"><b>1,198</b></td>
+      <td class="num"><b>35.7%</b></td><td class="num dn">−154 (−11%)</td>
+    </tr>
+    <tr>
+      <td style="padding-left:26px">↳ RCA (Revenue Cloud Core)</td>
+      <td class="num mu">881</td><td class="num mu">722</td><td class="num mu">870</td><td class="num">787</td>
+      <td class="num">23.5%</td><td class="num dn">−83 (−10%)</td>
+    </tr>
+    <tr>
+      <td style="padding-left:26px">↳ Legacy Revenue</td>
+      <td class="num mu">457</td><td class="num mu">405</td><td class="num mu">482</td><td class="num">411</td>
+      <td class="num">12.3%</td><td class="num dn">−71 (−15%)</td>
+    </tr>
+    <tr style="height:3px"><td colspan="7"></td></tr>
+    <tr style="background:#F3F2F2;font-weight:700">
+      <td>Total</td>
+      <td class="num">3,365</td><td class="num">2,969</td><td class="num">3,475</td><td class="num">3,363</td>
+      <td class="num">100%</td><td class="num">—</td>
+    </tr>
+  </table>
+  <div style="padding:8px 12px;font-size:11px;color:#706E6B;background:#F8F7F6;border-top:1px solid #DDDBDA">
+    Industries share: Apr 60% → May 62% → Jun 61% → <strong>Jul 64%</strong> &nbsp;·&nbsp; Revenue share: Apr 40% → May 38% → Jun 39% → <strong>Jul 36%</strong>
+  </div>
+</div>
+
+<!-- ═══ YoY CALLOUT ═══ -->
+<div class="sec-lbl">Year-over-Year — July '26 vs July '25</div>
+<div class="three-col" style="margin-bottom:4px">
+  <div class="yoy-tile" style="border-top:3px solid #2E844A">
+    <div style="font-size:11px;font-weight:700;color:#2E844A">Life Sciences</div>
+    <div class="yv" style="color:#2E844A">+700%+</div>
+    <div class="yl">Jul '25: &lt;76 → Jul '26: 608</div>
+    <div style="font-size:11px;color:#3E3E3C;margin-top:4px">Fastest growing product · 18.1% of total inflow</div>
+  </div>
+  <div class="yoy-tile" style="border-top:3px solid #BA0517">
+    <div style="font-size:11px;font-weight:700;color:#BA0517">OmniStudio</div>
+    <div class="yv" style="color:#BA0517">−52%</div>
+    <div class="yl">Jul '25: ~746 → Jul '26: 356</div>
+    <div style="font-size:11px;color:#3E3E3C;margin-top:4px">Largest absolute volume decline YoY</div>
+  </div>
+  <div class="yoy-tile" style="border-top:3px solid #0176D3">
+    <div style="font-size:11px;font-weight:700;color:#0176D3">Total Inflow YoY</div>
+    <div class="yv" style="color:#032D60">−9.6%</div>
+    <div class="yl">Jul '25: 3,712 → Jul '26: 3,353</div>
+    <div style="font-size:11px;color:#3E3E3C;margin-top:4px">Mix shift: Industries ↑ · Revenue ↓</div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<footer>
+  <strong>Revenue Cloud &amp; Industry Cloud — Executive MBR — July 2026</strong>
+  <span>EMEA + India · Eshant Sharma · Source: OrgCS SOQL · eshantsharma-bit.github.io/rc-dashboard</span>
+</footer>
+
+<script>
+Chart.register(ChartDataLabels);
+Chart.defaults.color = '#3E3E3C';
+Chart.defaults.borderColor = '#DDDBDA';
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.set('plugins.datalabels', { display: false });
+
+const months4 = ['Apr-26','May-26','Jun-26','Jul-26'];
+const grid = '#F0EFED';
+const SFB = 'rgba(1,118,211,1)';
+const SFN = 'rgba(3,45,96,1)';
+const SFG = 'rgba(46,132,74,1)';
+const SFR = 'rgba(186,5,23,1)';
+const SFA = 'rgba(224,123,0,1)';
+
+// Overall Products
+new Chart(document.getElementById('overallProdChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Life Sciences','OmniStudio','CPQ/OM','SF CPQ','Retail'],
+    datasets: [
+      { label: "Jul '26",  data: [605,356,337,286,202], backgroundColor: 'rgba(3,45,96,0.87)',  borderRadius: 4 },
+      { label: "Jun '26",  data: [460,346,387,328,207], backgroundColor: 'rgba(1,118,211,0.5)', borderRadius: 4 },
+      { label: "Jul '25 *",data: [76,398,256,null,null], backgroundColor: 'rgba(160,160,160,0.4)', borderColor:'rgba(160,160,160,0.7)', borderWidth:1.5, borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{labels:{color:'#3E3E3C',boxWidth:12}}, tooltip:{mode:'index',intersect:false} },
+    scales:{
+      x:{grid:{display:false},ticks:{color:'#706E6B',font:{size:11}}},
+      y:{grid:{color:grid},ticks:{color:'#706E6B'},beginAtZero:true}
+    }
+  }
+});
+
+// Signature Products
+new Chart(document.getElementById('sigProdChart'), {
+  type: 'bar',
+  data: {
+    labels: ['LSC','CPQ/OM','OmniStudio','Retail','RC Core-PC'],
+    datasets: [
+      { label: "Jul '26",   data: [228,190,142,77,54],    backgroundColor: 'rgba(27,94,32,0.87)',  borderRadius: 4 },
+      { label: "Jun '26",   data: [120,213,112,84,null],  backgroundColor: 'rgba(46,132,74,0.5)', borderRadius: 4 },
+      { label: "Jul '25 *", data: [null,254,158,57,null], backgroundColor: 'rgba(160,160,160,0.4)', borderColor:'rgba(160,160,160,0.7)', borderWidth:1.5, borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{labels:{color:'#3E3E3C',boxWidth:12}}, tooltip:{mode:'index',intersect:false} },
+    scales:{
+      x:{grid:{display:false},ticks:{color:'#706E6B',font:{size:11}}},
+      y:{grid:{color:grid},ticks:{color:'#706E6B'},beginAtZero:true}
+    }
+  }
+});
+
+// Chat Mix by Cloud Family (EMEA)
+new Chart(document.getElementById('chatMixChart'), {
+  type: 'line',
+  data: {
+    labels: months4,
+    datasets: [
+      { label: 'Revenue Cloud', data: [24, 27, 29, 35],
+        borderColor: SFB, backgroundColor: 'rgba(1,118,211,0.1)', fill:true, tension:0.3, pointRadius:7, borderWidth:2.5,
+        datalabels:{display:true, anchor:'end', align:'top', color:SFN, font:{weight:'bold',size:12}, formatter: v => v+'%'} },
+      { label: 'Industries', data: [19.2, 19.2, 20.1, 20.3],
+        borderColor: SFG, backgroundColor: 'rgba(46,132,74,0.08)', fill:true, tension:0.3, pointRadius:7, borderWidth:2.5,
+        datalabels:{display:true, anchor:'start', align:'bottom', color:'rgba(27,94,32,1)', font:{weight:'bold',size:12}, formatter: v => v+'%'} },
+      { label: 'Target 30%', data: [30,30,30,30],
+        borderColor:'rgba(224,123,0,0.7)', borderDash:[6,4], pointRadius:0, fill:false, borderWidth:1.5,
+        datalabels:{display:false} }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false, layout:{padding:{top:28,bottom:24}},
+    plugins:{ legend:{labels:{color:'#3E3E3C',boxWidth:12}}, tooltip:{mode:'index',intersect:false} },
+    scales:{
+      y:{min:10, max:42, grid:{color:grid}, ticks:{color:'#706E6B', callback:v=>v+'%'}},
+      x:{grid:{display:false}, ticks:{color:'#706E6B'}}
+    }
+  }
+});
+
+// Overall Chat Mix Bar
+new Chart(document.getElementById('chatOverallChart'), {
+  type: 'bar',
+  data: {
+    labels: months4,
+    datasets: [{
+      label: 'EMEA Chat Mix %',
+      data: [21.5, 22.7, 24.3, 26.7],
+      backgroundColor: ['rgba(1,118,211,0.4)','rgba(1,118,211,0.55)','rgba(1,118,211,0.7)','rgba(1,118,211,0.9)'],
+      borderColor: SFB, borderWidth: 1.5, borderRadius: 6,
+      datalabels:{display:true, anchor:'end', align:'end', color:SFN, font:{weight:'bold',size:13}, formatter:v=>v+'%'}
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false, layout:{padding:{top:32}},
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:ctx=>' Chat Mix: '+ctx.parsed.y+'%'}} },
+    scales:{
+      y:{min:0, max:35, grid:{color:grid}, ticks:{color:'#706E6B', callback:v=>v+'%'}},
+      x:{grid:{display:false}, ticks:{color:'#706E6B'}}
+    }
+  }
+});
+
+// Cloud Family Line
+const cloudTotals4 = [3365,2969,3475,3363];
+const indData = [2027,1842,2123,2165];
+const revData = [1338,1127,1352,1198];
+const indPct  = indData.map((v,i)=>Math.round(v/cloudTotals4[i]*100));
+const revPct  = revData.map((v,i)=>Math.round(v/cloudTotals4[i]*100));
+
+new Chart(document.getElementById('cloudFamilyChart'), {
+  type:'line',
+  data:{
+    labels: months4,
+    datasets:[
+      { label:'Industries', data:indData, borderColor:SFB, backgroundColor:'rgba(1,118,211,0.1)', fill:true, tension:0.3, pointRadius:7, borderWidth:2.5,
+        datalabels:{display:true, align:'top', anchor:'end', color:SFN, font:{weight:'bold',size:11},
+          formatter:(v,ctx)=>v.toLocaleString()+'\n('+indPct[ctx.dataIndex]+'%)'} },
+      { label:'Revenue', data:revData, borderColor:SFA, backgroundColor:'rgba(224,123,0,0.1)', fill:true, tension:0.3, pointRadius:7, borderWidth:2.5,
+        datalabels:{display:true, align:'bottom', anchor:'start', color:'rgba(160,90,0,1)', font:{weight:'bold',size:11},
+          formatter:(v,ctx)=>v.toLocaleString()+'\n('+revPct[ctx.dataIndex]+'%)'} }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false, layout:{padding:{top:32,bottom:28}},
+    plugins:{legend:{labels:{color:'#3E3E3C',boxWidth:12}}, tooltip:{mode:'index',intersect:false}},
+    scales:{
+      y:{min:900, grid:{color:grid}, ticks:{color:'#706E6B'}},
+      x:{grid:{display:false}, ticks:{color:'#706E6B'}}
+    }
+  }
+});
+
+// LSC & RCA Bar
+const lscData = [320,347,460,608];
+const rcaData = [881,722,870,787];
+const lscPct  = lscData.map((v,i)=>Math.round(v/cloudTotals4[i]*100));
+const rcaPct  = rcaData.map((v,i)=>Math.round(v/cloudTotals4[i]*100));
+
+new Chart(document.getElementById('subProductChart'), {
+  type:'bar',
+  data:{
+    labels: months4,
+    datasets:[
+      { label:'Life Sciences', data:lscData, backgroundColor:'rgba(186,5,23,0.75)', borderColor:SFR, borderWidth:2, borderRadius:4,
+        datalabels:{display:true, anchor:'end', align:'end', color:SFR, font:{weight:'bold',size:11},
+          formatter:(v,ctx)=>v+'\n('+lscPct[ctx.dataIndex]+'%)'} },
+      { label:'RCA — Revenue Cloud Core', data:rcaData, backgroundColor:'rgba(224,123,0,0.55)', borderColor:SFA, borderWidth:2, borderRadius:4,
+        datalabels:{display:true, anchor:'end', align:'end', color:'rgba(160,90,0,1)', font:{weight:'bold',size:11},
+          formatter:(v,ctx)=>v+'\n('+rcaPct[ctx.dataIndex]+'%)'} }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false, layout:{padding:{top:36}},
+    plugins:{legend:{labels:{color:'#3E3E3C',boxWidth:12}}, tooltip:{mode:'index',intersect:false}},
+    scales:{
+      y:{beginAtZero:true, grid:{color:grid}, ticks:{color:'#706E6B'}},
+      x:{grid:{display:false}, ticks:{color:'#706E6B'}}
+    }
+  }
+});
+</script>
+</body>
+</html>
