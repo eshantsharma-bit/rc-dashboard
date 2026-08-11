@@ -238,42 +238,6 @@ canvas{max-width:100%;}
   </div>
 </div>
 
-<div class="card red-border" style="margin-bottom:14px;">
-  <div class="section-label">&#128680; Omnistudio S1 Spike &mdash; Platform Signal</div>
-  <div class="grid-2" style="gap:16px;">
-    <div>
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-        <div>
-          <div class="big-num" style="color:var(--red);">13</div>
-          <div style="font-size:11px;color:var(--muted);">S1s TW &middot; was 3 PW (+333%)</div>
-        </div>
-        <div style="flex:1;">
-          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">S1 trend vs volume (3 weeks)</div>
-          <canvas id="omniChart" height="70"></canvas>
-        </div>
-      </div>
-      <div class="insight red">
-        <strong>Volume flat 3 weeks (84&rarr;84&rarr;84), S1 jumped 3&rarr;13 in 1 week</strong>
-        <span>13 S1s spread across <strong>12 different accounts</strong> &mdash; no single account dominates. Distributed pattern = platform/package release event. Recommend R&amp;D/PM check on recent managed package release immediately.</span>
-      </div>
-    </div>
-    <div>
-      <table class="data-table">
-        <thead><tr><th>S1 Pattern</th><th>Count</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr><td>OmniScript errors (activation, save, properties)</td><td>5</td><td><span class="pill pill-red">4 Open</span></td></tr>
-          <tr><td>Package install / version issues</td><td>4</td><td><span class="pill pill-green">3 Closed</span></td></tr>
-          <tr><td>FlexCard query / access errors</td><td>3</td><td><span class="pill pill-green">2 Closed</span></td></tr>
-          <tr><td>Cache / rendering issues</td><td>1</td><td><span class="pill pill-green">Closed</span></td></tr>
-        </tbody>
-      </table>
-      <div class="insight blue" style="margin-top:8px;">
-        <strong>4 distinct failure themes in same week</strong>
-        <span>FlexCard errors, OmniScript activation failures, package install blocks, version auto-update failures. Combination with flat volume is a clear managed package regression fingerprint.</span>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="card" style="margin-bottom:14px;">
   <div class="section-label">Top 10 Accounts &mdash; Week of 2 Aug 2026</div>
@@ -613,13 +577,7 @@ def('geoChart',{type:'bar',data:{labels:wks,datasets:[
   y:{stacked:true,grid:gridOpts,ticks:{...tickOpts,font:{size:10}}}
 }}});
 
-def('omniChart',{type:'line',data:{labels:['PPW','PW','TW'],datasets:[
-  {label:'Volume',data:[84,84,84],borderColor:'rgba(37,99,235,.6)',backgroundColor:'rgba(37,99,235,.08)',fill:true,borderWidth:1.5,pointRadius:3,tension:.3,yAxisID:'y'},
-  {label:'S1',data:[2,3,13],borderColor:'rgba(220,38,38,.9)',backgroundColor:'rgba(220,38,38,.1)',fill:true,borderWidth:2,pointRadius:4,tension:.3,yAxisID:'y2'}
-]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#4b6f8c',font:{size:9}},position:'bottom'}},scales:{
-  y:{grid:gridOpts,ticks:{...tickOpts,font:{size:9}},min:70,max:100},
-  y2:{grid:{display:false},ticks:{...tickOpts,font:{size:9}},min:0,max:20,position:'right'}
-}}});
+;
 
 def('tcdChart',{type:'bar',data:{
   labels:['Ind-LS','Ind-Omni','Leg-CPQ','Ind-CPQ','RCA-PC','RCA-TM','Ind-RCG','RCA-PM','Ind-FS','RCA-PCat','RCA-Bil'],
