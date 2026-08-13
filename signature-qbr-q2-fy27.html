@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signature QBR Dashboard — Q2 FY27 | EMEA + India</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  :root {
+    --bg: #F8FAFC;
+    --surface: #FFFFFF;
+    --surface-2: #F1F5F9;
+    --border: #E2E8F0;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+    --c-sig:     #2563EB;
+    --c-premier: #7C3AED;
+    --c-std:     #0891B2;
+    --c-partner: #059669;
+    --c-other:   #94A3B8;
+    --status-good:  #059669;
+    --status-warn:  #D97706;
+    --status-bad:   #DC2626;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 0 0 56px;
+  }
+
+  /* HEADER */
+  .page-header {
+    background: linear-gradient(135deg, #1E3A8A 0%, #1D4ED8 60%, #2563EB 100%);
+    color: #fff;
+    padding: 28px 40px 24px;
+  }
+  .page-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing:.08em; text-transform:uppercase; color:#BFDBFE; margin-bottom:6px; }
+  .page-header h1 { font-size: 24px; font-weight: 800; letter-spacing:-.02em; margin-bottom: 4px; }
+  .page-header .subtitle { font-size: 13px; color: #BFDBFE; }
+  .header-meta { display:flex; gap:12px; margin-top:14px; flex-wrap:wrap; }
+  .meta-chip { background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25); border-radius:20px; padding:3px 12px; font-size:12px; font-weight:500; color:#fff; }
+
+  /* LAYOUT */
+  .content { padding: 28px 40px 0; }
+  .section-label {
+    font-size: 11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-muted); margin-bottom:14px; margin-top:32px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+  .grid { display:grid; gap:16px; }
+  .grid-4 { grid-template-columns: repeat(4,1fr); }
+  .grid-3 { grid-template-columns: repeat(3,1fr); }
+  .grid-2 { grid-template-columns: repeat(2,1fr); }
+  .grid-2-1 { grid-template-columns: 2fr 1fr; }
+  @media(max-width:1100px){ .grid-4{grid-template-columns:repeat(2,1fr);} .grid-3{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:700px){ .grid-4,.grid-3,.grid-2,.grid-2-1{grid-template-columns:1fr;} .content{padding:16px 16px 0;} .page-header{padding:20px 16px 16px;} }
+
+  /* CARD */
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+  .card-header { padding:14px 20px 11px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+  .card-title { font-size:13px; font-weight:600; color:var(--text-primary); letter-spacing:-.01em; }
+  .card-subtitle { font-size:11px; color:var(--text-muted); margin-top:2px; }
+  .card-body { padding:16px 20px; }
+  .card-body-flush { padding:0; }
+
+  /* STAT TILES */
+  .stat-tile { padding:20px 20px 16px; }
+  .stat-eyebrow { font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; }
+  .stat-value { font-size:32px; font-weight:800; letter-spacing:-.03em; line-height:1; color:var(--text-primary); margin-bottom:6px; }
+  .stat-value.blue  { color: var(--c-sig); }
+  .stat-value.green { color: var(--status-good); }
+  .stat-value.red   { color: var(--status-bad); }
+  .stat-meta { font-size:12px; color:var(--text-secondary); display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .badge { display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:600; padding:2px 7px; border-radius:20px; }
+  .badge-up   { background:#DCFCE7; color:#15803D; }
+  .badge-down { background:#FEE2E2; color:#B91C1C; }
+  .badge-flat { background:#F1F5F9; color:#475569; }
+  .badge-warn { background:#FEF3C7; color:#92400E; }
+  .badge-new  { background:#EDE9FE; color:#6D28D9; }
+
+  /* CHART WRAP */
+  .chart-wrap { position:relative; padding:8px 20px 16px; }
+  .chart-wrap canvas { display:block; }
+
+  /* LEGEND */
+  .chart-legend { display:flex; flex-wrap:wrap; gap:12px; padding:8px 20px 0; }
+  .legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-secondary); font-weight:500; }
+  .legend-swatch { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+  .legend-line   { width:16px; height:3px; border-radius:2px; flex-shrink:0; }
+  .dot { display:inline-block; width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+  /* TABLES */
+  .data-table { width:100%; border-collapse:collapse; }
+  .data-table th {
+    font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--text-muted); padding:8px 12px; border-bottom:1px solid var(--border);
+    background:var(--surface-2); text-align:right;
+  }
+  .data-table th:first-child, .data-table th.left { text-align:left; }
+  .data-table td {
+    padding:9px 12px; border-bottom:1px solid var(--border);
+    font-size:12px; color:var(--text-primary); text-align:right;
+  }
+  .data-table td:first-child { text-align:left; font-weight:500; }
+  .data-table tr:last-child td { border-bottom:none; }
+  .data-table tr:hover td { background:var(--surface-2); }
+
+  /* PILLS / TAGS */
+  .score-pill { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:600; padding:2px 8px; border-radius:20px; }
+  .score-excellent { background:#DCFCE7; color:#15803D; }
+  .score-good      { background:#FEF9C3; color:#854D0E; }
+  .score-fair      { background:#FEE2E2; color:#B91C1C; }
+  .score-na        { background:#F1F5F9; color:#64748B; }
+  .tag { display:inline-block; font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px; text-transform:uppercase; letter-spacing:.04em; }
+  .tag-rising  { background:#FEE2E2; color:#991B1B; }
+  .tag-falling { background:#DCFCE7; color:#166534; }
+  .tag-stable  { background:#F1F5F9; color:#64748B; }
+  .sev1-high   { color:#DC2626; font-weight:700; }
+  .trend-up    { color:#DC2626; }
+  .trend-down  { color:#059669; }
+  .trend-flat  { color:#94A3B8; }
+
+  /* INSIGHT CARDS */
+  .insight-list { display:flex; flex-direction:column; gap:10px; }
+  .insight-item { display:flex; gap:12px; padding:12px 14px; border-radius:var(--radius-sm); border:1px solid var(--border); background:var(--surface-2); align-items:flex-start; }
+  .insight-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+  .icon-blue   { background:#DBEAFE; }
+  .icon-green  { background:#DCFCE7; }
+  .icon-amber  { background:#FEF3C7; }
+  .icon-red    { background:#FEE2E2; }
+  .icon-purple { background:#EDE9FE; }
+  .insight-text .title { font-size:12px; font-weight:600; color:var(--text-primary); margin-bottom:2px; }
+  .insight-text .body  { font-size:11px; color:var(--text-secondary); line-height:1.5; }
+
+  /* SIG SHARE TREND */
+  .sig-trend-card { background:linear-gradient(180deg,#F0F7FF 0%,#fff 100%); }
+  .sig-trend-annotation { display:flex; gap:20px; padding:0 20px 14px; flex-wrap:wrap; }
+  .sig-trend-num { text-align:center; }
+  .sig-trend-num .val { font-size:18px; font-weight:800; color:#0F172A; }
+  .sig-trend-num .lbl { font-size:10px; color:#94A3B8; font-weight:500; }
+  .sig-trend-num .chg { font-size:11px; font-weight:600; }
+
+  /* FOOTER */
+  .page-footer { margin-top:40px; padding:18px 40px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-muted); flex-wrap:wrap; gap:8px; }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="eyebrow">Signature Global QBR · August 19, 2026</div>
+  <h1>Signature Portfolio — Q2 FY27 Deep Dive</h1>
+  <div class="subtitle">Industry &amp; Revenue Cloud · EMEA + India · Data as of 12 Aug 2026</div>
+  <div class="header-meta">
+    <span class="meta-chip">📅 Q2 FY27: May–Jul 2026</span>
+    <span class="meta-chip">📊 vs Q1 FY27: Feb–Apr 2026</span>
+    <span class="meta-chip">🌍 EMEA + India only</span>
+    <span class="meta-chip">🔒 Signature + Premier Priority</span>
+    <span class="meta-chip">📦 Industry + Revenue Cases</span>
+  </div>
+</header>
+
+<div class="content">
+
+<!-- ══ SECTION 1: KPI TILES ══ -->
+<div class="section-label">Section 1 — Portfolio Snapshot</div>
+<div class="grid grid-4">
+
+  <div class="card">
+    <div class="stat-tile">
+      <div class="stat-eyebrow">Q2 FY27 Signature Cases</div>
+      <div class="stat-value blue">2,857</div>
+      <div class="stat-meta">
+        <span class="badge badge-flat">Q1 FY27: 2,983</span>
+        <span class="badge badge-flat" style="margin-left:4px;">Q2 FY26: 2,330</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="stat-tile">
+      <div class="stat-eyebrow">QoQ Change (Q2 vs Q1 FY27)</div>
+      <div class="stat-value green">-4.2%</div>
+      <div class="stat-meta">
+        <span class="badge badge-down">↓ 126 cases</span>
+        <span style="color:var(--text-muted)">All-plans -9.5% QoQ</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="stat-tile">
+      <div class="stat-eyebrow">YoY Growth (Q2 FY27 vs Q2 FY26)</div>
+      <div class="stat-value blue">+22.6%</div>
+      <div class="stat-meta">
+        <span class="badge badge-up">↑ 527 cases</span>
+        <span style="color:var(--text-muted)">Q2 FY26: 2,330</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="stat-tile">
+      <div class="stat-eyebrow">Q2 Sev1 Cases (EMEA + India)</div>
+      <div class="stat-value green">181</div>
+      <div class="stat-meta">
+        <span class="badge badge-down">↓ 27% vs Q1 (248)</span>
+        <span style="color:var(--text-muted)">96% closed · avg TTR 7.2d</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ SECTION 2: VOLUME TREND + SIGNATURE % ══ -->
+<div class="section-label">Section 2 — Signature as % of Total Volume</div>
+<div class="grid grid-2">
+
+  <!-- Monthly inflow line chart -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Monthly Inflow by Success Plan</div>
+        <div class="card-subtitle">Feb–Jul 2026 · All plans · EMEA + India · Industry + Revenue · Premier &amp; Premier+ combined as Premier+</div>
+      </div>
+    </div>
+    <div class="chart-legend">
+      <span class="legend-item"><span class="legend-line" style="background:#2563EB"></span>Signature</span>
+      <span class="legend-item"><span class="legend-line" style="background:#7C3AED"></span>Premier+ (incl. Premier)</span>
+      <span class="legend-item"><span class="legend-line" style="background:#059669"></span>Partner Premier</span>
+      <span class="legend-item"><span class="legend-line" style="background:#0891B2"></span>Standard</span>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="monthlyTrendChart" height="230"></canvas>
+    </div>
+  </div>
+
+  <!-- Signature % share donuts + legend -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Signature Share of Total Volume</div>
+        <div class="card-subtitle">Q1 vs Q2 FY27 · Premier &amp; Premier+ combined · EMEA + India · OrgCS SOQL</div>
+      </div>
+      <span class="badge badge-up">↑ +1.6pp QoQ</span>
+    </div>
+    <div style="display:flex; gap:12px; padding:16px 20px 8px; align-items:center; flex-wrap:wrap;">
+      <div style="position:relative;width:148px;height:148px;flex-shrink:0;">
+        <canvas id="donutQ1" width="148" height="148"></canvas>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;">
+          <div style="font-size:18px;font-weight:800;color:#0F172A;">27.4%</div>
+          <div style="font-size:10px;color:#94A3B8;font-weight:600;margin-top:1px;">Q1 FY27</div>
+          <div style="font-size:10px;color:#475569;margin-top:1px;">2,983 cases</div>
+        </div>
+      </div>
+      <div style="position:relative;width:148px;height:148px;flex-shrink:0;">
+        <canvas id="donutQ2" width="148" height="148"></canvas>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;">
+          <div style="font-size:18px;font-weight:800;color:#2563EB;">29.0%</div>
+          <div style="font-size:10px;color:#94A3B8;font-weight:600;margin-top:1px;">Q2 FY27</div>
+          <div style="font-size:10px;color:#2563EB;margin-top:1px;">2,857 cases</div>
+        </div>
+      </div>
+      <div style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:7px;">
+        <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;margin-bottom:4px;">
+          Signature volume <strong>-125 cases QoQ</strong> (-4.2%) but <strong style="color:#2563EB">share rose +1.6pp</strong> because Premier+ dropped harder (-13.4%) and Partner/Standard also fell. July: Signature overtook Premier+ as <strong>#1 plan</strong>.
+        </div>
+        <div class="legend-item"><span class="dot" style="background:#2563EB"></span><span style="font-size:12px;">Signature: <strong>29.0%</strong> · 2,858 cases <span class="badge badge-up" style="margin-left:4px;">↑</span></span></div>
+        <div class="legend-item"><span class="dot" style="background:#7C3AED"></span><span style="font-size:12px;">Premier+ (merged): <strong>37.0%</strong> · 3,645 cases <span class="badge badge-down" style="margin-left:4px;">↓ -13.4%</span></span></div>
+        <div class="legend-item"><span class="dot" style="background:#059669"></span><span style="font-size:12px;">Partner Premier: <strong>18.0%</strong> · 1,769 cases <span class="badge badge-down" style="margin-left:4px;">↓</span></span></div>
+        <div class="legend-item"><span class="dot" style="background:#0891B2"></span><span style="font-size:12px;">Standard: <strong>16.0%</strong> · 1,576 cases <span class="badge badge-down" style="margin-left:4px;">↓ -7.7%</span></span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Signature % monthly trend — improved standalone card -->
+<div class="card sig-trend-card" style="margin-top:16px;">
+  <div class="card-header" style="background:transparent;">
+    <div>
+      <div class="card-title">Signature % of Total — Monthly Trend (Feb–Jul 2026)</div>
+      <div class="card-subtitle">Signature share of all plans · EMEA + India · with absolute case count · OrgCS SOQL live data</div>
+    </div>
+    <span class="badge badge-up">July = 30.3% — new high, #1 plan</span>
+  </div>
+  <!-- Monthly % values + volume counts as visual headline row -->
+  <div class="sig-trend-annotation">
+    <div class="sig-trend-num">
+      <div class="val">27.6%</div>
+      <div class="lbl">Feb</div>
+      <div style="font-size:10px;color:#2563EB;font-weight:600;">1,042 cases</div>
+      <div class="chg" style="color:#94A3B8;">baseline</div>
+    </div>
+    <div style="display:flex;align-items:center;color:#CBD5E1;font-size:18px;padding-bottom:6px;">→</div>
+    <div class="sig-trend-num">
+      <div class="val">28.1%</div>
+      <div class="lbl">Mar</div>
+      <div style="font-size:10px;color:#2563EB;font-weight:600;">1,056 cases</div>
+      <div class="chg" style="color:#059669;">+0.5pp</div>
+    </div>
+    <div style="display:flex;align-items:center;color:#CBD5E1;font-size:18px;padding-bottom:6px;">→</div>
+    <div class="sig-trend-num">
+      <div class="val">26.4%</div>
+      <div class="lbl">Apr</div>
+      <div style="font-size:10px;color:#2563EB;font-weight:600;">885 cases</div>
+      <div class="chg" style="color:#DC2626;">-1.7pp</div>
+    </div>
+    <div style="display:flex;align-items:center;color:#CBD5E1;font-size:18px;padding-bottom:6px;">→</div>
+    <div class="sig-trend-num">
+      <div class="val">28.4%</div>
+      <div class="lbl">May</div>
+      <div style="font-size:10px;color:#2563EB;font-weight:600;">845 cases</div>
+      <div class="chg" style="color:#059669;">+2.0pp</div>
+    </div>
+    <div style="display:flex;align-items:center;color:#CBD5E1;font-size:18px;padding-bottom:6px;">→</div>
+    <div class="sig-trend-num">
+      <div class="val">28.4%</div>
+      <div class="lbl">Jun</div>
+      <div style="font-size:10px;color:#2563EB;font-weight:600;">987 cases</div>
+      <div class="chg" style="color:#059669;">+0.1pp</div>
+    </div>
+    <div style="display:flex;align-items:center;color:#CBD5E1;font-size:18px;padding-bottom:6px;">→</div>
+    <div class="sig-trend-num">
+      <div class="val" style="color:#2563EB;font-size:22px;">30.3%</div>
+      <div class="lbl">Jul 🔵</div>
+      <div style="font-size:10px;color:#2563EB;font-weight:700;">1,025 cases</div>
+      <div class="chg" style="color:#059669;font-size:12px;">+1.9pp ↑ NEW HIGH</div>
+    </div>
+  </div>
+  <div class="chart-wrap" style="padding-top:0;">
+    <canvas id="sigShareTrendChart" height="140"></canvas>
+  </div>
+  <div style="padding:10px 20px 14px;background:rgba(37,99,235,.04);border-top:1px solid var(--border);font-size:12px;color:var(--text-secondary);">
+    <strong style="color:#0F172A;">Why share grew while Sig volume fell:</strong> Signature cases dropped -4.2% QoQ (2,983→2,858) but <em>other plans fell harder</em> — Premier+ (merged) -13.4%, Partner -10.8%, Standard -7.7%. The % rise is structural: premium customers open more complex cases; standard/premier volume is being partially absorbed by Agentforce self-service deflection.
+  </div>
+</div>
+
+<!-- ══ SECTION 3: PRODUCTS ══ -->
+<div class="section-label">Section 3 — Product Volume: EMEA + India, Q2 vs Q1</div>
+
+<!-- Product bar chart — full width redesign -->
+<div class="card" style="margin-bottom:16px;">
+  <div class="card-header">
+    <div>
+      <div class="card-title">Top Products by Volume — Q2 vs Q1 FY27</div>
+      <div class="card-subtitle">EMEA + India · Signature + Premier Priority · Industry + Revenue · Source: OrgCS dashboard</div>
+    </div>
+  </div>
+  <div class="chart-legend" style="padding-bottom:4px;">
+    <span class="legend-item"><span class="legend-swatch" style="background:#2563EB;border-radius:3px;width:14px;height:10px;"></span>Q2 FY27 (May–Jul)</span>
+    <span class="legend-item"><span class="legend-swatch" style="background:#BFDBFE;border-radius:3px;width:14px;height:10px;"></span>Q1 FY27 (Feb–Apr)</span>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="productBarChart" height="320"></canvas>
+  </div>
+</div>
+
+<div class="grid grid-2">
+  <!-- Signal table with corrected EMEA+India numbers -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Product Signals — Q2 vs Q1 FY27</div>
+        <div class="card-subtitle">EMEA + India · Signature + Premier Priority</div>
+      </div>
+    </div>
+    <div class="card-body-flush">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="left">Product</th>
+            <th>Q2</th><th>Q1</th><th>QoQ</th><th>Signal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>🧬 Life Sciences</td><td>439</td><td>313</td><td class="trend-up">+40%</td><td><span class="tag tag-rising">Rising</span></td></tr>
+          <tr><td>💰 Financial Services</td><td>69</td><td>48</td><td class="trend-up">+44%</td><td><span class="tag tag-rising">Rising</span></td></tr>
+          <tr><td>💵 Rev CPQ <span style="font-size:10px;color:var(--text-muted);">(Salesforce CPQ + CPQ Dev)</span></td><td>268</td><td>243</td><td class="trend-up">+10%</td><td><span class="tag tag-rising">Rising</span></td></tr>
+          <tr><td>⚙️ RC Core-Prod Config</td><td>132</td><td>121</td><td class="trend-up">+9%</td><td><span class="tag tag-rising">Rising</span></td></tr>
+          <tr><td>🛒 Retail &amp; CG</td><td>222</td><td>232</td><td class="trend-down">-4%</td><td><span class="tag tag-stable">Stable</span></td></tr>
+          <tr><td>📦 CPQ / Order Mgmt</td><td>557</td><td>577</td><td class="trend-down">-3.5%</td><td><span class="tag tag-stable">Stable</span></td></tr>
+          <tr><td>📑 Doc Generation</td><td>64</td><td>77</td><td class="trend-down">-17%</td><td><span class="tag tag-falling">Easing</span></td></tr>
+          <tr><td>📡 Communication Cloud</td><td>52</td><td>63</td><td class="trend-down">-17%</td><td><span class="tag tag-falling">Easing</span></td></tr>
+          <tr><td>🔄 RC Core-Transactions</td><td>72</td><td>86</td><td class="trend-down">-16%</td><td><span class="tag tag-falling">Easing</span></td></tr>
+          <tr><td>🔵 OmniStudio</td><td>397</td><td>584</td><td class="trend-down">-32%</td><td><span class="tag tag-falling">Easing</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- YoY context panel -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">YoY Context — Q2 FY27 vs Q2 FY26</div>
+      <div class="card-subtitle">EMEA + India · Long-term trend view</div>
+    </div>
+    <div class="card-body-flush">
+      <table class="data-table">
+        <thead>
+          <tr><th class="left">Product</th><th>Q2 FY27</th><th>Q2 FY26</th><th>YoY</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>📦 CPQ / Order Mgmt</td><td>557</td><td>645</td><td class="trend-down">-14%</td></tr>
+          <tr><td>🔵 OmniStudio</td><td>397</td><td>474</td><td class="trend-down">-16%</td></tr>
+          <tr><td>🧬 Life Sciences</td><td>439</td><td>8</td><td class="trend-up">+5,388%</td></tr>
+          <tr><td>💵 Rev CPQ <span style="font-size:10px;color:var(--text-muted);">(Salesforce CPQ + CPQ Dev)</span></td><td>268</td><td>317</td><td class="trend-down">-15%</td></tr>
+          <tr><td>🛒 Retail &amp; CG</td><td>222</td><td>139</td><td class="trend-up">+60%</td></tr>
+          <tr><td>⚙️ RC Core-Prod Config</td><td>132</td><td>68</td><td class="trend-up">+94%</td></tr>
+          <tr><td>💰 Financial Services</td><td>69</td><td>60</td><td class="trend-up">+15%</td></tr>
+          <tr><td>📡 Communication Cloud</td><td>52</td><td>102</td><td class="trend-down">-49%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:10px 20px 12px;background:var(--surface-2);border-top:1px solid var(--border);font-size:11px;color:var(--text-secondary);">
+      📊 Life Sciences YoY growth is the single biggest shift — only 8 EMEA+India Sig cases in Q2 FY26, now 439 in Q2 FY27. Rev CPQ declined -15% YoY (317→268) as newer RC Core products absorb demand. RC Core Configurator nearly doubled (+94%).
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 4: TOP 10 ACCOUNTS ══ -->
+<div class="section-label">Section 4 — Top 10 Accounts Deep Dive (Q2 FY27 · EMEA + India)</div>
+
+<div class="card">
+  <div class="card-header">
+    <div>
+      <div class="card-title">Top 10 Accounts — Q2 FY27 Volume, Trend &amp; Engineering Dependency</div>
+      <div class="card-subtitle">EMEA + India · Signature + Premier Priority · Industry + Revenue · OrgCS SOQL verified</div>
+    </div>
+  </div>
+  <div class="card-body-flush">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="left">#</th>
+          <th class="left">Account</th>
+          <th class="left">Primary Cloud</th>
+          <th>Q2 FY27</th>
+          <th>Q1 FY27</th>
+          <th>Q2 FY26</th>
+          <th>QoQ</th>
+          <th>YoY</th>
+          <th title="Cases where engineering investigation raised (GUS ticket)">GUS Inv.</th>
+          <th title="Cases confirmed as product defect by engineering">Bug</th>
+          <th>Sev1</th>
+          <th>CSS Score</th>
+          <th class="left">Story</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--text-muted);font-weight:700;">1</td>
+          <td><strong>Pfizer - LSC EMEA</strong></td>
+          <td>🧬 Life Sciences</td>
+          <td><strong>179</strong></td><td>242</td><td style="color:var(--text-muted);">—</td>
+          <td class="trend-down">-26%</td><td style="color:var(--text-muted);">NEW FY27</td>
+          <td><span class="badge badge-warn">84 (47%)</span></td>
+          <td><span class="badge badge-warn">43 (24%)</span></td>
+          <td style="color:var(--text-muted);">0</td>
+          <td><span class="score-pill score-na">—</span></td>
+          <td style="font-size:11px;color:var(--text-secondary);">Volume easing (-26%) as initial deployment stabilises. Still 47% GUS-dependent — R&amp;D engagement critical.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-weight:700;">2</td>
+          <td><strong>Deloitte LLP</strong></td>
+          <td>🧬 Life Sciences SI</td>
+          <td><strong>95</strong></td><td>73</td><td>40</td>
+          <td class="trend-up">+30%</td><td class="trend-up">+138%</td>
+          <td><span class="badge badge-flat">22 (23%)</span></td>
+          <td><span class="badge badge-flat">11 (12%)</span></td>
+          <td class="sev1-high">3</td>
+          <td><span class="score-pill score-na">—</span></td>
+          <td style="font-size:11px;color:var(--text-secondary);">SI managing multi-customer LSC implementations. Consistent YoY growth — expanding Signature footprint.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-weight:700;">3</td>
+          <td><strong>Claro América Latina</strong></td>
+          <td>📦 CPQ/Order Mgmt</td>
+          <td><strong>71</strong></td><td>55</td><td>7</td>
+          <td class="trend-up">+29%</td><td class="trend-up">+914%</td>
+          <td><span class="badge badge-flat">5 (7%)</span></td>
+          <td><span class="badge badge-flat">3 (4%)</span></td>
+          <td style="color:var(--text-muted);">0</td>
+          <td><span class="score-pill score-na">—</span></td>
+          <td style="font-size:11px;color:var(--text-secondary);">Rapidly growing — barely in scope Q2 FY26, now #3. Configuration-heavy, low bug dependency. Healthy ramp.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-weight:700;">4</td>
+          <td><strong>BT Digico</strong></td>
+          <td>📦 CPQ/Order Mgmt</td>
+          <td><strong>69</strong></td><td>91</td><td>59</td>
+          <td class="trend-down">-24%</td><td class="trend-up">+17%</td>
+          <td><span class="badge badge-flat">15 (22%)</span></td>
+          <td><span class="badge badge-warn">13 (19%)</span></td>
+          <td class="sev1-high">4</td>
+          <td><span class="score-pill score-na">—</span></td>
+          <td style="font-size:11px;color:var(--text-secondary);">Volume declining as CME matures (-24% QoQ). 19% Bug rate warrants R&amp;D watch.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-weight:700;">5</td>
+          <td><strong>BT Consumer</strong></td>
+          <td>📦 CPQ/CME</td>
+          <td><strong>62</strong></td><td>39</td><td>44</td>
+          <td class="trend-up">+59%</td><td class="trend-up">+41%</td>
+          <td><span class="badge badge-flat">3 (5%)</span></td>
+          <td><span class="badge badge-flat">2 (3%)</span></td>
+          <td class="sev1-high">5</td>
+          <td><span class="score-pill score-na">—</span></td>
+          <td style="font-size:11px;color:var(--text-secondary);">Steepest volume rise (+59%). Sev1 elevated during rapid EPC ramp. Low engineering dependency — usage-driven complexity.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-weight:700;">6</td>
+          <td><strong>Mylan Inc.</strong></td>
+          <td>🧬 Life Sciences</td>
+          <td><strong>52</strong></td><td style="color:var(--text-muted);">—</td><td style="color:var(--text-muted);">—</td>
+          <td><span class="badge badge-new">NEW Q2</span></td><td><span class="badge badge-new">NEW FY27</span></td>
+          <td><span class="badge badge-flat">10 (19%)</span></td>
+          <td><span class="badge badge-flat">1 (2%)</span></td>
+          <td style="color:var(--text-muted);">0</td>
+          <td><span class="score-pill score-na">—</span></td>
+          <td style="font-size:11px;color:var(--text-secondary);">Brand new Sig account, Q2 FY27 only. 0 Sev1, low bug rate — positive early-deployment signal.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-weight:700;">7</td>
+          <td><strong>Kaseya - New Org</strong></td>
+          <td>📦 CPQ/Order Mgmt</td>
+          <td><strong>50</strong></td><td>70</td><td>25</td>
+          <td class="trend-down">-29%</td><td class="trend-up">+100%</td>
+          <td><span class="badge badge-flat">5 (10%)</span></td>
+          <td><span class="badge badge-flat">3 (6%)</span></td>
+          <td style="color:var(--text-muted);">0</td>
+          <td><span class="score-pill score-na">—</span></td>
+          <td style="font-size:11px;color:var(--text-secondary);">Volume declining as deployment matures. YoY doubled — solidifying Signature engagement. 0 Sev1 positive.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-weight:700;">8</td>
+          <td><strong>One New Zealand</strong></td>
+          <td>📦 CPQ/CME</td>
+          <td><strong>42</strong></td><td>54</td><td>39</td>
+          <td class="trend-down">-22%</td><td class="trend-up">+8%</td>
+          <td><span class="badge badge-flat">9 (21%)</span></td>
+          <td><span class="badge badge-warn">10 (24%)</span></td>
+          <td class="sev1-high">4</td>
+          <td><span class="score-pill score-na">—</span></td>
+          <td style="font-size:11px;color:var(--text-secondary);">Bug rate (24%) higher than GUS rate — bugs being caught at case level. Sev1 stable but warrants monitoring.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-weight:700;">9</td>
+          <td><strong>Metlen Energy &amp; Metals</strong></td>
+          <td>📦 Ind CPQ</td>
+          <td><strong>36</strong></td><td style="color:var(--text-muted);">—</td><td style="color:var(--text-muted);">—</td>
+          <td><span class="badge badge-new">NEW Q2</span></td><td><span class="badge badge-new">NEW FY27</span></td>
+          <td><span class="badge badge-flat">0 (0%)</span></td>
+          <td><span class="badge badge-flat">0 (0%)</span></td>
+          <td style="color:var(--text-muted);">0</td>
+          <td><span class="score-pill score-na">—</span></td>
+          <td style="font-size:11px;color:var(--text-secondary);">New EMEA energy account on Ind CPQ. 0 GUS, 0 Bug, 0 Sev1 — clean start.</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-weight:700;">10</td>
+          <td><strong>Sky Deutschland</strong></td>
+          <td>📦 CPQ/CME</td>
+          <td><strong>35</strong></td><td>26</td><td>25</td>
+          <td class="trend-up">+35%</td><td class="trend-up">+40%</td>
+          <td><span class="badge badge-flat">1 (3%)</span></td>
+          <td><span class="badge badge-flat">1 (3%)</span></td>
+          <td style="color:var(--text-muted);">0</td>
+          <td><span class="score-pill score-na">—</span></td>
+          <td style="font-size:11px;color:var(--text-secondary);">Steady YoY growth (+40%). Low engineering dependency, 0 Sev1 — self-sufficient usage pattern.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="padding:10px 20px;background:var(--surface-2);border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);">
+    <strong>GUS Inv.</strong> = cases where an engineering investigation (GUS ticket) was raised. &nbsp;|&nbsp; <strong>Bug</strong> = subset confirmed as a product defect. &nbsp;|&nbsp;
+    <strong>Product Adoption Score</strong> = a CSS sub-component built from License Usage, Consumption, and Feature Usage (each weighted — e.g. Consumption × 50% + Feature Usage × 50%). Scores are product-specific and only meaningful when matched to the exact product/topic the account is logging cases on.
+    All scores shown as <strong>—</strong>: product-level adoption scores are not queryable from OrgCS — they live in the Customer Success Platform (C360). Please populate manually from the relevant account's CSS page, mapping the score to the product/topic that matches their case volume.
+  </div>
+</div>
+
+<!-- Sev1 bar — sorted descending, data labels -->
+<div class="card" style="margin-top:16px;">
+  <div class="card-header">
+    <div>
+      <div class="card-title">Top 10 Accounts — Sev1 Cases Q2 FY27 (EMEA + India)</div>
+      <div class="card-subtitle">Sorted high to low · Airtel #1 by volume (17), all resolved avg 2.1d · Sky Italia has 2 open cases · 8 total open Sev1s</div>
+    </div>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="sev1BarChart" height="200"></canvas>
+  </div>
+</div>
+
+<!-- ══ SEV1 PRODUCT DEEP DIVE ══ -->
+<div class="card" style="margin-top:16px;margin-bottom:0;">
+  <div class="card-header">
+    <div>
+      <div class="card-title">🔍 Sev1 Decline — Product Root Cause (Q2 vs Q1 FY27)</div>
+      <div class="card-subtitle">EMEA + India · 181 Q2 vs 248 Q1 · -27% QoQ · SOQL: Support_Region__c IN ('EMEA','IST')</div>
+    </div>
+    <span class="badge badge-up" style="background:#DCFCE7;color:#15803D;border-color:#BBF7D0;">-67 cases QoQ</span>
+  </div>
+  <div class="card-body-flush">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="left">Product</th><th>Q1 Sev1</th><th>Q2 Sev1</th><th>Change</th><th>Avg TTR (Q2)</th><th class="left">Interpretation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:#F0FFF4;">
+          <td>📦 CPQ / Order Mgmt</td><td>64</td><td>42</td><td class="trend-down" style="font-weight:700;">-34% ↓</td><td>5.9d</td>
+          <td style="font-size:11px;color:#15803D;font-weight:600;">LARGEST DROP — product stabilising; 3 cases still open (Telstra 45d, One NZ 38d)</td>
+        </tr>
+        <tr style="background:#F0FFF4;">
+          <td>🔵 OmniStudio</td><td>41</td><td>24</td><td class="trend-down" style="font-weight:700;">-41% ↓</td><td>7.4d</td>
+          <td style="font-size:11px;color:#15803D;">Implementations completing — 1 open case</td>
+        </tr>
+        <tr style="background:#F0FFF4;">
+          <td>💵 Rev CPQ (CPQ + Dev)</td><td>38</td><td>33</td><td class="trend-down" style="font-weight:700;">-13% ↓</td><td>3.8d</td>
+          <td style="font-size:11px;color:#15803D;">Fast resolution; all closed · gradual easing</td>
+        </tr>
+        <tr style="background:#F0FFF4;">
+          <td>🛒 Retail &amp; CG</td><td>22</td><td>14</td><td class="trend-down" style="font-weight:700;">-36% ↓</td><td>15.3d</td>
+          <td style="font-size:11px;color:#D97706;font-weight:600;">Long TTR (15.3d avg) — GUS-heavy (50%). Structural product issues.</td>
+        </tr>
+        <tr style="background:#ECFDF5;border-left:3px solid #059669;">
+          <td>🏭 Manufacturing Cloud</td><td>9</td><td>3</td><td class="trend-down" style="font-weight:700;color:#059669;">-67% ↓</td><td>22.7d</td>
+          <td style="font-size:11px;color:#059669;font-weight:600;">Near-zero · 100% GUS + 67% Bug in remaining 3 cases — R&amp;D watch</td>
+        </tr>
+        <tr style="background:#ECFDF5;border-left:3px solid #059669;">
+          <td>📡 Communication Cloud</td><td>6</td><td>3</td><td class="trend-down" style="font-weight:700;color:#059669;">-50% ↓</td><td>3.1d</td>
+          <td style="font-size:11px;color:#059669;font-weight:600;">Sharply reduced · all closed fast</td>
+        </tr>
+        <tr>
+          <td>⚙️ RC Core Configurator</td><td>12</td><td>9</td><td class="trend-down">-25%</td><td>5.2d</td>
+          <td style="font-size:11px;color:var(--text-secondary);">Easing · 33% GUS — RC Core complexity</td>
+        </tr>
+        <tr style="background:#FFF7ED;">
+          <td>🧬 Life Sciences</td><td>1</td><td>10</td><td class="trend-up" style="font-weight:700;">+900% ↑</td><td>6.3d</td>
+          <td style="font-size:11px;color:#D97706;font-weight:600;">New deployments ramping (Pfizer, Mylan, SPIMACO) — 1 open case · expected</td>
+        </tr>
+        <tr style="background:#FFF7ED;">
+          <td>🔁 Loyalty Management</td><td>9</td><td>4</td><td class="trend-down">-56%</td><td>21.0d</td>
+          <td style="font-size:11px;color:#D97706;">75% GUS rate on remaining cases — long TTR signal</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="padding:10px 20px;background:var(--surface-2);border-top:1px solid var(--border);font-size:11px;color:var(--text-secondary);">
+    ✅ <strong>Story:</strong> CPQ/OM and OmniStudio drive 58% of the Sev1 decline. Retail &amp; CG warrants watch — long TTR (15.3d) with 50% GUS rate despite decline in count. Life Sciences Sev1 rise from 1→10 is expected for 6 new Q2 accounts. <strong>8 open Sev1s</strong>: Telstra (45d), One NZ (38d), Sky Italia (37d+22d) are the critical aged cases.
+  </div>
+</div>
+
+<!-- ══ SECTION 5: NEW Q2 ACCOUNTS ══ -->
+<div class="section-label">Section 5 — Net-New Accounts in Q2 (EMEA + India · Not in Q1 Top 50)</div>
+<div class="grid grid-2">
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Net-New Signature Accounts — Q2 FY27</div>
+        <div class="card-subtitle">New entrants into top volume list · EMEA + India scope only</div>
+      </div>
+      <span class="badge badge-up">8 new accounts</span>
+    </div>
+    <div class="card-body-flush">
+      <table class="data-table">
+        <thead>
+          <tr><th class="left">Account</th><th>Q2 Cases</th><th class="left">Primary Cloud</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Mylan Inc.</td><td>74</td><td>🧬 Life Sciences</td></tr>
+          <tr><td>Apsen Farmaceutica S/A</td><td>65</td><td>🧬 Life Sciences</td></tr>
+          <tr><td>ModernaTX, Inc.</td><td>40</td><td>🧬 Life Sciences</td></tr>
+          <tr><td>Metlen Energy &amp; Metals</td><td>36</td><td>📦 Ind CPQ</td></tr>
+          <tr><td>Harrow Health</td><td>34</td><td>🧬 Health Cloud</td></tr>
+          <tr><td>Alnylam Pharmaceuticals</td><td>33</td><td>🧬 Life Sciences</td></tr>
+          <tr><td>SPIMACO</td><td>31</td><td>🧬 Life Sciences (EMEA Pharma)</td></tr>
+          <tr><td>Fresenius Kabi AG</td><td>31</td><td>🧬 Life Sciences (EMEA Pharma)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">What's Driving the New Account Surge?</div>
+        <div class="card-subtitle">6 of 8 new accounts are Life Sciences / Pharma</div>
+      </div>
+    </div>
+    <div class="chart-wrap" style="padding-top:16px;">
+      <canvas id="newAcctDonut" width="200" height="200" style="display:block;margin:0 auto;"></canvas>
+    </div>
+    <div class="insight-list" style="padding:0 16px 16px;">
+      <div class="insight-item">
+        <div class="insight-icon icon-purple">🧬</div>
+        <div class="insight-text">
+          <div class="title">Life Sciences Wave Confirmed</div>
+          <div class="body">6 of 8 new EMEA accounts are Pharma/Life Sciences — directly explaining the +40% QoQ surge. Portfolio growth, not support quality issue.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon icon-amber">⚙️</div>
+        <div class="insight-text">
+          <div class="title">Pre-Adoption CSS Scores (15–27)</div>
+          <div class="body">Expected for new deployments. High GUS/Bug rates reflect implementation complexity — should normalise within 2 quarters.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ SECTION 6: INSIGHTS ══ -->
+<div class="section-label">Section 6 — Executive Insights &amp; Q3 Actions</div>
+<div class="grid grid-3">
+
+  <div class="card">
+    <div class="card-header"><div class="card-title">🟢 Positive Signals</div></div>
+    <div class="card-body">
+      <div class="insight-list">
+        <div class="insight-item">
+          <div class="insight-icon icon-green">📉</div>
+          <div class="insight-text">
+            <div class="title">Sev1 Down 27% QoQ — Structural Stability, Not Luck</div>
+            <div class="body">181 vs 248 in Q1 (EMEA+India). CPQ/OM -34% (64→42), OmniStudio -41% (41→24), Rev CPQ -13% (38→33). 96% of Q2 Sev1s are CLOSED. Avg TTR 7.2 days. Airtel #1 by volume (17 Sev1s) but ALL resolved at 2.1d avg — not a risk, a volume signal. Life Sciences 1→10 is expected (6 new accounts). Net: portfolio stability improving.</div>
+          </div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon icon-green">📊</div>
+          <div class="insight-text">
+            <div class="title">Signature = #1 Plan in July (30.3%)</div>
+            <div class="body">First time Signature overtook Premier+ by volume. Sig volume dipped -4.2% QoQ but Premier+ fell harder (-13.4%), Standard -7.7%, Partner -10.8%. Agentforce self-service deflection is compressing standard/premier inflow — Signature complex cases are less deflectable, making the share shift structural, not just volume noise.</div>
+          </div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon icon-green">⚡</div>
+          <div class="insight-text">
+            <div class="title">Airtel — #1 Sev1 Volume, 2.1d Avg TTR (All Closed)</div>
+            <div class="body">17 Sev1s — highest in the EMEA+India portfolio. But every single one is closed, resolved in an average of 2.1 days. 0 GUS, 0 Bug. This is a volume story, not a quality failure. Demonstrates that high Sev1 count is not inherently a risk when resolution velocity is strong.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-title">🔴 Watch Items</div></div>
+    <div class="card-body">
+      <div class="insight-list">
+        <div class="insight-item">
+          <div class="insight-icon icon-red">⚠️</div>
+          <div class="insight-text">
+            <div class="title">3 Aged Open Sev1s — Immediate Escalation Needed</div>
+            <div class="body">8 open Sev1s total; 3 are critically aged: <strong>Telstra</strong> (CPQ/OM, 44.8 days open — #473964663), <strong>One New Zealand</strong> (CPQ/OM, 37.75 days — #474015216), <strong>Sky Italia</strong> (CPQ/OM + OmniStudio, 36.75d + 21.6d — Sky has 2 open cases + 60% GUS rate on 5 Sev1s). Also watch: SPIMACO (Life Sciences, 20.8d), Elevance Health (OmniStudio, 16.5d). These need manager escalation before QBR.</div>
+          </div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon icon-red">🔬</div>
+          <div class="insight-text">
+            <div class="title">Retail &amp; CG Sev1: Slow TTR + High GUS = R&amp;D Bottleneck</div>
+            <div class="body">Retail &amp; CG: 14 Sev1s, avg TTR 15.3 days, 50% GUS-raised, 29% confirmed bugs. Motorola Solutions: 3 Sev1s, 100% GUS, 67% Bug, 23.7d avg TTR — all closed but slow. Mars Info: 75% GUS, 16.7d avg TTR. Pattern: R&amp;D queue is the bottleneck on these accounts, not case complexity.</div>
+          </div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon icon-amber">📈</div>
+          <div class="insight-text">
+            <div class="title">BT Consumer — +59% Vol, 6 Sev1, Avg TTR 7.5d</div>
+            <div class="body">Steepest volume rise in top-10 (+59% QoQ). 6 Sev1s, all closed at 7.5d avg TTR — healthy resolution pace. 17% GUS, 17% Bug — low dependency for a fast-scaling EPC account. Monitor Q3 for continued ramp; self-sufficient pattern emerging.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-title">📋 Q3 FY27 Actions</div></div>
+    <div class="card-body">
+      <div class="insight-list">
+        <div class="insight-item">
+          <div class="insight-icon icon-red">🔔</div>
+          <div class="insight-text">
+            <div class="title">Escalate 3 Aged Open Sev1s Before QBR</div>
+            <div class="body">Telstra (44.8d), One New Zealand (37.75d), Sky Italia (36.75d + 22d) — all EMEA/APAC CPQ accounts. Assign manager escalation owners. Sky Italia also has 60% GUS dependency; flag to RC engineering before Aug 19.</div>
+          </div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon icon-purple">🧬</div>
+          <div class="insight-text">
+            <div class="title">LSC + Retail &amp; CG: R&amp;D Queue Partnership</div>
+            <div class="body">Life Sciences: Pfizer (47% GUS), Mylan, Deloitte LSC cases. Retail &amp; CG: 50% GUS rate, 15.3d avg TTR. Partner with R&amp;D to fast-track GUS triage for both portfolios — both show R&amp;D queue as the primary SLA risk.</div>
+          </div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon icon-blue">📡</div>
+          <div class="insight-text">
+            <div class="title">QBR Sections 4–6: Pending Inputs</div>
+            <div class="body">Agentforce (Saheb) · Guides (Bhagat + Darshan) · VOC/Product Gaps (Kalpesh + Cloud POCs) — DMs drafted.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- /content -->
+
+<div class="page-footer">
+  <span>Signature QBR · Global · Aug 19, 2026 · Q2 FY27 (May–Jul 2026)</span>
+  <span>OrgCS SOQL · EMEA + India · Signature + Premier Priority · Industry + Revenue</span>
+  <span>Prepared by Eshant Sharma · 12 Aug 2026</span>
+</div>
+
+<!-- ══════════ CHARTS ══════════ -->
+<script>
+// Register datalabels plugin globally
+Chart.register(ChartDataLabels);
+
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#64748B';
+Chart.defaults.plugins.legend.display = false;
+// Disable datalabels globally, enable per chart
+Chart.defaults.plugins.datalabels.display = false;
+
+const C = {
+  sig:      '#2563EB',
+  sigLight: '#BFDBFE',
+  premier:  '#7C3AED',
+  std:      '#0891B2',
+  partner:  '#059669',
+  other:    '#94A3B8',
+  red:      '#DC2626',
+  amber:    '#D97706',
+  green:    '#059669',
+};
+
+const MONTHS = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
+
+// ─── 1. Monthly Inflow Trend (EMEA+India all plans) — OrgCS SOQL verified ───
+// RecordType: Support + Platform/App Support only (matches OrgCS dashboard)
+// Premier & Premier+ COMBINED into single "Premier+" line (same success plan)
+const monthly = {
+  sig:     [1042, 1056,  885,  845,  987, 1025],  // Sig Success + Signature + PP
+  premp:   [1514, 1459, 1235, 1167, 1228, 1250],  // Premier+ + Premier merged
+  partner: [ 650,  641,  688,  514,  679,  568],  // Partner Premier
+  std:     [ 565,  596,  544,  451,  580,  543],  // Standard
+};
+// Totals: Feb=3771, Mar=3752, Apr=3352, May=2977, Jun=3474, Jul=3386
+// Q2 Sig=2857 ✓ (matches OrgCS dashboard), Q2 total=9837 (~9829 dashboard, Δ8 = boundary cases)
+new Chart(document.getElementById('monthlyTrendChart'), {
+  type: 'line',
+  data: {
+    labels: MONTHS,
+    datasets: [
+      { label:'Signature',            data:monthly.sig,    borderColor:C.sig,     backgroundColor:'rgba(37,99,235,.08)', borderWidth:2.5, pointRadius:5, pointHoverRadius:7, tension:.35, fill:false },
+      { label:'Premier+ (incl. Premier)', data:monthly.premp,  borderColor:C.premier, backgroundColor:'transparent',        borderWidth:2,   pointRadius:4, pointHoverRadius:6, tension:.35, fill:false },
+      { label:'Partner Premier',      data:monthly.partner,borderColor:C.partner, backgroundColor:'transparent',        borderWidth:2,   pointRadius:4, pointHoverRadius:6, tension:.35, fill:false },
+      { label:'Standard',             data:monthly.std,    borderColor:C.std,     backgroundColor:'transparent',        borderWidth:2,   pointRadius:4, pointHoverRadius:6, tension:.35, fill:false },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend:{display:false},
+      datalabels:{display:false},
+      tooltip:{
+        backgroundColor:'#1E293B', titleColor:'#F8FAFC', bodyColor:'#CBD5E1',
+        padding:10, cornerRadius:8, borderColor:'#334155', borderWidth:1,
+        callbacks:{ label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toLocaleString()}` }
+      }
+    },
+    scales:{
+      x:{ grid:{color:'#F1F5F9'}, ticks:{color:'#64748B'} },
+      y:{ grid:{color:'#F1F5F9'}, ticks:{color:'#64748B'}, title:{display:true, text:'Cases', color:'#94A3B8', font:{size:10}} }
+    }
+  }
+});
+
+// ─── 2. Donuts ───
+function makeDonut(id, data) {
+  new Chart(document.getElementById(id), {
+    type:'doughnut',
+    data:{ datasets:[{ data, backgroundColor:[C.sig,C.premier,C.partner,C.std], borderWidth:2, borderColor:'#FFFFFF' }] },
+    options:{ cutout:'65%', responsive:false, plugins:{ legend:{display:false}, datalabels:{display:false}, tooltip:{enabled:false} } }
+  });
+}
+// Q1 (Feb-Apr): Sig=2983, Premier+(merged)=4208, Partner=1979, Std=1705
+makeDonut('donutQ1', [2983, 4208, 1979, 1705]);
+// Q2 (May-Jul): Sig=2857, Premier+(merged)=3645, Partner=1761, Std=1574
+makeDonut('donutQ2', [2857, 3645, 1761, 1574]);
+
+// ─── 3. Signature % Monthly Trend — OrgCS SOQL verified ───
+// Sig% = Sig cases / all-plan total per month. sigVol = absolute count per month
+const sigPct = [27.6, 28.1, 26.4, 28.4, 28.4, 30.3];
+const sigVol =  [1042, 1056,  885,  845,  987, 1025]; // absolute Sig case counts
+
+new Chart(document.getElementById('sigShareTrendChart'), {
+  type: 'line',
+  data: {
+    labels: MONTHS,
+    datasets: [{
+      label: 'Sig %',
+      data: sigPct,
+      borderColor: C.sig,
+      backgroundColor: 'rgba(37,99,235,.12)',
+      borderWidth: 3,
+      pointRadius: 7,
+      pointHoverRadius: 9,
+      pointBackgroundColor: sigPct.map((v,i) => i===5 ? '#FFFFFF' : C.sig),
+      pointBorderColor:     sigPct.map(()  => C.sig),
+      pointBorderWidth:     sigPct.map((v,i) => i===5 ? 3 : 0),
+      tension: .35,
+      fill: true,
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    layout:{ padding:{ top:24, right:24 } },
+    plugins:{
+      legend:{display:false},
+      datalabels:{
+        display: true,
+        align: 'top',
+        offset: 6,
+        font:{ weight:'700', size:11 },
+        color: (ctx) => ctx.dataIndex === 5 ? '#2563EB' : '#0F172A',
+        formatter: (v, ctx) => v + '%\n(' + sigVol[ctx.dataIndex] + ')',
+      },
+      tooltip:{
+        backgroundColor:'#1E293B', titleColor:'#F8FAFC', bodyColor:'#CBD5E1',
+        padding:10, cornerRadius:8,
+        callbacks:{ label: ctx => ` Signature: ${ctx.raw}% · ${sigVol[ctx.dataIndex]} cases` }
+      }
+    },
+    scales:{
+      x:{ grid:{color:'#F1F5F9'}, ticks:{font:{size:12, weight:'600'}, color:'#475569'} },
+      y:{
+        min:25, max:31.8,
+        grid:{color:'#F1F5F9'},
+        ticks:{ callback: v => v+'%', font:{size:11}, color:'#64748B' },
+        title:{display:true, text:'Signature % of all cases', color:'#94A3B8', font:{size:10}}
+      }
+    }
+  }
+});
+
+// ─── 4. Product Bar Chart (EMEA+India, from OrgCS dashboard screenshot) ───
+const products = [
+  'CPQ/Order Mgmt',
+  'OmniStudio',
+  'Life Sciences',
+  'Rev CPQ',
+  'Retail & CG',
+  'RC Core-Prod Config',
+  'RC Core-Transactions',
+  'Financial Services',
+  'Doc Generation',
+  'Comm Cloud',
+];
+// Rev CPQ = Rev-Salesforce CPQ (189/184) + Rev-CPQ Dev Support (79/59) = 268/243
+const q2v = [557, 397, 439, 268, 222, 132, 72, 69, 64, 52];
+const q1v = [577, 584, 313, 243, 232, 121, 86, 48, 77, 63];
+
+// Sort by Q2 descending
+const idx = [...Array(products.length).keys()].sort((a,b)=>q2v[b]-q2v[a]);
+const sortedLabels = idx.map(i=>products[i]);
+const sortedQ2 = idx.map(i=>q2v[i]);
+const sortedQ1 = idx.map(i=>q1v[i]);
+
+new Chart(document.getElementById('productBarChart'), {
+  type: 'bar',
+  data: {
+    labels: sortedLabels,
+    datasets: [
+      { label:'Q2 FY27', data:sortedQ2, backgroundColor:C.sig,     borderRadius:4, borderSkipped:false },
+      { label:'Q1 FY27', data:sortedQ1, backgroundColor:C.sigLight, borderRadius:4, borderSkipped:false },
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive:true, maintainAspectRatio:false,
+    layout:{ padding:{ right:50 } },
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend:{display:false},
+      datalabels:{
+        display: true,
+        anchor: 'end',
+        align: 'end',
+        offset: 2,
+        font:{ weight:'700', size:10 },
+        color: (ctx) => ctx.datasetIndex === 0 ? C.sig : '#94A3B8',
+        formatter: v => v,
+      },
+      tooltip:{
+        backgroundColor:'#1E293B', titleColor:'#F8FAFC', bodyColor:'#CBD5E1',
+        padding:10, cornerRadius:8,
+        callbacks:{ label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}` }
+      }
+    },
+    scales:{
+      x:{ grid:{color:'#F1F5F9'}, ticks:{color:'#64748B'}, title:{display:true,text:'Cases',color:'#94A3B8',font:{size:10}} },
+      y:{ grid:{display:false}, ticks:{font:{size:11}, color:'#0F172A'} }
+    }
+  }
+});
+
+// ─── 5. Sev1 Bar — EMEA+India scope, Sig+PP plans, verified from OrgCS SOQL ───
+// Q2 FY27 (May–Jul 2026) · Support_Region__c IN ('EMEA','IST')
+// Airtel=17 (all closed avg 2.1d), CrowdStrike=7, BT Consumer=6, BT Digico=6, PowerSchool=6
+// Pure Storage=5, Sky Italia=5 (2 OPEN), Danaher=4, Mars Info=4, Deloitte=3
+const sev1Accounts = ['Bharti Airtel', 'CrowdStrike', 'BT Consumer', 'BT Digico', 'PowerSchool', 'Pure Storage', 'Sky Italia', 'Danaher Diag.', 'Mars Info Svc', 'Deloitte'];
+const sev1Vals     = [17, 7, 6, 6, 6, 5, 5, 4, 4, 3];
+const sev1Colors   = sev1Vals.map(v => v >= 15 ? '#DC2626' : v >= 7 ? '#D97706' : '#2563EB');
+const sev1TextClr  = sev1Vals.map(() => '#0F172A');
+
+new Chart(document.getElementById('sev1BarChart'), {
+  type: 'bar',
+  data: {
+    labels: sev1Accounts,
+    datasets: [{
+      label:'Sev1 Cases',
+      data: sev1Vals,
+      backgroundColor: sev1Colors,
+      borderRadius: 5,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    layout:{ padding:{ top:30 } },
+    plugins:{
+      legend:{display:false},
+      datalabels:{
+        display: true,
+        anchor: 'end',
+        align: 'end',
+        offset: 4,
+        font:{ weight:'800', size:13 },
+        color: (ctx) => sev1TextClr[ctx.dataIndex],
+        formatter: v => v > 0 ? v : '',
+      },
+      tooltip:{
+        backgroundColor:'#1E293B', titleColor:'#F8FAFC', bodyColor:'#CBD5E1',
+        padding:10, cornerRadius:8,
+        callbacks:{ label: ctx => ` Sev1: ${ctx.raw} cases` }
+      }
+    },
+    scales:{
+      x:{ grid:{display:false}, ticks:{font:{size:11,weight:'600'}, color:'#0F172A'} },
+      y:{
+        grid:{color:'#F1F5F9'}, max:20,
+        ticks:{stepSize:2, color:'#64748B'},
+        title:{display:true, text:'Sev1 Count', color:'#94A3B8', font:{size:10}}
+      }
+    }
+  }
+});
+
+// ─── 6. New Acct Donut (6 LifeSci/Health, 1 Ind CPQ, 1 Other) ───
+new Chart(document.getElementById('newAcctDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Life Sciences', 'Health Cloud', 'Ind CPQ', 'Other'],
+    datasets: [{
+      data: [5, 2, 1, 0],
+      backgroundColor: ['#2563EB', '#059669', '#7C3AED', '#94A3B8'],
+      borderWidth: 2, borderColor: '#FFFFFF'
+    }]
+  },
+  options: {
+    cutout: '58%',
+    responsive: false,
+    plugins: {
+      legend: { display:true, position:'bottom', labels:{ font:{size:11}, padding:14, color:'#475569', usePointStyle:true } },
+      datalabels: {
+        display: (ctx) => ctx.dataset.data[ctx.dataIndex] > 0,
+        font: { weight:'700', size:13 },
+        color: '#fff',
+        formatter: v => v,
+      },
+      tooltip: {
+        backgroundColor:'#1E293B', titleColor:'#F8FAFC', bodyColor:'#CBD5E1',
+        padding:10, cornerRadius:8,
+        callbacks:{ label: ctx => ` ${ctx.label}: ${ctx.raw} accounts` }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
