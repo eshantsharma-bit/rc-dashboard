@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RC Weekly Dashboard · Aug 9–15 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:#f6f8fa;--surface:#ffffff;--border:#d0d7de;
+  --text:#1f2328;--muted:#656d76;--accent:#0969da;
+  --green:#1a7f37;--red:#cf222e;--yellow:#9a6700;--orange:#bc4c00;
+  --emea:#8250df;--india:#e16f42;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;background:var(--bg);color:var(--text);padding:16px}
+a{color:var(--accent);text-decoration:none}
+
+/* Header */
+.header{background:#032d60;color:#fff;padding:14px 20px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.header h1{font-size:16px;font-weight:600;letter-spacing:.3px}
+.header .meta{font-size:11px;color:rgba(255,255,255,.65);margin-top:3px}
+.header-badges{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge-red{background:#ffebe9;color:#cf222e;border:1px solid #ffcecb}
+.badge-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb}
+.badge-purple{background:#fbefff;color:#8250df;border:1px solid #d8b4fe}
+.badge-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845}
+.badge-blue{background:#ddf4ff;color:#0969da;border:1px solid #80ccff}
+
+/* KPI Row */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.kpi.alert{border-color:#ffcecb;background:#ffebe9}
+.kpi.warn{border-color:#f5d845;background:#fff8c5}
+.kpi.good{border-color:#aceebb;background:#dafbe1}
+.kpi-label{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:4px}
+.kpi-val{font-size:22px;font-weight:700;line-height:1}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.kpi-delta{font-size:11px;font-weight:600;margin-top:3px}
+.delta-up{color:var(--red)}
+.delta-dn{color:var(--green)}
+.delta-flat{color:var(--muted)}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.card-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+
+/* Grids */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+
+/* Tables */
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{background:#f6f8fa;color:var(--muted);font-weight:600;font-size:11px;padding:6px 8px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+.data-table td{padding:5px 8px;border-bottom:1px solid #eaeef2;vertical-align:top}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:#f6f8fa}
+
+/* Backlog / metrics table */
+.metrics-table{width:100%;border-collapse:collapse;font-size:12px}
+.metrics-table th{background:#032d60;color:#fff;font-size:11px;font-weight:600;padding:7px 10px;text-align:center;white-space:nowrap}
+.metrics-table th:first-child{text-align:left}
+.metrics-table td{padding:6px 10px;border-bottom:1px solid #eaeef2;text-align:center}
+.metrics-table td:first-child{text-align:left;font-weight:500;color:var(--text)}
+.metrics-table tr:hover td{background:#f6f8fa}
+.tw-col{background:rgba(9,105,218,.07)!important;font-weight:700}
+.csat-row td{background:rgba(63,185,80,.04)}
+.indent-row td:first-child{padding-left:22px;color:var(--muted);font-size:11px}
+
+/* Insight panels */
+.insight{padding:10px 12px;border-radius:6px;border-left:3px solid;margin-bottom:8px;font-size:12px;line-height:1.5}
+.insight.red{background:#ffebe9;border-color:var(--red);color:#82071e}
+.insight.green{background:#dafbe1;border-color:var(--green);color:#116329}
+.insight.yellow{background:#fff8c5;border-color:#d4a72c;color:#633c01}
+.insight.blue{background:#ddf4ff;border-color:var(--accent);color:#0550ae}
+.insight.purple{background:#fbefff;border-color:var(--emea);color:#5a32a3}
+.insight strong{font-weight:700}
+
+/* Pills */
+.pill{display:inline-block;padding:1px 6px;border-radius:12px;font-size:10px;font-weight:600}
+.pill-red{background:#ffebe9;color:#cf222e}
+.pill-green{background:#dafbe1;color:#1a7f37}
+.pill-yellow{background:#fff8c5;color:#9a6700}
+.pill-blue{background:#ddf4ff;color:#0969da}
+.pill-purple{background:#fbefff;color:#8250df}
+.pill-orange{background:#fff1e5;color:#bc4c00}
+
+/* Pct bar */
+.pct-bar-wrap{background:#eaeef2;border-radius:4px;height:8px;overflow:hidden;margin:4px 0}
+.pct-emea{display:inline-block;background:#8250df;height:8px}
+.pct-india{display:inline-block;background:#e16f42;height:8px}
+
+/* Story strip */
+.story-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.story-card{border-radius:8px;padding:12px 14px;border:1px solid}
+.story-card.s-red{background:#ffebe9;border-color:#ffcecb}
+.story-card.s-green{background:#dafbe1;border-color:#aceebb}
+.story-card.s-purple{background:#fbefff;border-color:#d8b4fe}
+.story-card.s-yellow{background:#fff8c5;border-color:#f5d845}
+.story-card .s-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.story-card.s-red .s-title{color:#82071e}
+.story-card.s-green .s-title{color:#116329}
+.story-card.s-purple .s-title{color:#5a32a3}
+.story-card.s-yellow .s-title{color:#633c01}
+.story-card .s-num{font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
+.story-card .s-body{font-size:11px;line-height:1.5}
+
+/* Good news strip */
+.good-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid #aceebb;border-radius:8px;overflow:hidden;margin-bottom:12px}
+.good-cell{background:#dafbe1;padding:10px 12px;border-right:1px solid #aceebb}
+.good-cell:last-child{border-right:none}
+.good-cell .gc-label{font-size:10px;font-weight:600;color:#116329;text-transform:uppercase;margin-bottom:3px}
+.good-cell .gc-val{font-size:15px;font-weight:700;color:#1a7f37}
+.good-cell .gc-sub{font-size:10px;color:#116329;opacity:.8}
+
+/* Chart container */
+.chart-wrap{position:relative;height:180px}
+.chart-wrap-sm{position:relative;height:150px}
+
+/* Footer */
+footer{text-align:center;font-size:11px;color:var(--muted);margin-top:16px;padding-top:10px;border-top:1px solid var(--border)}
+
+/* Account name */
+.acc-name{font-weight:600}
+.red-acct{color:var(--red)}
+
+/* Number colours */
+.num-red{color:var(--red);font-weight:700}
+.num-green{color:var(--green);font-weight:700}
+.num-muted{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<div class="header">
+  <div>
+    <h1>⚡ Revenue Cloud &amp; Industries · Weekly Executive Dashboard</h1>
+    <div class="meta">Week of Aug 9–15, 2026 &nbsp;·&nbsp; EMEA + India &nbsp;·&nbsp; Source: OrgCS Live Query</div>
+  </div>
+  <div class="header-badges">
+    <span class="badge badge-red">🚨 CPQ S1 spike +6</span>
+    <span class="badge badge-red">🔴 India aged 45%</span>
+    <span class="badge badge-purple">EMEA S1 ↑ 20→29</span>
+    <span class="badge badge-green">✅ RCA S1 ↓ 21→12</span>
+    <span class="badge badge-yellow">⚠️ GUS 16.5% only</span>
+  </div>
+</div>
+
+<!-- ═══════════ KPI ROW ═══════════ -->
+<div class="kpi-row">
+  <div class="kpi alert">
+    <div class="kpi-label">Support Inflow</div>
+    <div class="kpi-val">639</div>
+    <div class="kpi-delta delta-dn">↓ 116 vs PW (755)</div>
+    <div class="kpi-sub">EMEA 349 · India 290</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">Sev1 Inflow</div>
+    <div class="kpi-val">56</div>
+    <div class="kpi-delta delta-dn">↓ 5 vs PW (61)</div>
+    <div class="kpi-sub">EMEA 29 · India 27</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Sev2 Inflow</div>
+    <div class="kpi-val">341</div>
+    <div class="kpi-delta delta-dn">↓ 21 vs PW (362)</div>
+    <div class="kpi-sub">53% of total inflow</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">Closures TW</div>
+    <div class="kpi-val">729</div>
+    <div class="kpi-delta delta-dn">↓ 22 vs PW (751)</div>
+    <div class="kpi-sub">S1 closes 72 ↑+10</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">TTR</div>
+    <div class="kpi-val">8.7</div>
+    <div class="kpi-delta delta-up">↑ 0.6 vs PW (8.1)</div>
+    <div class="kpi-sub">Target ≤ 10 days ✅</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">CSAT</div>
+    <div class="kpi-val">4.91</div>
+    <div class="kpi-delta delta-up">↑ 0.07 vs PW (4.84)</div>
+    <div class="kpi-sub">Target ≥ 4.5 ✅</div>
+  </div>
+</div>
+
+<!-- ═══════════ EXECUTIVE STORY ═══════════ -->
+<div class="story-grid">
+  <div class="story-card s-red">
+    <div class="s-title">🚨 CPQ S1 Spike</div>
+    <div class="s-num" style="color:#cf222e">7</div>
+    <div class="s-body">Revenue-Salesforce CPQ S1s this week — up from 1 PW (+6). V-shaped: PPW=6 → PW=1 → TW=7. Lexis Nexis duplicate filings (474316305, 474316270). Approval delegation defect unresolved.</div>
+  </div>
+  <div class="story-card s-red">
+    <div class="s-title">🚨 India Aged Backlog</div>
+    <div class="s-num" style="color:#cf222e">45%</div>
+    <div class="s-body">India closed cases aged &gt;10d: 152/337 (45.1%). 11 S1s closed without GUS. Critical outlier: Case 473890398 Accenture S1 at 55.2 days, zero GUS linkage. Manager review required.</div>
+  </div>
+  <div class="story-card s-green">
+    <div class="s-title">✅ RCA S1 Improving</div>
+    <div class="s-num" style="color:#1a7f37">12</div>
+    <div class="s-body">RCA Sev1 inflow dropped from 21 → 12 (−9 WoW). Product Catalog &amp; Usage/Ratings both cleared to 0 S1. Genuine resolution velocity — team win. OmniStudio still at 12.</div>
+  </div>
+  <div class="story-card s-purple">
+    <div class="s-title">📈 EMEA S1 Rising</div>
+    <div class="s-num" style="color:#8250df">29</div>
+    <div class="s-body">EMEA Sev1: 7 → 20 → 29 (+9 WoW). CPQ driving spike. India improving: 41 → 27 (−14). EMEA now 52% of S1 inflow vs 37% last week. Monitor next week.</div>
+  </div>
+</div>
+
+<!-- Good news strip -->
+<div class="good-strip">
+  <div class="good-cell">
+    <div class="gc-label">CSAT</div>
+    <div class="gc-val">4.91</div>
+    <div class="gc-sub">↑ 0.07 · 4-wk high</div>
+  </div>
+  <div class="good-cell">
+    <div class="gc-label">India S1 Inflow</div>
+    <div class="gc-val">27 ↓</div>
+    <div class="gc-sub">Was 41 PW · −14</div>
+  </div>
+  <div class="good-cell">
+    <div class="gc-label">Total Inflow</div>
+    <div class="gc-val">639 ↓</div>
+    <div class="gc-sub">−15% vs PW · 755→639</div>
+  </div>
+  <div class="good-cell">
+    <div class="gc-label">RCA S1</div>
+    <div class="gc-val">12 ↓</div>
+    <div class="gc-sub">Was 21 PW · −9</div>
+  </div>
+</div>
+
+<!-- ═══════════ KEY METRICS 4-WEEK TABLE + KPI TREND (center) ═══════════ -->
+<div class="card" style="margin-bottom:12px">
+  <div class="card-title">📊 Key Metrics &amp; KPI Trends — 4 Week View</div>
+  <div style="display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start">
+    <div>
+      <table class="metrics-table">
+        <thead>
+          <tr>
+            <th style="min-width:150px">KPIs</th>
+            <th>Target</th>
+            <th class="tw-col">★ 2026-08-09</th>
+            <th>2026-08-02</th>
+            <th>2026-07-26</th>
+            <th>2026-07-19</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Support Inflow</td>
+            <td style="color:var(--muted)">—</td>
+            <td class="tw-col">630 <span style="color:var(--red);font-size:10px">(-122)</span></td>
+            <td>752 <span style="color:var(--muted);font-size:10px">(80)</span></td>
+            <td>672 <span style="color:var(--green);font-size:10px">(-134)</span></td>
+            <td>806</td>
+          </tr>
+          <tr class="indent-row">
+            <td>↳ EMEA Inflow</td>
+            <td style="color:var(--muted)">—</td>
+            <td class="tw-col" style="color:#8250df;font-weight:700">349</td>
+            <td>410</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr class="indent-row">
+            <td>↳ India Inflow</td>
+            <td style="color:var(--muted)">—</td>
+            <td class="tw-col" style="color:#e16f42;font-weight:700">290</td>
+            <td>345</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Closures</td>
+            <td style="color:var(--muted)">—</td>
+            <td class="tw-col">730 <span style="color:var(--muted);font-size:10px">(-20)</span></td>
+            <td>750 <span style="color:var(--muted);font-size:10px">(-10)</span></td>
+            <td>760 <span style="color:var(--green);font-size:10px">(15)</span></td>
+            <td>745</td>
+          </tr>
+          <tr>
+            <td>Sev1</td>
+            <td style="color:var(--muted)">—</td>
+            <td class="tw-col">56 <span style="color:var(--green);font-size:10px">(-5)</span></td>
+            <td>61</td>
+            <td>34</td>
+            <td>41</td>
+          </tr>
+          <tr class="indent-row">
+            <td style="color:#8250df">↳ EMEA Sev1</td>
+            <td style="color:var(--muted)">—</td>
+            <td class="tw-col" style="color:#8250df;font-weight:700">29 <span style="color:var(--red);font-size:10px">(+9)</span></td>
+            <td style="color:#8250df">20</td>
+            <td style="color:#8250df">18</td>
+            <td style="color:#8250df">26</td>
+          </tr>
+          <tr class="indent-row">
+            <td style="color:#e16f42">↳ India Sev1</td>
+            <td style="color:var(--muted)">—</td>
+            <td class="tw-col" style="color:#e16f42;font-weight:700">27 <span style="color:var(--green);font-size:10px">(-14)</span></td>
+            <td style="color:#e16f42">41</td>
+            <td style="color:#e16f42">16</td>
+            <td style="color:#e16f42">15</td>
+          </tr>
+          <tr>
+            <td>SLO Miss %</td>
+            <td style="color:var(--green);font-weight:600">&lt; 2%</td>
+            <td class="tw-col" style="color:var(--green);font-weight:700">0.3% <span style="color:var(--muted);font-size:10px">(0.3)</span></td>
+            <td>0.0%</td>
+            <td>0.0%</td>
+            <td>0.0%</td>
+          </tr>
+          <tr>
+            <td>Escalation %</td>
+            <td style="color:var(--green);font-weight:600">&lt; 2%</td>
+            <td class="tw-col" style="color:var(--green);font-weight:700">1.4% <span style="color:var(--muted);font-size:10px">(0.7)</span></td>
+            <td>0.7%</td>
+            <td>0.7%</td>
+            <td>0.7%</td>
+          </tr>
+          <tr class="csat-row">
+            <td>TTR</td>
+            <td style="color:var(--green);font-weight:600">10 days</td>
+            <td class="tw-col" style="color:var(--green);font-weight:700">8.7 <span style="color:var(--orange);font-size:10px">(0.6)</span></td>
+            <td>8.1</td>
+            <td>8.3</td>
+            <td>8.2</td>
+          </tr>
+          <tr class="csat-row">
+            <td>CSAT</td>
+            <td style="color:var(--green);font-weight:600">4.5</td>
+            <td class="tw-col" style="color:var(--green);font-weight:700">4.91 <span style="color:var(--green);font-size:10px">(0.07)</span></td>
+            <td>4.84</td>
+            <td>4.72</td>
+            <td>4.86</td>
+          </tr>
+          <tr>
+            <td>Reopen Rate</td>
+            <td style="color:var(--green);font-weight:600">20%</td>
+            <td class="tw-col" style="color:var(--orange);font-weight:700">8.2% <span style="color:var(--orange);font-size:10px">(1.3)</span></td>
+            <td>6.9%</td>
+            <td>7.5%</td>
+            <td>4.7%</td>
+          </tr>
+          <tr>
+            <td>Investigations</td>
+            <td style="color:var(--muted)">—</td>
+            <td class="tw-col">20 <span style="color:var(--red);font-size:10px">(-42)</span></td>
+            <td>62 <span style="color:var(--muted);font-size:10px">(5)</span></td>
+            <td>57 <span style="color:var(--muted);font-size:10px">(-36)</span></td>
+            <td>93</td>
+          </tr>
+          <tr>
+            <td>Investigation Rate</td>
+            <td style="color:var(--muted)">—</td>
+            <td class="tw-col" style="color:var(--red);font-weight:700">3.2% <span style="color:var(--red);font-size:10px">(-5)</span></td>
+            <td>8.2%</td>
+            <td>8.5%</td>
+            <td>11.5%</td>
+          </tr>
+          <tr>
+            <td>Bugs</td>
+            <td style="color:var(--muted)">—</td>
+            <td class="tw-col" style="color:var(--red);font-weight:700">8 <span style="color:var(--red);font-size:10px">(-13)</span></td>
+            <td>21</td>
+            <td>31</td>
+            <td>35</td>
+          </tr>
+          <tr>
+            <td>Bug Rate</td>
+            <td style="color:var(--muted)">—</td>
+            <td class="tw-col" style="color:var(--red);font-weight:700">1.3% <span style="color:var(--red);font-size:10px">(-1.5)</span></td>
+            <td>2.8%</td>
+            <td>4.6%</td>
+            <td>4.3%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- KPI TREND CHARTS (center) -->
+    <div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">📈 Inflow &amp; Closures Trend</div>
+        <div class="chart-wrap-sm"><canvas id="inflowChart"></canvas></div>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">⭐ CSAT &amp; TTR Trend</div>
+        <div class="chart-wrap-sm"><canvas id="csatChart"></canvas></div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">🔴 Sev1 Regional Trend</div>
+        <div class="chart-wrap-sm"><canvas id="sev1Chart"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PRODUCT MIX + REGION SPLIT ═══════════ -->
+<div class="grid-2">
+  <!-- Product Mix -->
+  <div class="card">
+    <div class="card-title">📦 Industry vs Revenue Mix (3-Week)</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Category</th><th>TW</th><th>PW</th><th>PPW</th><th>TW%</th><th>Δ</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Industries</strong></td>
+          <td class="num-red">405</td><td>481</td><td>434</td>
+          <td><span class="pill pill-blue">63%</span></td>
+          <td class="delta-dn">↓ 76</td>
+        </tr>
+        <tr>
+          <td style="padding-left:18px;color:var(--muted)">↳ Life Sciences</td>
+          <td>114</td><td>135</td><td>105</td>
+          <td><span class="pill pill-purple">18%</span></td>
+          <td class="delta-dn">↓ 21</td>
+        </tr>
+        <tr>
+          <td><strong>Revenue</strong></td>
+          <td class="num-red">234</td><td>274</td><td>243</td>
+          <td><span class="pill pill-orange">37%</span></td>
+          <td class="delta-dn">↓ 40</td>
+        </tr>
+        <tr>
+          <td style="padding-left:18px;color:var(--muted)">↳ RCA</td>
+          <td>155</td><td>189</td><td>157</td>
+          <td><span class="pill pill-blue">24%</span></td>
+          <td class="delta-dn">↓ 34</td>
+        </tr>
+        <tr>
+          <td style="padding-left:18px;color:var(--muted)">↳ Legacy Revenue</td>
+          <td>79</td><td>85</td><td>86</td>
+          <td><span class="pill pill-yellow">12%</span></td>
+          <td class="delta-dn">↓ 6</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="insight blue" style="margin-top:10px">Mix rock-solid at ~63/37 for 3 consecutive weeks. EMEA is 44% Revenue-heavy; India is 72% Industry-heavy — structural, not new.</div>
+  </div>
+
+  <!-- Region Split -->
+  <div class="card">
+    <div class="card-title">🌍 EMEA vs India — Inflow &amp; Closed</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Region</th><th>Inflow TW</th><th>Inflow PW</th><th>Δ</th><th>S1 TW</th><th>S1 PW</th><th>Δ S1</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="pill pill-purple">EMEA</span></td>
+          <td>349</td><td>410</td><td class="delta-dn">↓ 61</td>
+          <td class="num-red">29</td><td>20</td><td class="delta-up">↑ +9 🔴</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-orange">India</span></td>
+          <td>290</td><td>345</td><td class="delta-dn">↓ 55</td>
+          <td>27</td><td>41</td><td class="delta-dn">↓ −14 ✅</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="height:12px"></div>
+    <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px">Inflow Share (4 weeks)</div>
+    <div style="display:grid;grid-template-columns:60px 1fr;gap:8px;font-size:11px;align-items:center;margin-bottom:4px">
+      <span style="color:#8250df;font-weight:600">EMEA</span>
+      <div>
+        <div class="pct-bar-wrap"><div class="pct-emea" style="width:55%"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted)"><span>54% TW</span><span>54% PW</span><span>64% W-2</span><span>54% W-3</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:60px 1fr;gap:8px;font-size:11px;align-items:center">
+      <span style="color:#e16f42;font-weight:600">India</span>
+      <div>
+        <div class="pct-bar-wrap"><div class="pct-india" style="width:45%"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted)"><span>45% TW</span><span>46% PW</span><span>36% W-2</span><span>46% W-3</span></div>
+      </div>
+    </div>
+    <div class="insight purple" style="margin-top:10px">India S1 improved sharply (41→27) but India holds 74% of open Red Account cases (25/34). EMEA S1 spike (+9) driven entirely by CPQ — monitor next week.</div>
+  </div>
+</div>
+
+<!-- ═══════════ SEV1 DEEP DIVE + PRODUCT HOTSPOTS ═══════════ -->
+<div class="grid-2">
+  <!-- Sev1 By Product -->
+  <div class="card">
+    <div class="card-title">🔴 Sev1 by Product — WoW</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Product</th><th>TW S1</th><th>PW S1</th><th>Δ</th><th>Signal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>OmniStudio</td><td class="num-red">12</td><td>13</td><td class="delta-dn">−1</td><td><span class="pill pill-yellow">⚠️ Elevated</span></td></tr>
+        <tr><td>RCA (Core)</td><td>12</td><td>21</td><td class="num-green">−9</td><td><span class="pill pill-green">🟢 Improving</span></td></tr>
+        <tr><td>Revenue-CPQ</td><td class="num-red">7</td><td>1</td><td class="num-red">+6</td><td><span class="pill pill-red">🔴 Spike</span></td></tr>
+        <tr><td>Industry CPQ/OM</td><td>6</td><td>7</td><td class="delta-dn">−1</td><td><span class="pill pill-yellow">Watch</span></td></tr>
+        <tr><td>Life Sciences</td><td>4</td><td>5</td><td class="delta-dn">−1</td><td><span class="pill pill-yellow">Watch</span></td></tr>
+        <tr><td>Ind-Loyalty Mgmt</td><td>3</td><td>1</td><td class="delta-up">+2</td><td><span class="pill pill-yellow">Watch</span></td></tr>
+        <tr><td>Ind-Security Controls</td><td>3</td><td>0</td><td class="num-red">+3 🆕</td><td><span class="pill pill-red">New</span></td></tr>
+        <tr><td>RC Core-Trans. Mgmt</td><td>3</td><td>4</td><td class="delta-dn">−1</td><td><span class="pill pill-green">OK</span></td></tr>
+      </tbody>
+    </table>
+    <div class="insight red" style="margin-top:8px"><strong>CPQ S1 +6:</strong> Cases 474316305 &amp; 474316270 at Lexis Nexis appear to be near-duplicate filings for the same approval delegation defect. Consolidation + GUS required.</div>
+    <div class="insight yellow" style="margin-top:6px"><strong>OmniStudio 2nd week at 12–13 S1:</strong> "Save as Draft" loop (474316690, 474299120) + DOM XSS vulnerability (474301757, Ford IMG). CVE/GUS check required.</div>
+  </div>
+
+  <!-- Aged Case Summary -->
+  <div class="card">
+    <div class="card-title">⏱ Aged Case Breakdown — Closed TW</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Region</th><th>Closed</th><th>Aged &gt;10d</th><th>Aged%</th><th>W/GUS</th><th>No-GUS%</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="pill pill-orange">India</span></td>
+          <td>337</td><td class="num-red">152</td>
+          <td><span class="pill pill-red">45.1% 🔴</span></td>
+          <td>60</td>
+          <td class="num-red">60.5%</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-purple">EMEA</span></td>
+          <td>392</td><td>86</td>
+          <td><span class="pill pill-yellow">21.9%</span></td>
+          <td>44</td>
+          <td class="num-red">88.8% 🔴🔴</td>
+        </tr>
+        <tr style="background:#f6f8fa;font-weight:600">
+          <td>Total</td>
+          <td>729</td><td>238</td>
+          <td><span class="pill pill-yellow">32.6%</span></td>
+          <td>104</td>
+          <td class="num-red">83.5%</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px">Top Aged Engineers (India)</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Engineer</th><th>Closed</th><th>Aged</th><th>Aged%</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Hemanth Kumar Yadav K.</td><td>8</td><td class="num-red">7</td><td><span class="pill pill-red">87.5%</span></td></tr>
+        <tr><td>Abhishek Dixit</td><td>10</td><td class="num-red">8</td><td><span class="pill pill-red">80%</span></td></tr>
+        <tr><td>Rajath Nagaraj</td><td>8</td><td>6</td><td><span class="pill pill-red">75%</span></td></tr>
+        <tr><td>Jithin Venigalla</td><td>14</td><td>6</td><td><span class="pill pill-yellow">43%</span></td></tr>
+      </tbody>
+    </table>
+    <div class="insight red" style="margin-top:8px"><strong>Case 473890398</strong> — Accenture S1, 55.2 days, no GUS. Single most egregious case this week. Immediate manager review required.</div>
+  </div>
+</div>
+
+<!-- ═══════════ GUS DISCIPLINE + PRODUCT AGED ═══════════ -->
+<div class="grid-2">
+  <div class="card" style="border-color:#ffcecb">
+    <div class="card-title" style="color:#82071e">🚨 India S1 Closed WITHOUT GUS (Critical)</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Case #</th><th>Age</th><th>Account</th><th>Subject</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="color:var(--red);font-weight:600">473890398</td><td class="num-red">55.2d</td><td>Accenture LLP</td><td style="font-size:11px">Create/submit order button not showing</td></tr>
+        <tr><td style="color:var(--red)">474154178</td><td class="num-red">22.8d</td><td>SPIMACO</td><td style="font-size:11px">Life Science org — Visit module config</td></tr>
+        <tr><td style="color:var(--accent)">474131187</td><td>21.0d</td><td>ECi</td><td style="font-size:11px">OmniStudio DocGen hourly limit</td></tr>
+        <tr><td style="color:var(--accent)">474172620</td><td>18.4d</td><td>Cognizant</td><td style="font-size:11px">JWT Bearer OAuth 401 Session expired</td></tr>
+        <tr><td style="color:var(--accent)">474188816</td><td>15.0d</td><td>Tata Motors</td><td style="font-size:11px">DocGen per-hour limit increase</td></tr>
+        <tr><td style="color:var(--accent)">474221875</td><td>14.0d</td><td>Deloitte Global</td><td style="font-size:11px">Custom LWC not rendering on iPad</td></tr>
+      </tbody>
+    </table>
+    <div class="insight red" style="margin-top:8px"><strong>🔴🔴 GUS Discipline Failure:</strong> 83.5% of all 729 TW closes have no GUS/Bug linkage. EMEA 88.8% no-GUS is critical. S1s closed without engineering tracking mask recurring defects.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📉 Product Aged Rate (Closed TW)</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Product</th><th>Closed</th><th>Aged</th><th>Aged%</th><th>GUS%</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Industry-Life Sciences</td><td>136</td><td class="num-red">75</td><td><span class="pill pill-red">55.1%</span></td><td>35%</td></tr>
+        <tr><td>Industry-Loyalty Mgmt</td><td>12</td><td>7</td><td><span class="pill pill-red">58.3%</span></td><td>—</td></tr>
+        <tr><td>Industry-OmniStudio</td><td>89</td><td>21</td><td><span class="pill pill-yellow">23.6%</span></td><td class="num-red">14% 🔴</td></tr>
+        <tr><td>Revenue-Salesforce CPQ</td><td>50</td><td>13</td><td><span class="pill pill-yellow">26.0%</span></td><td class="num-red">0% 🔴🔴</td></tr>
+        <tr><td>RC Core-Product Config.</td><td>56</td><td>11</td><td><span class="pill pill-yellow">19.6%</span></td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div class="insight yellow" style="margin-top:8px"><strong>Life Sciences:</strong> 55.1% aged rate, 75/136 cases — biggest absolute driver. Pfizer and Deloitte key accounts. CPQ aged with 0% GUS linkage is an engineering blindspot — 13 aged closes with zero investigation records.</div>
+  </div>
+</div>
+
+<!-- ═══════════ ACCOUNT DEEP DIVE ═══════════ -->
+<div class="card" style="margin-bottom:12px">
+  <div class="card-title">🏢 Key Account Activity — TW</div>
+  <table class="data-table">
+    <thead>
+      <tr><th>Account</th><th>TW Vol</th><th>PW Vol</th><th>Δ</th><th>TW S1</th><th>PW S1</th><th>Region</th><th>Red Acct</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="acc-name">Deloitte Global Services</td>
+        <td>12</td><td>9</td><td class="delta-up">+3</td>
+        <td class="num-red">5</td><td>3</td>
+        <td><span class="pill pill-orange">India</span></td><td>—</td>
+        <td style="font-size:11px">Activity Timeline W-23660701 + OmniStudio + Life Sciences multi-product strain</td>
+      </tr>
+      <tr>
+        <td class="acc-name">Accenture LLP</td>
+        <td>8</td><td>5</td><td class="delta-up">+3</td>
+        <td class="num-red">3</td><td>2</td>
+        <td><span class="pill pill-orange">India</span></td><td>—</td>
+        <td style="font-size:11px">Case 473890398 S1 at 55.2d no-GUS. W-23660701 also present.</td>
+      </tr>
+      <tr>
+        <td class="acc-name">Bluvium Inc</td>
+        <td>7</td><td>9</td><td class="delta-dn">−2</td>
+        <td class="num-red">4</td><td>4</td>
+        <td><span class="pill pill-orange">India</span></td><td>—</td>
+        <td style="font-size:11px">All low-age S1 closes this week — Revenue Cloud/Product Configurator</td>
+      </tr>
+      <tr>
+        <td class="acc-name red-acct">Bharti Airtel ⚠️</td>
+        <td>6</td><td>3</td><td class="delta-up">+3</td>
+        <td class="num-red">3</td><td>1</td>
+        <td><span class="pill pill-purple">EMEA</span></td><td><span class="pill pill-red">RED</span></td>
+        <td style="font-size:11px">CPQ decomposition + MACD quote failures in prod. Live deployment disruption.</td>
+      </tr>
+      <tr>
+        <td class="acc-name">Lexis Nexis</td>
+        <td>5</td><td>1</td><td class="delta-up">+4</td>
+        <td class="num-red">2</td><td>0</td>
+        <td><span class="pill pill-purple">EMEA</span></td><td>—</td>
+        <td style="font-size:11px">474316305 &amp; 474316270 — likely duplicate S1s, same approval delegation defect</td>
+      </tr>
+      <tr>
+        <td class="acc-name">London Business School</td>
+        <td>4</td><td>2</td><td class="delta-up">+2</td>
+        <td class="num-red">2</td><td>1</td>
+        <td><span class="pill pill-purple">EMEA</span></td><td>—</td>
+        <td style="font-size:11px">474299120 OmniStudio swarm ~7 days running</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════ KEY SIGNALS + ACTIVITY TIMELINE BUG ═══════════ -->
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">🔎 Key Signals &amp; Observations</div>
+    <div class="insight red"><strong>1. CPQ S1 surge (+6):</strong> Revenue-Salesforce CPQ 1→7. Lexis Nexis duplicate filings. Approval delegation defect. GUS + dedup required this week.</div>
+    <div class="insight red"><strong>2. India aged rate 45.1%:</strong> 14 of top 15 aged engineers India-based. Manager-level backlog review needed. 11 S1s closed without GUS TW.</div>
+    <div class="insight yellow"><strong>3. OmniStudio S1 structurally elevated (12):</strong> 2nd consecutive week at 12–13. Save-as-Draft loop across 2 accounts + DOM XSS vulnerability (474301757) needs CVE check.</div>
+    <div class="insight yellow"><strong>4. GUS discipline broken:</strong> 83.5% of closes have no investigation linkage. EMEA 88.8% no-GUS. Investigation Rate collapsed 8.2%→3.2% WoW (−5pp). Bugs filed: 21→8 (−13).</div>
+    <div class="insight green"><strong>5. RCA S1 improving (21→12):</strong> Product Catalog &amp; Usage/Ratings cleared to 0 S1. Genuine resolution velocity — call out as team win in WBR.</div>
+    <div class="insight purple"><strong>6. Activity Timeline bug W-23660701:</strong> Hitting Deloitte Global AND Accenture simultaneously. Same defect across two major SIs via Varun Reddy A. Needs immediate product escalation if not already done.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 4-Week KPI Trend Charts</div>
+    <div style="margin-bottom:12px">
+      <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:4px">Investigations &amp; Bug Rate</div>
+      <div class="chart-wrap-sm"><canvas id="gusChart"></canvas></div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:4px">Reopen Rate &amp; SLO Miss</div>
+      <div class="chart-wrap-sm"><canvas id="reopenChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ NEW: SECURITY / MANDATORY CONTROLS WATCH ═══════════ -->
+<div class="card" style="margin-bottom:12px;border-color:#ffc896">
+  <div class="card-title" style="color:#bc4c00">🆕 New Signal Watch — Industry-Mandatory Security Controls</div>
+  <div class="insight yellow">8 new cases filed this week (0 in PW/PPW). Passkey enforcement, API catalog sync failures, login outages. Likely a platform release artefact — monitor for growth next week. If reaches 15+, treat as spike event.</div>
+</div>
+
+<!-- Charts JS -->
+<script>
+const wks = ['Jul 19','Jul 26','Aug 2','Aug 9'];
+const def = (id, cfg) => new Chart(document.getElementById(id).getContext('2d'), cfg);
+
+// Inflow & Closures
+def('inflowChart', {
+  type:'bar',
+  data:{
+    labels: wks,
+    datasets:[
+      {label:'Inflow',data:[806,672,752,630],backgroundColor:['rgba(88,166,255,.5)','rgba(88,166,255,.5)','rgba(88,166,255,.5)','rgba(248,81,73,.65)'],borderRadius:4},
+      {label:'Closures',type:'line',data:[745,760,750,729],borderColor:'#1a7f37',backgroundColor:'transparent',pointBackgroundColor:'#1a7f37',tension:.3,pointRadius:4}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:10},color:'#656d76'}}},scales:{y:{grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#656d76',font:{size:10}}},x:{grid:{display:false},ticks:{color:'#656d76',font:{size:10}}}}}
+});
+
+// CSAT & TTR
+def('csatChart', {
+  type:'line',
+  data:{
+    labels: wks,
+    datasets:[
+      {label:'CSAT',data:[4.86,4.72,4.84,4.91],borderColor:'#1a7f37',backgroundColor:'rgba(26,127,55,.1)',fill:true,tension:.3,pointRadius:4,yAxisID:'y'},
+      {label:'TTR (days)',data:[8.2,8.3,8.1,8.7],borderColor:'#0969da',backgroundColor:'transparent',tension:.3,pointRadius:4,borderDash:[4,3],yAxisID:'y2'}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:10},color:'#656d76'}}},scales:{y:{min:4.0,max:5.2,grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#1a7f37',font:{size:10}}},y2:{position:'right',min:5,max:12,grid:{display:false},ticks:{color:'#0969da',font:{size:10}}},x:{grid:{display:false},ticks:{color:'#656d76',font:{size:10}}}}}
+});
+
+// Sev1 Regional
+def('sev1Chart', {
+  type:'bar',
+  data:{
+    labels: wks,
+    datasets:[
+      {label:'EMEA S1',data:[26,18,20,29],backgroundColor:'rgba(130,80,223,.6)',borderRadius:3},
+      {label:'India S1',data:[15,16,41,27],backgroundColor:'rgba(225,111,66,.6)',borderRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:10},color:'#656d76'}}},scales:{x:{stacked:true,grid:{display:false},ticks:{color:'#656d76',font:{size:10}}},y:{stacked:true,grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#656d76',font:{size:10}}}}}
+});
+
+// GUS/Investigations
+def('gusChart', {
+  type:'line',
+  data:{
+    labels: wks,
+    datasets:[
+      {label:'Investigations',data:[93,57,62,20],borderColor:'#cf222e',backgroundColor:'rgba(207,34,46,.1)',fill:true,tension:.3,pointRadius:4,yAxisID:'y'},
+      {label:'Bug Rate %',data:[4.3,4.6,2.8,1.3],borderColor:'#bc4c00',backgroundColor:'transparent',tension:.3,pointRadius:4,borderDash:[4,3],yAxisID:'y2'}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:10},color:'#656d76'}}},scales:{y:{min:0,max:110,grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#cf222e',font:{size:10}}},y2:{position:'right',min:0,max:6,grid:{display:false},ticks:{color:'#bc4c00',font:{size:10}}},x:{grid:{display:false},ticks:{color:'#656d76',font:{size:10}}}}}
+});
+
+// Reopen / SLO
+def('reopenChart', {
+  type:'line',
+  data:{
+    labels: wks,
+    datasets:[
+      {label:'Reopen Rate %',data:[4.7,7.5,6.9,8.2],borderColor:'#9a6700',backgroundColor:'rgba(154,103,0,.1)',fill:true,tension:.3,pointRadius:4},
+      {label:'Escalation %',data:[0.7,0.7,0.7,1.4],borderColor:'#8250df',backgroundColor:'transparent',tension:.3,pointRadius:4,borderDash:[4,3]}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:10},color:'#656d76'}}},scales:{y:{min:0,max:12,grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#656d76',font:{size:10}}},x:{grid:{display:false},ticks:{color:'#656d76',font:{size:10}}}}}
+});
+</script>
+
+<footer>Revenue Cloud &amp; Industries Weekly Dashboard &nbsp;·&nbsp; Week of Aug 9–15, 2026 &nbsp;·&nbsp; Data: OrgCS live query (2026-08-18) &nbsp;·&nbsp; EMEA + India &nbsp;·&nbsp; Manager-filtered</footer>
+</body>
+</html>
