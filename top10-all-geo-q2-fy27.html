@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top 10 Accounts Deep Dive — All GEOs · Q2 FY27</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  :root {
+    --bg: #F8FAFC;
+    --surface: #FFFFFF;
+    --surface-2: #F1F5F9;
+    --border: #E2E8F0;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+    --c-sig:     #2563EB;
+    --c-premier: #7C3AED;
+    --c-std:     #0891B2;
+    --c-partner: #059669;
+    --c-other:   #94A3B8;
+    --status-good:  #059669;
+    --status-warn:  #D97706;
+    --status-bad:   #DC2626;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 0 0 56px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1E3A8A 0%, #1D4ED8 60%, #2563EB 100%);
+    color: #fff;
+    padding: 28px 40px 24px;
+  }
+  .page-header .eyebrow { font-size: 11px; font-weight: 600; letter-spacing:.08em; text-transform:uppercase; color:#BFDBFE; margin-bottom:6px; }
+  .page-header h1 { font-size: 24px; font-weight: 800; letter-spacing:-.02em; margin-bottom: 4px; }
+  .page-header .subtitle { font-size: 13px; color: #BFDBFE; }
+  .header-meta { display:flex; gap:12px; margin-top:14px; flex-wrap:wrap; }
+  .meta-chip { background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25); border-radius:20px; padding:3px 12px; font-size:12px; font-weight:500; color:#fff; }
+
+  .content { padding: 28px 40px 0; }
+  .section-label {
+    font-size: 11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-muted); margin-bottom:14px; margin-top:32px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+  .grid { display:grid; gap:16px; }
+  .grid-4 { grid-template-columns: repeat(4,1fr); }
+  .grid-3 { grid-template-columns: repeat(3,1fr); }
+  .grid-2 { grid-template-columns: repeat(2,1fr); }
+  .grid-2-1 { grid-template-columns: 2fr 1fr; }
+  @media(max-width:1100px){ .grid-4{grid-template-columns:repeat(2,1fr);} .grid-3{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:700px){ .grid-4,.grid-3,.grid-2,.grid-2-1{grid-template-columns:1fr;} .content{padding:16px 16px 0;} .page-header{padding:20px 16px 16px;} }
+
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+  .card-header { padding:14px 20px 11px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+  .card-title { font-size:13px; font-weight:600; color:var(--text-primary); letter-spacing:-.01em; }
+  .card-subtitle { font-size:11px; color:var(--text-muted); margin-top:2px; }
+  .card-body { padding:16px 20px; }
+  .card-body-flush { padding:0; }
+
+  .stat-tile { padding:20px 20px 16px; }
+  .stat-eyebrow { font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; }
+  .stat-value { font-size:32px; font-weight:800; letter-spacing:-.03em; line-height:1; color:var(--text-primary); margin-bottom:6px; }
+  .stat-value.blue  { color: var(--c-sig); }
+  .stat-value.green { color: var(--status-good); }
+  .stat-value.red   { color: var(--status-bad); }
+  .stat-meta { font-size:12px; color:var(--text-secondary); display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .badge { display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:600; padding:2px 7px; border-radius:20px; }
+  .badge-up   { background:#DCFCE7; color:#15803D; }
+  .badge-down { background:#FEE2E2; color:#B91C1C; }
+  .badge-flat { background:#F1F5F9; color:#475569; }
+  .badge-warn { background:#FEF3C7; color:#92400E; }
+  .badge-new  { background:#EDE9FE; color:#6D28D9; }
+
+  .chart-wrap { position:relative; padding:8px 20px 16px; }
+  .chart-wrap canvas { display:block; }
+
+  .chart-legend { display:flex; flex-wrap:wrap; gap:12px; padding:8px 20px 0; }
+  .legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-secondary); font-weight:500; }
+  .legend-swatch { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+  .dot { display:inline-block; width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+  .data-table { width:100%; border-collapse:collapse; }
+  .data-table th {
+    font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--text-muted); padding:8px 12px; border-bottom:1px solid var(--border);
+    background:var(--surface-2); text-align:right;
+  }
+  .data-table th:first-child, .data-table th.left { text-align:left; }
+  .data-table td {
+    padding:9px 12px; border-bottom:1px solid var(--border);
+    font-size:12px; color:var(--text-primary); text-align:right;
+  }
+  .data-table td:first-child { text-align:left; font-weight:500; }
+  .data-table tr:last-child td { border-bottom:none; }
+  .data-table tr:hover td { background:var(--surface-2); }
+
+  .score-pill { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:600; padding:2px 8px; border-radius:20px; }
+  .score-na        { background:#F1F5F9; color:#64748B; }
+  .tag { display:inline-block; font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px; text-transform:uppercase; letter-spacing:.04em; }
+  .tag-rising  { background:#FEE2E2; color:#991B1B; }
+  .tag-falling { background:#DCFCE7; color:#166534; }
+  .tag-stable  { background:#F1F5F9; color:#64748B; }
+  .trend-up    { color:#DC2626; }
+  .trend-down  { color:#059669; }
+  .trend-flat  { color:#94A3B8; }
+
+  .insight-list { display:flex; flex-direction:column; gap:10px; }
+  .insight-item { display:flex; gap:12px; padding:12px 14px; border-radius:var(--radius-sm); border:1px solid var(--border); background:var(--surface-2); align-items:flex-start; }
+  .insight-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+  .icon-blue   { background:#DBEAFE; }
+  .icon-green  { background:#DCFCE7; }
+  .icon-amber  { background:#FEF3C7; }
+  .icon-red    { background:#FEE2E2; }
+  .icon-purple { background:#EDE9FE; }
+  .insight-text .title { font-size:12px; font-weight:600; color:var(--text-primary); margin-bottom:2px; }
+  .insight-text .body  { font-size:11px; color:var(--text-secondary); line-height:1.5; }
+
+  .geo-pill { display:inline-flex; align-items:center; gap:3px; font-size:10px; font-weight:600; padding:2px 6px; border-radius:10px; margin:1px 1px; }
+  .geo-india  { background:#DBEAFE; color:#1D4ED8; }
+  .geo-amer   { background:#DCFCE7; color:#166534; }
+  .geo-emea   { background:#FEF3C7; color:#92400E; }
+  .geo-apac   { background:#EDE9FE; color:#6D28D9; }
+
+  .page-footer { margin-top:40px; padding:18px 40px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-muted); flex-wrap:wrap; gap:8px; }
+
+  /* Rank badge */
+  .rank-badge { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; font-size:11px; font-weight:800; flex-shrink:0; }
+  .rank-1 { background:#FEF3C7; color:#92400E; }
+  .rank-2 { background:#F1F5F9; color:#475569; }
+  .rank-3 { background:#FEE2E2; color:#991B1B; }
+  .rank-other { background:#F8FAFC; color:#94A3B8; }
+
+  /* Account card row */
+  .acct-card { border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); padding:0; overflow:hidden; }
+  .acct-card-head { display:flex; align-items:center; gap:12px; padding:12px 16px 10px; border-bottom:1px solid var(--border); background:var(--surface-2); }
+  .acct-card-body { padding:12px 16px; }
+  .acct-name { font-size:13px; font-weight:700; color:var(--text-primary); flex:1; }
+  .acct-vol  { font-size:20px; font-weight:800; color:var(--c-sig); }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="eyebrow">Signature Global QBR · August 19, 2026 · All GEOs</div>
+  <h1>Top 10 Accounts Deep Dive — Q2 FY27</h1>
+  <div class="subtitle">Industry &amp; Revenue Cloud · All Regions · OrgCS SOQL verified · Aug 18, 2026</div>
+  <div class="header-meta">
+    <span class="meta-chip">📅 Q2 FY27: May–Jul 2026</span>
+    <span class="meta-chip">📊 vs Q1 FY27: Feb–Apr 2026</span>
+    <span class="meta-chip">🌍 All GEOs — AMER, EMEA, India, APAC</span>
+    <span class="meta-chip">🔒 Signature + Premier Priority</span>
+    <span class="meta-chip">📦 Industry + Revenue Cases</span>
+  </div>
+</header>
+
+<div class="content">
+
+<!-- ══ SECTION 1: KPI TILES ══ -->
+<div class="section-label">Portfolio Snapshot — Top 10 Accounts · All GEOs</div>
+<div class="grid grid-4">
+
+  <div class="card">
+    <div class="stat-tile">
+      <div class="stat-eyebrow">Top 10 Total Cases (Q2)</div>
+      <div class="stat-value blue">992</div>
+      <div class="stat-meta">
+        <span class="badge badge-flat">Q1: 1,046</span>
+        <span class="badge badge-down">↓ 5.2% QoQ</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="stat-tile">
+      <div class="stat-eyebrow">Accounts Growing QoQ</div>
+      <div class="stat-value red">6 of 10</div>
+      <div class="stat-meta">
+        <span class="badge badge-warn">Deloitte +42% · BT Con +45%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="stat-tile">
+      <div class="stat-eyebrow">New Spike Accounts</div>
+      <div class="stat-value" style="color:#7C3AED;">2</div>
+      <div class="stat-meta">
+        <span class="badge badge-new">Mylan +7,200%</span>
+        <span class="badge badge-new">Apsen +983%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="stat-tile">
+      <div class="stat-eyebrow">Dominant Industry</div>
+      <div class="stat-value green">4</div>
+      <div class="stat-meta">
+        <span class="badge badge-flat">of 10 are Life Sciences</span>
+        <span style="color:var(--text-muted);">Pfizer · Mylan · Apsen · Deloitte</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ SECTION 2: VOLUME BAR CHART ══ -->
+<div class="section-label">Q2 vs Q1 Volume — Top 10 Accounts (All GEOs)</div>
+
+<div class="grid grid-2">
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Case Volume — Q2 vs Q1 FY27</div>
+        <div class="card-subtitle">All GEOs · Signature + Premier Priority · Industry + Revenue</div>
+      </div>
+    </div>
+    <div class="chart-legend">
+      <span class="legend-item"><span class="legend-swatch" style="background:#2563EB;border-radius:3px;width:14px;height:10px;"></span>Q2 FY27 (May–Jul)</span>
+      <span class="legend-item"><span class="legend-swatch" style="background:#BFDBFE;border-radius:3px;width:14px;height:10px;"></span>Q1 FY27 (Feb–Apr)</span>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="accountBarChart" height="320"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">QoQ Change — Q2 vs Q1 FY27</div>
+        <div class="card-subtitle">Absolute change in cases per account · green = declining (positive) · red = growing (watch)</div>
+      </div>
+    </div>
+    <div class="chart-wrap" style="padding-top:16px;">
+      <canvas id="qoqDeltaChart" height="320"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 3: MAIN ACCOUNT TABLE ══ -->
+<div class="section-label">Top 10 Accounts — Full Deep Dive</div>
+
+<div class="card">
+  <div class="card-header">
+    <div>
+      <div class="card-title">Top 10 Accounts — Q2 FY27 · Volume, Trend, Cloud &amp; GEO Handling</div>
+      <div class="card-subtitle">All GEOs · Signature + US Sig + Gov Sig + Premier Priority · Industry + Revenue · OrgCS SOQL verified</div>
+    </div>
+  </div>
+  <div class="card-body-flush" style="overflow-x:auto;">
+    <table class="data-table" style="min-width:960px;">
+      <thead>
+        <tr>
+          <th class="left" style="width:28px;">#</th>
+          <th class="left">Account</th>
+          <th class="left">Primary Cloud</th>
+          <th>Q2 FY27</th>
+          <th>Q1 FY27</th>
+          <th>Q2 FY26</th>
+          <th>QoQ</th>
+          <th>YoY</th>
+          <th class="left">Top GEO Handling</th>
+          <th class="left">Story</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td style="color:#92400E;font-weight:800;">1</td>
+          <td><strong>Pfizer – Commercial LSC – EMEA</strong></td>
+          <td>🧬 Life Sciences (99%)</td>
+          <td><strong>343</strong></td>
+          <td>448</td>
+          <td style="color:var(--text-muted);">—</td>
+          <td class="trend-down">-23%</td>
+          <td style="color:var(--text-muted);">NEW FY27</td>
+          <td>
+            <span class="geo-pill geo-india">India 157</span>
+            <span class="geo-pill geo-amer">AMER 150</span>
+            <span class="geo-pill geo-emea">EMEA 22</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Volume easing (-23% QoQ) as deployment stabilises. Still highest-volume account globally. India + AMER both absorbing ~44% each — unusual for "EMEA" named account.</td>
+        </tr>
+
+        <tr>
+          <td style="color:#475569;font-weight:800;">2</td>
+          <td><strong>Deloitte Consulting LLP</strong></td>
+          <td>🧬 Life Sciences SI (84%)</td>
+          <td><strong>109</strong></td>
+          <td>77</td>
+          <td>49</td>
+          <td class="trend-up">+42%</td>
+          <td class="trend-up">+122%</td>
+          <td>
+            <span class="geo-pill geo-india">India 74</span>
+            <span class="geo-pill geo-emea">EMEA 21</span>
+            <span class="geo-pill geo-apac">APAC 4</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">SI managing multi-customer LSC implementations globally. Strong consistent YoY growth (+122%). India handling 68% of cases — watch for capacity in IST Life Sciences team.</td>
+        </tr>
+
+        <tr>
+          <td style="color:#475569;font-weight:800;">3</td>
+          <td><strong>British Telecom (Digico)</strong></td>
+          <td>📦 CPQ/Order Mgmt (77%)</td>
+          <td><strong>77</strong></td>
+          <td>94</td>
+          <td>63</td>
+          <td class="trend-down">-18%</td>
+          <td class="trend-up">+22%</td>
+          <td>
+            <span class="geo-pill geo-india">India 57</span>
+            <span class="geo-pill geo-emea">EMEA 12</span>
+            <span class="geo-pill geo-amer">AMER 3</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Volume declining as CME matures (-18% QoQ). India absorbing 74% of this EMEA account's cases. Positive stabilisation trend.</td>
+        </tr>
+
+        <tr style="background:#FFFBEB;">
+          <td style="color:#475569;font-weight:800;">4</td>
+          <td><strong>Mylan Inc.</strong> <span class="badge badge-new" style="font-size:10px;">NEW SPIKE</span></td>
+          <td>🧬 Life Sciences (100%)</td>
+          <td><strong>74</strong></td>
+          <td>1</td>
+          <td style="color:var(--text-muted);">—</td>
+          <td><span class="badge badge-new">+7,200%</span></td>
+          <td style="color:var(--text-muted);">NEW FY27</td>
+          <td>
+            <span class="geo-pill geo-india">India 28</span>
+            <span class="geo-pill geo-emea">EMEA 24</span>
+            <span class="geo-pill geo-amer">AMER 17</span>
+          </td>
+          <td style="font-size:11px;color:#92400E;font-weight:500;">Brand new deployment wave. All 74 cases are Life Sciences. 3-GEO spread (India/EMEA/AMER) suggests global rollout. Needs dedicated onboarding coverage.</td>
+        </tr>
+
+        <tr>
+          <td style="color:#475569;font-weight:800;">5</td>
+          <td><strong>Claro América Latina</strong></td>
+          <td>📦 CPQ/Order Mgmt (95%)</td>
+          <td><strong>74</strong></td>
+          <td>68</td>
+          <td>28</td>
+          <td class="trend-up">+9%</td>
+          <td class="trend-up">+164%</td>
+          <td>
+            <span class="geo-pill geo-india">India 58</span>
+            <span class="geo-pill geo-emea">EMEA 13</span>
+            <span class="geo-pill geo-amer">AMER 3</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Steady growth (+9% QoQ, +164% YoY). Configuration-heavy, India handling 78%. Latin America telecom on CPQ/OM ramp — healthy trajectory.</td>
+        </tr>
+
+        <tr style="background:#FFFBEB;">
+          <td style="color:#475569;font-weight:800;">6</td>
+          <td><strong>Apsen Farmaceutica S/A</strong> <span class="badge badge-new" style="font-size:10px;">NEW SPIKE</span></td>
+          <td>🧬 Life Sciences (97%)</td>
+          <td><strong>65</strong></td>
+          <td>6</td>
+          <td style="color:var(--text-muted);">—</td>
+          <td><span class="badge badge-new">+983%</span></td>
+          <td style="color:var(--text-muted);">NEW FY27</td>
+          <td>
+            <span class="geo-pill geo-amer">AMER 63</span>
+          </td>
+          <td style="font-size:11px;color:#92400E;font-weight:500;">AMER-concentrated Life Sciences spike (97% AMER). Brazilian pharma on new deployment — 97% cases Life Sciences. Pure early-life adoption signal.</td>
+        </tr>
+
+        <tr>
+          <td style="color:#475569;font-weight:800;">7</td>
+          <td><strong>Bell Canada</strong></td>
+          <td>⚡ Revenue Cloud (84%)</td>
+          <td><strong>64</strong></td>
+          <td>46</td>
+          <td>3</td>
+          <td class="trend-up">+39%</td>
+          <td class="trend-up">+2,033%</td>
+          <td>
+            <span class="geo-pill geo-amer">AMER 43</span>
+            <span class="geo-pill geo-emea">EMEA 17</span>
+            <span class="geo-pill geo-apac">APAC 1</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">RC-heavy account: DRO (13) + Transaction Mgmt (13) + Configurator (13) + PCM (9). Volume rising fast (+39%). AMER-led. Telco on complex RC implementation — requires RC specialist alignment.</td>
+        </tr>
+
+        <tr>
+          <td style="color:#475569;font-weight:800;">8</td>
+          <td><strong>BT – Consumer</strong></td>
+          <td>📦 CPQ/Order Mgmt + Comm Cloud</td>
+          <td><strong>64</strong></td>
+          <td>44</td>
+          <td>49</td>
+          <td class="trend-up">+45%</td>
+          <td class="trend-up">+31%</td>
+          <td>
+            <span class="geo-pill geo-india">India 35</span>
+            <span class="geo-pill geo-emea">EMEA 27</span>
+            <span class="geo-pill geo-apac">APAC 2</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Steepest volume rise (+45% QoQ) in the top 10. CPQ/OM (56%) + Comm Cloud (30%). Different from BT Digico — consumer segment on EPC ramp. India + EMEA joint coverage needed.</td>
+        </tr>
+
+        <tr>
+          <td style="color:#475569;font-weight:800;">9</td>
+          <td><strong>Equinix, Inc.</strong></td>
+          <td>⚡ Revenue Cloud (98%)</td>
+          <td><strong>63</strong></td>
+          <td>108</td>
+          <td style="color:var(--text-muted);">—</td>
+          <td class="trend-down">-42%</td>
+          <td style="color:var(--text-muted);">NEW FY27</td>
+          <td>
+            <span class="geo-pill geo-amer">AMER 34</span>
+            <span class="geo-pill geo-apac">APAC 17</span>
+            <span class="geo-pill geo-emea">EMEA 6</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Strong improvement: -42% QoQ. Near-100% Revenue Cloud (Configurator + DRO + Price + TxnMgmt). AMER+APAC led. CSM to confirm whether decline reflects resolution or deferred load.</td>
+        </tr>
+
+        <tr>
+          <td style="color:#475569;font-weight:800;">10</td>
+          <td><strong>One New Zealand Group</strong></td>
+          <td>📦 CPQ/OM (47%) + OmniStudio (36%)</td>
+          <td><strong>59</strong></td>
+          <td>80</td>
+          <td>64</td>
+          <td class="trend-down">-26%</td>
+          <td class="trend-down">-8%</td>
+          <td>
+            <span class="geo-pill geo-india">India 35</span>
+            <span class="geo-pill geo-apac">APAC 11</span>
+            <span class="geo-pill geo-emea">EMEA 7</span>
+          </td>
+          <td style="font-size:11px;color:var(--text-secondary);">Volume declining (-26% QoQ, -8% YoY) as deployment matures. CPQ/OM + OmniStudio mix stabilising. India handling 59% of this APAC account. Healthy resolution trajectory.</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <div style="padding:10px 20px;background:var(--surface-2);border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);">
+    <strong>GEO Handling</strong> = Support_Region__c of the case owner — who handled the case, not where the customer is. &nbsp;|&nbsp;
+    <strong>New Spike</strong> = accounts with near-zero Q1 volume that jumped dramatically in Q2. &nbsp;|&nbsp;
+    <strong>Cloud %</strong> = share of account's Q2 cases on that product area. &nbsp;|&nbsp; All numbers: OrgCS SOQL · Aug 18, 2026.
+  </div>
+</div>
+
+<!-- ══ SECTION 4: GEO HANDLING ══ -->
+<div class="section-label">Case Handling by Region — Top 10 Accounts Q2 FY27</div>
+
+<div class="grid grid-2">
+
+  <!-- Stacked bar -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Regional Handling per Account — Stacked</div>
+        <div class="card-subtitle">Who handled each account's cases · India #1 handler across 7 of 10 accounts</div>
+      </div>
+    </div>
+    <div class="chart-wrap" style="padding-top:16px;">
+      <canvas id="geoStackedChart" height="320"></canvas>
+    </div>
+    <div class="chart-legend" style="padding-bottom:12px;">
+      <span class="legend-item"><span class="dot" style="background:#2563EB"></span>India</span>
+      <span class="legend-item"><span class="dot" style="background:#059669"></span>AMER</span>
+      <span class="legend-item"><span class="dot" style="background:#D97706"></span>EMEA</span>
+      <span class="legend-item"><span class="dot" style="background:#7C3AED"></span>APAC</span>
+    </div>
+  </div>
+
+  <!-- Pie / donut overall split -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Overall Regional Split — All Top 10 Accounts (992 cases)</div>
+        <div class="card-subtitle">Combined volume across all 10 accounts by handling region</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:28px;padding:20px 24px 16px;flex-wrap:wrap;">
+      <div style="position:relative;width:200px;height:200px;flex-shrink:0;">
+        <canvas id="geoDonut" width="200" height="200"></canvas>
+      </div>
+      <div style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:10px;">
+        <div class="legend-item">
+          <span class="dot" style="background:#2563EB;width:14px;height:14px;"></span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#0F172A;">India &nbsp;<span style="color:#2563EB;">448</span></div>
+            <div style="font-size:11px;color:#64748B;">45% of top-10 load · #1 handler for 7 accounts</div>
+          </div>
+        </div>
+        <div class="legend-item">
+          <span class="dot" style="background:#059669;width:14px;height:14px;"></span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#0F172A;">AMER &nbsp;<span style="color:#059669;">322</span></div>
+            <div style="font-size:11px;color:#64748B;">32% · leads on Apsen, Bell Canada, Equinix</div>
+          </div>
+        </div>
+        <div class="legend-item">
+          <span class="dot" style="background:#D97706;width:14px;height:14px;"></span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#0F172A;">EMEA &nbsp;<span style="color:#D97706;">149</span></div>
+            <div style="font-size:11px;color:#64748B;">15% · secondary on BT Consumer, Mylan, Deloitte</div>
+          </div>
+        </div>
+        <div class="legend-item">
+          <span class="dot" style="background:#7C3AED;width:14px;height:14px;"></span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#0F172A;">APAC &nbsp;<span style="color:#7C3AED;">49</span></div>
+            <div style="font-size:11px;color:#64748B;">5% · primary only on Equinix (APAC 17)</div>
+          </div>
+        </div>
+        <div class="legend-item">
+          <span class="dot" style="background:#CBD5E1;width:14px;height:14px;"></span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#0F172A;">Unassigned &nbsp;<span style="color:#94A3B8;">24</span></div>
+            <div style="font-size:11px;color:#64748B;">2% · no Support_Region__c set on case owner</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:10px 20px 14px;background:var(--surface-2);border-top:1px solid var(--border);font-size:11px;color:var(--text-secondary);">
+      <strong style="color:#0F172A;">Key signal:</strong> India handles 45% of all top-10 Signature cases globally — including EMEA-named accounts (Pfizer, BT, Claro) and APAC accounts (One NZ). IST team is the de-facto global handler for Life Sciences and CPQ accounts.
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ SECTION 5: CLOUD MIX ══ -->
+<div class="section-label">Cloud &amp; Product Mix</div>
+
+<div class="grid grid-2">
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Top 10 Accounts — Cloud Distribution Q2 FY27</div>
+        <div class="card-subtitle">Total 992 cases across top 10 accounts (OrgCS SOQL verified)</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:24px;padding:16px 20px;">
+      <div style="position:relative;width:180px;height:180px;flex-shrink:0;">
+        <canvas id="cloudDonut" width="180" height="180"></canvas>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+        <div class="legend-item"><span class="dot" style="background:#2563EB"></span><span style="font-size:12px;"><strong>Life Sciences</strong> — 591 cases (59%)<br><span style="color:var(--text-muted);">Pfizer 343 · Deloitte 92 · Mylan 74 · Apsen 63 · Deloitte-OmniStudio overlap</span></span></div>
+        <div class="legend-item"><span class="dot" style="background:#7C3AED"></span><span style="font-size:12px;"><strong>CPQ / Order Mgmt + Telecom</strong> — 237 cases (24%)<br><span style="color:var(--text-muted);">BT Digico 59 · Claro 70 · BT Consumer 36 · One NZ 28</span></span></div>
+        <div class="legend-item"><span class="dot" style="background:#059669"></span><span style="font-size:12px;"><strong>Revenue Cloud Core</strong> — 117 cases (12%)<br><span style="color:var(--text-muted);">Equinix 62 · Bell Canada 55</span></span></div>
+        <div class="legend-item"><span class="dot" style="background:#0891B2"></span><span style="font-size:12px;"><strong>OmniStudio</strong> — 56 cases (6%)<br><span style="color:var(--text-muted);">BT Digico 11 · One NZ 21 · Deloitte 5</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Account Cluster Analysis</div>
+        <div class="card-subtitle">Three distinct groups in the top 10</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="insight-list">
+        <div class="insight-item" style="background:#EFF6FF;border-color:#BFDBFE;">
+          <div class="insight-icon icon-blue">🧬</div>
+          <div class="insight-text">
+            <div class="title">Life Sciences Cluster (4 accounts · 591 cases · 59%)</div>
+            <div class="body">Pfizer, Deloitte, Mylan, Apsen. All Q2-heavy with new/expanding deployments. Two are brand new (Mylan +7,200%, Apsen +983%). Deloitte is the SI driving LSC implementations globally — its growth (+42%) tracks the pharma customer base, not a single account.</div>
+          </div>
+        </div>
+        <div class="insight-item" style="background:#F0FDF4;border-color:#BBF7D0;">
+          <div class="insight-icon icon-green">📦</div>
+          <div class="insight-text">
+            <div class="title">Telecom / CPQ Cluster (4 accounts · 274 cases · 27%)</div>
+            <div class="body">BT Digico, Claro, BT Consumer, One New Zealand. All on CPQ/Order Management or Comm Cloud. 3 of 4 declining or stable QoQ — deployment maturing. BT Consumer (+45%) is the exception, on EPC ramp.</div>
+          </div>
+        </div>
+        <div class="insight-item" style="background:#FFF7ED;border-color:#FED7AA;">
+          <div class="insight-icon icon-amber">⚡</div>
+          <div class="insight-text">
+            <div class="title">Revenue Cloud Cluster (2 accounts · 127 cases · 13%)</div>
+            <div class="body">Bell Canada (+39%) and Equinix (-42%) move in opposite directions. Bell scaling up on DRO+Configurator+TxnMgmt. Equinix improving significantly. Both near 100% Revenue Cloud — concentrated RC complexity warranting RC product-team alignment.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ SECTION 6: MOVEMENT TABLE ══ -->
+<div class="section-label">Account Movement — New Entrants &amp; Dropouts</div>
+
+<div class="grid grid-2">
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">New to Top 10 in Q2 FY27 (All GEOs)</div>
+        <div class="card-subtitle">Accounts not in Q1 top 10 — new deployment waves</div>
+      </div>
+      <span class="badge badge-new">2 new entries</span>
+    </div>
+    <div class="card-body-flush">
+      <table class="data-table">
+        <thead>
+          <tr><th class="left">Account</th><th>Q2 Cases</th><th>Q1 Cases</th><th class="left">Why Now</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Mylan Inc.</strong></td>
+            <td><strong>74</strong></td><td style="color:var(--text-muted);">1</td>
+            <td style="font-size:11px;">Global Life Sciences deployment rollout — India, EMEA, AMER all active in Q2</td>
+          </tr>
+          <tr>
+            <td><strong>Apsen Farmaceutica S/A</strong></td>
+            <td><strong>65</strong></td><td style="color:var(--text-muted);">6</td>
+            <td style="font-size:11px;">Brazilian pharma LSC go-live — 97% cases AMER-handled, concentrated adoption burst</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Q1 Top 10 Accounts That Dropped Out</div>
+        <div class="card-subtitle">Fell below rank 10 in Q2 — mostly improving signals</div>
+      </div>
+      <span class="badge badge-down">3 dropouts</span>
+    </div>
+    <div class="card-body-flush">
+      <table class="data-table">
+        <thead>
+          <tr><th class="left">Account</th><th>Q1 Cases</th><th>Q2 Cases</th><th>QoQ</th><th class="left">Signal</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Keskinäinen Fennia</strong></td>
+            <td>111</td><td>~35–40</td><td class="trend-down">-66%</td>
+            <td style="font-size:11px;">EMEA Financial Services — significant improvement</td>
+          </tr>
+          <tr>
+            <td><strong>Telecom Argentina</strong></td>
+            <td>93</td><td>57</td><td class="trend-down">-39%</td>
+            <td style="font-size:11px;">Deployment stabilising — CPQ/OM load reducing</td>
+          </tr>
+          <tr>
+            <td><strong>AT&amp;T Business</strong></td>
+            <td>77</td><td>54</td><td class="trend-down">-30%</td>
+            <td style="font-size:11px;">Volume easing — deployment maturity signal</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ SECTION 7: EXECUTIVE INSIGHTS ══ -->
+<div class="section-label">Executive Insights — Key Signals for QBR</div>
+
+<div class="grid grid-2">
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Risk Signals — Needs Attention</div>
+        <div class="card-subtitle">Accounts or patterns requiring active CSM or product engagement</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="insight-list">
+        <div class="insight-item" style="background:#FFF7ED;border-color:#FED7AA;">
+          <div class="insight-icon icon-amber">⚠️</div>
+          <div class="insight-text">
+            <div class="title">Mylan + Apsen: New Deployments Need Dedicated Coverage</div>
+            <div class="body">Two pharma accounts went from near-zero to combined 139 cases in Q2. Both are 100% Life Sciences. Mylan spans 3 GEOs. Without deliberate onboarding support and early-life engineering alignment, these accounts risk becoming Pfizer-scale volume spikes in Q3.</div>
+          </div>
+        </div>
+        <div class="insight-item" style="background:#FFF7ED;border-color:#FED7AA;">
+          <div class="insight-icon icon-amber">📈</div>
+          <div class="insight-text">
+            <div class="title">Bell Canada: RC Volume Rising Fast in AMER</div>
+            <div class="body">+39% QoQ growth, all Revenue Cloud (DRO + Configurator + Transaction Mgmt). Only 64 cases in Q2 but on a steep trajectory — was just 3 cases in Q2 FY26. RC specialist coverage must keep pace. Telecom RC implementations typically plateau after 2–3 quarters; we're in the steep part of the curve.</div>
+          </div>
+        </div>
+        <div class="insight-item" style="background:#FFF7ED;border-color:#FED7AA;">
+          <div class="insight-icon icon-amber">🌏</div>
+          <div class="insight-text">
+            <div class="title">India Absorbing Majority of Cross-GEO Load</div>
+            <div class="body">India is the #1 handling region for 7 of top 10 accounts — including EMEA-named accounts (Pfizer, BT Digico, Claro) and APAC accounts (One NZ). IST Life Sciences team capacity needs to scale with the new pharma deployment wave (Mylan, Apsen, Deloitte).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Positive Signals — Strong Performance</div>
+        <div class="card-subtitle">Accounts and trends showing healthy patterns</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="insight-list">
+        <div class="insight-item" style="background:#F0FDF4;border-color:#BBF7D0;">
+          <div class="insight-icon icon-green">↘</div>
+          <div class="insight-text">
+            <div class="title">Pfizer Stabilising — Largest Account Declining</div>
+            <div class="body">Pfizer dropped from 448 → 343 (-23% QoQ). Still #1 globally but the trend is in the right direction as the initial Life Sciences deployment matures. If Q3 continues this trajectory, Pfizer will drop out of the top 5 — a strong portfolio health signal.</div>
+          </div>
+        </div>
+        <div class="insight-item" style="background:#F0FDF4;border-color:#BBF7D0;">
+          <div class="insight-icon icon-green">✓</div>
+          <div class="insight-text">
+            <div class="title">Equinix: Major Improvement (-42%)</div>
+            <div class="body">Was #3 in Q1 with 108 cases, down to 63 in Q2 (-42%). Near-100% Revenue Cloud. Strong resolution progress. Recommend CSM verification that this is genuine stabilisation vs. deferred backlog — but the initial signal is very positive.</div>
+          </div>
+        </div>
+        <div class="insight-item" style="background:#F0FDF4;border-color:#BBF7D0;">
+          <div class="insight-icon icon-green">📉</div>
+          <div class="insight-text">
+            <div class="title">Dropout Accounts All Improving</div>
+            <div class="body">3 Q1 top-10 accounts (Fennia, Telecom Argentina, AT&amp;T) all fell out due to volume reduction — not because new accounts were added. All show 30–66% QoQ declines. Combined they freed ~130 cases of capacity headroom in the top-10 bracket.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ SECTION 8: QUICK REF ══ -->
+<div class="section-label">Quick Reference Summary</div>
+
+<div class="card">
+  <div class="card-header">
+    <div>
+      <div class="card-title">Top 10 Account Summary Card — All GEOs Q2 FY27</div>
+      <div class="card-subtitle">Use this for QBR executive readout</div>
+    </div>
+  </div>
+  <div class="card-body-flush" style="overflow-x:auto;">
+    <table class="data-table" style="min-width:640px;">
+      <thead>
+        <tr>
+          <th class="left">#</th>
+          <th class="left">Account</th>
+          <th>Q2</th><th>QoQ</th><th>YoY</th>
+          <th class="left">Cluster</th>
+          <th class="left">Primary GEO Handler</th>
+          <th class="left">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><strong>Pfizer – LSC EMEA</strong></td><td>343</td><td class="trend-down">-23%</td><td style="color:var(--text-muted);">NEW FY27</td><td>🧬 Life Sciences</td><td><span class="geo-pill geo-india">India</span> <span class="geo-pill geo-amer">AMER</span></td><td style="font-size:11px;">Monitor stabilisation; confirm Q3 trajectory</td></tr>
+        <tr><td>2</td><td><strong>Deloitte Consulting LLP</strong></td><td>109</td><td class="trend-up">+42%</td><td class="trend-up">+122%</td><td>🧬 Life Sciences SI</td><td><span class="geo-pill geo-india">India</span></td><td style="font-size:11px;">IST LSC team capacity watch; expanding SI</td></tr>
+        <tr><td>3</td><td><strong>BT Digico</strong></td><td>77</td><td class="trend-down">-18%</td><td class="trend-up">+22%</td><td>📦 CPQ/OM Telecom</td><td><span class="geo-pill geo-india">India</span></td><td style="font-size:11px;">Stable; deployment maturing</td></tr>
+        <tr style="background:#FFFBEB;"><td>4</td><td><strong>Mylan Inc.</strong> 🚨</td><td>74</td><td>+7,200%</td><td style="color:var(--text-muted);">NEW</td><td>🧬 Life Sciences</td><td><span class="geo-pill geo-india">India</span> <span class="geo-pill geo-emea">EMEA</span> <span class="geo-pill geo-amer">AMER</span></td><td style="font-size:11px;color:#D97706;font-weight:600;">Urgent: assign CS + engineering coverage now</td></tr>
+        <tr><td>5</td><td><strong>Claro América Latina</strong></td><td>74</td><td class="trend-up">+9%</td><td class="trend-up">+164%</td><td>📦 CPQ/OM Telecom</td><td><span class="geo-pill geo-india">India</span></td><td style="font-size:11px;">Healthy ramp; low engineering dependency</td></tr>
+        <tr style="background:#FFFBEB;"><td>6</td><td><strong>Apsen Farmaceutica</strong> 🚨</td><td>65</td><td>+983%</td><td style="color:var(--text-muted);">NEW</td><td>🧬 Life Sciences</td><td><span class="geo-pill geo-amer">AMER</span></td><td style="font-size:11px;color:#D97706;font-weight:600;">New Brazil pharma go-live; AMER onboarding focus</td></tr>
+        <tr><td>7</td><td><strong>Bell Canada</strong></td><td>64</td><td class="trend-up">+39%</td><td class="trend-up">+2,033%</td><td>⚡ Revenue Cloud</td><td><span class="geo-pill geo-amer">AMER</span></td><td style="font-size:11px;">RC growing fast; align DRO/TxnMgmt specialist</td></tr>
+        <tr><td>8</td><td><strong>BT Consumer</strong></td><td>64</td><td class="trend-up">+45%</td><td class="trend-up">+31%</td><td>📦 CPQ + Comm Cloud</td><td><span class="geo-pill geo-india">India</span> <span class="geo-pill geo-emea">EMEA</span></td><td style="font-size:11px;">EPC ramp driving volume; monitor Sev trend</td></tr>
+        <tr><td>9</td><td><strong>Equinix, Inc.</strong></td><td>63</td><td class="trend-down">-42%</td><td style="color:var(--text-muted);">NEW FY27</td><td>⚡ Revenue Cloud</td><td><span class="geo-pill geo-amer">AMER</span></td><td style="font-size:11px;">Strong improvement; CSM to verify resolution</td></tr>
+        <tr><td>10</td><td><strong>One New Zealand</strong></td><td>59</td><td class="trend-down">-26%</td><td class="trend-down">-8%</td><td>📦 CPQ + OmniStudio</td><td><span class="geo-pill geo-india">India</span></td><td style="font-size:11px;">Declining — deployment maturing, positive signal</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<div class="page-footer">
+  <span>Signature QBR · All GEOs · Aug 19, 2026 · Q2 FY27 (May–Jul 2026) · Top 10 Account Deep Dive</span>
+  <span>OrgCS SOQL verified · All Regions · Signature + Premier Priority · Industry + Revenue</span>
+  <span>Prepared by Eshant Sharma · 18 Aug 2026</span>
+</div>
+
+<!-- ══════════ CHARTS ══════════ -->
+<script>
+Chart.register(ChartDataLabels);
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#64748B';
+Chart.defaults.plugins.legend.display = false;
+Chart.defaults.plugins.datalabels.display = false;
+
+const C = {
+  sig:      '#2563EB',
+  sigLight: '#BFDBFE',
+  green:    '#059669',
+  greenLight: '#D1FAE5',
+  amber:    '#D97706',
+  red:      '#DC2626',
+  purple:   '#7C3AED',
+  teal:     '#0891B2',
+  grey:     '#94A3B8',
+};
+
+// ─── 1. Q2 vs Q1 Account Bar Chart ───
+const accounts = [
+  'Pfizer - LSC EMEA',
+  'Deloitte LLP',
+  'BT Digico',
+  'Mylan Inc.',
+  'Claro LATAM',
+  'Apsen Pharma',
+  'Bell Canada',
+  'BT Consumer',
+  'Equinix',
+  'One New Zealand',
+];
+const q2 = [343, 109, 77, 74, 74, 65, 64, 64, 63, 59];
+const q1 = [448,  77, 94,  1, 68,  6, 46, 44, 108, 80];
+
+new Chart(document.getElementById('accountBarChart'), {
+  type: 'bar',
+  data: {
+    labels: accounts,
+    datasets: [
+      { label:'Q2 FY27', data:q2, backgroundColor:C.sig,      borderRadius:4, borderSkipped:false },
+      { label:'Q1 FY27', data:q1, backgroundColor:C.sigLight, borderRadius:4, borderSkipped:false },
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive:true, maintainAspectRatio:false,
+    layout:{ padding:{ right:48 } },
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend:{display:false},
+      datalabels:{
+        display:true, anchor:'end', align:'end', offset:2,
+        font:{ weight:'700', size:10 },
+        color: (ctx) => ctx.datasetIndex === 0 ? C.sig : '#94A3B8',
+        formatter: v => v,
+      },
+      tooltip:{
+        backgroundColor:'#1E293B', titleColor:'#F8FAFC', bodyColor:'#CBD5E1',
+        padding:10, cornerRadius:8,
+        callbacks:{ label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}` }
+      }
+    },
+    scales:{
+      x:{ grid:{color:'#F1F5F9'}, ticks:{color:'#64748B'}, title:{display:true,text:'Cases',color:'#94A3B8',font:{size:10}} },
+      y:{ grid:{display:false}, ticks:{font:{size:11,weight:'500'}, color:'#0F172A'} }
+    }
+  }
+});
+
+// ─── 2. QoQ Delta Chart (Q2 minus Q1, sorted) ───
+// q2 - q1 per account, same order as accounts array
+const delta = q2.map((v, i) => v - q1[i]);
+// sort by delta ascending (most negative = best improvement on left)
+const deltaIdx = [...Array(accounts.length).keys()].sort((a,b) => delta[a] - delta[b]);
+const deltaLabels = deltaIdx.map(i => accounts[i]);
+const deltaVals   = deltaIdx.map(i => delta[i]);
+const deltaColors = deltaVals.map(v => v <= 0 ? '#059669' : '#DC2626');
+
+new Chart(document.getElementById('qoqDeltaChart'), {
+  type: 'bar',
+  data: {
+    labels: deltaLabels,
+    datasets: [{
+      label: 'QoQ Change (Q2 − Q1)',
+      data: deltaVals,
+      backgroundColor: deltaColors,
+      borderRadius: 4,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive:true, maintainAspectRatio:false,
+    layout:{ padding:{ left:8, right:60 } },
+    plugins:{
+      legend:{display:false},
+      datalabels:{
+        display:true, anchor:'end', align: ctx => ctx.dataset.data[ctx.dataIndex] >= 0 ? 'end' : 'start',
+        offset:4,
+        font:{ weight:'800', size:11 },
+        color: ctx => deltaVals[ctx.dataIndex] <= 0 ? '#059669' : '#DC2626',
+        formatter: v => (v > 0 ? '+' : '') + v,
+      },
+      tooltip:{
+        backgroundColor:'#1E293B', titleColor:'#F8FAFC', bodyColor:'#CBD5E1',
+        padding:10, cornerRadius:8,
+        callbacks:{
+          label: ctx => {
+            const i = deltaIdx[ctx.dataIndex];
+            return ` Q2: ${q2[i]}  Q1: ${q1[i]}  Change: ${ctx.raw > 0 ? '+' : ''}${ctx.raw}`;
+          }
+        }
+      }
+    },
+    scales:{
+      x:{
+        grid:{color:'#F1F5F9'}, ticks:{color:'#64748B'},
+        title:{display:true,text:'Cases (Q2 − Q1)',color:'#94A3B8',font:{size:10}},
+        afterDataLimits: axis => { axis.max = axis.max + 20; axis.min = axis.min - 10; }
+      },
+      y:{ grid:{display:false}, ticks:{font:{size:11,weight:'500'}, color:'#0F172A'} }
+    }
+  }
+});
+
+// ─── 3. GEO Stacked Bar Chart ───
+// India, AMER, EMEA, APAC per account
+const geoIndia = [157, 74, 57,  28,  58,   0, 0,  35,   4, 35];
+const geoAMER  = [150,  4,  3,  17,   3,  63, 43,   0,  34,  5];
+const geoEMEA  = [ 22, 21, 12,  24,  13,   0, 17,  27,   6,  7];
+const geoAPAC  = [  9,  4,  1,   4,   0,   0,  1,   2,  17, 11];
+
+new Chart(document.getElementById('geoStackedChart'), {
+  type: 'bar',
+  data: {
+    labels: accounts,
+    datasets: [
+      { label:'India', data:geoIndia, backgroundColor:'#2563EB', borderRadius:0, stack:'s' },
+      { label:'AMER',  data:geoAMER,  backgroundColor:'#059669', borderRadius:0, stack:'s' },
+      { label:'EMEA',  data:geoEMEA,  backgroundColor:'#D97706', borderRadius:0, stack:'s' },
+      { label:'APAC',  data:geoAPAC,  backgroundColor:'#7C3AED', borderRadius:0, stack:'s' },
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive:true, maintainAspectRatio:false,
+    layout:{ padding:{ right:20 } },
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend:{display:false},
+      datalabels:{
+        display: (ctx) => ctx.dataset.data[ctx.dataIndex] >= 5,
+        anchor:'center', align:'center',
+        font:{ weight:'700', size:10 },
+        color:'#fff',
+        formatter: v => v,
+      },
+      tooltip:{
+        backgroundColor:'#1E293B', titleColor:'#F8FAFC', bodyColor:'#CBD5E1',
+        padding:10, cornerRadius:8,
+        callbacks:{ label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}` }
+      }
+    },
+    scales:{
+      x:{ stacked:true, grid:{color:'#F1F5F9'}, ticks:{color:'#64748B'}, title:{display:true,text:'Cases',color:'#94A3B8',font:{size:10}} },
+      y:{ stacked:true, grid:{display:false}, ticks:{font:{size:11,weight:'500'}, color:'#0F172A'} }
+    }
+  }
+});
+
+// ─── 4. GEO Pie — overall split across all 10 accounts ───
+// India=448, AMER=322, EMEA=149, APAC=49, Null=24
+// Derived from Support_Region__c sums across all 10 accounts:
+// India: 157+74+57+28+58+0+0+35+4+35 = 448
+// AMER:  150+4+3+17+3+63+43+0+34+5   = 322
+// EMEA:  22+21+12+24+13+0+17+27+6+7  = 149
+// APAC:  9+4+1+4+0+0+1+2+17+11       = 49
+// Null:  5+6+4+1+0+2+3+0+2+1         = 24
+new Chart(document.getElementById('geoDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['India', 'AMER', 'EMEA', 'APAC', 'Unassigned'],
+    datasets: [{
+      data: [448, 322, 149, 49, 24],
+      backgroundColor: ['#2563EB', '#059669', '#D97706', '#7C3AED', '#CBD5E1'],
+      borderWidth: 2, borderColor: '#FFFFFF'
+    }]
+  },
+  options: {
+    cutout: '55%',
+    responsive: false,
+    plugins: {
+      legend: { display: false },
+      datalabels: {
+        display: ctx => ctx.dataset.data[ctx.dataIndex] >= 30,
+        font: { weight: '800', size: 12 },
+        color: '#fff',
+        formatter: (v) => Math.round(v / 992 * 100) + '%',
+      },
+      tooltip: {
+        backgroundColor:'#1E293B', titleColor:'#F8FAFC', bodyColor:'#CBD5E1',
+        padding:10, cornerRadius:8,
+        callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} cases (${Math.round(ctx.raw/992*100)}%)` }
+      }
+    }
+  }
+});
+
+// ─── 6. Cloud Donut ───
+// Life Sciences ~591, CPQ/Telecom ~237, RC Core ~117, OmniStudio ~56
+new Chart(document.getElementById('cloudDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Life Sciences', 'CPQ / Telecom', 'Revenue Cloud', 'OmniStudio'],
+    datasets: [{
+      data: [591, 237, 117, 56],
+      backgroundColor: [C.sig, C.purple, C.green, C.teal],
+      borderWidth: 2, borderColor: '#FFFFFF'
+    }]
+  },
+  options: {
+    cutout: '62%',
+    responsive: false,
+    plugins: {
+      legend:{display:false},
+      datalabels:{
+        display: true,
+        font:{ weight:'800', size:11 },
+        color:'#fff',
+        formatter: (v, ctx) => {
+          const pct = Math.round(v / 992 * 100);
+          return pct + '%';
+        },
+      },
+      tooltip:{
+        backgroundColor:'#1E293B', titleColor:'#F8FAFC', bodyColor:'#CBD5E1',
+        padding:10, cornerRadius:8,
+        callbacks:{ label: ctx => ` ${ctx.label}: ${ctx.raw} cases (${Math.round(ctx.raw/992*100)}%)` }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
