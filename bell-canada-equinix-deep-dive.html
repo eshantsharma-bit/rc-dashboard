@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bell Canada &amp; Equinix — SA Account Deep Dive · Q2 FY27</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:#f6f8fa; --surface:#ffffff; --border:#d0d7de;
+  --text:#1f2328; --muted:#656d76; --accent:#0969da;
+  --green:#1a7f37; --red:#cf222e; --yellow:#9a6700; --orange:#bc4c00;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;padding:20px}
+.page-header{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.page-header h1{font-size:18px;font-weight:700}
+.page-header .meta{font-size:12px;color:var(--muted);margin-top:4px}
+/* Account header panels */
+.acct-header{border-radius:8px;padding:14px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.acct-header.bell{background:#ddf4ff;border:2px solid #80ccff}
+.acct-header.equinix{background:#ffebe9;border:2px solid #ffcecb}
+.acct-header h2{font-size:16px;font-weight:700}
+.acct-header .status-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-red{background:#ffebe9;color:#cf222e;border:1px solid #ffcecb}
+.badge-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb}
+.badge-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845}
+.badge-blue{background:#ddf4ff;color:#0969da;border:1px solid #80ccff}
+.badge-purple{background:#fbefff;color:#8250df;border:1px solid #d8b4fe}
+.badge-orange{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
+/* KPI rows */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px}
+.kpi-row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.kpi.alert{border-color:#ffcecb;background:#ffebe9}
+.kpi.warn{border-color:#f5d845;background:#fff8c5}
+.kpi.good{border-color:#aceebb;background:#dafbe1}
+.kpi-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+.kpi-value{font-size:22px;font-weight:700;line-height:1.1;margin:5px 0 3px}
+.kpi-sub{font-size:10px;color:var(--muted)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.card.red-border{border-color:#ffcecb}
+.card.blue-border{border-color:#80ccff}
+.card.orange-border{border-color:#ffc896}
+.card.yellow-border{border-color:#f5d845}
+.card.green-border{border-color:#aceebb}
+.card.purple-border{border-color:#d8b4fe}
+.card-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.data-table{width:100%;border-collapse:collapse;font-size:11px}
+.data-table th{background:#f6f8fa;color:var(--muted);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;padding:6px 8px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+.data-table th:first-child,.data-table td:first-child{text-align:left}
+.data-table td{padding:6px 8px;border-bottom:1px solid #eaeef2;text-align:right;color:var(--text)}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:#f6f8fa}
+.data-table .total-row td{background:#f6f8fa!important;font-weight:700;border-top:2px solid var(--border)}
+.data-table .tw-col{background:rgba(88,166,255,.08);font-weight:700}
+.data-table .warn-row td{background:#fff8c5!important}
+.data-table .alert-row td{background:#ffebe9!important}
+.pill{display:inline-block;padding:2px 5px;border-radius:10px;font-size:10px;font-weight:600}
+.pill-red{background:#ffebe9;color:#cf222e;border:1px solid #ffcecb}
+.pill-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb}
+.pill-blue{background:#ddf4ff;color:#0969da;border:1px solid #80ccff}
+.pill-orange{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
+.pill-purple{background:#fbefff;color:#8250df;border:1px solid #d8b4fe}
+.pill-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845}
+.pill-gray{background:#f6f8fa;color:#656d76;border:1px solid #d0d7de}
+.insight{padding:10px 12px;border-radius:6px;border-left:3px solid;margin-bottom:8px;font-size:11px;line-height:1.5}
+.insight.red{background:#ffebe9;border-color:#cf222e}
+.insight.green{background:#dafbe1;border-color:#1a7f37}
+.insight.yellow{background:#fff8c5;border-color:#9a6700}
+.insight.blue{background:#ddf4ff;border-color:#0969da}
+.insight.purple{background:#fbefff;border-color:#8250df}
+.insight.orange{background:#fff1e5;border-color:#bc4c00}
+.insight:last-child{margin-bottom:0}
+.case-num{font-family:monospace;font-size:10px;color:#0969da;font-weight:600}
+.section-divider{height:1px;background:var(--border);margin:18px 0}
+.section-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+.num-up{color:#cf222e;font-weight:600}
+.num-down{color:#1a7f37;font-weight:600}
+/* Timeline dots */
+.tl{display:flex;flex-direction:column;gap:8px}
+.tl-item{display:flex;gap:10px;align-items:flex-start}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.tl-dot.red{background:#cf222e}
+.tl-dot.orange{background:#bc4c00}
+.tl-dot.yellow{background:#9a6700}
+.tl-dot.blue{background:#0969da}
+.tl-dot.green{background:#1a7f37}
+.tl-content{font-size:11px;line-height:1.4}
+.tl-date{font-size:10px;color:var(--muted);font-weight:600}
+/* Comparison table */
+.compare-table{width:100%;border-collapse:collapse;font-size:11px}
+.compare-table th{background:#f6f8fa;color:var(--muted);font-size:10px;font-weight:600;text-transform:uppercase;padding:6px 8px;border-bottom:1px solid var(--border);text-align:left}
+.compare-table td{padding:7px 8px;border-bottom:1px solid #eaeef2;vertical-align:top}
+.compare-table .metric-col{font-weight:600;width:200px;color:var(--muted)}
+.compare-table .bell-col{background:#f0f8ff;border-left:2px solid #80ccff}
+.compare-table .equinix-col{background:#fff5f5;border-left:2px solid #ffcecb}
+footer{text-align:center;font-size:10px;color:var(--muted);margin-top:20px;padding-top:10px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div>
+    <h1>🏢 Bell Canada &amp; Equinix — SA-Engaged Account Deep Dive</h1>
+    <div class="meta">Q2 FY27 (Feb–Jul 2026) · 263 cases analyzed · Source: OrgCS live query · Aug 19, 2026</div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+    <span class="badge badge-green">✅ Bell Canada — SA disengaged · all 98 cases closed</span>
+    <span class="badge badge-red">🔴 Equinix — SA active · Project RED · 12 P2s in Jul</span>
+    <span class="badge badge-orange">⚠️ Equinix go-live Oct 9 — 10 weeks · Deep Clone bug unresolved</span>
+  </div>
+</div>
+
+<!-- ====================== BELL CANADA ====================== -->
+<div class="acct-header bell">
+  <div>
+    <h2>🇨🇦 Bell Canada</h2>
+    <div style="font-size:12px;color:#0969da;margin-top:3px">SA: Milan Lima · Disengaged post-hypercare · Go-live: Oct 2025 ✅ · RC ACV: $0 (renewal) · Owns RCA · RCB: N</div>
+    <div class="status-row">
+      <span class="badge badge-green">✅ 98/98 cases closed · 0 open</span>
+      <span class="badge badge-blue">P2 rate 48% · GUS 27.6%</span>
+      <span class="badge badge-yellow">⚠️ 5 recurring platform bugs · no SA triage</span>
+      <span class="badge badge-orange">Promotion deployment corruption ongoing</span>
+    </div>
+  </div>
+  <div style="text-align:right;font-size:11px;color:var(--muted)">
+    <div style="font-size:20px;font-weight:700;color:#0969da">98</div>
+    <div>total cases</div>
+    <div style="margin-top:4px;font-size:10px">Feb–Jul 2026</div>
+  </div>
+</div>
+
+<!-- BELL KPIs -->
+<div class="kpi-row">
+  <div class="kpi warn">
+    <div class="kpi-label">Total Cases</div>
+    <div class="kpi-value">98</div>
+    <div class="kpi-sub">Feb–Jul 2026</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">P2 Cases</div>
+    <div class="kpi-value" style="color:#cf222e">47</div>
+    <div class="kpi-sub">48.0% of total · elevated</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">Open Cases</div>
+    <div class="kpi-value" style="color:#1a7f37">0</div>
+    <div class="kpi-sub">All 98 closed ✅</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">GUS Filed</div>
+    <div class="kpi-value">27.6%</div>
+    <div class="kpi-sub">27 of 98 cases</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Bug Filed</div>
+    <div class="kpi-value">14.3%</div>
+    <div class="kpi-sub">14 of 98 cases</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">Untriaged</div>
+    <div class="kpi-value" style="color:#cf222e">70.4%</div>
+    <div class="kpi-sub">69 cases — no GUS, no Bug</div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <!-- Monthly trend + topic breakdown -->
+  <div class="card blue-border">
+    <div class="card-title">📅 Monthly Volume Trend (Bell Canada)</div>
+    <canvas id="bellMonthly" height="180"></canvas>
+    <div style="margin-top:8px;display:flex;gap:12px;font-size:11px;color:var(--muted)">
+      <span>Peak: <strong style="color:#cf222e">Jun 22 cases</strong></span>
+      <span>P2 peak: <strong style="color:#cf222e">Jun 15 P2s</strong></span>
+      <span>Jul drop: 13 (closing out)</span>
+    </div>
+  </div>
+
+  <div class="card blue-border">
+    <div class="card-title">📊 Topic Breakdown — Bell Canada</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="min-width:180px;text-align:left">Topic</th>
+          <th>Cases</th><th>%</th><th>P2</th><th>GUS</th><th>Bug</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>DRO (Dynamic Revenue Orch)</strong></td><td class="tw-col">24</td><td>24.5%</td><td>12</td><td style="color:#1a7f37"><strong>9</strong></td><td style="color:#1a7f37"><strong>6</strong></td></tr>
+        <tr><td><strong>Product Configurator</strong></td><td class="tw-col">24</td><td>24.5%</td><td>11</td><td style="color:#cf222e">3</td><td style="color:#cf222e">1</td></tr>
+        <tr><td>Transaction Management</td><td>17</td><td>17.3%</td><td>8</td><td>3</td><td>1</td></tr>
+        <tr><td>Price Management</td><td>11</td><td>11.2%</td><td>6</td><td>2</td><td>1</td></tr>
+        <tr><td>Product Catalog Management</td><td>11</td><td>11.2%</td><td>7</td><td>4</td><td>3</td></tr>
+        <tr><td>Dev Support (P2O)</td><td>7</td><td>7.1%</td><td>2</td><td>3</td><td>1</td></tr>
+        <tr><td>Business Rules Engine</td><td>2</td><td>2.0%</td><td>1</td><td>2</td><td>1</td></tr>
+        <tr><td>CLM DocGen + OmniStudio</td><td>2</td><td>2.0%</td><td>0</td><td>1</td><td>0</td></tr>
+        <tr class="total-row"><td colspan="2"><strong>TOTAL</strong></td><td>—</td><td><strong>47</strong></td><td><strong>27</strong></td><td><strong>14</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="insight blue" style="margin-top:8px;font-size:10px">
+      DRO has 2× the GUS/Bug rate of Configurator (9 GUS / 6 bugs vs 3/1), reflecting platform-level defects in orchestration vs. config how-to questions in Configurator.
+    </div>
+  </div>
+</div>
+
+<!-- BELL RECURRING THEMES -->
+<div class="card orange-border" style="margin-bottom:14px">
+  <div class="card-title">🔁 Recurring Problem Patterns — Bell Canada (5 persistent themes)</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <!-- theme 1 -->
+    <div>
+      <div style="font-weight:700;font-size:12px;color:#cf222e;margin-bottom:6px;border-bottom:1px solid #ffcecb;padding-bottom:4px">🔴 Theme 1: DRO / Orchestration Failures (13 cases)</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot red"></div>
+          <div class="tl-content"><span class="tl-date">Mar 5 — Jun 22</span><br>Orchestration plan not generated for inflight amendments, V3 supplemental orders, PROD migration errors. Bugs <strong>W-22838077</strong> + <strong>W-23135970</strong> confirmed — both re-hit in production in subsequent months.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot orange"></div>
+          <div class="tl-content"><span class="tl-date">Cases</span><br><span class="case-num">472933749 472939243 472989640 473397931 473533777 473562452 473570457 473828596 473836975 473880553 473894921 473900990 474135288</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content"><span class="tl-date">Key bug</span><br><strong>W-23135970</strong> (lineItem null in orchestration) hit in both May (473533777) and Jun (473900990) with no GUS on the Jun recurrence — same bug, no engineering escalation the second time.</div>
+        </div>
+      </div>
+    </div>
+    <!-- theme 2 -->
+    <div>
+      <div style="font-weight:700;font-size:12px;color:#cf222e;margin-bottom:6px;border-bottom:1px solid #ffcecb;padding-bottom:4px">🔴 Theme 2: Assetization Failures (11 cases)</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot red"></div>
+          <div class="tl-content"><span class="tl-date">Feb 3 — Jul 28</span><br>SwapIn assets not created, MACD cancellation leaving wrong asset states, NullPointerException in <code>AssetizationDataServiceBase</code>. Gack logged Jul 28.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot orange"></div>
+          <div class="tl-content"><span class="tl-date">Cases</span><br><span class="case-num">472665836 472970458 473325000 473384177 473416385 473420279 473521820 473562452 473987499 474105676 474190377</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content"><span class="tl-date">Flag</span><br>Most assetization cases have NO GUS, no Bug despite recurring failures — platform feedback loop completely absent without SA coverage.</div>
+        </div>
+      </div>
+    </div>
+    <!-- theme 3 -->
+    <div>
+      <div style="font-weight:700;font-size:12px;color:#9a6700;margin-bottom:6px;border-bottom:1px solid #f5d845;padding-bottom:4px">🟡 Theme 3: Promotion Deployment Data Corruption (11 cases) ⚠️</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot red"></div>
+          <div class="tl-content"><span class="tl-date">Feb 16 — Jul 31</span><br>Data corruption when deploying changes to existing promotions. <strong>Bug W-23122719</strong> confirmed Jun (473608801). <strong>Same bug hit again Jul 22</strong> (473911258) — 5 weeks later, filed separately, same root cause. Bell is manually patching PROD as workaround.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot red"></div>
+          <div class="tl-content"><span class="tl-date">Jul 31</span><br><span class="case-num">474226197</span> — "Deep Clone not working for Promotion" — same promotion-system cluster, final case in period.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot orange"></div>
+          <div class="tl-content"><span class="tl-date">All cases</span><br><span class="case-num">472786367 472817504 472971740 473017026 473084433 473157521 473211851 473364021 473608801 473911258 474226197</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- theme 4 -->
+    <div>
+      <div style="font-weight:700;font-size:12px;color:#9a6700;margin-bottom:6px;border-bottom:1px solid #f5d845;padding-bottom:4px">🟡 Theme 4: ContextDefinition Deployment Blockers (8 cases)</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content"><span class="tl-date">Mar 26 — Jul 23</span><br>ContextDefinition sync/activation failures, deployment attribute-type change rejections, mid-PROD deployment blocker. Case <span class="case-num">474156503</span> (Jul 23) was P0-severity mid-PROD — Decision Table deployment with GUS <strong>W-23574135</strong>, Bug <strong>W-23612780</strong>.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot orange"></div>
+          <div class="tl-content"><span class="tl-date">All cases</span><br><span class="case-num">473107381 473384177 473437244 473580047 473894734 474049577 474105676 474156503</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content"><span class="tl-date">Flag</span><br>Bell's CI/CD pipeline (Copado) is fighting platform-level ContextDefinition deployment gaps. 4 distinct error categories in PROD (473894734, Jun 19) — structural DevOps gap that SA handover should have documented.</div>
+        </div>
+      </div>
+    </div>
+    <!-- theme 5 -->
+    <div style="grid-column:1/-1">
+      <div style="font-weight:700;font-size:12px;color:#bc4c00;margin-bottom:6px;border-bottom:1px solid #ffc896;padding-bottom:4px">🟠 Theme 5: ENTITY_IS_LOCKED / Inflight + Supplemental Order failures (8 cases)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="tl">
+          <div class="tl-item">
+            <div class="tl-dot orange"></div>
+            <div class="tl-content"><span class="tl-date">Feb 12 — Jul 1</span><br>ENTITY_IS_LOCKED on supplemental order updates (473623122, Jun) and inflight cancellation (473986890, Jul). Two FIELD_INTEGRITY_EXCEPTION on invalid status transitions (Apr + May). GUS W-23329608 filed on Jul case — Jun case has none.</div>
+          </div>
+        </div>
+        <div class="insight yellow" style="margin:0;font-size:10px">
+          <strong>Pattern not being connected across cases</strong> — Jun and Jul ENTITY_IS_LOCKED cases are filed as separate unlinked tickets. Without SA oversight, the team is solving the same bug twice with no systemic escalation. W-23329608 (Jul) and W-22838077 (inflight DRO, May) should be cross-referenced.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BELL TECHNICAL DEBT ANALYSIS -->
+<div class="card blue-border" style="margin-bottom:14px">
+  <div class="card-title">📋 Post-Go-Live Technical Debt — What the SA Handover Should Have Captured</div>
+  <div class="grid-2">
+    <div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">Open Bug</th>
+            <th style="text-align:left">Impact</th>
+            <th>SA Handover?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="alert-row"><td><strong>W-22364893 / W-23122719</strong></td><td style="text-align:left">Promotion deployment data corruption — manual PROD workaround required, recurring</td><td><span class="pill pill-red">Missing</span></td></tr>
+          <tr class="alert-row"><td><strong>W-22838077</strong></td><td style="text-align:left">Inflight amendment DRO plan not generated</td><td><span class="pill pill-red">Missing</span></td></tr>
+          <tr class="alert-row"><td><strong>W-23135970</strong></td><td style="text-align:left">DRO lineItem null — orchestration decomposition failure</td><td><span class="pill pill-red">Missing</span></td></tr>
+          <tr class="warn-row"><td><strong>W-23612780</strong></td><td style="text-align:left">ContextDefinition deployment blocker (Decision Tables) — hit mid-PROD Jul 23</td><td><span class="pill pill-yellow">Likely missing</span></td></tr>
+          <tr class="warn-row"><td><strong>API perf 10-15× gap</strong></td><td style="text-align:left">Custom promotion logic — will worsen at PROD scale</td><td><span class="pill pill-yellow">Not documented</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="insight red">
+        <strong>Promotion data corruption is the top unresolved debt item</strong><br>
+        Bug W-23122719 was confirmed June (case 473608801). Bell engineers applied a manual workaround. The same bug hit again in July 22 (473911258) as a NEW case with no link to June's case — the support team did not recognize the pattern. Without SA monitoring for recurrence, Bell will keep filing this as a new case each time. Milan Lima's disengagement left this pattern untracked.
+      </div>
+      <div class="insight yellow" style="margin-top:8px">
+        <strong>Recommendation: Re-engage SA for a 1-session handover</strong><br>
+        Bell has 0 open cases today, but 5 confirmed platform bugs will continue generating support tickets. A single pattern-review session with Milan Lima (now passive) + Seamus Redmond's team would document the bug-watch list and prevent the 70% untriaged rate from becoming permanently entrenched.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================== EQUINIX ====================== -->
+<div class="section-divider"></div>
+
+<div class="acct-header equinix">
+  <div>
+    <h2>🌐 Equinix, Inc.</h2>
+    <div style="font-size:12px;color:#cf222e;margin-top:3px">SA: Madalina Rivera · ACTIVE · Project RED 🔴 · Self-implementation · Go-live: Oct 9, 2026 · RC ACV: $710,937 · Owns RCA + RCB (not live) · PM: Swapnil Khabiya</div>
+    <div class="status-row">
+      <span class="badge badge-red">🔴 Project RED · multiple go-live pushes</span>
+      <span class="badge badge-red">⚠️ 12 P2s in July — 60% P2 rate</span>
+      <span class="badge badge-red">Deep Clone bug W-23665086 — 4 variants untracked</span>
+      <span class="badge badge-orange">5 confirmed bugs need fix before Oct 9</span>
+      <span class="badge badge-yellow">1 open case · P2 · 21 days in Qualification</span>
+    </div>
+  </div>
+  <div style="text-align:right;font-size:11px;color:var(--muted)">
+    <div style="font-size:20px;font-weight:700;color:#cf222e">165</div>
+    <div>total cases</div>
+    <div style="margin-top:4px;font-size:10px">Feb–Jul 2026</div>
+  </div>
+</div>
+
+<!-- EQUINIX KPIs -->
+<div class="kpi-row">
+  <div class="kpi alert">
+    <div class="kpi-label">Total Cases</div>
+    <div class="kpi-value" style="color:#cf222e">165</div>
+    <div class="kpi-sub">Feb–Jul 2026</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">P2 Cases</div>
+    <div class="kpi-value" style="color:#cf222e">51</div>
+    <div class="kpi-sub">30.9% — Jul: 12 (60% of Jul)</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">Open Cases</div>
+    <div class="kpi-value" style="color:#cf222e">1</div>
+    <div class="kpi-sub">474203493 · P2 · 21d</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">GUS Filed</div>
+    <div class="kpi-value" style="color:#cf222e">18.2%</div>
+    <div class="kpi-sub">30 of 165 cases</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">Bug Filed</div>
+    <div class="kpi-value" style="color:#9a6700">11.5%</div>
+    <div class="kpi-sub">19 of 165 cases</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">Untriaged</div>
+    <div class="kpi-value" style="color:#cf222e">78.8%</div>
+    <div class="kpi-sub">130 cases — no GUS, no Bug</div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card red-border">
+    <div class="card-title">📅 Monthly Trend — <span style="color:#cf222e">P2 spike in July = ⚠️</span></div>
+    <canvas id="equinixMonthly" height="190"></canvas>
+    <div style="margin-top:8px;display:flex;gap:12px;font-size:10px;color:var(--muted)">
+      <span>Feb peak: 52 cases (chaos phase)</span>
+      <span style="color:#cf222e"><strong>Jul P2 rate: 12/20 = 60%</strong></span>
+      <span>Direction: WORSENING</span>
+    </div>
+  </div>
+
+  <div class="card red-border">
+    <div class="card-title">📊 Topic Breakdown — Equinix</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="min-width:170px;text-align:left">Topic</th>
+          <th>Cases</th><th>%</th><th>P2</th><th>GUS</th><th>Bug</th><th>Open</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:rgba(248,81,73,.04)"><td><strong>Product Configurator</strong></td><td class="tw-col">48</td><td>29.1%</td><td>14</td><td>8</td><td>4</td><td><strong style="color:#cf222e">1</strong></td></tr>
+        <tr><td>DRO (Dynamic Revenue Orch)</td><td class="tw-col">33</td><td>20.0%</td><td>7</td><td>4</td><td>5</td><td>0</td></tr>
+        <tr><td>Transaction Management</td><td>27</td><td>16.4%</td><td>11</td><td>7</td><td>3</td><td>0</td></tr>
+        <tr style="background:rgba(255,165,0,.05)"><td><strong>Price Management</strong> <span class="pill pill-orange">33% GUS!</span></td><td>21</td><td>12.7%</td><td>5</td><td style="color:#1a7f37"><strong>7</strong></td><td>4</td><td>0</td></tr>
+        <tr><td>Dev Support (P2O)</td><td>19</td><td>11.5%</td><td>5</td><td>2</td><td>1</td><td>0</td></tr>
+        <tr><td>Product Catalog Management</td><td>10</td><td>6.1%</td><td>5</td><td>2</td><td>1</td><td>0</td></tr>
+        <tr><td>Advanced Approvals</td><td>3</td><td>1.8%</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+        <tr><td>Billing + CPQ</td><td>4</td><td>2.4%</td><td>3</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr class="total-row"><td colspan="2"><strong>TOTAL</strong></td><td>—</td><td><strong>51</strong></td><td><strong>30</strong></td><td><strong>19</strong></td><td><strong>1</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="insight orange" style="margin-top:8px;font-size:10px">
+      Price Management GUS rate 33% (7/21) — highest of any topic. Systemic pricing procedure platform defects, including CPU limit errors and Procedure Plan Condition bug <strong>W-23334769</strong>.
+    </div>
+  </div>
+</div>
+
+<!-- EQUINIX: GO-LIVE RISK SECTION -->
+<div class="card red-border" style="margin-bottom:14px">
+  <div class="card-title">🚨 Go-Live Risk Analysis — Oct 9, 2026 (10 weeks) · Madalina Rivera: Action Required</div>
+  <div class="grid-2">
+
+    <!-- Deep Clone cluster -->
+    <div>
+      <div style="font-weight:700;font-size:12px;color:#cf222e;margin-bottom:8px;border-bottom:1px solid #ffcecb;padding-bottom:4px">🔴 BLOCKER: Deep Clone / Delta Count Mismatch (5 cases · Jul 7–27)</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">Case</th>
+            <th style="text-align:left">Subject (short)</th>
+            <th>Date</th><th>Sev</th><th>GUS</th><th>Bug</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="alert-row"><td><span class="case-num">474021595</span></td><td style="text-align:left">Change Order Action · delta count 102≠104</td><td>Jul 7</td><td><span class="pill pill-red">P2</span></td><td><span class="pill pill-red">None</span></td><td><span class="pill pill-red">None</span></td></tr>
+          <tr class="alert-row"><td><span class="case-num">474049474</span></td><td style="text-align:left">deepCloneSalesTransaction · NOT_FOUND</td><td>Jul 9</td><td><span class="pill pill-red">P2</span></td><td><span class="pill pill-red">None</span></td><td><span class="pill pill-red">None</span></td></tr>
+          <tr class="warn-row"><td><span class="case-num">474072775</span></td><td style="text-align:left">Unable to Clone Order Items · delta 181≠194</td><td>Jul 13</td><td><span class="pill pill-yellow">P3</span></td><td><span class="pill pill-red">None</span></td><td><span class="pill pill-red">None</span></td></tr>
+          <tr style="background:#dafbe1"><td><span class="case-num">474087979</span></td><td style="text-align:left">Deep Clone Order Action · delta 102≠104</td><td>Jul 14</td><td><span class="pill pill-red">P2</span></td><td style="color:#1a7f37"><strong>W-23529222</strong></td><td style="color:#1a7f37"><strong>W-23665086</strong></td></tr>
+          <tr class="alert-row"><td><span class="case-num">474183634</span></td><td style="text-align:left">Change Order: delta 106≠109 · "SF regression post-patch"</td><td>Jul 27</td><td><span class="pill pill-red">P2</span></td><td><span class="pill pill-red">None</span></td><td><span class="pill pill-red">None</span></td></tr>
+        </tbody>
+      </table>
+      <div class="insight red" style="margin-top:8px;font-size:10px">
+        <strong>4 of 5 clone cases have no GUS and no Bug filed.</strong> Only <span class="case-num">474087979</span> (Jul 14) has confirmed bug W-23665086. Case <span class="case-num">474183634</span> (Jul 27) explicitly calls this a regression from a Salesforce patch release — OOTB functionality, not a customer config issue. Madalina needs to confirm whether W-23665086 covers all delta-count variants, or file separate GUSes for <span class="case-num">474021595</span>, <span class="case-num">474049474</span>, <span class="case-num">474183634</span>.
+      </div>
+    </div>
+
+    <!-- Immediate action list -->
+    <div>
+      <div style="font-weight:700;font-size:12px;color:#cf222e;margin-bottom:8px;border-bottom:1px solid #ffcecb;padding-bottom:4px">🎯 Cases to Triage This Week (Madalina Rivera)</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">Case</th>
+            <th style="text-align:left">Issue</th>
+            <th>Status</th><th>Sev</th><th>GUS</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="alert-row">
+            <td><span class="case-num">474203493</span></td>
+            <td style="text-align:left">Delete Offering from Configurator — OPEN · 21d</td>
+            <td>Qualification</td><td><span class="pill pill-red">P2</span></td>
+            <td><span class="pill pill-red">None</span></td>
+            <td><span class="pill pill-red">File GUS now</span></td>
+          </tr>
+          <tr class="alert-row">
+            <td><span class="case-num">474183634</span></td>
+            <td style="text-align:left">Change Order delta mismatch — OOTB regression</td>
+            <td>Closed</td><td><span class="pill pill-red">P2</span></td>
+            <td><span class="pill pill-red">None</span></td>
+            <td><span class="pill pill-red">File GUS/verify W-23665086</span></td>
+          </tr>
+          <tr class="alert-row">
+            <td><span class="case-num">474049474</span></td>
+            <td style="text-align:left">deepCloneSalesTransaction NOT_FOUND</td>
+            <td>Closed</td><td><span class="pill pill-red">P2</span></td>
+            <td><span class="pill pill-red">None</span></td>
+            <td><span class="pill pill-red">File GUS (different failure mode)</span></td>
+          </tr>
+          <tr class="warn-row">
+            <td><span class="case-num">474115122</span></td>
+            <td style="text-align:left">Unable to add DRO Mapping</td>
+            <td>Closed</td><td><span class="pill pill-red">P2</span></td>
+            <td><span class="pill pill-red">None</span></td>
+            <td><span class="pill pill-yellow">Verify W-23044239 fix ETA</span></td>
+          </tr>
+          <tr class="warn-row">
+            <td><span class="case-num">474089047</span></td>
+            <td style="text-align:left">FulfillmentOrderLineItem field INVALID_FIELD_FOR_INSERT_UPDATE</td>
+            <td>Closed</td><td><span class="pill pill-red">P2</span></td>
+            <td><span class="pill pill-red">None</span></td>
+            <td><span class="pill pill-yellow">File GUS — platform constraint</span></td>
+          </tr>
+          <tr>
+            <td><span class="case-num">474021595</span></td>
+            <td style="text-align:left">Change Order delta count mismatch (first in Jul cluster)</td>
+            <td>Closed</td><td><span class="pill pill-red">P2</span></td>
+            <td><span class="pill pill-red">None</span></td>
+            <td><span class="pill pill-yellow">Link to W-23665086</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- EQUINIX: RECURRING THEMES -->
+<div class="card orange-border" style="margin-bottom:14px">
+  <div class="card-title">🔁 Recurring Problem Patterns — Equinix (5 themes)</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+    <div>
+      <div style="font-weight:700;font-size:12px;color:#cf222e;margin-bottom:6px;border-bottom:1px solid #ffcecb;padding-bottom:4px">🔴 Theme 1: DRO / Decomposition BLOCKERS (33 cases · Feb–Jul)</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot red"></div>
+          <div class="tl-content"><span class="tl-date">Feb–Jul: sustained</span><br><strong>Attribute limit (&gt;50 per order item)</strong> — structural constraint. Hit as Feb BLOCKER (<span class="case-num">472839893</span>), confirmed bugs. Hit again in Jun as P1 PROD blocker (<span class="case-num">473727560</span>, bugs W-22834177 + W-23044239 + W-23125579). Equinix's Private Cage product regularly exceeds 50 attributes.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot red"></div>
+          <div class="tl-content"><span class="tl-date">Bug W-23044239 recurrence</span><br>DRO Expression Set Field Mapping — confirmed bug. Hit in Jun PROD blocker AND Jul (<span class="case-num">474068415</span>). Same bug, same customer, 5 weeks apart with no fix deployed. Must have fix ETA before Oct 9.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot orange"></div>
+          <div class="tl-content"><span class="tl-date">Stage Assetize (W-22834177)</span><br>Summer '26 regression — FulfillmentAsset not created by Stage Assetize. If unreliable at go-live, post-order fulfillment is broken.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-weight:700;font-size:12px;color:#bc4c00;margin-bottom:6px;border-bottom:1px solid #ffc896;padding-bottom:4px">🟠 Theme 2: CPU Limit / Pricing Procedure (20 cases)</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot orange"></div>
+          <div class="tl-content"><span class="tl-date">May 7–8: cluster of 3</span><br>"CPU Limit error on Renewal Quote," "CPU Limit error on Quote Finalize," "Refresh Price causing CPU Limit" — 3 separate cases in 2 days (<span class="case-num">473422430 473422593 473431977</span>). Indicates org is approaching CPU limits during pricing execution. Will be acute under go-live load.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content"><span class="tl-date">Bug W-23334769</span><br>Procedure Plan Condition not evaluating correctly — confirmed Jul. Wrong pricing logic will corrupt orders at go-live if unresolved.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content"><span class="tl-date">Steps limit (200)</span><br><span class="case-num">474059932</span> Jul 10 — "Unable to add Steps in Pricing Procedure — 200 limit." Expression set limit hit. Architectural constraint for complex pricing rules.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-weight:700;font-size:12px;color:#bc4c00;margin-bottom:6px;border-bottom:1px solid #ffc896;padding-bottom:4px">🟠 Theme 3: Partner Community / PSL / Permission Set (18 cases · new in May–Jun)</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot orange"></div>
+          <div class="tl-content"><span class="tl-date">New workstream opened May 2026</span><br>Equinix is trying to enable Partner Community ordering simultaneously with their Oct 9 go-live. Browse Catalog not showing in Partner Portal (<span class="case-num">473577040</span>), Quote Line Items not created for partners (<span class="case-num">473657629</span>).</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot red"></div>
+          <div class="tl-content"><span class="tl-date">Bug W-23685282</span><br>PSL "View All Products" permission blocking PSG setup (<span class="case-num">474028136</span> Jul 7). If PSG can't be configured, Equinix users won't have correct access at go-live. <strong>Confirmed bug — needs fix ETA.</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-weight:700;font-size:12px;color:#9a6700;margin-bottom:6px;border-bottom:1px solid #f5d845;padding-bottom:4px">🟡 Theme 4: CML / Configurator Attribute Behavior (Madalina Rivera owns 3 directly)</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content"><span class="tl-date">Feb–Jul: 48 cases (29% of all)</span><br>Heaviest topic by volume. SA Madalina Rivera directly owns 3 cases: <span class="case-num">473970080</span> (CML hide attribute, 38d age, Jun 29), <span class="case-num">473205100</span> (Configurator launch, Apr 3), <span class="case-num">473129017</span> (attribute decimals, Mar 30). SA case ownership indicates she stepped in personally on complex CML scenarios — this is above normal SA involvement.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot orange"></div>
+          <div class="tl-content"><span class="tl-date">OPEN: 474203493</span><br>"Deletion of Offering from Configurator" — P2, 21 days in Qualification, no GUS, no Bug. Related closed case <span class="case-num">474011824</span> (same scenario, Jul 6) suggests prior resolution was incomplete.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="grid-column:1/-1">
+      <div style="font-weight:700;font-size:12px;color:#0969da;margin-bottom:6px;border-bottom:1px solid #80ccff;padding-bottom:4px">🔵 Theme 5: Pre-Go-Live P2 Surge in July — Leading Indicator of Launch Risk</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div class="insight red" style="margin:0;font-size:10px">
+          <strong>Jul P2 rate: 60% (12 of 20 cases)</strong><br>
+          Highest P2 rate of any month in the period. For comparison: Feb 21%, Mar 25%, Apr 28%, May 38%, Jun 32%, Jul 60%. Acceleration is clear — NOT the typical "stabilizing as go-live approaches" pattern. This is a warning signal.
+        </div>
+        <div class="insight orange" style="margin:0;font-size:10px">
+          <strong>Jul P2 breakdown (12 cases):</strong><br>
+          Deep Clone cluster: 4 P2 (no GUS) · Transaction Mgmt clones: 2 P2 · DRO mapping: 1 P2 · FulfillmentLineItem: 1 P2 · Configurator: 1 P2 (open) · Partner PSL: 1 P2 · Other: 2 P2. Five topics contributing to Jul P2 spike = broad surface area of issues, not a single solvable problem.
+        </div>
+        <div class="insight yellow" style="margin:0;font-size:10px">
+          <strong>Self-implementation risk compounding</strong><br>
+          Equinix's team is doing this without a system integrator. The average case age is 12.9 days (vs Bell's 11.0d), and Madalina Rivera is directly owning cases rather than guiding. The team needs structured issue tracking and a go/no-go criteria checklist for Oct 9 — not just reactive case resolution.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5 BUGS THAT MUST BE FIXED BEFORE OCT 9 -->
+<div class="card red-border" style="margin-bottom:14px">
+  <div class="card-title">🐛 5 Confirmed Bugs — Fix Required Before Oct 9 Go-Live</div>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="text-align:left">Bug ID</th>
+        <th style="text-align:left">Description</th>
+        <th>Risk Level</th>
+        <th style="text-align:left">Case Evidence</th>
+        <th>Fix by Oct 9?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="alert-row">
+        <td><strong>W-23665086</strong></td>
+        <td style="text-align:left">Deep Clone / delta count mismatch — quote-to-order workflow blocked</td>
+        <td><span class="pill pill-red">CRITICAL</span></td>
+        <td style="text-align:left"><span class="case-num">474087979</span> + 4 uncovered variants</td>
+        <td><span class="pill pill-red">⚠️ No ETA confirmed</span></td>
+      </tr>
+      <tr class="alert-row">
+        <td><strong>W-23044239</strong></td>
+        <td style="text-align:left">DRO Expression Set Field Mapping — decomposition fails in PROD</td>
+        <td><span class="pill pill-red">CRITICAL</span></td>
+        <td style="text-align:left"><span class="case-num">473727560</span> (Jun PROD) + <span class="case-num">474068415</span> (Jul)</td>
+        <td><span class="pill pill-red">⚠️ Hit twice — no fix deployed</span></td>
+      </tr>
+      <tr class="alert-row">
+        <td><strong>W-22834177</strong></td>
+        <td style="text-align:left">Stage Assetize not creating FulfillmentAsset — Summer '26 regression</td>
+        <td><span class="pill pill-red">CRITICAL</span></td>
+        <td style="text-align:left"><span class="case-num">473579027</span> + <span class="case-num">473727560</span></td>
+        <td><span class="pill pill-red">⚠️ Regression — no fix confirmed</span></td>
+      </tr>
+      <tr class="warn-row">
+        <td><strong>W-23334769</strong></td>
+        <td style="text-align:left">Procedure Plan Condition not evaluating correctly — wrong pricing output</td>
+        <td><span class="pill pill-orange">HIGH</span></td>
+        <td style="text-align:left"><span class="case-num">473941063</span> (Jun 25)</td>
+        <td><span class="pill pill-yellow">Needs ETA</span></td>
+      </tr>
+      <tr class="warn-row">
+        <td><strong>W-23685282</strong></td>
+        <td style="text-align:left">PSL "View All Products" blocks PSG setup — access blocked at go-live</td>
+        <td><span class="pill pill-orange">HIGH</span></td>
+        <td style="text-align:left"><span class="case-num">474028136</span> (Jul 7)</td>
+        <td><span class="pill pill-yellow">Needs ETA</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+    <div class="insight red" style="margin:0;font-size:10px">
+      <strong>W-23665086 is the top priority</strong> — 5 clone/delta-count cases in 20 days, only 1 tracked by engineering. If this bug is not fixed before Oct 9, Equinix's Change Order workflow (core to their Private Cage / Cabinet / Circuit amendments) will be broken on day 1 of go-live.
+    </div>
+    <div class="insight red" style="margin:0;font-size:10px">
+      <strong>W-23044239 recurrence pattern is alarming</strong> — the same DRO Expression Set mapping bug hit in production in June, was presumably resolved, then re-appeared in July. Either the fix regressed or the July case is a variant not covered by the June fix. Needs engineering confirmation this week.
+    </div>
+    <div class="insight orange" style="margin:0;font-size:10px">
+      <strong>Structural attribute limit issue (>50 per OI)</strong> — not a confirmable GUS-fixable bug, but a platform architectural constraint. Equinix's product catalog design (Private Cage + Circuit attributes) will regularly exceed this. Product design review with Madalina Rivera needed before go-live to confirm the catalog is restructured within limits.
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON + CROSS-ACCOUNT RECOMMENDATIONS -->
+<div class="card purple-border" style="margin-bottom:14px">
+  <div class="card-title">⚖️ Side-by-Side Comparison — Bell Canada vs Equinix</div>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th class="metric-col">Metric</th>
+        <th class="bell-col" style="padding:6px 10px">🇨🇦 Bell Canada</th>
+        <th class="equinix-col" style="padding:6px 10px">🌐 Equinix</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="metric-col">Total cases (Feb–Jul)</td><td class="bell-col">98</td><td class="equinix-col" style="font-weight:700;color:#cf222e">165 (+68%)</td></tr>
+      <tr><td class="metric-col">P2 count / rate</td><td class="bell-col">47 · 48.0%</td><td class="equinix-col">51 · 30.9% (but Jul = 60%)</td></tr>
+      <tr><td class="metric-col">Open cases today</td><td class="bell-col" style="color:#1a7f37;font-weight:700">0 — all closed ✅</td><td class="equinix-col" style="color:#cf222e;font-weight:700">1 — P2, 21 days in Qualification ⚠️</td></tr>
+      <tr><td class="metric-col">GUS rate</td><td class="bell-col" style="color:#1a7f37">27.6% (better)</td><td class="equinix-col" style="color:#cf222e">18.2% (lower)</td></tr>
+      <tr><td class="metric-col">Untriaged (no GUS, no Bug)</td><td class="bell-col" style="color:#9a6700">70.4%</td><td class="equinix-col" style="color:#cf222e;font-weight:700">78.8%</td></tr>
+      <tr><td class="metric-col">Avg case age (closed)</td><td class="bell-col">11.0 days</td><td class="equinix-col">12.9 days</td></tr>
+      <tr><td class="metric-col">Confirmed open bugs</td><td class="bell-col">W-22838077 · W-23135970 · W-23122719 · W-23612780</td><td class="equinix-col" style="font-weight:700;color:#cf222e">W-23665086 · W-23044239 · W-22834177 · W-23334769 · W-23685282</td></tr>
+      <tr><td class="metric-col">P2 trend (recent)</td><td class="bell-col" style="color:#1a7f37">Stable → 0 in Jul (declining)</td><td class="equinix-col" style="color:#cf222e;font-weight:700">WORSENING — 12 P2s in Jul (60%)</td></tr>
+      <tr><td class="metric-col">Top recurring cluster</td><td class="bell-col">Promotion deployment corruption + DRO supplemental orders</td><td class="equinix-col">Deep Clone delta mismatch + DRO attribute limit + CPU limits</td></tr>
+      <tr><td class="metric-col">SA status</td><td class="bell-col">Milan Lima — disengaged post-hypercare</td><td class="equinix-col" style="font-weight:700;color:#cf222e">Madalina Rivera — ACTIVE · Project RED 🔴</td></tr>
+      <tr><td class="metric-col">Go-live</td><td class="bell-col" style="color:#1a7f37">Oct 2025 — complete ✅</td><td class="equinix-col" style="color:#cf222e;font-weight:700">Oct 9, 2026 — 10 weeks ⚠️</td></tr>
+      <tr><td class="metric-col">Risk profile</td><td class="bell-col">Ongoing operational tech debt · no SA pattern triage</td><td class="equinix-col" style="font-weight:700;color:#cf222e">Acute pre-go-live · P2 surge · 5 bugs need fix · 1 open case</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- RECOMMENDATIONS -->
+<div class="grid-2">
+  <div class="card blue-border">
+    <div class="card-title">🔵 Bell Canada — Recommendations (post-hypercare, no open cases)</div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-dot yellow"></div>
+        <div class="tl-content"><strong>1. Promote bug watch list to Milan Lima for passive tracking</strong><br>W-22364893/W-23122719 (promotion deployment), W-22838077 (inflight DRO), W-23135970 (DRO lineItem null) — all will continue generating support tickets without a fix. Milan should get a monthly status email on these bugs from engineering.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot yellow"></div>
+        <div class="tl-content"><strong>2. Pattern-review session for Seamus Redmond's team</strong><br>ENTITY_IS_LOCKED (Jun + Jul — filed as unlinked tickets), assetization failures (11 cases, most untriaged) — team is solving the same bugs individually. A 30-min sync to link patterns to known GUSes would significantly reduce repeat case volume.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot blue"></div>
+        <div class="tl-content"><strong>3. API performance review</strong><br>Case 473590153 (May) documented a 10-15× gap vs SF benchmarks in UAT. Case 474107098 (Jul) showed all APIs timing out. Bell is in PROD with this performance baseline. An architecture review call before Q3 would surface whether custom promotion logic needs optimization.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card red-border">
+    <div class="card-title">🔴 Equinix — Immediate Action Items (Madalina Rivera)</div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-dot red"></div>
+        <div class="tl-content"><strong>1. File GUS on 4 uncovered Deep Clone variants — THIS WEEK</strong><br>Cases 474021595, 474049474, 474183634 (each a different failure mode) have no GUS. W-23665086 may not cover the "NOT_FOUND: Invalid Action Type" variant (474049474) or the post-patch OOTB regression (474183634). Push for fix ETA. Deep Clone is core to Equinix's Change Order flow.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot red"></div>
+        <div class="tl-content"><strong>2. Confirm W-23044239 fix is deployed and covers Jul variant</strong><br>Same DRO Expression Set mapping bug hit in Jun PROD and again in Jul. Either the fix didn't hold or the Jul case is a variant. Get engineering confirmation that W-23044239 is resolved in the release track Equinix will be on at go-live (Oct 9).</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot red"></div>
+        <div class="tl-content"><strong>3. Resolve 474203493 (open, 21d, P2) immediately</strong><br>"Delete Offering from Configurator" — no GUS, no Bug, been in Qualification 21 days. Assign to Sangeetha Laxman (who owns related case 474011824) and file a GUS on the underlying platform gap (LWC Configurator doesn't expose delete API for child offering lines).</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot orange"></div>
+        <div class="tl-content"><strong>4. Attribute limit architecture review</strong><br>Equinix's Private Cage product model regularly exceeds 50 attributes per order item — a platform hard limit. This has produced BLOCKER cases in Feb and Jun PROD. Before Oct 9, the product catalog design must be validated to stay within limits, or a Product Manager briefed on the timeline for limit increase.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot orange"></div>
+        <div class="tl-content"><strong>5. Build a formal go/no-go checklist for Oct 9</strong><br>5 confirmed bugs, self-implementation, project RED, Partner Community workstream added late. Madalina Rivera should co-own a go/no-go criteria document with Swapnil Khabiya (PM Sponsor) that defines which bugs must be fixed vs. accepted as known workarounds for go-live day.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Bell Canada &amp; Equinix SA Deep Dive · Q2 FY27 · 98 + 165 cases analyzed · OrgCS live query Aug 19, 2026 · Bell SA: Milan Lima (disengaged) · Equinix SA: Madalina Rivera (active, RED)</footer>
+
+<script>
+const def = (id, cfg) => new Chart(document.getElementById(id).getContext('2d'), cfg);
+const tickColor = '#656d76';
+const gridColor = 'rgba(208,215,222,.6)';
+
+// Bell Canada monthly
+def('bellMonthly', {
+  type:'bar',
+  data:{
+    labels:['Feb','Mar','Apr','May','Jun','Jul'],
+    datasets:[
+      {label:'P2', data:[9,10,5,8,15,0], backgroundColor:'rgba(248,81,73,.75)', stack:'s'},
+      {label:'P3', data:[4,4,4,9,5,8],  backgroundColor:'rgba(240,136,62,.65)', stack:'s'},
+      {label:'P4/None', data:[2,2,2,4,2,5], backgroundColor:'rgba(139,148,158,.5)', stack:'s'},
+    ]
+  },
+  options:{
+    responsive:true, plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:8}}},
+    scales:{
+      x:{stacked:true,ticks:{color:tickColor},grid:{color:gridColor}},
+      y:{stacked:true,ticks:{color:tickColor},grid:{color:gridColor}}
+    }
+  }
+});
+
+// Equinix monthly
+def('equinixMonthly', {
+  type:'bar',
+  data:{
+    labels:['Feb','Mar','Apr','May','Jun','Jul'],
+    datasets:[
+      {label:'P2', data:[11,8,5,9,6,12],  backgroundColor:'rgba(248,81,73,.80)', stack:'s'},
+      {label:'P3', data:[32,18,10,11,11,6], backgroundColor:'rgba(240,136,62,.65)', stack:'s'},
+      {label:'P4/None', data:[9,6,3,4,2,2], backgroundColor:'rgba(139,148,158,.5)', stack:'s'},
+    ]
+  },
+  options:{
+    responsive:true, plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:8}}},
+    scales:{
+      x:{stacked:true,ticks:{color:tickColor},grid:{color:gridColor}},
+      y:{stacked:true,ticks:{color:tickColor},grid:{color:gridColor}}
+    }
+  }
+});
+</script>
+</body>
+</html>
