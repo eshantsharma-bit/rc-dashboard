@@ -25,17 +25,18 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .badge-purple{background:#fbefff;color:#8250df;border:1px solid #d8b4fe}
 .badge-orange{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
 .kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+.kpi-row-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
 .kpi.alert{border-color:#ffcecb;background:#ffebe9}
 .kpi.warn{border-color:#f5d845;background:#fff8c5}
 .kpi.good{border-color:#aceebb;background:#dafbe1}
 .kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:600}
-.kpi-value{font-size:28px;font-weight:700;line-height:1.1;margin:6px 0 4px}
+.kpi-value{font-size:26px;font-weight:700;line-height:1.1;margin:6px 0 4px}
 .kpi-sub{font-size:11px;color:var(--muted)}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
-.card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .card.red-border{border-color:#ffcecb}
 .card.orange-border{border-color:#ffc896}
 .card.yellow-border{border-color:#f5d845}
@@ -56,6 +57,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .pill-orange{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
 .pill-purple{background:#fbefff;color:#8250df;border:1px solid #d8b4fe}
 .pill-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845}
+.pill-gray{background:#f6f8fa;color:#656d76;border:1px solid #d0d7de}
 .insight{padding:12px 14px;border-radius:6px;border-left:3px solid;margin-bottom:10px;font-size:12px;line-height:1.5}
 .insight.red{background:#ffebe9;border-color:#cf222e}
 .insight.green{background:#dafbe1;border-color:#1a7f37}
@@ -70,25 +72,20 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .family-cpq{background:#fff1e5;color:#bc4c00}
 .family-billing{background:#fbefff;color:#8250df}
 .family-docgen{background:#dafbe1;color:#1a7f37}
-.family-other{background:#f6f8fa;color:#656d76;border:1px solid var(--border)}
 .num-up{color:#cf222e;font-weight:600}
 .num-down{color:#1a7f37;font-weight:600}
-.num-neutral{color:var(--muted);font-weight:600}
 .section-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:8px}
-.acct-card{border:1px solid var(--border);border-radius:6px;overflow:hidden}
-.acct-card-hdr{background:#f6f8fa;padding:8px 10px;font-weight:700;font-size:11px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:6px}
-.acct-row{display:flex;justify-content:space-between;align-items:center;padding:5px 10px;border-bottom:1px solid #eaeef2;font-size:11px}
-.acct-row:last-child{border-bottom:none}
-.acct-name{color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px}
-.acct-count{font-weight:700;color:var(--accent);flex-shrink:0}
-.rank-num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;font-weight:700;flex-shrink:0;margin-right:6px}
+.rank-num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;font-weight:700;flex-shrink:0;margin-right:4px}
 .rank-num.gold{background:#9a6700}
 .rank-num.silver{background:#656d76}
 .rank-num.bronze{background:#bc4c00}
-.trend-chip{display:inline-flex;align-items:center;gap:2px;padding:1px 5px;border-radius:10px;font-size:10px;font-weight:700}
-.trend-up{background:#ffebe9;color:#cf222e}
-.trend-down{background:#dafbe1;color:#1a7f37}
-.trend-flat{background:#f6f8fa;color:#656d76;border:1px solid var(--border)}
+/* horizontal stacked mini bar */
+.mini-bar{height:8px;border-radius:4px;overflow:hidden;display:flex;margin-top:3px}
+.mini-bar-cpq{background:#f08838}
+.mini-bar-rca{background:#58a6ff}
+.mini-bar-billing{background:#a371f7}
+/* GEO bar */
+.geo-bar{height:12px;border-radius:6px;overflow:hidden;display:flex;gap:1px;margin-top:6px}
 footer{text-align:center;font-size:11px;color:var(--muted);margin-top:24px;padding-top:12px;border-top:1px solid var(--border)}
 canvas{max-width:100%}
 </style>
@@ -102,7 +99,7 @@ canvas{max-width:100%}
     <div class="meta">Q2 FY27 (May–Jul 2026) · All Regions · Source: OrgCS Dashboard · Aug 19, 2026</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
-    <span class="badge badge-orange">📦 Legacy CPQ 559 cases · 36.7% of RC · +3.3% QoQ</span>
+    <span class="badge badge-orange">📦 Legacy CPQ 559 · 36.7% · +3.3% QoQ</span>
     <span class="badge badge-red">📈 CLM DocGen +65% QoQ · surging</span>
     <span class="badge badge-green">✅ Dev P2O −37% · normalized</span>
     <span class="badge badge-blue">📊 Inflow 1,522 · −35 QoQ</span>
@@ -147,25 +144,25 @@ canvas{max-width:100%}
 <div class="story-grid">
   <div class="insight red">
     <strong>🔴 Legacy CPQ combined: 559 cases · 36.7% of all RC volume</strong><br>
-    SF CPQ (406) + CPQ Dev Support (153) = 559 Q2 cases, up from 541 in Q1 (+18, +3.3%). Legacy CPQ is the single largest demand block in Revenue Cloud. Trimble Illuminate spans both sub-topics — primary concentration risk at 21 combined cases.
+    SF CPQ (406) + CPQ Dev Support (153) = 559 Q2 vs 541 Q1 (+3.3%). Legacy CPQ install base is old — 79% of all CPQ contacts are &gt;6 months old. Growing CPQ Dev Support (+10.9%) signals increasing platform complexity as accounts push CPQ harder. Trimble Illuminate (21 cases across both sub-topics) is the top concentration account.
   </div>
   <div class="insight orange">
-    <strong>📈 CLM with DocGen: fastest-growing topic at +64.7% QoQ</strong><br>
-    14 (FY26Q3) → 11 (FY26Q4) → 34 (FY27Q1) → 56 (FY27Q2). Accelerating sharply each quarter — from fringe topic to #10 in ranking in two quarters. PwC Global is the anchor account. Highest P2% (58.8%) of any emerging topic. Engineering watch warranted.
+    <strong>📈 CLM DocGen +65% QoQ — fastest growing, highest P2% (58.8%)</strong><br>
+    34 → 56 cases. PwC Global anchors 12 of 56 (21%). Acceleration is clear: May 9 → Jun 11 → Jul 14. CLM DocGen shows 34.7% new-account (<6mo) share — active adoption phase driving ticket volume. Engineering watch warranted.
   </div>
   <div class="insight green">
-    <strong>✅ Dev Support (Product to Order) fully normalized: −37% QoQ</strong><br>
-    144 (FY26Q3) → 84 → 107 → 67 (FY27Q2). Consistent downward trajectory over 4 quarters. The RLM go-live migration wave is absorbed. Frees engineering capacity now being absorbed by Configurator and CLM DocGen growth.
+    <strong>✅ RCA share rising as CPQ normalizes — healthy product mix shift</strong><br>
+    RCA grew from 55–58% of monthly mix in Q1 to 55–61% in Q2, while CPQ share pulled back from a Jun peak of 42% to 35% in Jul. RCA dominates new accounts (41% of RCA contacts are &lt;6mo) — growth momentum is on the right product.
   </div>
   <div class="insight blue">
-    <strong>📊 Product Configurator: structural lift with Jun/Jul acceleration</strong><br>
-    FY27Q2 at 267 (+11.7% vs Q1's 239) but the shape matters more than the total — Jun 52 → Jul 54 monthly cases. FY26Q3 peak was 309 and we're climbing back. Kaseya (18 cases) + Siemens (13) concentration in EMEA. Highest backlog count (18 open) of any topic.
+    <strong>📊 Product Configurator: 239 → 267 (+11.7%), Jun/Jul accelerating</strong><br>
+    May 26 → Jun 52 → Jul 54 monthly. Kaseya (50 total Q2 cases, Adoption Score=1, 98% RCA) is the #3 account with no Arch/Guide Eng assigned. Highest open backlog (18) of any topic. Watch Q3.
   </div>
 </div>
 
-<!-- PRODUCT TOPIC MASTER TABLE -->
+<!-- MASTER DRIVER TABLE -->
 <div class="card" style="margin-bottom:16px">
-  <div class="card-title">📊 Top Case Drivers — Q1 vs Q2 FY27</div>
+  <div class="card-title">📊 Top Case Drivers — Q1 vs Q2 FY27 (Legacy CPQ combined)</div>
   <table class="data-table">
     <thead>
       <tr>
@@ -178,9 +175,9 @@ canvas{max-width:100%}
       </tr>
     </thead>
     <tbody>
-      <tr style="background:rgba(240,136,62,.06)">
+      <tr style="background:rgba(240,136,62,.05)">
         <td>
-          <strong>Legacy CPQ</strong>
+          <strong>Legacy CPQ</strong> <span class="badge badge-orange" style="font-size:9px;padding:1px 5px">COMBINED</span>
           <div style="font-size:10px;color:var(--muted);margin-top:2px">↳ SF CPQ: Q1 403 → Q2 <strong>406</strong> &nbsp;|&nbsp; CPQ Dev Support: Q1 138 → Q2 <strong>153</strong></div>
         </td>
         <td><span class="family-tag family-cpq">Legacy CPQ</span></td>
@@ -191,70 +188,60 @@ canvas{max-width:100%}
       <tr>
         <td><strong>Product Configurator</strong></td>
         <td><span class="family-tag family-rc">RC Core</span></td>
-        <td>239</td>
-        <td class="tw-col"><strong>267</strong></td>
+        <td>239</td><td class="tw-col"><strong>267</strong></td>
         <td><span class="num-up">+28</span></td><td><span class="num-up">+11.7%</span></td>
       </tr>
       <tr>
         <td><strong>Transaction Management</strong></td>
         <td><span class="family-tag family-rc">RC Core</span></td>
-        <td>165</td>
-        <td class="tw-col"><strong>151</strong></td>
+        <td>165</td><td class="tw-col"><strong>151</strong></td>
         <td><span class="num-down">−14</span></td><td><span class="num-down">−8.5%</span></td>
       </tr>
       <tr>
         <td><strong>Price Management</strong></td>
         <td><span class="family-tag family-rc">RC Core</span></td>
-        <td>138</td>
-        <td class="tw-col"><strong>116</strong></td>
+        <td>138</td><td class="tw-col"><strong>116</strong></td>
         <td><span class="num-down">−22</span></td><td><span class="num-down">−15.9%</span></td>
       </tr>
       <tr>
         <td><strong>Billing &amp; Invoicing</strong></td>
         <td><span class="family-tag family-rc">RC Core</span></td>
-        <td>83</td>
-        <td class="tw-col"><strong>70</strong></td>
+        <td>83</td><td class="tw-col"><strong>70</strong></td>
         <td><span class="num-down">−13</span></td><td><span class="num-down">−15.7%</span></td>
       </tr>
       <tr style="background:rgba(46,164,79,.04)">
         <td><strong>Dev Support (Product to Order)</strong> <span class="badge badge-green" style="font-size:9px;padding:1px 5px;margin-left:4px">↓ −37%</span></td>
         <td><span class="family-tag family-rc">RC Core</span></td>
-        <td>107</td>
-        <td class="tw-col"><strong>67</strong></td>
+        <td>107</td><td class="tw-col"><strong>67</strong></td>
         <td><span class="num-down">−40</span></td><td><span class="num-down">−37.4%</span></td>
       </tr>
       <tr>
         <td><strong>Salesforce Billing</strong></td>
         <td><span class="family-tag family-billing">Billing</span></td>
-        <td>52</td>
-        <td class="tw-col"><strong>62</strong></td>
+        <td>52</td><td class="tw-col"><strong>62</strong></td>
         <td><span class="num-up">+10</span></td><td><span class="num-up">+19.2%</span></td>
       </tr>
       <tr>
         <td><strong>Product Catalog Management</strong></td>
         <td><span class="family-tag family-rc">RC Core</span></td>
-        <td>71</td>
-        <td class="tw-col"><strong>60</strong></td>
+        <td>71</td><td class="tw-col"><strong>60</strong></td>
         <td><span class="num-down">−11</span></td><td><span class="num-down">−15.5%</span></td>
       </tr>
       <tr style="background:rgba(248,81,73,.04)">
         <td><strong>CLM with DocGen</strong> <span class="badge badge-red" style="font-size:9px;padding:1px 5px;margin-left:4px">↑ +65%</span></td>
         <td><span class="family-tag family-rc">RC Core</span></td>
-        <td>34</td>
-        <td class="tw-col"><strong>56</strong></td>
+        <td>34</td><td class="tw-col"><strong>56</strong></td>
         <td><span class="num-up">+22</span></td><td><span class="num-up">+64.7%</span></td>
       </tr>
       <tr>
         <td><strong>Document Generation</strong></td>
         <td><span class="family-tag family-docgen">DocGen</span></td>
-        <td>34</td>
-        <td class="tw-col"><strong>28</strong></td>
+        <td>34</td><td class="tw-col"><strong>28</strong></td>
         <td><span class="num-down">−6</span></td><td><span class="num-down">−17.6%</span></td>
       </tr>
       <tr>
         <td style="color:var(--muted);font-size:11px">Other Revenue topics</td>
-        <td>—</td>
-        <td style="color:var(--muted)">—</td>
+        <td>—</td><td style="color:var(--muted)">—</td>
         <td class="tw-col" style="color:var(--muted)"><strong>86</strong></td>
         <td>—</td><td>—</td>
       </tr>
@@ -268,12 +255,12 @@ canvas{max-width:100%}
   </table>
 </div>
 
-<!-- CHARTS: Q1 vs Q2 BAR + FAMILY DONUT -->
+<!-- CHARTS: Q1 vs Q2 + FAMILY DONUT -->
 <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px">
   <div class="card">
-    <div class="card-title">📊 Q1 vs Q2 FY27 — Topic Volume (Legacy CPQ combined)</div>
-    <canvas id="qtrTrend" height="220"></canvas>
-    <div style="margin-top:10px;display:flex;gap:16px;font-size:11px;color:var(--muted)">
+    <div class="card-title">📊 Q1 vs Q2 FY27 — Volume by Topic (Legacy CPQ combined)</div>
+    <canvas id="q1vsq2Bar" height="220"></canvas>
+    <div style="margin-top:8px;display:flex;gap:16px;font-size:11px;color:var(--muted)">
       <span>Q1 Total: <strong style="color:var(--text)">1,557</strong></span>
       <span>Q2 Total: <strong style="color:#1a7f37">1,522 ↓ −35</strong></span>
       <span>Legacy CPQ: <strong style="color:#bc4c00">541→559 +3.3%</strong></span>
@@ -281,277 +268,361 @@ canvas{max-width:100%}
   </div>
   <div class="card">
     <div class="card-title">🍩 Q2 FY27 by Family</div>
-    <canvas id="familyDonut" height="200"></canvas>
-    <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px">
+    <canvas id="familyDonut" height="190"></canvas>
+    <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px">
       <div style="padding:6px 8px;background:#fff1e5;border-radius:6px;border:1px solid #ffc896">
         <div style="font-weight:700;color:#bc4c00">Legacy CPQ</div>
         <div style="color:var(--text)">559 · 36.7%</div>
-        <div style="color:var(--muted);font-size:10px">SF CPQ 406 + CPQ Dev 153</div>
+        <div style="color:var(--muted);font-size:10px">SF CPQ 406 · Dev 153</div>
       </div>
       <div style="padding:6px 8px;background:#ddf4ff;border-radius:6px;border:1px solid #80ccff">
-        <div style="font-weight:700;color:#0969da">RC Core</div>
+        <div style="font-weight:700;color:#0969da">RC Core (RCA)</div>
         <div style="color:var(--text)">840 · 55.2%</div>
-        <div style="color:var(--muted);font-size:10px">RLM + all Core topics</div>
-      </div>
-      <div style="padding:6px 8px;background:#dafbe1;border-radius:6px;border:1px solid #aceebb">
-        <div style="font-weight:700;color:#1a7f37">DocGen</div>
-        <div style="color:var(--text)">28 · 1.8%</div>
-        <div style="color:var(--muted);font-size:10px">Doc Generation</div>
+        <div style="color:var(--muted);font-size:10px">RLM + all Core</div>
       </div>
       <div style="padding:6px 8px;background:#fbefff;border-radius:6px;border:1px solid #d8b4fe">
         <div style="font-weight:700;color:#8250df">Billing</div>
         <div style="color:var(--text)">62 · 4.1%</div>
         <div style="color:var(--muted);font-size:10px">SF Billing</div>
       </div>
+      <div style="padding:6px 8px;background:#dafbe1;border-radius:6px;border:1px solid #aceebb">
+        <div style="font-weight:700;color:#1a7f37">Other</div>
+        <div style="color:var(--text)">61 · 4.0%</div>
+        <div style="color:var(--muted);font-size:10px">DocGen + misc</div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- QoQ MOVEMENT + QUARTERLY METRICS TABLE -->
+<!-- VOLUME SHARE TREND + KEY METRICS TABLE -->
 <div class="grid-2">
   <div class="card">
-    <div class="card-title">🔄 QoQ Volume Movement (FY27Q1 → FY27Q2)</div>
-    <canvas id="q1vsq2" height="280"></canvas>
+    <div class="card-title">📈 Volume Share Trend — Legacy CPQ vs RCA vs Billing (Feb–Jul 2026 · EMEA+India Sig-tier)</div>
+    <canvas id="shareLineChart" height="200"></canvas>
+    <div style="margin-top:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:11px">
+      <div style="padding:5px 8px;background:#fff1e5;border-radius:5px;border-left:3px solid #f08838">
+        <div style="font-weight:700;color:#bc4c00">Legacy CPQ</div>
+        <div>Feb 30.4% → Jul 34.9%</div>
+        <div style="color:var(--muted);font-size:10px">Peak: May/Jun 42.1%</div>
+      </div>
+      <div style="padding:5px 8px;background:#ddf4ff;border-radius:5px;border-left:3px solid #58a6ff">
+        <div style="font-weight:700;color:#0969da">RCA</div>
+        <div>Feb 65.0% → Jul 61.4%</div>
+        <div style="color:var(--muted);font-size:10px">Dominant throughout</div>
+      </div>
+      <div style="padding:5px 8px;background:#fbefff;border-radius:5px;border-left:3px solid #a371f7">
+        <div style="font-weight:700;color:#8250df">Billing</div>
+        <div>Feb 3.8% → Jul 3.3%</div>
+        <div style="color:var(--muted);font-size:10px">Low, declining</div>
+      </div>
+    </div>
   </div>
 
   <div class="card">
-    <div class="card-title">📋 Key Metrics &amp; Trends — 4-Quarter View</div>
+    <div class="card-title">📋 Key Metrics — Q1 vs Q2 FY27</div>
     <table class="data-table">
       <thead>
         <tr>
-          <th style="text-align:left;min-width:120px">KPI</th>
+          <th style="text-align:left;min-width:130px">KPI</th>
           <th>Target</th>
-          <th>FY26Q3</th>
-          <th>FY26Q4</th>
           <th>FY27Q1</th>
           <th class="tw-col" style="background:rgba(88,166,255,.12)">★ FY27Q2</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td><strong>Support Inflow</strong></td>
-          <td style="color:var(--muted)">—</td>
-          <td>1,573</td><td>1,422</td><td>1,557</td>
-          <td class="tw-col"><strong>1,522</strong></td>
-        </tr>
-        <tr style="background:rgba(63,185,80,.03)">
-          <td><strong>Closures</strong></td>
-          <td style="color:var(--muted)">—</td>
-          <td>1,568</td><td>1,439</td><td>1,557</td>
-          <td class="tw-col"><strong>1,549</strong></td>
-        </tr>
-        <tr>
-          <td><strong>SLO Miss %</strong></td>
-          <td style="color:var(--muted)">&lt;2%</td>
-          <td style="color:#9a6700">1.7%</td><td style="color:#cf222e">4.1%</td><td style="color:#cf222e">3.1%</td>
-          <td class="tw-col"><strong style="color:#1a7f37">2.2%</strong></td>
-        </tr>
-        <tr style="background:rgba(63,185,80,.03)">
-          <td><strong>Escalation %</strong></td>
-          <td style="color:var(--muted)">&lt;2%</td>
-          <td>1.3%</td><td>1.2%</td><td>0.8%</td>
-          <td class="tw-col"><strong style="color:#1a7f37">0.5%</strong></td>
-        </tr>
-        <tr>
-          <td><strong>TTR (Days)</strong></td>
-          <td style="color:var(--muted)">10d</td>
-          <td>10.6</td><td>10.2</td><td>9.2</td>
-          <td class="tw-col"><strong style="color:#1a7f37">9.1</strong></td>
-        </tr>
-        <tr style="background:rgba(63,185,80,.03)">
-          <td><strong>CSAT</strong></td>
-          <td style="color:var(--muted)">4.7</td>
-          <td>4.69</td><td>4.88</td><td>4.57</td>
-          <td class="tw-col"><strong style="color:#1a7f37">4.87</strong></td>
-        </tr>
-        <tr>
-          <td><strong>Reopen Rate</strong></td>
-          <td style="color:var(--muted)">20%</td>
-          <td>7.7%</td><td>7.3%</td><td>6.0%</td>
-          <td class="tw-col"><strong style="color:#9a6700">7.3%</strong></td>
-        </tr>
-        <tr>
-          <td><strong>Investigations</strong></td>
-          <td style="color:var(--muted)">—</td>
-          <td>202</td><td>163</td><td>164</td>
-          <td class="tw-col"><strong>150</strong></td>
-        </tr>
-        <tr style="background:rgba(63,185,80,.03)">
-          <td><strong>Investigation Rate</strong></td>
-          <td style="color:var(--muted)">—</td>
-          <td>12.8%</td><td>11.5%</td><td>10.5%</td>
-          <td class="tw-col"><strong style="color:#1a7f37">9.9%</strong></td>
-        </tr>
-        <tr>
-          <td><strong>Bugs</strong></td>
-          <td style="color:var(--muted)">—</td>
-          <td>98</td><td>83</td><td>99</td>
-          <td class="tw-col"><strong>91</strong></td>
-        </tr>
-        <tr style="background:rgba(63,185,80,.03)">
-          <td><strong>Bug Rate</strong></td>
-          <td style="color:var(--muted)">—</td>
-          <td>6.2%</td><td>5.8%</td><td>6.4%</td>
-          <td class="tw-col"><strong>6.0%</strong></td>
-        </tr>
+        <tr><td><strong>Support Inflow</strong></td><td style="color:var(--muted)">—</td><td>1,557</td><td class="tw-col"><strong>1,522</strong></td></tr>
+        <tr style="background:rgba(63,185,80,.03)"><td><strong>Closures</strong></td><td style="color:var(--muted)">—</td><td>1,557</td><td class="tw-col"><strong>1,549</strong></td></tr>
+        <tr><td><strong>SLO Miss %</strong></td><td style="color:var(--muted)">&lt;2%</td><td style="color:#cf222e">3.1%</td><td class="tw-col"><strong style="color:#1a7f37">2.2%</strong></td></tr>
+        <tr style="background:rgba(63,185,80,.03)"><td><strong>Escalation %</strong></td><td style="color:var(--muted)">&lt;2%</td><td>0.8%</td><td class="tw-col"><strong style="color:#1a7f37">0.5%</strong></td></tr>
+        <tr><td><strong>TTR (Days)</strong></td><td style="color:var(--muted)">10d</td><td>9.2</td><td class="tw-col"><strong style="color:#1a7f37">9.1</strong></td></tr>
+        <tr style="background:rgba(63,185,80,.03)"><td><strong>CSAT</strong></td><td style="color:var(--muted)">4.7</td><td style="color:#cf222e">4.57</td><td class="tw-col"><strong style="color:#1a7f37">4.87</strong></td></tr>
+        <tr><td><strong>Reopen Rate</strong></td><td style="color:var(--muted)">20%</td><td>6.0%</td><td class="tw-col"><strong style="color:#9a6700">7.3%</strong></td></tr>
+        <tr style="background:rgba(63,185,80,.03)"><td><strong>Investigations</strong></td><td style="color:var(--muted)">—</td><td>164</td><td class="tw-col"><strong>150</strong></td></tr>
+        <tr><td><strong>Investigation Rate</strong></td><td style="color:var(--muted)">—</td><td>10.5%</td><td class="tw-col"><strong style="color:#1a7f37">9.9%</strong></td></tr>
+        <tr style="background:rgba(63,185,80,.03)"><td><strong>Bugs</strong></td><td style="color:var(--muted)">—</td><td>99</td><td class="tw-col"><strong>91</strong></td></tr>
+        <tr><td><strong>Bug Rate</strong></td><td style="color:var(--muted)">—</td><td>6.4%</td><td class="tw-col"><strong>6.0%</strong></td></tr>
       </tbody>
     </table>
     <div class="insight green" style="margin-top:10px;font-size:11px">
-      <strong>5/5 operational KPIs improving QoQ:</strong> SLO Miss −0.9pp · Escalation −0.3pp · TTR −0.1d · CSAT +0.30 · Investigation Rate −0.6pp. All heading in the right direction.
+      <strong>5/5 operational KPIs improving QoQ:</strong> SLO Miss −0.9pp · CSAT +0.30 · TTR −0.1d · Escalation −0.3pp · Investigation Rate −0.6pp.
     </div>
   </div>
 </div>
 
-<!-- TOP 10 ACCOUNTS -->
-<div class="card" style="margin-bottom:16px;margin-top:0">
-  <div class="card-title">🏢 Top 10 Case-Creating Accounts — Q2 FY27</div>
+<!-- CONTACT AGE SECTION -->
+<div class="card orange-border" style="margin-bottom:16px">
+  <div class="card-title">🕐 Contact Age Analysis — <6 Months vs ≥6 Months (Grand Total 3,533 cases · All-scope)</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:14px">
+    <!-- Summary KPIs -->
+    <div class="kpi" style="border-color:#ffc896;background:#fff1e5">
+      <div class="kpi-label" style="color:#bc4c00">Legacy CPQ — New</div>
+      <div class="kpi-value" style="color:#bc4c00;font-size:22px">21.0%</div>
+      <div class="kpi-sub">281 of 1,338 cases &lt;6mo</div>
+      <div class="kpi-sub" style="margin-top:2px;font-weight:600;color:#9a6700">Old install base — 79% mature</div>
+    </div>
+    <div class="kpi" style="border-color:#80ccff;background:#ddf4ff">
+      <div class="kpi-label" style="color:#0969da">RCA (RC Core) — New</div>
+      <div class="kpi-value" style="color:#0969da;font-size:22px">41.1%</div>
+      <div class="kpi-sub">840 of 2,043 cases &lt;6mo</div>
+      <div class="kpi-sub" style="margin-top:2px;font-weight:600;color:#1a7f37">Active adoption — 2× CPQ new ratio</div>
+    </div>
+    <div class="kpi" style="border-color:#d8b4fe;background:#fbefff">
+      <div class="kpi-label" style="color:#8250df">Billing — New</div>
+      <div class="kpi-value" style="color:#8250df;font-size:22px">29.2%</div>
+      <div class="kpi-sub">38 of 130 cases &lt;6mo</div>
+      <div class="kpi-sub" style="margin-top:2px">In between CPQ and RCA</div>
+    </div>
+    <div class="kpi good">
+      <div class="kpi-label">All RC — New</div>
+      <div class="kpi-value" style="font-size:22px">33.0%</div>
+      <div class="kpi-sub">1,159 of 3,511 cases &lt;6mo</div>
+      <div class="kpi-sub" style="margin-top:2px">67% from established accounts</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Bar chart -->
+    <div>
+      <canvas id="contactAgeChart" height="200"></canvas>
+    </div>
+    <!-- Per-topic table -->
+    <div>
+      <div class="section-label" style="margin-bottom:10px">By Topic — &lt;6mo Share (New Account Rate)</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">Topic (short)</th>
+            <th>Total</th>
+            <th>&lt;6mo</th>
+            <th>&lt;6mo %</th>
+            <th>Signal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- RCA topics — high new acct rate -->
+          <tr><td>Usage &amp; Ratings</td><td>25</td><td>15</td><td class="tw-col"><strong>60.0%</strong></td><td><span class="pill pill-red">Very high</span></td></tr>
+          <tr><td>Business Rules Engine</td><td>13</td><td>7</td><td class="tw-col"><strong>53.8%</strong></td><td><span class="pill pill-red">Very high</span></td></tr>
+          <tr><td>Advanced Approvals</td><td>47</td><td>22</td><td class="tw-col"><strong>46.8%</strong></td><td><span class="pill pill-orange">High</span></td></tr>
+          <tr><td>Prod Catalog Mgmt</td><td>151</td><td>72</td><td class="tw-col"><strong>47.7%</strong></td><td><span class="pill pill-orange">High</span></td></tr>
+          <tr><td>Price Management</td><td>291</td><td>131</td><td class="tw-col"><strong>45.0%</strong></td><td><span class="pill pill-orange">High</span></td></tr>
+          <tr><td>Product Configurator</td><td>598</td><td>242</td><td class="tw-col"><strong>40.5%</strong></td><td><span class="pill pill-yellow">Moderate</span></td></tr>
+          <tr><td>Transaction Mgmt</td><td>364</td><td>144</td><td class="tw-col"><strong>39.6%</strong></td><td><span class="pill pill-yellow">Moderate</span></td></tr>
+          <tr><td>CLM with DocGen</td><td>95</td><td>33</td><td class="tw-col"><strong>34.7%</strong></td><td><span class="pill pill-yellow">Moderate</span></td></tr>
+          <tr style="border-top:1px solid var(--border)"><td>SF Billing</td><td>130</td><td>38</td><td class="tw-col"><strong>29.2%</strong></td><td><span class="pill pill-blue">Lower</span></td></tr>
+          <tr style="border-top:1px solid var(--border)"><td>CPQ Dev Support</td><td>339</td><td>60</td><td class="tw-col"><strong>17.7%</strong></td><td><span class="pill pill-gray">Mature</span></td></tr>
+          <tr><td>SF CPQ</td><td>928</td><td>202</td><td class="tw-col"><strong>21.8%</strong></td><td><span class="pill pill-gray">Mature</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+    <div class="insight orange" style="margin:0;font-size:11px">
+      <strong>RCA adoption is active — 41% new contacts</strong><br>
+      2× the new-account rate of Legacy CPQ. Usage &amp; Ratings (60%) and Business Rules Engine (54%) are almost entirely new adoption — tickets here reflect go-live pain, not legacy debt.
+    </div>
+    <div class="insight red" style="margin:0;font-size:11px">
+      <strong>Legacy CPQ is 79% mature install base</strong><br>
+      Only 21% of CPQ contacts are &lt;6 months. CPQ volume is driven by established accounts with recurring operational issues — not new adopters. Stabilization requires knowledge base / self-serve, not go-live support.
+    </div>
+    <div class="insight blue" style="margin:0;font-size:11px">
+      <strong>CLM DocGen 35% new — adoption + complexity surge</strong><br>
+      Both new accounts (35%) and complex existing use-cases (65% mature) driving volume simultaneously. Explains the P2-heavy mix (58.8%) — new accounts hit harder bugs during initial configuration.
+    </div>
+  </div>
+</div>
+
+<!-- TOP 10 ACCOUNTS with GUS/Bug/Family -->
+<div class="card" style="margin-bottom:16px">
+  <div class="card-title">🏢 Top 10 Accounts — Q2 FY27 · GUS, Bug &amp; Product Family Breakdown</div>
   <table class="data-table">
     <thead>
       <tr>
-        <th style="text-align:center;width:30px">#</th>
-        <th style="text-align:left">Account</th>
-        <th>Inflow</th>
-        <th>CSAT</th>
-        <th>Guide Eng (New|Active)</th>
-        <th>Arch Eng (New|Active)</th>
-        <th>Onboarding Eng (New|Active)</th>
-        <th>Adoption Score</th>
-        <th>Red Acct?</th>
-        <th>Renewal Date</th>
+        <th style="text-align:center;width:28px">#</th>
+        <th style="text-align:left;min-width:160px">Account</th>
+        <th>Total</th>
+        <th>Primary Family</th>
+        <th style="min-width:90px">CPQ / RCA / Billing</th>
+        <th>GUS Filed</th>
+        <th>GUS %</th>
+        <th>Bug Filed</th>
+        <th>Bug %</th>
+        <th>No Triage ⚠️</th>
+        <th>P2</th>
+        <th>Open</th>
+        <th>Red?</th>
+        <th>Renewal</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td style="text-align:center"><span class="rank-num gold">1</span></td>
         <td><strong>Equinix, Inc.</strong></td>
-        <td class="tw-col"><strong>60</strong></td>
-        <td style="color:#1a7f37;font-weight:700">5.0</td>
-        <td>2 | 2</td><td>0 | 0</td><td>0 | 0</td>
-        <td>86</td><td><span class="pill pill-green">No</span></td><td>2026-11-05</td>
+        <td class="tw-col"><strong>63</strong></td>
+        <td><span class="family-tag family-rc">RCA 98%</span></td>
+        <td>
+          <div class="mini-bar">
+            <div class="mini-bar-cpq" style="width:1.6%"></div>
+            <div class="mini-bar-rca" style="width:98.4%"></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted)">CPQ 1 · RCA 62</div>
+        </td>
+        <td>10</td><td>15.9%</td><td>5</td><td>7.9%</td>
+        <td><strong style="color:#cf222e">51</strong></td>
+        <td>22</td><td>1</td>
+        <td><span class="pill pill-green">No</span></td><td style="font-size:11px">Nov 2026</td>
       </tr>
       <tr>
         <td style="text-align:center"><span class="rank-num silver">2</span></td>
         <td><strong>Bell Canada</strong></td>
-        <td class="tw-col"><strong>55</strong></td>
-        <td style="color:#1a7f37;font-weight:700">5.0</td>
-        <td>1 | 1</td><td>1 | 1</td><td>0 | 0</td>
-        <td>2</td><td><span class="pill pill-red">Yes</span></td><td>2031-01-31</td>
+        <td class="tw-col"><strong>56</strong></td>
+        <td><span class="family-tag family-rc">RCA 100%</span></td>
+        <td>
+          <div class="mini-bar">
+            <div class="mini-bar-rca" style="width:100%"></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted)">CPQ 0 · RCA 56</div>
+        </td>
+        <td><strong style="color:#1a7f37">20</strong></td><td><strong style="color:#1a7f37">35.7%</strong></td>
+        <td><strong style="color:#1a7f37">11</strong></td><td><strong style="color:#1a7f37">19.6%</strong></td>
+        <td>35</td>
+        <td>15</td><td>0</td>
+        <td><span class="pill pill-red">Yes</span></td><td style="font-size:11px">Jan 2031</td>
       </tr>
       <tr>
         <td style="text-align:center"><span class="rank-num bronze">3</span></td>
         <td><strong>Kaseya — New Org</strong></td>
         <td class="tw-col"><strong>50</strong></td>
-        <td style="color:var(--muted)">—</td>
-        <td>0 | 0</td><td>0 | 0</td><td>0 | 0</td>
-        <td>1</td><td><span class="pill pill-green">No</span></td><td>2028-08-30</td>
+        <td><span class="family-tag family-rc">RCA 98%</span></td>
+        <td>
+          <div class="mini-bar">
+            <div class="mini-bar-rca" style="width:98%"></div>
+            <div class="mini-bar-billing" style="width:2%"></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted)">RCA 49 · Billing 1</div>
+        </td>
+        <td>6</td><td>12.0%</td><td>3</td><td>6.0%</td>
+        <td><strong style="color:#cf222e">42</strong></td>
+        <td><strong style="color:#cf222e">45</strong></td><td>0</td>
+        <td><span class="pill pill-green">No</span></td><td style="font-size:11px">Aug 2028</td>
       </tr>
       <tr>
         <td style="text-align:center"><span class="rank-num">4</span></td>
         <td><strong>CrowdStrike, Inc.</strong></td>
         <td class="tw-col"><strong>46</strong></td>
-        <td style="color:#1a7f37;font-weight:700">5.0</td>
-        <td>0 | 0</td><td>0 | 0</td><td>0 | 0</td>
-        <td>93</td><td><span class="pill pill-green">No</span></td><td>2029-01-31</td>
+        <td><span class="family-tag family-rc">RCA 63%</span></td>
+        <td>
+          <div class="mini-bar">
+            <div class="mini-bar-cpq" style="width:37%"></div>
+            <div class="mini-bar-rca" style="width:63%"></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted)">CPQ 17 · RCA 29</div>
+        </td>
+        <td>2</td><td style="color:#cf222e">4.3%</td><td>1</td><td>2.2%</td>
+        <td><strong style="color:#cf222e">43</strong></td>
+        <td>5</td><td>1</td>
+        <td><span class="pill pill-green">No</span></td><td style="font-size:11px">Jan 2029</td>
       </tr>
       <tr>
         <td style="text-align:center"><span class="rank-num">5</span></td>
-        <td><strong>Trimble Illuminate</strong></td>
-        <td class="tw-col"><strong>33</strong></td>
-        <td style="color:#9a6700;font-weight:700">4.5</td>
-        <td>0 | 0</td><td>0 | 0</td><td>0 | 0</td>
-        <td>—</td><td><span class="pill pill-green">No</span></td><td>2026-12-16</td>
-      </tr>
-      <tr>
-        <td style="text-align:center"><span class="rank-num">6</span></td>
         <td><strong>Rapid7</strong></td>
         <td class="tw-col"><strong>33</strong></td>
-        <td style="color:#1a7f37;font-weight:700">4.7</td>
-        <td>0 | 0</td><td>0 | 0</td><td>0 | 0</td>
-        <td>25</td><td><span class="pill pill-green">No</span></td><td>2027-10-31</td>
+        <td><span class="family-tag family-rc">RCA 100%</span></td>
+        <td>
+          <div class="mini-bar">
+            <div class="mini-bar-rca" style="width:100%"></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted)">CPQ 0 · RCA 33</div>
+        </td>
+        <td>2</td><td style="color:#cf222e">6.1%</td><td>0</td><td>0.0%</td>
+        <td><strong style="color:#cf222e">31</strong></td>
+        <td>8</td><td>0</td>
+        <td><span class="pill pill-green">No</span></td><td style="font-size:11px">Oct 2027</td>
+      </tr>
+      <tr style="background:rgba(240,136,62,.04)">
+        <td style="text-align:center"><span class="rank-num">6</span></td>
+        <td><strong>Trimble Illuminate</strong></td>
+        <td class="tw-col"><strong>33</strong></td>
+        <td><span class="family-tag family-cpq">CPQ 85%</span></td>
+        <td>
+          <div class="mini-bar">
+            <div class="mini-bar-cpq" style="width:84.8%"></div>
+            <div class="mini-bar-billing" style="width:15.2%"></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted)">CPQ 28 · Billing 5</div>
+        </td>
+        <td>1</td><td style="color:#cf222e">3.0%</td><td>1</td><td>3.0%</td>
+        <td><strong style="color:#cf222e">32</strong></td>
+        <td>22</td><td>0</td>
+        <td><span class="pill pill-green">No</span></td><td style="font-size:11px">Dec 2026</td>
       </tr>
       <tr>
         <td style="text-align:center"><span class="rank-num">7</span></td>
-        <td><strong>Digicert, Inc.</strong></td>
-        <td class="tw-col"><strong>31</strong></td>
-        <td style="color:var(--muted)">—</td>
-        <td>0 | 0</td><td>2 | 2</td><td>0 | 0</td>
-        <td>84</td><td><span class="pill pill-green">No</span></td><td>2028-05-29</td>
+        <td><strong>AI inside Inc.</strong></td>
+        <td class="tw-col"><strong>32</strong></td>
+        <td><span class="family-tag family-rc">RCA 84%</span></td>
+        <td>
+          <div class="mini-bar">
+            <div class="mini-bar-cpq" style="width:6.2%"></div>
+            <div class="mini-bar-rca" style="width:84.4%"></div>
+            <div class="mini-bar-billing" style="width:9.4%"></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted)">CPQ 2 · RCA 27 · Bill 3</div>
+        </td>
+        <td>6</td><td>18.8%</td><td>1</td><td>3.1%</td>
+        <td>26</td>
+        <td>9</td><td><strong style="color:#cf222e">5</strong></td>
+        <td><span class="pill pill-green">No</span></td><td style="font-size:11px">May 2028</td>
       </tr>
       <tr>
         <td style="text-align:center"><span class="rank-num">8</span></td>
         <td><strong>Laboratory Corp of America</strong></td>
-        <td class="tw-col"><strong>31</strong></td>
-        <td style="color:var(--muted)">—</td>
-        <td>1 | 1</td><td>4 | 5</td><td>0 | 0</td>
-        <td>68</td><td><span class="pill pill-green">No</span></td><td>2029-02-01</td>
+        <td class="tw-col"><strong>32</strong></td>
+        <td><span class="family-tag family-rc">RCA 97%</span></td>
+        <td>
+          <div class="mini-bar">
+            <div class="mini-bar-rca" style="width:96.9%"></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted)">CPQ 0 · RCA 31</div>
+        </td>
+        <td>6</td><td>18.8%</td><td>3</td><td>9.4%</td>
+        <td>26</td>
+        <td>3</td><td>2</td>
+        <td><span class="pill pill-green">No</span></td><td style="font-size:11px">Feb 2029</td>
       </tr>
       <tr>
         <td style="text-align:center"><span class="rank-num">9</span></td>
-        <td><strong>AI inside Inc.</strong></td>
-        <td class="tw-col"><strong>30</strong></td>
-        <td style="color:#1a7f37;font-weight:700">4.8</td>
-        <td>0 | 0</td><td>1 | 1</td><td>0 | 0</td>
-        <td>33</td><td><span class="pill pill-green">No</span></td><td>2028-05-14</td>
-      </tr>
-      <tr>
-        <td style="text-align:center"><span class="rank-num">10</span></td>
-        <td><strong>Veeam Software Corporation</strong></td>
+        <td><strong>Veeam Software Corp</strong></td>
         <td class="tw-col"><strong>29</strong></td>
-        <td style="color:#1a7f37;font-weight:700">5.0</td>
-        <td>0 | 0</td><td>3 | 3</td><td>0 | 0</td>
-        <td>89</td><td><span class="pill pill-red">Yes</span></td><td>2026-09-18</td>
+        <td><span class="family-tag family-rc">RCA 97%</span></td>
+        <td>
+          <div class="mini-bar">
+            <div class="mini-bar-cpq" style="width:3.4%"></div>
+            <div class="mini-bar-rca" style="width:96.6%"></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted)">CPQ 1 · RCA 28</div>
+        </td>
+        <td>2</td><td>6.9%</td><td>3</td><td>10.3%</td>
+        <td>25</td>
+        <td>15</td><td><strong style="color:#9a6700">4</strong></td>
+        <td><span class="pill pill-red">Yes</span></td><td style="font-size:11px">Sep 2026 ⚠️</td>
       </tr>
     </tbody>
   </table>
-  <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+
+  <!-- Account insight strips -->
+  <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
     <div class="insight red" style="margin:0;font-size:11px">
-      <strong>🔴 Bell Canada &amp; Veeam flagged Red</strong><br>
-      Both are in the top 10. Bell Canada has low adoption score (2) despite high volume (55) and 5.0 CSAT. Veeam renewal due Sep 2026 — urgent.
+      <strong>🔴 Low GUS/Bug triage rate across top accounts</strong><br>
+      8 of 9 accounts have &gt;50% cases with no GUS and no Bug filed. Kaseya (42 untriaged of 50), CrowdStrike (43/46), Trimble (32/33), Rapid7 (31/33). High P2 volume without investigation filings = engineering signal backlog. Bell Canada is the outlier — 35.7% GUS rate is best-in-class.
     </div>
     <div class="insight orange" style="margin:0;font-size:11px">
-      <strong>🟠 Kaseya: #3 volume, Adoption Score = 1</strong><br>
-      50 cases with near-zero adoption and no Guide/Arch Eng assigned. Spans Configurator (18), Usage &amp; Ratings (5), Price Mgmt (5), Billing &amp; Inv (10).
+      <strong>🟠 8 of 9 accounts are RCA-primary</strong><br>
+      Only Trimble Illuminate is Legacy CPQ-primary (85%). All others are 63–100% RCA. Kaseya (RCA 98%) spans Configurator, Usage &amp; Ratings, Price Mgmt, and Billing &amp; Invoicing — a broad platform adoption footprint with Adoption Score = 1 and no Arch Eng assigned.
     </div>
     <div class="insight yellow" style="margin:0;font-size:11px">
-      <strong>⚠️ Trimble Illuminate: multi-topic risk</strong><br>
-      33 inflow spanning SF CPQ (15) + CPQ Dev Support (6) + SF Billing (5). Low CSAT (4.5). No Arch/Guide Eng. High-frequency Signature account with no coverage.
-    </div>
-  </div>
-</div>
-
-<!-- KEY SIGNALS -->
-<div class="card green-border" style="margin-bottom:16px">
-  <div class="card-title">🔑 Key Signals &amp; Action Matrix — Q2 FY27</div>
-  <div class="grid-2">
-    <div>
-      <div class="section-label" style="color:#cf222e">🔺 Watch: Growing Pressure</div>
-      <div class="insight red">
-        <strong>Legacy CPQ combined: 559 cases · dominant at 36.7% of RC</strong><br>
-        SF CPQ (406) + CPQ Dev Support (153) = 559 Q2 cases vs 541 Q1 (+3.3%). SF CPQ is flat (+0.7%) but CPQ Dev Support is growing (+10.9%), signalling increasing complexity and developer-level requests within the legacy stack. Trimble Illuminate (21 cases across both) is the top concentration account.
-      </div>
-      <div class="insight red">
-        <strong>CLM DocGen: 34 → 56 (+65%) — fastest growing topic</strong><br>
-        Emerging from near-zero volume two quarters ago to a material topic in Q2. PwC Global anchors demand (12 of 56 cases). P2% at 58.8% is the highest urgency ratio of any topic. Action: engineering sync on CLM workflow + DocGen rendering bugs.
-      </div>
-      <div class="insight orange">
-        <strong>Product Configurator: 239 → 267 (+11.7%), Jun/Jul accelerating</strong><br>
-        May 26 → Jun 52 → Jul 54 monthly. Kaseya accounts for 18 cases. Highest open backlog count (18) of any topic, EMEA-heavy (13/5). Action: review Kaseya escalation pattern; assess shared product gap.
-      </div>
-    </div>
-    <div>
-      <div class="section-label" style="color:#1a7f37">🔻 Healthy: Declining Demand</div>
-      <div class="insight green">
-        <strong>Dev Support (P2O): 107 → 67 (−37%) · fully normalized</strong><br>
-        Consistent downward trajectory. The RLM go-live migration cohort is stable. Freed engineering bandwidth is being absorbed by Configurator and CLM growth — net capacity picture is neutral.
-      </div>
-      <div class="insight green">
-        <strong>Price Mgmt + Transaction combined: −36 cases QoQ</strong><br>
-        Price Mgmt: 138 → 116 (−15.9%). Transaction: 165 → 151 (−8.5%). Core RLM engine topics declining together. Reed Exhibitions (7 Price) and Rapid7 (8 Transaction) remain account watch — trend direction is positive.
-      </div>
-      <div class="insight blue">
-        <strong>5/5 operational KPIs improving QoQ ✅</strong><br>
-        SLO Miss 2.2% · CSAT 4.87 (+0.30) · TTR 9.1d · Escalation 0.5% · Investigation Rate 9.9%. All heading in the right direction simultaneously. Salesforce Billing rebounding (+19.2%) is the one watch item.
-      </div>
+      <strong>⚠️ Veeam: Red account · renewal Sep 2026 · 4 open cases</strong><br>
+      29 Q2 cases (all RCA), 4 currently open, 2 bugs filed. Renewal due this month (Sep 2026). Needs immediate CSM + AE alignment. Kaseya P2 count (45) is the highest of any account — all without Arch/Guide Eng coverage.
     </div>
   </div>
 </div>
@@ -568,156 +639,195 @@ canvas{max-width:100%}
         <div class="section-label">Q2 FY27 Sev1 by Product Topic (EMEA + India · Sig-tier)</div>
         <table class="data-table">
           <thead>
-            <tr><th style="text-align:left">Topic</th><th>EMEA</th><th>India</th><th>Total</th></tr>
+            <tr><th style="text-align:left">Topic</th><th>EMEA</th><th>India</th><th>Total</th><th>Sev1 Rate</th></tr>
           </thead>
           <tbody>
-            <tr><td>Transaction Management</td><td>8</td><td>3</td><td><strong>11</strong></td></tr>
-            <tr><td>Legacy CPQ (combined)</td><td>5</td><td>4</td><td><strong>9</strong></td></tr>
-            <tr><td>Product Configurator</td><td>4</td><td>3</td><td><strong>7</strong></td></tr>
-            <tr><td>CLM with DocGen</td><td>3</td><td>2</td><td><strong>5</strong></td></tr>
-            <tr><td>Price Management</td><td>3</td><td>1</td><td><strong>4</strong></td></tr>
-            <tr><td>Billing &amp; Invoicing</td><td>2</td><td>2</td><td><strong>4</strong></td></tr>
-            <tr><td>Other topics</td><td>3</td><td>2</td><td><strong>5</strong></td></tr>
-            <tr class="total-row"><td colspan="3">Total</td><td><strong>45</strong></td></tr>
+            <tr><td>Transaction Management</td><td>8</td><td>3</td><td><strong>11</strong></td><td>15.3%</td></tr>
+            <tr><td>Legacy CPQ (combined)</td><td>5</td><td>4</td><td><strong>9</strong></td><td>1.6%</td></tr>
+            <tr><td>Product Configurator</td><td>4</td><td>3</td><td><strong>7</strong></td><td>5.3%</td></tr>
+            <tr style="background:rgba(248,81,73,.05)"><td>CLM with DocGen</td><td>3</td><td>2</td><td><strong>5</strong></td><td><strong style="color:#cf222e">8.9% ⚠️</strong></td></tr>
+            <tr><td>Price Management</td><td>3</td><td>1</td><td><strong>4</strong></td><td>7.7%</td></tr>
+            <tr><td>Billing &amp; Invoicing</td><td>2</td><td>2</td><td><strong>4</strong></td><td>10.8%</td></tr>
+            <tr><td>Other topics</td><td>3</td><td>2</td><td><strong>5</strong></td><td>—</td></tr>
+            <tr class="total-row"><td colspan="2">Total</td><td>16</td><td><strong>45</strong></td><td>6.3%</td></tr>
           </tbody>
         </table>
       </div>
       <div class="insight red" style="font-size:11px">
-        <strong>Transaction Mgmt leads Sev1 with 11 cases</strong> — EMEA-heavy (8/3). Rapid7 (8 total Q2 cases) and PostNL (5) are likely contributors. Despite total volume declining −8.5%, the high-severity share remains elevated — signals a persistent platform stability issue for EMEA RLM customers.
+        <strong>Transaction Mgmt leads Sev1 at 15.3% Sev1 rate</strong> — EMEA-heavy (8/3). Despite total volume declining −8.5% QoQ, severity rate is elevated. Signals a persistent platform stability issue for EMEA RLM customers. Rapid7 and PostNL are likely contributors.
       </div>
       <div class="insight orange" style="font-size:11px;margin-top:8px">
-        <strong>CLM DocGen: 5 Sev1 despite only 56 total cases</strong> — 8.9% Sev1 rate, the highest of any topic. Reinforces the case for priority engineering attention on this topic.
+        <strong>CLM DocGen: 8.9% Sev1 rate — highest emerging topic</strong> — Only 56 total cases but 5 Sev1. New-account adoption (35% of contacts &lt;6mo) hitting hard bugs during initial CLM configuration. Engineering priority reinforced.
       </div>
     </div>
   </div>
 </div>
 
-<!-- GEO VIEW -->
+<!-- GEO VIEW — ALL REGIONS -->
 <div class="card purple-border" style="margin-bottom:16px">
-  <div class="card-title">🌍 GEO View — EMEA vs India · Revenue Cloud · Q2 FY27 (Signature Tier)</div>
-  <div class="grid-3" style="margin-bottom:14px">
-    <div class="kpi" style="border-color:#d8b4fe;background:#fbefff">
-      <div class="kpi-label" style="color:#8250df">EMEA · Q2 Total</div>
-      <div class="kpi-value" style="color:#8250df">371</div>
-      <div class="kpi-sub">51.8% of RC Sig volume · vs Q1: 386 · −15</div>
+  <div class="card-title">🌍 GEO View — All Regions · Revenue Cloud Q2 FY27
+    <span class="badge badge-yellow" style="font-size:10px">Based on all-scope sample · 500 records</span>
+  </div>
+
+  <!-- All-region KPIs -->
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px">
+    <div class="kpi" style="border-color:#80ccff;background:#ddf4ff;padding:10px 12px">
+      <div class="kpi-label" style="color:#0969da">AMER</div>
+      <div class="kpi-value" style="color:#0969da;font-size:22px">44.8%</div>
+      <div class="kpi-sub">224 of 500 · Largest region</div>
     </div>
-    <div class="kpi" style="border-color:#ffc896;background:#fff1e5">
-      <div class="kpi-label" style="color:#e16f42">India · Q2 Total</div>
-      <div class="kpi-value" style="color:#e16f42">345</div>
-      <div class="kpi-sub">48.2% of RC Sig volume · vs Q1: 360 · −15</div>
+    <div class="kpi" style="border-color:#d8b4fe;background:#fbefff;padding:10px 12px">
+      <div class="kpi-label" style="color:#8250df">EMEA</div>
+      <div class="kpi-value" style="color:#8250df;font-size:22px">26.6%</div>
+      <div class="kpi-sub">133 of 500 · 2nd largest</div>
     </div>
-    <div class="kpi good">
-      <div class="kpi-label">GEO Split</div>
-      <div class="kpi-value" style="font-size:18px">52 / 48</div>
-      <div class="kpi-sub">EMEA slightly larger · balanced</div>
+    <div class="kpi" style="border-color:#ffc896;background:#fff1e5;padding:10px 12px">
+      <div class="kpi-label" style="color:#e16f42">India</div>
+      <div class="kpi-value" style="color:#e16f42;font-size:22px">13.6%</div>
+      <div class="kpi-sub">68 of 500 · RC Sig focus</div>
+    </div>
+    <div class="kpi" style="padding:10px 12px">
+      <div class="kpi-label">APAC</div>
+      <div class="kpi-value" style="font-size:22px">7.8%</div>
+      <div class="kpi-sub">39 of 500</div>
+    </div>
+    <div class="kpi" style="padding:10px 12px">
+      <div class="kpi-label">Japan</div>
+      <div class="kpi-value" style="font-size:22px">0.6%</div>
+      <div class="kpi-sub">3 of 500 · all RCA</div>
     </div>
   </div>
 
   <div class="grid-2">
     <div>
-      <canvas id="geoChart" height="220"></canvas>
+      <canvas id="geoAllRegionsChart" height="220"></canvas>
     </div>
     <div>
-      <div class="section-label" style="margin-bottom:10px">Topic-level GEO split — Q2 FY27 (Sig-tier)</div>
+      <div class="section-label" style="margin-bottom:10px">Family share by Region (sample · 500 records)</div>
       <table class="data-table">
         <thead>
           <tr>
-            <th style="text-align:left">Topic</th>
-            <th style="color:#8250df">EMEA</th>
-            <th style="color:#e16f42">India</th>
-            <th>Split</th>
+            <th style="text-align:left">Region</th>
+            <th>Total</th>
+            <th>Legacy CPQ</th>
+            <th>RCA</th>
+            <th>Billing</th>
+            <th>CPQ %</th>
+            <th>RCA %</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Legacy CPQ (combined)</td>
-            <td style="color:#8250df"><strong>124</strong></td><td style="color:#e16f42"><strong>144</strong></td>
-            <td><span class="pill pill-orange">India-heavy</span></td>
+            <td style="color:#0969da;font-weight:700">AMER</td>
+            <td>224</td><td>113</td><td>103</td><td>8</td>
+            <td><strong>50.4%</strong></td><td>46.0%</td>
           </tr>
           <tr>
-            <td>Product Configurator</td>
-            <td style="color:#8250df">69</td><td style="color:#e16f42">63</td>
-            <td><span class="pill pill-purple">Balanced</span></td>
+            <td style="color:#8250df;font-weight:700">EMEA</td>
+            <td>133</td><td>51</td><td>79</td><td>3</td>
+            <td>38.3%</td><td><strong>59.4%</strong></td>
           </tr>
           <tr>
-            <td>Transaction Management</td>
-            <td style="color:#8250df">44</td><td style="color:#e16f42">28</td>
-            <td><span class="pill pill-purple">EMEA-heavy</span></td>
+            <td style="color:#e16f42;font-weight:700">India</td>
+            <td>68</td><td>21</td><td>43</td><td>4</td>
+            <td>30.9%</td><td><strong>63.2%</strong></td>
           </tr>
           <tr>
-            <td>Price Management</td>
-            <td style="color:#8250df">33</td><td style="color:#e16f42">19</td>
-            <td><span class="pill pill-purple">EMEA-heavy</span></td>
+            <td>APAC</td>
+            <td>39</td><td>14</td><td>23</td><td>2</td>
+            <td>35.9%</td><td><strong>59.0%</strong></td>
           </tr>
           <tr>
-            <td>Billing &amp; Invoicing</td>
-            <td style="color:#8250df">22</td><td style="color:#e16f42">15</td>
-            <td><span class="pill pill-purple">EMEA-heavy</span></td>
-          </tr>
-          <tr>
-            <td>CLM with DocGen</td>
-            <td style="color:#8250df">14</td><td style="color:#e16f42">20</td>
-            <td><span class="pill pill-orange">India-heavy</span></td>
-          </tr>
-          <tr>
-            <td>Prod Catalog Management</td>
-            <td style="color:#8250df">19</td><td style="color:#e16f42">8</td>
-            <td><span class="pill pill-purple">EMEA-heavy</span></td>
-          </tr>
-          <tr>
-            <td>Dev Support (P2O)</td>
-            <td style="color:#8250df">15</td><td style="color:#e16f42">11</td>
-            <td><span class="pill pill-purple">Balanced</span></td>
-          </tr>
-          <tr>
-            <td>SF Billing</td>
-            <td style="color:#8250df">4</td><td style="color:#e16f42">12</td>
-            <td><span class="pill pill-orange">India-heavy</span></td>
+            <td>Japan</td>
+            <td>3</td><td>0</td><td>3</td><td>0</td>
+            <td>0.0%</td><td><strong>100%</strong></td>
           </tr>
         </tbody>
       </table>
-      <div class="insight purple" style="margin-top:10px;font-size:11px">
-        <strong>EMEA leads 6 of 9 topics</strong> · India leads Legacy CPQ (124 vs 144 — India-heavy: CPQ Dev Support 50 India vs 29 EMEA) and SF Billing (12 India vs 4 EMEA). CLM DocGen India-heavy (20/14) aligns with India's deeper RLM adoption for contract management workloads.
+
+      <div class="insight blue" style="margin-top:10px;font-size:11px">
+        <strong>AMER is uniquely CPQ-heavy: 50.4% Legacy CPQ</strong> — the highest of any region. EMEA, India, and APAC are all RCA-dominant (59–63% RCA). This means CPQ long-tail demand is primarily a North America installed-base problem. EMEA + India Sig-tier focus on RCA is well-aligned to the actual adoption curve.
+      </div>
+      <div class="insight purple" style="margin-top:8px;font-size:11px">
+        <strong>India: 63% RCA — deepest RLM adoption ratio</strong><br>
+        India has the lowest Legacy CPQ share (31%) and highest RCA share (63%) of any region, consistent with India's position as the primary RLM go-live support GEO. EMEA is close behind at 59% RCA.
       </div>
     </div>
   </div>
 </div>
 
-<footer>Revenue Cloud · Product &amp; Topic Deep Dive · Q2 FY27 · Data: OrgCS Dashboard (Aug 19, 2026)</footer>
+<!-- KEY SIGNALS -->
+<div class="card green-border" style="margin-bottom:16px">
+  <div class="card-title">🔑 Key Signals &amp; Action Matrix — Q2 FY27</div>
+  <div class="grid-2">
+    <div>
+      <div class="section-label" style="color:#cf222e">🔺 Watch: Growing Pressure</div>
+      <div class="insight red">
+        <strong>Legacy CPQ 559 cases · 79% mature install base · low triage rate</strong><br>
+        CPQ volume is driven by established accounts (79% &gt;6mo). Yet 85–97% of CPQ cases at top accounts (Trimble, CrowdStrike) have no GUS or Bug filed. High P2 volumes without investigation filings = missed engineering signal. Action: enforce GUS-filing hygiene for CPQ P2 cases aged &gt;7d.
+      </div>
+      <div class="insight red">
+        <strong>CLM DocGen: 34→56 (+65%) · 8.9% Sev1 rate · PwC-concentrated</strong><br>
+        Fastest growing topic. New-account adoption (35% &lt;6mo) hitting hard bugs. PwC Global 12/56 cases. Action: engineering sync on CLM workflow + DocGen rendering bugs; consider dedicated EMEA/India focus session.
+      </div>
+      <div class="insight orange">
+        <strong>Product Configurator: Jun/Jul at 52/54 monthly · backlog 18</strong><br>
+        +11.7% QoQ with accelerating monthly curve. Highest open backlog. Kaseya (50 total Q2 cases, no Arch Eng, Adoption Score=1) spans Configurator + Usage &amp; Ratings + Price Mgmt — single account, multiple topics, zero engagement coverage. Assign Arch Eng immediately.
+      </div>
+    </div>
+    <div>
+      <div class="section-label" style="color:#1a7f37">🔻 Healthy: Positive Signals</div>
+      <div class="insight green">
+        <strong>RCA share rising, CPQ share peaking — right direction</strong><br>
+        CPQ share hit 42% in May/Jun but pulled back to 35% in Jul. RCA share returned to 61% in Jul. The product mix is normalizing toward the growth platform. RCA's 41% new-account rate confirms active adoption continues.
+      </div>
+      <div class="insight green">
+        <strong>Dev P2O: 107→67 (−37%) · 5/5 KPIs improving QoQ</strong><br>
+        RLM migration wave absorbed. SLO Miss best in 4 quarters (2.2%). CSAT +0.30. Bell Canada leading on engineering engagement (35.7% GUS rate, 19.6% Bug rate) — model to replicate across other high-volume accounts.
+      </div>
+      <div class="insight blue">
+        <strong>AMER CPQ concentration is a pricing/packaging signal</strong><br>
+        AMER is 50% Legacy CPQ vs 59–63% RCA for all other regions. AMER legacy CPQ volume is the tail of pre-RLM deployments. As AMER migrates, overall CPQ share should continue declining — current Jul 35% CPQ share is the structural trend direction.
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Revenue Cloud · Product &amp; Topic Deep Dive · Q2 FY27 · Data: OrgCS Dashboard (Aug 19, 2026) · Contact age: all-scope 3,533 cases · GEO: 500-record sample</footer>
 
 <script>
 const def = (id, cfg) => new Chart(document.getElementById(id).getContext('2d'), cfg);
 const gridColor = 'rgba(208,215,222,.6)';
 const tickColor = '#656d76';
 
-// 1. Q1 vs Q2 topic bar (top chart) — Legacy CPQ combined, Q1 vs Q2 only
-def('qtrTrend', {
-  type: 'bar',
+// 1. Q1 vs Q2 horizontal grouped bar — Legacy CPQ combined
+def('q1vsq2Bar', {
+  type:'bar',
   data:{
-    labels:['Legacy CPQ','Prod Configurator','Txn Management','Price Management','Billing & Inv','Dev P2O','SF Billing','Prod Catalog','CLM DocGen','Doc Gen'],
+    labels:['Legacy CPQ','Prod Config','Txn Mgmt','Price Mgmt','Billing Inv','Dev P2O','SF Billing','Prod Catalog','CLM DocGen'],
     datasets:[
-      { label:'Q1 FY27', data:[541,239,165,138,83,107,52,71,34,34], backgroundColor:'rgba(139,148,158,.55)', borderWidth:0 },
-      { label:'Q2 FY27', data:[559,267,151,116,70,67,62,60,56,28],  backgroundColor:'rgba(88,166,255,.85)', borderWidth:0 }
+      {label:'Q1 FY27', data:[541,239,165,138,83,107,52,71,34], backgroundColor:'rgba(139,148,158,.55)', borderWidth:0},
+      {label:'Q2 FY27', data:[559,267,151,116,70,67,62,60,56],  backgroundColor:'rgba(88,166,255,.85)', borderWidth:0}
     ]
   },
   options:{
     indexAxis:'y', responsive:true,
-    plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, boxWidth:12, padding:10 }}},
+    plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:10}}},
     scales:{
-      x:{ ticks:{color:tickColor}, grid:{color:gridColor} },
-      y:{ ticks:{color:tickColor, font:{size:11}}, grid:{display:false} }
+      x:{ticks:{color:tickColor},grid:{color:gridColor}},
+      y:{ticks:{color:tickColor,font:{size:11}},grid:{display:false}}
     }
   }
 });
 
-// 2. Family donut — Legacy CPQ as single slice
+// 2. Family donut
 def('familyDonut', {
-  type: 'doughnut',
+  type:'doughnut',
   data:{
-    labels:['RC Core (RLM)','Legacy CPQ','SF Billing','DocGen','Other'],
+    labels:['RC Core (RCA)','Legacy CPQ','SF Billing','Other/DocGen'],
     datasets:[{
-      data:[840,559,62,28,33],
-      backgroundColor:['rgba(88,166,255,.80)','rgba(240,136,62,.80)','rgba(163,113,247,.80)','rgba(46,164,79,.80)','rgba(139,148,158,.65)'],
+      data:[840,559,62,61],
+      backgroundColor:['rgba(88,166,255,.80)','rgba(240,136,62,.80)','rgba(163,113,247,.80)','rgba(46,164,79,.70)'],
       borderWidth:1, borderColor:'#ffffff'
     }]
   },
@@ -725,70 +835,106 @@ def('familyDonut', {
     responsive:true, cutout:'68%',
     plugins:{
       legend:{display:false},
-      tooltip:{ callbacks:{ label: ctx => ` ${ctx.label}: ${ctx.raw} (${((ctx.raw/1522)*100).toFixed(1)}%)` }}
+      tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} (${((ctx.raw/1522)*100).toFixed(1)}%)`}}
     }
   }
 });
 
-// 3. QoQ movement — Legacy CPQ combined
-def('q1vsq2', {
-  type: 'bar',
+// 3. Volume share trend line chart — Feb–Jul 2026
+def('shareLineChart', {
+  type:'line',
   data:{
-    labels:['Legacy CPQ','Prod Config','Txn Mgmt','Price Mgmt','Billing Inv','Dev P2O','SF Billing','Prod Catalog','CLM DocGen'],
+    labels:['Feb 26','Mar 26','Apr 26','May 26','Jun 26','Jul 26'],
     datasets:[
-      { label:'Q1 FY27', data:[541,239,165,138,83,107,52,71,34], backgroundColor:'rgba(139,148,158,.50)', borderWidth:0 },
-      { label:'Q2 FY27', data:[559,267,151,116,70,67,62,60,56],  backgroundColor:'rgba(88,166,255,.80)', borderWidth:0 }
-    ]
-  },
-  options:{
-    indexAxis:'y', responsive:true,
-    plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, boxWidth:12, padding:10 }}},
-    scales:{
-      x:{ ticks:{color:tickColor}, grid:{color:gridColor} },
-      y:{ ticks:{color:tickColor, font:{size:11}}, grid:{display:false} }
-    }
-  }
-});
-
-// 4. Sev1 trend — quarterly (EMEA + India Sig-tier, estimated from case data patterns)
-def('sev1Chart', {
-  type: 'bar',
-  data:{
-    labels:['Q1 FY27','Q2 FY27'],
-    datasets:[
-      { label:'EMEA Sev1', data:[52,39], backgroundColor:'rgba(163,113,247,.80)', stack:'s' },
-      { label:'India Sev1', data:[28,22], backgroundColor:'rgba(241,111,66,.80)', stack:'s' }
+      {label:'Legacy CPQ %', data:[30.4,33.8,40.0,42.1,42.1,34.9],
+       borderColor:'rgba(240,136,62,.9)', backgroundColor:'rgba(240,136,62,.08)',
+       tension:.3, pointRadius:4, fill:false},
+      {label:'RCA %', data:[65.0,60.8,56.4,54.8,56.8,61.4],
+       borderColor:'rgba(88,166,255,.9)', backgroundColor:'rgba(88,166,255,.08)',
+       tension:.3, pointRadius:4, fill:false},
+      {label:'Billing %', data:[3.8,4.6,3.6,2.7,1.1,3.3],
+       borderColor:'rgba(163,113,247,.9)', backgroundColor:'rgba(163,113,247,.08)',
+       tension:.3, pointRadius:4, fill:false, borderDash:[4,3]}
     ]
   },
   options:{
     responsive:true,
-    plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, boxWidth:12, padding:10 }},
-      title:{ display:true, text:'Sev1 Cases QoQ (EMEA + India · Sig-tier)', font:{size:12}, color:tickColor }
+    plugins:{
+      legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:10}},
+      annotation:{}
     },
     scales:{
-      x:{ stacked:true, ticks:{color:tickColor}, grid:{color:gridColor} },
-      y:{ stacked:true, ticks:{color:tickColor}, grid:{color:gridColor},
-          title:{display:true, text:'Cases', color:tickColor, font:{size:11}} }
+      x:{ticks:{color:tickColor},grid:{color:gridColor}},
+      y:{min:0,max:75,ticks:{color:tickColor,callback:v=>v+'%'},grid:{color:gridColor}}
     }
   }
 });
 
-// 5. GEO split per topic — stacked EMEA/India
-def('geoChart', {
-  type: 'bar',
+// 4. Contact age grouped bar — per family
+def('contactAgeChart', {
+  type:'bar',
   data:{
-    labels:['Legacy CPQ','Prod Config','Txn Mgmt','Price Mgmt','Billing Inv','CLM DocGen','Prod Catalog','Dev P2O','SF Billing'],
+    labels:['<6mo','6M–1YR','1–2YRS','2–3YRS','3–4YRS','4–5YRS','5+YRS'],
     datasets:[
-      { label:'EMEA', data:[124,69,44,33,22,14,19,15,4],  backgroundColor:'rgba(163,113,247,.80)', stack:'g' },
-      { label:'India', data:[144,63,28,19,15,20,8,11,12], backgroundColor:'rgba(241,111,66,.80)',  stack:'g' }
+      {label:'Legacy CPQ', data:[281,207,327,167,143,73,140],
+       backgroundColor:'rgba(240,136,62,.80)', borderWidth:0},
+      {label:'RCA', data:[840,468,242,108,109,66,210],
+       backgroundColor:'rgba(88,166,255,.80)', borderWidth:0},
+      {label:'Billing', data:[38,14,33,21,15,3,6],
+       backgroundColor:'rgba(163,113,247,.80)', borderWidth:0}
     ]
   },
   options:{
-    indexAxis:'y', responsive:true,
-    plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, boxWidth:12, padding:10 }}},
+    responsive:true,
+    plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:10}}},
     scales:{
-      x:{ stacked:true, ticks:{color:tickColor}, grid:{color:gridColor} },
-      y:{ stacked:true, ticks:{color:tickColor, font:{size:11}}, grid:{display:false} }
+      x:{ticks:{color:tickColor},grid:{color:gridColor}},
+      y:{ticks:{color:tickColor},grid:{color:gridColor}}
+    }
+  }
+});
+
+// 5. Sev1 chart
+def('sev1Chart', {
+  type:'bar',
+  data:{
+    labels:['Q1 FY27','Q2 FY27'],
+    datasets:[
+      {label:'EMEA Sev1', data:[52,29], backgroundColor:'rgba(163,113,247,.80)', stack:'s'},
+      {label:'India Sev1', data:[28,16], backgroundColor:'rgba(241,111,66,.80)',  stack:'s'}
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{
+      legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:10}},
+      title:{display:true,text:'Sev1 QoQ — EMEA + India Sig-tier',font:{size:12},color:tickColor}
+    },
+    scales:{
+      x:{stacked:true,ticks:{color:tickColor},grid:{color:gridColor}},
+      y:{stacked:true,ticks:{color:tickColor},grid:{color:gridColor}}
+    }
+  }
+});
+
+// 6. All-regions GEO stacked bar — family by region
+def('geoAllRegionsChart', {
+  type:'bar',
+  data:{
+    labels:['AMER','EMEA','India','APAC','Japan'],
+    datasets:[
+      {label:'Legacy CPQ', data:[113,51,21,14,0], backgroundColor:'rgba(240,136,62,.80)', stack:'g'},
+      {label:'RCA',         data:[103,79,43,23,3], backgroundColor:'rgba(88,166,255,.80)',  stack:'g'},
+      {label:'Billing',     data:[8,  3, 4, 2, 0], backgroundColor:'rgba(163,113,247,.80)', stack:'g'},
+      {label:'Unknown/Other',data:[33,0, 0, 0, 0], backgroundColor:'rgba(139,148,158,.45)', stack:'g'}
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:10}}},
+    scales:{
+      x:{stacked:true,ticks:{color:tickColor},grid:{color:gridColor}},
+      y:{stacked:true,ticks:{color:tickColor},grid:{color:gridColor}}
     }
   }
 });
