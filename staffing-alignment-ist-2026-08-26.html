@@ -42,10 +42,6 @@
   .chart-card { border: 1px solid var(--border); border-radius: 8px; padding: 20px; background: var(--bg2); margin-bottom: 24px; }
   .chart-wrap { height: 340px; }
 
-  /* Gap bar */
-  .gap-card { border: 1px solid var(--border); border-radius: 8px; padding: 20px; background: var(--bg2); margin-bottom: 24px; }
-  .gap-wrap  { height: 220px; }
-
   /* Two-col callouts */
   .insight-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
   .callout { border-radius: 8px; border: 1px solid var(--border); padding: 16px 18px; }
@@ -120,14 +116,6 @@
   <h2>Hourly Demand % vs Staffing % — IST</h2>
   <div class="chart-wrap">
     <canvas id="mainChart"></canvas>
-  </div>
-</div>
-
-<!-- Gap chart -->
-<div class="gap-card">
-  <h2>Staffing Surplus / Deficit by Hour (Staff % − Demand %)</h2>
-  <div class="gap-wrap">
-    <canvas id="gapChart"></canvas>
   </div>
 </div>
 
@@ -286,49 +274,6 @@ new Chart(ctx1, {
   }
 });
 
-/* ── Gap chart ── */
-const gaps = rows.map(r => +(r.sta - r.dem).toFixed(2));
-const ctx2 = document.getElementById('gapChart').getContext('2d');
-new Chart(ctx2, {
-  type: 'bar',
-  data: {
-    labels,
-    datasets: [{
-      label: 'Gap (Staff − Demand) pp',
-      data: gaps,
-      backgroundColor: gaps.map(g => {
-        if (g < -5)  return 'rgba(207,34,46,0.9)';
-        if (g < -1)  return 'rgba(207,34,46,0.5)';
-        if (g > 2)   return 'rgba(26,127,55,0.55)';
-        if (g > 0.5) return 'rgba(26,127,55,0.3)';
-        return 'rgba(130,130,130,0.3)';
-      }),
-      borderColor: gaps.map(g => g < -1 ? '#cf222e' : g > 0.5 ? '#1a7f37' : '#888'),
-      borderWidth: 1,
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: c => `Gap: ${c.parsed.y > 0 ? '+' : ''}${Number(c.parsed.y).toFixed(2)}pp`,
-          afterBody: items => [`PDT: ${rows[items[0].dataIndex].pdt}`]
-        }
-      }
-    },
-    scales: {
-      x: { grid: { color: '#eaecef' }, ticks: { font: { size: 11 }, maxRotation: 45 } },
-      y: {
-        grid: { color: '#eaecef' },
-        ticks: { callback: v => (v > 0 ? '+' : '') + v + 'pp', font: { size: 11 } },
-        title: { display: true, text: 'pp surplus (+) or deficit (−)', font: { size: 11 } }
-      }
-    }
-  }
-});
 
 /* ── Table ── */
 const tbody = document.getElementById('tbody');
