@@ -163,8 +163,6 @@
         <th>Avg Cases/Day</th>
         <th>Staffing %</th>
         <th>Avg HC Available</th>
-        <th>Cases per HC</th>
-        <th>Gap (Staff − Demand)</th>
         <th>Status</th>
       </tr>
     </thead>
@@ -338,16 +336,11 @@ rows.forEach(r => {
   const g = +(r.sta - r.dem).toFixed(2);
   let rowCls = '', badge = '', gapCls = 'gap-bal';
 
-  if (g < -5)      { rowCls='crit';  badge=`<span class="badge b-crit">Critical −</span>`;  gapCls='gap-neg-big'; }
-  else if (g < -1) { rowCls='under'; badge=`<span class="badge b-under">Understaffed</span>`; gapCls='gap-neg'; }
-  else if (g > 2)  { rowCls='over';  badge=`<span class="badge b-over">Overstaffed</span>`;  gapCls='gap-pos'; }
-  else if (g > 0.5){ rowCls='mod';   badge=`<span class="badge b-over">Moderate +</span>`;   gapCls='gap-pos'; }
+  if (g < -5)      { rowCls='crit';  badge=`<span class="badge b-crit">Critical −</span>`;  }
+  else if (g < -1) { rowCls='under'; badge=`<span class="badge b-under">Understaffed</span>`; }
+  else if (g > 2)  { rowCls='over';  badge=`<span class="badge b-over">Overstaffed</span>`;  }
+  else if (g > 0.5){ rowCls='mod';   badge=`<span class="badge b-over">Moderate +</span>`;   }
   else             { badge=`<span class="badge b-bal">Balanced</span>`; }
-
-  // Cases-per-HC load class
-  let loadCls = 'load-lo';
-  if (r.cphc >= 2.5)      loadCls = 'load-hi';
-  else if (r.cphc >= 1.2) loadCls = 'load-mid';
 
   const tr = document.createElement('tr');
   tr.className = rowCls;
@@ -359,8 +352,6 @@ rows.forEach(r => {
     <td>${r.avgVol}</td>
     <td>${r.sta.toFixed(2)}%</td>
     <td>${r.hc}</td>
-    <td class="${loadCls}">${r.cphc}</td>
-    <td class="${gapCls}">${g>0?'+':''}${g.toFixed(2)}pp</td>
     <td>${badge}</td>
   `;
   tbody.appendChild(tr);
