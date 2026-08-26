@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IST Staffing vs Demand Alignment</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f6f8fa;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --muted: #656d76;
+    --blue: #0969da;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --orange: #bc4c00;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; padding: 28px 32px; max-width: 1300px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  h2 { font-size: 14px; font-weight: 600; margin-bottom: 14px; }
+  .meta { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+  .meta span { margin-right: 16px; }
+
+  /* KPI cards */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .kpi { border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .kpi.red  { background: #fff0ee; border-color: #f7c5c0; }
+  .kpi.grn  { background: #eafbee; border-color: #9be9a8; }
+  .kpi.ylw  { background: #fffbdd; border-color: #e3c900; }
+  .kpi.neu  { background: var(--bg2); }
+  .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 4px; }
+  .kpi-val   { font-size: 26px; font-weight: 800; line-height: 1.1; }
+  .kpi.red .kpi-val { color: var(--red); }
+  .kpi.grn .kpi-val { color: var(--green); }
+  .kpi.ylw .kpi-val { color: #7d5b00; }
+  .kpi-sub   { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* Chart */
+  .chart-card { border: 1px solid var(--border); border-radius: 8px; padding: 20px; background: var(--bg2); margin-bottom: 24px; }
+  .chart-wrap { height: 340px; }
+
+  /* Gap bar */
+  .gap-card { border: 1px solid var(--border); border-radius: 8px; padding: 20px; background: var(--bg2); margin-bottom: 24px; }
+  .gap-wrap  { height: 220px; }
+
+  /* Two-col callouts */
+  .insight-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+  .callout { border-radius: 8px; border: 1px solid var(--border); padding: 16px 18px; }
+  .callout.red   { background: #fff0ee; border-color: #f7c5c0; }
+  .callout.grn   { background: #eafbee; border-color: #9be9a8; }
+  .callout.blue  { background: #ddf4ff; border-color: #80ccff; }
+  .callout-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .callout p     { font-size: 13px; color: var(--muted); line-height: 1.65; }
+  .callout strong { color: var(--text); }
+
+  /* Table */
+  .tbl-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--bg2); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); padding: 9px 12px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+  td { padding: 7px 12px; border-bottom: 1px solid #eaecef; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr.crit td { background: #fff0ee; }
+  tr.under td { background: #fff8f0; }
+  tr.over td  { background: #f0faf2; }
+  tr.mod  td  { background: #f8fdf9; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
+  .b-crit  { background: #cf222e; color: #fff; }
+  .b-under { background: #ff818233; color: var(--red); border: 1px solid #ff818266; }
+  .b-over  { background: #56d36430; color: var(--green); border: 1px solid #56d36460; }
+  .b-bal   { background: var(--bg2); color: var(--muted); border: 1px solid var(--border); }
+  .gap-neg-big { color: var(--red); font-weight: 800; font-size: 14px; }
+  .gap-neg     { color: #bc4c00; font-weight: 700; }
+  .gap-pos     { color: var(--green); }
+  .gap-bal     { color: var(--muted); }
+  .note { font-size: 11px; color: var(--muted); margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<h1>IST Staffing vs Demand Alignment</h1>
+<p class="meta">
+  <span>All Products · All Topics</span>
+  <span>Last 60 Days · 21,241 cases</span>
+  <span>Timezone: IST (UTC+5:30)</span>
+  <span>Shift data mapped to IST hour by floor(:30 → hour)</span>
+</p>
+
+<!-- KPI row -->
+<div class="kpi-row">
+  <div class="kpi red">
+    <div class="kpi-label">Worst Under-coverage (Hr 20)</div>
+    <div class="kpi-val">−13.3pp</div>
+    <div class="kpi-sub">8:30 PM IST · 8 AM PDT · 20.7% demand, 7.4% staff</div>
+  </div>
+  <div class="kpi red">
+    <div class="kpi-label">Demand in Peak 2 hrs (19–20)</div>
+    <div class="kpi-val">36.9%</div>
+    <div class="kpi-sub">Only 13.1% of staffing covers these hours</div>
+  </div>
+  <div class="kpi grn">
+    <div class="kpi-label">Largest Overstaffed Block</div>
+    <div class="kpi-val">9am–7pm IST</div>
+    <div class="kpi-sub">~51% staffing vs ~32% demand (10 hrs)</div>
+  </div>
+  <div class="kpi ylw">
+    <div class="kpi-label">Secondary Gap (Hr 00)</div>
+    <div class="kpi-val">−3.2pp</div>
+    <div class="kpi-sub">12:30 AM IST · 12 PM PDT · 8.1% demand, 4.9% staff</div>
+  </div>
+</div>
+
+<!-- Demand vs Staffing chart -->
+<div class="chart-card">
+  <h2>Hourly Demand % vs Staffing % — IST</h2>
+  <div class="chart-wrap">
+    <canvas id="mainChart"></canvas>
+  </div>
+</div>
+
+<!-- Gap chart -->
+<div class="gap-card">
+  <h2>Staffing Surplus / Deficit by Hour (Staff % − Demand %)</h2>
+  <div class="gap-wrap">
+    <canvas id="gapChart"></canvas>
+  </div>
+</div>
+
+<!-- Insight callouts -->
+<div class="insight-row">
+  <div class="callout red">
+    <div class="callout-title">Critical Understaffing — 7:30–8:30 PM IST (Hours 19–20)</div>
+    <p>These two hours contain <strong>36.9% of all daily cases</strong> (~7,800 in 60 days) but receive only <strong>13.1% of available staffing</strong> — a combined deficit of <strong>23.8pp</strong>. This window is <strong>7–9 AM PDT</strong>, the US Pacific morning ramp when engineers and customers open cases as they start work. The structural mismatch is the single largest staffing risk.</p>
+  </div>
+  <div class="callout red">
+    <div class="callout-title">Secondary Gap — 12:30 AM IST (Hour 00 / 12 PM PDT)</div>
+    <p>Midnight IST (US lunch hour on the Pacific coast) carries <strong>8.1% of demand</strong> with only <strong>4.9% staffing</strong>. Combined with hours 19–20, three hours of the day account for <strong>45% of all demand</strong> but only <strong>18% of staffing</strong>. Any SLA pressure will concentrate in these windows.</p>
+  </div>
+  <div class="callout grn">
+    <div class="callout-title">Overstaffed — 9:30 AM to 6:30 PM IST (9 hours)</div>
+    <p>IST business hours (9:30 AM–6:30 PM) carry ~32% of demand but ~51% of staffing — a <strong>19pp surplus</strong>. Worst single hour: <strong>5:30 PM IST</strong> (+3.2pp: 6.9% staff vs 3.7% demand). These are IST-convenient hours, but the actual case load is low during this window as most US customers haven't started their day yet.</p>
+  </div>
+  <div class="callout blue">
+    <div class="callout-title">Recommendation — Shift the Evening Cohort</div>
+    <p>Extending coverage into <strong>6–9 PM IST</strong> (5–8 AM PDT) by shifting 3–4pp of staffing from the 12–18 IST block would directly address the peak. A dedicated <strong>late-evening IST cohort</strong> (e.g. 6 PM–2 AM IST) covering the 7–10 PM IST window could absorb 40%+ of daily volume without adding headcount.</p>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="tbl-card">
+  <table>
+    <thead>
+      <tr>
+        <th>IST Hour</th>
+        <th>Shift (IST)</th>
+        <th>Shift (PDT)</th>
+        <th>Demand %</th>
+        <th>Staffing %</th>
+        <th>Gap (Staff − Demand)</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+<p class="note">PST column in source data is PDT (UTC−7). Gap = Staffing% − Demand%; negative = understaffed. Shifts at :30 IST mapped to floor hour (e.g. 7:30 PM IST → Hour 19).</p>
+
+<script>
+const rows = [
+  { h:0,  ist:"12:30 AM", pdt:"12:00 PM", dem:8.1,  sta:4.93 },
+  { h:1,  ist:"1:30 AM",  pdt:"1:00 PM",  dem:3.1,  sta:4.93 },
+  { h:2,  ist:"2:30 AM",  pdt:"2:00 PM",  dem:2.8,  sta:3.00 },
+  { h:3,  ist:"3:30 AM",  pdt:"3:00 PM",  dem:1.7,  sta:2.84 },
+  { h:4,  ist:"4:30 AM",  pdt:"4:00 PM",  dem:1.2,  sta:1.82 },
+  { h:5,  ist:"5:30 AM",  pdt:"5:00 PM",  dem:1.0,  sta:1.12 },
+  { h:6,  ist:"6:30 AM",  pdt:"6:00 PM",  dem:0.9,  sta:1.12 },
+  { h:7,  ist:"7:30 AM",  pdt:"7:00 PM",  dem:0.9,  sta:1.12 },
+  { h:8,  ist:"8:30 AM",  pdt:"8:00 PM",  dem:0.9,  sta:1.12 },
+  { h:9,  ist:"9:30 AM",  pdt:"9:00 PM",  dem:1.1,  sta:3.43 },
+  { h:10, ist:"10:30 AM", pdt:"10:00 PM", dem:1.8,  sta:3.43 },
+  { h:11, ist:"11:30 AM", pdt:"11:00 PM", dem:2.4,  sta:3.43 },
+  { h:12, ist:"12:30 PM", pdt:"12:00 AM", dem:3.1,  sta:5.89 },
+  { h:13, ist:"1:30 PM",  pdt:"1:00 AM",  dem:3.4,  sta:5.89 },
+  { h:14, ist:"2:30 PM",  pdt:"2:00 AM",  dem:3.4,  sta:4.82 },
+  { h:15, ist:"3:30 PM",  pdt:"3:00 AM",  dem:3.8,  sta:4.82 },
+  { h:16, ist:"4:30 PM",  pdt:"4:00 AM",  dem:3.6,  sta:4.82 },
+  { h:17, ist:"5:30 PM",  pdt:"5:00 AM",  dem:3.7,  sta:6.91 },
+  { h:18, ist:"6:30 PM",  pdt:"6:00 AM",  dem:4.4,  sta:6.64 },
+  { h:19, ist:"7:30 PM",  pdt:"7:00 AM",  dem:16.2, sta:5.68 },
+  { h:20, ist:"8:30 PM",  pdt:"8:00 AM",  dem:20.7, sta:7.45 },
+  { h:21, ist:"9:30 PM",  pdt:"9:00 AM",  dem:4.3,  sta:4.93 },
+  { h:22, ist:"10:30 PM", pdt:"10:00 AM", dem:3.8,  sta:4.93 },
+  { h:23, ist:"11:30 PM", pdt:"11:00 AM", dem:3.8,  sta:4.93 },
+];
+
+/* ── Main chart ── */
+const labels = rows.map(r => r.ist);
+const ctx1 = document.getElementById('mainChart').getContext('2d');
+new Chart(ctx1, {
+  data: {
+    labels,
+    datasets: [
+      {
+        type: 'bar',
+        label: 'Demand % (case volume)',
+        data: rows.map(r => r.dem),
+        backgroundColor: rows.map(r => {
+          const g = r.sta - r.dem;
+          if (g < -5)  return 'rgba(207,34,46,0.85)';
+          if (g < -1)  return 'rgba(207,34,46,0.45)';
+          return 'rgba(9,105,218,0.45)';
+        }),
+        borderColor: rows.map(r => {
+          const g = r.sta - r.dem;
+          return (g < -1) ? '#cf222e' : '#0969da';
+        }),
+        borderWidth: 1,
+        order: 2,
+      },
+      {
+        type: 'line',
+        label: 'Staffing %',
+        data: rows.map(r => r.sta),
+        borderColor: '#1a7f37',
+        backgroundColor: 'rgba(26,127,55,0.08)',
+        borderWidth: 2.5,
+        pointBackgroundColor: '#1a7f37',
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        fill: false,
+        tension: 0.35,
+        order: 1,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 12 }, padding: 16 } },
+      tooltip: {
+        callbacks: {
+          label: c => `${c.dataset.label}: ${Number(c.parsed.y).toFixed(1)}%`,
+          afterBody: items => {
+            const r = rows[items[0].dataIndex];
+            const g = r.sta - r.dem;
+            return [`Gap: ${g>0?'+':''}${g.toFixed(1)}pp`, `PDT: ${r.pdt}`];
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#eaecef' }, ticks: { font: { size: 11 }, maxRotation: 45 } },
+      y: {
+        grid: { color: '#eaecef' },
+        ticks: { callback: v => v + '%', font: { size: 11 } },
+        title: { display: true, text: '% of daily total', font: { size: 11 } }
+      }
+    }
+  }
+});
+
+/* ── Gap chart ── */
+const gaps = rows.map(r => +(r.sta - r.dem).toFixed(2));
+const ctx2 = document.getElementById('gapChart').getContext('2d');
+new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [{
+      label: 'Gap (Staff − Demand) pp',
+      data: gaps,
+      backgroundColor: gaps.map(g => {
+        if (g < -5)  return 'rgba(207,34,46,0.9)';
+        if (g < -1)  return 'rgba(207,34,46,0.5)';
+        if (g > 2)   return 'rgba(26,127,55,0.55)';
+        if (g > 0.5) return 'rgba(26,127,55,0.3)';
+        return 'rgba(130,130,130,0.3)';
+      }),
+      borderColor: gaps.map(g => g < -1 ? '#cf222e' : g > 0.5 ? '#1a7f37' : '#888'),
+      borderWidth: 1,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: c => `Gap: ${c.parsed.y > 0 ? '+' : ''}${Number(c.parsed.y).toFixed(2)}pp`,
+          afterBody: items => [`PDT: ${rows[items[0].dataIndex].pdt}`]
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#eaecef' }, ticks: { font: { size: 11 }, maxRotation: 45 } },
+      y: {
+        grid: { color: '#eaecef' },
+        ticks: { callback: v => (v > 0 ? '+' : '') + v + 'pp', font: { size: 11 } },
+        title: { display: true, text: 'pp surplus (+) or deficit (−)', font: { size: 11 } }
+      }
+    }
+  }
+});
+
+/* ── Table ── */
+const tbody = document.getElementById('tbody');
+rows.forEach(r => {
+  const g = +(r.sta - r.dem).toFixed(2);
+  let rowCls = '', badge = '', gapCls = 'gap-bal';
+
+  if (g < -5)      { rowCls='crit';  badge=`<span class="badge b-crit">Critical −</span>`;  gapCls='gap-neg-big'; }
+  else if (g < -1) { rowCls='under'; badge=`<span class="badge b-under">Understaffed</span>`; gapCls='gap-neg'; }
+  else if (g > 2)  { rowCls='over';  badge=`<span class="badge b-over">Overstaffed</span>`;  gapCls='gap-pos'; }
+  else if (g > 0.5){ rowCls='mod';   badge=`<span class="badge b-over">Moderate +</span>`;   gapCls='gap-pos'; }
+  else             { badge=`<span class="badge b-bal">Balanced</span>`; }
+
+  const tr = document.createElement('tr');
+  tr.className = rowCls;
+  tr.innerHTML = `
+    <td><strong>${String(r.h).padStart(2,'0')}:00</strong></td>
+    <td>${r.ist}</td>
+    <td>${r.pdt}</td>
+    <td>${r.dem.toFixed(1)}%</td>
+    <td>${r.sta.toFixed(2)}%</td>
+    <td class="${gapCls}">${g>0?'+':''}${g.toFixed(2)}pp</td>
+    <td>${badge}</td>
+  `;
+  tbody.appendChild(tr);
+});
+</script>
+</body>
+</html>
