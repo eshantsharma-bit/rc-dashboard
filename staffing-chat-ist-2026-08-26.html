@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IST Staffing vs Demand — Chat Origin</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f6f8fa;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --muted: #656d76;
+    --blue: #0969da;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --orange: #bc4c00;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; padding: 28px 32px; max-width: 1300px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  h2 { font-size: 14px; font-weight: 600; margin-bottom: 14px; }
+  .meta { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+  .meta span { margin-right: 16px; }
+  .origin-badge { display: inline-block; background: #ddf4ff; border: 1px solid #80ccff; color: #0550ae; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 20px; vertical-align: middle; margin-left: 8px; }
+
+  /* KPI cards */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .kpi { border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .kpi.red  { background: #fff0ee; border-color: #f7c5c0; }
+  .kpi.grn  { background: #eafbee; border-color: #9be9a8; }
+  .kpi.ylw  { background: #fffbdd; border-color: #e3c900; }
+  .kpi.neu  { background: var(--bg2); }
+  .kpi.blu  { background: #ddf4ff; border-color: #80ccff; }
+  .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 4px; }
+  .kpi-val   { font-size: 26px; font-weight: 800; line-height: 1.1; }
+  .kpi.red .kpi-val { color: var(--red); }
+  .kpi.grn .kpi-val { color: var(--green); }
+  .kpi.ylw .kpi-val { color: #7d5b00; }
+  .kpi.blu .kpi-val { color: #0550ae; }
+  .kpi-sub   { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* Compare strip */
+  .compare-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+  .compare-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; background: var(--bg2); }
+  .compare-card h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); margin-bottom: 10px; }
+  .compare-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 4px 0; border-bottom: 1px solid #eaecef; }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row .lbl { color: var(--muted); }
+  .compare-row .val { font-weight: 700; }
+  .val-red { color: var(--red); }
+  .val-grn { color: var(--green); }
+  .val-neu { color: var(--muted); }
+
+  /* Chart */
+  .chart-card { border: 1px solid var(--border); border-radius: 8px; padding: 20px; background: var(--bg2); margin-bottom: 24px; }
+  .chart-wrap { height: 340px; }
+
+  /* Insight callouts */
+  .insight-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+  .callout { border-radius: 8px; border: 1px solid var(--border); padding: 16px 18px; }
+  .callout.red   { background: #fff0ee; border-color: #f7c5c0; }
+  .callout.grn   { background: #eafbee; border-color: #9be9a8; }
+  .callout.blue  { background: #ddf4ff; border-color: #80ccff; }
+  .callout.ylw   { background: #fffbdd; border-color: #e3c900; }
+  .callout-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .callout p     { font-size: 13px; color: var(--muted); line-height: 1.65; }
+  .callout strong { color: var(--text); }
+
+  /* Table */
+  .tbl-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--bg2); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); padding: 9px 12px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+  td { padding: 7px 12px; border-bottom: 1px solid #eaecef; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr.crit  td { background: #fff0ee; }
+  tr.under td { background: #fff8f0; }
+  tr.over  td { background: #f0faf2; }
+  tr.mod   td { background: #f8fdf9; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
+  .b-crit  { background: #cf222e; color: #fff; }
+  .b-under { background: #ff818233; color: var(--red); border: 1px solid #ff818266; }
+  .b-over  { background: #56d36430; color: var(--green); border: 1px solid #56d36460; }
+  .b-bal   { background: var(--bg2); color: var(--muted); border: 1px solid var(--border); }
+  .note { font-size: 11px; color: var(--muted); margin-top: 8px; }
+  .tab-nav { display: flex; gap: 2px; margin-bottom: 0; }
+  .tab-link { font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: none; padding: 5px 14px; border: 1px solid var(--border); border-radius: 6px 6px 0 0; background: var(--bg2); }
+  .tab-link.active { background: #ddf4ff; border-color: #80ccff; color: #0550ae; }
+</style>
+</head>
+<body>
+
+<h1>IST Staffing vs Demand — Chat Origin <span class="origin-badge">Chat</span></h1>
+<p class="meta">
+  <span>All Products · All Topics</span>
+  <span>Last 60 Days · Weekdays only (Mon–Fri) · 75,233 chat cases · 43 days</span>
+  <span>Timezone: IST (UTC+5:30)</span>
+  <span>Origin = 'Chat' · Weekends excluded (SOQL)</span>
+</p>
+
+<!-- tab nav -->
+<div class="tab-nav">
+  <a class="tab-link" href="staffing-alignment-ist-2026-08-26.html">All Origins</a>
+  <a class="tab-link active" href="#">Chat</a>
+</div>
+
+<!-- KPI row -->
+<div class="kpi-row" style="margin-top:12px">
+  <div class="kpi blu">
+    <div class="kpi-label">Chat Cases (Weekdays)</div>
+    <div class="kpi-val">75,233</div>
+    <div class="kpi-sub">~1,750/day avg · Mon–Fri only · 43 weekdays in 60d window</div>
+  </div>
+  <div class="kpi ylw">
+    <div class="kpi-label">Peak Hour (Hr 19)</div>
+    <div class="kpi-val">7.5%</div>
+    <div class="kpi-sub">7:30 PM IST · 7 AM PDT · vs 16.2% for all-origins</div>
+  </div>
+  <div class="kpi red">
+    <div class="kpi-label">Understaffed Block</div>
+    <div class="kpi-val">7:30–9:30 PM</div>
+    <div class="kpi-sub">Hrs 19–21 · 21.0% demand · ~17.5% staffing</div>
+  </div>
+  <div class="kpi grn">
+    <div class="kpi-label">Best-matched vs All-Origins</div>
+    <div class="kpi-val">Much flatter</div>
+    <div class="kpi-sub">Chat spreads evenly; no single-hour spike ≥8%</div>
+  </div>
+</div>
+
+<!-- Compare strip -->
+<div class="compare-strip">
+  <div class="compare-card">
+    <h3>Chat vs All-Origins — Peak hour demand %</h3>
+    <div class="compare-row"><span class="lbl">Hr 19 · 7:30 PM IST · All Origins</span><span class="val val-red">16.2%</span></div>
+    <div class="compare-row"><span class="lbl">Hr 20 · 8:30 PM IST · All Origins</span><span class="val val-red">20.7%</span></div>
+    <div class="compare-row"><span class="lbl">Hr 19 · 7:30 PM IST · Chat</span><span class="val val-neu">7.5%</span></div>
+    <div class="compare-row"><span class="lbl">Hr 20 · 8:30 PM IST · Chat</span><span class="val val-neu">7.5%</span></div>
+    <div class="compare-row"><span class="lbl">Highest chat hour (Hr 19)</span><span class="val val-neu">7.5%</span></div>
+  </div>
+  <div class="compare-card">
+    <h3>Chat demand concentration vs staffing</h3>
+    <div class="compare-row"><span class="lbl">Hrs 18–23 (6:30 PM–11:30 PM IST)</span><span class="val val-red">39.3% demand · 29.2% staffing</span></div>
+    <div class="compare-row"><span class="lbl">Hrs 12–17 (12:30–5:30 PM IST)</span><span class="val val-grn">29.0% demand · 34.8% staffing</span></div>
+    <div class="compare-row"><span class="lbl">Hrs 9–11 (9:30–11:30 AM IST)</span><span class="val val-grn">7.7% demand · 10.3% staffing</span></div>
+    <div class="compare-row"><span class="lbl">Hrs 0–1 (12:30–1:30 AM IST)</span><span class="val val-neu">9.6% demand · 9.9% staffing</span></div>
+  </div>
+</div>
+
+<!-- Demand vs Staffing chart -->
+<div class="chart-card">
+  <h2>Hourly Demand % (Chat) vs Staffing % — IST</h2>
+  <div class="chart-wrap">
+    <canvas id="mainChart"></canvas>
+  </div>
+</div>
+
+<!-- Insight callouts -->
+<div class="insight-row">
+  <div class="callout red">
+    <div class="callout-title">Understaffed — 7:30–9:30 PM IST (Hours 19–21)</div>
+    <p>The chat evening peak runs <strong>7:30–9:30 PM IST</strong> (7–9 AM PDT) carrying <strong>21% of daily chat demand</strong> (~286 cases/day) against only ~17.5% of staffing. Unlike all-origins where hours 19–20 spike to 37%, chat has a <strong>broader, shallower peak</strong> — manageable but still structurally understaffed by 3–4pp each hour.</p>
+  </div>
+  <div class="callout ylw">
+    <div class="callout-title">Late Night IST Gap — Hrs 5–8 (5:30–8:30 AM IST)</div>
+    <p>Hours 5–8 (5–9 PM PDT, US afternoon) carry <strong>6.8% of chat demand</strong> (~93 cases/day) but only <strong>4.5% of staffing</strong> (84 HC). This is the US West Coast afternoon window — customers are active on chat, but IST headcount is at its lowest. Gap of ~−0.6pp per hour consistently across these 4 hours.</p>
+  </div>
+  <div class="callout grn">
+    <div class="callout-title">Well-matched — 12:30 PM–5:30 PM IST (Hours 12–17)</div>
+    <p>IST afternoon hours carry <strong>29% of chat demand</strong> and have <strong>34.8% of staffing</strong> — a modest surplus. These hours map to US overnight/early morning (12 AM–6 AM PDT) when case volume is naturally lower. Chat is better distributed here than all-origins, making the IST afternoon staffing a reasonable coverage band.</p>
+  </div>
+  <div class="callout blue">
+    <div class="callout-title">Key Difference vs All-Origins</div>
+    <p>Chat demand is <strong>far more evenly spread</strong> across the day. The all-origins model has a structural crisis at 8:30 PM IST (20.7% of volume); chat caps at 7.5%. This means <strong>chat-focused teams are better served by current shifts</strong> than all-origin teams. The priority fix is the 7:30–9:30 PM IST block, not a wholesale shift restructure.</p>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="tbl-card">
+  <table>
+    <thead>
+      <tr>
+        <th>IST Hour</th>
+        <th>Shift (IST)</th>
+        <th>Shift (PDT)</th>
+        <th>Chat Demand %</th>
+        <th>Avg Cases/Day</th>
+        <th>Avg HC Available</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+<p class="note">Origin = 'Chat' · SOQL live query · Last 60 days · Weekdays only (Mon–Fri) · 75,233 cases · 43 weekdays · Avg cases/day = demand% × (75,233 ÷ 43 ≈ 1,750). HC Available from staffing sheet (col Q). Status based on staffing% − demand% gap.</p>
+
+<script>
+// Weekday-only (Mon–Fri) counts from SOQL, 43 weekdays in last 60 days
+const TOTAL     = 75233;
+const DAILY_AVG = TOTAL / 43;  // ~1750 avg weekday chat cases/day
+
+// Raw chat case counts per IST hour — weekdays only
+const chatCounts = [3497,3055,2369,1508,1183,1181,1287,1363,1319,1384,1914,2658,3444,3867,4060,3996,3754,3763,4788,5959,5912,5343,4628,4406];
+
+const rows = [
+  { h:0,  ist:"12:30 AM", pdt:"12:00 PM", hc:92  },
+  { h:1,  ist:"1:30 AM",  pdt:"1:00 PM",  hc:92  },
+  { h:2,  ist:"2:30 AM",  pdt:"2:00 PM",  hc:56  },
+  { h:3,  ist:"3:30 AM",  pdt:"3:00 PM",  hc:53  },
+  { h:4,  ist:"4:30 AM",  pdt:"4:00 PM",  hc:34  },
+  { h:5,  ist:"5:30 AM",  pdt:"5:00 PM",  hc:21  },
+  { h:6,  ist:"6:30 AM",  pdt:"6:00 PM",  hc:21  },
+  { h:7,  ist:"7:30 AM",  pdt:"7:00 PM",  hc:21  },
+  { h:8,  ist:"8:30 AM",  pdt:"8:00 PM",  hc:21  },
+  { h:9,  ist:"9:30 AM",  pdt:"9:00 PM",  hc:64  },
+  { h:10, ist:"10:30 AM", pdt:"10:00 PM", hc:64  },
+  { h:11, ist:"11:30 AM", pdt:"11:00 PM", hc:64  },
+  { h:12, ist:"12:30 PM", pdt:"12:00 AM", hc:110 },
+  { h:13, ist:"1:30 PM",  pdt:"1:00 AM",  hc:110 },
+  { h:14, ist:"2:30 PM",  pdt:"2:00 AM",  hc:90  },
+  { h:15, ist:"3:30 PM",  pdt:"3:00 AM",  hc:90  },
+  { h:16, ist:"4:30 PM",  pdt:"4:00 AM",  hc:90  },
+  { h:17, ist:"5:30 PM",  pdt:"5:00 AM",  hc:129 },
+  { h:18, ist:"6:30 PM",  pdt:"6:00 AM",  hc:124 },
+  { h:19, ist:"7:30 PM",  pdt:"7:00 AM",  hc:106 },
+  { h:20, ist:"8:30 PM",  pdt:"8:00 AM",  hc:139 },
+  { h:21, ist:"9:30 PM",  pdt:"9:00 AM",  hc:92  },
+  { h:22, ist:"10:30 PM", pdt:"10:00 AM", hc:92  },
+  { h:23, ist:"11:30 PM", pdt:"11:00 AM", hc:92  },
+];
+
+const TOTAL_HC = rows.reduce((s,r) => s + r.hc, 0); // 1867
+
+rows.forEach((r, i) => {
+  r.dem    = +(chatCounts[i] / TOTAL * 100).toFixed(2);
+  r.sta    = +(r.hc / TOTAL_HC * 100).toFixed(2);
+  r.avgVol = +(r.dem / 100 * DAILY_AVG).toFixed(1);
+});
+
+/* ── Main chart ── */
+const labels = rows.map(r => r.ist);
+const ctx1 = document.getElementById('mainChart').getContext('2d');
+new Chart(ctx1, {
+  data: {
+    labels,
+    datasets: [
+      {
+        type: 'bar',
+        label: 'Chat Demand %',
+        data: rows.map(r => r.dem),
+        backgroundColor: rows.map(r => {
+          const g = r.sta - r.dem;
+          if (g < -3)  return 'rgba(207,34,46,0.85)';
+          if (g < -0.5) return 'rgba(207,34,46,0.45)';
+          return 'rgba(9,105,218,0.45)';
+        }),
+        borderColor: rows.map(r => {
+          const g = r.sta - r.dem;
+          return (g < -0.5) ? '#cf222e' : '#0969da';
+        }),
+        borderWidth: 1,
+        order: 2,
+      },
+      {
+        type: 'line',
+        label: 'Staffing %',
+        data: rows.map(r => r.sta),
+        borderColor: '#1a7f37',
+        backgroundColor: 'rgba(26,127,55,0.08)',
+        borderWidth: 2.5,
+        pointBackgroundColor: '#1a7f37',
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        fill: false,
+        tension: 0.35,
+        order: 1,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 12 }, padding: 16 } },
+      tooltip: {
+        callbacks: {
+          label: c => `${c.dataset.label}: ${Number(c.parsed.y).toFixed(2)}%`,
+          afterBody: items => {
+            const r = rows[items[0].dataIndex];
+            const g = r.sta - r.dem;
+            return [
+              `Gap: ${g>0?'+':''}${g.toFixed(2)}pp`,
+              `Avg chat cases/day: ${r.avgVol}`,
+              `HC available: ${r.hc}`,
+              `PDT: ${r.pdt}`
+            ];
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#eaecef' }, ticks: { font: { size: 11 }, maxRotation: 45 } },
+      y: {
+        grid: { color: '#eaecef' },
+        ticks: { callback: v => v + '%', font: { size: 11 } },
+        title: { display: true, text: '% of daily total', font: { size: 11 } }
+      }
+    }
+  }
+});
+
+/* ── Table ── */
+const tbody = document.getElementById('tbody');
+rows.forEach(r => {
+  const g = +(r.sta - r.dem).toFixed(2);
+  let rowCls = '', badge = '';
+
+  if (g < -3)       { rowCls='crit';  badge=`<span class="badge b-crit">Critical −</span>`; }
+  else if (g < -0.5){ rowCls='under'; badge=`<span class="badge b-under">Understaffed</span>`; }
+  else if (g > 2)   { rowCls='over';  badge=`<span class="badge b-over">Overstaffed</span>`; }
+  else if (g > 0.5) { rowCls='mod';   badge=`<span class="badge b-over">Moderate +</span>`; }
+  else              { badge=`<span class="badge b-bal">Balanced</span>`; }
+
+  const tr = document.createElement('tr');
+  tr.className = rowCls;
+  tr.innerHTML = `
+    <td><strong>${String(r.h).padStart(2,'0')}:00</strong></td>
+    <td>${r.ist}</td>
+    <td>${r.pdt}</td>
+    <td>${r.dem.toFixed(2)}%</td>
+    <td>${r.avgVol}</td>
+    <td>${r.hc}</td>
+    <td>${badge}</td>
+  `;
+  tbody.appendChild(tr);
+});
+</script>
+</body>
+</html>
