@@ -86,7 +86,7 @@
 <h1>IST Staffing vs Demand Alignment</h1>
 <p class="meta">
   <span>All Products · All Topics</span>
-  <span>Last 60 Days · 21,241 cases</span>
+  <span>Last 60 Days · 21,241 cases · Weekdays only (Mon–Fri, ~43 days)</span>
   <span>Timezone: IST (UTC+5:30)</span>
   <span>Shift data mapped to IST hour by floor(:30 → hour)</span>
 </p>
@@ -171,13 +171,14 @@
     <tbody id="tbody"></tbody>
   </table>
 </div>
-<p class="note">PST column in source data is PDT (UTC−7). Gap = Staffing% − Demand%; negative = understaffed. Avg Cases/Day = demand% × (21,241 ÷ 60 days). HC Available = col-Q headcount from staffing sheet. Cases per HC = Avg Cases/Day ÷ HC Available (red ≥ 2.5, amber ≥ 1.2). Shifts at :30 IST mapped to floor hour.</p>
+<p class="note">PST column in source data is PDT (UTC−7). Gap = Staffing% − Demand%; negative = understaffed. Avg Cases/Day = demand% × (21,241 ÷ 43 weekdays) — weekday denominator aligns with Mon–Fri staffing. HC Available = col-Q headcount from staffing sheet. Cases per HC = Avg Cases/Day ÷ HC Available (red ≥ 2.5, amber ≥ 1.2). Note: hourly demand % shape includes some weekend signal as the source heatmap covers all 60 calendar days.</p>
 
 <script>
-// Total cases over 60 days = 21,241 → avg per day = 21241/60 = 354.0
-// Total headcount slots (col Q sum) = 1,867 (sum of all 24 hourly HC values)
-// avgVol = dem% × 354.0; avgHC = sta% × TOTAL_HC/100 where TOTAL_HC=1867
-const DAILY_AVG = 21241 / 60;     // 354.0 avg cases per day
+// Total cases over 60 days = 21,241. Weekdays only: 60 days ≈ 43 weekdays (Mon–Fri).
+// Staffing sheet is weekday-only, so avg daily cases must use weekday denominator.
+// Hourly demand % shape still includes some weekend signal (no weekday-only heatmap export
+// available), but the daily avg is correct for a weekday staffing comparison.
+const DAILY_AVG = 21241 / 43;     // ≈ 494 avg weekday cases per day
 const TOTAL_HC  = 1867;            // sum of col-Q headcount across all 24 shift rows
 
 const rows = [
