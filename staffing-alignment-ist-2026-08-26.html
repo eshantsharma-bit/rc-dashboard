@@ -76,6 +76,9 @@
   .gap-pos     { color: var(--green); }
   .gap-bal     { color: var(--muted); }
   .note { font-size: 11px; color: var(--muted); margin-top: 8px; }
+  .load-hi  { color: var(--red);    font-weight: 800; }
+  .load-mid { color: #bc4c00;       font-weight: 700; }
+  .load-lo  { color: var(--green);  }
 </style>
 </head>
 <body>
@@ -157,7 +160,10 @@
         <th>Shift (IST)</th>
         <th>Shift (PDT)</th>
         <th>Demand %</th>
+        <th>Avg Cases/Day</th>
         <th>Staffing %</th>
+        <th>Avg HC Available</th>
+        <th>Cases per HC</th>
         <th>Gap (Staff − Demand)</th>
         <th>Status</th>
       </tr>
@@ -165,35 +171,47 @@
     <tbody id="tbody"></tbody>
   </table>
 </div>
-<p class="note">PST column in source data is PDT (UTC−7). Gap = Staffing% − Demand%; negative = understaffed. Shifts at :30 IST mapped to floor hour (e.g. 7:30 PM IST → Hour 19).</p>
+<p class="note">PST column in source data is PDT (UTC−7). Gap = Staffing% − Demand%; negative = understaffed. Avg Cases/Day = demand% × (21,241 ÷ 60 days). HC Available = col-Q headcount from staffing sheet. Cases per HC = Avg Cases/Day ÷ HC Available (red ≥ 2.5, amber ≥ 1.2). Shifts at :30 IST mapped to floor hour.</p>
 
 <script>
+// Total cases over 60 days = 21,241 → avg per day = 21241/60 = 354.0
+// Total headcount slots (col Q sum) = 1,867 (sum of all 24 hourly HC values)
+// avgVol = dem% × 354.0; avgHC = sta% × TOTAL_HC/100 where TOTAL_HC=1867
+const DAILY_AVG = 21241 / 60;     // 354.0 avg cases per day
+const TOTAL_HC  = 1867;            // sum of col-Q headcount across all 24 shift rows
+
 const rows = [
-  { h:0,  ist:"12:30 AM", pdt:"12:00 PM", dem:8.1,  sta:4.93 },
-  { h:1,  ist:"1:30 AM",  pdt:"1:00 PM",  dem:3.1,  sta:4.93 },
-  { h:2,  ist:"2:30 AM",  pdt:"2:00 PM",  dem:2.8,  sta:3.00 },
-  { h:3,  ist:"3:30 AM",  pdt:"3:00 PM",  dem:1.7,  sta:2.84 },
-  { h:4,  ist:"4:30 AM",  pdt:"4:00 PM",  dem:1.2,  sta:1.82 },
-  { h:5,  ist:"5:30 AM",  pdt:"5:00 PM",  dem:1.0,  sta:1.12 },
-  { h:6,  ist:"6:30 AM",  pdt:"6:00 PM",  dem:0.9,  sta:1.12 },
-  { h:7,  ist:"7:30 AM",  pdt:"7:00 PM",  dem:0.9,  sta:1.12 },
-  { h:8,  ist:"8:30 AM",  pdt:"8:00 PM",  dem:0.9,  sta:1.12 },
-  { h:9,  ist:"9:30 AM",  pdt:"9:00 PM",  dem:1.1,  sta:3.43 },
-  { h:10, ist:"10:30 AM", pdt:"10:00 PM", dem:1.8,  sta:3.43 },
-  { h:11, ist:"11:30 AM", pdt:"11:00 PM", dem:2.4,  sta:3.43 },
-  { h:12, ist:"12:30 PM", pdt:"12:00 AM", dem:3.1,  sta:5.89 },
-  { h:13, ist:"1:30 PM",  pdt:"1:00 AM",  dem:3.4,  sta:5.89 },
-  { h:14, ist:"2:30 PM",  pdt:"2:00 AM",  dem:3.4,  sta:4.82 },
-  { h:15, ist:"3:30 PM",  pdt:"3:00 AM",  dem:3.8,  sta:4.82 },
-  { h:16, ist:"4:30 PM",  pdt:"4:00 AM",  dem:3.6,  sta:4.82 },
-  { h:17, ist:"5:30 PM",  pdt:"5:00 AM",  dem:3.7,  sta:6.91 },
-  { h:18, ist:"6:30 PM",  pdt:"6:00 AM",  dem:4.4,  sta:6.64 },
-  { h:19, ist:"7:30 PM",  pdt:"7:00 AM",  dem:16.2, sta:5.68 },
-  { h:20, ist:"8:30 PM",  pdt:"8:00 AM",  dem:20.7, sta:7.45 },
-  { h:21, ist:"9:30 PM",  pdt:"9:00 AM",  dem:4.3,  sta:4.93 },
-  { h:22, ist:"10:30 PM", pdt:"10:00 AM", dem:3.8,  sta:4.93 },
-  { h:23, ist:"11:30 PM", pdt:"11:00 AM", dem:3.8,  sta:4.93 },
+  { h:0,  ist:"12:30 AM", pdt:"12:00 PM", dem:8.1,  sta:4.93, hc:92  },
+  { h:1,  ist:"1:30 AM",  pdt:"1:00 PM",  dem:3.1,  sta:4.93, hc:92  },
+  { h:2,  ist:"2:30 AM",  pdt:"2:00 PM",  dem:2.8,  sta:3.00, hc:56  },
+  { h:3,  ist:"3:30 AM",  pdt:"3:00 PM",  dem:1.7,  sta:2.84, hc:53  },
+  { h:4,  ist:"4:30 AM",  pdt:"4:00 PM",  dem:1.2,  sta:1.82, hc:34  },
+  { h:5,  ist:"5:30 AM",  pdt:"5:00 PM",  dem:1.0,  sta:1.12, hc:21  },
+  { h:6,  ist:"6:30 AM",  pdt:"6:00 PM",  dem:0.9,  sta:1.12, hc:21  },
+  { h:7,  ist:"7:30 AM",  pdt:"7:00 PM",  dem:0.9,  sta:1.12, hc:21  },
+  { h:8,  ist:"8:30 AM",  pdt:"8:00 PM",  dem:0.9,  sta:1.12, hc:21  },
+  { h:9,  ist:"9:30 AM",  pdt:"9:00 PM",  dem:1.1,  sta:3.43, hc:64  },
+  { h:10, ist:"10:30 AM", pdt:"10:00 PM", dem:1.8,  sta:3.43, hc:64  },
+  { h:11, ist:"11:30 AM", pdt:"11:00 PM", dem:2.4,  sta:3.43, hc:64  },
+  { h:12, ist:"12:30 PM", pdt:"12:00 AM", dem:3.1,  sta:5.89, hc:110 },
+  { h:13, ist:"1:30 PM",  pdt:"1:00 AM",  dem:3.4,  sta:5.89, hc:110 },
+  { h:14, ist:"2:30 PM",  pdt:"2:00 AM",  dem:3.4,  sta:4.82, hc:90  },
+  { h:15, ist:"3:30 PM",  pdt:"3:00 AM",  dem:3.8,  sta:4.82, hc:90  },
+  { h:16, ist:"4:30 PM",  pdt:"4:00 AM",  dem:3.6,  sta:4.82, hc:90  },
+  { h:17, ist:"5:30 PM",  pdt:"5:00 AM",  dem:3.7,  sta:6.91, hc:129 },
+  { h:18, ist:"6:30 PM",  pdt:"6:00 AM",  dem:4.4,  sta:6.64, hc:124 },
+  { h:19, ist:"7:30 PM",  pdt:"7:00 AM",  dem:16.2, sta:5.68, hc:106 },
+  { h:20, ist:"8:30 PM",  pdt:"8:00 AM",  dem:20.7, sta:7.45, hc:139 },
+  { h:21, ist:"9:30 PM",  pdt:"9:00 AM",  dem:4.3,  sta:4.93, hc:92  },
+  { h:22, ist:"10:30 PM", pdt:"10:00 AM", dem:3.8,  sta:4.93, hc:92  },
+  { h:23, ist:"11:30 PM", pdt:"11:00 AM", dem:3.8,  sta:4.93, hc:92  },
 ];
+
+// Compute derived fields
+rows.forEach(r => {
+  r.avgVol = +(r.dem / 100 * DAILY_AVG).toFixed(1);   // avg cases per day in this hour
+  r.cphc   = r.hc > 0 ? +(r.avgVol / r.hc).toFixed(2) : null; // cases per HC slot
+});
 
 /* ── Main chart ── */
 const labels = rows.map(r => r.ist);
@@ -247,7 +265,13 @@ new Chart(ctx1, {
           afterBody: items => {
             const r = rows[items[0].dataIndex];
             const g = r.sta - r.dem;
-            return [`Gap: ${g>0?'+':''}${g.toFixed(1)}pp`, `PDT: ${r.pdt}`];
+            return [
+              `Gap: ${g>0?'+':''}${g.toFixed(1)}pp`,
+              `Avg cases/day: ${r.avgVol}`,
+              `HC available: ${r.hc}`,
+              `Cases per HC: ${r.cphc}`,
+              `PDT: ${r.pdt}`
+            ];
           }
         }
       }
@@ -319,6 +343,11 @@ rows.forEach(r => {
   else if (g > 0.5){ rowCls='mod';   badge=`<span class="badge b-over">Moderate +</span>`;   gapCls='gap-pos'; }
   else             { badge=`<span class="badge b-bal">Balanced</span>`; }
 
+  // Cases-per-HC load class
+  let loadCls = 'load-lo';
+  if (r.cphc >= 2.5)      loadCls = 'load-hi';
+  else if (r.cphc >= 1.2) loadCls = 'load-mid';
+
   const tr = document.createElement('tr');
   tr.className = rowCls;
   tr.innerHTML = `
@@ -326,7 +355,10 @@ rows.forEach(r => {
     <td>${r.ist}</td>
     <td>${r.pdt}</td>
     <td>${r.dem.toFixed(1)}%</td>
+    <td>${r.avgVol}</td>
     <td>${r.sta.toFixed(2)}%</td>
+    <td>${r.hc}</td>
+    <td class="${loadCls}">${r.cphc}</td>
     <td class="${gapCls}">${g>0?'+':''}${g.toFixed(2)}pp</td>
     <td>${badge}</td>
   `;
