@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WFM Capacity & Staffing Analysis — Industry + Revenue Cloud</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:#fff; --bg2:#f6f8fa; --bg3:#eaeef2; --border:#d0d7de;
+  --text:#1f2328; --muted:#656d76; --link:#0969da;
+  --red:#cf222e; --red-bg:#fff0ee; --red-border:#f7c5c0;
+  --green:#1a7f37; --green-bg:#eafbee; --green-border:#9be9a8;
+  --orange:#bc4c00; --orange-bg:#fff8f0; --orange-border:#ffb77c;
+  --blue:#0550ae; --blue-bg:#ddf4ff; --blue-border:#80ccff;
+  --purple:#6639ba; --purple-bg:#fbefff; --purple-border:#d2b0f7;
+  --apac:#0284c7; --india:#7c3aed; --emea:#d97706; --est:#16a34a; --pst:#dc2626;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:13px;padding:24px 32px;max-width:1400px;margin:0 auto;}
+
+/* header */
+.page-header{border-bottom:2px solid var(--border);padding-bottom:16px;margin-bottom:24px;}
+.page-header h1{font-size:22px;font-weight:800;letter-spacing:-0.3px;}
+.page-header .sub{font-size:12px;color:var(--muted);margin-top:4px;display:flex;gap:20px;flex-wrap:wrap;}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:20px;vertical-align:middle;}
+.badge.ind{background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;}
+.badge.rev{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
+.badge.wfm{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border);}
+
+/* section */
+.section{margin-bottom:28px;}
+.section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:14px;}
+
+/* kpi grid */
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;}
+.kpi{border:1px solid var(--border);border-radius:8px;padding:14px 16px;background:var(--bg2);}
+.kpi.red{background:var(--red-bg);border-color:var(--red-border);}
+.kpi.grn{background:var(--green-bg);border-color:var(--green-border);}
+.kpi.blu{background:var(--blue-bg);border-color:var(--blue-border);}
+.kpi.ylw{background:var(--orange-bg);border-color:var(--orange-border);}
+.kpi-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:4px;}
+.kpi-val{font-size:24px;font-weight:800;line-height:1.1;}
+.kpi.red .kpi-val{color:var(--red);}
+.kpi.grn .kpi-val{color:var(--green);}
+.kpi.blu .kpi-val{color:var(--blue);}
+.kpi.ylw .kpi-val{color:var(--orange);}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4;}
+
+/* shift legend */
+.shift-legend{display:flex;gap:18px;margin-bottom:14px;flex-wrap:wrap;}
+.shift-dot{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;}
+.dot{width:12px;height:12px;border-radius:2px;flex-shrink:0;}
+
+/* charts */
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.chart-card{border:1px solid var(--border);border-radius:8px;padding:18px;background:var(--bg2);}
+.chart-card.wide{grid-column:1/-1;}
+.chart-card h3{font-size:13px;font-weight:700;margin-bottom:4px;}
+.chart-card .chart-sub{font-size:11px;color:var(--muted);margin-bottom:12px;}
+.chart-wrap{position:relative;}
+.h280{height:280px;}
+.h320{height:320px;}
+.h200{height:200px;}
+
+/* shift coverage bands */
+.coverage-grid{display:grid;grid-template-columns:120px repeat(24,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:10px;}
+.cg-head{background:var(--bg3);font-weight:700;padding:5px 4px;text-align:center;color:var(--muted);}
+.cg-label{background:var(--bg2);font-weight:700;padding:6px 8px;display:flex;align-items:center;font-size:11px;}
+.cg-cell{padding:5px 2px;text-align:center;background:var(--bg);}
+.cg-cell.on-apac{background:#bae6fd;color:#0369a1;font-weight:700;}
+.cg-cell.on-india{background:#ddd6fe;color:#5b21b6;font-weight:700;}
+.cg-cell.on-emea{background:#fde68a;color:#92400e;font-weight:700;}
+.cg-cell.on-est{background:#bbf7d0;color:#166534;font-weight:700;}
+.cg-cell.on-pst{background:#fecaca;color:#991b1b;font-weight:700;}
+.cg-cell.on-multi2{background:#c4b5fd;color:#3730a3;font-weight:700;}
+.cg-cell.on-multi3{background:#f97316;color:#fff;font-weight:700;}
+
+/* action table */
+.tbl-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--bg3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;}
+td{padding:7px 10px;border-bottom:1px solid #eaecef;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr.crit td{background:#fff0ee;}
+tr.under td{background:#fff8f0;}
+tr.over td{background:#f0faf2;}
+tr.mod td{background:#f8fdf9;}
+.pill{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.p-crit{background:var(--red);color:#fff;}
+.p-under{background:#ff818233;color:var(--red);border:1px solid #ff818266;}
+.p-over{background:#56d36430;color:var(--green);border:1px solid #56d36460;}
+.p-bal{background:var(--bg3);color:var(--muted);border:1px solid var(--border);}
+.p-mod{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7;}
+.neg-big{color:var(--red);font-weight:800;}
+.neg{color:var(--orange);font-weight:700;}
+.pos{color:var(--green);}
+.bal{color:var(--muted);}
+
+/* recommendation cards */
+.rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.rec-card{border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.rec-card.urgent{background:var(--red-bg);border-color:var(--red-border);}
+.rec-card.improve{background:var(--orange-bg);border-color:var(--orange-border);}
+.rec-card.optimize{background:var(--green-bg);border-color:var(--green-border);}
+.rec-title{font-size:12px;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.rec-card.urgent .rec-title{color:var(--red);}
+.rec-card.improve .rec-title{color:var(--orange);}
+.rec-card.optimize .rec-title{color:var(--green);}
+.rec-body{font-size:12px;color:var(--muted);line-height:1.65;}
+.rec-body strong{color:var(--text);}
+
+.note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5;}
+
+/* product split bar */
+.split-bar{height:8px;border-radius:4px;overflow:hidden;display:flex;margin-top:4px;}
+.split-ind{background:#0284c7;}
+.split-rev{background:#d97706;}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>WFM Capacity &amp; Staffing Analysis <span class="badge wfm">Workforce Management</span></h1>
+  <div class="sub">
+    <span><span class="badge ind">Industry Cloud</span> + <span class="badge rev">Revenue Cloud</span></span>
+    <span>Last 60 Days · Weekdays Only (Mon–Fri) · 44 weekdays</span>
+    <span>All times in IST (UTC+5:30)</span>
+    <span>Shifts: APAC 5:30AM–2:30PM · India 9:30AM–6:30PM · EMEA 12:30PM–9:30PM · EST 5:30PM–2:30AM · PST 8:30PM–5:30AM</span>
+  </div>
+</div>
+
+<!-- ── SECTION 1: SCORECARD ── -->
+<div class="section">
+  <div class="section-title">Executive Scorecard</div>
+  <div class="kpi-grid">
+    <div class="kpi blu">
+      <div class="kpi-label">Total Weekday Cases</div>
+      <div class="kpi-val">20,798</div>
+      <div class="kpi-sub">44 weekdays · 473 avg/day</div>
+      <div class="split-bar" style="margin-top:6px"><div class="split-ind" style="width:77.6%"></div><div class="split-rev" style="width:22.4%"></div></div>
+      <div class="kpi-sub" style="margin-top:3px">Ind 16,147 (77.6%) · Rev 4,651 (22.4%)</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Peak Hour Avg Inflow</div>
+      <div class="kpi-val">100.2/hr</div>
+      <div class="kpi-sub">8:30 PM IST · 8 AM PDT · 21.2% of daily volume in 1 hour</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Worst Staffing Gap</div>
+      <div class="kpi-val">−13.8pp</div>
+      <div class="kpi-sub">8:30 PM IST · 7.5% supply vs 21.2% demand</div>
+    </div>
+    <div class="kpi ylw">
+      <div class="kpi-label">Understaffed Hours</div>
+      <div class="kpi-val">3 hrs</div>
+      <div class="kpi-sub">12:30 AM (−2.9pp) · 7:30 PM (−10.9pp) · 8:30 PM (−13.8pp)</div>
+    </div>
+    <div class="kpi grn">
+      <div class="kpi-label">Total HC Pool</div>
+      <div class="kpi-val">1,867</div>
+      <div class="kpi-sub">Ind 1,378 · Rev 489 · across 5 shift bands</div>
+    </div>
+    <div class="kpi grn">
+      <div class="kpi-label">Overstaffed Block</div>
+      <div class="kpi-val">9 hrs</div>
+      <div class="kpi-sub">9:30 AM–6:30 PM IST · avg +2.1pp surplus per hour</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION 2: CHARTS ── -->
+<div class="section">
+  <div class="section-title">Case Inflow vs Engineer Availability — Hourly (IST)</div>
+  <div class="chart-row">
+    <div class="chart-card wide">
+      <h3>Daily Avg Case Inflow by Hour — Industry vs Revenue Cloud</h3>
+      <div class="chart-sub">Average cases per weekday per IST hour · Stacked by product · 44-day baseline</div>
+      <div class="chart-wrap h280">
+        <canvas id="inflowChart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <h3>Engineer Availability by Shift — Hourly (IST)</h3>
+      <div class="chart-sub">Headcount on-shift per hour · Stacked by region</div>
+      <div class="shift-legend">
+        <span class="shift-dot"><span class="dot" style="background:#0284c7"></span>APAC</span>
+        <span class="shift-dot"><span class="dot" style="background:#7c3aed"></span>India (IST)</span>
+        <span class="shift-dot"><span class="dot" style="background:#d97706"></span>EMEA</span>
+        <span class="shift-dot"><span class="dot" style="background:#16a34a"></span>AMER-EST</span>
+        <span class="shift-dot"><span class="dot" style="background:#dc2626"></span>AMER-PST</span>
+      </div>
+      <div class="chart-wrap h280">
+        <canvas id="staffChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>Demand % vs Supply % — Alignment View</h3>
+      <div class="chart-sub">Red bars = understaffed hours · Green line = staffing capacity share</div>
+      <div class="chart-wrap h280">
+        <canvas id="alignChart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card wide">
+      <h3>Cases per Engineer by Hour — Inflow Pressure Index</h3>
+      <div class="chart-sub">Avg new cases arriving per available engineer per hour · Higher = more inbound pressure on shift</div>
+      <div class="chart-wrap h200">
+        <canvas id="pressureChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION 3: SHIFT COVERAGE GRID ── -->
+<div class="section">
+  <div class="section-title">Shift Coverage Map — Active Shifts by IST Hour</div>
+  <div class="coverage-grid" id="coverageGrid"></div>
+  <p class="note">Each cell shows headcount active from that shift in that hour. Colour = dominant shift. Hours with multiple overlapping shifts shown in orange.</p>
+</div>
+
+<!-- ── SECTION 4: HOUR-BY-HOUR TABLE ── -->
+<div class="section">
+  <div class="section-title">Hour-by-Hour Capacity Analysis</div>
+  <div class="tbl-card">
+    <table>
+      <thead>
+        <tr>
+          <th>IST Time</th>
+          <th>PDT</th>
+          <th>Active Shifts</th>
+          <th>Ind Cases/Day</th>
+          <th>Rev Cases/Day</th>
+          <th>Total Cases/Day</th>
+          <th>Demand %</th>
+          <th>HC Available</th>
+          <th>Supply %</th>
+          <th>Gap</th>
+          <th>Pressure Index</th>
+          <th>Verdict</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── SECTION 5: RECOMMENDATIONS ── -->
+<div class="section">
+  <div class="section-title">Staffing Recommendations</div>
+  <div class="rec-grid">
+    <div class="rec-card urgent">
+      <div class="rec-title">🔴 Critical — Peak Coverage Gap (7:30–8:30 PM IST)</div>
+      <div class="rec-body">
+        Hours 19–20 carry <strong>37.8% of all daily Industry cases</strong> (~163 cases/day) but only <strong>13.1% of staffing</strong>. This maps to <strong>7–9 AM PDT</strong> — the US morning ramp.<br><br>
+        <strong>Recommended fix:</strong> Extend EMEA shift end from 9:30 PM to 10:30 PM (+1 hr, +47 HC) and pull forward PST start from 8:30 PM to 7:30 PM (+1 hr, +46 HC). Combined adds ~93 HC to the most critical hours at zero new headcount.
+      </div>
+    </div>
+    <div class="rec-card urgent">
+      <div class="rec-title">🔴 High — Midnight Gap (12:30 AM IST)</div>
+      <div class="rec-body">
+        Hour 0 (12:30 AM IST = 12 PM PDT) carries <strong>7.8% of daily demand</strong> (~36.8 cases/day) but only <strong>4.9% of staffing</strong> (92 HC). This is US noon — a natural inflow spike as East Coast engineers open cases after lunch.<br><br>
+        <strong>Recommended fix:</strong> EST shift currently runs 5:30 PM–2:30 AM IST. Extend by 1 hour to 12:30 AM → 2:30 AM gives EST coverage through midnight. Alternatively, a small IST late-night cohort (5 engineers) can absorb the gap.
+      </div>
+    </div>
+    <div class="rec-card improve">
+      <div class="rec-title">🟡 Optimise — APAC/India Overlap (9:30 AM–2:30 PM IST)</div>
+      <div class="rec-body">
+        Hours 9–13 have both APAC (21 HC) and India (43 HC) active simultaneously — <strong>64–110 engineers</strong> covering only <strong>1.1–3.4% of daily demand</strong> each hour. This is US overnight / early morning (9 PM–2 AM PDT) when customers are not active.<br><br>
+        <strong>Recommended fix:</strong> Reduce APAC headcount in hours 12–13 (wind down earlier, e.g., 1:30 PM instead of 2:30 PM). Redeploy 10–14 APAC engineers to a late-evening IST window (6–8 PM IST) where demand surges.
+      </div>
+    </div>
+    <div class="rec-card improve">
+      <div class="rec-title">🟡 Optimise — India Shift End Alignment</div>
+      <div class="rec-body">
+        India engineers (43 HC) wind down at 6:30 PM IST. At 7:30 PM (hr19), India HC drops to 0 just as Industry volume spikes from ~14 to 70 cases/day. India shift ending at 6:30 PM IST = 6 AM PDT, before the US morning surge even begins.<br><br>
+        <strong>Recommended fix:</strong> Introduce a late IST cohort (e.g., 12:30 PM – 9:30 PM IST) for 15–20 India engineers, creating overlap with the peak hrs 19–20 window. Existing India engineers on standard shift keep 9:30 AM–6:30 PM.
+      </div>
+    </div>
+    <div class="rec-card optimize">
+      <div class="rec-title">🟢 Efficiency — Revenue Cloud Understaffed vs Industry</div>
+      <div class="rec-body">
+        Revenue Cloud carries 22.4% of case volume but only has 26.2% of HC (489 of 1,867). Revenue's peak is more evenly distributed (max 7.9% at hr19) vs Industry's extreme spike (18.6% at hr20).<br><br>
+        <strong>Recommended fix:</strong> Revenue staffing is structurally reasonable. No headcount add needed — focus should be on ensuring Revenue engineers at hrs 19–20 (29–38 HC) are not pulled to admin tasks during the peak window.
+      </div>
+    </div>
+    <div class="rec-card optimize">
+      <div class="rec-title">🟢 Baseline — EST/PST Night Coverage Is Adequate</div>
+      <div class="rec-body">
+        Hours 1–4 (1:30–4:30 AM IST = 1–4 PM PDT, US afternoon) have <strong>adequate coverage</strong>: 34–92 HC covering 0.9–2.6% demand each. PST (46 HC) + EST residual provides solid overnight IST coverage.<br><br>
+        <strong>No action needed</strong> for these hours. This is the best-matched block in the 24-hour cycle. Maintain current EST/PST staffing levels for this window.
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="note">Data: OrgCS SOQL · cssf_Product_Topic_Name__c LIKE 'Industry%' OR 'Revenue%' · CreatedDate last 60 days · Weekdays only (Mon–Fri, 44 days) · 20,798 cases · HC from engineer shift CSV · Demand% = hourly cases ÷ total · Supply% = hourly HC ÷ 1,867 · Pressure Index = avg cases/day ÷ HC available · Gap = Supply% − Demand%</p>
+
+<script>
+// ── DATA ──
+const TOTAL_HC = 1867;
+const TOTAL_CASES = 20798;
+const WEEKDAYS = 44;
+
+// IST hours 0-23, display order starts at hr5 (5:30 AM) wrapping to hr4 (4:30 AM)
+const dispOrder = [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0,1,2,3,4];
+
+const istLabels = ['12:30 AM','1:30 AM','2:30 AM','3:30 AM','4:30 AM','5:30 AM','6:30 AM','7:30 AM','8:30 AM','9:30 AM','10:30 AM','11:30 AM','12:30 PM','1:30 PM','2:30 PM','3:30 PM','4:30 PM','5:30 PM','6:30 PM','7:30 PM','8:30 PM','9:30 PM','10:30 PM','11:30 PM'];
+const pdtLabels = ['12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM','6:00 PM','7:00 PM','8:00 PM','9:00 PM','10:00 PM','11:00 PM','12:00 AM','1:00 AM','2:00 AM','3:00 AM','4:00 AM','5:00 AM','6:00 AM','7:00 AM','8:00 AM','9:00 AM','10:00 AM','11:00 AM'];
+
+// Weekday-only hourly counts (hr 0-23)
+const indCases = [1432,382,336,191,133,139,139,128,142,170,260,336,431,476,477,535,504,491,612,3082,4059,593,560,539];
+const revCases = [187,164,162,109,73,56,42,50,47,55,106,163,209,226,231,298,277,306,330,366,350,318,268,258];
+
+// HC by IST hour (from CSV, Industries + Revenue combined)
+const hcTotal = [92,92,56,53,34,21,21,21,21,64,64,64,110,110,90,90,90,129,124,106,139,92,92,92];
+const hcInd   = [73,73,47,44,25,15,15,15,15,46,46,46,73,73,59,59,59,88,95,77,101,73,73,73];
+const hcRev   = [19,19,9,9,9,6,6,6,6,18,18,18,37,37,31,31,31,41,29,29,38,19,19,19];
+
+// HC by shift (APAC, India, EMEA, EST, PST) per IST hour
+const hcAPAC  = [0,0,0,0,1,21,21,21,21,21,21,21,20,20,0,0,0,0,0,0,0,0,0,0];
+const hcIndia = [0,0,0,0,0,0,0,0,0,43,43,43,43,43,43,43,43,43,31,0,0,0,0,0];
+const hcEMEA  = [0,0,0,0,0,0,0,0,0,0,0,0,47,47,47,47,47,47,47,47,47,0,0,0];
+const hcEST   = [46,46,10,7,0,0,0,0,0,0,0,0,0,0,0,0,0,39,46,46,46,46,46,46];
+const hcPST   = [46,46,46,46,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,46,46,46,46];
+
+// Derived
+const totCases = indCases.map((v,i) => v + revCases[i]);
+const demPct   = totCases.map(v => v / TOTAL_CASES * 100);
+const supPct   = hcTotal.map(v => v / TOTAL_HC * 100);
+const gap      = supPct.map((v,i) => v - demPct[i]);
+const indAvg   = indCases.map(v => +(v / WEEKDAYS).toFixed(1));
+const revAvg   = revCases.map(v => +(v / WEEKDAYS).toFixed(1));
+const totAvg   = totCases.map(v => +(v / WEEKDAYS).toFixed(1));
+const pressure = hcTotal.map((hc, i) => hc > 0 ? +(totAvg[i] / hc).toFixed(2) : 0);
+
+// Reorder arrays for display (hr5 first)
+function reorder(arr) { return dispOrder.map(i => arr[i]); }
+const dLabels   = reorder(istLabels);
+const dIndAvg   = reorder(indAvg);
+const dRevAvg   = reorder(revAvg);
+const dTotAvg   = reorder(totAvg);
+const dDemPct   = reorder(demPct);
+const dSupPct   = reorder(supPct);
+const dGap      = reorder(gap);
+const dHC       = reorder(hcTotal);
+const dPressure = reorder(pressure);
+const dAPAC     = reorder(hcAPAC);
+const dIndia    = reorder(hcIndia);
+const dEMEA     = reorder(hcEMEA);
+const dEST      = reorder(hcEST);
+const dPST      = reorder(hcPST);
+
+// ── CHART 1: Inflow stacked bar ──
+new Chart(document.getElementById('inflowChart'), {
+  type: 'bar',
+  data: {
+    labels: dLabels,
+    datasets: [
+      { label: 'Industry', data: dIndAvg, backgroundColor: 'rgba(2,132,199,0.75)', borderColor: '#0284c7', borderWidth: 1, stack: 'cases' },
+      { label: 'Revenue',  data: dRevAvg, backgroundColor: 'rgba(217,119,6,0.75)', borderColor: '#d97706', borderWidth: 1, stack: 'cases' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 }, padding: 12 } },
+      tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(1)} cases/day` } }
+    },
+    scales: {
+      x: { stacked: true, grid: { color: '#eaecef' }, ticks: { font: { size: 9 }, maxRotation: 45 } },
+      y: { stacked: true, grid: { color: '#eaecef' }, ticks: { font: { size: 10 } }, title: { display: true, text: 'Avg cases / weekday', font: { size: 10 } } }
+    }
+  }
+});
+
+// ── CHART 2: Staffing stacked bar ──
+new Chart(document.getElementById('staffChart'), {
+  type: 'bar',
+  data: {
+    labels: dLabels,
+    datasets: [
+      { label: 'APAC',      data: dAPAC,  backgroundColor: 'rgba(2,132,199,0.8)',   borderWidth: 0, stack: 's' },
+      { label: 'India',     data: dIndia, backgroundColor: 'rgba(124,58,237,0.8)',  borderWidth: 0, stack: 's' },
+      { label: 'EMEA',      data: dEMEA,  backgroundColor: 'rgba(217,119,6,0.8)',   borderWidth: 0, stack: 's' },
+      { label: 'AMER-EST',  data: dEST,   backgroundColor: 'rgba(22,163,74,0.8)',   borderWidth: 0, stack: 's' },
+      { label: 'AMER-PST',  data: dPST,   backgroundColor: 'rgba(220,38,38,0.8)',   borderWidth: 0, stack: 's' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y} HC` } } },
+    scales: {
+      x: { stacked: true, grid: { color: '#eaecef' }, ticks: { font: { size: 9 }, maxRotation: 45 } },
+      y: { stacked: true, grid: { color: '#eaecef' }, ticks: { font: { size: 10 } }, title: { display: true, text: 'Engineers on shift', font: { size: 10 } } }
+    }
+  }
+});
+
+// ── CHART 3: Alignment (demand vs supply %) ──
+new Chart(document.getElementById('alignChart'), {
+  data: {
+    labels: dLabels,
+    datasets: [
+      {
+        type: 'bar', label: 'Demand %',
+        data: dDemPct,
+        backgroundColor: dGap.map(g => g < -5 ? 'rgba(207,34,46,0.85)' : g < -0.5 ? 'rgba(207,34,46,0.45)' : 'rgba(9,105,218,0.4)'),
+        borderWidth: 0, order: 2
+      },
+      {
+        type: 'line', label: 'Supply %',
+        data: dSupPct,
+        borderColor: '#1a7f37', backgroundColor: 'rgba(26,127,55,0.06)',
+        borderWidth: 2.5, pointRadius: 3, pointBackgroundColor: '#1a7f37',
+        fill: false, tension: 0.3, order: 1
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 }, padding: 12 } },
+      tooltip: {
+        callbacks: {
+          label: c => `${c.dataset.label}: ${Number(c.parsed.y).toFixed(1)}%`,
+          afterBody: items => {
+            const i = items[0].dataIndex;
+            return [`Gap: ${dGap[i] > 0 ? '+' : ''}${dGap[i].toFixed(1)}pp`];
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#eaecef' }, ticks: { font: { size: 9 }, maxRotation: 45 } },
+      y: { grid: { color: '#eaecef' }, ticks: { callback: v => v + '%', font: { size: 10 } } }
+    }
+  }
+});
+
+// ── CHART 4: Pressure index ──
+new Chart(document.getElementById('pressureChart'), {
+  type: 'bar',
+  data: {
+    labels: dLabels,
+    datasets: [{
+      label: 'Cases per Engineer (Pressure Index)',
+      data: dPressure,
+      backgroundColor: dPressure.map(v => v > 0.7 ? 'rgba(207,34,46,0.85)' : v > 0.35 ? 'rgba(188,76,0,0.7)' : 'rgba(26,127,55,0.55)'),
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => `${c.parsed.y.toFixed(2)} cases/engineer this hour` } }
+    },
+    scales: {
+      x: { grid: { color: '#eaecef' }, ticks: { font: { size: 9 }, maxRotation: 45 } },
+      y: { grid: { color: '#eaecef' }, ticks: { font: { size: 10 } }, title: { display: true, text: 'Cases / HC', font: { size: 10 } } }
+    }
+  }
+});
+
+// ── COVERAGE GRID ──
+const cgGrid = document.getElementById('coverageGrid');
+// Header row: label + 24 hour labels
+const blankHead = document.createElement('div');
+blankHead.className = 'cg-head'; blankHead.textContent = 'Shift';
+cgGrid.appendChild(blankHead);
+dLabels.forEach(l => {
+  const d = document.createElement('div');
+  d.className = 'cg-head'; d.textContent = l.replace(':30','');
+  cgGrid.appendChild(d);
+});
+
+const shifts = [
+  { name: 'APAC', cls: 'on-apac', data: dAPAC },
+  { name: 'India (IST)', cls: 'on-india', data: dIndia },
+  { name: 'EMEA', cls: 'on-emea', data: dEMEA },
+  { name: 'AMER-EST', cls: 'on-est', data: dEST },
+  { name: 'AMER-PST', cls: 'on-pst', data: dPST },
+];
+shifts.forEach(s => {
+  const lbl = document.createElement('div');
+  lbl.className = 'cg-label'; lbl.textContent = s.name;
+  cgGrid.appendChild(lbl);
+  s.data.forEach(v => {
+    const d = document.createElement('div');
+    d.className = 'cg-cell' + (v > 0 ? ' ' + s.cls : '');
+    d.textContent = v > 0 ? v : '';
+    cgGrid.appendChild(d);
+  });
+});
+
+// ── TABLE ──
+const tbody = document.getElementById('tbody');
+// Display in order 5AM→4AM
+dispOrder.forEach((h, di) => {
+  const dem = demPct[h], sup = supPct[h], g = gap[h], hc = hcTotal[h];
+  const pr = pressure[h];
+
+  // active shifts
+  const actShifts = [];
+  if (hcAPAC[h]  > 0) actShifts.push('APAC');
+  if (hcIndia[h] > 0) actShifts.push('India');
+  if (hcEMEA[h]  > 0) actShifts.push('EMEA');
+  if (hcEST[h]   > 0) actShifts.push('EST');
+  if (hcPST[h]   > 0) actShifts.push('PST');
+
+  let rowCls='', pill='', gapCls='bal';
+  if (g < -5)        { rowCls='crit';  pill=`<span class="pill p-crit">Critical −</span>`; gapCls='neg-big'; }
+  else if (g < -0.5) { rowCls='under'; pill=`<span class="pill p-under">Understaffed</span>`; gapCls='neg'; }
+  else if (g > 3)    { rowCls='over';  pill=`<span class="pill p-over">Overstaffed</span>`; gapCls='pos'; }
+  else if (g > 1)    { rowCls='mod';   pill=`<span class="pill p-mod">Moderate +</span>`; gapCls='pos'; }
+  else               { pill=`<span class="pill p-bal">Balanced</span>`; }
+
+  const prCls = pr > 0.7 ? 'neg-big' : pr > 0.35 ? 'neg' : 'pos';
+
+  const tr = document.createElement('tr');
+  tr.className = rowCls;
+  tr.innerHTML = `
+    <td><strong>${istLabels[h]}</strong></td>
+    <td>${pdtLabels[h]}</td>
+    <td style="font-size:10px">${actShifts.join(', ')}</td>
+    <td>${indAvg[h]}</td>
+    <td>${revAvg[h]}</td>
+    <td><strong>${totAvg[h]}</strong></td>
+    <td>${dem.toFixed(1)}%</td>
+    <td>${hc}</td>
+    <td>${sup.toFixed(1)}%</td>
+    <td class="${gapCls}">${g > 0 ? '+' : ''}${g.toFixed(1)}pp</td>
+    <td class="${prCls}">${pr.toFixed(2)}</td>
+    <td>${pill}</td>
+  `;
+  tbody.appendChild(tr);
+});
+</script>
+</body>
+</html>
