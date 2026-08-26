@@ -7,7 +7,7 @@
 <style>
 :root{--bg:#f6f8fa;--surface:#ffffff;--border:#d0d7de;--text:#1f2328;--muted:#656d76;
 --accent:#0969da;--green:#1a7f37;--red:#cf222e;--yellow:#9a6700;--orange:#bc4c00;
---emea:#8250df;--india:#e16f42;}
+--emea:#8250df;--india:#e16f42;--apac:#1f6feb;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;padding:16px 20px;}
 h1{font-size:20px;font-weight:700;letter-spacing:-.3px;}
@@ -84,12 +84,12 @@ canvas{max-width:100%;}
 <div class="header">
   <div>
     <h1>⚡ Revenue Cloud · Weekly Report · Aug 16–22, 2026</h1>
-    <div class="meta">EMEA + India · Manager scope · Source: OrgCS live query + Salesforce KPI report · Generated: 25 Aug 2026</div>
+    <div class="meta">EMEA + India + APAC · Manager scope · Source: OrgCS live query + Salesforce KPI report · Generated: 26 Aug 2026</div>
     <div class="badges">
       <span class="badge badge-green">🔬 4 unique GUS investigations · W-23936240 covers 27 Configurator cases</span>
-      <span class="badge badge-green">✅ Backlog ↓ 210 (−19 vs PW) · TTR 5.4d</span>
+      <span class="badge badge-green">✅ Backlog 251 (EMEA+India+APAC) · TTR 5.5d</span>
       <span class="badge badge-red">🔴 Sev1 ↑+65% (33 vs 20) · EMEA driving</span>
-      <span class="badge badge-red">⚠️ Aged >15d back to 36 (+8 WoW)</span>
+      <span class="badge badge-red">⚠️ Aged >15d = 46 · APAC 30.3% aged rate — highest of 3 regions</span>
       <span class="badge badge-purple">🏢 RIEDEL Communications — 13 open cases TW</span>
     </div>
   </div>
@@ -99,8 +99,8 @@ canvas{max-width:100%;}
 <div class="kpi-row">
   <div class="kpi warn">
     <div class="kpi-label">Inflow</div>
-    <div class="kpi-val">272</div>
-    <div class="kpi-delta up">▲ +34 vs PW (238) · +14%</div>
+    <div class="kpi-val">302</div>
+    <div class="kpi-delta up">▲ +14% vs PW · EMEA 66% / India 25% / APAC 9%</div>
   </div>
   <div class="kpi alert">
     <div class="kpi-label">Sev1 Inflow</div>
@@ -110,17 +110,17 @@ canvas{max-width:100%;}
   <div class="kpi good">
     <div class="kpi-label">CSAT</div>
     <div class="kpi-val" style="color:var(--green);">4.88</div>
-    <div class="kpi-delta neu">▼ −0.02 vs PW · n=25 · 0 detractors</div>
+    <div class="kpi-delta neu">▼ −0.02 vs PW · n=28 · 0 detractors · 4th consecutive wk</div>
   </div>
   <div class="kpi good">
     <div class="kpi-label">Open Backlog</div>
-    <div class="kpi-val" style="color:var(--green);">210</div>
-    <div class="kpi-delta dn">▼ −19 vs PW (229) · ↓ improving</div>
+    <div class="kpi-val" style="color:var(--green);">251</div>
+    <div class="kpi-delta neu">EMEA 122 / India 96 / APAC 33</div>
   </div>
   <div class="kpi alert">
     <div class="kpi-label">Aged &gt;15d</div>
-    <div class="kpi-val" style="color:var(--red);">36</div>
-    <div class="kpi-delta up">▲ +8 vs PW (28) · worsening</div>
+    <div class="kpi-val" style="color:var(--red);">46</div>
+    <div class="kpi-delta up">▲ EMEA 15 / India 21 / APAC 10 · APAC 30.3% rate ⚠️</div>
   </div>
 </div>
 
@@ -129,27 +129,27 @@ canvas{max-width:100%;}
   <div class="section-label">Executive Summary — Aug 16–22, 2026</div>
   <div class="grid-2" style="gap:8px;margin-bottom:10px;">
     <div class="insight red">
-      <strong>1. Inflow rebounded +14% (272 vs 238) — Sev1 spiked +65% to 33</strong>
-      <span>EMEA drove the Sev1 surge (19 of 33, 58%) reversing last week's India-heavy pattern. RCA Product Configurator was the primary engine: 90 TW vs 56 PW (+61%). RIEDEL Communications GmbH logged 18 cases in the week (13 remain open) — partner is raising cases for identified Product Configurator limitations, SA is engaged, this is active implementation-phase triage. EMEA share rose to 73% of EMEA+India inflow, the highest in 4 weeks.</span>
+      <strong>1. Inflow 302 (EMEA+India+APAC) — +14% WoW · Sev1 spiked +65% to 39</strong>
+      <span>EMEA drove the Sev1 surge (19 of 39 inflow S1s, 49%) reversing last week's India-heavy pattern. APAC added 28 cases (9% of total, 6 S1s). RCA Product Configurator was the primary engine: 90 TW vs 56 PW (+61%). RIEDEL Communications GmbH logged 18 cases in the week (13 remain open) — partner is raising cases for identified Product Configurator limitations, SA is engaged, this is active implementation-phase triage.</span>
     </div>
     <div class="insight green">
-      <strong>2. 4 unique GUS investigations covering 30 cases — W-23936240 is the key item</strong>
-      <span>The KPI report shows 31 cases with a GUS number, but there are only 4 unique investigation numbers. W-23936240 alone links to 27 Product Configurator cases — one engineering item impacting many customers simultaneously. This is concentrated product-layer risk. TTR improved to 5.4 days (4-week best) and Escalation % stayed at 0.7% — resolution of W-23936240 is the key milestone for EMEA volume.</span>
+      <strong>2. 6 unique GUS investigations covering 32 cases — W-23936240 is the key item</strong>
+      <span>The KPI report shows 31 cases with a GUS number, but there are only 6 unique investigation numbers. W-23936240 alone links to 27 Product Configurator cases — a single engineering item impacting many customers simultaneously. This is concentrated product-layer risk. TTR is 5.5 days and Escalation 1.0% — resolution of W-23936240 is the key milestone for EMEA Product Configurator volume.</span>
     </div>
     <div class="insight yellow">
-      <strong>3. Aged >15d worsened to 36 (+8 WoW) — India at 24.1% aged rate</strong>
-      <span>Aged cases worsened after two weeks of improvement (38→33→28→36). India aged rate hit 24.1% vs EMEA 12.2% — nearly 2× gap. Manu Ramamurthy holds 20 of 21 India aged cases (9 no-path: Working, no GUS/Bug). Despite the aged increase, total open backlog fell to 210 (lowest in 4 weeks) — the team closed more than opened overall.</span>
+      <strong>3. Aged >15d = 46 (EMEA+India+APAC) — APAC 30.3% aged rate is highest of 3 regions</strong>
+      <span>Full 3-region aged: EMEA 15 (12.3%), India 21 (21.9%), APAC 10 (30.3%). APAC's 30.3% rate is the highest across all regions. APAC oldest cases: E-coordina 70.1d S1 (GUS filed), MYOB 57d S2, Veeam 50.4d S1 (GUS filed) — all with Rafik Shaikh. India remains concentrated with Manu Ramamurthy (20 of 21 India aged). 9 no-path cases (Working, no GUS/Bug) across EMEA, India, and APAC.</span>
     </div>
     <div class="insight green">
-      <strong>4. CSAT 4.88 — resilient under volume surge, zero detractors</strong>
-      <span>CSAT held strong at 4.88 (−0.02 WoW) despite the highest inflow in 4 weeks. India maintained perfect 5.00 across 12 responses. EMEA at 4.82 (13 responses). Zero detractors for 3rd consecutive week. Strong recognition signal: multiple engineers named in positive comments this week including Sriharsh Gampa and Santhosh Kathi.</span>
+      <strong>4. CSAT 4.89 (n=28, 3 regions) — zero detractors 4th consecutive week</strong>
+      <span>CSAT held strong at 4.89 (n=28 including APAC) despite the highest inflow in 4 weeks. EMEA 4.92 (n=13), India 4.85 (n=13), APAC perfect 5.00 (n=2). Zero detractors for 4th consecutive week — a streak worth recognising. APAC's first responses on record are perfect 5.00. Strong recognition: Anish, Sohag, Pradeepa, Claudio named in positive comments.</span>
     </div>
   </div>
   <div class="good-strip">
-    <div class="good-cell"><div class="val">4.88</div><div class="lbl">CSAT — 0 detractors</div></div>
-    <div class="good-cell"><div class="val">5.4d</div><div class="lbl">TTR — 4-wk best</div></div>
-    <div class="good-cell"><div class="val">0.7%</div><div class="lbl">Escalation % — low</div></div>
-    <div class="good-cell"><div class="val">210</div><div class="lbl">Backlog ↓ −19 WoW</div></div>
+    <div class="good-cell"><div class="val">4.89</div><div class="lbl">CSAT — 0 detractors · 4th wk</div></div>
+    <div class="good-cell"><div class="val">5.5d</div><div class="lbl">TTR — strong</div></div>
+    <div class="good-cell"><div class="val">1.0%</div><div class="lbl">Escalation % — low</div></div>
+    <div class="good-cell"><div class="val">251</div><div class="lbl">Backlog · 3 regions</div></div>
   </div>
 </div>
 
@@ -171,7 +171,7 @@ canvas{max-width:100%;}
       <tr>
         <td><strong>Support Inflow</strong></td>
         <td>—</td>
-        <td class="tw-col"><strong>272</strong></td>
+        <td class="tw-col"><strong>302</strong></td>
         <td>238</td>
         <td>273</td>
         <td>243</td>
@@ -227,7 +227,7 @@ canvas{max-width:100%;}
       <tr style="background:rgba(63,185,80,.03);">
         <td><strong>CSAT</strong></td>
         <td>≥4.50</td>
-        <td class="tw-col"><strong style="color:var(--green);">4.88</strong></td>
+        <td class="tw-col"><strong style="color:var(--green);">4.89</strong></td>
         <td style="color:var(--green);">4.90</td>
         <td style="color:var(--green);">4.85</td>
         <td style="color:var(--yellow);">4.58</td>
@@ -235,7 +235,7 @@ canvas{max-width:100%;}
       <tr>
         <td><strong>TTR (days)</strong></td>
         <td>≤10d</td>
-        <td class="tw-col"><strong style="color:var(--green);">5.4 ↓↓</strong></td>
+        <td class="tw-col"><strong style="color:var(--green);">5.5</strong></td>
         <td style="color:var(--yellow);">7.0</td>
         <td style="color:var(--green);">5.5</td>
         <td>6.3</td>
@@ -243,7 +243,7 @@ canvas{max-width:100%;}
       <tr style="background:rgba(63,185,80,.03);">
         <td><strong>Unique GUS Investigations</strong></td>
         <td>—</td>
-        <td class="tw-col"><strong style="color:var(--green);">4 unique · 30 cases linked</strong></td>
+        <td class="tw-col"><strong style="color:var(--green);">6 unique · 32 cases linked</strong></td>
         <td>7 (2.9%)</td>
         <td>12 (4.4%)</td>
         <td>7 (2.9%)</td>
@@ -259,7 +259,7 @@ canvas{max-width:100%;}
       <tr>
         <td><strong>Escalation %</strong></td>
         <td>&lt;2%</td>
-        <td class="tw-col"><strong style="color:var(--green);">0.7%</strong></td>
+        <td class="tw-col"><strong style="color:var(--green);">1.0%</strong></td>
         <td style="color:var(--yellow);">1.7%</td>
         <td style="color:var(--green);">0.4%</td>
         <td>1.2%</td>
@@ -267,7 +267,7 @@ canvas{max-width:100%;}
       <tr style="background:rgba(248,81,73,.04);">
         <td><strong>Aged &gt;15d</strong></td>
         <td>—</td>
-        <td class="tw-col"><strong style="color:var(--red);">36 ↑↑</strong></td>
+        <td class="tw-col"><strong style="color:var(--red);">46 ↑↑</strong></td>
         <td style="color:var(--green);">28</td>
         <td>33</td>
         <td>33</td>
@@ -275,7 +275,7 @@ canvas{max-width:100%;}
       <tr style="background:rgba(63,185,80,.03);">
         <td><strong>Open Backlog</strong></td>
         <td>—</td>
-        <td class="tw-col"><strong style="color:var(--green);">210</strong></td>
+        <td class="tw-col"><strong style="color:var(--green);">251</strong></td>
         <td>229</td>
         <td>225</td>
         <td>212</td>
@@ -291,7 +291,8 @@ canvas{max-width:100%;}
     <canvas id="inflowChart" height="170"></canvas>
     <div style="margin-top:8px;font-size:11px;color:var(--muted);">
       <span style="color:var(--emea);">■</span> EMEA &nbsp;
-      <span style="color:var(--india);">■</span> India · Manager scope
+      <span style="color:var(--india);">■</span> India &nbsp;
+      <span style="color:var(--apac);">■</span> APAC · Manager scope
     </div>
   </div>
   <div class="card">
@@ -308,8 +309,8 @@ canvas{max-width:100%;}
     <canvas id="csatChart" height="170"></canvas>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
       <div style="background:#dafbe1;border-radius:5px;padding:6px 8px;text-align:center;">
-        <div style="font-size:18px;font-weight:700;color:var(--green);">4.88</div>
-        <div style="font-size:10px;color:var(--muted);">TW avg (n=25)</div>
+        <div style="font-size:18px;font-weight:700;color:var(--green);">4.89</div>
+        <div style="font-size:10px;color:var(--muted);">TW avg (n=28)</div>
       </div>
       <div style="background:#dafbe1;border-radius:5px;padding:6px 8px;text-align:center;">
         <div style="font-size:18px;font-weight:700;color:var(--green);">0</div>
@@ -326,21 +327,28 @@ canvas{max-width:100%;}
     <canvas id="geoChart" height="155"></canvas>
     <div style="margin-top:10px;">
       <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px;">
-        <span><span style="color:var(--emea);">■</span> EMEA 205 (73%)</span>
-        <span><span style="color:var(--india);">■</span> India 75 (27%)</span>
+        <span><span style="color:var(--emea);">■</span> EMEA 205 (67%)</span>
+        <span><span style="color:var(--india);">■</span> India 75 (24%)</span>
+        <span><span style="color:var(--apac);">■</span> APAC 28 (9%)</span>
       </div>
-      <div class="pct-bar-wrap"><div class="pct-emea" style="width:73%;"></div><div class="pct-india" style="width:27%;"></div></div>
+      <div class="pct-bar-wrap">
+        <div style="height:100%;background:var(--emea);float:left;width:67%;"></div>
+        <div style="height:100%;background:var(--india);float:left;width:24%;"></div>
+        <div style="height:100%;background:var(--apac);float:left;width:9%;"></div>
+      </div>
     </div>
     <table class="data-table" style="margin-top:10px;">
-      <thead><tr><th>Region</th><th class="tw-col">TW</th><th>PW</th><th>Δ</th><th>TW S1</th><th>PW S1</th></tr></thead>
+      <thead><tr><th>Region</th><th class="tw-col">TW</th><th>TW S1</th><th>TW%</th></tr></thead>
       <tbody>
-        <tr><td><span style="color:var(--emea);">■</span> EMEA</td><td class="tw-col"><strong>205</strong></td><td>159</td><td class="up">+46 ↑↑</td><td class="up"><strong style="color:var(--red);">19</strong></td><td style="color:var(--emea);">13</td></tr>
-        <tr><td><span style="color:var(--india);">■</span> India</td><td class="tw-col"><strong>75</strong></td><td>82</td><td class="dn">−7</td><td><strong>14</strong></td><td style="color:var(--green);">7</td></tr>
+        <tr><td><span style="color:var(--emea);">■</span> EMEA</td><td class="tw-col"><strong>205</strong></td><td class="up"><strong style="color:var(--red);">19</strong></td><td>67%</td></tr>
+        <tr><td><span style="color:var(--india);">■</span> India</td><td class="tw-col"><strong>75</strong></td><td><strong>14</strong></td><td>24%</td></tr>
+        <tr><td><span style="color:var(--apac);">■</span> APAC</td><td class="tw-col"><strong>28</strong></td><td><strong>6</strong></td><td>9%</td></tr>
+        <tr style="background:#f6f8fa;"><td><strong>Total (3-region)</strong></td><td class="tw-col"><strong>308</strong></td><td><strong style="color:var(--red);">39</strong></td><td>—</td></tr>
       </tbody>
     </table>
     <div class="insight red" style="margin-top:8px;">
-      <strong>EMEA surge +46 cases WoW — RIEDEL Communications drives 18 alone</strong>
-      <span>EMEA share hit 73% of EMEA+India inflow (highest in 4 weeks). India actually decreased −7 WoW. EMEA Sev1 jumped from 13→19, now 58% of all Sev1s. The EMEA/India oscillation pattern continues but this is a significant EMEA-weighted spike, not noise.</span>
+      <strong>EMEA surge +46 cases WoW — RIEDEL Communications drives 18 alone · APAC adds 28 new</strong>
+      <span>EMEA share 67% of 3-region inflow. APAC's 28 cases in first week of inclusion: 6 S1s (21% S1 rate vs EMEA 9%, India 19%). EMEA Sev1 jumped from 13→19, India from 7→14 WoW. The 39 total inflow Sev1s is the highest weekly figure in the tracked window.</span>
     </div>
   </div>
 
@@ -348,17 +356,17 @@ canvas{max-width:100%;}
     <div class="section-label">Sev1 Trend by Region — 4-Week</div>
     <canvas id="sev1Chart" height="155"></canvas>
     <table class="data-table" style="margin-top:10px;">
-      <thead><tr><th>Week</th><th>Total S1</th><th>EMEA S1</th><th>India S1</th><th>EMEA%</th></tr></thead>
+      <thead><tr><th>Week</th><th>Total S1</th><th>EMEA S1</th><th>India S1</th><th style="color:var(--apac);">APAC S1</th></tr></thead>
       <tbody>
-        <tr><td>Jul 26–Aug 1</td><td>33</td><td style="color:var(--emea);">18</td><td style="color:var(--india);">15</td><td>55%</td></tr>
-        <tr><td>Aug 2–8</td><td>25</td><td style="color:var(--green);">7 ↓↓</td><td style="color:var(--india);">18 ↑↑</td><td>28%</td></tr>
-        <tr><td>Aug 9–15</td><td style="color:var(--green);">20 ▼</td><td style="color:var(--emea);">13</td><td style="color:var(--green);">7 ▼▼</td><td>65%</td></tr>
-        <tr class="highlight-row"><td>★ Aug 16–22</td><td style="color:var(--red);">33 ↑↑</td><td style="color:var(--red);">19 ↑</td><td style="color:var(--india);">14</td><td>58%</td></tr>
+        <tr><td>Jul 26–Aug 1</td><td>33</td><td style="color:var(--emea);">18</td><td style="color:var(--india);">15</td><td style="color:var(--apac);">—</td></tr>
+        <tr><td>Aug 2–8</td><td>25</td><td style="color:var(--green);">7 ↓↓</td><td style="color:var(--india);">18 ↑↑</td><td style="color:var(--apac);">—</td></tr>
+        <tr><td>Aug 9–15</td><td style="color:var(--green);">20 ▼</td><td style="color:var(--emea);">13</td><td style="color:var(--green);">7 ▼▼</td><td style="color:var(--apac);">—</td></tr>
+        <tr class="highlight-row"><td>★ Aug 16–22</td><td style="color:var(--red);">39 ↑↑</td><td style="color:var(--red);">19 ↑</td><td style="color:var(--india);">14</td><td style="color:var(--apac);font-weight:700;">6 ★new</td></tr>
       </tbody>
     </table>
     <div class="insight red" style="margin-top:8px;">
-      <strong>S1 back to 33 — same as Jul 26–Aug 1 peak · EMEA leading</strong>
-      <span>The improving arc (33→25→20) reversed sharply. EMEA S1 is now 19 (58% share), highest since Jul 19–25. India S1 at 14 is up from 7 but not at its own peak (18). RCA Product Configurator accounts for a significant share of EMEA S1s — Sev1 filings and the Investigation surge are likely linked.</span>
+      <strong>S1 inflow hit 39 with APAC included — 29 open S1s across 3 regions</strong>
+      <span>Including APAC: 39 Sev1s this week (EMEA 19, India 14, APAC 6). Open S1s live: 29 total (EMEA 11, India 11, APAC 7). APAC S1 aged rate is highest: E-coordina 70.1d and Veeam 50.4d both S1 with GUS filed. EMEA S1 surge from 13→19 WoW is the main inflow driver.</span>
     </div>
   </div>
 </div>
@@ -373,6 +381,8 @@ canvas{max-width:100%;}
         <tbody>
           <tr class="highlight-row"><td style="color:var(--green);font-weight:700;">W-23936240</td><td style="color:var(--green);font-weight:700;">27</td><td>Product Configurator (dominant)</td></tr>
           <tr><td>W-23948929</td><td>1</td><td>—</td></tr>
+          <tr><td>W-23989209</td><td>1</td><td>APAC</td></tr>
+          <tr><td>W-23980955</td><td>1</td><td>APAC</td></tr>
           <tr><td>W-23820685</td><td>1</td><td>—</td></tr>
           <tr><td>W-23085281</td><td>1</td><td>—</td></tr>
         </tbody>
@@ -388,19 +398,49 @@ canvas{max-width:100%;}
     </div>
     <div style="display:flex;flex-direction:column;gap:8px;">
       <div style="background:#dafbe1;border-radius:6px;padding:10px 14px;text-align:center;">
-        <div style="font-size:26px;font-weight:700;color:var(--green);">4</div>
+        <div style="font-size:26px;font-weight:700;color:var(--green);">6</div>
         <div style="font-size:11px;color:var(--muted);">Unique GUS investigations (TW)</div>
-        <div style="font-size:10px;color:var(--green);margin-top:2px;">30 cases linked across them</div>
+        <div style="font-size:10px;color:var(--green);margin-top:2px;">32 cases linked across them</div>
       </div>
       <div style="background:#ddf4ff;border-radius:6px;padding:8px 14px;text-align:center;">
-        <div style="font-size:20px;font-weight:700;color:var(--accent);">3</div>
+        <div style="font-size:20px;font-weight:700;color:var(--accent);">4</div>
         <div style="font-size:10px;color:var(--muted);">Unique Bugs filed (TW)</div>
       </div>
     </div>
     <div class="insight green" style="margin-bottom:0;">
-      <strong>W-23936240 covers 27 cases — one product-level fix, many customers</strong>
-      <span>The Salesforce KPI report shows 31 cases with a GUS number, but there are only 4 unique investigation numbers. W-23936240 alone links to 27 Product Configurator cases — a single engineering item (likely a platform-level defect or behaviour change) impacting many customers simultaneously. This is a sign of concentrated product-layer risk, not 31 separate investigations. Tracking the resolution of W-23936240 is the key milestone for EMEA Product Configurator volume.</span>
+      <strong>W-23936240 covers 27 cases — one product-level fix, many customers · 6 unique investigations total</strong>
+      <span>The Salesforce KPI report shows 31 cases with a GUS number, but there are only 6 unique investigation numbers (including 2 new APAC ones this week: W-23989209, W-23980955). W-23936240 alone links to 27 Product Configurator cases — a single engineering item impacting many customers simultaneously. This is concentrated product-layer risk, not 31 separate investigations. Resolution of W-23936240 is the key milestone for EMEA Product Configurator volume.</span>
     </div>
+  </div>
+</div>
+
+<!-- APAC SPOTLIGHT -->
+<div class="card" style="margin-bottom:14px;border-color:var(--apac);">
+  <div class="section-label" style="color:var(--apac);border-color:rgba(31,111,235,.3);">🌏 APAC Region — First Week Included · Managed by Mahima Prathaban, Brahmarouthu Swetha, Rafik Shaikh</div>
+  <div class="grid-3" style="gap:10px;margin-bottom:10px;">
+    <div style="background:#ddf4ff;border-radius:6px;padding:12px 14px;text-align:center;">
+      <div style="font-size:22px;font-weight:700;color:var(--apac);">28</div>
+      <div style="font-size:11px;color:var(--muted);">TW Inflow · 9% of 3-region total</div>
+      <div style="font-size:10px;color:var(--red);margin-top:3px;">6 S1s (21% S1 rate)</div>
+    </div>
+    <div style="background:#ffebe9;border-radius:6px;padding:12px 14px;text-align:center;">
+      <div style="font-size:22px;font-weight:700;color:var(--red);">30.3%</div>
+      <div style="font-size:11px;color:var(--muted);">Aged rate — highest of 3 regions</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:3px;">10 of 33 open cases aged >15d</div>
+    </div>
+    <div style="background:#ddf4ff;border-radius:6px;padding:12px 14px;text-align:center;">
+      <div style="font-size:22px;font-weight:700;color:var(--apac);">7</div>
+      <div style="font-size:11px;color:var(--muted);">Open S1s live</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:3px;">33 total open backlog cases</div>
+    </div>
+  </div>
+  <div class="insight red" style="margin-bottom:8px;">
+    <strong>APAC oldest cases led by Rafik Shaikh — E-coordina 70.1d S1, Veeam 50.4d S1, MYOB 57d S2</strong>
+    <span>All three are the oldest cases in the entire 3-region portfolio. E-coordina (473852468) and Veeam (474020033) are S1s — both have GUS investigations filed (W-23324735/W-23917359 and W-23636443/W-23966075 respectively). MYOB (473973212) has GUS W-23766576. APAC's aged concentration is driven by these 3 high-age cases — resolution of these GUS items is the key milestone. MYOB also appears twice in top-10 oldest (India: 474134504 via Manu, APAC: 473973212 via Rafik) indicating a cross-region account pattern.</span>
+  </div>
+  <div class="insight blue">
+    <strong>APAC CSAT: 5.00/5.00 on first submissions — strong start</strong>
+    <span>APAC contributed 2 CSAT responses this week, both scored 5.0 (Very Satisfied). 4 Bugs filed (TW total across all regions). No escalations from APAC this week.</span>
   </div>
 </div>
 
@@ -459,30 +499,35 @@ canvas{max-width:100%;}
     <table class="data-table">
       <thead><tr><th>Metric</th><th>Count</th></tr></thead>
       <tbody>
-        <tr><td>Active backlog (excl Solution Provided)</td><td><strong>210</strong></td></tr>
-        <tr><td>Aged &gt;15 days ★</td><td><strong style="color:var(--red);">36</strong></td></tr>
-        <tr><td style="padding-left:18px;">↳ Working (active — needs action)</td><td style="color:var(--red);"><strong>9</strong> no-path cases</td></tr>
-        <tr><td style="padding-left:18px;">↳ Need More Information (customer's ball)</td><td style="color:var(--muted);">74 (all open)</td></tr>
-        <tr><td style="padding-left:18px;">↳ Call/Meeting Scheduled</td><td style="color:var(--muted);">6</td></tr>
-        <tr><td>EMEA open</td><td>123</td></tr>
-        <tr><td>India open</td><td>87</td></tr>
-        <tr><td><strong>EMEA aged &gt;15d</strong></td><td><strong style="color:var(--orange);">15 = 12.2% of EMEA</strong></td></tr>
-        <tr><td><strong>India aged &gt;15d</strong></td><td><strong style="color:var(--red);">21 = 24.1% of India ⚠️</strong></td></tr>
-        <tr><td>Open S1s (unresolved)</td><td>18</td></tr>
+        <tr><td>Active backlog (excl Solution Provided)</td><td><strong>251</strong></td></tr>
+        <tr><td>Aged &gt;15 days ★</td><td><strong style="color:var(--red);">46</strong></td></tr>
+        <tr><td style="padding-left:18px;">↳ No-path (Working, no GUS/Bug)</td><td style="color:var(--red);"><strong>9</strong> cases</td></tr>
+        <tr><td style="color:var(--emea);">EMEA open</td><td>122</td></tr>
+        <tr><td style="color:var(--india);">India open</td><td>96</td></tr>
+        <tr><td style="color:var(--apac);">APAC open</td><td>33</td></tr>
+        <tr><td><strong>EMEA aged &gt;15d</strong></td><td><strong style="color:var(--orange);">15 = 12.3% of EMEA</strong></td></tr>
+        <tr><td><strong>India aged &gt;15d</strong></td><td><strong style="color:var(--red);">21 = 21.9% of India ⚠️</strong></td></tr>
+        <tr><td><strong style="color:var(--apac);">APAC aged &gt;15d ⚠️</strong></td><td><strong style="color:var(--red);">10 = 30.3% of APAC 🔴 highest</strong></td></tr>
+        <tr><td>Open S1s (unresolved)</td><td>29 (EMEA 11 / India 11 / APAC 7)</td></tr>
         <tr><td>S1s aged &gt;14d, no GUS</td><td style="color:var(--red);"><strong>2 🔴</strong></td></tr>
         <tr><td>No-path cases (aged &gt;15d, Working, no GUS/Bug)</td><td style="color:var(--yellow);">9</td></tr>
       </tbody>
     </table>
     <div style="margin-top:10px;">
       <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px;">
-        <span><span style="color:var(--emea);">■</span> EMEA 123 (59%)</span>
-        <span><span style="color:var(--india);">■</span> India 87 (41%)</span>
+        <span><span style="color:var(--emea);">■</span> EMEA 122 (49%)</span>
+        <span><span style="color:var(--india);">■</span> India 96 (38%)</span>
+        <span><span style="color:var(--apac);">■</span> APAC 33 (13%)</span>
       </div>
-      <div class="pct-bar-wrap"><div class="pct-emea" style="width:59%;"></div><div class="pct-india" style="width:41%;"></div></div>
+      <div class="pct-bar-wrap">
+        <div style="height:100%;background:var(--emea);float:left;width:49%;"></div>
+        <div style="height:100%;background:var(--india);float:left;width:38%;"></div>
+        <div style="height:100%;background:var(--apac);float:left;width:13%;"></div>
+      </div>
     </div>
     <div class="insight red" style="margin-top:10px;">
-      <strong>India aged rate 24.1% vs EMEA 12.2% — nearly 2× concentration gap</strong>
-      <span>India carries 21 of 36 aged cases (58%) despite being only 41% of the open backlog. Manu Ramamurthy holds 20 of those 21 India aged cases. 9 no-path cases (Working, aged >15d, no GUS/Bug) are the primary actionable items — 6 with Manu, 2 with Apurva, 1 with Seamus.</span>
+      <strong>APAC 30.3% aged rate — highest of 3 regions · India 21.9% · EMEA 12.3%</strong>
+      <span>APAC leads on aged rate: 10 of 33 cases aged >15d, oldest being E-coordina 70.1d S1 and Veeam 50.4d S1 — both with GUS filed. India 21 aged (21.9%), EMEA 15 aged (12.3%). 9 no-path cases (Working, no GUS/Bug) across Manu×5, Apurva×2, Seamus×1, Brahmarouthu×1.</span>
     </div>
   </div>
 
@@ -498,21 +543,21 @@ canvas{max-width:100%;}
     </table>
     <div class="section-label" style="margin-top:14px;">Top 10 Oldest Open Cases (live)</div>
     <table class="data-table">
-      <thead><tr><th>Case #</th><th>Account</th><th>Age</th><th>Sev</th><th>P&amp;T</th><th>GUS</th></tr></thead>
+      <thead><tr><th>Case #</th><th>Account</th><th>Age</th><th>Sev</th><th>Rgn</th><th>P&amp;T</th><th>GUS</th></tr></thead>
       <tbody>
-        <tr><td style="color:var(--red);"><strong>474021398</strong></td><td>athenahealth Inc.</td><td style="color:var(--red);">50.0d</td><td>S3</td><td><span class="pill pill-purple">Legacy CPQ</span></td><td><span class="pill pill-green">W-23807493</span></td></tr>
-        <tr><td style="color:var(--red);"><strong>474103667</strong></td><td>Milestone Systems A/S</td><td style="color:var(--red);">40.7d</td><td>S2</td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">null</span></td></tr>
-        <tr><td style="color:var(--red);"><strong>474111403</strong></td><td>Pierce Washington</td><td style="color:var(--red);">39.9d</td><td>S2</td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">null ⚠️</span></td></tr>
-        <tr><td style="color:var(--orange);"><strong>474134504</strong></td><td>MYOB Australia Pty Ltd</td><td style="color:var(--orange);">35.7d</td><td>S2</td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">null</span></td></tr>
-        <tr><td style="color:var(--orange);"><strong>474155499</strong></td><td>LabCorp</td><td style="color:var(--orange);">33.6d</td><td>S2</td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">null</span></td></tr>
-        <tr><td><strong>474163026</strong></td><td>Siemens SiePortal</td><td>32.8d</td><td>S2</td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-green">W-23947748</span></td></tr>
-        <tr><td><strong>474164119</strong></td><td>SYNAOS GmbH</td><td>32.7d</td><td>S2</td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">null</span></td></tr>
-        <tr><td><strong>474178261</strong></td><td>Bluvium Inc</td><td>29.9d</td><td>S3</td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">null ⚠️</span></td></tr>
-        <tr><td><strong>474192524</strong></td><td>Infoblox (Vista Org)</td><td>28.6d</td><td>S2</td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-green">W-23726465</span></td></tr>
-        <tr><td><strong>474212487</strong></td><td>Midmark Corporation</td><td>26.7d</td><td>S2</td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">null ⚠️</span></td></tr>
+        <tr><td style="color:var(--red);"><strong>473852468</strong></td><td>E-coordina</td><td style="color:var(--red);">70.1d</td><td>S1</td><td><span class="pill pill-blue">APAC</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-green" style="font-size:9px;">W-23324735</span></td></tr>
+        <tr><td style="color:var(--red);"><strong>473973212</strong></td><td>MYOB Australia</td><td style="color:var(--red);">57.0d</td><td>S2</td><td><span class="pill pill-blue">APAC</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-green">W-23766576</span></td></tr>
+        <tr><td style="color:var(--red);"><strong>474020033</strong></td><td>Veeam Software</td><td style="color:var(--red);">50.4d</td><td>S1</td><td><span class="pill pill-blue">APAC</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-green" style="font-size:9px;">W-23636443</span></td></tr>
+        <tr><td style="color:var(--red);"><strong>474021398</strong></td><td>athenahealth Inc.</td><td style="color:var(--red);">50.1d</td><td>S3</td><td><span class="pill pill-purple">India</span></td><td><span class="pill pill-purple">Legacy CPQ</span></td><td><span class="pill pill-green">W-23807493</span></td></tr>
+        <tr><td style="color:var(--orange);"><strong>474103667</strong></td><td>Milestone Systems A/S</td><td style="color:var(--orange);">40.8d</td><td>S2</td><td><span class="pill pill-purple">EMEA</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">null</span></td></tr>
+        <tr><td style="color:var(--orange);"><strong>474111403</strong></td><td>Pierce Washington</td><td style="color:var(--orange);">40.0d</td><td>S2</td><td><span class="pill pill-purple">EMEA</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">null ⚠️</span></td></tr>
+        <tr><td><strong>474134504</strong></td><td>MYOB Australia Pty Ltd</td><td>35.8d</td><td>S2</td><td><span class="pill pill-muted">India</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">null</span></td></tr>
+        <tr><td><strong>474150197</strong></td><td>RevCycle Limited</td><td>34.3d</td><td>S2</td><td><span class="pill pill-blue">APAC</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-green">W-23963732</span></td></tr>
+        <tr><td><strong>474155499</strong></td><td>LabCorp</td><td>33.7d</td><td>S2</td><td><span class="pill pill-purple">EMEA</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">null</span></td></tr>
+        <tr><td><strong>474163026</strong></td><td>Siemens SiePortal</td><td>32.9d</td><td>S2</td><td><span class="pill pill-purple">EMEA</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-green">W-23947748</span></td></tr>
       </tbody>
     </table>
-    <div style="font-size:10px;color:var(--muted);margin-top:6px;">⚠️ = no-path: Working status, aged >15d, no GUS/Bug filed. All cases confirmed open (IsClosed=false).</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;">⚠️ = no-path: Working status, aged >15d, no GUS/Bug filed. All cases confirmed open (IsClosed=false). APAC now included — 3 APAC cases in top 4 oldest.</div>
   </div>
 </div>
 
@@ -527,7 +572,7 @@ canvas{max-width:100%;}
           <tr><td>Jul 26–Aug 1</td><td>24</td><td style="color:var(--yellow);">4.58</td><td style="color:var(--red);">2</td></tr>
           <tr><td>Aug 2–8</td><td>20</td><td style="color:var(--green);">4.85</td><td>0</td></tr>
           <tr><td>Aug 9–15</td><td>20</td><td style="color:var(--green);">4.90</td><td>0</td></tr>
-          <tr class="highlight-row"><td>★ Aug 16–22</td><td>25</td><td style="color:var(--green);"><strong>4.88</strong></td><td style="color:var(--green);"><strong>0</strong></td></tr>
+          <tr class="highlight-row"><td>★ Aug 16–22</td><td>28</td><td style="color:var(--green);"><strong>4.89</strong></td><td style="color:var(--green);"><strong>0</strong></td></tr>
         </tbody>
       </table>
     </div>
@@ -535,8 +580,8 @@ canvas{max-width:100%;}
       <table class="data-table">
         <thead><tr><th>Score</th><th>Label</th><th>N</th><th>%</th></tr></thead>
         <tbody>
-          <tr><td>5</td><td>Very Satisfied</td><td style="color:var(--green);">22</td><td>88%</td></tr>
-          <tr><td>4</td><td>Satisfied</td><td>3</td><td>12%</td></tr>
+          <tr><td>5</td><td>Very Satisfied</td><td style="color:var(--green);">25</td><td>89%</td></tr>
+          <tr><td>4</td><td>Satisfied</td><td>3</td><td>11%</td></tr>
           <tr><td>3</td><td>Somewhat Satisfied</td><td>0</td><td>0%</td></tr>
           <tr><td>2</td><td>Not Very Satisfied</td><td>0</td><td>0%</td></tr>
           <tr><td>1</td><td>Not Satisfied</td><td>0</td><td>0%</td></tr>
@@ -547,8 +592,9 @@ canvas{max-width:100%;}
       <table class="data-table">
         <thead><tr><th>Dimension</th><th>N</th><th>Avg</th></tr></thead>
         <tbody>
-          <tr><td><span style="color:var(--emea);">■</span> EMEA</td><td>13</td><td style="color:var(--green);">4.82</td></tr>
-          <tr><td><span style="color:var(--india);">■</span> India</td><td>12</td><td style="color:var(--green);font-weight:700;">5.00 ★</td></tr>
+          <tr><td><span style="color:var(--emea);">■</span> EMEA</td><td>13</td><td style="color:var(--green);">4.92</td></tr>
+          <tr><td><span style="color:var(--india);">■</span> India</td><td>13</td><td style="color:var(--green);">4.85</td></tr>
+          <tr><td><span style="color:var(--apac);">■</span> APAC</td><td>2</td><td style="color:var(--green);font-weight:700;">5.00 ★</td></tr>
           <tr><td>RCA</td><td>18</td><td style="color:var(--green);">4.83</td></tr>
           <tr><td>Legacy CPQ</td><td>5</td><td style="color:var(--green);">5.00 ★</td></tr>
           <tr><td>Billing</td><td>2</td><td style="color:var(--green);">5.00 ★</td></tr>
@@ -558,12 +604,12 @@ canvas{max-width:100%;}
   </div>
   <div class="grid-2" style="gap:8px;margin-bottom:0;">
     <div class="insight green" style="margin-bottom:0;">
-      <strong>4.88 — resilient CSAT under inflow surge · 88% Very Satisfied</strong>
-      <span>22 of 25 responses scored 5 (Very Satisfied). Zero detractors for 3rd consecutive week — a streak worthy of recognition. India team at perfect 5.00 across 12 responses. CPQ and Billing both 5.00. CSAT held strong despite Sev1 spike and volume rebound, indicating strong TSE execution under pressure.</span>
+      <strong>4.89 (n=28, 3 regions) — resilient CSAT under inflow surge · 89% Very Satisfied</strong>
+      <span>25 of 28 responses scored 5 (Very Satisfied). Zero detractors for 4th consecutive week — a sustained streak. APAC's first CSAT responses on record are a perfect 5.00. EMEA 4.92 (n=13, up from 4.82), India 4.85 (n=13). CSAT held strong despite Sev1 spike and volume rebound, indicating strong TSE execution under pressure. Named recognition: Anish, Sohag, Pradeepa, Claudio.</span>
     </div>
     <div class="insight green" style="margin-bottom:0;">
-      <strong>No low-CSAT responses in TW — continue proactive customer communication</strong>
-      <span>No scores below 3 this week. Given the Sev1 surge and investigation rate spike, proactive customer updates on open critical cases are clearly landing well. Encourage managers to continue the "update before being asked" cadence particularly for the RIEDEL account cluster and any aged Sev1s.</span>
+      <strong>No low-CSAT responses in TW — 4th consecutive zero-detractor week</strong>
+      <span>No scores below 3 this week. APAC joins with 2/2 perfect 5.00 scores. Given the Sev1 surge and investigation rate spike, proactive customer updates on open critical cases are clearly landing well. Encourage managers to continue the "update before being asked" cadence particularly for the RIEDEL account cluster, aged APAC S1s, and any aged Sev1s with no GUS.</span>
     </div>
   </div>
 </div>
@@ -602,23 +648,27 @@ canvas{max-width:100%;}
     <div class="section-label">Open S1 Summary (live)</div>
     <div style="display:flex;gap:10px;margin-top:4px;">
       <div style="background:#fff8c5;border-radius:6px;padding:8px 14px;text-align:center;">
-        <div style="font-size:20px;font-weight:700;color:var(--yellow);">18</div>
+        <div style="font-size:20px;font-weight:700;color:var(--yellow);">29</div>
         <div style="font-size:10px;color:var(--muted);">Open S1 total</div>
       </div>
       <div style="background:#fbefff;border-radius:6px;padding:8px 14px;text-align:center;">
-        <div style="font-size:20px;font-weight:700;color:var(--emea);">12</div>
+        <div style="font-size:20px;font-weight:700;color:var(--emea);">11</div>
         <div style="font-size:10px;color:var(--muted);">EMEA open</div>
       </div>
       <div style="background:#fff1e5;border-radius:6px;padding:8px 14px;text-align:center;">
-        <div style="font-size:20px;font-weight:700;color:var(--india);">6</div>
+        <div style="font-size:20px;font-weight:700;color:var(--india);">11</div>
         <div style="font-size:10px;color:var(--muted);">India open</div>
+      </div>
+      <div style="background:#ddf4ff;border-radius:6px;padding:8px 14px;text-align:center;">
+        <div style="font-size:20px;font-weight:700;color:var(--apac);">7</div>
+        <div style="font-size:10px;color:var(--muted);">APAC open</div>
       </div>
       <div style="background:#ffebe9;border-radius:6px;padding:8px 14px;text-align:center;">
         <div style="font-size:20px;font-weight:700;color:var(--red);">2</div>
         <div style="font-size:10px;color:var(--muted);">S1 aged >14d no GUS</div>
       </div>
       <div style="background:#ddf4ff;border-radius:6px;padding:8px 14px;text-align:center;">
-        <div style="font-size:20px;font-weight:700;color:var(--accent);">33</div>
+        <div style="font-size:20px;font-weight:700;color:var(--accent);">39</div>
         <div style="font-size:10px;color:var(--muted);">Inflow Sev1 this week</div>
       </div>
     </div>
@@ -631,8 +681,8 @@ canvas{max-width:100%;}
     <div class="section-label">Aged &gt;15d Trend — 4 Weeks</div>
     <canvas id="agedChart" height="155"></canvas>
     <div class="insight yellow" style="margin-top:10px;">
-      <strong>Aged worsened: 38 → 33 → 28 → 36 — India concentration at 24.1%</strong>
-      <span>Two weeks of improvement partially reversed. India aged rate (24.1%) is nearly 2× EMEA (12.2%). Manu Ramamurthy holds 20 aged cases — the India concentration is manager-specific, not structural. 9 no-path cases (Working, no GUS/Bug) across Manu (6), Apurva (2), Seamus (1) are the primary actionable items this week.</span>
+      <strong>Full 3-region aged = 46 · APAC 30.3% rate leads · India 21.9% · EMEA 12.3%</strong>
+      <span>APAC aged rate (30.3%) is the highest of all three regions — 10 of 33 cases aged >15d. APAC oldest: E-coordina 70.1d S1, Veeam 50.4d S1, MYOB 57d (all Rafik Shaikh). India 21 aged cases (21.9%), concentration in Manu Ramamurthy. 9 no-path cases (Working, no GUS/Bug) span Manu×5, Apurva×2, Seamus×1, Brahmarouthu×1.</span>
     </div>
   </div>
   <div class="card">
@@ -668,6 +718,9 @@ def('inflowChart',{type:'bar',data:{labels:wks,datasets:[
     borderRadius:3,stack:'a'},
   {label:'India',data:[93,99,82,75],
     backgroundColor:['rgba(225,111,66,.35)','rgba(225,111,66,.35)','rgba(225,111,66,.35)','rgba(225,111,66,.85)'],
+    borderRadius:3,stack:'a'},
+  {label:'APAC',data:[null,null,null,28],
+    backgroundColor:['rgba(31,111,235,.35)','rgba(31,111,235,.35)','rgba(31,111,235,.35)','rgba(31,111,235,.85)'],
     borderRadius:3,stack:'a'}
 ]},options:{...baseOpts,
   scales:{
@@ -696,7 +749,7 @@ def('ptStackChart',{type:'bar',data:{labels:wks,datasets:[
 
 // CSAT line
 def('csatChart',{type:'line',data:{labels:wks,datasets:[
-  {label:'CSAT',data:[4.58,4.85,4.90,4.88],
+  {label:'CSAT',data:[4.58,4.85,4.90,4.89],
     borderColor:'rgba(26,127,55,.9)',
     backgroundColor:'rgba(26,127,55,.07)',
     fill:true,borderWidth:2.5,
@@ -719,7 +772,10 @@ def('geoChart',{type:'line',data:{labels:wks,datasets:[
   {label:'EMEA',data:[150,175,159,205],
     borderColor:'rgba(130,80,223,.9)',fill:false,borderWidth:2,pointRadius:4,tension:.3},
   {label:'India',data:[93,99,82,75],
-    borderColor:'rgba(225,111,66,.9)',fill:false,borderWidth:2,pointRadius:4,tension:.3}
+    borderColor:'rgba(225,111,66,.9)',fill:false,borderWidth:2,pointRadius:4,tension:.3},
+  {label:'APAC',data:[null,null,null,28],
+    borderColor:'rgba(31,111,235,.9)',fill:false,borderWidth:2,pointRadius:4,tension:.3,
+    borderDash:[4,3]}
 ]},options:{...baseOpts,
   scales:{
     y:{grid:gridOpts,ticks:tickOpts},
@@ -734,6 +790,9 @@ def('sev1Chart',{type:'bar',data:{labels:wks,datasets:[
     borderRadius:3},
   {label:'India S1',data:[15,18,7,14],
     backgroundColor:['rgba(225,111,66,.4)','rgba(225,111,66,.4)','rgba(225,111,66,.4)','rgba(225,111,66,.9)'],
+    borderRadius:3},
+  {label:'APAC S1',data:[null,null,null,6],
+    backgroundColor:['rgba(31,111,235,.4)','rgba(31,111,235,.4)','rgba(31,111,235,.4)','rgba(31,111,235,.9)'],
     borderRadius:3}
 ]},options:{...baseOpts,
   scales:{
@@ -744,14 +803,14 @@ def('sev1Chart',{type:'bar',data:{labels:wks,datasets:[
 
 // Aged bar — colour coded by direction
 def('agedChart',{type:'bar',data:{labels:wks,datasets:[
-  {label:'Aged >15d',data:[33,33,28,38],
+  {label:'Aged >15d (3-region)',data:[33,33,28,46],
     backgroundColor:['rgba(210,153,34,.7)','rgba(210,153,34,.7)','rgba(26,127,55,.8)','rgba(248,81,73,.85)'],
     borderRadius:4}
 ]},options:{...baseOpts,
   plugins:{legend:{display:false}},
   scales:{
     x:{grid:{display:false},ticks:tickOpts},
-    y:{grid:gridOpts,ticks:tickOpts,min:0,max:45}
+    y:{grid:gridOpts,ticks:tickOpts,min:0,max:55}
   }
 }});
 
@@ -771,6 +830,6 @@ def('ptTrendChart',{type:'line',data:{labels:wks,datasets:[
 }});
 </script>
 
-<footer>Revenue Cloud Weekly · Aug 16–22, 2026 · EMEA + India · Manager scope: OrgCS live SOQL + Salesforce KPI report · <a href="https://eshantsharma-bit.github.io/rc-dashboard/" style="color:var(--accent);">eshantsharma-bit.github.io/rc-dashboard</a></footer>
+<footer>Revenue Cloud Weekly · Aug 16–22, 2026 · EMEA + India + APAC · Manager scope: OrgCS live SOQL + Salesforce KPI report · <a href="https://eshantsharma-bit.github.io/rc-dashboard/" style="color:var(--accent);">eshantsharma-bit.github.io/rc-dashboard</a></footer>
 </body>
 </html>
