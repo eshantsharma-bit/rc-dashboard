@@ -277,24 +277,28 @@ tr.mod td{background:#f8fdf9;}
   <button class="recalc-btn" onclick="recalcTable()">Recalculate with edited HC values</button>
 
   <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:12px 16px;margin-bottom:10px;font-size:12px;line-height:1.7;color:#0c4a6e;">
-    <strong style="display:block;margin-bottom:4px;font-size:12px;color:#0369a1;">How to read the Target Cases Consumed columns</strong>
-    Each shift has a total daily case target = <strong>HC × 1.7</strong>. As the shift progresses, engineers work through that target.
-    By any given IST hour, the cases consumed toward that target = <strong>HC × 1.7 × (hours elapsed ÷ 9)</strong>.
+    <strong style="display:block;margin-bottom:4px;font-size:12px;color:#0369a1;">How to read the On-Target Closures columns</strong>
+    <strong>1.7 is the daily closure target per engineer</strong> — each engineer is expected to close 1.7 cases by the end of their 9-hour shift.
+    The columns show <strong>how many cases each shift should have closed by this IST hour</strong> if they are running on target.
     <br><br>
-    Example: APAC (21 HC) starts at 5:30 AM. Daily target = 21 × 1.7 = <strong>35.7 cases</strong>.
-    By 9:30 AM (4 hrs in) → 35.7 × (4 ÷ 9) = <strong>15.9 cases consumed</strong> toward target. By end of shift = 35.7 (100%).
+    <strong>Formula: HC × 1.7 × (hours elapsed ÷ 9)</strong><br>
+    Example: APAC (21 HC) starts at 5:30 AM. Full-day target = 21 × 1.7 = 35.7 cases.
+    By 9:30 AM (4 hrs into a 9-hr shift) → 21 × 1.7 × (4÷9) = <strong>15.9 cases should be closed by now</strong> if on target.
+    By end of shift at 2:30 PM = 35.7 (full target met).
     <br><br>
-    <strong>Consumed vs Inflow</strong> = sum of all active shifts' consumed cases minus Cases/Day arriving that hour.
-    <span style="color:#16a34a;font-weight:700;">Green / positive</span> = shifts have processed more than the inflow arriving this hour — capacity is ahead.
-    <span style="color:#dc2626;font-weight:700;">Red / negative</span> = inflow is outpacing what active shifts can absorb — cases are queuing.
+    <strong>Cases/Day is the inflow signal</strong> — the actual demand arriving each hour. This is what drives queue growth.
+    <br><br>
+    <strong>On-Target vs Inflow</strong> = total on-target closures across all active shifts minus Cases/Day arriving that hour.<br>
+    <span style="color:#16a34a;font-weight:700;">Green / positive</span> = shifts are closing more than the inflow arriving — queue is being absorbed.<br>
+    <span style="color:#dc2626;font-weight:700;">Red / negative</span> = inflow exceeds on-target closures — cases are building in the queue.
     A shift showing <strong>—</strong> has not started yet at that hour.
     <br><br>
     <strong>Example at 9:30 AM IST</strong> — two shifts active:<br>
-    &nbsp;&nbsp;· APAC (21 HC, 4 hrs in): 21 × 1.7 × (4÷9) = <strong>15.9</strong><br>
-    &nbsp;&nbsp;· India (43 HC, 1 hr in): 43 × 1.7 × (1÷9) = <strong>8.1</strong><br>
-    &nbsp;&nbsp;· Total consumed = <strong>24.0</strong> &nbsp;|&nbsp; Cases/Day arriving at 9:30 AM = <strong>5.1</strong><br>
-    &nbsp;&nbsp;· Consumed vs Inflow = 24.0 − 5.1 = <span style="color:#16a34a;font-weight:700;">+18.9</span> — shifts are comfortably ahead at this hour.<br>
-    Compare this to <strong>8:30 PM IST</strong> where 100.2 cases/day arrive but shifts have consumed far less — that's where the red appears.
+    &nbsp;&nbsp;· APAC (21 HC, 4 hrs in): 21 × 1.7 × (4÷9) = <strong>15.9</strong> on-target closures<br>
+    &nbsp;&nbsp;· India (43 HC, 1 hr in): 43 × 1.7 × (1÷9) = <strong>8.1</strong> on-target closures<br>
+    &nbsp;&nbsp;· Total on-target = <strong>24.0</strong> &nbsp;|&nbsp; Cases/Day (inflow) at 9:30 AM = <strong>5.1</strong><br>
+    &nbsp;&nbsp;· On-Target vs Inflow = 24.0 − 5.1 = <span style="color:#16a34a;font-weight:700;">+18.9</span> — shifts are closing faster than inflow at this hour.<br>
+    Compare to <strong>8:30 PM</strong> where 100.2 cases/day arrive — that is where the red appears and queue builds.
   </div>
 
   <div class="tbl-wrap">
@@ -311,18 +315,18 @@ tr.mod td{background:#f8fdf9;}
           <th>Demand %</th>
           <th>HC Available ✎</th>
           <th>Supply %</th>
-          <th title="HC × 1.7 × (hrs elapsed ÷ 9)">APAC Consumed</th>
-          <th title="HC × 1.7 × (hrs elapsed ÷ 9)">India Consumed</th>
-          <th title="HC × 1.7 × (hrs elapsed ÷ 9)">EMEA Consumed</th>
-          <th title="HC × 1.7 × (hrs elapsed ÷ 9)">EST Consumed</th>
-          <th title="HC × 1.7 × (hrs elapsed ÷ 9)">PST Consumed</th>
-          <th title="Sum of all active shifts consumed minus Cases/Day">Consumed vs Inflow</th>
+          <th title="HC × 1.7 × (hrs elapsed ÷ 9) — closures if on target">APAC On-Target</th>
+          <th title="HC × 1.7 × (hrs elapsed ÷ 9) — closures if on target">India On-Target</th>
+          <th title="HC × 1.7 × (hrs elapsed ÷ 9) — closures if on target">EMEA On-Target</th>
+          <th title="HC × 1.7 × (hrs elapsed ÷ 9) — closures if on target">EST On-Target</th>
+          <th title="HC × 1.7 × (hrs elapsed ÷ 9) — closures if on target">PST On-Target</th>
+          <th title="Total on-target closures minus Cases/Day inflow">On-Target vs Inflow</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
-  <p class="note">Cases/Day = Total Cases (44d) ÷ 44. Consumed = HC × 1.7 × (hrs elapsed ÷ 9) — cases worked toward daily target by that IST hour. Consumed vs Inflow = total consumed across active shifts minus Cases/Day that hour; green = shifts absorbing more than arriving, red = inflow outpacing capacity. HC Available is editable; click "Recalculate" to model scenarios.</p>
+  <p class="note">Cases/Day = inflow signal (Total Cases ÷ 44 weekdays). On-Target = HC × 1.7 × (hrs elapsed ÷ 9) — how many cases a shift should have closed by this hour if running at the 1.7/day target. On-Target vs Inflow: green = closures ahead of inflow, red = inflow exceeding on-target closures (queue building). HC Available is editable; click "Recalculate" to model scenarios.</p>
 </div>
 
 
