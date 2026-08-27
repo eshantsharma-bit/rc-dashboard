@@ -276,6 +276,36 @@ tr.mod td{background:#f8fdf9;}
   <div class="sec-title">Hour-by-Hour Capacity Detail — <span id="tbl-scope">Industry + Revenue</span></div>
   <button class="recalc-btn" onclick="recalcTable()">Recalculate with edited HC values</button>
 
+  <!-- GHO context card -->
+  <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px 18px;margin-bottom:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start">
+    <div>
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:#92400e;margin-bottom:8px">GHO — Global Handover (Active, Ind+Rev, Last 60d)</div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <tr style="border-bottom:1px solid #fde68a">
+          <td style="padding:4px 8px 4px 0;color:#78350f;font-weight:600">Routing log rows</td>
+          <td style="padding:4px 0;font-weight:700;color:#1f2328">1,343</td>
+        </tr>
+        <tr style="border-bottom:1px solid #fde68a">
+          <td style="padding:4px 8px 4px 0;color:#78350f;font-weight:600">Unique cases through GHO</td>
+          <td style="padding:4px 0;font-weight:700;color:#1f2328">387</td>
+        </tr>
+        <tr style="border-bottom:1px solid #fde68a">
+          <td style="padding:4px 8px 4px 0;color:#78350f;font-weight:600">Avg handovers per case</td>
+          <td style="padding:4px 0;font-weight:700;color:#1f2328">~3.5 (handed over 3–4× across shifts)</td>
+        </tr>
+        <tr>
+          <td style="padding:4px 8px 4px 0;color:#78350f;font-weight:600">Avg GHO cases active/day</td>
+          <td style="padding:4px 0;font-weight:700;color:#b45309">~9 cases/day (387 ÷ 44 weekdays)</td>
+        </tr>
+      </table>
+    </div>
+    <div style="font-size:12px;color:#78350f;line-height:1.7;border-left:3px solid #fcd34d;padding-left:14px">
+      <strong style="color:#1f2328">387 unique cases</strong> is the real signal — these are distinct cases consuming cross-shift capacity on a 24×7 basis.<br><br>
+      At any given hour, <strong style="color:#b45309">~9 GHO cases are in flight</strong> and carried by the shift currently owning them. The <strong>GHO Active</strong> column shows this as a standing backlog — separate from new case inflow.<br><br>
+      <strong style="color:#1f2328">IST sends but never receives GHO</strong> — the load sits with APAC, EMEA, and AMER. Transition hours: <strong>5:30 AM</strong> (AMER→APAC), <strong>5:30 PM</strong> (IST→EMEA), <strong>8:30 PM</strong> (EMEA→AMER).
+    </div>
+  </div>
+
   <div class="tbl-wrap">
     <table>
       <thead>
@@ -290,14 +320,13 @@ tr.mod td{background:#f8fdf9;}
           <th>Demand %</th>
           <th>HC Available ✎</th>
           <th>Supply %</th>
-          <th title="Avg GHO cases active per day (387 unique cases ÷ 44 weekdays). Transition hours shown with ↔ label.">GHO Active</th>
-          <th title="Cases/Day + 9 GHO cases = total demand the receiving shift faces">Adj. Inflow</th>
+          <th title="Avg GHO cases active per day (387 unique cases ÷ 44 weekdays). ↔ marks shift transition hours.">GHO Active</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
-  <p class="note">Cases/Day = inflow signal (Total Cases ÷ 44 weekdays). Supply% = HC Available ÷ Total HC. Demand% = Cases/Day share of daily total. GHO Active = 9 cases/day avg (387 unique Active GHO cases, Ind+Rev, ÷ 44 weekdays); ↔ marks shift transition hours (5:30 AM AMER→APAC, 5:30 PM IST→EMEA, 8:30 PM EMEA→AMER). Adj. Inflow = Cases/Day + GHO Active. IST shift sends GHO but does not receive — GHO load stays with APAC/EMEA/AMER. HC Available is editable; click "Recalculate" to model scenarios.</p>
+  <p class="note">Cases/Day = inflow signal (Total Cases ÷ 44 weekdays). Supply% = HC Available ÷ Total HC. Demand% = Cases/Day share of daily total. GHO Active = 9 standing cases/day (387 unique ÷ 44 weekdays) — backlog carried by the owning shift, separate from new inflow. ↔ marks transition hours. IST sends GHO but does not receive. HC Available is editable; click "Recalculate" to model scenarios.</p>
 </div>
 
 
@@ -789,7 +818,6 @@ function buildTable(){
     if(sh.PST[h]>0)  actShifts.push('PST');
 
     const ghoTransition = GHO_TRANSITIONS[h] || '';
-    const adjInflow = (parseFloat(casesDay) + GHO_AVG).toFixed(1);
 
     const tr=document.createElement('tr');
     tr.innerHTML=`
@@ -804,7 +832,6 @@ function buildTable(){
       <td><input class="hc-input" value="${hcArr[h]}" data-hr="${h}" type="number" min="0"></td>
       <td>${sup.toFixed(1)}%</td>
       <td style="font-size:11px;font-weight:700;color:#b45309">${GHO_AVG}${ghoTransition ? '<br><span style="font-size:10px;font-weight:600;color:#92400e">'+ghoTransition+'</span>' : ''}</td>
-      <td style="font-weight:700;color:#0c4a6e">${adjInflow}</td>
     `;
     tbody.appendChild(tr);
   });
