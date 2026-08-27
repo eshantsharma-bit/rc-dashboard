@@ -279,10 +279,17 @@ tr.mod td{background:#f8fdf9;}
           <th>Cases/Day <span id="th-scope">(Both)</span></th>
           <th>Chat/Day</th>
           <th>Chat %</th>
+          <th>Cumul. Inflow</th>
           <th>Demand %</th>
           <th>HC Available ✎</th>
           <th>Supply %</th>
           <th>Gap (pp)</th>
+          <th>APAC Cap.</th>
+          <th>India Cap.</th>
+          <th>EMEA Cap.</th>
+          <th>EST Cap.</th>
+          <th>PST Cap.</th>
+          <th>Total Cap.</th>
           <th>Pressure</th>
           <th>Status</th>
         </tr>
@@ -290,7 +297,7 @@ tr.mod td{background:#f8fdf9;}
       <tbody id="tbody"></tbody>
     </table>
   </div>
-  <p class="note">HC Available column is editable — change values and click "Recalculate" to model different staffing scenarios. Gap = Supply% − Demand%; Pressure = cases/day ÷ HC.</p>
+  <p class="note">Cumul. Inflow = running average of new cases arrived per weekday from hr0 up to this hour (total ÷ 44 weekdays, cumulative). Capacity consumed columns = HC on-shift × hours elapsed in shift × 0.189 (daily target 1.7 cases/eng ÷ 9-hr shift) — this is capacity working toward the daily closure target, not actual closures. HC Available is editable; click "Recalculate" to model scenarios. Gap = Supply% − Demand%; Pressure = avg inflow cases/day ÷ HC.</p>
 </div>
 
 <!-- ── RECOMMENDATIONS ── -->
@@ -338,12 +345,26 @@ const revCases  = [187,164,162,109,73,56,42,50,47,55,106,163,209,226,231,298,277
 const indChat   = [68,51,49,20,19,15,21,26,26,26,26,34,42,68,49,64,59,64,59,100,90,75,74,61];
 const revChat   = [53,30,44,32,22,13,13,19,12,16,24,41,40,42,54,89,70,79,93,112,109,82,67,85];
 
-const hcTotal   = [92,92,56,53,34,21,21,21,21,64,64,64,110,110,90,90,90,129,124,106,139,92,92,92];
-const hcAPAC    = [0,0,0,0,1,15,15,15,15,15,15,15,14,14,0,0,0,0,0,0,0,0,0,0];
-const hcIndia   = [0,0,0,0,0,0,0,0,0,31,31,31,31,31,31,31,31,31,31,0,0,0,0,0];
-const hcEMEA    = [0,0,0,0,0,0,0,0,0,0,0,0,28,28,28,28,28,28,28,28,28,0,0,0];
-const hcEST     = [36,36,10,7,0,0,0,0,0,0,0,0,0,0,0,0,0,29,36,36,36,36,36,36];
-const hcPST     = [56,56,46,46,33,6,6,6,6,18,18,18,37,37,31,31,31,70,29,42,75,56,56,56];
+// Industries headcount per shift (hr 0-23 IST)
+const hcInd_APAC = [0,0,0,0,1,15,15,15,15,15,15,15,14,14,0,0,0,0,0,0,0,0,0,0];
+const hcInd_IST  = [0,0,0,0,0,0,0,0,0,31,31,31,31,31,31,31,31,31,31,0,0,0,0,0];
+const hcInd_EMEA = [0,0,0,0,0,0,0,0,0,0,0,0,28,28,28,28,28,28,28,28,28,0,0,0];
+const hcInd_EST  = [36,36,10,7,0,0,0,0,0,0,0,0,0,0,0,0,0,29,36,36,36,36,36,36];
+const hcInd_PST  = [37,37,37,37,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,37,37,37,37];
+// Revenue headcount per shift (hr 0-23 IST)
+const hcRev_APAC = [0,0,0,0,0,6,6,6,6,6,6,6,6,6,0,0,0,0,0,0,0,0,0,0];
+const hcRev_IST  = [0,0,0,0,0,0,0,0,0,12,12,12,12,12,12,12,12,12,0,0,0,0,0,0];
+const hcRev_EMEA = [0,0,0,0,0,0,0,0,0,0,0,0,19,19,19,19,19,19,19,19,19,0,0,0];
+const hcRev_EST  = [10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10,10,10,10,10];
+const hcRev_PST  = [9,9,9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,9,9,9];
+// Combined totals (Ind+Rev) — verified cross-sum
+const hcTotal = [92,92,56,53,34,21,21,21,21,64,64,64,110,110,90,90,90,129,124,106,139,92,92,92];
+
+// Throughput target: 1.7 cases/engineer/day ÷ 9-hour shift = 0.189/hr
+// "Capacity consumed toward target" = HC × hours_elapsed × 0.189
+const DAILY_TARGET = 1.7;
+const SHIFT_HOURS  = 9;
+const HOURLY_RATE  = DAILY_TARGET / SHIFT_HOURS; // ~0.1889
 
 // Case origins (60d all, Industry+Revenue)
 const origins = [
@@ -404,9 +425,11 @@ function setFilter(f){
   document.getElementById('tbl-scope').textContent = f==='ind'?'Industry Cloud':f==='rev'?'Revenue Cloud':'Industry + Revenue';
   document.getElementById('th-scope').textContent = f==='ind'?'(Ind)':f==='rev'?'(Rev)':'(Both)';
   updateInflowChart();
+  updateStaffChart();
   updateAlignChart();
   updatePressureChart();
   updateChatChart();
+  buildHmap();
   buildTable();
   updateKPIs();
 }
@@ -469,6 +492,24 @@ function getHC(){
   return result;
 }
 
+// Returns per-shift HC arrays filtered by current product selection
+function getShiftHC(filter){
+  function add(a,b){ return a.map((v,i)=>v+b[i]); }
+  const f = filter || currentFilter;
+  if(f==='ind')  return { APAC:hcInd_APAC, IST:hcInd_IST, EMEA:hcInd_EMEA, EST:hcInd_EST, PST:hcInd_PST };
+  if(f==='rev')  return { APAC:hcRev_APAC, IST:hcRev_IST, EMEA:hcRev_EMEA, EST:hcRev_EST, PST:hcRev_PST };
+  return {
+    APAC: add(hcInd_APAC,hcRev_APAC),
+    IST:  add(hcInd_IST, hcRev_IST),
+    EMEA: add(hcInd_EMEA,hcRev_EMEA),
+    EST:  add(hcInd_EST, hcRev_EST),
+    PST:  add(hcInd_PST, hcRev_PST),
+  };
+}
+
+// Shift start hours (IST, inclusive)
+const SHIFT_START = { APAC:5, IST:9, EMEA:12, EST:17, PST:20 };
+
 // ── CHART: INFLOW ─────────────────────────────────────────────
 function buildInflow(){
   const ctx = document.getElementById('inflowChart').getContext('2d');
@@ -514,16 +555,17 @@ function updateInflowChart(){
 // ── CHART: STAFF ──────────────────────────────────────────────
 function buildStaff(){
   const ctx = document.getElementById('staffChart').getContext('2d');
+  const sh = getShiftHC();
   staffCh = new Chart(ctx,{
     type:'bar',
     data:{
       labels:reorder(IST),
       datasets:[
-        {label:'APAC', data:reorder(hcAPAC), backgroundColor:'rgba(2,132,199,0.85)',  borderWidth:0,stack:'s'},
-        {label:'India',data:reorder(hcIndia),backgroundColor:'rgba(124,58,237,0.85)', borderWidth:0,stack:'s'},
-        {label:'EMEA', data:reorder(hcEMEA), backgroundColor:'rgba(217,119,6,0.85)',  borderWidth:0,stack:'s'},
-        {label:'EST',  data:reorder(hcEST),  backgroundColor:'rgba(22,163,74,0.85)',  borderWidth:0,stack:'s'},
-        {label:'PST',  data:reorder(hcPST),  backgroundColor:'rgba(220,38,38,0.85)',  borderWidth:0,stack:'s'},
+        {label:'APAC', data:reorder(sh.APAC), backgroundColor:'rgba(2,132,199,0.85)',  borderWidth:0,stack:'s'},
+        {label:'India',data:reorder(sh.IST),  backgroundColor:'rgba(124,58,237,0.85)', borderWidth:0,stack:'s'},
+        {label:'EMEA', data:reorder(sh.EMEA), backgroundColor:'rgba(217,119,6,0.85)',  borderWidth:0,stack:'s'},
+        {label:'EST',  data:reorder(sh.EST),  backgroundColor:'rgba(22,163,74,0.85)',  borderWidth:0,stack:'s'},
+        {label:'PST',  data:reorder(sh.PST),  backgroundColor:'rgba(220,38,38,0.85)',  borderWidth:0,stack:'s'},
       ]
     },
     options:{
@@ -535,6 +577,17 @@ function buildStaff(){
       }
     }
   });
+}
+
+function updateStaffChart(){
+  if(!staffCh) return;
+  const sh = getShiftHC();
+  staffCh.data.datasets[0].data = reorder(sh.APAC);
+  staffCh.data.datasets[1].data = reorder(sh.IST);
+  staffCh.data.datasets[2].data = reorder(sh.EMEA);
+  staffCh.data.datasets[3].data = reorder(sh.EST);
+  staffCh.data.datasets[4].data = reorder(sh.PST);
+  staffCh.update();
 }
 
 // ── CHART: ALIGN ──────────────────────────────────────────────
@@ -699,20 +752,20 @@ function buildHmap(){
   const blank=document.createElement('div');blank.className='hm-head';blank.textContent='Shift';grid.appendChild(blank);
   dLabels.forEach(l=>{const d=document.createElement('div');d.className='hm-head';d.textContent=l.replace(':30','').replace(' AM','a').replace(' PM','p');grid.appendChild(d);});
 
+  const sh = getShiftHC();
   const shiftDefs=[
-    {name:'APAC',    cls:'apac',  arr:hcAPAC},
-    {name:'India',   cls:'india', arr:hcIndia},
-    {name:'EMEA',    cls:'emea',  arr:hcEMEA},
-    {name:'AMER-EST',cls:'est',   arr:hcEST},
-    {name:'AMER-PST',cls:'pst',   arr:hcPST},
+    {name:'APAC',    cls:'apac',  arr:sh.APAC},
+    {name:'India',   cls:'india', arr:sh.IST},
+    {name:'EMEA',    cls:'emea',  arr:sh.EMEA},
+    {name:'AMER-EST',cls:'est',   arr:sh.EST},
+    {name:'AMER-PST',cls:'pst',   arr:sh.PST},
   ];
   shiftDefs.forEach(s=>{
     const lbl=document.createElement('div');lbl.className='hm-lbl';lbl.textContent=s.name;grid.appendChild(lbl);
     dispOrder.forEach(h=>{
       const v=s.arr[h];
       const d=document.createElement('div');
-      // count active shifts this hour
-      const active=[hcAPAC,hcIndia,hcEMEA,hcEST,hcPST].filter(a=>a[h]>0).length;
+      const active=[sh.APAC,sh.IST,sh.EMEA,sh.EST,sh.PST].filter(a=>a[h]>0).length;
       d.className='hm-cell'+(v>0?' '+(active>=3?'multi':s.cls):'');
       d.textContent=v>0?v:'';
       grid.appendChild(d);
@@ -729,6 +782,16 @@ function buildTable(){
   const total = cases.reduce((a,b)=>a+b,0);
   const hcArr = getHC();
   const TOTAL_HC = hcArr.reduce((a,b)=>a+b,0)||TOTAL_HC_BASE;
+  const sh = getShiftHC();
+
+  // Cumulative inflow tracking (running sum of avg cases/day from hr0)
+  let cumulInflow = 0;
+
+  // Capacity consumed per shift (hours elapsed since shift start × HC × HOURLY_RATE)
+  // Track hours each shift has been active so far as we walk dispOrder
+  const shiftElapsed = { APAC:0, IST:0, EMEA:0, EST:0, PST:0 };
+  // Reset on each buildTable call
+  Object.keys(shiftElapsed).forEach(k=>shiftElapsed[k]=0);
 
   dispOrder.forEach((h,di)=>{
     const dem  = cases[h]/total*100;
@@ -739,12 +802,30 @@ function buildTable(){
     const chatPct  = cases[h]>0?(chat[h]/cases[h]*100).toFixed(0)+'%':'—';
     const pressure = hcArr[h]>0?(cases[h]/WEEKDAYS/hcArr[h]).toFixed(2):'—';
 
+    // Cumulative inflow: rolling avg cases/day up to and including this hour
+    cumulInflow += cases[h]/WEEKDAYS;
+
+    // Per-shift capacity consumed toward daily target
+    // Increment elapsed hours for each shift that is active this hour, then compute
+    const shiftNames = ['APAC','IST','EMEA','EST','PST'];
+    const shiftArrays = [sh.APAC,sh.IST,sh.EMEA,sh.EST,sh.PST];
+    shiftNames.forEach((nm,si)=>{
+      if(shiftArrays[si][h]>0) shiftElapsed[nm]++;
+    });
+    // capacity consumed = HC × hours_elapsed_in_shift × HOURLY_RATE
+    const capAPAC = (sh.APAC[h]>0 ? sh.APAC[h]*shiftElapsed.APAC*HOURLY_RATE : 0);
+    const capIST  = (sh.IST[h]>0  ? sh.IST[h] *shiftElapsed.IST *HOURLY_RATE : 0);
+    const capEMEA = (sh.EMEA[h]>0 ? sh.EMEA[h]*shiftElapsed.EMEA*HOURLY_RATE : 0);
+    const capEST  = (sh.EST[h]>0  ? sh.EST[h] *shiftElapsed.EST *HOURLY_RATE : 0);
+    const capPST  = (sh.PST[h]>0  ? sh.PST[h] *shiftElapsed.PST *HOURLY_RATE : 0);
+    const capTot  = capAPAC+capIST+capEMEA+capEST+capPST;
+
     const actShifts=[];
-    if(hcAPAC[h]>0) actShifts.push('APAC');
-    if(hcIndia[h]>0) actShifts.push('India');
-    if(hcEMEA[h]>0) actShifts.push('EMEA');
-    if(hcEST[h]>0) actShifts.push('EST');
-    if(hcPST[h]>0) actShifts.push('PST');
+    if(sh.APAC[h]>0) actShifts.push('APAC');
+    if(sh.IST[h]>0)  actShifts.push('India');
+    if(sh.EMEA[h]>0) actShifts.push('EMEA');
+    if(sh.EST[h]>0)  actShifts.push('EST');
+    if(sh.PST[h]>0)  actShifts.push('PST');
 
     let rowCls='',pill='',gapCls='muted';
     if(g<-5){rowCls='crit';pill=`<span class="pill p-crit">Critical −</span>`;gapCls='neg-big';}
@@ -755,6 +836,8 @@ function buildTable(){
 
     const prCls = pressure!=='—'?(+pressure>0.7?'neg-big':+pressure>0.35?'neg':'pos'):'muted';
 
+    const fmtCap = v => v>0 ? v.toFixed(1) : '—';
+
     const tr=document.createElement('tr');
     tr.className=rowCls;
     tr.innerHTML=`
@@ -764,10 +847,17 @@ function buildTable(){
       <td><strong>${casesDay}</strong></td>
       <td style="color:#7c3aed">${chatDay}</td>
       <td style="font-size:11px">${chatPct}</td>
+      <td style="font-weight:700;color:#0550ae">${cumulInflow.toFixed(1)}</td>
       <td>${dem.toFixed(1)}%</td>
       <td><input class="hc-input" value="${hcArr[h]}" data-hr="${h}" type="number" min="0"></td>
       <td>${sup.toFixed(1)}%</td>
       <td class="${gapCls}">${g>0?'+':''}${g.toFixed(1)}pp</td>
+      <td style="font-size:11px;color:#0369a1">${fmtCap(capAPAC)}</td>
+      <td style="font-size:11px;color:#5b21b6">${fmtCap(capIST)}</td>
+      <td style="font-size:11px;color:#92400e">${fmtCap(capEMEA)}</td>
+      <td style="font-size:11px;color:#166534">${fmtCap(capEST)}</td>
+      <td style="font-size:11px;color:#991b1b">${fmtCap(capPST)}</td>
+      <td style="font-weight:700;color:#1e293b">${fmtCap(capTot)}</td>
       <td class="${prCls}">${pressure}</td>
       <td>${pill}</td>
     `;
