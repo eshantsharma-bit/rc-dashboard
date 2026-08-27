@@ -277,16 +277,13 @@ tr.mod td{background:#f8fdf9;}
   <button class="recalc-btn" onclick="recalcTable()">Recalculate with edited HC values</button>
 
   <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:12px 16px;margin-bottom:10px;font-size:12px;line-height:1.7;color:#0c4a6e;">
-    <strong style="display:block;margin-bottom:4px;font-size:12px;color:#0369a1;">How to read the Capacity % columns</strong>
-    Each engineer has a daily target of <strong>1.7 cases per shift day</strong> (9 hours). The <strong>Cap. %</strong> columns show how much of that daily target a shift has consumed by each IST hour — purely based on time elapsed, not actual case counts.
+    <strong style="display:block;margin-bottom:4px;font-size:12px;color:#0369a1;">How to read the Shift Completion % columns</strong>
+    These columns show <strong>how far through their 9-hour shift each region is</strong> at each IST hour — nothing more.
     <br><br>
-    <strong>Formula:</strong> Hours elapsed in shift ÷ 9 × 100. &nbsp;
-    Example: APAC starts at 5:30 AM. By 9:30 AM they have been on shift 4 hours → <strong>4 ÷ 9 × 100 = 44%</strong> of their daily capacity consumed. By 2:30 PM (end of shift) it reaches 100%.
+    <strong>Formula:</strong> Hours elapsed since shift start ÷ 9 × 100. &nbsp;
+    Example: APAC starts at 5:30 AM. By 9:30 AM they have been on shift 4 hours → <strong>4 ÷ 9 × 100 = 44% of shift completed</strong>. By 2:30 PM (end of shift) it reaches 100%.
     <br><br>
-    A shift showing <strong>—</strong> has not started yet at that hour.
-    <strong>Wtd Avg Cap. %</strong> is the headcount-weighted average across all shifts active at that hour — larger shifts carry more weight.
-    <br><br>
-    <em>This is not cases actually closed. It is the theoretical capacity working toward the daily target. Compare it against Cases/Day to see whether enough capacity is on-shift when demand arrives.</em>
+    A shift showing <strong>—</strong> has not started yet at that hour. Use these columns to see which shifts are early, mid, or late in their day when demand peaks — and whether a handoff is imminent.
   </div>
 
   <div class="tbl-wrap">
@@ -303,17 +300,17 @@ tr.mod td{background:#f8fdf9;}
           <th>Demand %</th>
           <th>HC Available ✎</th>
           <th>Supply %</th>
-          <th>APAC Cap. %</th>
-          <th>India Cap. %</th>
-          <th>EMEA Cap. %</th>
-          <th>EST Cap. %</th>
-          <th>PST Cap. %</th>
+          <th>APAC Shift %</th>
+          <th>India Shift %</th>
+          <th>EMEA Shift %</th>
+          <th>EST Shift %</th>
+          <th>PST Shift %</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
-  <p class="note">Total Cases (44d) = indCases[h] + revCases[h] — raw count across all 44 weekdays for that IST hour. Cases/Day = Total ÷ 44. Cap. % columns = hours elapsed in shift ÷ 9 × 100 — what % of each shift's daily capacity target has been consumed by this IST hour (e.g. 44% = 4 of 9 hours done). Wtd Avg Cap. % = HC-weighted average across all active shifts. Not actual closures — theoretical capacity toward the 1.7/day target. HC Available is editable; click "Recalculate" to model scenarios.</p>
+  <p class="note">Total Cases (44d) = indCases[h] + revCases[h] — raw count across all 44 weekdays for that IST hour. Cases/Day = Total ÷ 44. Shift % columns = hours elapsed since shift start ÷ 9 × 100 — how far through their shift each region is at that IST hour (e.g. 44% = 4 of 9 hours done). HC Available is editable; click "Recalculate" to model scenarios.</p>
 </div>
 
 
