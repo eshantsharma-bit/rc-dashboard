@@ -330,7 +330,7 @@ tr.mod td{background:#f8fdf9;}
 </div>
 
 
-<p class="note" style="margin-bottom:24px;">Data: OrgCS SOQL · cssf_Product_Topic_Name__c LIKE 'Industry%' OR 'Revenue%' · Last 60 days · Weekdays only (Mon–Fri, 44 days) · 20,798 cases · Chat subset: 2,427 weekday cases · HC from engineer shift CSV · All times IST (UTC+5:30)</p>
+<p class="note" style="margin-bottom:24px;">Data: OrgCS SOQL · cssf_Product_Topic_Name__c LIKE 'Industry%' OR 'Revenue%' · Excludes Industry-Mandatory Security Controls (1,000 bulk-automated cases created at 15:04 UTC on Aug 12 — not organic inflow) · Last 60 days · 14,618 cases · HC from engineer shift CSV · All times IST (UTC+5:30)</p>
 
 </div><!-- /page -->
 
@@ -339,8 +339,9 @@ tr.mod td{background:#f8fdf9;}
 const WEEKDAYS = 44;
 const TOTAL_HC_BASE = 1867;
 
-const indCases  = [1432,382,336,191,133,139,139,128,142,170,260,336,431,476,477,535,504,491,612,3082,4059,593,560,539];
-const revCases  = [187,164,162,109,73,56,42,50,47,55,106,163,209,226,231,298,277,306,330,366,350,318,268,258];
+// Industry-Mandatory Security Controls excluded (bulk automated security events, not organic inflow)
+const indCases  = [464,418,294,196,157,132,142,152,158,233,271,423,472,475,512,527,473,588,636,714,647,572,554,506];
+const revCases  = [231,208,169,99,73,47,52,45,55,74,128,202,238,234,284,290,276,343,339,379,347,292,281,216];
 const indChat   = [68,51,49,20,19,15,21,26,26,26,26,34,42,68,49,64,59,64,59,100,90,75,74,61];
 const revChat   = [53,30,44,32,22,13,13,19,12,16,24,41,40,42,54,89,70,79,93,112,109,82,67,85];
 
