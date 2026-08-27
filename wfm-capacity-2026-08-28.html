@@ -290,12 +290,14 @@ tr.mod td{background:#f8fdf9;}
           <th>Demand %</th>
           <th>HC Available ✎</th>
           <th>Supply %</th>
+          <th title="Avg GHO cases active per day (387 unique cases ÷ 44 weekdays). Transition hours shown with ↔ label.">GHO Active</th>
+          <th title="Cases/Day + 9 GHO cases = total demand the receiving shift faces">Adj. Inflow</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
-  <p class="note">Cases/Day = inflow signal (Total Cases ÷ 44 weekdays). Supply% = HC Available ÷ Total HC. Demand% = Cases/Day share of daily total. HC Available is editable; click "Recalculate" to model scenarios.</p>
+  <p class="note">Cases/Day = inflow signal (Total Cases ÷ 44 weekdays). Supply% = HC Available ÷ Total HC. Demand% = Cases/Day share of daily total. GHO Active = 9 cases/day avg (387 unique Active GHO cases, Ind+Rev, ÷ 44 weekdays); ↔ marks shift transition hours (5:30 AM AMER→APAC, 5:30 PM IST→EMEA, 8:30 PM EMEA→AMER). Adj. Inflow = Cases/Day + GHO Active. IST shift sends GHO but does not receive — GHO load stays with APAC/EMEA/AMER. HC Available is editable; click "Recalculate" to model scenarios.</p>
 </div>
 
 
@@ -747,6 +749,19 @@ function buildHmap(){
   });
 }
 
+// ── GHO ──────────────────────────────────────────────────────
+// 387 unique GHO cases (Active, Ind+Rev) over 44 weekdays = 8.8 → 9/day
+const GHO_AVG = 9;
+// IST hours when GHO cases transition between shifts:
+//   h=5  (5:30 AM)  — AMER hands over to APAC
+//   h=17 (5:30 PM)  — APAC/IST hands over to EMEA
+//   h=20 (8:30 PM)  — EMEA hands over to AMER
+const GHO_TRANSITIONS = {
+  5:  '↔ AMER→APAC',
+  17: '↔ IST→EMEA',
+  20: '↔ EMEA→AMER',
+};
+
 // ── TABLE ────────────────────────────────────────────────────
 function buildTable(){
   const tbody=document.getElementById('tbody');
@@ -773,6 +788,9 @@ function buildTable(){
     if(sh.EST[h]>0)  actShifts.push('EST');
     if(sh.PST[h]>0)  actShifts.push('PST');
 
+    const ghoTransition = GHO_TRANSITIONS[h] || '';
+    const adjInflow = (parseFloat(casesDay) + GHO_AVG).toFixed(1);
+
     const tr=document.createElement('tr');
     tr.innerHTML=`
       <td><strong>${IST[h]}</strong></td>
@@ -785,6 +803,8 @@ function buildTable(){
       <td>${dem.toFixed(1)}%</td>
       <td><input class="hc-input" value="${hcArr[h]}" data-hr="${h}" type="number" min="0"></td>
       <td>${sup.toFixed(1)}%</td>
+      <td style="font-size:11px;font-weight:700;color:#b45309">${GHO_AVG}${ghoTransition ? '<br><span style="font-size:10px;font-weight:600;color:#92400e">'+ghoTransition+'</span>' : ''}</td>
+      <td style="font-weight:700;color:#0c4a6e">${adjInflow}</td>
     `;
     tbody.appendChild(tr);
   });
