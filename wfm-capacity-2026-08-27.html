@@ -42,7 +42,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sec-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:5px;margin-bottom:12px;}
 
 /* kpis */
-.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;}
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
 .kpi{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:13px 15px;}
 .kpi.red{background:var(--red-bg);border-color:var(--red-bd);}
 .kpi.grn{background:var(--grn-bg);border-color:var(--grn-bd);}
@@ -180,11 +180,6 @@ tr.mod td{background:#f8fdf9;}
       <div class="kpi-val" id="k-peak">100.2/hr</div>
       <div class="kpi-sub" id="k-peak-sub">8:30 PM IST · 8 AM PDT · 21.2% of daily volume</div>
     </div>
-    <div class="kpi red">
-      <div class="kpi-lbl">Worst Staffing Gap</div>
-      <div class="kpi-val" id="k-gap">−13.8pp</div>
-      <div class="kpi-sub" id="k-gap-sub">8:30 PM IST · 7.5% supply vs 21.2% demand</div>
-    </div>
     <div class="kpi ylw">
       <div class="kpi-lbl">Understaffed Hours</div>
       <div class="kpi-val" id="k-under">3</div>
@@ -311,36 +306,6 @@ tr.mod td{background:#f8fdf9;}
   <p class="note">Total Cases (44d) = indCases[h] + revCases[h] — raw count across all 44 weekdays for that IST hour. Cases/Day = Total ÷ 44. Cap. % columns = hours elapsed in shift ÷ 9 × 100 — what % of each shift's daily capacity target has been consumed by this IST hour (e.g. 44% = 4 of 9 hours done). Wtd Avg Cap. % = HC-weighted average across all active shifts. Not actual closures — theoretical capacity toward the 1.7/day target. HC Available is editable; click "Recalculate" to model scenarios.</p>
 </div>
 
-<!-- ── RECOMMENDATIONS ── -->
-<div class="sec">
-  <div class="sec-title">Staffing Recommendations &amp; Actions</div>
-  <div class="rec-grid">
-    <div class="rec urgent">
-      <div class="rec-title">🔴 Critical — Peak Gap 7:30–8:30 PM IST</div>
-      <div class="rec-body">Hours 19–20 carry <strong>37.8% of Industry volume</strong> (~138 cases/day) but only <strong>13.1% of staffing</strong>. Maps to <strong>7–9 AM PDT</strong> — US morning ramp.<br><br><strong>Fix:</strong> Pull PST start forward to 7:30 PM IST (+46 HC at hr19). Extend EMEA to 10:30 PM (+47 HC at hr20). Adds ~93 HC across peak hours at zero net new headcount.</div>
-    </div>
-    <div class="rec urgent">
-      <div class="rec-title">🔴 High — Midnight IST Gap (12:30 AM)</div>
-      <div class="rec-body">Hour 0 carries <strong>7.8% demand</strong> (~36.8 cases/day) vs only 4.9% supply (92 HC). This is <strong>12 PM PDT</strong> — US East Coast lunch inflow spike. Chat contributes 2.9 cases/hr of this.<br><br><strong>Fix:</strong> Extend EST shift by 1 hour to cover through 12:30 AM IST. Or add a 5-engineer IST late-night cohort 11 PM–3 AM IST.</div>
-    </div>
-    <div class="rec warn">
-      <div class="rec-title">🟡 Optimise — APAC/India Overlap 9:30AM–2:30PM IST</div>
-      <div class="rec-body">64–110 engineers active during hours 9–13 covering only 1–3.4% demand each. US is overnight (9 PM–2 AM PDT). Chat inflow is also minimal (avg 1.0–2.9/hr).<br><br><strong>Fix:</strong> Stagger APAC end to 1:30 PM IST. Redeploy 10–15 APAC engineers to 6–8 PM IST late cohort where demand spikes 14× higher.</div>
-    </div>
-    <div class="rec warn">
-      <div class="rec-title">🟡 Optimise — India Shift End vs Peak Mismatch</div>
-      <div class="rec-body">India shift (43 HC) ends at 6:30 PM IST. By 7:30 PM India drops to 0 — exactly when inflow spikes from 14 to 70+ cases/hr. IST engineers are most cost-efficient for this window.<br><br><strong>Fix:</strong> Introduce a second India cohort (15–20 engineers): 12:30 PM–9:30 PM IST to cover the evening peak alongside EMEA.</div>
-    </div>
-    <div class="rec ok">
-      <div class="rec-title">🟢 Revenue Cloud — Structurally Adequate</div>
-      <div class="rec-body">Revenue carries 22.4% of case volume and 26.2% of HC (489/1867). Its hourly shape is flatter (max 7.9% at hr19 vs Industry's 18.6%). Chat adds 28 cases/day evenly spread.<br><br><strong>No headcount add needed.</strong> Ensure Rev engineers at hrs 19–20 (29–38 HC) are protected from admin tasks during peak window.</div>
-    </div>
-    <div class="rec ok">
-      <div class="rec-title">🟢 EST/PST Night Block — Well Matched</div>
-      <div class="rec-body">Hours 1–4 (1:30–4:30 AM IST = 1–4 PM PDT, US afternoon) are the best-matched block: 34–92 HC covering 0.9–2.6% demand each. PST (46 HC) + EST residual gives solid overnight IST coverage.<br><br><strong>No action needed.</strong> Maintain current EST/PST levels for this window.</div>
-    </div>
-  </div>
-</div>
 
 <p class="note" style="margin-bottom:24px;">Data: OrgCS SOQL · cssf_Product_Topic_Name__c LIKE 'Industry%' OR 'Revenue%' · Last 60 days · Weekdays only (Mon–Fri, 44 days) · 20,798 cases · Chat subset: 2,427 weekday cases · HC from engineer shift CSV · All times IST (UTC+5:30)</p>
 
@@ -457,9 +422,7 @@ function updateKPIs(){
   const demPct = cases.map(v=>v/total*100);
   const supPct = hc.map(v=>v/TOTAL_HC*100);
   const gapArr = supPct.map((v,i)=>v-demPct[i]);
-
   const peakIdx = cases.indexOf(Math.max(...cases));
-  const worstGapIdx = gapArr.indexOf(Math.min(...gapArr));
   const understaffed = gapArr.filter(g=>g<-0.5).length;
 
   document.getElementById('k-total').textContent = total.toLocaleString();
@@ -479,10 +442,6 @@ function updateKPIs(){
   const peakAvg = (cases[peakIdx]/WEEKDAYS).toFixed(1);
   document.getElementById('k-peak').textContent = peakAvg+'/hr';
   document.getElementById('k-peak-sub').textContent = `${IST[peakIdx]} IST · ${PDT[peakIdx]} PDT · ${demPct[peakIdx].toFixed(1)}% of daily volume`;
-
-  const wg = gapArr[worstGapIdx];
-  document.getElementById('k-gap').textContent = (wg>0?'+':'')+wg.toFixed(1)+'pp';
-  document.getElementById('k-gap-sub').textContent = `${IST[worstGapIdx]} IST · ${supPct[worstGapIdx].toFixed(1)}% supply vs ${demPct[worstGapIdx].toFixed(1)}% demand`;
 
   document.getElementById('k-under').textContent = understaffed;
   const underHrs = gapArr.map((g,i)=>g<-0.5?IST[i]:null).filter(Boolean).slice(0,3).join(' · ');
