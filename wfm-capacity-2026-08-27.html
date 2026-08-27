@@ -277,13 +277,17 @@ tr.mod td{background:#f8fdf9;}
   <button class="recalc-btn" onclick="recalcTable()">Recalculate with edited HC values</button>
 
   <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:12px 16px;margin-bottom:10px;font-size:12px;line-height:1.7;color:#0c4a6e;">
-    <strong style="display:block;margin-bottom:4px;font-size:12px;color:#0369a1;">How to read the Shift Completion % columns</strong>
-    These columns show <strong>how far through their 9-hour shift each region is</strong> at each IST hour — nothing more.
+    <strong style="display:block;margin-bottom:4px;font-size:12px;color:#0369a1;">How to read the Target Cases Consumed columns</strong>
+    Each shift has a total daily case target = <strong>HC × 1.7</strong>. As the shift progresses, engineers work through that target.
+    By any given IST hour, the cases consumed toward that target = <strong>HC × 1.7 × (hours elapsed ÷ 9)</strong>.
     <br><br>
-    <strong>Formula:</strong> Hours elapsed since shift start ÷ 9 × 100. &nbsp;
-    Example: APAC starts at 5:30 AM. By 9:30 AM they have been on shift 4 hours → <strong>4 ÷ 9 × 100 = 44% of shift completed</strong>. By 2:30 PM (end of shift) it reaches 100%.
+    Example: APAC (21 HC) starts at 5:30 AM. Daily target = 21 × 1.7 = <strong>35.7 cases</strong>.
+    By 9:30 AM (4 hrs in) → 35.7 × (4 ÷ 9) = <strong>15.9 cases consumed</strong> toward target. By end of shift = 35.7 (100%).
     <br><br>
-    A shift showing <strong>—</strong> has not started yet at that hour. Use these columns to see which shifts are early, mid, or late in their day when demand peaks — and whether a handoff is imminent.
+    <strong>Consumed vs Inflow</strong> = sum of all active shifts' consumed cases minus Cases/Day arriving that hour.
+    <span style="color:#16a34a;font-weight:700;">Green / positive</span> = shifts have processed more than the inflow arriving this hour — capacity is ahead.
+    <span style="color:#dc2626;font-weight:700;">Red / negative</span> = inflow is outpacing what active shifts can absorb — cases are queuing.
+    A shift showing <strong>—</strong> has not started yet at that hour.
   </div>
 
   <div class="tbl-wrap">
@@ -300,17 +304,18 @@ tr.mod td{background:#f8fdf9;}
           <th>Demand %</th>
           <th>HC Available ✎</th>
           <th>Supply %</th>
-          <th>APAC Shift %</th>
-          <th>India Shift %</th>
-          <th>EMEA Shift %</th>
-          <th>EST Shift %</th>
-          <th>PST Shift %</th>
+          <th title="HC × 1.7 × (hrs elapsed ÷ 9)">APAC Consumed</th>
+          <th title="HC × 1.7 × (hrs elapsed ÷ 9)">India Consumed</th>
+          <th title="HC × 1.7 × (hrs elapsed ÷ 9)">EMEA Consumed</th>
+          <th title="HC × 1.7 × (hrs elapsed ÷ 9)">EST Consumed</th>
+          <th title="HC × 1.7 × (hrs elapsed ÷ 9)">PST Consumed</th>
+          <th title="Sum of all active shifts consumed minus Cases/Day">Consumed vs Inflow</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
-  <p class="note">Total Cases (44d) = indCases[h] + revCases[h] — raw count across all 44 weekdays for that IST hour. Cases/Day = Total ÷ 44. Shift % columns = hours elapsed since shift start ÷ 9 × 100 — how far through their shift each region is at that IST hour (e.g. 44% = 4 of 9 hours done). HC Available is editable; click "Recalculate" to model scenarios.</p>
+  <p class="note">Cases/Day = Total Cases (44d) ÷ 44. Consumed = HC × 1.7 × (hrs elapsed ÷ 9) — cases worked toward daily target by that IST hour. Consumed vs Inflow = total consumed across active shifts minus Cases/Day that hour; green = shifts absorbing more than arriving, red = inflow outpacing capacity. HC Available is editable; click "Recalculate" to model scenarios.</p>
 </div>
 
 
@@ -846,12 +851,15 @@ function buildTable(){
     const shiftNames  = ['APAC','IST','EMEA','EST','PST'];
     const shiftArrays = [sh.APAC,sh.IST,sh.EMEA,sh.EST,sh.PST];
     shiftNames.forEach((nm,si)=>{ if(shiftArrays[si][h]>0) shiftElapsed[nm]++; });
-    // % of shift's daily capacity consumed = hours_elapsed ÷ 9 × 100
-    const capAPAC = sh.APAC[h]>0 ? shiftElapsed.APAC/SHIFT_HOURS*100 : 0;
-    const capIST  = sh.IST[h]>0  ? shiftElapsed.IST /SHIFT_HOURS*100 : 0;
-    const capEMEA = sh.EMEA[h]>0 ? shiftElapsed.EMEA/SHIFT_HOURS*100 : 0;
-    const capEST  = sh.EST[h]>0  ? shiftElapsed.EST /SHIFT_HOURS*100 : 0;
-    const capPST  = sh.PST[h]>0  ? shiftElapsed.PST /SHIFT_HOURS*100 : 0;
+    // Cases consumed toward daily target = HC × 1.7 × (hours_elapsed ÷ 9)
+    const capAPAC = sh.APAC[h]>0 ? sh.APAC[h]*DAILY_TARGET*(shiftElapsed.APAC/SHIFT_HOURS) : 0;
+    const capIST  = sh.IST[h]>0  ? sh.IST[h] *DAILY_TARGET*(shiftElapsed.IST /SHIFT_HOURS) : 0;
+    const capEMEA = sh.EMEA[h]>0 ? sh.EMEA[h]*DAILY_TARGET*(shiftElapsed.EMEA/SHIFT_HOURS) : 0;
+    const capEST  = sh.EST[h]>0  ? sh.EST[h] *DAILY_TARGET*(shiftElapsed.EST /SHIFT_HOURS) : 0;
+    const capPST  = sh.PST[h]>0  ? sh.PST[h] *DAILY_TARGET*(shiftElapsed.PST /SHIFT_HOURS) : 0;
+    const capTotal = capAPAC + capIST + capEMEA + capEST + capPST;
+    const vsInflow = capTotal - parseFloat(casesDay);  // consumed minus inflow this hour
+
     const actShifts=[];
     if(sh.APAC[h]>0) actShifts.push('APAC');
     if(sh.IST[h]>0)  actShifts.push('India');
@@ -859,7 +867,9 @@ function buildTable(){
     if(sh.EST[h]>0)  actShifts.push('EST');
     if(sh.PST[h]>0)  actShifts.push('PST');
 
-    const fmtCap = v => v>0 ? v.toFixed(0)+'%' : '—';
+    const fmtCap  = v => v>0 ? v.toFixed(1) : '—';
+    const vsColor = vsInflow>=0 ? '#16a34a' : '#dc2626';
+    const vsText  = capTotal>0 ? (vsInflow>=0?'+':'')+vsInflow.toFixed(1) : '—';
 
     const tr=document.createElement('tr');
     tr.innerHTML=`
@@ -878,6 +888,7 @@ function buildTable(){
       <td style="font-size:11px;color:#92400e">${fmtCap(capEMEA)}</td>
       <td style="font-size:11px;color:#166534">${fmtCap(capEST)}</td>
       <td style="font-size:11px;color:#991b1b">${fmtCap(capPST)}</td>
+      <td style="font-weight:700;color:${vsColor}">${vsText}</td>
     `;
     tbody.appendChild(tr);
   });
