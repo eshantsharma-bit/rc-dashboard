@@ -283,18 +283,18 @@ tr.mod td{background:#f8fdf9;}
           <th>Demand %</th>
           <th>HC Available ✎</th>
           <th>Supply %</th>
-          <th>APAC Cap.</th>
-          <th>India Cap.</th>
-          <th>EMEA Cap.</th>
-          <th>EST Cap.</th>
-          <th>PST Cap.</th>
-          <th>Total Cap.</th>
+          <th>APAC Cap. %</th>
+          <th>India Cap. %</th>
+          <th>EMEA Cap. %</th>
+          <th>EST Cap. %</th>
+          <th>PST Cap. %</th>
+          <th>Wtd Avg Cap. %</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
-  <p class="note">Total Cases (44d) = indCases[h] + revCases[h] — raw count across all 44 weekdays for that IST hour. Cases/Day = Total ÷ 44. Capacity consumed columns = HC on-shift × hours elapsed in shift × 0.189 (daily target 1.7 cases/eng ÷ 9-hr shift) — capacity working toward the daily target, not actual closures. HC Available is editable; click "Recalculate" to model scenarios.</p>
+  <p class="note">Total Cases (44d) = indCases[h] + revCases[h] — raw count across all 44 weekdays for that IST hour. Cases/Day = Total ÷ 44. Cap. % columns = hours elapsed in shift ÷ 9 × 100 — what % of each shift's daily capacity target has been consumed by this IST hour (e.g. 44% = 4 of 9 hours done). Wtd Avg Cap. % = HC-weighted average across all active shifts. Not actual closures — theoretical capacity toward the 1.7/day target. HC Available is editable; click "Recalculate" to model scenarios.</p>
 </div>
 
 <!-- ── RECOMMENDATIONS ── -->
@@ -798,12 +798,16 @@ function buildTable(){
     const shiftNames  = ['APAC','IST','EMEA','EST','PST'];
     const shiftArrays = [sh.APAC,sh.IST,sh.EMEA,sh.EST,sh.PST];
     shiftNames.forEach((nm,si)=>{ if(shiftArrays[si][h]>0) shiftElapsed[nm]++; });
-    const capAPAC = sh.APAC[h]>0 ? sh.APAC[h]*shiftElapsed.APAC*HOURLY_RATE : 0;
-    const capIST  = sh.IST[h]>0  ? sh.IST[h] *shiftElapsed.IST *HOURLY_RATE : 0;
-    const capEMEA = sh.EMEA[h]>0 ? sh.EMEA[h]*shiftElapsed.EMEA*HOURLY_RATE : 0;
-    const capEST  = sh.EST[h]>0  ? sh.EST[h] *shiftElapsed.EST *HOURLY_RATE : 0;
-    const capPST  = sh.PST[h]>0  ? sh.PST[h] *shiftElapsed.PST *HOURLY_RATE : 0;
-    const capTot  = capAPAC+capIST+capEMEA+capEST+capPST;
+    // % of shift's daily capacity consumed = hours_elapsed ÷ 9 × 100
+    const capAPAC = sh.APAC[h]>0 ? shiftElapsed.APAC/SHIFT_HOURS*100 : 0;
+    const capIST  = sh.IST[h]>0  ? shiftElapsed.IST /SHIFT_HOURS*100 : 0;
+    const capEMEA = sh.EMEA[h]>0 ? shiftElapsed.EMEA/SHIFT_HOURS*100 : 0;
+    const capEST  = sh.EST[h]>0  ? shiftElapsed.EST /SHIFT_HOURS*100 : 0;
+    const capPST  = sh.PST[h]>0  ? shiftElapsed.PST /SHIFT_HOURS*100 : 0;
+    // Weighted avg % across all active shifts (by HC)
+    const _actv = [{p:capAPAC,hc:sh.APAC[h]},{p:capIST,hc:sh.IST[h]},{p:capEMEA,hc:sh.EMEA[h]},{p:capEST,hc:sh.EST[h]},{p:capPST,hc:sh.PST[h]}].filter(s=>s.hc>0);
+    const _totHC = _actv.reduce((a,s)=>a+s.hc,0);
+    const capTot = _totHC>0 ? _actv.reduce((a,s)=>a+s.p*s.hc,0)/_totHC : 0;
 
     const actShifts=[];
     if(sh.APAC[h]>0) actShifts.push('APAC');
@@ -812,7 +816,7 @@ function buildTable(){
     if(sh.EST[h]>0)  actShifts.push('EST');
     if(sh.PST[h]>0)  actShifts.push('PST');
 
-    const fmtCap = v => v>0 ? v.toFixed(1) : '—';
+    const fmtCap = v => v>0 ? v.toFixed(0)+'%' : '—';
 
     const tr=document.createElement('tr');
     tr.innerHTML=`
