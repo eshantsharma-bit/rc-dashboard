@@ -90,6 +90,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .hm-cell.est{background:#bbf7d0;color:#166534;font-weight:700;}
 .hm-cell.pst{background:#fecaca;color:#991b1b;font-weight:700;}
 .hm-cell.multi{background:#fb923c;color:#fff;font-weight:700;}
+/* cool-off: diagonal stripes over the shift colour */
+.hm-cell.cooloff-apac{background:repeating-linear-gradient(45deg,#bae6fd,#bae6fd 3px,#e0f2fe 3px,#e0f2fe 7px);color:#0369a1;font-weight:700;}
+.hm-cell.cooloff-india{background:repeating-linear-gradient(45deg,#ddd6fe,#ddd6fe 3px,#ede9fe 3px,#ede9fe 7px);color:#5b21b6;font-weight:700;}
+.hm-cell.cooloff-emea{background:repeating-linear-gradient(45deg,#fde68a,#fde68a 3px,#fef9c3 3px,#fef9c3 7px);color:#92400e;font-weight:700;}
+.hm-cell.cooloff-est{background:repeating-linear-gradient(45deg,#bbf7d0,#bbf7d0 3px,#dcfce7 3px,#dcfce7 7px);color:#166534;font-weight:700;}
 
 /* table */
 .tbl-wrap{overflow-x:auto;}
@@ -257,7 +262,13 @@ tr.mod td{background:#f8fdf9;}
   <div class="hmap-wrap">
     <div class="hmap" id="hmapGrid"></div>
   </div>
-  <p class="note">Each cell = headcount active from that shift in that hour. Colour = shift region. Orange = 3+ shifts overlapping simultaneously.</p>
+  <div style="display:flex;align-items:center;gap:18px;margin-top:8px;flex-wrap:wrap;">
+    <span style="font-size:11px;color:var(--muted);font-weight:600;">Legend:</span>
+    <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:18px;height:12px;border-radius:2px;background:#bae6fd;border:1px solid #7dd3fc;display:inline-block"></span>Active</span>
+    <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:18px;height:12px;border-radius:2px;background:repeating-linear-gradient(45deg,#bae6fd,#bae6fd 3px,#e0f2fe 3px,#e0f2fe 7px);border:1px solid #7dd3fc;display:inline-block"></span>Cool-off (last 30 min of shift)</span>
+    <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:18px;height:12px;border-radius:2px;background:#fb923c;display:inline-block"></span>3+ shifts overlapping</span>
+    <span style="font-size:11px;color:var(--muted);">PST has no cool-off (no shift overlap at end).</span>
+  </div>
 </div>
 
 <!-- ── DETAIL TABLE ── -->
@@ -297,7 +308,6 @@ tr.mod td{background:#f8fdf9;}
           <th>EMEA Cap. %</th>
           <th>EST Cap. %</th>
           <th>PST Cap. %</th>
-          <th>Wtd Avg Cap. %</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -723,12 +733,28 @@ function buildHmap(){
   dLabels.forEach(l=>{const d=document.createElement('div');d.className='hm-head';d.textContent=l.replace(':30','').replace(' AM','a').replace(' PM','p');grid.appendChild(d);});
 
   const sh = getShiftHC();
+  // Last active hour (IST index 0-23) for each shift — cool-off applied here
+  // PST excluded (no shift overlap when PST ends)
+  function lastActiveHour(arr){
+    let last=-1;
+    for(let i=0;i<24;i++) if(arr[i]>0) last=i;
+    return last;
+  }
+  const cooloffHour={
+    APAC:  lastActiveHour(sh.APAC),
+    IST:   lastActiveHour(sh.IST),
+    EMEA:  lastActiveHour(sh.EMEA),
+    EST:   lastActiveHour(sh.EST),
+    PST:   -1,  // no cool-off for PST
+  };
+  const cooloffCls={ APAC:'cooloff-apac', IST:'cooloff-india', EMEA:'cooloff-emea', EST:'cooloff-est', PST:null };
+
   const shiftDefs=[
-    {name:'APAC',    cls:'apac',  arr:sh.APAC},
-    {name:'India',   cls:'india', arr:sh.IST},
-    {name:'EMEA',    cls:'emea',  arr:sh.EMEA},
-    {name:'AMER-EST',cls:'est',   arr:sh.EST},
-    {name:'AMER-PST',cls:'pst',   arr:sh.PST},
+    {name:'APAC',    cls:'apac',  arr:sh.APAC,  key:'APAC'},
+    {name:'India',   cls:'india', arr:sh.IST,   key:'IST'},
+    {name:'EMEA',    cls:'emea',  arr:sh.EMEA,  key:'EMEA'},
+    {name:'AMER-EST',cls:'est',   arr:sh.EST,   key:'EST'},
+    {name:'AMER-PST',cls:'pst',   arr:sh.PST,   key:'PST'},
   ];
   shiftDefs.forEach(s=>{
     const lbl=document.createElement('div');lbl.className='hm-lbl';lbl.textContent=s.name;grid.appendChild(lbl);
@@ -736,8 +762,10 @@ function buildHmap(){
       const v=s.arr[h];
       const d=document.createElement('div');
       const active=[sh.APAC,sh.IST,sh.EMEA,sh.EST,sh.PST].filter(a=>a[h]>0).length;
-      d.className='hm-cell'+(v>0?' '+(active>=3?'multi':s.cls):'');
+      const isCooloff = v>0 && h===cooloffHour[s.key] && cooloffCls[s.key];
+      d.className='hm-cell'+(v>0?' '+(isCooloff ? cooloffCls[s.key] : active>=3?'multi':s.cls):'');
       d.textContent=v>0?v:'';
+      d.title = isCooloff ? '30-min cool-off (last hour of shift)' : '';
       grid.appendChild(d);
     });
   });
@@ -777,11 +805,6 @@ function buildTable(){
     const capEMEA = sh.EMEA[h]>0 ? shiftElapsed.EMEA/SHIFT_HOURS*100 : 0;
     const capEST  = sh.EST[h]>0  ? shiftElapsed.EST /SHIFT_HOURS*100 : 0;
     const capPST  = sh.PST[h]>0  ? shiftElapsed.PST /SHIFT_HOURS*100 : 0;
-    // Weighted avg % across all active shifts (by HC)
-    const _actv = [{p:capAPAC,hc:sh.APAC[h]},{p:capIST,hc:sh.IST[h]},{p:capEMEA,hc:sh.EMEA[h]},{p:capEST,hc:sh.EST[h]},{p:capPST,hc:sh.PST[h]}].filter(s=>s.hc>0);
-    const _totHC = _actv.reduce((a,s)=>a+s.hc,0);
-    const capTot = _totHC>0 ? _actv.reduce((a,s)=>a+s.p*s.hc,0)/_totHC : 0;
-
     const actShifts=[];
     if(sh.APAC[h]>0) actShifts.push('APAC');
     if(sh.IST[h]>0)  actShifts.push('India');
@@ -808,7 +831,6 @@ function buildTable(){
       <td style="font-size:11px;color:#92400e">${fmtCap(capEMEA)}</td>
       <td style="font-size:11px;color:#166534">${fmtCap(capEST)}</td>
       <td style="font-size:11px;color:#991b1b">${fmtCap(capPST)}</td>
-      <td style="font-weight:700;color:#1e293b">${fmtCap(capTot)}</td>
     `;
     tbody.appendChild(tr);
   });
