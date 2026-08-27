@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WFM Capacity & Staffing — Industry + Revenue Cloud</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#fff;--bg2:#f6f8fa;--bg3:#eaeef2;--border:#d0d7de;
+  --text:#1f2328;--muted:#656d76;
+  --red:#cf222e;--red-bg:#fff0ee;--red-bd:#f7c5c0;
+  --grn:#1a7f37;--grn-bg:#eafbee;--grn-bd:#9be9a8;
+  --org:#bc4c00;--org-bg:#fff8f0;--org-bd:#ffb77c;
+  --blu:#0550ae;--blu-bg:#ddf4ff;--blu-bd:#80ccff;
+  --pur:#6639ba;--pur-bg:#fbefff;--pur-bd:#d2b0f7;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f3f4f6;color:var(--text);font-size:13px;}
+.page{max-width:1440px;margin:0 auto;padding:24px 28px;}
+
+/* ── top bar ── */
+.topbar{background:#1e293b;color:#e2e8f0;padding:12px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:3px solid #0f172a;}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.topbar h1{font-size:15px;font-weight:800;letter-spacing:-0.2px;color:#f8fafc;}
+.topbar .sub{font-size:11px;color:#94a3b8;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+
+/* filter toggle */
+.seg{display:flex;border:1px solid #334155;border-radius:6px;overflow:hidden;}
+.seg button{background:transparent;border:none;color:#94a3b8;font-size:12px;font-weight:600;padding:5px 14px;cursor:pointer;transition:all .15s;}
+.seg button.active{background:#0f172a;color:#f8fafc;}
+.seg button:not(:last-child){border-right:1px solid #334155;}
+
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px;vertical-align:middle;}
+.bi{background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;}
+.br{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
+.bc{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+
+/* ── layout ── */
+.sec{margin-bottom:24px;}
+.sec-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:5px;margin-bottom:12px;}
+
+/* kpis */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.kpi{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:13px 15px;}
+.kpi.red{background:var(--red-bg);border-color:var(--red-bd);}
+.kpi.grn{background:var(--grn-bg);border-color:var(--grn-bd);}
+.kpi.blu{background:var(--blu-bg);border-color:var(--blu-bd);}
+.kpi.ylw{background:var(--org-bg);border-color:var(--org-bd);}
+.kpi-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;}
+.kpi-val{font-size:22px;font-weight:800;line-height:1.1;}
+.kpi.red .kpi-val{color:var(--red);}
+.kpi.grn .kpi-val{color:var(--grn);}
+.kpi.blu .kpi-val{color:var(--blu);}
+.kpi.ylw .kpi-val{color:var(--org);}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4;}
+.bar-split{height:6px;border-radius:3px;overflow:hidden;display:flex;margin-top:5px;}
+.bs-ind{background:#0284c7;}
+.bs-rev{background:#d97706;}
+.bs-ch{background:#7c3aed;margin-left:2px;}
+
+/* charts */
+.chart-row{display:grid;gap:12px;margin-bottom:12px;}
+.c2{grid-template-columns:2fr 1fr;}
+.c3{grid-template-columns:1fr 1fr 1fr;}
+.c1{grid-template-columns:1fr;}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px;}
+.card h3{font-size:12px;font-weight:700;margin-bottom:2px;}
+.card .csub{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.h260{height:260px;}
+.h220{height:220px;}
+.h190{height:190px;}
+.h160{height:160px;}
+
+/* shift legend */
+.sleg{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px;}
+.sleg-item{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;}
+.sdot{width:10px;height:10px;border-radius:2px;}
+
+/* coverage heatmap */
+.hmap-wrap{overflow-x:auto;}
+.hmap{display:grid;grid-template-columns:110px repeat(24,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;font-size:10px;min-width:900px;}
+.hm-head{background:var(--bg3);font-weight:700;padding:4px 2px;text-align:center;color:var(--muted);}
+.hm-lbl{background:var(--bg2);font-weight:700;padding:5px 8px;font-size:11px;display:flex;align-items:center;}
+.hm-cell{padding:4px 2px;text-align:center;background:var(--bg);font-size:10px;}
+.hm-cell.apac{background:#bae6fd;color:#0369a1;font-weight:700;}
+.hm-cell.india{background:#ddd6fe;color:#5b21b6;font-weight:700;}
+.hm-cell.emea{background:#fde68a;color:#92400e;font-weight:700;}
+.hm-cell.est{background:#bbf7d0;color:#166534;font-weight:700;}
+.hm-cell.pst{background:#fecaca;color:#991b1b;font-weight:700;}
+.hm-cell.multi{background:#fb923c;color:#fff;font-weight:700;}
+/* cool-off: diagonal stripes over the shift colour */
+.hm-cell.cooloff-apac{background:repeating-linear-gradient(45deg,#bae6fd,#bae6fd 3px,#e0f2fe 3px,#e0f2fe 7px);color:#0369a1;font-weight:700;}
+.hm-cell.cooloff-india{background:repeating-linear-gradient(45deg,#ddd6fe,#ddd6fe 3px,#ede9fe 3px,#ede9fe 7px);color:#5b21b6;font-weight:700;}
+.hm-cell.cooloff-emea{background:repeating-linear-gradient(45deg,#fde68a,#fde68a 3px,#fef9c3 3px,#fef9c3 7px);color:#92400e;font-weight:700;}
+.hm-cell.cooloff-est{background:repeating-linear-gradient(45deg,#bbf7d0,#bbf7d0 3px,#dcfce7 3px,#dcfce7 7px);color:#166534;font-weight:700;}
+
+/* table */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--bg3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;}
+td{padding:6px 10px;border-bottom:1px solid #eaecef;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr.crit td{background:#fff0ee;}
+tr.under td{background:#fff8f0;}
+tr.over td{background:#f0faf2;}
+tr.mod td{background:#f8fdf9;}
+.pill{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.p-crit{background:var(--red);color:#fff;}
+.p-under{background:#ff818233;color:var(--red);border:1px solid #ff818266;}
+.p-over{background:#56d36430;color:var(--grn);border:1px solid #56d36460;}
+.p-mod{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7;}
+.p-bal{background:var(--bg3);color:var(--muted);border:1px solid var(--border);}
+.neg-big{color:var(--red);font-weight:800;}
+.neg{color:var(--org);font-weight:700;}
+.pos{color:var(--grn);}
+.muted{color:var(--muted);}
+
+/* editable HC */
+.hc-input{width:52px;border:1px solid var(--border);border-radius:4px;padding:2px 4px;font-size:12px;text-align:center;background:var(--bg2);}
+.hc-input:focus{outline:2px solid #0969da;border-color:#0969da;}
+
+/* rec grid */
+.rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.rec{border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.rec.urgent{background:var(--red-bg);border-color:var(--red-bd);}
+.rec.warn{background:var(--org-bg);border-color:var(--org-bd);}
+.rec.ok{background:var(--grn-bg);border-color:var(--grn-bd);}
+.rec-title{font-size:12px;font-weight:800;margin-bottom:6px;}
+.rec.urgent .rec-title{color:var(--red);}
+.rec.warn .rec-title{color:var(--org);}
+.rec.ok .rec-title{color:var(--grn);}
+.rec-body{font-size:12px;color:var(--muted);line-height:1.65;}
+.rec-body strong{color:var(--text);}
+
+.note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5;}
+.recalc-btn{background:#0969da;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;margin-bottom:8px;}
+.recalc-btn:hover{background:#0550ae;}
+</style>
+</head>
+<body>
+
+<!-- sticky topbar -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div>
+      <div class="topbar h1" style="font-size:15px;font-weight:800;color:#f8fafc;">WFM Capacity &amp; Staffing Analysis</div>
+      <div style="font-size:11px;color:#94a3b8;margin-top:1px;">Industry + Revenue Cloud · Weekdays only (Mon–Fri) · 44 days · IST timezone</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span style="font-size:11px;color:#94a3b8;">Filter:</span>
+    <div class="seg">
+      <button class="active" onclick="setFilter('both')">Both</button>
+      <button onclick="setFilter('ind')">Industry</button>
+      <button onclick="setFilter('rev')">Revenue</button>
+    </div>
+    <span style="font-size:11px;color:#94a3b8;margin-left:8px;">Shifts: APAC 5:30AM–2:30PM · India 9:30AM–6:30PM · EMEA 12:30PM–9:30PM · EST 5:30PM–2:30AM · PST 8:30PM–5:30AM (all IST)</span>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ── KPIs ── -->
+<div class="sec" style="margin-top:16px;">
+  <div class="sec-title">Executive Scorecard — <span id="kpi-scope">Industry + Revenue Combined</span></div>
+  <div class="kpi-row">
+    <div class="kpi blu">
+      <div class="kpi-lbl">Total Weekday Cases</div>
+      <div class="kpi-val" id="k-total">20,798</div>
+      <div class="kpi-sub" id="k-total-sub">44 weekdays · 473 avg/day</div>
+      <div class="bar-split"><div class="bs-ind" id="k-bar-ind" style="width:77.6%"></div><div class="bs-rev" id="k-bar-rev" style="width:22.4%"></div></div>
+      <div class="kpi-sub" id="k-bar-lbl" style="margin-top:3px">Ind 16,147 (77.6%) · Rev 4,651 (22.4%)</div>
+    </div>
+    <div class="kpi blu" style="background:#f0fdf4;border-color:#86efac;">
+      <div class="kpi-lbl">Chat Cases (subset)</div>
+      <div class="kpi-val" id="k-chat" style="color:#15803d;">2,427</div>
+      <div class="kpi-sub" id="k-chat-sub">55.2 chat/day · 11.7% of volume</div>
+      <div class="bar-split" style="margin-top:5px"><div class="bs-ind" id="k-chat-bar-ind" style="width:49%"></div><div class="bs-rev" id="k-chat-bar-rev" style="width:51%"></div></div>
+      <div class="kpi-sub" id="k-chat-lbl" style="margin-top:3px;">Ind 1,186 · Rev 1,241</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-lbl">Peak Hour Avg Inflow</div>
+      <div class="kpi-val" id="k-peak">100.2/hr</div>
+      <div class="kpi-sub" id="k-peak-sub">8:30 PM IST · 8 AM PDT · 21.2% of daily volume</div>
+    </div>
+    <div class="kpi ylw">
+      <div class="kpi-lbl">Understaffed Hours</div>
+      <div class="kpi-val" id="k-under">3</div>
+      <div class="kpi-sub" id="k-under-sub">12:30AM · 7:30PM · 8:30PM IST</div>
+    </div>
+    <div class="kpi grn">
+      <div class="kpi-lbl">Total HC Pool</div>
+      <div class="kpi-val" id="k-hc">1,867</div>
+      <div class="kpi-sub">Ind 1,378 · Rev 489 · 5 shift bands</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHARTS ROW 1: inflow + origin ── -->
+<div class="sec">
+  <div class="sec-title">Case Inflow — Hourly Distribution (IST)</div>
+  <div class="chart-row c2">
+    <div class="card">
+      <h3>Avg Daily Case Inflow by Hour <span id="inflow-scope-lbl" class="badge bi">Both</span></h3>
+      <div class="csub">Average cases per weekday · Chat shown as subset overlay · 44-day baseline · Weekdays only</div>
+      <div style="height:260px"><canvas id="inflowChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Case Origin Mix <span class="badge bc">60d · All</span></h3>
+      <div class="csub">Distribution by case origin channel · Industry + Revenue combined</div>
+      <div style="height:260px"><canvas id="originChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHARTS ROW 2: staffing + alignment ── -->
+<div class="sec">
+  <div class="sec-title">Staffing Capacity vs Demand</div>
+  <div class="chart-row c3">
+    <div class="card">
+      <h3>Engineer Availability by Shift (HC/hour)</h3>
+      <div class="csub">Headcount on-shift per IST hour · Stacked by region</div>
+      <div class="sleg">
+        <span class="sleg-item"><span class="sdot" style="background:#0284c7"></span>APAC</span>
+        <span class="sleg-item"><span class="sdot" style="background:#7c3aed"></span>India</span>
+        <span class="sleg-item"><span class="sdot" style="background:#d97706"></span>EMEA</span>
+        <span class="sleg-item"><span class="sdot" style="background:#16a34a"></span>EST</span>
+        <span class="sleg-item"><span class="sdot" style="background:#dc2626"></span>PST</span>
+      </div>
+      <div style="height:220px"><canvas id="staffChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Demand % vs Supply % — Alignment</h3>
+      <div class="csub">Red bars = understaffed · Green line = staffing capacity share</div>
+      <div style="height:260px"><canvas id="alignChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Inflow Pressure Index</h3>
+      <div class="csub">Avg new cases arriving per available engineer · Higher = more pressure</div>
+      <div style="height:260px"><canvas id="pressureChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHAT DEEP DIVE ── -->
+<div class="sec">
+  <div class="sec-title">Chat Origin — Hourly Inflow Deep Dive</div>
+  <div class="chart-row c1">
+    <div class="card">
+      <h3>Chat Cases/Day by Hour — Industry vs Revenue breakdown <span class="badge bc">Chat only</span></h3>
+      <div class="csub">Stacked bars — Industry &amp; Revenue chat cases/day · Purple line = Chat % of total cases (right axis)</div>
+      <div style="height:220px"><canvas id="chatChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SHIFT COVERAGE HEATMAP ── -->
+<div class="sec">
+  <div class="sec-title">Shift Coverage Map — Engineers On-Shift by Hour (IST)</div>
+  <div class="hmap-wrap">
+    <div class="hmap" id="hmapGrid"></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:18px;margin-top:8px;flex-wrap:wrap;">
+    <span style="font-size:11px;color:var(--muted);font-weight:600;">Legend:</span>
+    <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:18px;height:12px;border-radius:2px;background:#bae6fd;border:1px solid #7dd3fc;display:inline-block"></span>Active</span>
+    <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:18px;height:12px;border-radius:2px;background:repeating-linear-gradient(45deg,#bae6fd,#bae6fd 3px,#e0f2fe 3px,#e0f2fe 7px);border:1px solid #7dd3fc;display:inline-block"></span>Cool-off (last 30 min of shift)</span>
+    <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:18px;height:12px;border-radius:2px;background:#fb923c;display:inline-block"></span>3+ shifts overlapping</span>
+    <span style="font-size:11px;color:var(--muted);">PST has no cool-off (no shift overlap at end).</span>
+  </div>
+</div>
+
+<!-- ── DETAIL TABLE ── -->
+<div class="sec">
+  <div class="sec-title">Hour-by-Hour Capacity Detail — <span id="tbl-scope">Industry + Revenue</span></div>
+  <button class="recalc-btn" onclick="recalcTable()">Recalculate with edited HC values</button>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>IST Time</th>
+          <th>PDT</th>
+          <th>Active Shifts</th>
+          <th>Cases/Day <span id="th-scope">(Both)</span></th>
+          <th>Chat/Day</th>
+          <th>Chat %</th>
+          <th>Total Cases (44d)</th>
+          <th>Demand %</th>
+          <th>HC Available ✎</th>
+          <th>Supply %</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <p class="note">Cases/Day = inflow signal (Total Cases ÷ 44 weekdays). Supply% = HC Available ÷ Total HC. Demand% = Cases/Day share of daily total. HC Available is editable; click "Recalculate" to model scenarios.</p>
+</div>
+
+
+<p class="note" style="margin-bottom:24px;">Data: OrgCS SOQL · cssf_Product_Topic_Name__c LIKE 'Industry%' OR 'Revenue%' · Last 60 days · Weekdays only (Mon–Fri, 44 days) · 20,798 cases · Chat subset: 2,427 weekday cases · HC from engineer shift CSV · All times IST (UTC+5:30)</p>
+
+</div><!-- /page -->
+
+<script>
+// ── RAW DATA (hr 0–23 IST) ──────────────────────────────────
+const WEEKDAYS = 44;
+const TOTAL_HC_BASE = 1867;
+
+const indCases  = [1432,382,336,191,133,139,139,128,142,170,260,336,431,476,477,535,504,491,612,3082,4059,593,560,539];
+const revCases  = [187,164,162,109,73,56,42,50,47,55,106,163,209,226,231,298,277,306,330,366,350,318,268,258];
+const indChat   = [68,51,49,20,19,15,21,26,26,26,26,34,42,68,49,64,59,64,59,100,90,75,74,61];
+const revChat   = [53,30,44,32,22,13,13,19,12,16,24,41,40,42,54,89,70,79,93,112,109,82,67,85];
+
+// Industries headcount per shift (hr 0-23 IST)
+const hcInd_APAC = [0,0,0,0,1,15,15,15,15,15,15,15,14,14,0,0,0,0,0,0,0,0,0,0];
+const hcInd_IST  = [0,0,0,0,0,0,0,0,0,31,31,31,31,31,31,31,31,31,31,0,0,0,0,0];
+const hcInd_EMEA = [0,0,0,0,0,0,0,0,0,0,0,0,28,28,28,28,28,28,28,28,28,0,0,0];
+const hcInd_EST  = [36,36,10,7,0,0,0,0,0,0,0,0,0,0,0,0,0,29,36,36,36,36,36,36];
+const hcInd_PST  = [37,37,37,37,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,37,37,37,37];
+// Revenue headcount per shift (hr 0-23 IST)
+const hcRev_APAC = [0,0,0,0,0,6,6,6,6,6,6,6,6,6,0,0,0,0,0,0,0,0,0,0];
+const hcRev_IST  = [0,0,0,0,0,0,0,0,0,12,12,12,12,12,12,12,12,12,0,0,0,0,0,0];
+const hcRev_EMEA = [0,0,0,0,0,0,0,0,0,0,0,0,19,19,19,19,19,19,19,19,19,0,0,0];
+const hcRev_EST  = [10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10,10,10,10,10];
+const hcRev_PST  = [9,9,9,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,9,9,9];
+// Combined totals (Ind+Rev) — verified cross-sum
+const hcTotal = [92,92,56,53,34,21,21,21,21,64,64,64,110,110,90,90,90,129,124,106,139,92,92,92];
+
+// Case origins (60d all, Industry+Revenue)
+const origins = [
+  {label:'Salesforce Internal', n:7951},
+  {label:'Self-Service',        n:5459},
+  {label:'ASA Case',            n:4292},
+  {label:'Chat',                n:2546},
+  {label:'Product Specialist',  n:543},
+  {label:'Other Internal',      n:321},
+  {label:'Other',               n:313},
+];
+
+// Display order: 5:30AM → 4:30AM (business-day start first)
+const dispOrder = [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0,1,2,3,4];
+const IST = ['12:30 AM','1:30 AM','2:30 AM','3:30 AM','4:30 AM','5:30 AM','6:30 AM','7:30 AM','8:30 AM','9:30 AM','10:30 AM','11:30 AM','12:30 PM','1:30 PM','2:30 PM','3:30 PM','4:30 PM','5:30 PM','6:30 PM','7:30 PM','8:30 PM','9:30 PM','10:30 PM','11:30 PM'];
+const PDT = ['12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM','6:00 PM','7:00 PM','8:00 PM','9:00 PM','10:00 PM','11:00 PM','12:00 AM','1:00 AM','2:00 AM','3:00 AM','4:00 AM','5:00 AM','6:00 AM','7:00 AM','8:00 AM','9:00 AM','10:00 AM','11:00 AM'];
+
+function reorder(a){ return dispOrder.map(i=>a[i]); }
+
+// ── FILTER STATE ─────────────────────────────────────────────
+let currentFilter = 'both';
+
+function getCases(filter){
+  return indCases.map((v,i)=>
+    filter==='ind' ? v : filter==='rev' ? revCases[i] : v+revCases[i]
+  );
+}
+function getChat(filter){
+  return indChat.map((v,i)=>
+    filter==='ind' ? v : filter==='rev' ? revChat[i] : v+revChat[i]
+  );
+}
+function totalCases(filter){ return getCases(filter).reduce((a,b)=>a+b,0); }
+function totalChat(filter){ return getChat(filter).reduce((a,b)=>a+b,0); }
+
+// ── CHART INSTANCES ──────────────────────────────────────────
+let inflowCh, staffCh, alignCh, pressureCh, chatCh;
+
+function buildAll(){
+  buildInflow();
+  buildStaff();
+  buildAlign();
+  buildPressure();
+  buildOrigin();
+  buildChat();
+  buildHmap();
+  buildTable();
+  updateKPIs();
+}
+
+function setFilter(f){
+  currentFilter = f;
+  document.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('active', b.textContent.toLowerCase()===f||(f==='both'&&b.textContent==='Both')));
+  const lbl = f==='ind'?'Industry':f==='rev'?'Revenue':'Both';
+  document.getElementById('inflow-scope-lbl').textContent = lbl;
+  document.getElementById('inflow-scope-lbl').className = 'badge '+(f==='ind'?'bi':f==='rev'?'br':'bc');
+  document.getElementById('kpi-scope').textContent = f==='ind'?'Industry Cloud':f==='rev'?'Revenue Cloud':'Industry + Revenue Combined';
+  document.getElementById('tbl-scope').textContent = f==='ind'?'Industry Cloud':f==='rev'?'Revenue Cloud':'Industry + Revenue';
+  document.getElementById('th-scope').textContent = f==='ind'?'(Ind)':f==='rev'?'(Rev)':'(Both)';
+  updateInflowChart();
+  updateStaffChart();
+  updateAlignChart();
+  updatePressureChart();
+  updateChatChart();
+  buildHmap();
+  buildTable();
+  updateKPIs();
+}
+
+function updateKPIs(){
+  const cases = getCases(currentFilter);
+  const chat  = getChat(currentFilter);
+  const total = cases.reduce((a,b)=>a+b,0);
+  const totalCh = chat.reduce((a,b)=>a+b,0);
+  const dailyAvg = total/WEEKDAYS;
+  const hc = getHC();
+  const TOTAL_HC = hc.reduce((a,b)=>a+b,0)||TOTAL_HC_BASE;
+
+  const demPct = cases.map(v=>v/total*100);
+  const supPct = hc.map(v=>v/TOTAL_HC*100);
+  const gapArr = supPct.map((v,i)=>v-demPct[i]);
+  const peakIdx = cases.indexOf(Math.max(...cases));
+  const understaffed = gapArr.filter(g=>g<-0.5).length;
+
+  document.getElementById('k-total').textContent = total.toLocaleString();
+  document.getElementById('k-total-sub').textContent = `${WEEKDAYS} weekdays · ${dailyAvg.toFixed(0)} avg/day`;
+  const indTot = indCases.reduce((a,b)=>a+b,0);
+  const revTot = revCases.reduce((a,b)=>a+b,0);
+  const combined = indTot+revTot;
+  if(currentFilter==='both'){
+    document.getElementById('k-bar-ind').style.width=(indTot/combined*100)+'%';
+    document.getElementById('k-bar-rev').style.width=(revTot/combined*100)+'%';
+    document.getElementById('k-bar-lbl').textContent=`Ind ${indTot.toLocaleString()} (${(indTot/combined*100).toFixed(1)}%) · Rev ${revTot.toLocaleString()} (${(revTot/combined*100).toFixed(1)}%)`;
+  }
+
+  document.getElementById('k-chat').textContent = totalCh.toLocaleString();
+  document.getElementById('k-chat-sub').textContent = `${(totalCh/WEEKDAYS).toFixed(1)} chat/day · ${(totalCh/total*100).toFixed(1)}% of volume`;
+
+  const peakAvg = (cases[peakIdx]/WEEKDAYS).toFixed(1);
+  document.getElementById('k-peak').textContent = peakAvg+'/hr';
+  document.getElementById('k-peak-sub').textContent = `${IST[peakIdx]} IST · ${PDT[peakIdx]} PDT · ${demPct[peakIdx].toFixed(1)}% of daily volume`;
+
+  document.getElementById('k-under').textContent = understaffed;
+  const underHrs = gapArr.map((g,i)=>g<-0.5?IST[i]:null).filter(Boolean).slice(0,3).join(' · ');
+  document.getElementById('k-under-sub').textContent = underHrs||'None';
+
+  document.getElementById('k-hc').textContent = TOTAL_HC.toLocaleString();
+}
+
+// ── GET CURRENT HC (possibly edited) ──────────────────────────
+function getHC(){
+  const inputs = document.querySelectorAll('.hc-input');
+  if(inputs.length===0) return hcTotal;
+  const result = new Array(24).fill(0);
+  inputs.forEach((inp,di)=>{
+    const h = dispOrder[di];
+    result[h] = parseInt(inp.value)||0;
+  });
+  return result;
+}
+
+// Returns per-shift HC arrays filtered by current product selection
+function getShiftHC(filter){
+  function add(a,b){ return a.map((v,i)=>v+b[i]); }
+  const f = filter || currentFilter;
+  if(f==='ind')  return { APAC:hcInd_APAC, IST:hcInd_IST, EMEA:hcInd_EMEA, EST:hcInd_EST, PST:hcInd_PST };
+  if(f==='rev')  return { APAC:hcRev_APAC, IST:hcRev_IST, EMEA:hcRev_EMEA, EST:hcRev_EST, PST:hcRev_PST };
+  return {
+    APAC: add(hcInd_APAC,hcRev_APAC),
+    IST:  add(hcInd_IST, hcRev_IST),
+    EMEA: add(hcInd_EMEA,hcRev_EMEA),
+    EST:  add(hcInd_EST, hcRev_EST),
+    PST:  add(hcInd_PST, hcRev_PST),
+  };
+}
+
+// Shift start hours (IST, inclusive)
+const SHIFT_START = { APAC:5, IST:9, EMEA:12, EST:17, PST:20 };
+
+// ── CHART: INFLOW ─────────────────────────────────────────────
+function buildInflow(){
+  const ctx = document.getElementById('inflowChart').getContext('2d');
+  const dLabels = reorder(IST);
+  const cases = getCases(currentFilter);
+  const chat  = getChat(currentFilter);
+  const total = cases.reduce((a,b)=>a+b,0);
+
+  inflowCh = new Chart(ctx,{
+    data:{
+      labels:dLabels,
+      datasets:[
+        {type:'bar',label:'Industry',data:reorder(indCases).map(v=>+(v/WEEKDAYS).toFixed(1)),backgroundColor:'rgba(2,132,199,0.7)',borderWidth:0,stack:'cases',hidden:currentFilter==='rev'},
+        {type:'bar',label:'Revenue', data:reorder(revCases).map(v=>+(v/WEEKDAYS).toFixed(1)),backgroundColor:'rgba(217,119,6,0.7)', borderWidth:0,stack:'cases',hidden:currentFilter==='ind'},
+        {type:'line',label:'Chat (subset)',data:reorder(chat).map(v=>+(v/WEEKDAYS).toFixed(1)),borderColor:'#7c3aed',backgroundColor:'rgba(124,58,237,0.08)',borderWidth:2,pointRadius:2,fill:true,tension:0.35,stack:undefined,yAxisID:'y'},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{position:'top',labels:{font:{size:10},padding:10}},
+        tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${Number(c.parsed.y).toFixed(1)}/day`}}
+      },
+      scales:{
+        x:{stacked:true,grid:{color:'#eaecef'},ticks:{font:{size:9},maxRotation:45}},
+        y:{stacked:true,grid:{color:'#eaecef'},ticks:{font:{size:10}},title:{display:true,text:'Avg cases / weekday',font:{size:10}}}
+      }
+    }
+  });
+}
+
+function updateInflowChart(){
+  if(!inflowCh) return;
+  const cases = getCases(currentFilter);
+  const chat  = getChat(currentFilter);
+  inflowCh.data.datasets[0].hidden = currentFilter==='rev';
+  inflowCh.data.datasets[1].hidden = currentFilter==='ind';
+  inflowCh.data.datasets[2].data   = reorder(chat).map(v=>+(v/WEEKDAYS).toFixed(1));
+  inflowCh.update();
+}
+
+// ── CHART: STAFF ──────────────────────────────────────────────
+function buildStaff(){
+  const ctx = document.getElementById('staffChart').getContext('2d');
+  const sh = getShiftHC();
+  staffCh = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:reorder(IST),
+      datasets:[
+        {label:'APAC', data:reorder(sh.APAC), backgroundColor:'rgba(2,132,199,0.85)',  borderWidth:0,stack:'s'},
+        {label:'India',data:reorder(sh.IST),  backgroundColor:'rgba(124,58,237,0.85)', borderWidth:0,stack:'s'},
+        {label:'EMEA', data:reorder(sh.EMEA), backgroundColor:'rgba(217,119,6,0.85)',  borderWidth:0,stack:'s'},
+        {label:'EST',  data:reorder(sh.EST),  backgroundColor:'rgba(22,163,74,0.85)',  borderWidth:0,stack:'s'},
+        {label:'PST',  data:reorder(sh.PST),  backgroundColor:'rgba(220,38,38,0.85)',  borderWidth:0,stack:'s'},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y} HC`}}},
+      scales:{
+        x:{stacked:true,grid:{color:'#eaecef'},ticks:{font:{size:9},maxRotation:45}},
+        y:{stacked:true,grid:{color:'#eaecef'},ticks:{font:{size:10}},title:{display:true,text:'Engineers on shift',font:{size:10}}}
+      }
+    }
+  });
+}
+
+function updateStaffChart(){
+  if(!staffCh) return;
+  const sh = getShiftHC();
+  staffCh.data.datasets[0].data = reorder(sh.APAC);
+  staffCh.data.datasets[1].data = reorder(sh.IST);
+  staffCh.data.datasets[2].data = reorder(sh.EMEA);
+  staffCh.data.datasets[3].data = reorder(sh.EST);
+  staffCh.data.datasets[4].data = reorder(sh.PST);
+  staffCh.update();
+}
+
+// ── CHART: ALIGN ──────────────────────────────────────────────
+function buildAlign(){
+  const ctx = document.getElementById('alignChart').getContext('2d');
+  const cases = getCases(currentFilter);
+  const total = cases.reduce((a,b)=>a+b,0);
+  const hc    = getHC();
+  const TOTAL_HC = hc.reduce((a,b)=>a+b,0)||TOTAL_HC_BASE;
+  const demPct = reorder(cases.map(v=>v/total*100));
+  const supPct = reorder(hc.map(v=>v/TOTAL_HC*100));
+  const gapD   = demPct.map((v,i)=>supPct[i]-v);
+
+  alignCh = new Chart(ctx,{
+    data:{
+      labels:reorder(IST),
+      datasets:[
+        {type:'bar',label:'Demand %',data:demPct,backgroundColor:gapD.map(g=>g<-5?'rgba(207,34,46,0.85)':g<-0.5?'rgba(207,34,46,0.45)':'rgba(9,105,218,0.4)'),borderWidth:0,order:2},
+        {type:'line',label:'Supply %',data:supPct,borderColor:'#1a7f37',backgroundColor:'rgba(26,127,55,0.05)',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#1a7f37',fill:false,tension:0.3,order:1}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{position:'top',labels:{font:{size:10},padding:10}},
+        tooltip:{callbacks:{
+          label:c=>`${c.dataset.label}: ${Number(c.parsed.y).toFixed(1)}%`,
+          afterBody:items=>{const i=items[0].dataIndex;return[`Gap: ${gapD[i]>0?'+':''}${gapD[i].toFixed(1)}pp`];}
+        }}
+      },
+      scales:{
+        x:{grid:{color:'#eaecef'},ticks:{font:{size:9},maxRotation:45}},
+        y:{grid:{color:'#eaecef'},ticks:{callback:v=>v+'%',font:{size:10}}}
+      }
+    }
+  });
+}
+
+function updateAlignChart(){
+  if(!alignCh) return;
+  const cases  = getCases(currentFilter);
+  const total  = cases.reduce((a,b)=>a+b,0);
+  const hc     = getHC();
+  const TOTAL_HC = hc.reduce((a,b)=>a+b,0)||TOTAL_HC_BASE;
+  const demPct = reorder(cases.map(v=>v/total*100));
+  const supPct = reorder(hc.map(v=>v/TOTAL_HC*100));
+  const gapD   = demPct.map((v,i)=>supPct[i]-v);
+  alignCh.data.datasets[0].data = demPct;
+  alignCh.data.datasets[0].backgroundColor = gapD.map(g=>g<-5?'rgba(207,34,46,0.85)':g<-0.5?'rgba(207,34,46,0.45)':'rgba(9,105,218,0.4)');
+  alignCh.data.datasets[1].data = supPct;
+  alignCh.update();
+}
+
+// ── CHART: PRESSURE ───────────────────────────────────────────
+function buildPressure(){
+  const ctx = document.getElementById('pressureChart').getContext('2d');
+  const cases = getCases(currentFilter);
+  const hc    = getHC();
+  const pres  = reorder(hc.map((h,i)=>h>0?+(cases[i]/WEEKDAYS/h).toFixed(2):0));
+
+  pressureCh = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:reorder(IST),
+      datasets:[{
+        label:'Cases/Engineer (Pressure)',
+        data:pres,
+        backgroundColor:pres.map(v=>v>0.7?'rgba(207,34,46,0.85)':v>0.35?'rgba(188,76,0,0.7)':'rgba(26,127,55,0.55)'),
+        borderWidth:0
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.parsed.y.toFixed(2)} cases/engineer`}}},
+      scales:{
+        x:{grid:{color:'#eaecef'},ticks:{font:{size:9},maxRotation:45}},
+        y:{grid:{color:'#eaecef'},ticks:{font:{size:10}},title:{display:true,text:'Cases / HC',font:{size:10}}}
+      }
+    }
+  });
+}
+
+function updatePressureChart(){
+  if(!pressureCh) return;
+  const cases = getCases(currentFilter);
+  const hc    = getHC();
+  const pres  = reorder(hc.map((h,i)=>h>0?+(cases[i]/WEEKDAYS/h).toFixed(2):0));
+  pressureCh.data.datasets[0].data = pres;
+  pressureCh.data.datasets[0].backgroundColor = pres.map(v=>v>0.7?'rgba(207,34,46,0.85)':v>0.35?'rgba(188,76,0,0.7)':'rgba(26,127,55,0.55)');
+  pressureCh.update();
+}
+
+// ── CHART: ORIGIN DONUT ───────────────────────────────────────
+function buildOrigin(){
+  const ctx = document.getElementById('originChart').getContext('2d');
+  new Chart(ctx,{
+    type:'doughnut',
+    data:{
+      labels:origins.map(o=>o.label),
+      datasets:[{
+        data:origins.map(o=>o.n),
+        backgroundColor:['#0284c7','#7c3aed','#d97706','#16a34a','#dc2626','#94a3b8','#cbd5e1'],
+        borderWidth:2,borderColor:'#fff'
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'right',labels:{font:{size:10},padding:8,boxWidth:10}},
+        tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed.toLocaleString()} (${(c.parsed/origins.reduce((a,o)=>a+o.n,0)*100).toFixed(1)}%)`}}
+      }
+    }
+  });
+}
+
+// ── CHART: CHAT ───────────────────────────────────────────────
+function buildChat(){
+  const ctx = document.getElementById('chatChart').getContext('2d');
+  chatCh = new Chart(ctx,{
+    data:{
+      labels:reorder(IST),
+      datasets:[
+        {type:'bar',label:'Industry Chat',data:reorder(indChat).map(v=>+(v/WEEKDAYS).toFixed(1)),backgroundColor:'rgba(2,132,199,0.6)',borderWidth:0,stack:'chat'},
+        {type:'bar',label:'Revenue Chat', data:reorder(revChat).map(v=>+(v/WEEKDAYS).toFixed(1)),backgroundColor:'rgba(217,119,6,0.6)', borderWidth:0,stack:'chat'},
+        {type:'line',label:'Chat % of total',
+          data:reorder(indChat.map((v,i)=>{const tot=indCases[i]+revCases[i];return tot>0?+((v+revChat[i])/tot*100).toFixed(1):0;})),
+          borderColor:'#7c3aed',backgroundColor:'rgba(124,58,237,0.08)',borderWidth:2,pointRadius:2,fill:false,tension:0.35,yAxisID:'y2'
+        }
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{position:'top',labels:{font:{size:10},padding:10}}},
+      scales:{
+        x:{stacked:true,grid:{color:'#eaecef'},ticks:{font:{size:9},maxRotation:45}},
+        y:{stacked:true,grid:{color:'#eaecef'},ticks:{font:{size:10}},title:{display:true,text:'Chat cases / weekday',font:{size:10}}},
+        y2:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>v+'%',font:{size:10}},title:{display:true,text:'Chat %',font:{size:10}}}
+      }
+    }
+  });
+}
+
+function updateChatChart(){
+  if(!chatCh) return;
+  const chat = getChat(currentFilter);
+  const cases = getCases(currentFilter);
+  chatCh.data.datasets[0].hidden = currentFilter==='rev';
+  chatCh.data.datasets[1].hidden = currentFilter==='ind';
+  chatCh.data.datasets[2].data   = reorder(cases.map((v,i)=>v>0?+((indChat[i]+revChat[i])/v*100).toFixed(1):0));
+  chatCh.update();
+}
+
+// ── HEATMAP GRID ─────────────────────────────────────────────
+function buildHmap(){
+  const grid = document.getElementById('hmapGrid');
+  grid.innerHTML='';
+  const dLabels = reorder(IST);
+
+  // header
+  const blank=document.createElement('div');blank.className='hm-head';blank.textContent='Shift';grid.appendChild(blank);
+  dLabels.forEach(l=>{const d=document.createElement('div');d.className='hm-head';d.textContent=l.replace(':30','').replace(' AM','a').replace(' PM','p');grid.appendChild(d);});
+
+  const sh = getShiftHC();
+  // Last active hour (IST index 0-23) for each shift — cool-off applied here
+  // PST excluded (no shift overlap when PST ends)
+  function lastActiveHour(arr){
+    let last=-1;
+    for(let i=0;i<24;i++) if(arr[i]>0) last=i;
+    return last;
+  }
+  const cooloffHour={
+    APAC:  lastActiveHour(sh.APAC),
+    IST:   lastActiveHour(sh.IST),
+    EMEA:  lastActiveHour(sh.EMEA),
+    EST:   lastActiveHour(sh.EST),
+    PST:   -1,  // no cool-off for PST
+  };
+  const cooloffCls={ APAC:'cooloff-apac', IST:'cooloff-india', EMEA:'cooloff-emea', EST:'cooloff-est', PST:null };
+
+  const shiftDefs=[
+    {name:'APAC',    cls:'apac',  arr:sh.APAC,  key:'APAC'},
+    {name:'India',   cls:'india', arr:sh.IST,   key:'IST'},
+    {name:'EMEA',    cls:'emea',  arr:sh.EMEA,  key:'EMEA'},
+    {name:'AMER-EST',cls:'est',   arr:sh.EST,   key:'EST'},
+    {name:'AMER-PST',cls:'pst',   arr:sh.PST,   key:'PST'},
+  ];
+  shiftDefs.forEach(s=>{
+    const lbl=document.createElement('div');lbl.className='hm-lbl';lbl.textContent=s.name;grid.appendChild(lbl);
+    dispOrder.forEach(h=>{
+      const v=s.arr[h];
+      const d=document.createElement('div');
+      const active=[sh.APAC,sh.IST,sh.EMEA,sh.EST,sh.PST].filter(a=>a[h]>0).length;
+      const isCooloff = v>0 && h===cooloffHour[s.key] && cooloffCls[s.key];
+      d.className='hm-cell'+(v>0?' '+(isCooloff ? cooloffCls[s.key] : active>=3?'multi':s.cls):'');
+      d.textContent=v>0?v:'';
+      d.title = isCooloff ? '30-min cool-off (last hour of shift)' : '';
+      grid.appendChild(d);
+    });
+  });
+}
+
+// ── TABLE ────────────────────────────────────────────────────
+function buildTable(){
+  const tbody=document.getElementById('tbody');
+  tbody.innerHTML='';
+  const cases = getCases(currentFilter);
+  const chat  = getChat(currentFilter);
+  const total = cases.reduce((a,b)=>a+b,0);
+  const hcArr = getHC();
+  const TOTAL_HC = hcArr.reduce((a,b)=>a+b,0)||TOTAL_HC_BASE;
+  const sh = getShiftHC();
+
+  dispOrder.forEach((h,di)=>{
+    const dem      = cases[h]/total*100;
+    const sup      = hcArr[h]/TOTAL_HC*100;
+    const casesDay = (cases[h]/WEEKDAYS).toFixed(1);
+    const chatDay  = (chat[h]/WEEKDAYS).toFixed(1);
+    const chatPct  = cases[h]>0?(chat[h]/cases[h]*100).toFixed(0)+'%':'—';
+    const rawTotal = (indCases[h] + revCases[h]).toLocaleString();
+
+    const actShifts=[];
+    if(sh.APAC[h]>0) actShifts.push('APAC');
+    if(sh.IST[h]>0)  actShifts.push('India');
+    if(sh.EMEA[h]>0) actShifts.push('EMEA');
+    if(sh.EST[h]>0)  actShifts.push('EST');
+    if(sh.PST[h]>0)  actShifts.push('PST');
+
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><strong>${IST[h]}</strong></td>
+      <td>${PDT[h]}</td>
+      <td style="font-size:10px;color:var(--muted)">${actShifts.join(' · ')}</td>
+      <td><strong>${casesDay}</strong></td>
+      <td style="color:#7c3aed">${chatDay}</td>
+      <td style="font-size:11px">${chatPct}</td>
+      <td style="font-weight:700;color:#0550ae">${rawTotal}</td>
+      <td>${dem.toFixed(1)}%</td>
+      <td><input class="hc-input" value="${hcArr[h]}" data-hr="${h}" type="number" min="0"></td>
+      <td>${sup.toFixed(1)}%</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function recalcTable(){
+  updateAlignChart();
+  updatePressureChart();
+  buildTable();
+  updateKPIs();
+}
+
+// ── INIT ─────────────────────────────────────────────────────
+buildAll();
+</script>
+</body>
+</html>
