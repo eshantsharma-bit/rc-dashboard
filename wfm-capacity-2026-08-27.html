@@ -288,6 +288,13 @@ tr.mod td{background:#f8fdf9;}
     <span style="color:#16a34a;font-weight:700;">Green / positive</span> = shifts have processed more than the inflow arriving this hour — capacity is ahead.
     <span style="color:#dc2626;font-weight:700;">Red / negative</span> = inflow is outpacing what active shifts can absorb — cases are queuing.
     A shift showing <strong>—</strong> has not started yet at that hour.
+    <br><br>
+    <strong>Example at 9:30 AM IST</strong> — two shifts active:<br>
+    &nbsp;&nbsp;· APAC (21 HC, 4 hrs in): 21 × 1.7 × (4÷9) = <strong>15.9</strong><br>
+    &nbsp;&nbsp;· India (43 HC, 1 hr in): 43 × 1.7 × (1÷9) = <strong>8.1</strong><br>
+    &nbsp;&nbsp;· Total consumed = <strong>24.0</strong> &nbsp;|&nbsp; Cases/Day arriving at 9:30 AM = <strong>5.1</strong><br>
+    &nbsp;&nbsp;· Consumed vs Inflow = 24.0 − 5.1 = <span style="color:#16a34a;font-weight:700;">+18.9</span> — shifts are comfortably ahead at this hour.<br>
+    Compare this to <strong>8:30 PM IST</strong> where 100.2 cases/day arrive but shifts have consumed far less — that's where the red appears.
   </div>
 
   <div class="tbl-wrap">
