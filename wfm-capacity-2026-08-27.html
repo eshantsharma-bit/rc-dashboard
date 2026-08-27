@@ -279,25 +279,22 @@ tr.mod td{background:#f8fdf9;}
           <th>Cases/Day <span id="th-scope">(Both)</span></th>
           <th>Chat/Day</th>
           <th>Chat %</th>
-          <th>Cumul. Inflow</th>
+          <th>Total Cases (44d)</th>
           <th>Demand %</th>
           <th>HC Available ✎</th>
           <th>Supply %</th>
-          <th>Gap (pp)</th>
           <th>APAC Cap.</th>
           <th>India Cap.</th>
           <th>EMEA Cap.</th>
           <th>EST Cap.</th>
           <th>PST Cap.</th>
           <th>Total Cap.</th>
-          <th>Pressure</th>
-          <th>Status</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
-  <p class="note">Cumul. Inflow = running average of new cases arrived per weekday from hr0 up to this hour (total ÷ 44 weekdays, cumulative). Capacity consumed columns = HC on-shift × hours elapsed in shift × 0.189 (daily target 1.7 cases/eng ÷ 9-hr shift) — this is capacity working toward the daily closure target, not actual closures. HC Available is editable; click "Recalculate" to model scenarios. Gap = Supply% − Demand%; Pressure = avg inflow cases/day ÷ HC.</p>
+  <p class="note">Total Cases (44d) = indCases[h] + revCases[h] — raw count across all 44 weekdays for that IST hour. Cases/Day = Total ÷ 44. Capacity consumed columns = HC on-shift × hours elapsed in shift × 0.189 (daily target 1.7 cases/eng ÷ 9-hr shift) — capacity working toward the daily target, not actual closures. HC Available is editable; click "Recalculate" to model scenarios.</p>
 </div>
 
 <!-- ── RECOMMENDATIONS ── -->
@@ -784,40 +781,28 @@ function buildTable(){
   const TOTAL_HC = hcArr.reduce((a,b)=>a+b,0)||TOTAL_HC_BASE;
   const sh = getShiftHC();
 
-  // Cumulative inflow tracking (running sum of avg cases/day from hr0)
-  let cumulInflow = 0;
-
   // Capacity consumed per shift (hours elapsed since shift start × HC × HOURLY_RATE)
   // Track hours each shift has been active so far as we walk dispOrder
   const shiftElapsed = { APAC:0, IST:0, EMEA:0, EST:0, PST:0 };
-  // Reset on each buildTable call
-  Object.keys(shiftElapsed).forEach(k=>shiftElapsed[k]=0);
 
   dispOrder.forEach((h,di)=>{
-    const dem  = cases[h]/total*100;
-    const sup  = hcArr[h]/TOTAL_HC*100;
-    const g    = sup-dem;
+    const dem     = cases[h]/total*100;
+    const sup     = hcArr[h]/TOTAL_HC*100;
     const casesDay = (cases[h]/WEEKDAYS).toFixed(1);
     const chatDay  = (chat[h]/WEEKDAYS).toFixed(1);
     const chatPct  = cases[h]>0?(chat[h]/cases[h]*100).toFixed(0)+'%':'—';
-    const pressure = hcArr[h]>0?(cases[h]/WEEKDAYS/hcArr[h]).toFixed(2):'—';
-
-    // Cumulative inflow: rolling avg cases/day up to and including this hour
-    cumulInflow += cases[h]/WEEKDAYS;
+    // Raw total cases across 44 weekdays for this hour (indCases + revCases)
+    const rawTotal = (indCases[h] + revCases[h]).toLocaleString();
 
     // Per-shift capacity consumed toward daily target
-    // Increment elapsed hours for each shift that is active this hour, then compute
-    const shiftNames = ['APAC','IST','EMEA','EST','PST'];
+    const shiftNames  = ['APAC','IST','EMEA','EST','PST'];
     const shiftArrays = [sh.APAC,sh.IST,sh.EMEA,sh.EST,sh.PST];
-    shiftNames.forEach((nm,si)=>{
-      if(shiftArrays[si][h]>0) shiftElapsed[nm]++;
-    });
-    // capacity consumed = HC × hours_elapsed_in_shift × HOURLY_RATE
-    const capAPAC = (sh.APAC[h]>0 ? sh.APAC[h]*shiftElapsed.APAC*HOURLY_RATE : 0);
-    const capIST  = (sh.IST[h]>0  ? sh.IST[h] *shiftElapsed.IST *HOURLY_RATE : 0);
-    const capEMEA = (sh.EMEA[h]>0 ? sh.EMEA[h]*shiftElapsed.EMEA*HOURLY_RATE : 0);
-    const capEST  = (sh.EST[h]>0  ? sh.EST[h] *shiftElapsed.EST *HOURLY_RATE : 0);
-    const capPST  = (sh.PST[h]>0  ? sh.PST[h] *shiftElapsed.PST *HOURLY_RATE : 0);
+    shiftNames.forEach((nm,si)=>{ if(shiftArrays[si][h]>0) shiftElapsed[nm]++; });
+    const capAPAC = sh.APAC[h]>0 ? sh.APAC[h]*shiftElapsed.APAC*HOURLY_RATE : 0;
+    const capIST  = sh.IST[h]>0  ? sh.IST[h] *shiftElapsed.IST *HOURLY_RATE : 0;
+    const capEMEA = sh.EMEA[h]>0 ? sh.EMEA[h]*shiftElapsed.EMEA*HOURLY_RATE : 0;
+    const capEST  = sh.EST[h]>0  ? sh.EST[h] *shiftElapsed.EST *HOURLY_RATE : 0;
+    const capPST  = sh.PST[h]>0  ? sh.PST[h] *shiftElapsed.PST *HOURLY_RATE : 0;
     const capTot  = capAPAC+capIST+capEMEA+capEST+capPST;
 
     const actShifts=[];
@@ -827,19 +812,9 @@ function buildTable(){
     if(sh.EST[h]>0)  actShifts.push('EST');
     if(sh.PST[h]>0)  actShifts.push('PST');
 
-    let rowCls='',pill='',gapCls='muted';
-    if(g<-5){rowCls='crit';pill=`<span class="pill p-crit">Critical −</span>`;gapCls='neg-big';}
-    else if(g<-0.5){rowCls='under';pill=`<span class="pill p-under">Understaffed</span>`;gapCls='neg';}
-    else if(g>3){rowCls='over';pill=`<span class="pill p-over">Overstaffed</span>`;gapCls='pos';}
-    else if(g>1){rowCls='mod';pill=`<span class="pill p-mod">Moderate +</span>`;gapCls='pos';}
-    else{pill=`<span class="pill p-bal">Balanced</span>`;}
-
-    const prCls = pressure!=='—'?(+pressure>0.7?'neg-big':+pressure>0.35?'neg':'pos'):'muted';
-
     const fmtCap = v => v>0 ? v.toFixed(1) : '—';
 
     const tr=document.createElement('tr');
-    tr.className=rowCls;
     tr.innerHTML=`
       <td><strong>${IST[h]}</strong></td>
       <td>${PDT[h]}</td>
@@ -847,19 +822,16 @@ function buildTable(){
       <td><strong>${casesDay}</strong></td>
       <td style="color:#7c3aed">${chatDay}</td>
       <td style="font-size:11px">${chatPct}</td>
-      <td style="font-weight:700;color:#0550ae">${cumulInflow.toFixed(1)}</td>
+      <td style="font-weight:700;color:#0550ae">${rawTotal}</td>
       <td>${dem.toFixed(1)}%</td>
       <td><input class="hc-input" value="${hcArr[h]}" data-hr="${h}" type="number" min="0"></td>
       <td>${sup.toFixed(1)}%</td>
-      <td class="${gapCls}">${g>0?'+':''}${g.toFixed(1)}pp</td>
       <td style="font-size:11px;color:#0369a1">${fmtCap(capAPAC)}</td>
       <td style="font-size:11px;color:#5b21b6">${fmtCap(capIST)}</td>
       <td style="font-size:11px;color:#92400e">${fmtCap(capEMEA)}</td>
       <td style="font-size:11px;color:#166534">${fmtCap(capEST)}</td>
       <td style="font-size:11px;color:#991b1b">${fmtCap(capPST)}</td>
       <td style="font-weight:700;color:#1e293b">${fmtCap(capTot)}</td>
-      <td class="${prCls}">${pressure}</td>
-      <td>${pill}</td>
     `;
     tbody.appendChild(tr);
   });
