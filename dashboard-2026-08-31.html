@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RC Monthly · August 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f6f8fa;--surface:#ffffff;--border:#d0d7de;--text:#1f2328;--muted:#656d76;
+--accent:#0969da;--green:#1a7f37;--red:#cf222e;--yellow:#9a6700;--orange:#bc4c00;
+--emea:#8250df;--india:#e16f42;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;padding:16px 20px;}
+h1{font-size:20px;font-weight:700;letter-spacing:-.3px;}
+h2{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;}
+h3{font-size:13px;font-weight:600;margin-bottom:8px;}
+.meta{color:var(--muted);font-size:12px;margin-top:3px;}
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--border);}
+.badges{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;}
+.badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-red{background:#ffebe9;color:#cf222e;border:1px solid #ffcecb;}
+.badge-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb;}
+.badge-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845;}
+.badge-blue{background:#ddf4ff;color:#0969da;border:1px solid #80ccff;}
+.badge-purple{background:#fbefff;color:#8250df;border:1px solid #d8b4fe;}
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px;}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+.kpi.alert{border-color:#ffcecb;background:#ffebe9;}
+.kpi.warn{border-color:#f5d845;background:#fff8c5;}
+.kpi.good{border-color:#aceebb;background:#dafbe1;}
+.kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.kpi-val{font-size:24px;font-weight:700;line-height:1.1;}
+.kpi-delta{font-size:11px;margin-top:3px;}
+.up{color:var(--red);}
+.dn{color:var(--green);}
+.neu{color:var(--muted);}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:14px;}
+.card.red-border{border-color:#ffcecb;}
+.card.orange-border{border-color:#ffc896;}
+.card.green-border{border-color:#aceebb;}
+.card.yellow-border{border-color:#f5d845;}
+.card.purple-border{border-color:#d8b4fe;}
+.data-table{width:100%;border-collapse:collapse;font-size:12px;}
+.data-table th{background:#f6f8fa;color:var(--muted);font-weight:600;padding:6px 8px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border);}
+.data-table td{padding:5px 8px;border-bottom:1px solid #eaeef2;vertical-align:top;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr:hover td{background:#f6f8fa;}
+.tw-col{background:#ddf4ff!important;}
+.highlight-row td{background:#ddf4ff!important;font-weight:600;}
+.pill{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600;}
+.pill-red{background:#ffebe9;color:#cf222e;}
+.pill-orange{background:#fff1e5;color:#bc4c00;}
+.pill-yellow{background:#fff8c5;color:#9a6700;}
+.pill-green{background:#dafbe1;color:#1a7f37;}
+.pill-blue{background:#ddf4ff;color:#0969da;}
+.pill-muted{background:#f6f8fa;color:#656d76;border:1px solid #d0d7de;}
+.pill-purple{background:#fbefff;color:#8250df;}
+.insight{border-radius:6px;padding:10px 12px;margin-bottom:8px;border-left:3px solid;}
+.insight.red{border-color:#cf222e;background:#ffebe9;}
+.insight.green{border-color:#1a7f37;background:#dafbe1;}
+.insight.yellow{border-color:#9a6700;background:#fff8c5;}
+.insight.blue{border-color:#0969da;background:#ddf4ff;}
+.insight.orange{border-color:#bc4c00;background:#fff1e5;}
+.insight.purple{border-color:#8250df;background:#fbefff;}
+.insight strong{display:block;font-size:12px;margin-bottom:3px;}
+.insight span{font-size:11px;color:var(--muted);line-height:1.5;}
+.section-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+.pct-bar-wrap{height:8px;border-radius:4px;overflow:hidden;background:#d0d7de;margin:3px 0;}
+.pct-emea{height:100%;background:var(--emea);float:left;}
+.pct-india{height:100%;background:var(--india);}
+.big-num{font-size:28px;font-weight:700;line-height:1;}
+.good-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;}
+.good-cell{background:#dafbe1;border-radius:5px;padding:7px 10px;text-align:center;}
+.good-cell .val{font-size:16px;font-weight:700;color:var(--green);}
+.good-cell .lbl{font-size:10px;color:var(--muted);margin-top:2px;}
+footer{text-align:center;color:var(--muted);font-size:11px;margin-top:24px;padding-top:12px;border-top:1px solid var(--border);}
+canvas{max-width:100%;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>⚡ Revenue Cloud · Monthly Executive Dashboard · August 2026</h1>
+    <div class="meta">EMEA + India · Manager scope · Source: OrgCS live query · 4-Month Trend: May → Jun → Jul → Aug · Generated: Sep 2, 2026</div>
+    <div class="badges">
+      <span class="badge badge-green">✅ S1 at 4-month low — 120 · EMEA/India parity (60/60) for the first time</span>
+      <span class="badge badge-green">⭐ CSAT 4.84 — best month of the period</span>
+      <span class="badge badge-blue">📉 Inflow 1,127 — 4-month low · post-June normalisation</span>
+      <span class="badge badge-red">⚠️ 15 no-path cases · RIEDEL ×2 Red Acct · no GUS</span>
+      <span class="badge badge-purple">🔬 RCA share 70.6% — 4-month high · Dev Support P2O +55% MoM</span>
+    </div>
+  </div>
+</div>
+
+<!-- KPI ROW -->
+<div class="kpi-row">
+  <div class="kpi good">
+    <div class="kpi-label">Aug Inflow</div>
+    <div class="kpi-val">1,127</div>
+    <div class="kpi-delta dn">▼ −74 vs Jul (−6.2%) · 4-month low</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">S1 Critical</div>
+    <div class="kpi-val" style="color:var(--green);">120</div>
+    <div class="kpi-delta dn">▼ −29 vs Jul (−19.5%) · EMEA/India 60/60</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">S2 Urgent</div>
+    <div class="kpi-val">500</div>
+    <div class="kpi-delta neu">▼ −22 vs Jul · stable</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">CSAT (Aug)</div>
+    <div class="kpi-val" style="color:var(--green);">4.84</div>
+    <div class="kpi-delta dn">▲ best 4-month · n=86 · 1 low score</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Open Backlog</div>
+    <div class="kpi-val">281</div>
+    <div class="kpi-delta neu">EMEA 163 / India 118 · live snapshot</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Aged &gt;15d</div>
+    <div class="kpi-val">39</div>
+    <div class="kpi-delta neu">EMEA 23 (14.1%) · India 16 (13.6%)</div>
+  </div>
+</div>
+
+<!-- EXEC SUMMARY PANELS -->
+<div class="card">
+  <div class="section-label">Executive Summary — August 2026 · 4-Month Context</div>
+  <div class="grid-2" style="gap:8px;margin-bottom:10px;">
+    <div class="insight blue">
+      <strong>1. Inflow 1,127 — 4-month low · post-June surge fully absorbed</strong>
+      <span>August inflow of 1,127 is the lowest of the May–August window, down 6.2% MoM and 16.6% below the June peak of 1,351. The team has absorbed the surge and held throughput — total open backlog at 281 and aged at 39 are essentially flat vs the Jul 19–25 anchor (38 aged, 246 total). RCA is now 70.6% of all inflow — the highest share in the 4-month period — while Legacy CPQ dropped to a 4-month low at 24.5%.</span>
+    </div>
+    <div class="insight green">
+      <strong>2. S1 Critical — 120 in August, down 19.5% MoM · EMEA/India parity first time</strong>
+      <span>S1 inflow peaked in June at 174 and has declined each month since (149 Jul → 120 Aug). For the first time in 4 months, EMEA and India are at exact parity: 60 S1 cases each in August. India S1 dropped sharply from its June peak of 99 (−39, −39%). Only 1 open S1 is aged >14 days (LabCorp, GUS filed W-23861712). This is the strongest critical-case position in the tracked window.</span>
+    </div>
+    <div class="insight yellow">
+      <strong>3. 15 no-path cases · RIEDEL ×2 Red Accounts require immediate GUS filing</strong>
+      <span>39 total open cases are aged >15d. Of these, 15 are no-path (Working status, no GUS, no Bug) — the highest priority for the team this week. Seamus Redmond holds 7, Manu Ramamurthy 5, Eshant Sharma 3. Two RIEDEL Communications cases (474399536, 474399637 — both S2, Red Account, RCA, 15.1 days) have no GUS filed and are the most urgent. Bug filing rate dropped to a 4-month low in August at 2.2% despite RCA volume being at its highest share — potential product defect under-reporting.</span>
+    </div>
+    <div class="insight green">
+      <strong>4. CSAT 4.84 · 87.2% Very Satisfied · 1 low score (RWS Unified, Score=1)</strong>
+      <span>August CSAT of 4.84 is the strongest of the 4-month window (May 4.81 → Jun 4.81 → Jul 4.79 → Aug 4.84). 75 of 86 responses scored 5 (Very Satisfied). One Score-1 response from RWS Unified (474253515, Seamus Redmond): "Manage escalations more appropriately. It took 2 weeks to begin escalating a very urgent problem." Escalation-delay signal — case-level review recommended. RCA CSAT (4.91) is notably above Legacy CPQ (4.53).</span>
+    </div>
+  </div>
+  <div class="good-strip">
+    <div class="good-cell"><div class="val">120</div><div class="lbl">S1 — 4-month low ↓↓</div></div>
+    <div class="good-cell"><div class="val">4.84</div><div class="lbl">CSAT — best of period ⭐</div></div>
+    <div class="good-cell"><div class="val">1,127</div><div class="lbl">Inflow — post-surge low</div></div>
+    <div class="good-cell"><div class="val">70.6%</div><div class="lbl">RCA share — 4-month high</div></div>
+  </div>
+</div>
+
+<!-- 4-MONTH METRICS TABLE -->
+<div class="card">
+  <div class="section-label">Key Metrics — 4-Month Comparison (May → Jun → Jul → Aug)</div>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>KPI</th>
+        <th>May 2026</th>
+        <th>Jun 2026</th>
+        <th>Jul 2026</th>
+        <th class="tw-col">★ Aug 2026</th>
+        <th>Jul→Aug Δ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Total Inflow</strong></td>
+        <td>1,121</td>
+        <td style="color:var(--red);">1,351 ↑↑ peak</td>
+        <td>1,201</td>
+        <td class="tw-col"><strong>1,127</strong></td>
+        <td class="dn">−74 (−6.2%)</td>
+      </tr>
+      <tr>
+        <td><strong>S1 Critical</strong></td>
+        <td>158</td>
+        <td style="color:var(--red);">174 ↑ peak</td>
+        <td>149</td>
+        <td class="tw-col"><strong style="color:var(--green);">120 ↓↓</strong></td>
+        <td class="dn">−29 (−19.5%)</td>
+      </tr>
+      <tr>
+        <td style="padding-left:16px;color:var(--emea);">↳ EMEA S1</td>
+        <td style="color:var(--emea);">68</td>
+        <td style="color:var(--emea);">75</td>
+        <td style="color:var(--emea);">78 ↑ peak</td>
+        <td class="tw-col" style="color:var(--emea);"><strong>60 ↓</strong></td>
+        <td class="dn">−18</td>
+      </tr>
+      <tr>
+        <td style="padding-left:16px;color:var(--india);">↳ India S1</td>
+        <td style="color:var(--india);">90</td>
+        <td style="color:var(--red);">99 ↑↑ peak</td>
+        <td style="color:var(--india);">71</td>
+        <td class="tw-col" style="color:var(--india);"><strong>60 ↓</strong></td>
+        <td class="dn">−11 (−15.5%)</td>
+      </tr>
+      <tr>
+        <td><strong>S2 Urgent</strong></td>
+        <td>468</td>
+        <td style="color:var(--red);">611 ↑↑</td>
+        <td>522</td>
+        <td class="tw-col"><strong>500</strong></td>
+        <td class="dn">−22 (−4.2%)</td>
+      </tr>
+      <tr style="background:rgba(88,166,255,.04);">
+        <td>RCA share</td>
+        <td>64.3% · 721</td>
+        <td>64.5% · 871</td>
+        <td>65.5% · 787</td>
+        <td class="tw-col"><strong style="color:var(--accent);">70.6% · 796 ↑↑</strong></td>
+        <td class="up">+5.1pp</td>
+      </tr>
+      <tr>
+        <td>Legacy CPQ share</td>
+        <td>30.4% · 341</td>
+        <td>29.8% · 403</td>
+        <td>29.1% · 349</td>
+        <td class="tw-col"><strong>24.5% · 276 ↓↓</strong></td>
+        <td class="dn">−4.6pp</td>
+      </tr>
+      <tr>
+        <td>Billing share</td>
+        <td>2.7% · 30</td>
+        <td>3.0% · 41</td>
+        <td>2.4% · 29</td>
+        <td class="tw-col">2.8% · 32</td>
+        <td class="neu">+0.4pp</td>
+      </tr>
+      <tr>
+        <td style="color:var(--emea);"><strong>EMEA Cases</strong></td>
+        <td style="color:var(--emea);">720 (64.2%)</td>
+        <td style="color:var(--emea);">854 (63.2%)</td>
+        <td style="color:var(--emea);">819 (68.2%)</td>
+        <td class="tw-col" style="color:var(--emea);"><strong>763 (67.7%)</strong></td>
+        <td class="dn">−56</td>
+      </tr>
+      <tr>
+        <td style="color:var(--india);"><strong>India Cases</strong></td>
+        <td style="color:var(--india);">401 (35.8%)</td>
+        <td style="color:var(--india);">497 (36.8%)</td>
+        <td style="color:var(--india);">382 (31.8%)</td>
+        <td class="tw-col" style="color:var(--india);"><strong>364 (32.3%)</strong></td>
+        <td class="dn">−18</td>
+      </tr>
+      <tr style="background:rgba(63,185,80,.03);">
+        <td><strong>CSAT</strong></td>
+        <td style="color:var(--green);">4.81 (n=89)</td>
+        <td style="color:var(--green);">4.81 (n=106)</td>
+        <td style="color:var(--yellow);">4.79 (n=105)</td>
+        <td class="tw-col"><strong style="color:var(--green);">4.84 (n=86) ★</strong></td>
+        <td class="dn">+0.05</td>
+      </tr>
+      <tr>
+        <td>GUS Filed</td>
+        <td>65 (5.8%)</td>
+        <td>60 (4.4%)</td>
+        <td>52 (4.3%)</td>
+        <td class="tw-col">62 (5.5%)</td>
+        <td class="dn">+10</td>
+      </tr>
+      <tr>
+        <td>Bug Filed</td>
+        <td>60 (5.4%)</td>
+        <td>41 (3.0%)</td>
+        <td>38 (3.2%)</td>
+        <td class="tw-col" style="color:var(--red);">25 (2.2%) ↓↓</td>
+        <td class="up">−13 (−34%)</td>
+      </tr>
+      <tr style="background:rgba(63,185,80,.03);">
+        <td><strong>Aged &gt;15d (live)</strong></td>
+        <td>—</td>
+        <td>—</td>
+        <td>38 (anchor)</td>
+        <td class="tw-col"><strong>39</strong></td>
+        <td class="neu">+1 → flat</td>
+      </tr>
+      <tr>
+        <td><strong>Open Backlog (live)</strong></td>
+        <td>—</td>
+        <td>—</td>
+        <td>246 (anchor)</td>
+        <td class="tw-col"><strong>281</strong></td>
+        <td class="up">+35</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CHARTS ROW -->
+<div class="grid-3">
+  <div class="card" style="margin-bottom:0;">
+    <h3>📈 Monthly Inflow Trend — May to Aug</h3>
+    <canvas id="inflowChart" height="170"></canvas>
+    <div style="margin-top:8px;font-size:11px;color:var(--muted);">
+      <span style="color:var(--emea);">■</span> EMEA &nbsp;
+      <span style="color:var(--india);">■</span> India
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:0;">
+    <h3>⭐ CSAT Monthly Trend</h3>
+    <canvas id="csatChart" height="170"></canvas>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
+      <div style="background:#dafbe1;border-radius:5px;padding:6px 8px;text-align:center;">
+        <div style="font-size:18px;font-weight:700;color:var(--green);">4.84</div>
+        <div style="font-size:10px;color:var(--muted);">Aug avg (n=86)</div>
+      </div>
+      <div style="background:#dafbe1;border-radius:5px;padding:6px 8px;text-align:center;">
+        <div style="font-size:18px;font-weight:700;color:var(--green);">1</div>
+        <div style="font-size:10px;color:var(--muted);">Low score (&lt;3)</div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:0;">
+    <h3>📦 P&amp;T Mix — Aug 2026</h3>
+    <canvas id="ptDonutChart" height="170"></canvas>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-top:8px;font-size:10px;">
+      <div style="text-align:center;padding:4px;background:#ddf4ff;border-radius:4px;"><span style="color:var(--accent);font-weight:700;">RCA</span><br>70.6% · 796</div>
+      <div style="text-align:center;padding:4px;background:#fbefff;border-radius:4px;"><span style="color:var(--emea);font-weight:700;">Legacy CPQ</span><br>24.5% · 276</div>
+      <div style="text-align:center;padding:4px;background:#fff1e5;border-radius:4px;"><span style="color:var(--orange);font-weight:700;">Billing</span><br>2.8% · 32</div>
+    </div>
+  </div>
+</div>
+
+<!-- S1 TREND + REGION SPLIT -->
+<div class="grid-2">
+  <div class="card">
+    <div class="section-label">S1 Critical Trend by Region — 4 Months</div>
+    <canvas id="sev1Chart" height="155"></canvas>
+    <table class="data-table" style="margin-top:10px;">
+      <thead><tr><th>Month</th><th>Total S1</th><th style="color:var(--emea);">EMEA S1</th><th style="color:var(--india);">India S1</th></tr></thead>
+      <tbody>
+        <tr><td>May 2026</td><td>158</td><td style="color:var(--emea);">68</td><td style="color:var(--india);">90</td></tr>
+        <tr><td>Jun 2026</td><td style="color:var(--red);">174 ↑ peak</td><td style="color:var(--emea);">75</td><td style="color:var(--red);">99 ↑↑ peak</td></tr>
+        <tr><td>Jul 2026</td><td style="color:var(--yellow);">149</td><td style="color:var(--emea);">78 ↑ EMEA peak</td><td style="color:var(--green);">71 ▼</td></tr>
+        <tr class="highlight-row"><td>★ Aug 2026</td><td style="color:var(--green);">120 ↓↓</td><td style="color:var(--green);">60 ▼</td><td style="color:var(--green);">60 ▼▼</td></tr>
+      </tbody>
+    </table>
+    <div class="insight green" style="margin-top:8px;">
+      <strong>EMEA/India S1 parity at 60/60 — first time in 4 months · India down 39% from June peak</strong>
+      <span>India S1 peaked at 99 in June and has dropped to 60 in August (−39.4% from peak). EMEA S1 peaked at 78 in July and dropped to 60 (−23.1%). Both regions converging at parity — positive structural signal. September will confirm if this is a lasting shift or a seasonal dip.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Inflow by Region — 4-Month Share</div>
+    <canvas id="geoChart" height="155"></canvas>
+    <table class="data-table" style="margin-top:10px;">
+      <thead><tr><th>Month</th><th>EMEA</th><th>India</th><th>EMEA%</th><th>India%</th></tr></thead>
+      <tbody>
+        <tr><td>May</td><td style="color:var(--emea);">720</td><td style="color:var(--india);">401</td><td>64.2%</td><td>35.8%</td></tr>
+        <tr><td>Jun</td><td style="color:var(--emea);">854</td><td style="color:var(--india);">497</td><td>63.2%</td><td>36.8%</td></tr>
+        <tr><td>Jul</td><td style="color:var(--emea);">819</td><td style="color:var(--india);">382</td><td style="color:var(--emea);">68.2%</td><td>31.8%</td></tr>
+        <tr class="highlight-row"><td>★ Aug</td><td style="color:var(--emea);"><strong>763</strong></td><td style="color:var(--india);"><strong>364</strong></td><td style="color:var(--emea);"><strong>67.7%</strong></td><td><strong>32.3%</strong></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px;">
+        <span><span style="color:var(--emea);">■</span> EMEA 763 (67.7%)</span>
+        <span><span style="color:var(--india);">■</span> India 364 (32.3%)</span>
+      </div>
+      <div class="pct-bar-wrap">
+        <div class="pct-emea" style="width:67.7%;"></div>
+        <div class="pct-india" style="width:32.3%;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P&T TREND -->
+<div class="card">
+  <div class="section-label">P&amp;T 4-Month Trend + Aug P&amp;T × Severity</div>
+  <div class="grid-2" style="gap:10px;margin-bottom:0;">
+    <div>
+      <canvas id="ptTrendChart" height="155"></canvas>
+      <table class="data-table" style="margin-top:8px;">
+        <thead><tr><th>Group</th><th>May</th><th>Jun</th><th>Jul</th><th class="tw-col">Aug ★</th><th>Jul→Aug</th></tr></thead>
+        <tbody>
+          <tr><td>RCA</td><td>721</td><td>871</td><td>787</td><td class="tw-col"><strong style="color:var(--accent);">796</strong></td><td class="up">+9 (70.6% ↑↑)</td></tr>
+          <tr><td>Legacy CPQ</td><td>341</td><td>403</td><td>349</td><td class="tw-col"><strong>276</strong></td><td class="dn">−73 (−20.9% ↓↓)</td></tr>
+          <tr><td>Billing</td><td>30</td><td>41</td><td>29</td><td class="tw-col">32</td><td class="up">+3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="section-label" style="margin-top:4px;">Aug Inflow P&amp;T × Severity</div>
+      <table class="data-table">
+        <thead><tr><th>Group</th><th>Total</th><th>S1</th><th>S2</th><th>S3</th><th>S4</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill pill-blue">RCA</span></td><td>796</td><td style="color:var(--red);">85</td><td>362</td><td>157</td><td>192</td></tr>
+          <tr><td><span class="pill pill-purple">Legacy CPQ</span></td><td>276</td><td style="color:var(--red);">29</td><td>111</td><td>31</td><td>105</td></tr>
+          <tr><td><span class="pill pill-orange">Billing</span></td><td>32</td><td>5</td><td>18</td><td>6</td><td>3</td></tr>
+          <tr style="background:#f6f8fa;font-weight:600;"><td>Total</td><td>1,127</td><td style="color:var(--red);">120</td><td>500</td><td>195</td><td>312</td></tr>
+        </tbody>
+      </table>
+      <div class="insight orange" style="margin-top:8px;">
+        <strong>Bug filing rate at 4-month low (2.2%) despite RCA being at highest share</strong>
+        <span>August: 25 bugs filed (2.2% rate) vs May's 60 (5.4%). RCA volume held at 796 cases while bugs dropped to near-zero relative rate. Likely under-representation of product defects. Managers should review RCA cases for candidates — particularly Product Configurator, Dev Support P2O, and Billing &amp; Invoicing sub-topics where volume grew.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RCA SUB-TOPIC DEEP DIVE -->
+<div class="card red-border">
+  <div class="section-label" style="color:var(--red);border-color:rgba(207,34,46,.3);">🔬 RCA Sub-Topic Deep Dive — Aug vs Jul 2026</div>
+  <div class="grid-2" style="gap:10px;margin-bottom:0;">
+    <div>
+      <table class="data-table">
+        <thead><tr><th>Sub-Topic</th><th class="tw-col">Aug ★</th><th>Jul</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr><td>Product Configurator</td><td class="tw-col"><strong>275</strong></td><td>277</td><td class="neu">−2 →</td></tr>
+          <tr><td>Transaction Management</td><td class="tw-col">168</td><td>178</td><td class="dn">−10</td></tr>
+          <tr><td>Price Management</td><td class="tw-col">124</td><td>120</td><td class="up">+4</td></tr>
+          <tr><td>Billing &amp; Invoicing</td><td class="tw-col">58</td><td>50</td><td class="up">+8</td></tr>
+          <tr><td>Product Catalog Management</td><td class="tw-col">44</td><td>38</td><td class="up">+6</td></tr>
+          <tr class="highlight-row"><td><strong>Dev Support – P2O</strong></td><td class="tw-col"><strong>34</strong></td><td>22</td><td class="up" style="color:var(--red);">+12 ↑↑ +55%</td></tr>
+          <tr><td>Contract Lifecycle Mgmt</td><td class="tw-col">28</td><td style="color:var(--green);">40</td><td class="dn">−12 ↓↓</td></tr>
+          <tr><td>Advanced Approvals</td><td class="tw-col">21</td><td>24</td><td class="dn">−3</td></tr>
+          <tr><td>Usage &amp; Ratings</td><td class="tw-col">18</td><td>21</td><td class="dn">−3</td></tr>
+          <tr><td>Dynamic Revenue Orch.</td><td class="tw-col">12</td><td>14</td><td class="dn">−2</td></tr>
+          <tr class="highlight-row"><td><strong>Document Generation (RCA)</strong></td><td class="tw-col"><strong>7</strong></td><td style="color:var(--muted);">0</td><td class="up">+7 ★ new</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="insight red">
+        <strong>Dev Support – P2O surged +55% MoM (22→34) — signal for Product team</strong>
+        <span>Developer Support – Product to Order is the biggest proportional mover in August (+55% MoM). This is distinct from run-rate RCA issues — it signals implementation complexity or API gaps. All other sub-topics were flat or declining. Worth flagging to P&T / Product as a potential emerging pattern requiring documentation or tooling support.</span>
+      </div>
+      <div class="insight yellow">
+        <strong>CLM dropped sharply −12 MoM (40→28) — positive for Jul's spike resolution</strong>
+        <span>Contract Lifecycle Management was elevated in July at 40 cases and dropped to 28 in August (−30%). This reversal suggests the July CLM volume was transient. Product Configurator remained essentially flat at 275 — still the dominant sub-topic at 34.5% of all RCA volume.</span>
+      </div>
+      <div class="insight blue">
+        <strong>Document Generation appeared as new RCA sub-topic in August (7 cases, 0 in July)</strong>
+        <span>Revenue Cloud (Core)-Document Generation is a new sub-topic appearing for the first time in August with 7 cases. Monitor over coming months to assess whether this is a one-off onboarding spike or an emerging support pattern requiring specialist coverage.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OPEN BACKLOG -->
+<div class="grid-2">
+  <div class="card" style="margin-bottom:0;">
+    <div class="section-label">Open Backlog — Live Snapshot (Sep 2, 2026)</div>
+    <table class="data-table">
+      <thead><tr><th>Metric</th><th>Count</th></tr></thead>
+      <tbody>
+        <tr><td>Total Open (excl. Solution Provided)</td><td><strong>281</strong></td></tr>
+        <tr><td>Aged &gt;15 days ★</td><td><strong>39</strong></td></tr>
+        <tr><td style="padding-left:18px;">↳ No-path (Working, no GUS/Bug)</td><td style="color:var(--orange);"><strong>15</strong></td></tr>
+        <tr><td style="color:var(--emea);">EMEA Open</td><td>163</td></tr>
+        <tr><td style="color:var(--india);">India Open</td><td>118</td></tr>
+        <tr><td><strong>EMEA Aged &gt;15d</strong></td><td><strong>23 = 14.1% of EMEA</strong></td></tr>
+        <tr><td><strong>India Aged &gt;15d</strong></td><td><strong>16 = 13.6% of India</strong></td></tr>
+        <tr><td>Open S1s (unresolved)</td><td>36 (EMEA 23 / India 13)</td></tr>
+        <tr><td>S1 aged &gt;14d</td><td style="color:var(--green);">1 (GUS filed ✓)</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px;">
+        <span><span style="color:var(--emea);">■</span> EMEA 163 (58%)</span>
+        <span><span style="color:var(--india);">■</span> India 118 (42%)</span>
+      </div>
+      <div class="pct-bar-wrap">
+        <div class="pct-emea" style="width:58%;"></div>
+        <div class="pct-india" style="width:42%;"></div>
+      </div>
+    </div>
+    <table class="data-table" style="margin-top:10px;">
+      <thead><tr><th>P&amp;T Group</th><th>Open</th><th>Aged &gt;15d</th><th>Aged %</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill pill-blue">RCA</span></td><td>204</td><td>27</td><td>13.2%</td></tr>
+        <tr><td><span class="pill pill-purple">Legacy CPQ</span></td><td>61</td><td>8</td><td>13.1%</td></tr>
+        <tr><td><span class="pill pill-orange">Billing</span> ⚠️</td><td>13</td><td style="color:var(--orange);">3</td><td style="color:var(--orange);">23.1%</td></tr>
+      </tbody>
+    </table>
+    <div class="insight yellow" style="margin-top:8px;">
+      <strong>Billing aged rate 23.1% — elevated (3/13 open) · small denominator but watch</strong>
+      <span>Billing backlog is small (13 cases) but the aged rate of 23.1% is the highest of any P&T group. Legacy CPQ and RCA are closely aligned at 13.1–13.2% aged rate — no regional concentration gap. vs anchor (Jul 19–25): Aged =38 → 39 (flat), Total =246 → 281 (+35).</span>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:0;">
+    <div class="section-label">Top 10 Oldest Open Cases (Sep 2, 2026)</div>
+    <table class="data-table">
+      <thead><tr><th>Case #</th><th>Account</th><th>Age</th><th>Sev</th><th>Status</th><th>P&amp;T</th><th>GUS</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--red);"><strong>474103667</strong></td><td>Milestone Systems A/S</td><td style="color:var(--red);">47.8d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-muted">SP</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">—</span></td></tr>
+        <tr><td style="color:var(--red);"><strong>474106763</strong></td><td>Infoblox (Vista Org)</td><td style="color:var(--red);">47.6d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-muted">SP</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">—</span></td></tr>
+        <tr><td style="color:var(--orange);"><strong>474155499</strong></td><td>LabCorp</td><td style="color:var(--orange);">40.8d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-yellow">Working</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-green" style="font-size:9px;">W-24054595</span></td></tr>
+        <tr><td style="color:var(--orange);"><strong>474164119</strong></td><td>SYNAOS GmbH</td><td style="color:var(--orange);">39.9d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-muted">NMI</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">—</span></td></tr>
+        <tr><td><strong>474192524</strong></td><td>Infoblox (Vista Org)</td><td>35.8d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-muted">NMI</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-green" style="font-size:9px;">W-23726465</span></td></tr>
+        <tr><td><strong>474212487</strong></td><td>Midmark Corporation</td><td>33.9d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-yellow">Working</span></td><td><span class="pill pill-blue">RCA</span></td><td><span class="pill pill-red">⚠ None</span></td></tr>
+        <tr><td><strong>474213782</strong></td><td>CUBE Content Governance</td><td>33.8d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-muted">NMI</span></td><td><span class="pill pill-purple">CPQ</span></td><td><span class="pill pill-red">—</span></td></tr>
+        <tr><td><strong>474222482</strong></td><td>Refinitiv Ltd</td><td>33.0d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-muted">NMI</span></td><td><span class="pill pill-purple">CPQ</span></td><td><span class="pill pill-green" style="font-size:9px;">W-23807493</span></td></tr>
+        <tr><td><strong>474249604</strong></td><td>Trimble Illuminate</td><td>28.9d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-muted">NMI</span></td><td><span class="pill pill-orange">Billing</span></td><td><span class="pill pill-green" style="font-size:9px;">W-23910766</span></td></tr>
+        <tr><td><strong>474262613</strong></td><td>Halliburton Energy Svcs</td><td>27.8d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-muted">NMI</span></td><td><span class="pill pill-purple">CPQ</span></td><td><span class="pill pill-red">—</span></td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;">SP = Solution Provided (customer confirmation pending). NMI = Need More Information. ⚠ = no-path Working case. Two Infoblox cases across different open statuses — account has persistent engagement pattern.</div>
+  </div>
+</div>
+
+<!-- CSAT FULL SECTION -->
+<div class="card green-border">
+  <div class="section-label" style="color:var(--green);border-color:rgba(63,185,80,.3);">⭐ CSAT Analysis — August 2026 · 4-Month Trend</div>
+  <div class="grid-3" style="gap:10px;margin-bottom:12px;">
+    <div>
+      <table class="data-table">
+        <thead><tr><th>Month</th><th>N</th><th>Avg</th><th>5★</th><th>&lt;3</th></tr></thead>
+        <tbody>
+          <tr><td>May</td><td>89</td><td style="color:var(--green);">4.81</td><td>77 (86.5%)</td><td style="color:var(--red);">1</td></tr>
+          <tr><td>Jun</td><td>106</td><td style="color:var(--green);">4.81</td><td>89 (84.0%)</td><td style="color:var(--red);">1</td></tr>
+          <tr><td>Jul</td><td>105</td><td style="color:var(--yellow);">4.79</td><td>90 (85.7%)</td><td style="color:var(--red);">2</td></tr>
+          <tr class="highlight-row"><td>★ Aug</td><td>86</td><td style="color:var(--green);"><strong>4.84 ★</strong></td><td><strong>75 (87.2%)</strong></td><td><strong>1</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <table class="data-table">
+        <thead><tr><th>Score</th><th>Label</th><th>N</th><th>%</th></tr></thead>
+        <tbody>
+          <tr><td>5</td><td>Very Satisfied</td><td style="color:var(--green);">75</td><td>87.2%</td></tr>
+          <tr><td>4</td><td>Satisfied</td><td>10</td><td>11.6%</td></tr>
+          <tr><td>3</td><td>Somewhat Satisfied</td><td>0</td><td>0.0%</td></tr>
+          <tr><td>2</td><td>Not Very Satisfied</td><td>0</td><td>0.0%</td></tr>
+          <tr><td>1</td><td style="color:var(--red);">Not Satisfied</td><td style="color:var(--red);">1</td><td style="color:var(--red);">1.2%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <table class="data-table">
+        <thead><tr><th>Dimension</th><th>N</th><th>Avg</th></tr></thead>
+        <tbody>
+          <tr><td><span style="color:var(--emea);">■</span> EMEA</td><td>55</td><td style="color:var(--green);">4.82</td></tr>
+          <tr><td><span style="color:var(--india);">■</span> India</td><td>31</td><td style="color:var(--green);">4.87</td></tr>
+          <tr><td><span class="pill pill-blue">RCA</span></td><td>66</td><td style="color:var(--green);">4.91 ★</td></tr>
+          <tr><td><span class="pill pill-purple">Legacy CPQ</span></td><td>17</td><td style="color:var(--yellow);">4.53</td></tr>
+          <tr><td><span class="pill pill-orange">Billing</span></td><td>2</td><td style="color:var(--green);">5.00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="grid-2" style="gap:8px;margin-bottom:0;">
+    <div class="insight green" style="margin-bottom:0;">
+      <strong>4.84 Aug avg — best of 4 months · 87.2% Very Satisfied · India (4.87) edges EMEA (4.82)</strong>
+      <span>August CSAT is the highest of the May–August window. 75/86 responses scored Very Satisfied (87.2%). Legacy CPQ CSAT (4.53) is notably below RCA (4.91) — worth a targeted pulse with the team. India CSAT (4.87) slightly above EMEA (4.82), consistent with July pattern.</span>
+    </div>
+    <div class="insight red" style="margin-bottom:0;">
+      <strong>⚠ Low CSAT — Score 1 · Case 474253515 · RWS Unified</strong>
+      <span><em>"Manage escalations more appropriately. It took 2 weeks to begin escalating a very urgent problem."</em> Escalation-delay signal. Customer felt urgency wasn't recognised for 2 weeks — likely linked to the no-path backlog pattern. Case-level review recommended: confirm whether escalation SLA was breached and what communication cadence was in place during the delay period.</span>
+    </div>
+  </div>
+</div>
+
+<!-- CASES TO WATCH -->
+<div class="card yellow-border">
+  <div class="section-label" style="color:var(--yellow);border-color:rgba(154,103,0,.3);">⚠️ Cases to Watch — No-Path Open Cases (Working · Aged &gt;15d · No GUS / No Bug)</div>
+  <div class="grid-2" style="gap:10px;margin-bottom:10px;">
+    <div>
+      <div class="section-label">EMEA — 10 cases</div>
+      <table class="data-table">
+        <thead><tr><th>Case #</th><th>Account</th><th>Age</th><th>Sev</th><th>P&amp;T</th></tr></thead>
+        <tbody>
+          <tr class="highlight-row"><td style="color:var(--red);">474399536</td><td>RIEDEL Communications 🔴</td><td style="color:var(--red);">15.1d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-blue">RCA</span></td></tr>
+          <tr class="highlight-row"><td style="color:var(--red);">474399637</td><td>RIEDEL Communications 🔴</td><td style="color:var(--red);">15.1d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-blue">RCA</span></td></tr>
+          <tr><td>474262524</td><td>Sweep SAS</td><td>27.8d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-blue">RCA</span></td></tr>
+          <tr><td>474282010</td><td>LabCorp</td><td>25.8d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-blue">RCA</span></td></tr>
+          <tr><td>474288141</td><td>AU10TIX Limited</td><td>23.9d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-purple">CPQ</span></td></tr>
+          <tr><td>474305934</td><td>Mimecast Services</td><td>21.6d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-blue">RCA</span></td></tr>
+          <tr><td>474373051</td><td>8com GmbH &amp; Co. KG</td><td>19.7d</td><td><span class="pill pill-muted">S4</span></td><td><span class="pill pill-purple">CPQ</span></td></tr>
+          <tr><td>474389753</td><td>Reditus</td><td>16.0d</td><td><span class="pill pill-yellow">S3</span></td><td><span class="pill pill-blue">RCA</span></td></tr>
+          <tr><td>474391601</td><td>Streets Heaver</td><td>15.8d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-purple">CPQ</span></td></tr>
+          <tr><td>474400269</td><td>DIGITALL Nature Germany</td><td>15.0d</td><td><span class="pill pill-yellow">S3</span></td><td><span class="pill pill-blue">RCA</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="section-label">India — 5 cases</div>
+      <table class="data-table">
+        <thead><tr><th>Case #</th><th>Account</th><th>Age</th><th>Sev</th><th>P&amp;T</th></tr></thead>
+        <tbody>
+          <tr><td>474212487</td><td>Midmark Corporation</td><td>33.9d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-blue">RCA</span></td></tr>
+          <tr><td>474388674</td><td>Avēsis, LLC</td><td>16.1d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-muted">Other</span></td></tr>
+          <tr><td>474396105</td><td>CDK Global, LLC</td><td>15.6d</td><td><span class="pill pill-yellow">S3</span></td><td><span class="pill pill-orange">Billing</span></td></tr>
+          <tr><td>474399881</td><td>TeamViewer Germany</td><td>15.1d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-blue">RCA</span></td></tr>
+          <tr><td>474400389</td><td>Siemens SiePortal</td><td>15.0d</td><td><span class="pill pill-yellow">S2</span></td><td><span class="pill pill-blue">RCA</span></td></tr>
+        </tbody>
+      </table>
+      <div class="insight red" style="margin-top:10px;">
+        <strong>RIEDEL ×2 (Red Acct, S2, 15.1d) — GUS must be filed immediately</strong>
+        <span>Both RIEDEL cases are Red Account, S2, Working status with no GUS filed. This is the highest-priority action item for the team this week. Two cases at the same account with same age and no engineering engagement is a compounding risk. RIEDEL appeared in August inflow and now holds no-path status in both open slots.</span>
+      </div>
+      <div class="insight green" style="margin-top:0;">
+        <strong>Open S1 hygiene: only 1 aged &gt;14d, GUS filed · 36 open S1s total</strong>
+        <span>474317097 (LabCorp, 20.9d, RCA, GUS: W-23861712) is the only open S1 aged >14d — and GUS is already filed. 36 total open S1s across EMEA (23) and India (13). Critical-case hygiene is strong. Focus shifts to no-path S2/S3 cases in the table above.</span>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
+    <div style="background:#ffebe9;border-radius:6px;padding:8px 14px;text-align:center;">
+      <div style="font-size:20px;font-weight:700;color:var(--red);">15</div>
+      <div style="font-size:10px;color:var(--muted);">No-path cases total</div>
+    </div>
+    <div style="background:#fbefff;border-radius:6px;padding:8px 14px;text-align:center;">
+      <div style="font-size:20px;font-weight:700;color:var(--emea);">10</div>
+      <div style="font-size:10px;color:var(--muted);">EMEA no-path</div>
+    </div>
+    <div style="background:#fff1e5;border-radius:6px;padding:8px 14px;text-align:center;">
+      <div style="font-size:20px;font-weight:700;color:var(--india);">5</div>
+      <div style="font-size:10px;color:var(--muted);">India no-path</div>
+    </div>
+    <div style="background:#ddf4ff;border-radius:6px;padding:8px 14px;text-align:center;">
+      <div style="font-size:20px;font-weight:700;color:var(--accent);">36</div>
+      <div style="font-size:10px;color:var(--muted);">Open S1 total</div>
+    </div>
+    <div style="background:#dafbe1;border-radius:6px;padding:8px 14px;text-align:center;">
+      <div style="font-size:20px;font-weight:700;color:var(--green);">1</div>
+      <div style="font-size:10px;color:var(--muted);">S1 aged &gt;14d (GUS ✓)</div>
+    </div>
+    <div style="background:#ffebe9;border-radius:6px;padding:8px 14px;text-align:center;">
+      <div style="font-size:20px;font-weight:700;color:var(--red);">120</div>
+      <div style="font-size:10px;color:var(--muted);">Aug S1 inflow (4-mo low)</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHART SCRIPTS -->
+<script>
+const months = ['May 2026','Jun 2026','Jul 2026','★ Aug 2026'];
+const def = (id, cfg) => new Chart(document.getElementById(id).getContext('2d'), cfg);
+const gridOpts = {color:'#d0d7de'};
+const tickOpts = {color:'#656d76', font:{size:10}};
+const baseOpts = {
+  responsive:true,
+  maintainAspectRatio:true,
+  plugins:{legend:{labels:{color:'#656d76',font:{size:11}},position:'bottom'}}
+};
+
+// Inflow stacked bar
+def('inflowChart',{type:'bar',data:{labels:months,datasets:[
+  {label:'EMEA',data:[720,854,819,763],
+    backgroundColor:['rgba(130,80,223,.35)','rgba(130,80,223,.35)','rgba(130,80,223,.35)','rgba(130,80,223,.85)'],
+    borderRadius:3,stack:'a'},
+  {label:'India',data:[401,497,382,364],
+    backgroundColor:['rgba(225,111,66,.35)','rgba(225,111,66,.35)','rgba(225,111,66,.35)','rgba(225,111,66,.85)'],
+    borderRadius:3,stack:'a'}
+]},options:{...baseOpts,
+  scales:{
+    x:{stacked:true,grid:{display:false},ticks:tickOpts},
+    y:{stacked:true,grid:gridOpts,ticks:tickOpts}
+  }
+}});
+
+// CSAT line
+def('csatChart',{type:'line',data:{labels:months,datasets:[
+  {label:'CSAT',data:[4.81,4.81,4.79,4.84],
+    borderColor:'rgba(26,127,55,.9)',
+    backgroundColor:'rgba(26,127,55,.07)',
+    fill:true,borderWidth:2.5,
+    pointRadius:6,
+    pointBackgroundColor:['rgba(26,127,55,.7)','rgba(26,127,55,.7)','rgba(154,103,0,.85)','rgba(26,127,55,1)'],
+    pointBorderColor:['#fff','#fff','#fff','#1a7f37'],
+    pointBorderWidth:2,
+    tension:.3}
+]},options:{...baseOpts,
+  plugins:{legend:{display:false}},
+  scales:{
+    y:{grid:gridOpts,ticks:{...tickOpts,callback:v=>v.toFixed(2)},min:4.6,max:5.0,
+      title:{display:true,text:'Score (1–5)',color:'#656d76',font:{size:10}}},
+    x:{grid:{display:false},ticks:tickOpts}
+  }
+}});
+
+// P&T Donut
+def('ptDonutChart',{type:'doughnut',data:{
+  labels:['RCA','Legacy CPQ','Billing','Other'],
+  datasets:[{data:[796,276,32,23],
+    backgroundColor:['rgba(88,166,255,.85)','rgba(130,80,223,.85)','rgba(240,136,62,.85)','rgba(101,109,118,.5)'],
+    borderColor:['#ffffff'],borderWidth:2}]
+},options:{...baseOpts,
+  plugins:{legend:{position:'right',labels:{color:'#656d76',font:{size:10},padding:8}}}
+}});
+
+// S1 grouped bar
+def('sev1Chart',{type:'bar',data:{labels:months,datasets:[
+  {label:'EMEA S1',data:[68,75,78,60],
+    backgroundColor:['rgba(130,80,223,.4)','rgba(130,80,223,.4)','rgba(130,80,223,.4)','rgba(130,80,223,.9)'],
+    borderRadius:3},
+  {label:'India S1',data:[90,99,71,60],
+    backgroundColor:['rgba(225,111,66,.4)','rgba(225,111,66,.4)','rgba(225,111,66,.4)','rgba(225,111,66,.9)'],
+    borderRadius:3}
+]},options:{...baseOpts,
+  scales:{
+    x:{grid:{display:false},ticks:tickOpts},
+    y:{grid:gridOpts,ticks:tickOpts}
+  }
+}});
+
+// Region line chart
+def('geoChart',{type:'line',data:{labels:months,datasets:[
+  {label:'EMEA',data:[720,854,819,763],
+    borderColor:'rgba(130,80,223,.9)',fill:false,borderWidth:2,pointRadius:4,tension:.3},
+  {label:'India',data:[401,497,382,364],
+    borderColor:'rgba(225,111,66,.9)',fill:false,borderWidth:2,pointRadius:4,tension:.3}
+]},options:{...baseOpts,
+  scales:{
+    y:{grid:gridOpts,ticks:tickOpts},
+    x:{grid:{display:false},ticks:tickOpts}
+  }
+}});
+
+// P&T trend lines
+def('ptTrendChart',{type:'line',data:{labels:months,datasets:[
+  {label:'RCA',data:[721,871,787,796],
+    borderColor:'rgba(88,166,255,.9)',fill:false,borderWidth:2,pointRadius:4,tension:.3},
+  {label:'Legacy CPQ',data:[341,403,349,276],
+    borderColor:'rgba(130,80,223,.9)',fill:false,borderWidth:2,pointRadius:4,tension:.3},
+  {label:'Billing',data:[30,41,29,32],
+    borderColor:'rgba(240,136,62,.9)',fill:false,borderWidth:2,pointRadius:4,tension:.3}
+]},options:{...baseOpts,
+  scales:{
+    y:{grid:gridOpts,ticks:tickOpts},
+    x:{grid:{display:false},ticks:tickOpts}
+  }
+}});
+</script>
+
+<footer>Revenue Cloud Monthly Dashboard · August 2026 · EMEA + India · 4-Month Trend (May–Aug) · Data: OrgCS live query (Sep 2, 2026) · Manager scope · <a href="https://eshantsharma-bit.github.io/rc-dashboard/" style="color:var(--accent);">eshantsharma-bit.github.io/rc-dashboard</a></footer>
+</body>
+</html>
