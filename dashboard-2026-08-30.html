@@ -371,16 +371,17 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:16px 0 4px;bo
     <table class="data-table">
       <thead><tr><th>Product</th><th>TW</th><th>PW</th><th>Δ%</th><th>S1 TW</th><th>Evidence</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td><strong>Industry-OmniStudio</strong></td><td class="num tw-col bad">~230</td><td class="num">~121</td><td class="bad">+90%</td><td class="bad">~20</td><td><span class="pill pill-red">Bug W-24038766</span> <span class="pill pill-red">Bug W-24090869</span></td><td><span class="pill pill-red">✅ Confirmed</span></td></tr>
-        <tr><td><strong>Industry-Loyalty Mgmt</strong></td><td class="num tw-col bad">29</td><td class="num">12</td><td class="bad">+142%</td><td class="bad">4</td><td><span class="pill pill-red">GUS W-24041655</span> <span class="pill pill-red">Bug W-24043787</span></td><td><span class="pill pill-red">✅ Confirmed</span></td></tr>
-        <tr><td>Industry-CPQ/OM/DC</td><td class="num tw-col">~114</td><td class="num">~96</td><td class="warn">+19%</td><td class="warn">4</td><td><span class="pill pill-orange">Bug W-24035729</span> <span class="pill pill-orange">Bug W-24099013</span></td><td><span class="pill pill-orange">✅ Confirmed (partial)</span></td></tr>
+        <tr><td><strong>Industry-OmniStudio</strong></td><td class="num tw-col bad">231</td><td class="num">121</td><td class="bad">+91%</td><td class="bad">~20</td><td><span class="pill pill-red">GUS W-24085578 (39 cust)</span> <span class="pill pill-red">Bug W-24032962</span> <span class="pill pill-red">Bug W-24038766 (9 cust)</span></td><td><span class="pill pill-red">✅ Confirmed</span></td></tr>
+        <tr><td><strong>Industry-Loyalty Mgmt</strong></td><td class="num tw-col bad">29</td><td class="num">12</td><td class="bad">+142%</td><td class="bad">4</td><td><span class="pill pill-red">GUS W-24041655 (8 cust)</span> <span class="pill pill-red">Bug W-24043787</span></td><td><span class="pill pill-red">✅ Confirmed</span></td></tr>
+        <tr><td><strong>Industry-CPQ/OM/DC</strong></td><td class="num tw-col bad">114</td><td class="num">95</td><td class="bad">+20%</td><td class="bad">4 S1 open</td><td><span class="pill pill-red">Bug W-24035729 (19 cust)</span> <span class="pill pill-orange">Bug W-24099013 (5 cust)</span> <span class="pill pill-orange">GUS W-24034550</span></td><td><span class="pill pill-red">✅ Confirmed</span></td></tr>
         <tr><td>RCA (Revenue Cloud Core)</td><td class="num tw-col">248</td><td class="num">198</td><td class="warn">+25%</td><td class="warn">~15</td><td><span class="pill pill-yellow">GUS W-24086170</span></td><td><span class="pill pill-yellow">⚠️ Likely</span></td></tr>
         <tr><td>Industry-Comm Cloud</td><td class="num tw-col">~15</td><td class="num">~10</td><td>+50%</td><td class="warn">3</td><td>No GUS/Bug yet</td><td><span class="pill pill-yellow">⚠️ Possible</span></td></tr>
         <tr><td>Revenue-Salesforce CPQ</td><td class="num tw-col warn">65</td><td class="num">50</td><td class="warn">+30%</td><td class="warn">4</td><td>Rising WoW — watch</td><td><span class="pill pill-yellow">⚠️ Monitor</span></td></tr>
       </tbody>
     </table>
-    <div class="insight red" style="margin-top:10px"><strong>OmniStudio:</strong> Step-function surge (PPW=122 → PW=121 → TW=230). Bug W-24038766 (DataMapper/SetValues not calling Apex post-Winter '27) confirmed across One NZ (APAC Red S1), ENÉRGYA VM (EMEA S1), Pinnacle Pet (EMEA). Separate Standard Runtime regression (W-24090869) hit London Business School (India S1). Two distinct bugs; one product.</div>
-    <div class="insight red" style="margin-top:8px"><strong>Loyalty Mgmt — Deploy Blocker:</strong> GUS W-24041655 = "Transaction Journal Page Layouts broken after Winter '27" — Marriott (EMEA Red S1 open 7 days) + TouchPoints (EMEA S1 closed). Bug W-24043787 = breaking API change in Loyalty Eligibility rewardType — Flight Centre (India Red S1 closed). Silent-impact risk for all Loyalty Eligibility API consumers.</div>
+    <div class="insight red" style="margin-top:10px"><strong>OmniStudio — Regression 1 (Largest):</strong> GUS W-24085578 + Bug W-24032962 = <strong>39 customers</strong> impacted. OmniStudio failure post-Winter '27. Accounts include ORANGE BELGIUM, Sky Business, KeyBank, INWI, Orange Polska, Girikon, NTT Group, Amplifon, Ford Credit, Telefónica Germany, Deloitte, BBVA + 27 more. Most resolved via workaround (closed/SP). One still working: ITS Technology Group.</div>
+    <div class="insight red" style="margin-top:6px"><strong>OmniStudio — Regression 2:</strong> Bug W-24038766 = <strong>9 customers</strong>. DataMapper/SetValues not calling Apex. One NZ (APAC S1 open), Suncorp NZ (APAC S1 closed), ENÉRGYA VM, Pinnacle Pet, Craftware, McGill &amp; Partners. Different root cause from W-24032962.</div>
+    <div class="insight red" style="margin-top:6px"><strong>Loyalty Mgmt — W-24041655 = 8 customers:</strong> Marriott (EMEA S1 closed), Flight Centre (APAC S1 open), TouchPoints (EMEA ×2), Bank of America (EMEA open), Australian Red Cross Lifeblood (APAC open), Slimming World, Enilive. Transaction Journal Page Layouts deploy-blocker post-Winter '27. 3 cases still open.</div>
   </div>
 
   <div class="card">
@@ -514,19 +515,103 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:16px 0 4px;bo
   <div class="insight yellow" style="margin-top:10px"><strong>Aged Escalation Flags:</strong> Case 474201682 at 40 days is the oldest — categorised as "Business Impact," complex cross-engineering handoff (no specific support miss). Case 474317218 at 26 days and 474433265 at 17 days. Bhagat M's queue carries the two oldest escalations. The 7 blank root-cause escalations represent a categorisation gap — recommend root cause tagging before next WBR to enable better trend tracking.</div>
 </div>
 
+<!-- GUS/BUG MULTI-CUSTOMER EVIDENCE -->
+<div class="card alert-border" style="margin-bottom:16px">
+  <div class="card-title">🔬 Multi-Customer Impact — GUS &amp; Bug Evidence (Winter '27)</div>
+  <table class="data-table">
+    <thead><tr><th>GUS / Bug</th><th>Product</th><th>Customers Hit</th><th>Open Cases</th><th>Key Accounts</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>GUS W-24085578<br><small>+ Bug W-24032962</small></strong></td>
+        <td><span class="pill pill-purple">OmniStudio</span></td>
+        <td class="num bad"><strong>39</strong></td>
+        <td class="num warn">1</td>
+        <td style="font-size:11px">ORANGE BELGIUM ×3, Sky Business ×2, KeyBank, INWI, Orange Polska, Keskinäinen Fennia, Girikon, NTT Group, Amplifon, Ford Credit, Telefónica DE, Deloitte, BBVA + 25 more</td>
+        <td><span class="pill pill-yellow">Mostly closed — workaround exists. ITS Tech still working.</span></td>
+      </tr>
+      <tr>
+        <td><strong>Bug W-24035729</strong><br><small>+ GUS W-24034550</small></td>
+        <td><span class="pill pill-orange">CPQ/OM/DC</span></td>
+        <td class="num bad"><strong>19</strong></td>
+        <td class="num bad"><strong>9 open</strong></td>
+        <td style="font-size:11px">NOS Technology 🔴 S1, BT Consumer S1, BT Digico S1, Centrica S1, Bharti Airtel, One NZ, Genesis Energy, Sky Deutschland B2B, Cox Comms, EDP, 8x8, REV, Netcompany</td>
+        <td><span class="pill pill-red">4 S1s open. Most dangerous unresolved regression.</span></td>
+      </tr>
+      <tr>
+        <td><strong>Bug W-24038766</strong></td>
+        <td><span class="pill pill-purple">OmniStudio</span></td>
+        <td class="num bad"><strong>9</strong></td>
+        <td class="num warn">2</td>
+        <td style="font-size:11px">One NZ 🔴 S1 (open), Suncorp NZ S1 (closed), ENÉRGYA VM S1 (closed), Pinnacle Pet S1 (closed), Craftware (working), FASTLIGHT (open)</td>
+        <td><span class="pill pill-red">One NZ S1 still open. DataMapper/Apex regression.</span></td>
+      </tr>
+      <tr>
+        <td><strong>GUS W-24041655</strong></td>
+        <td><span class="pill pill-green">Loyalty Mgmt</span></td>
+        <td class="num bad"><strong>8</strong></td>
+        <td class="num warn">3</td>
+        <td style="font-size:11px">Marriott (EMEA, closed), Flight Centre APAC S1 (open), Bank of America EMEA (open), Aus Red Cross APAC (open), TouchPoints ×2 (closed), Slimming World (closed), Enilive (closed)</td>
+        <td><span class="pill pill-red">3 open. Flight Centre + BofA + Aus Red Cross unresolved.</span></td>
+      </tr>
+      <tr>
+        <td><strong>Bug W-24099013<br><small>+ GUS W-23925862 / W-24097916</small></strong></td>
+        <td><span class="pill pill-orange">CPQ/OM/DC</span></td>
+        <td class="num">5</td>
+        <td class="num warn">3</td>
+        <td style="font-size:11px">BT Digico S1 (open), TalkTalk, NOS Technology, Volton Hellenic Energy, Telia Finland</td>
+        <td><span class="pill pill-orange">V264 upgrade cluster. BT Digico S1 open.</span></td>
+      </tr>
+      <tr>
+        <td><strong>GUS W-24053809<br><small>+ Bug W-23627628</small></strong></td>
+        <td><span class="pill pill-orange">CPQ/OM/DC</span></td>
+        <td class="num">7</td>
+        <td class="num warn">5</td>
+        <td style="font-size:11px">Cable &amp; Wireless, HKT Limited, OTE Greece, E.ON Digital, PPC Greece, Telecomunicaciones Guatemala S1, New Work SE</td>
+        <td><span class="pill pill-yellow">5 still working/NMI.</span></td>
+      </tr>
+      <tr>
+        <td><strong>GUS W-24084070<br><small>+ Bug W-24090869</small></strong></td>
+        <td><span class="pill pill-purple">OmniStudio</span></td>
+        <td class="num">3</td>
+        <td class="num warn">1</td>
+        <td style="font-size:11px">London Business School S1 (open), University of London (closed), Univ College Dublin (SP)</td>
+        <td><span class="pill pill-red">Standard Runtime regression. India/Education cluster. LBS S1 open.</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px">
+    <div style="background:#ffebe9;border:1px solid #ffcecb;border-radius:6px;padding:10px;text-align:center">
+      <div style="font-size:22px;font-weight:700;color:#cf222e">39</div>
+      <div style="font-size:10px;color:#cf222e;margin-top:2px">OmniStudio — W-24085578<br>largest single regression</div>
+    </div>
+    <div style="background:#ffebe9;border:1px solid #ffcecb;border-radius:6px;padding:10px;text-align:center">
+      <div style="font-size:22px;font-weight:700;color:#cf222e">19</div>
+      <div style="font-size:10px;color:#cf222e;margin-top:2px">CPQ/OM — W-24035729<br>4 S1s still open</div>
+    </div>
+    <div style="background:#ffebe9;border:1px solid #ffcecb;border-radius:6px;padding:10px;text-align:center">
+      <div style="font-size:22px;font-weight:700;color:#cf222e">8</div>
+      <div style="font-size:10px;color:#cf222e;margin-top:2px">Loyalty — W-24041655<br>3 open incl. BofA, Aus Red Cross</div>
+    </div>
+    <div style="background:#fff8c5;border:1px solid #f5d845;border-radius:6px;padding:10px;text-align:center">
+      <div style="font-size:22px;font-weight:700;color:#9a6700">9</div>
+      <div style="font-size:10px;color:#9a6700;margin-top:2px">OmniStudio — W-24038766<br>One NZ S1 open</div>
+    </div>
+  </div>
+</div>
+
 <!-- ACCOUNT STORY -->
 <div class="card" style="margin-bottom:16px">
-  <div class="card-title">🏢 Account Stories — Release Week</div>
+  <div class="card-title">🏢 Key Account Actions — Release Week</div>
   <div class="grid-2" style="gap:12px">
     <div>
-      <div class="insight red"><strong>One New Zealand — APAC Red, OmniStudio S1 Open:</strong> Case 474489101 — "SetValues with Function is not invoking Apex (Winter 27)." Linked to Bug W-24038766 (confirmed multi-customer) + GUS W-24037462. Owner: Pranil Kale (APAC). This is a production blocker on a Red account — the OmniStudio DataMapper regression makes all Function-action-based OmniScripts non-functional post-Winter '27 upgrade.</div>
-      <div class="insight red" style="margin-top:8px"><strong>Marriott International — EMEA Red, Loyalty S1 Open 7 Days:</strong> Case 474494913 — "Winter '27: Unable to open Page Layouts and deploy Transaction Journal related lists." GUS W-24041655. Owner: Himali. Deploy-blocking UI regression. Parallel case at TouchPoints Data Services (EMEA, closed) confirms multi-customer pattern. Engineering expedite on W-24041655 needed.</div>
-      <div class="insight orange" style="margin-top:8px"><strong>BT PLC (Digico + Consumer) — Dual S1, CPQ/Orchestration:</strong> BT Digico: case 474487903, V264 Upgrade Issue (Bug W-24099013, GUS W-24097916). BT Consumer: case 474492290, CI Org Merge Request errors (Bug W-24035729). Two separate BT entities, two Orchestration-layer issues from the same Winter '27 upgrade cycle. NOS Technology (474492525, APAC Red) shares Bug W-24035729. Three telcos, one regression.</div>
+      <div class="insight red"><strong>CPQ/OM W-24035729 — Most Dangerous Open Regression:</strong> 19 customers, 4 S1s still open (NOS Technology 🔴, BT Consumer, BT Digico, Centrica). 9 of 19 cases are Working/Need More Info. Telecom and energy/utility concentration across EMEA and India. Engineering escalation on W-24035729 required — no workaround has resolved the bulk of cases yet.</div>
+      <div class="insight red" style="margin-top:8px"><strong>OmniStudio W-24085578 — 39 Customers, Mostly Resolved:</strong> Largest breadth regression of the week. Workaround exists (most cases closed). Two still active: ITS Technology Group (EMEA Working) and Girikon (India Need More Info). Monitor for reopens if patch is not delivered before next release cycle.</div>
+      <div class="insight orange" style="margin-top:8px"><strong>Loyalty W-24041655 — 3 Open: Bank of America, Flight Centre, Australian Red Cross:</strong> GUS W-24041655 (Transaction Journal page layouts). Bank of America is the highest-profile new entrant vs our prior analysis. Flight Centre and Australian Red Cross (APAC) still unresolved. Marriott (previously flagged) is now closed.</div>
     </div>
     <div>
-      <div class="insight orange"><strong>Takeda Pharmaceuticals — India, Life Sciences, 3 Open S1 No GUS:</strong> Cases 474479133, 474479118, 474475063. Ages 10–10.5 days. Topics: activity goal calculations + event management + PDF conversion. No GUS investigations on any case. Pattern suggests a deployment-configuration issue (not a single platform bug) — but without GUS creation, there is no engineering tracking. Escalation: Naren Rajendran direct outreach, GUS creation by EOD Sep 7.</div>
-      <div class="insight blue" style="margin-top:8px"><strong>Flight Centre Travel Group — India Red, Loyalty API Breaking Change:</strong> Case 474490522, S1 closed — "[GPM / Loyalty] Breaking API Change: 'rewardType' returning null in Eligible API response." Bug W-24043787. Case is closed (likely workaround) but this is a silent-impact risk: any customer consuming `rewardType` in Loyalty Eligibility integrations is silently broken. Engineering customer-comms review recommended.</div>
-      <div class="insight yellow" style="margin-top:8px"><strong>Reed Exhibitions — EMEA, RCA S1 Open ~10 Days:</strong> Case 474480377 — "Sales users without RCA Permission Set Group assignment unable to update Sales Cloud Quote" post-Winter '27. GUS W-24086170. Permissions regression in RCA — wide potential impact for any multi-user org using PSGs. Single case currently; monitor for additional reporters next week.</div>
+      <div class="insight orange"><strong>Takeda Pharmaceuticals — India, Life Sciences, 3 Open S1, No GUS:</strong> Cases 474479133, 474479118, 474475063. Ages 10–10.5 days. No GUS on any case — no engineering tracking exists. Naren Rajendran direct outreach required; GUS creation by EOD Sep 7.</div>
+      <div class="insight blue" style="margin-top:8px"><strong>OmniStudio W-24038766 — One New Zealand S1 Still Open:</strong> DataMapper/SetValues Apex regression. 9 customers total; 7 resolved. One NZ (APAC Red) and FASTLIGHT still open. Suncorp NZ (APAC) closed independently. Different root cause from W-24085578 — do not conflate the two.</div>
+      <div class="insight yellow" style="margin-top:8px"><strong>Reed Exhibitions — RCA Permissions S1 Open ~10 Days:</strong> GUS W-24086170. "Sales users without RCA PSG unable to update Sales Cloud Quote" post-Winter '27. Single case; monitor for new reporters against W-24086170 next week.</div>
     </div>
   </div>
 </div>
