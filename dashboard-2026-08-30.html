@@ -616,9 +616,9 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:16px 0 4px;bo
   </div>
 </div>
 
-<!-- TTR CALLOUT -->
+<!-- TTR + CSAT + CHAT -->
 <div class="card warn-border" style="margin-bottom:16px">
-  <div class="card-title">⏱️ TTR &amp; Operational Efficiency</div>
+  <div class="card-title">⏱️ TTR, CSAT &amp; Chat Performance</div>
   <div class="grid-3" style="gap:12px">
     <div>
       <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase">TTR by Region</div>
@@ -631,10 +631,23 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:16px 0 4px;bo
           <tr><td>Combined</td><td class="num">7.56</td><td><span class="pill pill-yellow">→ Monitor</span></td></tr>
         </tbody>
       </table>
-      <div class="insight orange" style="margin-top:8px">India TTR 10.10 — above the 10-day threshold. India absorbed +100 new cases TW (largest absolute jump). TTR deterioration on a release-week spike is expected; if still above 10 next week, flag as structural bandwidth issue. Check open case age distribution in WBR-2.</div>
+      <div class="insight orange" style="margin-top:8px">India TTR 10.10 — above threshold. India absorbed +100 cases WoW (largest jump). If still above 10 in WBR-2, flag as structural bandwidth issue.</div>
+
+      <div style="font-size:11px;font-weight:700;color:var(--muted);margin:14px 0 8px;text-transform:uppercase">RR% &amp; Closure</div>
+      <table class="data-table">
+        <thead><tr><th>Metric</th><th>TW</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Inflow</td><td class="num">1,094</td><td></td></tr>
+          <tr><td>Closures</td><td class="num">903</td><td></td></tr>
+          <tr><td>Net Open</td><td class="num bad">+191</td><td><span class="pill pill-red">Backlog building</span></td></tr>
+          <tr><td>RR%</td><td class="num">7.5%</td><td><span class="pill pill-yellow">Monitor</span></td></tr>
+          <tr><td>SLO Miss%</td><td class="num good">0.30%</td><td><span class="pill pill-green">✓ Excellent</span></td></tr>
+        </tbody>
+      </table>
     </div>
+
     <div>
-      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase">CSAT Distribution</div>
+      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase">Case CSAT by Region</div>
       <table class="data-table">
         <thead><tr><th>Region</th><th>CSAT</th><th>n</th><th>Esc%</th><th>SLO%</th></tr></thead>
         <tbody>
@@ -644,22 +657,32 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:16px 0 4px;bo
           <tr><td><strong>Combined</strong></td><td class="num good">4.80</td><td>41</td><td class="warn">1.19%</td><td class="good">0.30%</td></tr>
         </tbody>
       </table>
-      <div class="insight blue" style="margin-top:8px">CSAT healthy across all regions despite release-week volume. India at 5.00 is exceptional (n=11). EMEA 4.70 — lowest but still above 4.5 floor. Survey count (n=41) is acceptable for a high-volume week. APAC Esc% 2.53% is the outlier — 5 escalations on 198 inflow cases.</div>
+      <div class="insight yellow" style="margin-top:8px"><strong>⚠️ 3 Low CSAT this week:</strong> 2 case surveys + 1 chat survey scored low. Owners to be identified and contacted for coaching/follow-up. Overall CSAT remains healthy at 4.80 — low scores are isolated, not a trend.</div>
+      <div class="insight blue" style="margin-top:8px">India CSAT 5.00 exceptional (n=11). EMEA 4.70 — above 4.5 floor. Strong across all regions despite highest-volume week of the quarter.</div>
     </div>
+
     <div>
-      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase">RR% &amp; Closure Rate</div>
-      <table class="data-table">
-        <thead><tr><th>Metric</th><th>TW</th><th>Context</th></tr></thead>
-        <tbody>
-          <tr><td>RR% (Reopen Rate)</td><td class="num">7.5%</td><td><span class="pill pill-yellow">Monitor</span></td></tr>
-          <tr><td>Inflow</td><td class="num">1,094</td><td></td></tr>
-          <tr><td>Closures</td><td class="num">903</td><td></td></tr>
-          <tr><td>Net New (Inflow−Close)</td><td class="num bad">+191</td><td><span class="pill pill-red">Backlog building</span></td></tr>
-          <tr><td>Open (TW)</td><td class="num">682</td><td></td></tr>
-          <tr><td>SLO Miss%</td><td class="num good">0.30%</td><td><span class="pill pill-green">✓ Excellent</span></td></tr>
-        </tbody>
-      </table>
-      <div class="insight yellow" style="margin-top:8px">Net +191 open cases TW (1,094 inflow − 903 closures) — backlog is building. Expected for a release week; watch in WBR-2 to confirm recovery. SLO Miss% at 0.3% is excellent regardless of inflow volume.</div>
+      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase">💬 Chat Performance</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="background:#dafbe1;border:1px solid #aceebb;border-radius:6px;padding:10px;text-align:center">
+          <div style="font-size:22px;font-weight:700;color:#1a7f37">5.0</div>
+          <div style="font-size:10px;color:#1a7f37;margin-top:2px">Chat CSAT ✅</div>
+        </div>
+        <div style="background:#dafbe1;border:1px solid #aceebb;border-radius:6px;padding:10px;text-align:center">
+          <div style="font-size:22px;font-weight:700;color:#1a7f37">74%</div>
+          <div style="font-size:10px;color:#1a7f37;margin-top:2px">Resolution Rate</div>
+        </div>
+        <div style="background:#ddf4ff;border:1px solid #80ccff;border-radius:6px;padding:10px;text-align:center">
+          <div style="font-size:22px;font-weight:700;color:#0969da">8 sec</div>
+          <div style="font-size:10px;color:#0969da;margin-top:2px">90th %ile Response ✅</div>
+        </div>
+        <div style="background:#fff8c5;border:1px solid #f5d845;border-radius:6px;padding:10px;text-align:center">
+          <div style="font-size:22px;font-weight:700;color:#9a6700">1</div>
+          <div style="font-size:10px;color:#9a6700;margin-top:2px">Low CSAT (chat)</div>
+        </div>
+      </div>
+      <div class="insight green">Chat channel delivering strong results — perfect CSAT (5.0), 8-sec 90th percentile response, 74% resolution rate. High-volume release week absorbed with no chat quality degradation.</div>
+      <div class="insight yellow" style="margin-top:8px">1 low chat CSAT this week — isolated. Owner to be reviewed alongside the 2 low case CSATs for coaching action.</div>
     </div>
   </div>
 </div>
