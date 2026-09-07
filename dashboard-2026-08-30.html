@@ -203,7 +203,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:16px 0 4px;bo
   <div class="good-strip">
     <div class="good-cell"><div class="val">0.3%</div><div class="lbl">SLO Miss — ✓</div></div>
     <div class="good-cell"><div class="val">4.80</div><div class="lbl">CSAT — all regions strong</div></div>
-    <div class="good-cell"><div class="val">CPQ ↓</div><div class="lbl">Legacy CPQ 3-week decline (healthy)</div></div>
+    <div class="good-cell"><div class="val">Retail ↓</div><div class="lbl">Retail &amp; Consumer Goods −13% WoW</div></div>
     <div class="good-cell"><div class="val">7 GUS</div><div class="lbl">Known bugs filed &amp; tracked</div></div>
   </div>
 </div>
@@ -269,15 +269,36 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:16px 0 4px;bo
       <thead><tr><th>Product</th><th>TW</th><th>PW</th><th>Δ%</th><th>S1 TW</th><th>Evidence</th><th>Status</th></tr></thead>
       <tbody>
         <tr><td><strong>Industry-OmniStudio</strong></td><td class="num tw-col bad">~230</td><td class="num">~121</td><td class="bad">+90%</td><td class="bad">~20</td><td><span class="pill pill-red">Bug W-24038766</span> <span class="pill pill-red">Bug W-24090869</span></td><td><span class="pill pill-red">✅ Confirmed</span></td></tr>
-        <tr><td><strong>Industry-Loyalty Mgmt</strong></td><td class="num tw-col bad">~20</td><td class="num">~12</td><td class="bad">+67%</td><td class="bad">4</td><td><span class="pill pill-red">GUS W-24041655</span> <span class="pill pill-red">Bug W-24043787</span></td><td><span class="pill pill-red">✅ Confirmed</span></td></tr>
+        <tr><td><strong>Industry-Loyalty Mgmt</strong></td><td class="num tw-col bad">29</td><td class="num">12</td><td class="bad">+142%</td><td class="bad">4</td><td><span class="pill pill-red">GUS W-24041655</span> <span class="pill pill-red">Bug W-24043787</span></td><td><span class="pill pill-red">✅ Confirmed</span></td></tr>
         <tr><td>Industry-CPQ/OM/DC</td><td class="num tw-col">~114</td><td class="num">~96</td><td class="warn">+19%</td><td class="warn">4</td><td><span class="pill pill-orange">Bug W-24035729</span> <span class="pill pill-orange">Bug W-24099013</span></td><td><span class="pill pill-orange">✅ Confirmed (partial)</span></td></tr>
         <tr><td>RCA (Revenue Cloud Core)</td><td class="num tw-col">248</td><td class="num">198</td><td class="warn">+25%</td><td class="warn">~15</td><td><span class="pill pill-yellow">GUS W-24086170</span></td><td><span class="pill pill-yellow">⚠️ Likely</span></td></tr>
         <tr><td>Industry-Comm Cloud</td><td class="num tw-col">~15</td><td class="num">~10</td><td>+50%</td><td class="warn">3</td><td>No GUS/Bug yet</td><td><span class="pill pill-yellow">⚠️ Possible</span></td></tr>
-        <tr style="background:#dafbe1"><td>Revenue-Salesforce CPQ</td><td class="num tw-col">~48</td><td class="num">~55</td><td class="good">−13%</td><td class="good">4</td><td>3-week decline</td><td><span class="pill pill-green">✅ Healthy decline</span></td></tr>
+        <tr><td>Revenue-Salesforce CPQ</td><td class="num tw-col warn">65</td><td class="num">50</td><td class="warn">+30%</td><td class="warn">4</td><td>Rising WoW — watch</td><td><span class="pill pill-yellow">⚠️ Monitor</span></td></tr>
       </tbody>
     </table>
     <div class="insight red" style="margin-top:10px"><strong>OmniStudio:</strong> Step-function surge (PPW=122 → PW=121 → TW=230). Bug W-24038766 (DataMapper/SetValues not calling Apex post-Winter '27) confirmed across One NZ (APAC Red S1), ENÉRGYA VM (EMEA S1), Pinnacle Pet (EMEA). Separate Standard Runtime regression (W-24090869) hit London Business School (India S1). Two distinct bugs; one product.</div>
     <div class="insight red" style="margin-top:8px"><strong>Loyalty Mgmt — Deploy Blocker:</strong> GUS W-24041655 = "Transaction Journal Page Layouts broken after Winter '27" — Marriott (EMEA Red S1 open 7 days) + TouchPoints (EMEA S1 closed). Bug W-24043787 = breaking API change in Loyalty Eligibility rewardType — Flight Centre (India Red S1 closed). Silent-impact risk for all Loyalty Eligibility API consumers.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📦 Top Case Drivers — TCD Validated (4 Weeks)</div>
+    <table class="data-table">
+      <thead><tr><th>Product / Topic</th><th class="tw-col">Aug 30</th><th>Aug 23</th><th>Aug 16</th><th>Aug 9</th><th>Δ WoW</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Industry-OmniStudio</strong></td><td class="num tw-col bad">231</td><td class="num">121</td><td class="num">122</td><td class="num">96</td><td class="bad">+91% 🔴</td></tr>
+        <tr><td>Industry-Life Sciences</td><td class="num tw-col">137</td><td class="num">138</td><td class="num">151</td><td class="num">139</td><td>−1% →</td></tr>
+        <tr><td>Industry-CPQ/OM/DC</td><td class="num tw-col warn">114</td><td class="num">95</td><td class="num">84</td><td class="num">76</td><td class="warn">+20% ↑</td></tr>
+        <tr><td>RC Core-Product Configurator</td><td class="num tw-col warn">81</td><td class="num">71</td><td class="num">96</td><td class="num">61</td><td class="warn">+14%</td></tr>
+        <tr><td>Revenue-Salesforce CPQ</td><td class="num tw-col warn">65</td><td class="num">50</td><td class="num">57</td><td class="num">65</td><td class="warn">+30% ⚠️</td></tr>
+        <tr><td>RC Core-Transaction Mgmt</td><td class="num tw-col warn">58</td><td class="num">41</td><td class="num">33</td><td class="num">41</td><td class="warn">+41% ↑</td></tr>
+        <tr><td>Industry-Retail &amp; Consumer Goods</td><td class="num tw-col">53</td><td class="num">61</td><td class="num">50</td><td class="num">40</td><td class="good">−13%</td></tr>
+        <tr><td>RC Core-Price Management</td><td class="num tw-col">36</td><td class="num">29</td><td class="num">32</td><td class="num">31</td><td>+24%</td></tr>
+        <tr><td><strong>Industry-Loyalty Management</strong></td><td class="num tw-col bad">29</td><td class="num">12</td><td class="num">14</td><td class="num">12</td><td class="bad">+142% 🔴</td></tr>
+        <tr><td>RC Core-Billing &amp; Invoicing</td><td class="num tw-col">24</td><td class="num">19</td><td class="num">13</td><td class="num">12</td><td>+26%</td></tr>
+        <tr><td>Industry-Nonprofit Cloud</td><td class="num tw-col">20</td><td class="num">27</td><td class="num">15</td><td class="num">20</td><td class="good">−26%</td></tr>
+        <tr><td>Industry-Financial Services</td><td class="num tw-col">18</td><td class="num">14</td><td class="num">20</td><td class="num">18</td><td>+29%</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <div class="card">
