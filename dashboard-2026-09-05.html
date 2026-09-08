@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RC Weekly · Aug 30–Sep 5, 2026</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #222536;
+    --border: #2e3150;
+    --accent: #4f6ef7;
+    --accent2: #7c3aed;
+    --green: #22c55e;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --orange: #f97316;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --emea: #4f6ef7;
+    --india: #a855f7;
+    --apac: #22c55e;
+    --rca: #4f6ef7;
+    --cpq: #f59e0b;
+    --billing: #22c55e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
+  .header {
+    background: linear-gradient(135deg, #1a1d27 0%, #0f1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 0 20px;
+    margin-bottom: 28px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  .header-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
+  .header h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .header-meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 16px; }
+  .header-meta span { display: flex; align-items: center; gap: 5px; }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; }
+  .badge-red { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+  .badge-yellow { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+  .badge-green { background: rgba(34,197,94,0.15); color: #86efac; border: 1px solid rgba(34,197,94,0.3); }
+  .badge-blue { background: rgba(79,110,247,0.15); color: #a5b4fc; border: 1px solid rgba(79,110,247,0.3); }
+  .metrics-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 16px 14px; position: relative; overflow: hidden; }
+  .metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+  .metric-card.red::before { background: var(--red); }
+  .metric-card.green::before { background: var(--green); }
+  .metric-card.yellow::before { background: var(--yellow); }
+  .metric-card.blue::before { background: var(--accent); }
+  .metric-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .metric-value { font-size: 32px; font-weight: 800; line-height: 1; margin-bottom: 6px; color: #fff; }
+  .metric-card.red .metric-value { color: #fca5a5; }
+  .metric-card.green .metric-value { color: #86efac; }
+  .metric-card.yellow .metric-value { color: #fcd34d; }
+  .metric-sub { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .metric-delta { font-size: 12px; font-weight: 700; margin-top: 4px; }
+  .delta-up { color: var(--red); }
+  .delta-down { color: var(--green); }
+  .delta-neutral { color: var(--muted); }
+  .section { margin-bottom: 28px; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .section-header h2 { font-size: 15px; font-weight: 700; color: #fff; }
+  .section-icon { font-size: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .card-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+  .card-body { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .card-body strong { color: var(--text); }
+  .highlight-box { background: rgba(79,110,247,0.07); border: 1px solid rgba(79,110,247,0.2); border-radius: 8px; padding: 12px 14px; margin-top: 10px; font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .highlight-box strong { color: #a5b4fc; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .grid-3 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 500px) { .grid-3 { grid-template-columns: 1fr; } }
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: var(--surface2); color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; padding: 10px 14px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--border); }
+  tbody tr { border-bottom: 1px solid rgba(46,49,80,0.5); transition: background 0.15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,0.03); }
+  tbody td { padding: 10px 14px; color: var(--text); vertical-align: middle; }
+  tbody td.muted { color: var(--muted); font-size: 12px; }
+  tbody tr.highlight-row { background: rgba(79,110,247,0.07); }
+  tbody tr.highlight-row td { color: #c7d2fe; }
+  .tw-star { color: #f59e0b; font-weight: 700; }
+  td.red-cell { color: #fca5a5; font-weight: 700; }
+  td.green-cell { color: #86efac; font-weight: 700; }
+  td.yellow-cell { color: #fcd34d; font-weight: 700; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+  .dot-emea { background: var(--emea); }
+  .dot-india { background: var(--india); }
+  .dot-apac { background: var(--apac); }
+  .bar-container { display: flex; flex-direction: column; gap: 10px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; }
+  .bar-label { font-size: 12px; color: var(--muted); width: 160px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-track { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 22px; overflow: hidden; position: relative; }
+  .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9); transition: width 0.6s ease; white-space: nowrap; }
+  .bar-val { font-size: 12px; font-weight: 700; color: var(--text); width: 50px; text-align: right; flex-shrink: 0; }
+  .stacked-bar { height: 28px; border-radius: 6px; overflow: hidden; display: flex; margin: 10px 0; }
+  .stacked-seg { height: 100%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9); transition: width 0.6s ease; }
+  .stacked-legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .stacked-legend span { display: flex; align-items: center; gap: 6px; }
+  .legend-swatch { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .csat-big { text-align: center; padding: 20px; }
+  .csat-big .csat-num { font-size: 56px; font-weight: 900; color: #86efac; line-height: 1; }
+  .csat-big .csat-label { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  .csat-breakdown { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; }
+  .csat-row { display: flex; align-items: center; gap: 8px; }
+  .csat-score-label { font-size: 12px; color: var(--muted); width: 110px; flex-shrink: 0; }
+  .csat-bar-track { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 16px; overflow: hidden; }
+  .csat-bar-fill { height: 100%; border-radius: 4px; background: var(--green); transition: width 0.6s ease; }
+  .csat-bar-fill.score4 { background: #86efac99; }
+  .csat-bar-fill.score-low { background: var(--red); }
+  .csat-count { font-size: 12px; font-weight: 700; color: var(--text); width: 36px; text-align: right; }
+  .stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .stat-tile { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; min-width: 120px; text-align: center; flex: 1; }
+  .stat-tile .stat-n { font-size: 26px; font-weight: 800; line-height: 1; color: #fff; }
+  .stat-tile .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+  .callout { border-radius: 10px; padding: 14px 16px; font-size: 13px; line-height: 1.6; margin-bottom: 12px; border-left: 3px solid; }
+  .callout-red { background: rgba(239,68,68,0.08); border-color: var(--red); color: #fca5a5; }
+  .callout-yellow { background: rgba(245,158,11,0.08); border-color: var(--yellow); color: #fcd34d; }
+  .callout-green { background: rgba(34,197,94,0.08); border-color: var(--green); color: #86efac; }
+  .callout-blue { background: rgba(79,110,247,0.08); border-color: var(--accent); color: #a5b4fc; }
+  .callout strong { color: #fff; }
+  .no-path-tag { display: inline-block; background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); border-radius: 4px; font-size: 10px; font-weight: 700; padding: 1px 6px; vertical-align: middle; }
+  .footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 11px; color: var(--muted); text-align: center; line-height: 1.8; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #4f5680; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-tag">⚡ Revenue Cloud · Weekly Report</div>
+    <h1>RC Weekly &mdash; Aug 30&ndash;Sep 5, 2026</h1>
+    <div class="header-meta">
+      <span>🌍 EMEA + India + APAC</span>
+      <span>👔 Manager scope</span>
+      <span>📊 Source: OrgCS live query</span>
+      <span>🗓 Generated: 8 Sep 2026</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- HEADLINE METRICS -->
+  <div class="metrics-strip">
+    <div class="metric-card red">
+      <div class="metric-label">Inflow</div>
+      <div class="metric-value">364</div>
+      <div class="metric-delta delta-up">▲ +86 vs PW · +31%</div>
+      <div class="metric-sub">EMEA 57% / India 32% / APAC 11%</div>
+    </div>
+    <div class="metric-card red">
+      <div class="metric-label">Sev1 Inflow</div>
+      <div class="metric-value">46</div>
+      <div class="metric-delta delta-up">▲ +15 vs PW (31) · +48%</div>
+      <div class="metric-sub">EMEA 24 · India 20 · APAC 2</div>
+    </div>
+    <div class="metric-card green">
+      <div class="metric-label">CSAT</div>
+      <div class="metric-value">4.83</div>
+      <div class="metric-delta delta-up">▲ +0.21 vs PW · n=18</div>
+      <div class="metric-sub">1 detractor · EMEA 4.73 / India 5.00 / APAC 5.00</div>
+    </div>
+    <div class="metric-card yellow">
+      <div class="metric-label">Open Backlog</div>
+      <div class="metric-value">342</div>
+      <div class="metric-delta delta-up">▲ vs 278 PW inflow week</div>
+      <div class="metric-sub">EMEA 171 / India 129 / APAC 42</div>
+    </div>
+    <div class="metric-card yellow">
+      <div class="metric-label">Aged &gt;15d</div>
+      <div class="metric-value">39</div>
+      <div class="metric-delta delta-up">▲ APAC 16.7% rate</div>
+      <div class="metric-sub">EMEA 13 (7.6%) / India 19 (14.7%) / APAC 7 (16.7%)</div>
+    </div>
+    <div class="metric-card red">
+      <div class="metric-label">No-Path Cases</div>
+      <div class="metric-value">16</div>
+      <div class="metric-delta delta-up">▲ Working · no GUS/Bug</div>
+      <div class="metric-sub">Aged &gt;15d · needs investigation</div>
+    </div>
+    <div class="metric-card blue">
+      <div class="metric-label">GUS-linked Cases</div>
+      <div class="metric-value">23</div>
+      <div class="metric-delta delta-neutral">TW inflow</div>
+      <div class="metric-sub">19 Bug-linked · 6.3% GUS rate</div>
+    </div>
+    <div class="metric-card green">
+      <div class="metric-label">Open S1s</div>
+      <div class="metric-value">43</div>
+      <div class="metric-delta delta-up">▲ EMEA 31 dominant</div>
+      <div class="metric-sub">India 11 · APAC 1 · 1 no-GUS aged &gt;14d</div>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">📋</span>
+      <h2>Executive Summary — Aug 30–Sep 5, 2026</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">1. Inflow 364 — highest week in 4-week window · +31% WoW · Sev1 surge to 46</div>
+      <div class="card-body">
+        Total inflow reached <strong>364</strong> — up +86 from PW (278) and the highest in the 4-week trend. EMEA drove the Sev1 surge with <strong>24 S1s (52% of total)</strong>, reversing the mixed-region pattern of the prior week. India contributed 20 S1s (+33% WoW). RCA dominance intensified: <strong>Product Configurator +12 WoW</strong> and <strong>Transaction Management +15 WoW</strong> were the primary engines. RCA now accounts for <strong>72.8% of all inflow</strong>, the highest in the 4-week window.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">2. Open backlog 342 with 39 aged &gt;15d — India concentration and APAC 16.7% aged rate</div>
+      <div class="card-body">
+        India leads aged concentration: <strong>19 cases &gt;15d (14.7% of India backlog)</strong>. APAC's 16.7% aged rate is the highest across all regions at 7 of 42 open. EMEA held strongest at 7.6% aged rate. <strong>16 no-path cases</strong> (Working status, no GUS/Bug) warrant immediate review — India has 7, EMEA 5, APAC 4. Only <strong>1 open S1 is aged &gt;14d with no GUS</strong> (Equans, EMEA, 18.9d) — action required this week.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">3. CSAT 4.83 (n=18) — recovered +0.21 from PW · 1 detractor · EMEA-driven</div>
+      <div class="card-body">
+        CSAT bounced back strongly from 4.62 (PW) to <strong>4.83</strong>. India and APAC both achieved perfect <strong>5.00</strong>. One detractor: <strong>Accenture LLP (score=2, EMEA)</strong> — comment signals unauthorized change applied by engineer despite customer instruction. Immediate case review needed. EMEA average pulled to 4.73 by this single low score; without it EMEA would be ≥4.90.
+      </div>
+      <div class="highlight-box">
+        <strong>⚠️ Accenture LLP — Score 2</strong> — "We stated at the beginning that no changes should be applied without authorization. Changes were made." Manager: Darshan Jahagirdar. Immediate case review and customer outreach needed.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">4. YASH Technologies (India, 46d S1) and SYNAOS GmbH (EMEA, 46d S2) — oldest open cases</div>
+      <div class="card-body">
+        YASH Technologies (474163453) is the oldest open S1 at <strong>46 days</strong>, GUS W-23814264 filed. SYNAOS GmbH (474164119) is 46 days S2, <strong>no GUS filed</strong> — requires immediate investigation filing. RevCycle Limited appears twice in top-10 oldest (both APAC, Brahmarouthu Swetha) suggesting a persistent cross-case product issue. Midmark Corporation (India, 40d, no GUS) also needs path.
+      </div>
+    </div>
+  </div>
+
+  <!-- 4-WEEK KPI TABLE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">📊</span>
+      <h2>Key Metrics — 4-Week Comparison</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>KPI</th>
+            <th>Target</th>
+            <th class="tw-star">★ Aug 30–Sep 5</th>
+            <th>Aug 23–29 (PW)</th>
+            <th>Aug 16–22</th>
+            <th>Aug 9–15</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Support Inflow</strong></td>
+            <td class="muted">—</td>
+            <td class="red-cell"><strong>364 ↑↑</strong></td>
+            <td>278</td>
+            <td>305</td>
+            <td>278</td>
+          </tr>
+          <tr>
+            <td><strong>Sev1 Inflow</strong></td>
+            <td class="muted">&lt;25</td>
+            <td class="red-cell">46 ↑↑</td>
+            <td>31</td>
+            <td>36</td>
+            <td>24</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;↳ EMEA S1</td>
+            <td class="muted">—</td>
+            <td class="red-cell">24 ↑↑</td>
+            <td>15</td>
+            <td>20</td>
+            <td>13</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;↳ India S1</td>
+            <td class="muted">—</td>
+            <td class="red-cell">20 ↑</td>
+            <td>15</td>
+            <td>14</td>
+            <td>7</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;↳ APAC S1</td>
+            <td class="muted">—</td>
+            <td>2</td>
+            <td>1</td>
+            <td>2</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>RCA share</td>
+            <td class="muted">—</td>
+            <td class="red-cell">72.8% · 265 ↑↑</td>
+            <td>72.3% · 201</td>
+            <td>70.5% · 215</td>
+            <td>65.8% · 183</td>
+          </tr>
+          <tr>
+            <td>CPQ share</td>
+            <td class="muted">—</td>
+            <td>24.2% · 88</td>
+            <td>25.2% · 70</td>
+            <td>25.2% · 77</td>
+            <td>30.9% · 86</td>
+          </tr>
+          <tr>
+            <td>Billing share</td>
+            <td class="muted">—</td>
+            <td>2.2% · 8</td>
+            <td>2.2% · 6</td>
+            <td>3.9% · 12</td>
+            <td>3.2% · 9</td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>CSAT</strong></td>
+            <td class="muted">≥4.50</td>
+            <td class="green-cell">4.83 ✅</td>
+            <td class="yellow-cell">4.62</td>
+            <td class="green-cell">4.88</td>
+            <td class="green-cell">4.90</td>
+          </tr>
+          <tr>
+            <td><strong>CSAT Detractors &lt;3</strong></td>
+            <td class="muted">0</td>
+            <td class="yellow-cell">1 ⚠️</td>
+            <td class="red-cell">1</td>
+            <td class="green-cell">0 ✅</td>
+            <td class="green-cell">0 ✅</td>
+          </tr>
+          <tr>
+            <td><strong>GUS-linked (TW inflow)</strong></td>
+            <td class="muted">—</td>
+            <td>23 (6.3%)</td>
+            <td>7 (2.5%)</td>
+            <td>38 (12.5%)</td>
+            <td>10 (3.6%)</td>
+          </tr>
+          <tr>
+            <td><strong>Bug-linked (TW inflow)</strong></td>
+            <td class="muted">—</td>
+            <td>19 (5.2%)</td>
+            <td>5 (1.8%)</td>
+            <td>7 (2.3%)</td>
+            <td>7 (2.5%)</td>
+          </tr>
+          <tr>
+            <td><strong>Aged &gt;15d</strong></td>
+            <td class="muted">—</td>
+            <td class="yellow-cell">39</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><strong>Open Backlog</strong></td>
+            <td class="muted">—</td>
+            <td><strong>342</strong></td>
+            <td>—</td>
+            <td>251</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><strong>Open S1s</strong></td>
+            <td class="muted">—</td>
+            <td class="red-cell">43</td>
+            <td>—</td>
+            <td>29</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- INFLOW BY REGION -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">📈</span>
+      <h2>Inflow by Region — 4-Week Trend</h2>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">TW Inflow by Region</div>
+        <div class="table-wrap" style="border:none; border-radius:0;">
+          <table>
+            <thead><tr><th>Region</th><th>TW Cases</th><th>TW S1</th><th>PW Cases</th><th>Share</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="dot dot-emea"></span><strong>EMEA</strong></td>
+                <td class="red-cell"><strong>209</strong></td>
+                <td class="red-cell">24</td>
+                <td class="muted">166</td>
+                <td>57.4%</td>
+              </tr>
+              <tr>
+                <td><span class="dot dot-india"></span><strong>India</strong></td>
+                <td class="red-cell"><strong>115</strong></td>
+                <td class="red-cell">20</td>
+                <td class="muted">85</td>
+                <td>31.6%</td>
+              </tr>
+              <tr>
+                <td><span class="dot dot-apac"></span><strong>APAC</strong></td>
+                <td><strong>40</strong></td>
+                <td>2</td>
+                <td class="muted">27</td>
+                <td>11.0%</td>
+              </tr>
+              <tr style="border-top: 1px solid var(--border);">
+                <td><strong>Total</strong></td>
+                <td class="red-cell"><strong>364</strong></td>
+                <td class="red-cell"><strong>46</strong></td>
+                <td class="muted">278</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="stacked-bar" style="margin-top:14px;">
+          <div class="stacked-seg" style="background:var(--emea); width:57.4%;">57%</div>
+          <div class="stacked-seg" style="background:var(--india); width:31.6%;">32%</div>
+          <div class="stacked-seg" style="background:var(--apac); width:11.0%;">11%</div>
+        </div>
+        <div class="stacked-legend">
+          <span><div class="legend-swatch" style="background:var(--emea);"></div> EMEA 209 (57%)</span>
+          <span><div class="legend-swatch" style="background:var(--india);"></div> India 115 (32%)</span>
+          <span><div class="legend-swatch" style="background:var(--apac);"></div> APAC 40 (11%)</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Sev1 Trend by Region — 4-Week</div>
+        <div class="table-wrap" style="border:none; border-radius:0;">
+          <table>
+            <thead><tr><th>Week</th><th>Total S1</th><th>EMEA S1</th><th>India S1</th><th>APAC S1</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="muted">Aug 9–15</td>
+                <td>24</td><td>13</td><td>7</td><td>4</td>
+              </tr>
+              <tr>
+                <td class="muted">Aug 16–22</td>
+                <td class="red-cell">36 ↑↑</td><td class="red-cell">20 ↑</td><td>14</td><td>2</td>
+              </tr>
+              <tr>
+                <td class="muted">Aug 23–29</td>
+                <td class="green-cell">31 ↓</td><td class="green-cell">15 ↓</td><td>15</td><td>1</td>
+              </tr>
+              <tr class="highlight-row">
+                <td><strong>★ Aug 30–Sep 5</strong></td>
+                <td class="red-cell"><strong>46 ↑↑</strong></td>
+                <td class="red-cell">24 ↑↑</td>
+                <td class="red-cell">20 ↑</td>
+                <td>2</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout-red" style="margin-top:12px;">
+          <strong>S1 inflow hit 46 — highest in 4 weeks.</strong> EMEA S1 ascending trend: 13→20→15→24. India S1 also rebounding: 7→14→15→20. Both regions need S1 root cause review.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P&T MIX -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">📦</span>
+      <h2>P&amp;T Mix — 4-Week Trend &amp; RCA Deep Dive</h2>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">TW Product Mix</div>
+        <div class="bar-container">
+          <div class="bar-row">
+            <div class="bar-label">RCA (Revenue Cloud Core)</div>
+            <div class="bar-track"><div class="bar-fill" style="width:72.8%; background:var(--rca);">72.8%</div></div>
+            <div class="bar-val">265</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Legacy CPQ</div>
+            <div class="bar-track"><div class="bar-fill" style="width:24.2%; background:var(--cpq);">24.2%</div></div>
+            <div class="bar-val">88</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Billing</div>
+            <div class="bar-track"><div class="bar-fill" style="width:2.2%; background:var(--billing);">2%</div></div>
+            <div class="bar-val">8</div>
+          </div>
+        </div>
+        <div class="callout callout-blue" style="margin-top:14px;">
+          <strong>RCA share hit 72.8%</strong> — highest in 4-week window. Transaction Management and Product Configurator together drove +27 WoW increase.
+        </div>
+
+        <div class="card-title" style="margin-top:16px;">4-Week P&amp;T Share Trend</div>
+        <div class="table-wrap" style="border:none; border-radius:0;">
+          <table>
+            <thead><tr><th>Week</th><th>RCA %</th><th>CPQ %</th><th>Billing %</th></tr></thead>
+            <tbody>
+              <tr><td class="muted">Aug 9–15</td><td>65.8%</td><td>30.9%</td><td>3.2%</td></tr>
+              <tr><td class="muted">Aug 16–22</td><td>70.5%</td><td>25.2%</td><td>3.9%</td></tr>
+              <tr><td class="muted">Aug 23–29</td><td>72.3%</td><td>25.2%</td><td>2.2%</td></tr>
+              <tr class="highlight-row"><td><strong>★ Aug 30–Sep 5</strong></td><td class="red-cell">72.8% ↑</td><td>24.2%</td><td>2.2%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">RCA Sub-Topic — TW vs PW</div>
+        <div class="table-wrap" style="border:none; border-radius:0;">
+          <table>
+            <thead><tr><th>Sub-Topic</th><th>TW</th><th>PW</th><th>Δ</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Product Configurator</strong></td>
+                <td class="red-cell"><strong>84</strong></td>
+                <td>72</td>
+                <td class="red-cell">+12 ↑</td>
+              </tr>
+              <tr>
+                <td><strong>Transaction Management</strong></td>
+                <td class="red-cell"><strong>58</strong></td>
+                <td>43</td>
+                <td class="red-cell">+15 ↑↑</td>
+              </tr>
+              <tr>
+                <td>Price Management</td>
+                <td>37</td><td>29</td><td class="yellow-cell">+8 ↑</td>
+              </tr>
+              <tr>
+                <td>Billing &amp; Invoicing</td>
+                <td>27</td><td>18</td><td class="yellow-cell">+9 ↑</td>
+              </tr>
+              <tr>
+                <td>Product Catalog Management</td>
+                <td>16</td><td>12</td><td>+4</td>
+              </tr>
+              <tr>
+                <td>Developer Support – Prod to Order</td>
+                <td>14</td><td>8</td><td class="yellow-cell">+6</td>
+              </tr>
+              <tr>
+                <td>Advanced Approvals</td>
+                <td>10</td><td>7</td><td>+3</td>
+              </tr>
+              <tr>
+                <td>Contract Lifecycle Mgmt</td>
+                <td>10</td><td>5</td><td>+5</td>
+              </tr>
+              <tr>
+                <td>Usage &amp; Ratings</td>
+                <td>5</td><td>1</td><td class="yellow-cell">+4 ↑</td>
+              </tr>
+              <tr>
+                <td>Dynamic Revenue Orchestration</td>
+                <td>1</td><td>3</td><td class="green-cell">−2</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout-red" style="margin-top:10px;">
+          <strong>Transaction Management spike: 43→58 (+35%)</strong> is the biggest WoW driver alongside Product Configurator. Both indicate active product-layer issues requiring GUS review.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPEN BACKLOG -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">📦</span>
+      <h2>Open Backlog — Live Snapshot (Sep 8)</h2>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="metric-label">EMEA Open</div>
+        <div class="metric-value" style="font-size:40px; color:#a5b4fc;">171</div>
+        <div class="metric-sub">Aged &gt;15d: <strong style="color:#fcd34d;">13</strong> = 7.6% ✅</div>
+      </div>
+      <div class="card">
+        <div class="metric-label">India Open</div>
+        <div class="metric-value" style="font-size:40px; color:#c084fc;">129</div>
+        <div class="metric-sub">Aged &gt;15d: <strong style="color:#fca5a5;">19</strong> = 14.7% ⚠️</div>
+      </div>
+      <div class="card">
+        <div class="metric-label">APAC Open</div>
+        <div class="metric-value" style="font-size:40px; color:#86efac;">42</div>
+        <div class="metric-sub">Aged &gt;15d: <strong style="color:#fca5a5;">7</strong> = 16.7% 🔴</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Backlog Summary</div>
+        <div class="table-wrap" style="border:none; border-radius:0;">
+          <table>
+            <thead><tr><th>Metric</th><th>Count</th></tr></thead>
+            <tbody>
+              <tr><td>Active backlog (excl Solution Provided)</td><td><strong>342</strong></td></tr>
+              <tr><td>Aged &gt;15d ★</td><td class="yellow-cell"><strong>39</strong></td></tr>
+              <tr><td>&nbsp;&nbsp;↳ No-path (Working, no GUS/Bug)</td><td class="red-cell">16</td></tr>
+              <tr><td>Open S1s (unresolved)</td><td class="red-cell">43 (EMEA 31 / India 11 / APAC 1)</td></tr>
+              <tr><td>S1 aged &gt;14d, no GUS</td><td class="red-cell"><strong>1 🔴</strong> — Equans (EMEA)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-title" style="margin-top:14px;">P&amp;T Backlog Breakdown</div>
+        <div class="table-wrap" style="border:none; border-radius:0;">
+          <table>
+            <thead><tr><th>Group</th><th>Open</th><th>Aged &gt;15d</th><th>Aged %</th></tr></thead>
+            <tbody>
+              <tr><td>RCA</td><td>253</td><td class="yellow-cell">28</td><td>11.1%</td></tr>
+              <tr><td>CPQ</td><td>72</td><td class="yellow-cell">7</td><td>9.7%</td></tr>
+              <tr><td>Billing</td><td>12</td><td class="red-cell">3</td><td class="red-cell">25.0%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Aged Rate by Region</div>
+        <div class="bar-container">
+          <div class="bar-row">
+            <div class="bar-label"><span class="dot dot-apac"></span>APAC</div>
+            <div class="bar-track"><div class="bar-fill" style="width:16.7%; background:#ef4444;">16.7%</div></div>
+            <div class="bar-val">7/42</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span class="dot dot-india"></span>India</div>
+            <div class="bar-track"><div class="bar-fill" style="width:14.7%; background:#f59e0b;">14.7%</div></div>
+            <div class="bar-val">19/129</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span class="dot dot-emea"></span>EMEA</div>
+            <div class="bar-track"><div class="bar-fill" style="width:7.6%; background:#4f6ef7;">7.6%</div></div>
+            <div class="bar-val">13/171</div>
+          </div>
+        </div>
+
+        <div class="card-title" style="margin-top:16px;">CPQ Aged &gt;15d No GUS/Bug — by Region</div>
+        <div class="table-wrap" style="border:none; border-radius:0;">
+          <table>
+            <thead><tr><th>Region</th><th>Cases</th><th>Top Accounts (by age)</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="dot dot-emea"></span>EMEA</td>
+                <td class="yellow-cell">2</td>
+                <td class="muted">AU10TIX Ltd (29.9d), Aptean (28.8d)</td>
+              </tr>
+              <tr>
+                <td><span class="dot dot-apac"></span>APAC</td>
+                <td class="yellow-cell">2</td>
+                <td class="muted">NEXTDC Limited (22.4d), Evident Europe (22.0d)</td>
+              </tr>
+              <tr>
+                <td><span class="dot dot-india"></span>India</td>
+                <td class="yellow-cell">3</td>
+                <td class="muted">simPRO (18.6d), Int'l Flavors (15.1d), Trimble (15.1d)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP 10 OLDEST -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">⏰</span>
+      <h2>Top 10 Oldest Open Cases (live)</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Case #</th><th>Account</th><th>Age</th><th>Sev</th><th>Region</th><th>P&amp;T</th><th>GUS</th><th>Bug</th></tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td><strong>474163453</strong></td>
+            <td>YASH Technologies Pvt Ltd</td>
+            <td class="red-cell"><strong>46.0d</strong></td>
+            <td><span class="badge badge-red">S1</span></td>
+            <td><span class="dot dot-india"></span>India</td>
+            <td>RCA</td>
+            <td class="muted">W-23814264</td>
+            <td class="muted">—</td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>474164119</strong></td>
+            <td>SYNAOS GmbH</td>
+            <td class="red-cell"><strong>46.0d</strong></td>
+            <td><span class="badge badge-yellow">S2</span></td>
+            <td><span class="dot dot-emea"></span>EMEA</td>
+            <td>RCA</td>
+            <td><span class="no-path-tag">⚠️ null</span></td>
+            <td class="muted">—</td>
+          </tr>
+          <tr>
+            <td>474192524</td>
+            <td>Infoblox (Vista Org)</td>
+            <td class="yellow-cell">41.8d</td>
+            <td><span class="badge badge-yellow">S2</span></td>
+            <td><span class="dot dot-india"></span>India</td>
+            <td>RCA</td>
+            <td class="muted">W-23726465</td>
+            <td class="muted">W-24059609</td>
+          </tr>
+          <tr>
+            <td>474208757</td>
+            <td>RevCycle Limited</td>
+            <td class="yellow-cell">40.4d</td>
+            <td><span class="badge badge-yellow">S2</span></td>
+            <td><span class="dot dot-apac"></span>APAC</td>
+            <td>RCA</td>
+            <td class="muted">W-24084377</td>
+            <td class="muted">—</td>
+          </tr>
+          <tr>
+            <td>474212487</td>
+            <td>Midmark Corporation</td>
+            <td class="yellow-cell">40.0d</td>
+            <td><span class="badge badge-yellow">S2</span></td>
+            <td><span class="dot dot-india"></span>India</td>
+            <td>RCA</td>
+            <td><span class="no-path-tag">⚠️ null</span></td>
+            <td class="muted">—</td>
+          </tr>
+          <tr>
+            <td>474257410</td>
+            <td>RevCycle Limited</td>
+            <td class="yellow-cell">34.3d</td>
+            <td><span class="badge badge-yellow">S2</span></td>
+            <td><span class="dot dot-apac"></span>APAC</td>
+            <td>RCA</td>
+            <td class="muted">W-23918026</td>
+            <td class="muted">—</td>
+          </tr>
+          <tr>
+            <td>474274410</td>
+            <td>Trane Technologies Company LLC</td>
+            <td>32.7d</td>
+            <td><span class="badge badge-yellow">S2</span></td>
+            <td><span class="dot dot-india"></span>India</td>
+            <td>RCA</td>
+            <td><span class="no-path-tag">⚠️ null</span></td>
+            <td class="muted">—</td>
+          </tr>
+          <tr>
+            <td>474280564</td>
+            <td>ADNOC Global Trading</td>
+            <td>32.0d</td>
+            <td><span class="badge badge-yellow">S2</span></td>
+            <td><span class="dot dot-emea"></span>EMEA</td>
+            <td>RCA</td>
+            <td class="muted">W-23843844</td>
+            <td class="muted">W-24008880</td>
+          </tr>
+          <tr>
+            <td>474280881</td>
+            <td>Integrated Decisions &amp; Systems</td>
+            <td>32.0d</td>
+            <td><span class="badge badge-blue">S3</span></td>
+            <td><span class="dot dot-india"></span>India</td>
+            <td>Billing</td>
+            <td class="muted">W-23827328</td>
+            <td class="muted">W-23980272</td>
+          </tr>
+          <tr>
+            <td>474282010</td>
+            <td>Laboratory Corporation of America</td>
+            <td>31.9d</td>
+            <td><span class="badge badge-yellow">S2</span></td>
+            <td><span class="dot dot-emea"></span>EMEA</td>
+            <td>RCA</td>
+            <td><span class="no-path-tag">⚠️ null</span></td>
+            <td class="muted">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:11px; color:var(--muted); margin-top:8px;">
+      ⚠️ = no-path: aged &gt;15d, no GUS/Bug filed. RevCycle Limited appears twice (both APAC) — potential cross-case product pattern. 4 cases in top-10 with no GUS require immediate path.
+    </div>
+  </div>
+
+  <!-- CSAT -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">⭐</span>
+      <h2>CSAT Analysis — Aug 30–Sep 5, 2026</h2>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="csat-big">
+          <div class="csat-num">4.83</div>
+          <div class="csat-label">n=18 · 3 regions · 1 detractor (score=2)</div>
+        </div>
+        <div class="csat-breakdown">
+          <div class="csat-row">
+            <div class="csat-score-label">5 — Very Satisfied</div>
+            <div class="csat-bar-track"><div class="csat-bar-fill" style="width:94%;"></div></div>
+            <div class="csat-count">17</div>
+          </div>
+          <div class="csat-row">
+            <div class="csat-score-label">4 — Satisfied</div>
+            <div class="csat-bar-track"><div class="csat-bar-fill score4" style="width:0%;"></div></div>
+            <div class="csat-count">0</div>
+          </div>
+          <div class="csat-row">
+            <div class="csat-score-label">3 — Somewhat</div>
+            <div class="csat-bar-track"><div class="csat-bar-fill" style="width:0%;"></div></div>
+            <div class="csat-count">0</div>
+          </div>
+          <div class="csat-row">
+            <div class="csat-score-label">2 — Not Very</div>
+            <div class="csat-bar-track"><div class="csat-bar-fill score-low" style="width:5.5%;"></div></div>
+            <div class="csat-count">1</div>
+          </div>
+          <div class="csat-row">
+            <div class="csat-score-label">1 — Not Satisfied</div>
+            <div class="csat-bar-track"><div class="csat-bar-fill score-low" style="width:0%;"></div></div>
+            <div class="csat-count">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">CSAT — Region &amp; Product Breakdown</div>
+        <div class="table-wrap" style="border:none; border-radius:0;">
+          <table>
+            <thead><tr><th>Dimension</th><th>N</th><th>Avg</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="dot dot-emea"></span>EMEA</td>
+                <td>11</td>
+                <td class="yellow-cell">4.73</td>
+              </tr>
+              <tr>
+                <td><span class="dot dot-india"></span>India</td>
+                <td>5</td>
+                <td class="green-cell">5.00 ★</td>
+              </tr>
+              <tr>
+                <td><span class="dot dot-apac"></span>APAC</td>
+                <td>2</td>
+                <td class="green-cell">5.00 ★</td>
+              </tr>
+              <tr style="border-top:1px solid var(--border);">
+                <td>RCA</td><td>14</td><td>4.79</td>
+              </tr>
+              <tr>
+                <td>Legacy CPQ</td><td>4</td><td class="green-cell">5.00 ★</td>
+              </tr>
+              <tr>
+                <td>Billing</td><td>0</td><td class="muted">—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-title" style="margin-top:14px;">4-Week CSAT Trend</div>
+        <div class="table-wrap" style="border:none; border-radius:0;">
+          <table>
+            <thead><tr><th>Week</th><th>N</th><th>Avg</th><th>Detractors &lt;3</th></tr></thead>
+            <tbody>
+              <tr><td class="muted">Aug 9–15</td><td>21</td><td class="green-cell">4.90</td><td class="green-cell">0 ✅</td></tr>
+              <tr><td class="muted">Aug 16–22</td><td>26</td><td class="green-cell">4.88</td><td class="green-cell">0 ✅</td></tr>
+              <tr><td class="muted">Aug 23–29</td><td>16</td><td class="yellow-cell">4.62</td><td class="red-cell">1</td></tr>
+              <tr class="highlight-row"><td><strong>★ Aug 30–Sep 5</strong></td><td>18</td><td class="green-cell"><strong>4.83</strong></td><td class="yellow-cell"><strong>1 ⚠️</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-red" style="margin-top:10px;">
+          <strong>⚠️ Low CSAT Alert — Score 2:</strong> Case 474495051 · Accenture LLP (EMEA)<br>
+          Comment: "We stated at the beginning that no changes should be applied without authorization. Changes were made." — Manager: Darshan Jahagirdar. Action: case review + customer outreach required immediately.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASES TO WATCH -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">⚠️</span>
+      <h2>Cases to Watch — Open S1 Aged &gt;14d</h2>
+    </div>
+
+    <div class="callout callout-red">
+      <strong>1 open S1 aged &gt;14d with no GUS — Equans (EMEA, Seamus Redmond, 18.9d, Working).</strong>
+      If a product issue is in scope, GUS investigation must be filed immediately. Review case feed for resolution path.
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Case #</th><th>Account</th><th>Age (d)</th><th>P&amp;T</th><th>Region</th><th>Status</th><th>GUS</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>474421757</strong></td>
+            <td>Equans</td>
+            <td class="red-cell"><strong>18.9d</strong></td>
+            <td>RCA</td>
+            <td><span class="dot dot-emea"></span>EMEA</td>
+            <td>Working</td>
+            <td><span class="no-path-tag">⚠️ null</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stat-row" style="margin-top:16px;">
+      <div class="stat-tile">
+        <div class="stat-n" style="color:#fca5a5;">43</div>
+        <div class="stat-lbl">Open S1 total (live)</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-n" style="color:#a5b4fc;">31</div>
+        <div class="stat-lbl">EMEA open S1</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-n" style="color:#c084fc;">11</div>
+        <div class="stat-lbl">India open S1</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-n" style="color:#86efac;">1</div>
+        <div class="stat-lbl">APAC open S1</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-n" style="color:#fca5a5;">1</div>
+        <div class="stat-lbl">S1 aged &gt;14d no GUS</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-n" style="color:#fcd34d;">46</div>
+        <div class="stat-lbl">Inflow Sev1 this week</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION MATRIX -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🎯</span>
+      <h2>Action Matrix</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Priority</th><th>Item</th><th>Region</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-red">🔴 High</span></td>
+            <td><strong>Equans (474421757) — S1 18.9d No GUS</strong></td>
+            <td><span class="dot dot-emea"></span>EMEA</td>
+            <td>File GUS investigation immediately if product issue confirmed</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-red">🔴 High</span></td>
+            <td><strong>Accenture LLP CSAT=2 — Unauthorized change applied</strong></td>
+            <td><span class="dot dot-emea"></span>EMEA</td>
+            <td>Case review + customer apology outreach · Darshan Jahagirdar</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-red">🔴 High</span></td>
+            <td><strong>SYNAOS GmbH (474164119) — S2 46d No GUS</strong></td>
+            <td><span class="dot dot-emea"></span>EMEA</td>
+            <td>File investigation or confirm product-not-at-fault resolution path</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-red">🔴 High</span></td>
+            <td><strong>Midmark Corp (474212487) — S2 40d No GUS</strong> + Trane Tech + LabCorp</td>
+            <td><span class="dot dot-india"></span>India</td>
+            <td>3 India RCA cases &gt;30d with no GUS — need path this week</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-yellow">🟡 Medium</span></td>
+            <td><strong>16 No-path cases</strong> (Working, aged &gt;15d, no GUS/Bug)</td>
+            <td>All regions</td>
+            <td>India 7, EMEA 5, APAC 4 — review case feed, file GUS or close</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-yellow">🟡 Medium</span></td>
+            <td><strong>Transaction Management +35% WoW (43→58)</strong></td>
+            <td>EMEA+India</td>
+            <td>Review for common pattern across top accounts — GUS consolidation</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-yellow">🟡 Medium</span></td>
+            <td><strong>CPQ 7 aged no-path across 3 regions</strong></td>
+            <td>All regions</td>
+            <td>EMEA: AU10TIX, Aptean · APAC: NEXTDC, Evident · India: simPRO, IFF, Trimble</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-yellow">🟡 Medium</span></td>
+            <td><strong>RevCycle Limited × 2 open APAC cases (40d + 34d)</strong></td>
+            <td><span class="dot dot-apac"></span>APAC</td>
+            <td>Both have GUS — confirm resolution timeline with Brahmarouthu Swetha</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-green">🟢 Info</span></td>
+            <td><strong>CSAT recovered +0.21 to 4.83 · India &amp; APAC both 5.00</strong></td>
+            <td>All</td>
+            <td>Positive signal — share with team. Maintain zero-detractor focus.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-green">🟢 Info</span></td>
+            <td><strong>EMEA aged rate lowest (7.6%)</strong> vs India 14.7% / APAC 16.7%</td>
+            <td><span class="dot dot-emea"></span>EMEA</td>
+            <td>EMEA backlog health model — share approach with India/APAC leads</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Revenue Cloud Weekly · Aug 30–Sep 5, 2026 · EMEA + India + APAC · Manager scope<br>
+    Source: OrgCS live SOQL · Generated: 8 Sep 2026<br>
+    <a href="https://eshantsharma-bit.github.io/rc-dashboard">eshantsharma-bit.github.io/rc-dashboard</a>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const fills = document.querySelectorAll('.bar-fill, .csat-bar-fill, .stacked-seg');
+    fills.forEach(el => {
+      const target = el.style.width;
+      el.style.width = '0%';
+      setTimeout(() => { el.style.width = target; }, 100);
+    });
+  });
+</script>
+</body>
+</html>
