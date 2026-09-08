@@ -822,121 +822,59 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>#</th><th>Account</th><th>Region</th><th>TW Cases</th><th>P&amp;T Focus</th><th>Insight</th></tr>
+          <tr><th>#</th><th>Account</th><th>Region</th><th>Cases</th><th>S1</th><th>P&amp;T</th><th>Insight</th></tr>
         </thead>
         <tbody>
-          <tr>
+          <tr class="highlight-row">
             <td class="muted">1</td>
-            <td><strong>YASH Technologies</strong></td>
-            <td><span class="dot dot-india"></span>India</td>
-            <td class="red-cell"><strong>8</strong></td>
+            <td><strong>Bluvium Inc</strong></td>
+            <td><span class="dot dot-india"></span>India + EMEA</td>
+            <td class="red-cell"><strong>11</strong></td>
+            <td class="red-cell"><strong>9</strong></td>
             <td>RCA</td>
-            <td class="muted" style="font-size:12px;">Oldest open S1 at 46d · GUS W-23814264 · ongoing product investigation</td>
+            <td style="font-size:12px; color:var(--muted);">9 S1s across Configurator, Transaction Mgmt, Price Mgmt, Billing &amp; Usage — multi-topic active implementation surge · 2 still open · no GUS filed on any case</td>
           </tr>
           <tr>
             <td class="muted">2</td>
-            <td><strong>RevCycle Limited</strong></td>
-            <td><span class="dot dot-apac"></span>APAC</td>
-            <td class="red-cell"><strong>7</strong></td>
+            <td><strong>SHIFTLOGIC.IO LIMITED</strong></td>
+            <td><span class="dot dot-emea"></span>EMEA</td>
+            <td><strong>9</strong></td>
+            <td>1</td>
             <td>RCA</td>
-            <td class="muted" style="font-size:12px;">2 open cases aged 40d + 34d · persistent cross-case product pattern · GUS filed</td>
+            <td style="font-size:12px; color:var(--muted);">1 S1 · 8 S4 — high volume low-severity pattern; likely training/onboarding phase</td>
           </tr>
           <tr>
             <td class="muted">3</td>
-            <td><strong>Accenture LLP</strong></td>
+            <td><strong>TDC Net A/S</strong></td>
             <td><span class="dot dot-emea"></span>EMEA</td>
             <td><strong>6</strong></td>
+            <td>0</td>
             <td>RCA</td>
-            <td class="muted" style="font-size:12px;">CSAT=2 this week · unauthorized change applied · case review required</td>
+            <td style="font-size:12px; color:var(--muted);">All 6 cases S4 · steady low-severity volume · likely ongoing config or advisory requests</td>
           </tr>
           <tr>
             <td class="muted">4</td>
-            <td><strong>Trane Technologies</strong></td>
-            <td><span class="dot dot-india"></span>India</td>
-            <td><strong>5</strong></td>
+            <td><strong>WebPT.com (2nd org)</strong></td>
+            <td><span class="dot dot-emea"></span>EMEA</td>
+            <td><strong>6</strong></td>
+            <td>0</td>
             <td>RCA</td>
-            <td class="muted" style="font-size:12px;">32.7d open S2 · no GUS filed · Transaction Management focus</td>
+            <td style="font-size:12px; color:var(--muted);">2 S2 · 3 S3 · 1 S4 — mid-severity mixed pattern; 2nd org suggests parallel implementation track</td>
           </tr>
           <tr>
             <td class="muted">5</td>
-            <td><strong>Infoblox (Vista Org)</strong></td>
+            <td><strong>Trane Technologies</strong></td>
             <td><span class="dot dot-india"></span>India</td>
             <td><strong>5</strong></td>
+            <td>0</td>
             <td>RCA</td>
-            <td class="muted" style="font-size:12px;">41.8d open S2 · GUS W-23726465 + Bug W-24059609 · awaiting fix</td>
+            <td style="font-size:12px; color:var(--muted);">All 5 S2 · 32.7d open case no GUS · Transaction Management focus · needs path</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
-
-  <!-- ACTION MATRIX -->
-  <div class="section">
-    <div class="section-header">
-      <span class="section-icon">🎯</span>
-      <h2>Action Matrix</h2>
-    </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Priority</th><th>Item</th><th>Region</th><th>Action</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><span class="badge badge-red">🔴 High</span></td>
-            <td><strong>Equans · S1 18.9d · No GUS</strong></td>
-            <td><span class="dot dot-emea"></span>EMEA</td>
-            <td>File GUS immediately</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-red">🔴 High</span></td>
-            <td><strong>Accenture LLP · CSAT=2</strong></td>
-            <td><span class="dot dot-emea"></span>EMEA</td>
-            <td>Case review + customer outreach</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-red">🔴 High</span></td>
-            <td><strong>SYNAOS GmbH · S2 46d · No GUS</strong></td>
-            <td><span class="dot dot-emea"></span>EMEA</td>
-            <td>File GUS or confirm path</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-red">🔴 High</span></td>
-            <td><strong>Midmark + Trane + LabCorp · &gt;30d · No GUS</strong></td>
-            <td><span class="dot dot-india"></span>India</td>
-            <td>3 RCA cases need path this week</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-yellow">🟡 Medium</span></td>
-            <td><strong>16 no-path cases</strong> · aged &gt;15d · Working</td>
-            <td>All</td>
-            <td>India 7 · EMEA 5 · APAC 4</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-yellow">🟡 Medium</span></td>
-            <td><strong>Transaction Mgmt 43→58 (+35%)</strong></td>
-            <td>EMEA+India</td>
-            <td>GUS consolidation review</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-yellow">🟡 Medium</span></td>
-            <td><strong>CPQ 7 aged · no GUS/Bug</strong></td>
-            <td>All</td>
-            <td>EMEA 2 · APAC 2 · India 3</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-green">🟢 Info</span></td>
-            <td><strong>CSAT 4.83 · India &amp; APAC 5.00</strong></td>
-            <td>All</td>
-            <td>Strong recovery from 4.62 PW</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-green">🟢 Info</span></td>
-            <td><strong>EMEA aged 7.6%</strong> vs India 14.7% / APAC 16.7%</td>
-            <td><span class="dot dot-emea"></span>EMEA</td>
-            <td>Best-in-class aged rate</td>
-          </tr>
-        </tbody>
-      </table>
+    <div style="font-size:11px; color:var(--muted); margin-top:8px;">
+      ⚠️ Bluvium Inc: 9 S1s this week with no GUS filed on any case — highest S1 concentration in TW inflow.
     </div>
   </div>
 
