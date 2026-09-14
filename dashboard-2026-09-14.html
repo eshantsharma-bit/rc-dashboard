@@ -7,139 +7,110 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #222536;
-    --border: #2e3150;
-    --accent: #4f6ef7;
-    --accent2: #7c3aed;
-    --green: #22c55e;
-    --red: #ef4444;
-    --yellow: #f59e0b;
-    --orange: #f97316;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --emea: #4f6ef7;
-    --india: #a855f7;
-    --apac: #22c55e;
+    --bg: #0f1117; --surface: #1a1d27; --surface2: #222536; --border: #2e3150;
+    --accent: #4f6ef7; --accent2: #7c3aed; --green: #22c55e; --red: #ef4444;
+    --yellow: #f59e0b; --orange: #f97316; --text: #e2e8f0; --muted: #94a3b8;
+    --emea: #4f6ef7; --india: #a855f7; --apac: #22c55e;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
-  a { color: var(--accent); text-decoration: none; }
   .container { max-width: 1300px; margin: 0 auto; padding: 0 24px 60px; }
 
-  /* Header */
-  .header { background: linear-gradient(135deg, #1a1d27 0%, #0f1117 100%); border-bottom: 1px solid var(--border); padding: 24px 0 20px; margin-bottom: 28px; position: sticky; top: 0; z-index: 100; }
+  .header { background: linear-gradient(135deg,#1a1d27 0%,#0f1117 100%); border-bottom: 1px solid var(--border); padding: 22px 0 18px; margin-bottom: 24px; position: sticky; top: 0; z-index: 100; }
   .header-inner { max-width: 1300px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
-  .header-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
-  .header h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
-  .header-meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 16px; }
-  .header-badges { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding-top: 4px; }
-  .badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; white-space: nowrap; }
-  .badge-red { background: rgba(239,68,68,.15); color: #fca5a5; border: 1px solid rgba(239,68,68,.3); }
-  .badge-yellow { background: rgba(245,158,11,.15); color: #fcd34d; border: 1px solid rgba(245,158,11,.3); }
-  .badge-green { background: rgba(34,197,94,.15); color: #86efac; border: 1px solid rgba(34,197,94,.3); }
-  .badge-blue { background: rgba(79,110,247,.15); color: #a5b4fc; border: 1px solid rgba(79,110,247,.3); }
-  .badge-orange { background: rgba(249,115,22,.15); color: #fdba74; border: 1px solid rgba(249,115,22,.3); }
+  .header-tag { font-size: 11px; font-weight: 600; letter-spacing: .12em; color: var(--accent); text-transform: uppercase; margin-bottom: 5px; }
+  .header h1 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+  .header-meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 14px; }
+  .header-badges { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; padding-top: 4px; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .badge-red   { background: rgba(239,68,68,.15);  color: #fca5a5; border: 1px solid rgba(239,68,68,.3); }
+  .badge-yellow{ background: rgba(245,158,11,.15); color: #fcd34d; border: 1px solid rgba(245,158,11,.3); }
+  .badge-green { background: rgba(34,197,94,.15);  color: #86efac; border: 1px solid rgba(34,197,94,.3); }
+  .badge-orange{ background: rgba(249,115,22,.15); color: #fdba74; border: 1px solid rgba(249,115,22,.3); }
 
   /* Metrics strip */
-  .metrics-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 28px; }
-  @media(max-width:900px) { .metrics-strip { grid-template-columns: repeat(3, 1fr); } }
-  .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 16px 14px; position: relative; overflow: hidden; }
-  .metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+  .metrics-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
+  .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 14px 12px; position: relative; overflow: hidden; }
+  .metric-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:10px 10px 0 0; }
   .metric-card.red::before { background: var(--red); }
-  .metric-card.green::before { background: var(--green); }
   .metric-card.yellow::before { background: var(--yellow); }
-  .metric-card.blue::before { background: var(--accent); }
-  .metric-card.orange::before { background: var(--orange); }
-  .metric-card.purple::before { background: var(--accent2); }
-  .metric-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
-  .metric-value { font-size: 32px; font-weight: 800; line-height: 1; margin-bottom: 6px; color: #fff; }
+  .metric-card.emea::before { background: var(--emea); }
+  .metric-card.india::before { background: var(--india); }
+  .metric-card.apac::before { background: var(--apac); }
+  .metric-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing:.08em; margin-bottom: 5px; }
+  .metric-value { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 5px; color: #fff; }
   .metric-card.red .metric-value { color: #fca5a5; }
-  .metric-card.green .metric-value { color: #86efac; }
-  .metric-card.yellow .metric-value { color: #fcd34d; }
-  .metric-card.orange .metric-value { color: #fdba74; }
-  .metric-card.purple .metric-value { color: #c4b5fd; }
-  .metric-sub { font-size: 11px; color: var(--muted); line-height: 1.4; }
-  .metric-delta { font-size: 12px; font-weight: 700; margin-top: 4px; }
-  .delta-up { color: var(--red); }
-  .delta-down { color: var(--green); }
-  .delta-neutral { color: var(--muted); }
+  .metric-card.emea .metric-value { color: #a5b4fc; }
+  .metric-card.india .metric-value { color: #d8b4fe; }
+  .metric-card.apac .metric-value { color: #86efac; }
+  .metric-sub  { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .metric-delta{ font-size: 12px; font-weight: 700; margin-top: 3px; }
+  .du { color: var(--red); } .dd { color: var(--green); } .dn { color: var(--muted); }
 
   /* Layout */
-  .section { margin-bottom: 28px; }
-  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-  .section-header h2 { font-size: 15px; font-weight: 700; color: #fff; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-  .card-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 14px; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-  @media(max-width:900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .section { margin-bottom: 24px; }
+  .sh { display:flex; align-items:center; gap:8px; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .sh h2 { font-size: 14px; font-weight: 700; color: #fff; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .card-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing:.08em; margin-bottom: 12px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+  @media(max-width:900px) { .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr; } }
 
   /* Signal strip */
-  .signal-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
-  @media(max-width:900px) { .signal-strip { grid-template-columns: 1fr 1fr; } }
-  .signal { border-radius: 10px; padding: 14px 16px; border: 1px solid; }
-  .signal.red { background: rgba(239,68,68,.08); border-color: rgba(239,68,68,.3); }
-  .signal.yellow { background: rgba(245,158,11,.08); border-color: rgba(245,158,11,.3); }
-  .signal.green { background: rgba(34,197,94,.08); border-color: rgba(34,197,94,.3); }
-  .signal.blue { background: rgba(79,110,247,.08); border-color: rgba(79,110,247,.3); }
-  .signal.orange { background: rgba(249,115,22,.08); border-color: rgba(249,115,22,.3); }
-  .signal-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-  .signal.red .signal-label { color: #fca5a5; }
+  .signal-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+  .signal { border-radius: 8px; padding: 12px 14px; border: 1px solid; }
+  .signal.red    { background: rgba(239,68,68,.07);  border-color: rgba(239,68,68,.3); }
+  .signal.yellow { background: rgba(245,158,11,.07); border-color: rgba(245,158,11,.3); }
+  .signal.green  { background: rgba(34,197,94,.07);  border-color: rgba(34,197,94,.3); }
+  .signal.orange { background: rgba(249,115,22,.07); border-color: rgba(249,115,22,.3); }
+  .signal-label { font-size: 10px; font-weight: 700; letter-spacing:.1em; text-transform: uppercase; margin-bottom: 3px; }
+  .signal.red    .signal-label { color: #fca5a5; }
   .signal.yellow .signal-label { color: #fcd34d; }
-  .signal.green .signal-label { color: #86efac; }
-  .signal.blue .signal-label { color: #a5b4fc; }
+  .signal.green  .signal-label { color: #86efac; }
   .signal.orange .signal-label { color: #fdba74; }
-  .signal-text { font-size: 12.5px; color: var(--text); line-height: 1.45; }
+  .signal-text { font-size: 12px; color: var(--text); line-height: 1.45; }
   .signal-text strong { color: #fff; }
 
   /* Tables */
-  .data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-  .data-table th { background: var(--surface2); color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); }
-  .data-table td { padding: 9px 12px; border-bottom: 1px solid rgba(46,49,80,.5); color: var(--text); }
-  .data-table tr:last-child td { border-bottom: none; }
-  .data-table tr:hover td { background: rgba(79,110,247,.04); }
-  .data-table .this-week td { background: rgba(79,110,247,.08); font-weight: 600; }
-  .data-table .this-week td:first-child::before { content: '★ '; color: var(--accent); }
-  .pill { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: .03em; }
-  .pill-red { background: rgba(239,68,68,.15); color: #fca5a5; }
-  .pill-green { background: rgba(34,197,94,.15); color: #86efac; }
-  .pill-yellow { background: rgba(245,158,11,.15); color: #fcd34d; }
-  .pill-blue { background: rgba(79,110,247,.15); color: #a5b4fc; }
-  .pill-orange { background: rgba(249,115,22,.15); color: #fdba74; }
-  .pill-purple { background: rgba(168,85,247,.15); color: #d8b4fe; }
-  .num-up { color: #fca5a5; font-weight: 700; }
-  .num-down { color: #86efac; font-weight: 700; }
-  .num-neutral { color: var(--muted); }
-  .chart-wrap { position: relative; height: 220px; }
-  .chart-wrap-sm { position: relative; height: 180px; }
-  .chart-wrap-lg { position: relative; height: 260px; }
+  table.dt { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  table.dt th { background: var(--surface2); color: var(--muted); font-size: 10.5px; font-weight: 600; letter-spacing:.05em; text-transform: uppercase; padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+  table.dt th.r, table.dt td.r { text-align: right; }
+  table.dt th.c, table.dt td.c { text-align: center; }
+  table.dt td { padding: 8px 10px; border-bottom: 1px solid rgba(46,49,80,.45); color: var(--text); }
+  table.dt tr:last-child td { border-bottom: none; }
+  table.dt tr:hover td { background: rgba(79,110,247,.04); }
+  table.dt tr.tw td { background: rgba(79,110,247,.08); font-weight: 600; }
+  table.dt tr.tw td:first-child::before { content: '★ '; color: var(--accent); }
+  .pill { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+  .p-red    { background: rgba(239,68,68,.15);  color: #fca5a5; }
+  .p-green  { background: rgba(34,197,94,.15);  color: #86efac; }
+  .p-yellow { background: rgba(245,158,11,.15); color: #fcd34d; }
+  .p-blue   { background: rgba(79,110,247,.15); color: #a5b4fc; }
+  .p-orange { background: rgba(249,115,22,.15); color: #fdba74; }
+  .p-purple { background: rgba(168,85,247,.15); color: #d8b4fe; }
+  .nu { color: #fca5a5; font-weight: 700; }
+  .nd { color: #86efac; font-weight: 700; }
+  .nm { color: var(--muted); }
+
+  /* Region divider in table */
+  tr.region-row td { padding: 4px 10px 3px; background: var(--surface2); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); border-bottom: 1px solid var(--border); }
+
+  .chart-h180 { position: relative; height: 180px; }
+  .chart-h220 { position: relative; height: 220px; }
+  .chart-h260 { position: relative; height: 260px; }
 
   /* Bucket bar */
-  .bucket-bar { display: flex; height: 28px; border-radius: 6px; overflow: hidden; margin: 12px 0 8px; }
-  .bucket-bar div { display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; transition: opacity .2s; }
-  .bb-nopath { background: #ef4444; }
-  .bb-gus { background: #4f6ef7; }
-  .bb-swarm { background: #f59e0b; }
-  .bb-bug { background: #22c55e; }
-  .bb-nmi { background: #94a3b8; }
-  .bucket-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
-  .bucket-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
-  .bucket-legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+  .bbar { display: flex; height: 24px; border-radius: 5px; overflow: hidden; margin: 10px 0 6px; }
+  .bbar div { display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; }
+  .bb-np { background: #ef4444; } .bb-gus { background: #4f6ef7; }
+  .bb-sw { background: #f59e0b; } .bb-bug { background: #22c55e; }
+  .bleg { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
+  .bleg-i { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); }
+  .bleg-dot { width: 9px; height: 9px; border-radius: 2px; }
 
-  /* Manager trend table */
-  .mgr-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .mgr-table th { background: var(--surface2); color: var(--muted); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--border); }
-  .mgr-table th:first-child { text-align: left; }
-  .mgr-table td { padding: 8px 10px; text-align: center; border-bottom: 1px solid rgba(46,49,80,.5); }
-  .mgr-table td:first-child { text-align: left; font-weight: 500; color: #fff; }
-  .mgr-table tr:last-child td { border-bottom: none; }
-  .mgr-table tr:hover td { background: rgba(79,110,247,.04); }
-  .trend-arrow { font-size: 13px; margin-left: 3px; }
-  .region-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; padding: 6px 10px 4px; color: var(--muted); }
-
-  footer { text-align: center; color: var(--muted); font-size: 11px; padding: 20px 0 10px; border-top: 1px solid var(--border); margin-top: 12px; }
+  footer { text-align: center; color: var(--muted); font-size: 11px; padding: 18px 0 8px; border-top: 1px solid var(--border); margin-top: 10px; }
 </style>
 </head>
 <body>
@@ -147,471 +118,197 @@
 <div class="header">
   <div class="header-inner">
     <div>
-      <div class="header-tag">Aged Backlog Trend · EMEA + India + APAC</div>
+      <div class="header-tag">Aged Backlog Trend · EMEA · IST · APAC</div>
       <h1>📊 Aged Backlog Trend · Sep 14, 2026</h1>
       <div class="header-meta">
-        <span>📅 Last 3 posts compared: Sep 2 · Sep 10 · Sep 14</span>
-        <span>👥 11 Managers · All Industry + Revenue products</span>
-        <span>🔴 Aged threshold: >15 days</span>
+        <span>📅 Last 3 posts: Sep 2 · Sep 10 · Sep 14</span>
+        <span>11 Managers · All Industry + Revenue products</span>
+        <span>Aged threshold: >15 days</span>
       </div>
     </div>
     <div class="header-badges">
       <span class="badge badge-red">⬆ Aged 190→207→224 — 3rd consecutive rise</span>
-      <span class="badge badge-orange">APAC 33.0% — all 3 managers >28%</span>
-      <span class="badge badge-yellow">OmniStudio 11.5%→16.3%→22.0%</span>
-      <span class="badge badge-green">✅ Naren 13.5% — only green EMEA+India manager</span>
+      <span class="badge badge-orange">APAC 33% — all 3 managers >28%</span>
+      <span class="badge badge-yellow">OmniStudio 3-wk uptrend: 11.5%→22%</span>
+      <span class="badge badge-green">✅ Naren only sustained recovery</span>
     </div>
   </div>
 </div>
 
 <div class="container">
 
-  <!-- Metrics strip -->
+  <!-- KPI strip -->
   <div class="metrics-strip">
     <div class="metric-card red">
       <div class="metric-label">Total Aged</div>
       <div class="metric-value">224</div>
-      <div class="metric-delta delta-up">▲ +17 vs Sep 10</div>
+      <div class="metric-delta du">▲ +17 vs Sep 10</div>
       <div class="metric-sub">3rd consecutive week rising</div>
     </div>
     <div class="metric-card yellow">
       <div class="metric-label">Non-SP BL</div>
       <div class="metric-value">1,095</div>
-      <div class="metric-delta delta-down">▼ −47 vs Sep 10</div>
-      <div class="metric-sub">BL pulled back slightly</div>
+      <div class="metric-delta dd">▼ −47 vs Sep 10</div>
+      <div class="metric-sub">Org %: 20.5% (was 18.1%)</div>
     </div>
-    <div class="metric-card red">
-      <div class="metric-label">Org Aged %</div>
-      <div class="metric-value">20.5%</div>
-      <div class="metric-delta delta-up">▲ +2.4pp vs Sep 10</div>
-      <div class="metric-sub">Was 18.1% Sep 10 (low)</div>
-    </div>
-    <div class="metric-card blue">
+    <div class="metric-card emea">
       <div class="metric-label">EMEA Aged %</div>
       <div class="metric-value">17.6%</div>
-      <div class="metric-delta delta-up">▲ +3.8pp vs Sep 10</div>
-      <div class="metric-sub">BL: 426 | Aged: 75</div>
+      <div class="metric-delta du">▲ +3.8pp</div>
+      <div class="metric-sub">BL 426 · Aged 75</div>
     </div>
-    <div class="metric-card purple">
+    <div class="metric-card india">
       <div class="metric-label">IST Aged %</div>
       <div class="metric-value">17.6%</div>
-      <div class="metric-delta delta-up">▲ +0.7pp vs Sep 10</div>
-      <div class="metric-sub">BL: 466 | Aged: 82</div>
+      <div class="metric-delta du">▲ +0.7pp</div>
+      <div class="metric-sub">BL 466 · Aged 82</div>
     </div>
-    <div class="metric-card orange">
+    <div class="metric-card apac">
       <div class="metric-label">APAC Aged %</div>
       <div class="metric-value">33.0%</div>
-      <div class="metric-delta delta-up">▲ +4.4pp vs Sep 10</div>
-      <div class="metric-sub">BL: 203 | Aged: 67</div>
+      <div class="metric-delta du">▲ +4.4pp</div>
+      <div class="metric-sub">BL 203 · Aged 67</div>
     </div>
   </div>
 
-  <!-- Signal strip -->
+  <!-- Signals -->
   <div class="signal-strip">
     <div class="signal red">
       <div class="signal-label">🔴 Primary Signal</div>
-      <div class="signal-text"><strong>Aged rising 3 weeks straight.</strong> 190 → 207 → 224 (+34 total). Org% reversed after Sep 10 low — no recovery yet.</div>
+      <div class="signal-text"><strong>Aged rising 3 weeks straight:</strong> 190 → 207 → 224 (+34). Org% reversed to 20.5% after Sep 10 low of 18.1%.</div>
     </div>
     <div class="signal orange">
-      <div class="signal-label">🟠 APAC Alert</div>
-      <div class="signal-text"><strong>Rafik at 41.4%</strong> (29 cases, highest in org). All 3 APAC managers >28%. 4-week upward trajectory.</div>
+      <div class="signal-label">🟠 APAC</div>
+      <div class="signal-text"><strong>Rafik 41.4%</strong> — highest in org (29 cases). All 3 APAC managers >28%. No downward trend in any.</div>
     </div>
     <div class="signal yellow">
-      <div class="signal-label">🟡 P&T Watch</div>
-      <div class="signal-text"><strong>OmniStudio 3-week uptrend:</strong> 11.5% → 16.3% → 22.0%. <strong>Retail & CG</strong> biggest weekly jump: 33.0% → 43.4%.</div>
-    </div>
-    <div class="signal green">
-      <div class="signal-label">✅ Bright Spot</div>
-      <div class="signal-text"><strong>Naren Rajendran</strong> sustained recovery: 24.5% → 14.6% → 13.5%. Only EMEA+India manager trending down for 2 posts.</div>
+      <div class="signal-label">🟡 Watch</div>
+      <div class="signal-text"><strong>OmniStudio 3-wk surge:</strong> 11.5%→16.3%→22%. <strong>Retail & CG</strong> biggest weekly jump: 33%→43.4%.</div>
     </div>
   </div>
 
-  <!-- Overall trend charts -->
+  <!-- Overall trend -->
   <div class="section">
-    <div class="section-header">
-      <span class="section-icon">📈</span>
-      <h2>Overall Trend — 5 Weeks</h2>
-    </div>
+    <div class="sh"><span>📈</span><h2>Overall Trend</h2></div>
     <div class="grid-2">
       <div class="card">
-        <div class="card-title">Aged Case Count (>15d) — Absolute</div>
-        <div class="chart-wrap">
-          <canvas id="chartAgedCount"></canvas>
-        </div>
+        <div class="card-title">Aged Count (>15d)</div>
+        <div class="chart-h180"><canvas id="cAgedCount"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-title">Non-SP Backlog Total</div>
-        <div class="chart-wrap">
-          <canvas id="chartBL"></canvas>
-        </div>
+        <div class="card-title">Aged % by Region</div>
+        <div class="chart-h180"><canvas id="cRegionPct"></canvas></div>
       </div>
     </div>
-    <div class="card" style="margin-top:16px;">
-      <div class="card-title">Aged % by Region — 4 Weeks</div>
-      <div class="chart-wrap">
-        <canvas id="chartRegionPct"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <!-- Overall trend table -->
-  <div class="section">
-    <div class="section-header">
-      <span class="section-icon">🗓</span>
-      <h2>Trend Table — All 5 Data Points</h2>
-    </div>
-    <div class="card">
-      <table class="data-table">
+    <div class="card" style="margin-top:14px;">
+      <table class="dt">
         <thead>
           <tr>
-            <th>Date</th>
-            <th style="text-align:center">Non-SP BL</th>
-            <th style="text-align:center">Aged</th>
-            <th style="text-align:center">WoW Aged Δ</th>
-            <th style="text-align:center">Org %</th>
-            <th style="text-align:center">EMEA %</th>
-            <th style="text-align:center">IST %</th>
-            <th style="text-align:center">APAC %</th>
+            <th>Date</th><th class="c">Non-SP BL</th><th class="c">Aged</th><th class="c">WoW Δ</th>
+            <th class="c">Org %</th><th class="c">EMEA %</th><th class="c">IST %</th><th class="c">APAC %</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Aug 19</td>
-            <td style="text-align:center">798</td>
-            <td style="text-align:center">149</td>
-            <td style="text-align:center" class="num-down">—</td>
-            <td style="text-align:center">18.7%</td>
-            <td style="text-align:center">21.5%</td>
-            <td style="text-align:center">16.3%</td>
-            <td style="text-align:center"><span class="num-neutral">—</span></td>
-          </tr>
-          <tr>
-            <td>Aug 28</td>
-            <td style="text-align:center">971</td>
-            <td style="text-align:center">197</td>
-            <td style="text-align:center" class="num-up">▲ +48</td>
-            <td style="text-align:center">20.3%</td>
-            <td style="text-align:center">18.2%</td>
-            <td style="text-align:center">19.7%</td>
-            <td style="text-align:center">25.5% <span class="pill pill-orange">APAC added</span></td>
-          </tr>
-          <tr>
-            <td>Sep 2</td>
-            <td style="text-align:center">1,000</td>
-            <td style="text-align:center">190</td>
-            <td style="text-align:center" class="num-down">▼ −7</td>
-            <td style="text-align:center">19.0%</td>
-            <td style="text-align:center">14.9%</td>
-            <td style="text-align:center">17.0%</td>
-            <td style="text-align:center">32.3%</td>
-          </tr>
-          <tr>
-            <td>Sep 10</td>
-            <td style="text-align:center">1,142</td>
-            <td style="text-align:center">207</td>
-            <td style="text-align:center" class="num-up">▲ +17</td>
-            <td style="text-align:center">18.1%</td>
-            <td style="text-align:center">13.8%</td>
-            <td style="text-align:center">16.9%</td>
-            <td style="text-align:center">28.6%</td>
-          </tr>
-          <tr class="this-week">
-            <td>Sep 14</td>
-            <td style="text-align:center">1,095</td>
-            <td style="text-align:center">224</td>
-            <td style="text-align:center" class="num-up">▲ +17</td>
-            <td style="text-align:center">20.5%</td>
-            <td style="text-align:center">17.6%</td>
-            <td style="text-align:center">17.6%</td>
-            <td style="text-align:center">33.0%</td>
-          </tr>
+          <tr><td>Aug 28</td><td class="c">971</td><td class="c">197</td><td class="c nm">—</td><td class="c">20.3%</td><td class="c">18.2%</td><td class="c">19.7%</td><td class="c">25.5% <span class="pill p-orange">added</span></td></tr>
+          <tr><td>Sep 2</td><td class="c">1,000</td><td class="c">190</td><td class="c nd">▼ −7</td><td class="c">19.0%</td><td class="c">14.9%</td><td class="c">17.0%</td><td class="c">32.3%</td></tr>
+          <tr><td>Sep 10</td><td class="c">1,142</td><td class="c">207</td><td class="c nu">▲ +17</td><td class="c">18.1%</td><td class="c">13.8%</td><td class="c">16.9%</td><td class="c">28.6%</td></tr>
+          <tr class="tw"><td>Sep 14</td><td class="c">1,095</td><td class="c">224</td><td class="c nu">▲ +17</td><td class="c">20.5%</td><td class="c">17.6%</td><td class="c">17.6%</td><td class="c">33.0%</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- Manager trends -->
+  <!-- Manager trends — 3 separate regions -->
   <div class="section">
-    <div class="section-header">
-      <span class="section-icon">👤</span>
-      <h2>Manager Aged % — Last 3 Posts</h2>
-    </div>
+    <div class="sh"><span>👤</span><h2>Manager Aged % — Last 3 Posts</h2></div>
     <div class="grid-3">
       <div class="card">
-        <div class="card-title">EMEA — Aged % Trend</div>
-        <div class="chart-wrap-sm">
-          <canvas id="chartEMEAMgr"></canvas>
-        </div>
+        <div class="card-title" style="color:#a5b4fc;">● EMEA</div>
+        <div class="chart-h180"><canvas id="cEMEA"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-title">India — Aged % Trend</div>
-        <div class="chart-wrap-sm">
-          <canvas id="chartIndiaMgr"></canvas>
-        </div>
+        <div class="card-title" style="color:#d8b4fe;">● IST</div>
+        <div class="chart-h180"><canvas id="cIST"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-title">APAC — Aged % Trend (4 posts)</div>
-        <div class="chart-wrap-sm">
-          <canvas id="chartAPACMgr"></canvas>
-        </div>
+        <div class="card-title" style="color:#86efac;">● APAC (4 posts)</div>
+        <div class="chart-h180"><canvas id="cAPAC"></canvas></div>
       </div>
     </div>
 
-    <!-- Manager tables -->
-    <div class="grid-2" style="margin-top:16px;">
+    <div class="grid-3" style="margin-top:14px;">
+      <!-- EMEA table -->
       <div class="card">
-        <div class="card-title">EMEA + India Manager Detail</div>
-        <table class="mgr-table">
-          <thead>
-            <tr>
-              <th>Manager</th>
-              <th>Sep 2</th>
-              <th>Sep 10</th>
-              <th>Sep 14</th>
-              <th>WoW Δ</th>
-              <th>Today BL/Aged</th>
-            </tr>
-          </thead>
+        <div class="card-title" style="color:#a5b4fc;">EMEA — Manager Detail</div>
+        <table class="dt">
+          <thead><tr><th>Manager</th><th class="c">Sep 2</th><th class="c">Sep 10</th><th class="c">Sep 14</th><th class="c">WoW Δ</th><th class="r">BL / Aged</th></tr></thead>
           <tbody>
-            <tr><td colspan="6" style="padding:4px 10px;"><div class="region-label">EMEA</div></td></tr>
-            <tr>
-              <td>Darshan Jahagirdar</td>
-              <td>16.5%</td>
-              <td>18.2%</td>
-              <td><strong>24.3%</strong></td>
-              <td class="num-up">▲ +6.1pp</td>
-              <td>107 / 26</td>
-            </tr>
-            <tr>
-              <td>Sridhar Dwadasi</td>
-              <td>14.3%</td>
-              <td>15.0%</td>
-              <td><strong>20.5%</strong></td>
-              <td class="num-up">▲ +5.5pp</td>
-              <td>112 / 23</td>
-            </tr>
-            <tr>
-              <td>Seamus Redmond</td>
-              <td>20.0%</td>
-              <td>13.7%</td>
-              <td><strong>18.6%</strong></td>
-              <td class="num-up">▲ +4.9pp</td>
-              <td>59 / 11</td>
-            </tr>
-            <tr>
-              <td>Eshant Sharma</td>
-              <td>10.5%</td>
-              <td>5.1%</td>
-              <td><strong>10.5%</strong></td>
-              <td class="num-up">▲ +5.4pp</td>
-              <td>57 / 6</td>
-            </tr>
-            <tr>
-              <td>Apurva Ajit</td>
-              <td>11.2%</td>
-              <td>11.4%</td>
-              <td><strong>9.9%</strong></td>
-              <td class="num-down">▼ −1.5pp</td>
-              <td>91 / 9</td>
-            </tr>
-            <tr><td colspan="6" style="padding:4px 10px;"><div class="region-label">India</div></td></tr>
-            <tr>
-              <td>Manu Ramamurthy</td>
-              <td>13.7%</td>
-              <td>17.0%</td>
-              <td><strong>19.9%</strong></td>
-              <td class="num-up">▲ +2.9pp</td>
-              <td>166 / 33</td>
-            </tr>
-            <tr>
-              <td>Bhagat M</td>
-              <td>14.6%</td>
-              <td>18.6%</td>
-              <td><strong>18.4%</strong></td>
-              <td class="num-neutral">→ −0.2pp</td>
-              <td>174 / 32</td>
-            </tr>
-            <tr>
-              <td>Naren Rajendran</td>
-              <td>24.5%</td>
-              <td>14.6%</td>
-              <td><strong>13.5%</strong></td>
-              <td class="num-down">▼ −1.1pp</td>
-              <td>126 / 17</td>
-            </tr>
+            <tr><td>Darshan</td><td class="c">16.5%</td><td class="c">18.2%</td><td class="c"><strong>24.3%</strong></td><td class="c nu">▲ +6.1</td><td class="r">107 / 26</td></tr>
+            <tr><td>Sridhar</td><td class="c">14.3%</td><td class="c">15.0%</td><td class="c"><strong>20.5%</strong></td><td class="c nu">▲ +5.5</td><td class="r">112 / 23</td></tr>
+            <tr><td>Seamus</td><td class="c">20.0%</td><td class="c">13.7%</td><td class="c"><strong>18.6%</strong></td><td class="c nu">▲ +4.9</td><td class="r">59 / 11</td></tr>
+            <tr><td>Eshant</td><td class="c">10.5%</td><td class="c">5.1%</td><td class="c">10.5%</td><td class="c nu">▲ +5.4</td><td class="r">57 / 6</td></tr>
+            <tr><td>Apurva ✅</td><td class="c">11.2%</td><td class="c">11.4%</td><td class="c"><strong>9.9%</strong></td><td class="c nd">▼ −1.5</td><td class="r">91 / 9</td></tr>
           </tbody>
         </table>
       </div>
+      <!-- IST table -->
       <div class="card">
-        <div class="card-title">APAC Manager Detail (4 posts)</div>
-        <table class="mgr-table">
-          <thead>
-            <tr>
-              <th>Manager</th>
-              <th>Aug 28</th>
-              <th>Sep 2</th>
-              <th>Sep 10</th>
-              <th>Sep 14</th>
-              <th>WoW Δ</th>
-            </tr>
-          </thead>
+        <div class="card-title" style="color:#d8b4fe;">IST — Manager Detail</div>
+        <table class="dt">
+          <thead><tr><th>Manager</th><th class="c">Sep 2</th><th class="c">Sep 10</th><th class="c">Sep 14</th><th class="c">WoW Δ</th><th class="r">BL / Aged</th></tr></thead>
           <tbody>
-            <tr>
-              <td>Rafik Shaikh</td>
-              <td>34.8%</td>
-              <td>37.9%</td>
-              <td>35.6%</td>
-              <td><strong>41.4%</strong></td>
-              <td class="num-up">▲ +5.8pp</td>
-            </tr>
-            <tr>
-              <td>Mahima Prathaban</td>
-              <td>25.0%</td>
-              <td>33.3%</td>
-              <td>23.9%</td>
-              <td><strong>28.8%</strong></td>
-              <td class="num-up">▲ +4.9pp</td>
-            </tr>
-            <tr>
-              <td>Swetha B</td>
-              <td>16.4%</td>
-              <td>26.8%</td>
-              <td>24.7%</td>
-              <td><strong>28.4%</strong></td>
-              <td class="num-up">▲ +3.7pp</td>
-            </tr>
+            <tr><td>Manu</td><td class="c">13.7%</td><td class="c">17.0%</td><td class="c"><strong>19.9%</strong></td><td class="c nu">▲ +2.9</td><td class="r">166 / 33</td></tr>
+            <tr><td>Bhagat</td><td class="c">14.6%</td><td class="c">18.6%</td><td class="c">18.4%</td><td class="c nm">→ −0.2</td><td class="r">174 / 32</td></tr>
+            <tr><td>Naren ✅</td><td class="c">24.5%</td><td class="c">14.6%</td><td class="c"><strong>13.5%</strong></td><td class="c nd">▼ −1.1</td><td class="r">126 / 17</td></tr>
           </tbody>
         </table>
-        <div style="margin-top:14px;" class="signal orange">
-          <div class="signal-label">APAC Context</div>
-          <div class="signal-text">APAC was added to scope on Aug 28. All 3 managers have been structurally elevated since day 1. Rafik's 41.4% (29 aged cases) is the highest aged % in the org. No downward trend visible in any of the three managers.</div>
-        </div>
+      </div>
+      <!-- APAC table -->
+      <div class="card">
+        <div class="card-title" style="color:#86efac;">APAC — Manager Detail</div>
+        <table class="dt">
+          <thead><tr><th>Manager</th><th class="c">Aug 28</th><th class="c">Sep 2</th><th class="c">Sep 10</th><th class="c">Sep 14</th><th class="c">WoW Δ</th></tr></thead>
+          <tbody>
+            <tr><td>Rafik</td><td class="c">34.8%</td><td class="c">37.9%</td><td class="c">35.6%</td><td class="c"><strong>41.4%</strong></td><td class="c nu">▲ +5.8</td></tr>
+            <tr><td>Mahima</td><td class="c">25.0%</td><td class="c">33.3%</td><td class="c">23.9%</td><td class="c"><strong>28.8%</strong></td><td class="c nu">▲ +4.9</td></tr>
+            <tr><td>Swetha</td><td class="c">16.4%</td><td class="c">26.8%</td><td class="c">24.7%</td><td class="c"><strong>28.4%</strong></td><td class="c nu">▲ +3.7</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 
   <!-- P&T trends -->
   <div class="section">
-    <div class="section-header">
-      <span class="section-icon">📦</span>
-      <h2>Top P&T Aged Trends — Last 3 Posts</h2>
-    </div>
+    <div class="sh"><span>📦</span><h2>Top P&T Aged Trends — Last 3 Posts</h2></div>
     <div class="grid-2">
       <div class="card">
-        <div class="card-title">P&T Aged Count — Sep 2 · Sep 10 · Sep 14</div>
-        <div class="chart-wrap-lg">
-          <canvas id="chartPTCount"></canvas>
-        </div>
+        <div class="card-title">Aged Count per P&T</div>
+        <div class="chart-h260"><canvas id="cPTCount"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-title">P&T Aged % — Sep 2 · Sep 10 · Sep 14</div>
-        <div class="chart-wrap-lg">
-          <canvas id="chartPTPct"></canvas>
-        </div>
+        <div class="card-title">Aged % per P&T</div>
+        <div class="chart-h260"><canvas id="cPTPct"></canvas></div>
       </div>
     </div>
-    <div class="card" style="margin-top:16px;">
-      <div class="card-title">P&T Comparison Table</div>
-      <table class="data-table">
+    <div class="card" style="margin-top:14px;">
+      <table class="dt">
         <thead>
           <tr>
             <th>P&T</th>
-            <th style="text-align:center">Sep 2 BL</th>
-            <th style="text-align:center">Sep 2 Aged</th>
-            <th style="text-align:center">Sep 2 %</th>
-            <th style="text-align:center">Sep 10 Aged</th>
-            <th style="text-align:center">Sep 10 %</th>
-            <th style="text-align:center">Sep 14 BL</th>
-            <th style="text-align:center">Sep 14 Aged</th>
-            <th style="text-align:center">Sep 14 %</th>
-            <th style="text-align:center">3-wk Δ %</th>
+            <th class="c">Sep 2 Aged</th><th class="c">Sep 10 Aged</th><th class="c">Sep 14 Aged</th>
+            <th class="c">Sep 2 %</th><th class="c">Sep 10 %</th><th class="c">Sep 14 %</th>
+            <th class="c">3-wk Δ pp</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Life Sciences</td>
-            <td style="text-align:center">216</td>
-            <td style="text-align:center">43</td>
-            <td style="text-align:center">19.9%</td>
-            <td style="text-align:center">39</td>
-            <td style="text-align:center">18.5%</td>
-            <td style="text-align:center">198</td>
-            <td style="text-align:center">39</td>
-            <td style="text-align:center">19.7%</td>
-            <td style="text-align:center" class="num-neutral">→ −0.2pp</td>
-          </tr>
-          <tr>
-            <td>Retail & CG</td>
-            <td style="text-align:center">69</td>
-            <td style="text-align:center">29</td>
-            <td style="text-align:center">42.0%</td>
-            <td style="text-align:center">30</td>
-            <td style="text-align:center">33.0%</td>
-            <td style="text-align:center">83</td>
-            <td style="text-align:center">36</td>
-            <td style="text-align:center"><strong>43.4%</strong></td>
-            <td style="text-align:center" class="num-up">▲ +1.4pp</td>
-          </tr>
-          <tr>
-            <td>CPQ / OM / DC</td>
-            <td style="text-align:center">123</td>
-            <td style="text-align:center">28</td>
-            <td style="text-align:center">22.8%</td>
-            <td style="text-align:center">29</td>
-            <td style="text-align:center">20.4%</td>
-            <td style="text-align:center">134</td>
-            <td style="text-align:center">31</td>
-            <td style="text-align:center">23.1%</td>
-            <td style="text-align:center" class="num-up">▲ +0.3pp</td>
-          </tr>
-          <tr>
-            <td>OmniStudio <span class="pill pill-red">3-wk ↑</span></td>
-            <td style="text-align:center">113</td>
-            <td style="text-align:center">13</td>
-            <td style="text-align:center">11.5%</td>
-            <td style="text-align:center">21</td>
-            <td style="text-align:center">16.3%</td>
-            <td style="text-align:center">118</td>
-            <td style="text-align:center">26</td>
-            <td style="text-align:center"><strong>22.0%</strong></td>
-            <td style="text-align:center" class="num-up">▲ +10.5pp</td>
-          </tr>
-          <tr>
-            <td>Product Configurator</td>
-            <td style="text-align:center">79</td>
-            <td style="text-align:center">12</td>
-            <td style="text-align:center">15.2%</td>
-            <td style="text-align:center">13</td>
-            <td style="text-align:center">15.5%</td>
-            <td style="text-align:center">89</td>
-            <td style="text-align:center">16</td>
-            <td style="text-align:center">18.0%</td>
-            <td style="text-align:center" class="num-up">▲ +2.8pp</td>
-          </tr>
-          <tr>
-            <td>Transaction Mgmt</td>
-            <td style="text-align:center">38</td>
-            <td style="text-align:center">6</td>
-            <td style="text-align:center">15.8%</td>
-            <td style="text-align:center">7</td>
-            <td style="text-align:center">16.3%</td>
-            <td style="text-align:center">41</td>
-            <td style="text-align:center">7</td>
-            <td style="text-align:center">17.1%</td>
-            <td style="text-align:center" class="num-up">▲ +1.3pp</td>
-          </tr>
-          <tr>
-            <td>Financial Services</td>
-            <td style="text-align:center">—</td>
-            <td style="text-align:center">—</td>
-            <td style="text-align:center">—</td>
-            <td style="text-align:center">—</td>
-            <td style="text-align:center">—</td>
-            <td style="text-align:center">36</td>
-            <td style="text-align:center">7</td>
-            <td style="text-align:center">19.4%</td>
-            <td style="text-align:center"><span class="pill pill-orange">New</span></td>
-          </tr>
+          <tr><td>Life Sciences</td><td class="c">43</td><td class="c">39</td><td class="c">39</td><td class="c">19.9%</td><td class="c">18.5%</td><td class="c">19.7%</td><td class="c nm">→ −0.2</td></tr>
+          <tr><td>Retail & CG <span class="pill p-red">↑</span></td><td class="c">29</td><td class="c">30</td><td class="c"><strong>36</strong></td><td class="c">42.0%</td><td class="c">33.0%</td><td class="c"><strong>43.4%</strong></td><td class="c nu">+1.4</td></tr>
+          <tr><td>CPQ / OM / DC</td><td class="c">28</td><td class="c">29</td><td class="c">31</td><td class="c">22.8%</td><td class="c">20.4%</td><td class="c">23.1%</td><td class="c nu">+0.3</td></tr>
+          <tr><td>OmniStudio <span class="pill p-red">3-wk ↑↑</span></td><td class="c">13</td><td class="c">21</td><td class="c"><strong>26</strong></td><td class="c">11.5%</td><td class="c">16.3%</td><td class="c"><strong>22.0%</strong></td><td class="c nu">+10.5</td></tr>
+          <tr><td>Prod Configurator</td><td class="c">12</td><td class="c">13</td><td class="c">16</td><td class="c">15.2%</td><td class="c">15.5%</td><td class="c">18.0%</td><td class="c nu">+2.8</td></tr>
+          <tr><td>Transaction Mgmt</td><td class="c">6</td><td class="c">7</td><td class="c">7</td><td class="c">15.8%</td><td class="c">16.3%</td><td class="c">17.1%</td><td class="c nu">+1.3</td></tr>
+          <tr><td>Financial Services <span class="pill p-orange">new</span></td><td class="c">—</td><td class="c">—</td><td class="c">7</td><td class="c">—</td><td class="c">—</td><td class="c">19.4%</td><td class="c nm">—</td></tr>
         </tbody>
       </table>
     </div>
@@ -619,261 +316,126 @@
 
   <!-- Bucket breakdown -->
   <div class="section">
-    <div class="section-header">
-      <span class="section-icon">🗂</span>
-      <h2>Aged Case Breakdown — Sep 14 (224 total)</h2>
-    </div>
+    <div class="sh"><span>🗂</span><h2>Aged Case Breakdown — Sep 14 (224 total)</h2></div>
     <div class="grid-2">
       <div class="card">
         <div class="card-title">Bucket Distribution</div>
-        <div class="bucket-bar">
-          <div class="bb-nopath" style="width:46.9%">105</div>
+        <div class="bbar">
+          <div class="bb-np" style="width:46.9%">105</div>
           <div class="bb-gus" style="width:25.0%">56</div>
-          <div class="bb-swarm" style="width:15.6%">35</div>
+          <div class="bb-sw" style="width:15.6%">35</div>
           <div class="bb-bug" style="width:12.1%">27</div>
-          <div class="bb-nmi" style="width:0.4%"></div>
         </div>
-        <div class="bucket-legend">
-          <div class="bucket-legend-item"><div class="bucket-legend-dot" style="background:#ef4444"></div>No Path: 105 (47%)</div>
-          <div class="bucket-legend-item"><div class="bucket-legend-dot" style="background:#4f6ef7"></div>Has GUS: 56 (25%)</div>
-          <div class="bucket-legend-item"><div class="bucket-legend-dot" style="background:#f59e0b"></div>Swarm/No GUS: 35 (16%)</div>
-          <div class="bucket-legend-item"><div class="bucket-legend-dot" style="background:#22c55e"></div>Has Bug: 27 (12%)</div>
-          <div class="bucket-legend-item"><div class="bucket-legend-dot" style="background:#94a3b8"></div>Cust/NMI: 1 (0%)</div>
+        <div class="bleg">
+          <div class="bleg-i"><div class="bleg-dot" style="background:#ef4444"></div>No Path: 105 (47%)</div>
+          <div class="bleg-i"><div class="bleg-dot" style="background:#4f6ef7"></div>Has GUS: 56 (25%)</div>
+          <div class="bleg-i"><div class="bleg-dot" style="background:#f59e0b"></div>Swarm/No GUS: 35 (16%)</div>
+          <div class="bleg-i"><div class="bleg-dot" style="background:#22c55e"></div>Has Bug: 27 (12%)</div>
         </div>
-        <div style="margin-top:14px;">
-          <div class="chart-wrap-sm"><canvas id="chartBucket"></canvas></div>
-        </div>
+        <div style="margin-top:14px;" class="chart-h180"><canvas id="cBucket"></canvas></div>
       </div>
       <div class="card">
         <div class="card-title">Bucket Detail</div>
-        <table class="data-table">
-          <thead>
-            <tr><th>Bucket</th><th style="text-align:center">Count</th><th style="text-align:center">% of Aged</th><th>Action</th></tr>
-          </thead>
+        <table class="dt">
+          <thead><tr><th>Bucket</th><th class="c">Count</th><th class="c">% Aged</th><th>Action</th></tr></thead>
           <tbody>
-            <tr>
-              <td><span class="pill pill-red">No Path</span></td>
-              <td style="text-align:center"><strong>105</strong></td>
-              <td style="text-align:center" class="num-up">47%</td>
-              <td>Raise GUS, swarm, or close</td>
-            </tr>
-            <tr>
-              <td><span class="pill pill-blue">Has GUS</span></td>
-              <td style="text-align:center">56</td>
-              <td style="text-align:center">25%</td>
-              <td>Confirm GUS is active</td>
-            </tr>
-            <tr>
-              <td><span class="pill pill-yellow">Swarm/No GUS</span></td>
-              <td style="text-align:center">35</td>
-              <td style="text-align:center">16%</td>
-              <td>Link GUS to swarm (hygiene)</td>
-            </tr>
-            <tr>
-              <td><span class="pill pill-green">Has Bug</span></td>
-              <td style="text-align:center">27</td>
-              <td style="text-align:center">12%</td>
-              <td>Monitor engineering progress</td>
-            </tr>
-            <tr>
-              <td><span class="pill">Cust/NMI</span></td>
-              <td style="text-align:center">1</td>
-              <td style="text-align:center">0%</td>
-              <td>Awaiting customer response</td>
-            </tr>
+            <tr><td><span class="pill p-red">No Path</span></td><td class="c"><strong>105</strong></td><td class="c nu">47%</td><td>Raise GUS, swarm, or close</td></tr>
+            <tr><td><span class="pill p-blue">Has GUS</span></td><td class="c">56</td><td class="c">25%</td><td>Confirm GUS is active</td></tr>
+            <tr><td><span class="pill p-yellow">Swarm/No GUS</span></td><td class="c">35</td><td class="c">16%</td><td>Link GUS to swarm</td></tr>
+            <tr><td><span class="pill p-green">Has Bug</span></td><td class="c">27</td><td class="c">12%</td><td>Monitor engineering progress</td></tr>
+            <tr><td><span class="pill">Cust/NMI</span></td><td class="c">1</td><td class="c">0%</td><td>Awaiting customer</td></tr>
           </tbody>
         </table>
-        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-          <div style="flex:1; min-width:120px; background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.3); border-radius:8px; padding:10px 12px;">
-            <div style="font-size:10px; font-weight:700; color:#fca5a5; text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px;">🔴 Red Account</div>
-            <div style="font-size:24px; font-weight:800; color:#fca5a5;">29</div>
-            <div style="font-size:11px; color:var(--muted);">of 224 aged (13%)</div>
+        <div style="margin-top:14px; display:flex; gap:10px;">
+          <div style="flex:1; background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.3); border-radius:8px; padding:10px 12px;">
+            <div style="font-size:10px;font-weight:700;color:#fca5a5;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;">🔴 Red Account</div>
+            <div style="font-size:26px;font-weight:800;color:#fca5a5;">29</div>
+            <div style="font-size:11px;color:var(--muted);">of 224 aged (13%)</div>
           </div>
-          <div style="flex:1; min-width:120px; background:rgba(245,158,11,.08); border:1px solid rgba(245,158,11,.3); border-radius:8px; padding:10px 12px;">
-            <div style="font-size:10px; font-weight:700; color:#fcd34d; text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px;">⚠️ Untouched 1+d</div>
-            <div style="font-size:24px; font-weight:800; color:#fcd34d;">32</div>
-            <div style="font-size:11px; color:var(--muted);">no public activity</div>
-          </div>
-          <div style="flex:1; min-width:120px; background:rgba(249,115,22,.08); border:1px solid rgba(249,115,22,.3); border-radius:8px; padding:10px 12px;">
-            <div style="font-size:10px; font-weight:700; color:#fdba74; text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px;">👻 Ghost Swarm</div>
-            <div style="font-size:24px; font-weight:800; color:#fdba74;">35</div>
-            <div style="font-size:11px; color:var(--muted);">active swarm flag set</div>
+          <div style="flex:1; background:rgba(245,158,11,.08); border:1px solid rgba(245,158,11,.3); border-radius:8px; padding:10px 12px;">
+            <div style="font-size:10px;font-weight:700;color:#fcd34d;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;">⚠️ Untouched 1+d</div>
+            <div style="font-size:26px;font-weight:800;color:#fcd34d;">32</div>
+            <div style="font-size:11px;color:var(--muted);">no public activity</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-</div><!-- end container -->
+</div>
 
-<footer>Aged Backlog Trend Dashboard · Sep 14, 2026 · Data: OrgCS live query · EMEA + India + APAC · Manager-filtered · All Industry + Revenue products</footer>
+<footer>Aged Backlog Trend · Sep 14, 2026 · OrgCS live query · EMEA · IST · APAC · All Industry + Revenue products</footer>
 
 <script>
-const WEEKS_5 = ['Aug 19','Aug 28','Sep 2','Sep 10','Sep 14'];
-const WEEKS_4 = ['Aug 28','Sep 2','Sep 10','Sep 14'];
-const WEEKS_3 = ['Sep 2','Sep 10','Sep 14'];
-const grid = 'rgba(46,49,80,0.6)';
-const tick = '#94a3b8';
-
+const W4 = ['Aug 28','Sep 2','Sep 10','Sep 14'];
+const W3 = ['Sep 2','Sep 10','Sep 14'];
+const grid = 'rgba(46,49,80,0.6)', tick = '#94a3b8';
 const def = (id, cfg) => new Chart(document.getElementById(id).getContext('2d'), cfg);
-
-const baseOpts = (extra={}) => ({
-  responsive: true, maintainAspectRatio: false,
-  plugins: { legend: { labels: { color: tick, font: { size: 11 }, boxWidth: 12, padding: 12 } }, tooltip: { mode: 'index', intersect: false } },
-  scales: {
-    x: { grid: { color: grid }, ticks: { color: tick, font: { size: 11 } } },
-    y: { grid: { color: grid }, ticks: { color: tick, font: { size: 11 } }, ...extra }
-  }
+const base = (yExtra={}) => ({
+  responsive:true, maintainAspectRatio:false,
+  plugins:{ legend:{ labels:{ color:tick, font:{size:11}, boxWidth:11, padding:10 } }, tooltip:{ mode:'index', intersect:false } },
+  scales:{ x:{ grid:{color:grid}, ticks:{color:tick,font:{size:11}} }, y:{ grid:{color:grid}, ticks:{color:tick,font:{size:11}}, ...yExtra } }
 });
 
-// Aged count
-def('chartAgedCount', {
-  type: 'line',
-  data: {
-    labels: WEEKS_5,
-    datasets: [{
-      label: 'Aged Cases',
-      data: [149, 197, 190, 207, 224],
-      borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,.12)',
-      borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#ef4444', fill: true, tension: .3
-    }]
-  },
-  options: { ...baseOpts({ beginAtZero: false, suggestedMin: 120 }),
-    plugins: { ...baseOpts().plugins, annotation: {} }
-  }
-});
+def('cAgedCount',{ type:'line', data:{ labels:W4, datasets:[{
+  label:'Aged Cases', data:[197,190,207,224],
+  borderColor:'#ef4444', backgroundColor:'rgba(239,68,68,.12)',
+  borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#ef4444', fill:true, tension:.3
+}]}, options:base({beginAtZero:false,suggestedMin:160}) });
 
-// BL
-def('chartBL', {
-  type: 'line',
-  data: {
-    labels: WEEKS_5,
-    datasets: [{
-      label: 'Non-SP BL',
-      data: [798, 971, 1000, 1142, 1095],
-      borderColor: '#4f6ef7', backgroundColor: 'rgba(79,110,247,.12)',
-      borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#4f6ef7', fill: true, tension: .3
-    }]
-  },
-  options: baseOpts({ beginAtZero: false, suggestedMin: 700 })
-});
+def('cRegionPct',{ type:'line', data:{ labels:W4, datasets:[
+  { label:'Org',  data:[20.3,19.0,18.1,20.5], borderColor:'#e2e8f0', borderDash:[4,3], borderWidth:2, pointRadius:4, pointBackgroundColor:'#e2e8f0', fill:false },
+  { label:'EMEA', data:[18.2,14.9,13.8,17.6], borderColor:'#4f6ef7', borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#4f6ef7', fill:false },
+  { label:'IST',  data:[19.7,17.0,16.9,17.6], borderColor:'#a855f7', borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#a855f7', fill:false },
+  { label:'APAC', data:[25.5,32.3,28.6,33.0], borderColor:'#22c55e', borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#22c55e', fill:false }
+]}, options:base({beginAtZero:false,suggestedMin:10,suggestedMax:40}) });
 
-// Region %
-def('chartRegionPct', {
-  type: 'line',
-  data: {
-    labels: WEEKS_4,
-    datasets: [
-      { label: 'Org', data: [20.3, 19.0, 18.1, 20.5], borderColor: '#e2e8f0', backgroundColor: 'transparent', borderWidth: 2, borderDash: [4,3], pointRadius: 4, pointBackgroundColor: '#e2e8f0' },
-      { label: 'EMEA', data: [18.2, 14.9, 13.8, 17.6], borderColor: '#4f6ef7', backgroundColor: 'transparent', borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#4f6ef7' },
-      { label: 'IST', data: [19.7, 17.0, 16.9, 17.6], borderColor: '#a855f7', backgroundColor: 'transparent', borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#a855f7' },
-      { label: 'APAC', data: [25.5, 32.3, 28.6, 33.0], borderColor: '#22c55e', backgroundColor: 'transparent', borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#22c55e' }
-    ]
-  },
-  options: baseOpts({ beginAtZero: false, suggestedMin: 10, suggestedMax: 40 })
-});
+def('cEMEA',{ type:'line', data:{ labels:W3, datasets:[
+  { label:'Darshan', data:[16.5,18.2,24.3], borderColor:'#ef4444', borderWidth:2, pointRadius:4, pointBackgroundColor:'#ef4444', fill:false },
+  { label:'Sridhar', data:[14.3,15.0,20.5], borderColor:'#f97316', borderWidth:2, pointRadius:4, pointBackgroundColor:'#f97316', fill:false },
+  { label:'Seamus',  data:[20.0,13.7,18.6], borderColor:'#f59e0b', borderWidth:2, pointRadius:4, pointBackgroundColor:'#f59e0b', fill:false },
+  { label:'Eshant',  data:[10.5, 5.1,10.5], borderColor:'#a5b4fc', borderWidth:2, pointRadius:4, pointBackgroundColor:'#a5b4fc', fill:false },
+  { label:'Apurva',  data:[11.2,11.4, 9.9], borderColor:'#22c55e', borderWidth:2, pointRadius:4, pointBackgroundColor:'#22c55e', fill:false }
+]}, options:{ ...base({beginAtZero:false,suggestedMin:0,suggestedMax:30}),
+  plugins:{ legend:{ labels:{color:tick,font:{size:10},boxWidth:9,padding:7} }, tooltip:{mode:'index',intersect:false} } } });
 
-// EMEA mgr
-def('chartEMEAMgr', {
-  type: 'line',
-  data: {
-    labels: WEEKS_3,
-    datasets: [
-      { label: 'Darshan', data: [16.5, 18.2, 24.3], borderColor: '#ef4444', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#ef4444', fill: false },
-      { label: 'Sridhar', data: [14.3, 15.0, 20.5], borderColor: '#f97316', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#f97316', fill: false },
-      { label: 'Seamus', data: [20.0, 13.7, 18.6], borderColor: '#f59e0b', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#f59e0b', fill: false },
-      { label: 'Eshant', data: [10.5, 5.1, 10.5], borderColor: '#a5b4fc', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#a5b4fc', fill: false },
-      { label: 'Apurva', data: [11.2, 11.4, 9.9], borderColor: '#22c55e', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#22c55e', fill: false }
-    ]
-  },
-  options: { ...baseOpts({ beginAtZero: false, suggestedMin: 0, suggestedMax: 30 }),
-    plugins: { legend: { labels: { color: tick, font: { size: 10 }, boxWidth: 10, padding: 8 } }, tooltip: { mode: 'index', intersect: false } }
-  }
-});
+def('cIST',{ type:'line', data:{ labels:W3, datasets:[
+  { label:'Manu',  data:[13.7,17.0,19.9], borderColor:'#f97316', borderWidth:2, pointRadius:4, pointBackgroundColor:'#f97316', fill:false },
+  { label:'Bhagat',data:[14.6,18.6,18.4], borderColor:'#f59e0b', borderWidth:2, pointRadius:4, pointBackgroundColor:'#f59e0b', fill:false },
+  { label:'Naren', data:[24.5,14.6,13.5], borderColor:'#22c55e', borderWidth:2, pointRadius:4, pointBackgroundColor:'#22c55e', fill:false }
+]}, options:{ ...base({beginAtZero:false,suggestedMin:0,suggestedMax:30}),
+  plugins:{ legend:{ labels:{color:tick,font:{size:10},boxWidth:9,padding:7} }, tooltip:{mode:'index',intersect:false} } } });
 
-// India mgr
-def('chartIndiaMgr', {
-  type: 'line',
-  data: {
-    labels: WEEKS_3,
-    datasets: [
-      { label: 'Manu', data: [13.7, 17.0, 19.9], borderColor: '#f97316', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#f97316', fill: false },
-      { label: 'Bhagat', data: [14.6, 18.6, 18.4], borderColor: '#f59e0b', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#f59e0b', fill: false },
-      { label: 'Naren', data: [24.5, 14.6, 13.5], borderColor: '#22c55e', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#22c55e', fill: false }
-    ]
-  },
-  options: { ...baseOpts({ beginAtZero: false, suggestedMin: 0, suggestedMax: 30 }),
-    plugins: { legend: { labels: { color: tick, font: { size: 10 }, boxWidth: 10, padding: 8 } }, tooltip: { mode: 'index', intersect: false } }
-  }
-});
+def('cAPAC',{ type:'line', data:{ labels:W4, datasets:[
+  { label:'Rafik',  data:[34.8,37.9,35.6,41.4], borderColor:'#ef4444', borderWidth:2, pointRadius:4, pointBackgroundColor:'#ef4444', fill:false },
+  { label:'Mahima', data:[25.0,33.3,23.9,28.8], borderColor:'#f97316', borderWidth:2, pointRadius:4, pointBackgroundColor:'#f97316', fill:false },
+  { label:'Swetha', data:[16.4,26.8,24.7,28.4], borderColor:'#f59e0b', borderWidth:2, pointRadius:4, pointBackgroundColor:'#f59e0b', fill:false }
+]}, options:{ ...base({beginAtZero:false,suggestedMin:10,suggestedMax:50}),
+  plugins:{ legend:{ labels:{color:tick,font:{size:10},boxWidth:9,padding:7} }, tooltip:{mode:'index',intersect:false} } } });
 
-// APAC mgr
-def('chartAPACMgr', {
-  type: 'line',
-  data: {
-    labels: WEEKS_4,
-    datasets: [
-      { label: 'Rafik', data: [34.8, 37.9, 35.6, 41.4], borderColor: '#ef4444', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#ef4444', fill: false },
-      { label: 'Mahima', data: [25.0, 33.3, 23.9, 28.8], borderColor: '#f97316', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#f97316', fill: false },
-      { label: 'Swetha', data: [16.4, 26.8, 24.7, 28.4], borderColor: '#f59e0b', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#f59e0b', fill: false }
-    ]
-  },
-  options: { ...baseOpts({ beginAtZero: false, suggestedMin: 10, suggestedMax: 50 }),
-    plugins: { legend: { labels: { color: tick, font: { size: 10 }, boxWidth: 10, padding: 8 } }, tooltip: { mode: 'index', intersect: false } }
-  }
-});
+def('cPTCount',{ type:'bar', data:{ labels:['Life Sciences','Retail & CG','CPQ/OM/DC','OmniStudio','Prod Config','Txn Mgmt','Fin Services'],
+  datasets:[
+    { label:'Sep 2',  data:[43,29,28,13,12,6,null], backgroundColor:'rgba(79,110,247,.55)', borderRadius:3 },
+    { label:'Sep 10', data:[39,30,29,21,13,7,null],  backgroundColor:'rgba(168,85,247,.55)', borderRadius:3 },
+    { label:'Sep 14', data:[39,36,31,26,16,7,7],     backgroundColor:'rgba(239,68,68,.75)',  borderRadius:3 }
+  ]}, options:{ ...base({beginAtZero:true}),
+  plugins:{ legend:{ labels:{color:tick,font:{size:11},boxWidth:11,padding:10} }, tooltip:{mode:'index',intersect:false} } } });
 
-// P&T count
-def('chartPTCount', {
-  type: 'bar',
-  data: {
-    labels: ['Life Sciences','Retail & CG','CPQ/OM/DC','OmniStudio','Prod Config','Txn Mgmt','Fin Services'],
-    datasets: [
-      { label: 'Sep 2', data: [43, 29, 28, 13, 12, 6, null], backgroundColor: 'rgba(79,110,247,.5)', borderRadius: 3 },
-      { label: 'Sep 10', data: [39, 30, 29, 21, 13, 7, null], backgroundColor: 'rgba(168,85,247,.5)', borderRadius: 3 },
-      { label: 'Sep 14', data: [39, 36, 31, 26, 16, 7, 7], backgroundColor: 'rgba(239,68,68,.7)', borderRadius: 3 }
-    ]
-  },
-  options: { ...baseOpts({ beginAtZero: true }),
-    plugins: { legend: { labels: { color: tick, font: { size: 11 }, boxWidth: 12, padding: 10 } }, tooltip: { mode: 'index', intersect: false } }
-  }
-});
+def('cPTPct',{ type:'line', data:{ labels:['Life Sci','Retail&CG','CPQ/OM/DC','OmniStudio','Prod Config','Txn Mgmt'],
+  datasets:[
+    { label:'Sep 2',  data:[19.9,42.0,22.8,11.5,15.2,15.8], borderColor:'rgba(79,110,247,.9)',  borderWidth:2, pointRadius:4, fill:false },
+    { label:'Sep 10', data:[18.5,33.0,20.4,16.3,15.5,16.3], borderColor:'rgba(168,85,247,.9)', borderWidth:2, pointRadius:4, fill:false },
+    { label:'Sep 14', data:[19.7,43.4,23.1,22.0,18.0,17.1], borderColor:'#ef4444',              borderWidth:2.5, pointRadius:5, fill:false }
+  ]}, options:{ ...base({beginAtZero:false,suggestedMin:0,suggestedMax:55}),
+  plugins:{ legend:{ labels:{color:tick,font:{size:11},boxWidth:11,padding:10} }, tooltip:{mode:'index',intersect:false} } } });
 
-// P&T %
-def('chartPTPct', {
-  type: 'line',
-  data: {
-    labels: ['Life Sciences','Retail & CG','CPQ/OM/DC','OmniStudio','Prod Config','Txn Mgmt'],
-    datasets: [
-      { label: 'Sep 2', data: [19.9, 42.0, 22.8, 11.5, 15.2, 15.8], borderColor: 'rgba(79,110,247,.8)', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 4, pointBackgroundColor: 'rgba(79,110,247,.8)' },
-      { label: 'Sep 10', data: [18.5, 33.0, 20.4, 16.3, 15.5, 16.3], borderColor: 'rgba(168,85,247,.8)', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 4, pointBackgroundColor: 'rgba(168,85,247,.8)' },
-      { label: 'Sep 14', data: [19.7, 43.4, 23.1, 22.0, 18.0, 17.1], borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2.5, pointRadius: 5, pointBackgroundColor: '#ef4444' }
-    ]
-  },
-  options: { ...baseOpts({ beginAtZero: false, suggestedMin: 0, suggestedMax: 55 }),
-    plugins: { legend: { labels: { color: tick, font: { size: 11 }, boxWidth: 12, padding: 10 } }, tooltip: { mode: 'index', intersect: false } }
-  }
-});
-
-// Bucket pie
-def('chartBucket', {
-  type: 'doughnut',
-  data: {
-    labels: ['No Path (47%)', 'Has GUS (25%)', 'Swarm/No GUS (16%)', 'Has Bug (12%)', 'Cust/NMI (0%)'],
-    datasets: [{
-      data: [105, 56, 35, 27, 1],
-      backgroundColor: ['rgba(239,68,68,.8)', 'rgba(79,110,247,.8)', 'rgba(245,158,11,.8)', 'rgba(34,197,94,.8)', 'rgba(148,163,184,.8)'],
-      borderColor: '#0f1117', borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { position: 'right', labels: { color: tick, font: { size: 11 }, boxWidth: 12, padding: 10 } }
-    },
-    cutout: '60%'
-  }
-});
+def('cBucket',{ type:'doughnut', data:{
+  labels:['No Path (47%)','Has GUS (25%)','Swarm/No GUS (16%)','Has Bug (12%)','Cust/NMI (<1%)'],
+  datasets:[{ data:[105,56,35,27,1],
+    backgroundColor:['rgba(239,68,68,.8)','rgba(79,110,247,.8)','rgba(245,158,11,.8)','rgba(34,197,94,.8)','rgba(148,163,184,.8)'],
+    borderColor:'#0f1117', borderWidth:2 }]},
+  options:{ responsive:true, maintainAspectRatio:false, cutout:'62%',
+    plugins:{ legend:{ position:'right', labels:{color:tick,font:{size:11},boxWidth:11,padding:10} } } } });
 </script>
 </body>
 </html>
