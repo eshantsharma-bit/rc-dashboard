@@ -126,12 +126,6 @@
         <span>Aged threshold: >15 days</span>
       </div>
     </div>
-    <div class="header-badges">
-      <span class="badge badge-red">⬆ Aged 190→207→224 — 3rd consecutive rise</span>
-      <span class="badge badge-orange">APAC 33% — all 3 managers >28%</span>
-      <span class="badge badge-yellow">OmniStudio 3-wk uptrend: 11.5%→22%</span>
-      <span class="badge badge-green">✅ Naren only sustained recovery</span>
-    </div>
   </div>
 </div>
 
@@ -179,7 +173,7 @@
     </div>
     <div class="signal orange">
       <div class="signal-label">🟠 APAC</div>
-      <div class="signal-text"><strong>Rafik 42.0%</strong> — highest in org (29 cases). All 3 APAC managers >28%. No downward trend in any.</div>
+      <div class="signal-text"><strong>All 3 APAC managers >28%.</strong> Region at 33.2% — highest of the 3 regions. No downward trend in any.</div>
     </div>
     <div class="signal yellow">
       <div class="signal-label">🟡 Watch</div>
@@ -281,35 +275,29 @@
   <!-- P&T trends -->
   <div class="section">
     <div class="sh"><span>📦</span><h2>Top P&T Aged Trends — Last 3 Posts</h2></div>
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">Aged Count per P&T</div>
-        <div class="chart-h260"><canvas id="cPTCount"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Aged % per P&T</div>
-        <div class="chart-h260"><canvas id="cPTPct"></canvas></div>
-      </div>
+    <div class="card">
+      <div class="card-title">Aged Count per P&T</div>
+      <div class="chart-h260"><canvas id="cPTCount"></canvas></div>
     </div>
     <div class="card" style="margin-top:14px;">
       <table class="dt">
         <thead>
           <tr>
             <th>P&T</th>
-            <th class="c">Sep 2 Aged</th><th class="c">Sep 10 Aged</th><th class="c">Sep 14 Aged</th>
-            <th class="c">Sep 2 %</th><th class="c">Sep 10 %</th><th class="c">Sep 14 %</th>
+            <th class="c" style="color:var(--muted);">Sep 2 Aged</th><th class="c" style="color:var(--muted);">Sep 10 Aged</th><th class="c" style="color:#fff;font-size:12px;">Sep 14 Aged ★</th>
+            <th class="c" style="color:var(--muted);">Sep 2 %</th><th class="c" style="color:var(--muted);">Sep 10 %</th><th class="c" style="color:#fff;font-size:12px;">Sep 14 %</th>
             <th class="c">3-wk Δ pp</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Life Sciences</td><td class="c">43</td><td class="c">39</td><td class="c">36</td><td class="c">19.9%</td><td class="c">18.5%</td><td class="c">18.8%</td><td class="c nd">▼ −1.1</td></tr>
-          <tr><td>Retail & CG <span class="pill p-red">↑</span></td><td class="c">29</td><td class="c">30</td><td class="c"><strong>34</strong></td><td class="c">42.0%</td><td class="c">33.0%</td><td class="c"><strong>41.5%</strong></td><td class="c nm">→ −0.5</td></tr>
-          <tr><td>CPQ / OM / DC</td><td class="c">28</td><td class="c">29</td><td class="c">30</td><td class="c">22.8%</td><td class="c">20.4%</td><td class="c">22.2%</td><td class="c nm">→ −0.6</td></tr>
-          <tr><td>OmniStudio <span class="pill p-red">3-wk ↑↑</span></td><td class="c">13</td><td class="c">21</td><td class="c"><strong>24</strong></td><td class="c">11.5%</td><td class="c">16.3%</td><td class="c"><strong>21.1%</strong></td><td class="c nu">+9.6</td></tr>
-          <tr><td>Prod Configurator</td><td class="c">12</td><td class="c">13</td><td class="c">15</td><td class="c">15.2%</td><td class="c">15.5%</td><td class="c">16.7%</td><td class="c nu">+1.5</td></tr>
-          <tr><td>Transaction Mgmt</td><td class="c">6</td><td class="c">7</td><td class="c">7</td><td class="c">15.8%</td><td class="c">16.3%</td><td class="c">17.1%</td><td class="c nm">→</td></tr>
-          <tr><td>Financial Services</td><td class="c">—</td><td class="c">—</td><td class="c">7</td><td class="c">—</td><td class="c">—</td><td class="c">21.2%</td><td class="c nm">—</td></tr>
-          <tr><td>Loyalty Management</td><td class="c">—</td><td class="c">—</td><td class="c">6</td><td class="c">—</td><td class="c">—</td><td class="c">20.7%</td><td class="c nm">—</td></tr>
+          <tr><td>Life Sciences</td><td class="c nm">43</td><td class="c nm">39</td><td class="c" style="font-size:14px;font-weight:700;">36</td><td class="c nm">19.9%</td><td class="c nm">18.5%</td><td class="c" style="font-size:14px;font-weight:700;">18.8%</td><td class="c nd">▼ −1.1</td></tr>
+          <tr><td>Retail & CG <span class="pill p-red">↑</span></td><td class="c nm">29</td><td class="c nm">30</td><td class="c" style="font-size:14px;font-weight:700;color:#fca5a5;">34</td><td class="c nm">42.0%</td><td class="c nm">33.0%</td><td class="c" style="font-size:14px;font-weight:700;color:#fca5a5;">41.5%</td><td class="c nm">→ −0.5</td></tr>
+          <tr><td>CPQ / OM / DC</td><td class="c nm">28</td><td class="c nm">29</td><td class="c" style="font-size:14px;font-weight:700;">30</td><td class="c nm">22.8%</td><td class="c nm">20.4%</td><td class="c" style="font-size:14px;font-weight:700;">22.2%</td><td class="c nm">→ −0.6</td></tr>
+          <tr><td>OmniStudio <span class="pill p-red">3-wk ↑↑</span></td><td class="c nm">13</td><td class="c nm">21</td><td class="c" style="font-size:14px;font-weight:700;color:#fca5a5;">24</td><td class="c nm">11.5%</td><td class="c nm">16.3%</td><td class="c" style="font-size:14px;font-weight:700;color:#fca5a5;">21.1%</td><td class="c nu">+9.6</td></tr>
+          <tr><td>Prod Configurator</td><td class="c nm">12</td><td class="c nm">13</td><td class="c" style="font-size:14px;font-weight:700;">15</td><td class="c nm">15.2%</td><td class="c nm">15.5%</td><td class="c" style="font-size:14px;font-weight:700;">16.7%</td><td class="c nu">+1.5</td></tr>
+          <tr><td>Transaction Mgmt</td><td class="c nm">6</td><td class="c nm">7</td><td class="c" style="font-size:14px;font-weight:700;">7</td><td class="c nm">15.8%</td><td class="c nm">16.3%</td><td class="c" style="font-size:14px;font-weight:700;">17.1%</td><td class="c nm">→</td></tr>
+          <tr><td>Financial Services</td><td class="c nm">—</td><td class="c nm">—</td><td class="c" style="font-size:14px;font-weight:700;">7</td><td class="c nm">—</td><td class="c nm">—</td><td class="c" style="font-size:14px;font-weight:700;">21.2%</td><td class="c nm">—</td></tr>
+          <tr><td>Loyalty Management</td><td class="c nm">—</td><td class="c nm">—</td><td class="c" style="font-size:14px;font-weight:700;">6</td><td class="c nm">—</td><td class="c nm">—</td><td class="c" style="font-size:14px;font-weight:700;">20.7%</td><td class="c nm">—</td></tr>
         </tbody>
       </table>
     </div>
@@ -338,16 +326,16 @@
       <div class="card">
         <div class="card-title">Bucket Detail</div>
         <table class="dt">
-          <thead><tr><th>Bucket</th><th class="c">Count</th><th class="c">% Aged</th><th>Action</th></tr></thead>
+          <thead><tr><th>Bucket</th><th class="c">Count</th><th class="c">% Aged</th></tr></thead>
           <tbody>
-            <tr><td><span class="pill p-red">No Path</span></td><td class="c"><strong>96</strong></td><td class="c nu">45%</td><td>Raise GUS, swarm, or close</td></tr>
-            <tr style="padding-left:14px;"><td style="padding-left:20px;color:var(--muted);font-size:11.5px;">↳ Working (no eng. path)</td><td class="c"><strong>40</strong></td><td class="c nu"></td><td style="font-size:11px;">Act now</td></tr>
-            <tr style="padding-left:14px;"><td style="padding-left:20px;color:var(--muted);font-size:11.5px;">↳ Need More Info</td><td class="c">53</td><td class="c"></td><td style="font-size:11px;">Tag NMI or close</td></tr>
-            <tr style="padding-left:14px;"><td style="padding-left:20px;color:var(--muted);font-size:11.5px;">↳ Call Scheduled</td><td class="c">3</td><td class="c"></td><td style="font-size:11px;">Monitor</td></tr>
-            <tr><td><span class="pill p-blue">Has GUS</span></td><td class="c">53</td><td class="c">25%</td><td>Confirm GUS is active</td></tr>
-            <tr><td><span class="pill p-yellow">Swarm/No GUS</span></td><td class="c">34</td><td class="c">16%</td><td>Link GUS to swarm</td></tr>
-            <tr><td><span class="pill p-green">Has Bug</span></td><td class="c">28</td><td class="c">13%</td><td>Monitor eng. progress</td></tr>
-            <tr><td><span class="pill">NMI / Cust</span></td><td class="c">1</td><td class="c">0%</td><td>Awaiting customer</td></tr>
+            <tr><td><span class="pill p-red">No Path</span></td><td class="c"><strong>96</strong></td><td class="c nu">45%</td></tr>
+            <tr><td style="padding-left:20px;color:var(--muted);font-size:11.5px;">↳ Working (no eng. path)</td><td class="c"><strong>40</strong></td><td class="c"></td></tr>
+            <tr><td style="padding-left:20px;color:var(--muted);font-size:11.5px;">↳ Need More Info</td><td class="c">53</td><td class="c"></td></tr>
+            <tr><td style="padding-left:20px;color:var(--muted);font-size:11.5px;">↳ Call Scheduled</td><td class="c">3</td><td class="c"></td></tr>
+            <tr><td><span class="pill p-blue">Has GUS</span></td><td class="c">53</td><td class="c">25%</td></tr>
+            <tr><td><span class="pill p-yellow">Swarm/No GUS</span></td><td class="c">34</td><td class="c">16%</td></tr>
+            <tr><td><span class="pill p-green">Has Bug</span></td><td class="c">28</td><td class="c">13%</td></tr>
+            <tr><td><span class="pill">NMI / Cust</span></td><td class="c">1</td><td class="c">0%</td></tr>
           </tbody>
         </table>
       </div>
@@ -413,13 +401,6 @@ def('cPTCount',{ type:'bar', data:{ labels:['Life Sciences','Retail & CG','CPQ/O
   ]}, options:{ ...base({beginAtZero:true}),
   plugins:{ legend:{ labels:{color:tick,font:{size:11},boxWidth:11,padding:10} }, tooltip:{mode:'index',intersect:false} } } });
 
-def('cPTPct',{ type:'line', data:{ labels:['Life Sci','Retail&CG','CPQ/OM/DC','OmniStudio','Prod Config','Txn Mgmt'],
-  datasets:[
-    { label:'Sep 2',  data:[19.9,42.0,22.8,11.5,15.2,15.8], borderColor:'rgba(79,110,247,.9)',  borderWidth:2, pointRadius:4, fill:false },
-    { label:'Sep 10', data:[18.5,33.0,20.4,16.3,15.5,16.3], borderColor:'rgba(168,85,247,.9)', borderWidth:2, pointRadius:4, fill:false },
-    { label:'Sep 14', data:[18.8,41.5,22.2,21.1,16.7,17.1], borderColor:'#ef4444',              borderWidth:2.5, pointRadius:5, fill:false }
-  ]}, options:{ ...base({beginAtZero:false,suggestedMin:0,suggestedMax:55}),
-  plugins:{ legend:{ labels:{color:tick,font:{size:11},boxWidth:11,padding:10} }, tooltip:{mode:'index',intersect:false} } } });
 
 def('cBucket',{ type:'doughnut', data:{
   labels:['No Path (45%)','Has GUS (25%)','Swarm/No GUS (16%)','Has Bug (13%)','NMI (<1%)'],
