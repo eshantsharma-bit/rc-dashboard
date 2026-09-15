@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RC Upgrade — Cross-Release First 7 Days · 258 / 260 / 262 / 264</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
 :root{
   --bg:#f6f8fa;--surface:#ffffff;--border:#d0d7de;
@@ -186,6 +187,29 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
       </div>
     </div>
   </div>
+</div>
+
+<!-- CROSS-RELEASE SUMMARY — TOP -->
+<div class="card" style="margin-bottom:16px">
+  <h3>📊 Cross-Release Summary</h3>
+  <table>
+    <thead>
+      <tr><th>Metric</th><th class="num">258</th><th class="num">260</th><th class="num">262</th><th class="num" style="background:#fff0ef">264</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Active Orgs</td><td class="num">765</td><td class="num">1,266</td><td class="num">1,632</td><td class="num" style="background:#fff0ef;color:#cf222e;font-weight:700">1,908</td></tr>
+      <tr><td>RC Inflow (7d)</td><td class="num">499</td><td class="num">465</td><td class="num">427</td><td class="num" style="background:#fff0ef;font-weight:700">490</td></tr>
+      <tr><td>IR Cases</td><td class="num">60</td><td class="num">51</td><td class="num" style="color:#1a7f37;font-weight:700">12</td><td class="num" style="background:#fff0ef;font-weight:700">43</td></tr>
+      <tr><td>IR Rate (IR / Inflow)</td><td class="num">12.0%</td><td class="num">11.0%</td><td class="num" style="color:#1a7f37;font-weight:700">2.8%</td><td class="num" style="background:#fff0ef;font-weight:700">8.8%</td></tr>
+      <tr><td>IR / Active Org</td><td class="num">7.8%</td><td class="num">4.0%</td><td class="num" style="color:#1a7f37;font-weight:700">0.7%</td><td class="num" style="background:#fff0ef;color:#1a7f37;font-weight:700">2.3%</td></tr>
+      <tr><td>Sev1 IR</td><td class="num" style="color:#cf222e;font-weight:700">23</td><td class="num">11</td><td class="num">6</td><td class="num" style="background:#fff0ef;color:#1a7f37;font-weight:700">7</td></tr>
+      <tr><td>Unique Bugs</td><td class="num">14</td><td class="num" style="color:#cf222e;font-weight:700">29</td><td class="num">9</td><td class="num" style="background:#fff0ef;font-weight:700">13</td></tr>
+      <tr><td>Unique Bugs % (of IR)</td><td class="num">23%</td><td class="num" style="color:#cf222e;font-weight:700">57%</td><td class="num">75%</td><td class="num" style="background:#fff0ef;font-weight:700">30%</td></tr>
+      <tr><td>#1 IR Topic</td><td class="num">Config 50%</td><td class="num">Config 43%</td><td class="num">Config 42%</td><td class="num" style="background:#fff0ef">Config 28%</td></tr>
+      <tr><td>#2 IR Topic</td><td class="num">Txn Mgmt 27%</td><td class="num">Price Mgmt 20%</td><td class="num">Txn Mgmt 42%</td><td class="num" style="background:#fff0ef">Billing 14%</td></tr>
+      <tr><td>New IR Topics</td><td class="num" style="font-size:10px">Dev P2O</td><td class="num" style="font-size:10px">Price, DRO</td><td class="num" style="font-size:10px">Txn Mgmt</td><td class="num" style="background:#fff0ef;font-size:10px;color:#bc4c00;font-weight:700">Billing, Usage</td></tr>
+    </tbody>
+  </table>
 </div>
 
 <!-- RELEASE KPI CARDS -->
@@ -496,26 +520,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
       </div>
     </div>
 
-    <!-- Cross-release summary mini table -->
-    <div class="card">
-      <h3>📊 Cross-Release Summary</h3>
-      <table>
-        <thead>
-          <tr><th>Metric</th><th class="num">258</th><th class="num">260</th><th class="num">262</th><th class="num" style="background:#fff0ef">264</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Active Orgs</td><td class="num">765</td><td class="num">1,266</td><td class="num">1,632</td><td class="num" style="background:#fff0ef;color:#cf222e;font-weight:700">1,908</td></tr>
-          <tr><td>RC Inflow (7d)</td><td class="num">499</td><td class="num">465</td><td class="num">427</td><td class="num" style="background:#fff0ef;font-weight:700">490</td></tr>
-          <tr><td>IR Cases</td><td class="num">60</td><td class="num">51</td><td class="num" style="color:#1a7f37;font-weight:700">12</td><td class="num" style="background:#fff0ef;font-weight:700">43</td></tr>
-          <tr><td>IR Rate</td><td class="num">12.0%</td><td class="num">11.0%</td><td class="num" style="color:#1a7f37;font-weight:700">2.8%</td><td class="num" style="background:#fff0ef;font-weight:700">8.8%</td></tr>
-          <tr><td>IR / Active Org</td><td class="num">7.8%</td><td class="num">4.0%</td><td class="num" style="color:#1a7f37;font-weight:700">0.7%</td><td class="num" style="background:#fff0ef;color:#1a7f37;font-weight:700">2.3%</td></tr>
-          <tr><td>Sev1 IR</td><td class="num" style="color:#cf222e;font-weight:700">23</td><td class="num">11</td><td class="num">6</td><td class="num" style="background:#fff0ef;color:#1a7f37;font-weight:700">7</td></tr>
-          <tr><td>Unique Bugs</td><td class="num">14</td><td class="num" style="color:#cf222e;font-weight:700">29</td><td class="num">9</td><td class="num" style="background:#fff0ef;font-weight:700">13</td></tr>
-          <tr><td>#1 IR Topic</td><td class="num">Config 50%</td><td class="num">Config 43%</td><td class="num">Config 42%</td><td class="num" style="background:#fff0ef">Config 28%</td></tr>
-          <tr><td>New IR Topics</td><td class="num" style="font-size:10px">Dev P2O</td><td class="num" style="font-size:10px">Price, DRO</td><td class="num" style="font-size:10px">Txn Mgmt</td><td class="num" style="background:#fff0ef;font-size:10px;color:#bc4c00;font-weight:700">Billing, Usage</td></tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 </div>
 
@@ -523,41 +527,54 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
 
 </div>
 <script>
+Chart.register(ChartDataLabels);
 const gc = '#rgba(208,215,222,.5)';
 const tc = '#8b949e';
 const def = (id,cfg) => new Chart(document.getElementById(id).getContext('2d'), cfg);
 const REL = ["258","260","262","264"];
 const COLS = ['#0969da','#1a7f37','#9a6700','#cf222e'];
 
-// IR cases bar + IR/org ratio line
+// IR cases bar (uniform light blue) + IR/net inflow % line
 def('irTrend',{type:'bar',data:{labels:REL,datasets:[
-  {label:'IR Cases',data:[60,51,12,43],backgroundColor:COLS,borderRadius:4},
-  {label:'IR/Org %',data:[7.8,4.0,0.7,2.3],type:'line',yAxisID:'y1',
+  {label:'IR Cases',data:[60,51,12,43],
+   backgroundColor:'rgba(9,105,218,.55)',borderColor:'#0969da',borderWidth:1,borderRadius:4,
+   datalabels:{anchor:'end',align:'top',color:'#0969da',font:{size:13,weight:'700'},formatter:v=>v}},
+  {label:'IR / Inflow %',data:[12.0,11.0,2.8,8.8],type:'line',yAxisID:'y1',
    borderColor:'#8250df',backgroundColor:'rgba(130,80,223,.1)',
-   tension:.3,pointRadius:5,pointBackgroundColor:'#8250df',borderWidth:2}
+   tension:.3,pointRadius:6,pointBackgroundColor:'#8250df',borderWidth:2.5,
+   datalabels:{anchor:'end',align:'top',color:'#8250df',font:{size:11,weight:'600'},formatter:v=>v+'%'}}
 ]},options:{responsive:true,maintainAspectRatio:false,
-  plugins:{legend:{position:'top',labels:{boxWidth:10,font:{size:11}}}},
+  plugins:{
+    legend:{position:'top',labels:{boxWidth:10,font:{size:11}}},
+    datalabels:{display:true}
+  },
   scales:{
     x:{grid:{color:'rgba(208,215,222,.5)'},ticks:{color:tc,font:{size:11}}},
-    y:{grid:{color:'rgba(208,215,222,.5)'},ticks:{color:tc,font:{size:11}},title:{display:true,text:'IR Cases',color:tc,font:{size:11}}},
-    y1:{position:'right',grid:{display:false},ticks:{color:'#8250df',font:{size:11},callback:v=>v+'%'},
-      title:{display:true,text:'IR/Org %',color:'#8250df',font:{size:11}}}
+    y:{grid:{color:'rgba(208,215,222,.5)'},ticks:{color:tc,font:{size:11}},
+      title:{display:true,text:'IR Cases',color:tc,font:{size:11}},
+      suggestedMax:80},
+    y1:{position:'right',grid:{display:false},
+      ticks:{color:'#8250df',font:{size:11},callback:v=>v+'%'},
+      title:{display:true,text:'IR / Inflow %',color:'#8250df',font:{size:11}}}
   }}});
 
 // Topic stacked bar — content corrected, % of IR cases
 def('topicChart',{type:'bar',
   data:{labels:REL,
     datasets:[
-      {label:'Configurator', data:[50,43,42,28], backgroundColor:'#0969da99', borderRadius:2},
-      {label:'Txn Mgmt',     data:[27,16,42,19], backgroundColor:'#8250df99', borderRadius:2},
-      {label:'Price Mgmt',   data:[12,20, 8, 2], backgroundColor:'#9a670099', borderRadius:2},
-      {label:'Billing',      data:[ 0, 4, 0,14], backgroundColor:'#e16f4299', borderRadius:2},
-      {label:'Usage',        data:[ 0, 0, 0, 9], backgroundColor:'#1a7f3799', borderRadius:2},
-      {label:'PCM',          data:[ 2, 4, 0, 9], backgroundColor:'#65656699', borderRadius:2},
-      {label:'Other',        data:[ 9,13, 8,19], backgroundColor:'#d0d7de',   borderRadius:2},
+      {label:'Configurator', data:[50,43,42,28], backgroundColor:'#0969da99', borderRadius:2, datalabels:{display:false}},
+      {label:'Txn Mgmt',     data:[27,16,42,19], backgroundColor:'#8250df99', borderRadius:2, datalabels:{display:false}},
+      {label:'Price Mgmt',   data:[12,20, 8, 2], backgroundColor:'#9a670099', borderRadius:2, datalabels:{display:false}},
+      {label:'Billing',      data:[ 0, 4, 0,14], backgroundColor:'#e16f4299', borderRadius:2, datalabels:{display:false}},
+      {label:'Usage',        data:[ 0, 0, 0, 9], backgroundColor:'#1a7f3799', borderRadius:2, datalabels:{display:false}},
+      {label:'PCM',          data:[ 2, 4, 0, 9], backgroundColor:'#65656699', borderRadius:2, datalabels:{display:false}},
+      {label:'Other',        data:[ 9,13, 8,19], backgroundColor:'#d0d7de',   borderRadius:2, datalabels:{display:false}},
     ]},
   options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{position:'top',labels:{boxWidth:8,font:{size:10}}}},
+    plugins:{
+      legend:{position:'top',labels:{boxWidth:8,font:{size:10}}},
+      datalabels:{display:false}
+    },
     scales:{
       x:{stacked:true,grid:{color:'rgba(208,215,222,.5)'},ticks:{color:tc,font:{size:11}}},
       y:{stacked:true,max:100,grid:{color:'rgba(208,215,222,.5)'},
@@ -597,26 +614,30 @@ def('inflow264Chart',{
     labels:D264,
     datasets:[
       {label:'RC Inflow',data:inflowByDay,
-       borderColor:'#0969da',backgroundColor:'rgba(9,105,218,.08)',
-       tension:.35,pointRadius:3,pointBackgroundColor:'#0969da',borderWidth:2,fill:true,order:2},
+       borderColor:'#0969da',backgroundColor:'rgba(9,105,218,.10)',
+       tension:.35,pointRadius:5,pointBackgroundColor:'#0969da',borderWidth:2.5,fill:true,order:2,
+       datalabels:{anchor:'end',align:'top',color:'#0969da',font:{size:12,weight:'700'},formatter:v=>v}},
       {label:'IR Cases',data:irByDay264,
        borderColor:'#cf222e',backgroundColor:'rgba(207,34,46,.08)',
-       tension:.35,pointRadius:3,pointBackgroundColor:'#cf222e',borderWidth:2,fill:true,order:3},
+       tension:.35,pointRadius:5,pointBackgroundColor:'#cf222e',borderWidth:2.5,fill:true,order:3,
+       datalabels:{anchor:'end',align:'bottom',color:'#cf222e',font:{size:12,weight:'700'},formatter:v=>v}},
       {label:'Bug surfaced (new)',
        type:'scatter',
        data:bugScatter.map(b=>({x:b.x, y:b.y})),
        backgroundColor:'#9a6700',borderColor:'#fff',
-       pointRadius:8,pointHoverRadius:10,borderWidth:2,order:1,
-       parsing:{xAxisKey:'x',yAxisKey:'y'}}
+       pointRadius:9,pointHoverRadius:11,borderWidth:2,order:1,
+       parsing:{xAxisKey:'x',yAxisKey:'y'},
+       datalabels:{display:false}}
     ]},
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{
       legend:{position:'top',labels:{boxWidth:10,font:{size:11}}},
+      datalabels:{display:true},
       tooltip:{callbacks:{
         label(ctx){
           if(ctx.datasetIndex===2){
             const b=bugScatter[ctx.dataIndex];
-            return b ? `${b.bug} — ${b.topic}` : '';
+            return b ? `🐛 ${b.bug} — ${b.topic}` : '';
           }
           return `${ctx.dataset.label}: ${ctx.parsed.y}`;
         }
@@ -624,11 +645,11 @@ def('inflow264Chart',{
     },
     scales:{
       x:{type:'linear',min:0,max:6,
-        ticks:{color:tc,font:{size:10},
-          callback:(v)=>D264[v]||''},
+        ticks:{color:tc,font:{size:10,weight:'600'},
+          callback:(v)=>Number.isInteger(v)?D264[v]:''},
         grid:{color:'rgba(208,215,222,.5)'}},
       y:{grid:{color:'rgba(208,215,222,.5)'},ticks:{color:tc,font:{size:11}},
-        title:{display:true,text:'Cases',color:tc,font:{size:11}},min:0}
+        title:{display:true,text:'Cases',color:tc,font:{size:11}},min:0,suggestedMax:130}
     }}});
 </script>
 </body>
