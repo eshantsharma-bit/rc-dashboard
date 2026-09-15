@@ -113,8 +113,8 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
     <div class="badges" style="margin-top:8px">
       <span class="badge badge-red">264: Highest ever RC inflow (+5.4% vs 260)</span>
       <span class="badge badge-green">264 IR rate 9% — lower than 258 &amp; 260</span>
-      <span class="badge badge-blue">New in 264: Billing + Usage spikes not seen before</span>
-      <span class="badge badge-yellow">262 anomaly: only 12 IR cases in 7 days</span>
+      <span class="badge badge-blue">New in 264: Billing (14%) + Usage (11%) — not seen in prior upgrades</span>
+      <span class="badge badge-yellow">Content-corrected topics: TM share higher than tag data shows across all releases</span>
     </div>
   </div>
 </div>
@@ -136,11 +136,11 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
     <div class="rel-label c258">258 · Winter '26</div>
     <div class="metric-row">
       <span class="metric-label">RC Inflow (7d)</span>
-      <span class="metric-val">444</span>
+      <span class="metric-val">499</span>
     </div>
     <div class="metric-row">
       <span class="metric-label">IR-tagged cases</span>
-      <span class="metric-val highlight-val">60 <span class="metric-sub">13.5%</span></span>
+      <span class="metric-val highlight-val">60 <span class="metric-sub">12.0%</span></span>
     </div>
     <div class="metric-row">
       <span class="metric-label">Sev1 (IR cases)</span>
@@ -156,7 +156,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
     </div>
     <div class="metric-row">
       <span class="metric-label">Top Topic</span>
-      <span class="metric-val" style="font-size:11px">Configurator 67%</span>
+      <span class="metric-val" style="font-size:11px">Configurator 50%†</span>
     </div>
     <div class="sev-bars" title="Sev breakdown: L1=23 L2=27 L3=9 L4=1">
       <div class="sev-l1" style="width:38%"></div>
@@ -192,7 +192,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
     </div>
     <div class="metric-row">
       <span class="metric-label">Top Topic</span>
-      <span class="metric-val" style="font-size:11px">Configurator 45%</span>
+      <span class="metric-val" style="font-size:11px">Configurator 43%†</span>
     </div>
     <div class="sev-bars" title="L1=11 L2=54 L3=6 L4=4">
       <div class="sev-l1" style="width:15%"></div>
@@ -313,7 +313,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
 
 <!-- TOP 5 TOPICS TABLE -->
 <div class="card" style="margin-bottom:16px">
-  <h3>📋 Top 5 P&amp;T Topics — IR Cases Breakdown (all 4 releases)</h3>
+  <h3>📋 Top 3 P&amp;T Topics — IR Cases · Content-Corrected† (all 4 releases)</h3>
   <table>
     <thead>
       <tr>
@@ -328,19 +328,27 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
     <tbody>
       <tr>
         <td><span class="pill pill-blue">Product Configurator</span></td>
-        <td class="num">40</td><td class="num">67%</td>
-        <td class="num">34</td><td class="num">45%</td>
+        <td class="num">30</td><td class="num">50%</td>
+        <td class="num">32</td><td class="num">43%</td>
         <td class="num">5</td><td class="num">42%</td>
         <td class="num">15</td><td class="num">34%</td>
-        <td><span class="pill pill-green">↓ Declining share</span></td>
+        <td><span class="pill pill-green">↓ Declining share every release</span></td>
       </tr>
       <tr>
         <td><span class="pill pill-purple">Transaction Management</span></td>
-        <td class="num">5</td><td class="num">8%</td>
-        <td class="num">12</td><td class="num">16%</td>
-        <td class="num">4</td><td class="num">33%</td>
-        <td class="num">9</td><td class="num">20%</td>
-        <td><span class="pill pill-yellow">↑↓ Volatile</span></td>
+        <td class="num">16</td><td class="num">27%</td>
+        <td class="num">8</td><td class="num">11%</td>
+        <td class="num">5</td><td class="num">42%</td>
+        <td class="num">8</td><td class="num">18%</td>
+        <td><span class="pill pill-yellow">↑↓ Volatile — 258 worst (PlaceSalesTxn errors)</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-yellow">Price Management</span></td>
+        <td class="num">7</td><td class="num">12%</td>
+        <td class="num">15</td><td class="num">20%</td>
+        <td class="num">1</td><td class="num">8%</td>
+        <td class="num">1</td><td class="num">2%</td>
+        <td><span class="pill pill-green">↓ 264 near zero — significantly improved</span></td>
       </tr>
       <tr style="background:#fff1e5">
         <td><span class="pill pill-orange">Billing &amp; Invoicing</span></td>
@@ -348,7 +356,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
         <td class="num">2</td><td class="num">3%</td>
         <td class="num">0</td><td class="num">0%</td>
         <td class="num"><strong>6</strong></td><td class="num"><strong>14%</strong></td>
-        <td><span class="pill pill-red">⚠ NEW spike in 264</span></td>
+        <td><span class="pill pill-red">⚠ NEW #3 in 264 — W-24088655, W-24059609</span></td>
       </tr>
       <tr style="background:#fff1e5">
         <td><span class="pill pill-orange">Usage &amp; Ratings</span></td>
@@ -356,23 +364,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
         <td class="num">0</td><td class="num">0%</td>
         <td class="num">0</td><td class="num">0%</td>
         <td class="num"><strong>5</strong></td><td class="num"><strong>11%</strong></td>
-        <td><span class="pill pill-red">⚠ NEW in 264 only</span></td>
-      </tr>
-      <tr>
-        <td><span class="pill pill-yellow">Price Management</span></td>
-        <td class="num">3</td><td class="num">5%</td>
-        <td class="num">10</td><td class="num">13%</td>
-        <td class="num">1</td><td class="num">8%</td>
-        <td class="num">1</td><td class="num">2%</td>
-        <td><span class="pill pill-green">↓ Improved in 264</span></td>
-      </tr>
-      <tr>
-        <td><span class="pill pill-grey">Dev Support P2O</span></td>
-        <td class="num">10</td><td class="num">17%</td>
-        <td class="num">1</td><td class="num">1%</td>
-        <td class="num">1</td><td class="num">8%</td>
-        <td class="num">1</td><td class="num">2%</td>
-        <td><span class="pill pill-green">↓ Resolved</span></td>
+        <td><span class="pill pill-red">⚠ NEW in 264 only — W-23791512 (usage batch)</span></td>
       </tr>
       <tr>
         <td><span class="pill pill-purple">Dynamic Revenue Orch.</span></td>
@@ -387,19 +379,20 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
         <td class="num">1</td><td class="num">2%</td>
         <td class="num">2</td><td class="num">3%</td>
         <td class="num">0</td><td class="num">0%</td>
-        <td class="num">3</td><td class="num">7%</td>
-        <td><span class="pill pill-yellow">↑ Small uptick</span></td>
+        <td class="num">4</td><td class="num">9%</td>
+        <td><span class="pill pill-yellow">↑ 264 search index rebuild failures (W-24096152)</span></td>
       </tr>
       <tr>
-        <td><span class="pill pill-grey">CPQ / Other</span></td>
+        <td><span class="pill pill-grey">CPQ / Other (non-RC scope)</span></td>
         <td class="num">1</td><td class="num">2%</td>
-        <td class="num">7</td><td class="num">9%</td>
+        <td class="num">9</td><td class="num">12%</td>
         <td class="num">0</td><td class="num">0%</td>
-        <td class="num">2</td><td class="num">5%</td>
-        <td><span class="pill pill-grey">→ Mixed</span></td>
+        <td class="num">1</td><td class="num">2%</td>
+        <td><span class="pill pill-grey">260 spike = pricebook bug W-20924004 (Sales scope)</span></td>
       </tr>
     </tbody>
   </table>
+  <div style="margin-top:8px;font-size:11px;color:var(--muted)">† Content-corrected using the Understanding-First classifier (subject + bug signal). Key moves: PlaceSalesTxn errors tagged Configurator → TM; Pricing procedure errors tagged TM → Price Mgmt; Advanced Approvals → TM (folding rule); Search index rebuild → PCM; Dev Support P2O folded by content.</div>
 </div>
 
 <!-- TOP ACCOUNTS PER RELEASE -->
@@ -592,11 +585,11 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
     <tbody>
       <tr>
         <td><strong>RC Inflow D1–7</strong></td>
-        <td class="num">444</td>
+        <td class="num">499</td>
         <td class="num">465</td>
         <td class="num">427</td>
         <td class="num" style="background:#fff0ef;color:#cf222e;font-weight:700">490</td>
-        <td>264 all-time high; +5.4% vs 260</td>
+        <td>264 all-time high; +5.4% vs 260; 258 revised to 499</td>
       </tr>
       <tr>
         <td><strong>IR-Tagged Cases</strong></td>
@@ -608,11 +601,11 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
       </tr>
       <tr>
         <td><strong>IR Rate (%)</strong></td>
-        <td class="num">13.5%</td>
+        <td class="num">12.0%</td>
         <td class="num" style="color:#cf222e;font-weight:700">16.1%</td>
         <td class="num" style="color:#1a7f37;font-weight:700">2.8%</td>
         <td class="num" style="background:#fff0ef">9.0%</td>
-        <td>264 = second-best IR rate (after 262)</td>
+        <td>264 = second-best IR rate (after 262); 258 revised to 12%</td>
       </tr>
       <tr>
         <td><strong>Sev1 (IR cases)</strong></td>
@@ -640,11 +633,11 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
       </tr>
       <tr>
         <td><strong>#1 Topic</strong></td>
-        <td class="num">Config 67%</td>
-        <td class="num">Config 45%</td>
-        <td class="num">Config 42%</td>
-        <td class="num" style="background:#fff0ef">Config 34%</td>
-        <td>Configurator dominance declining each release</td>
+        <td class="num">Config 50%†</td>
+        <td class="num">Config 43%†</td>
+        <td class="num">Config 42%†</td>
+        <td class="num" style="background:#fff0ef">Config 34%†</td>
+        <td>Configurator declining each release (†content-corrected)</td>
       </tr>
       <tr>
         <td><strong>New Topic in Release</strong></td>
@@ -709,17 +702,18 @@ def('irBars',{type:'bar',data:{labels:RELEASES,datasets:[
 ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:10,font:{size:11}}}},scales:{x:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}}},y:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}},title:{display:true,text:'IR Cases',color:tickColor,font:{size:11}}},y1:{position:'right',grid:{display:false},ticks:{color:'#8250df',font:{size:11},callback:v=>v+'%'},title:{display:true,text:'IR Rate %',color:'#8250df',font:{size:11}}}}}});
 
 // Topic breakdown grouped bar
-const TOPICS = ['Configurator','TxnMgmt','Price Mgmt','Billing','Usage & Ratings','DRO','Dev P2O'];
+// Topic data: content-corrected (subject + bug signal re-classification)
+const TOPICS = ['Configurator','Txn Mgmt','Price Mgmt','Billing','Usage & Ratings','DRO','PCM'];
 const TOPIC_COLORS = ['#0969da','#8250df','#9a6700','#e16f42','#1a7f37','#cf222e','#656d76'];
-// Data per topic [258, 260, 262, 264]
+// Data per topic [258, 260, 262, 264] — content-corrected per Understanding-First classifier
 const TOPIC_DATA = [
-  [40,34,5,15],  // Configurator
-  [5,12,4,9],    // TxnMgmt
-  [3,10,1,1],    // Price
-  [0,2,0,6],     // Billing
-  [0,0,0,5],     // Usage
-  [0,4,1,2],     // DRO
-  [10,1,1,1],    // DevP2O
+  [30,32,5,15],  // Configurator (258: PlaceSalesTxn/pricing reclassified out)
+  [16, 8,5, 8],  // TxnMgmt (258: +11 from Configurator/DevP2O; 260: -4 pricing move)
+  [ 7,15,1, 1],  // Price Mgmt (258: +4 from Configurator; 260: +5 from TM)
+  [ 0, 2,0, 6],  // Billing (264 new spike)
+  [ 0, 0,0, 5],  // Usage & Ratings (264 only)
+  [ 0, 4,1, 2],  // DRO
+  [ 1, 2,0, 4],  // PCM (264: +1 search index cases reclassified from Configurator)
 ];
 
 def('topicChart',{type:'bar',data:{labels:RELEASES,datasets: TOPICS.map((t,i)=>({
