@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RC Upgrade — Cross-Release First 7 Days · 258 / 260 / 262 / 264</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#f6f8fa;--surface:#ffffff;--border:#d0d7de;
+  --text:#1f2328;--muted:#656d76;--accent:#0969da;
+  --green:#1a7f37;--red:#cf222e;--yellow:#9a6700;--orange:#bc4c00;
+  --r258:#0969da;--r260:#1a7f37;--r262:#9a6700;--r264:#cf222e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;color:var(--text)}
+.wrap{max-width:1280px;margin:0 auto;padding:20px}
+
+/* Header */
+.header{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-start}
+.header h1{font-size:18px;font-weight:700;margin-bottom:4px}
+.header .meta{color:var(--muted);font-size:12px}
+.badges{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px}
+.badge{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge-red{background:#ffebe9;color:#cf222e;border:1px solid #ffcecb}
+.badge-blue{background:#ddf4ff;color:#0969da;border:1px solid #80ccff}
+.badge-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb}
+.badge-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845}
+.badge-purple{background:#fbefff;color:#8250df;border:1px solid #d8b4fe}
+
+/* Release colour legend */
+.legend{display:flex;gap:20px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:12px}
+.legend-item{display:flex;align-items:center;gap:6px;font-weight:600}
+.dot{width:12px;height:12px;border-radius:50%}
+.d258{background:#0969da}.d260{background:#1a7f37}.d262{background:#9a6700}.d264{background:#cf222e}
+
+/* KPI Cards */
+.kpi-section{margin-bottom:16px}
+.kpi-section h2{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.release-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.release-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.release-card.r258{border-top:3px solid #0969da}
+.release-card.r260{border-top:3px solid #1a7f37}
+.release-card.r262{border-top:3px solid #9a6700}
+.release-card.r264{border-top:3px solid #cf222e}
+.release-card .rel-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;color:var(--muted)}
+.release-card .rel-label.c258{color:#0969da}
+.release-card .rel-label.c260{color:#1a7f37}
+.release-card .rel-label.c262{color:#9a6700}
+.release-card .rel-label.c264{color:#cf222e}
+.metric-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #eaeef2}
+.metric-row:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.metric-label{font-size:11px;color:var(--muted)}
+.metric-val{font-size:16px;font-weight:700}
+.metric-val.big{font-size:20px}
+.metric-sub{font-size:10px;color:var(--muted)}
+.highlight-val{color:#cf222e}
+.good-val{color:#1a7f37}
+
+/* Insight blocks */
+.insight{padding:10px 14px;border-radius:6px;margin-bottom:10px;border-left:3px solid}
+.insight.red{background:#ffebe9;border-color:#cf222e;color:#cf222e}
+.insight.green{background:#dafbe1;border-color:#1a7f37;color:#1a7f37}
+.insight.blue{background:#ddf4ff;border-color:#0969da;color:#0969da}
+.insight.yellow{background:#fff8c5;border-color:#9a6700;color:#9a6700}
+.insight.purple{background:#fbefff;border-color:#8250df;color:#8250df}
+.insight strong{display:block;font-size:12px;margin-bottom:2px}
+.insight span{font-size:11px;color:var(--text);opacity:.85}
+
+/* Grid layouts */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.card h3{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px}
+.card.red-border{border-color:#ffcecb;border-left:3px solid #cf222e}
+.card.yellow-border{border-color:#f5d845;border-left:3px solid #9a6700}
+.chart-wrap{position:relative;height:220px}
+.chart-wrap-lg{position:relative;height:260px}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#f6f8fa;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;font-weight:600;font-size:10px;padding:6px 10px;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:7px 10px;border-bottom:1px solid #eaeef2;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f6f8fa}
+td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+td.accent{color:#0969da;font-weight:600}
+.pill{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600;white-space:nowrap}
+.pill-red{background:#ffebe9;color:#cf222e}
+.pill-blue{background:#ddf4ff;color:#0969da}
+.pill-green{background:#dafbe1;color:#1a7f37}
+.pill-yellow{background:#fff8c5;color:#9a6700}
+.pill-purple{background:#fbefff;color:#8250df}
+.pill-orange{background:#fff1e5;color:#bc4c00}
+.pill-grey{background:#f6f8fa;color:#656d76;border:1px solid #d0d7de}
+
+/* Sev bar mini */
+.sev-bars{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:4px 0}
+.sev-l1{background:#cf222e}.sev-l2{background:#e16f42}.sev-l3{background:#f5d845}.sev-l4{background:#dafbe1;border:1px solid #aceebb}
+
+/* Footer */
+footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;border-top:1px solid var(--border);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>⚡ Revenue Cloud Upgrade — Cross-Release Comparison · First 7 Days</h1>
+    <div class="meta">Winter '26 (258) · Spring '26 (260) · Summer '26 (262) · Winter '27 (264) · Source: OrgCS Live Query · As of Sep 15, 2026 12:00 IST</div>
+    <div class="badges" style="margin-top:8px">
+      <span class="badge badge-red">264: Highest ever RC inflow (+5.4% vs 260)</span>
+      <span class="badge badge-green">264 IR rate 9% — lower than 258 &amp; 260</span>
+      <span class="badge badge-blue">New in 264: Billing + Usage spikes not seen before</span>
+      <span class="badge badge-yellow">262 anomaly: only 12 IR cases in 7 days</span>
+    </div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <span style="font-size:11px;color:var(--muted);margin-right:4px">RELEASE COLOUR KEY:</span>
+  <span class="legend-item"><span class="dot d258"></span>258 — Winter '26 (Sep 5, 2025)</span>
+  <span class="legend-item"><span class="dot d260"></span>260 — Spring '26 (Jan 9, 2026)</span>
+  <span class="legend-item"><span class="dot d262"></span>262 — Summer '26 (May 9, 2026)</span>
+  <span class="legend-item"><span class="dot d264"></span>264 — Winter '27 (Aug 29, 2026)</span>
+  <span style="margin-left:auto;font-size:11px;color:var(--muted)">All windows: SB1 Day 1 → Day 7 IST (UTC+5:30)</span>
+</div>
+
+<!-- RELEASE KPI SUMMARY -->
+<div class="release-grid">
+  <!-- 258 -->
+  <div class="release-card r258">
+    <div class="rel-label c258">258 · Winter '26</div>
+    <div class="metric-row">
+      <span class="metric-label">RC Inflow (7d)</span>
+      <span class="metric-val">444</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">IR-tagged cases</span>
+      <span class="metric-val highlight-val">60 <span class="metric-sub">13.5%</span></span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Sev1 (IR cases)</span>
+      <span class="metric-val">23</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Unique Bugs</span>
+      <span class="metric-val">13</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Unique GUS</span>
+      <span class="metric-val">25</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Top Topic</span>
+      <span class="metric-val" style="font-size:11px">Configurator 67%</span>
+    </div>
+    <div class="sev-bars" title="Sev breakdown: L1=23 L2=27 L3=9 L4=1">
+      <div class="sev-l1" style="width:38%"></div>
+      <div class="sev-l2" style="width:45%"></div>
+      <div class="sev-l3" style="width:15%"></div>
+      <div class="sev-l4" style="width:2%"></div>
+    </div>
+    <div class="metric-sub" style="margin-top:3px">L1:23 · L2:27 · L3:9 · L4:1</div>
+  </div>
+
+  <!-- 260 -->
+  <div class="release-card r260">
+    <div class="rel-label c260">260 · Spring '26</div>
+    <div class="metric-row">
+      <span class="metric-label">RC Inflow (7d)</span>
+      <span class="metric-val">465</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">IR-tagged cases</span>
+      <span class="metric-val highlight-val">75 <span class="metric-sub">16.1%</span></span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Sev1 (IR cases)</span>
+      <span class="metric-val">11</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Unique Bugs</span>
+      <span class="metric-val">28</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Unique GUS</span>
+      <span class="metric-val">20</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Top Topic</span>
+      <span class="metric-val" style="font-size:11px">Configurator 45%</span>
+    </div>
+    <div class="sev-bars" title="L1=11 L2=54 L3=6 L4=4">
+      <div class="sev-l1" style="width:15%"></div>
+      <div class="sev-l2" style="width:72%"></div>
+      <div class="sev-l3" style="width:8%"></div>
+      <div class="sev-l4" style="width:5%"></div>
+    </div>
+    <div class="metric-sub" style="margin-top:3px">L1:11 · L2:54 · L3:6 · L4:4</div>
+  </div>
+
+  <!-- 262 -->
+  <div class="release-card r262">
+    <div class="rel-label c262">262 · Summer '26</div>
+    <div class="metric-row">
+      <span class="metric-label">RC Inflow (7d)</span>
+      <span class="metric-val">427</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">IR-tagged cases</span>
+      <span class="metric-val good-val">12 <span class="metric-sub">2.8%</span></span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Sev1 (IR cases)</span>
+      <span class="metric-val">6</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Unique Bugs</span>
+      <span class="metric-val">10</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Unique GUS</span>
+      <span class="metric-val">9</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Top Topic</span>
+      <span class="metric-val" style="font-size:11px">Configurator 42%</span>
+    </div>
+    <div class="sev-bars" title="L1=6 L2=5 L3=1">
+      <div class="sev-l1" style="width:50%"></div>
+      <div class="sev-l2" style="width:42%"></div>
+      <div class="sev-l3" style="width:8%"></div>
+    </div>
+    <div class="metric-sub" style="margin-top:3px">L1:6 · L2:5 · L3:1 · L4:0</div>
+  </div>
+
+  <!-- 264 -->
+  <div class="release-card r264">
+    <div class="rel-label c264">264 · Winter '27</div>
+    <div class="metric-row">
+      <span class="metric-label">RC Inflow (7d)</span>
+      <span class="metric-val highlight-val">490</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">IR-tagged cases</span>
+      <span class="metric-val">44 <span class="metric-sub">9.0%</span></span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Sev1 (IR cases)</span>
+      <span class="metric-val good-val">7</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Unique Bugs</span>
+      <span class="metric-val">10</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Unique GUS</span>
+      <span class="metric-val">19</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Top Topic</span>
+      <span class="metric-val" style="font-size:11px">Configurator 34%</span>
+    </div>
+    <div class="sev-bars" title="L1=7 L2=30 L3=5 L4=2">
+      <div class="sev-l1" style="width:16%"></div>
+      <div class="sev-l2" style="width:68%"></div>
+      <div class="sev-l3" style="width:11%"></div>
+      <div class="sev-l4" style="width:5%"></div>
+    </div>
+    <div class="metric-sub" style="margin-top:3px">L1:7 · L2:30 · L3:5 · L4:2</div>
+  </div>
+</div>
+
+<!-- KEY INSIGHTS ROW -->
+<div class="grid-2" style="margin-bottom:16px">
+  <div>
+    <div class="insight red"><strong>🚨 264: Highest-ever RC inflow (490) — +10.4% vs 262, +5.4% vs 260</strong><span>Ramp-up pattern differs: 264 starts strong on D2 (36 cases) vs prior releases which spiked on D3-D4. Suggests faster customer impact post SB1.</span></div>
+    <div class="insight blue"><strong>📊 IR Rate improving: 16.1% (260) → 13.5% (258) → 9.0% (264)</strong><span>264 IR rate is the second-lowest ever — only 262 (2.8%) was lower, but 262's low volume may reflect narrower scope. 264 at 9% on 44 cases is a meaningful signal of improvement.</span></div>
+  </div>
+  <div>
+    <div class="insight yellow"><strong>⚡ 264 Topic Shift: Billing (14%) + Usage &amp; Ratings (11%) are NEW vs prior releases</strong><span>258 and 260 were Configurator-dominated (67% / 45%). 264 shows diversification — Billing/Invoicing and Usage/Ratings each hit double digits for the first time across any upgrade window.</span></div>
+    <div class="insight green"><strong>✅ 264 Sev1 (IR): Only 7 — lowest absolute count across all 4 releases</strong><span>258 had 23 Sev1 IR cases, 260 had 11, 262 had 6. 264's 7 is near-parity with 262 despite 3.7× more IR cases — indicates issues are more Sev2 in nature.</span></div>
+  </div>
+</div>
+
+<!-- CHARTS ROW 1: Inflow trend + IR case comparison -->
+<div class="grid-2">
+  <div class="card">
+    <h3>📈 Overall RC Inflow — Daily Trend (D1–D7)</h3>
+    <div class="chart-wrap-lg"><canvas id="inflowTrend"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>🚨 IR-Tagged Cases — Daily Cumulative &amp; Total Bars</h3>
+    <div class="chart-wrap-lg"><canvas id="irBars"></canvas></div>
+  </div>
+</div>
+
+<!-- CHARTS ROW 2: Topic breakdown + Sev -->
+<div class="grid-2">
+  <div class="card">
+    <h3>🏷 P&amp;T Topic Distribution in IR Cases (% share per release)</h3>
+    <div class="chart-wrap-lg"><canvas id="topicChart"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>🔴 Sev1 (Critical) IR Cases by Release</h3>
+    <div class="chart-wrap-lg"><canvas id="sevChart"></canvas></div>
+  </div>
+</div>
+
+<!-- TOP 5 TOPICS TABLE -->
+<div class="card" style="margin-bottom:16px">
+  <h3>📋 Top 5 P&amp;T Topics — IR Cases Breakdown (all 4 releases)</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>P&amp;T Topic</th>
+        <th class="num">258 Cases</th><th class="num">258 %</th>
+        <th class="num">260 Cases</th><th class="num">260 %</th>
+        <th class="num">262 Cases</th><th class="num">262 %</th>
+        <th class="num">264 Cases</th><th class="num">264 %</th>
+        <th>Trend</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="pill pill-blue">Product Configurator</span></td>
+        <td class="num">40</td><td class="num">67%</td>
+        <td class="num">34</td><td class="num">45%</td>
+        <td class="num">5</td><td class="num">42%</td>
+        <td class="num">15</td><td class="num">34%</td>
+        <td><span class="pill pill-green">↓ Declining share</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-purple">Transaction Management</span></td>
+        <td class="num">5</td><td class="num">8%</td>
+        <td class="num">12</td><td class="num">16%</td>
+        <td class="num">4</td><td class="num">33%</td>
+        <td class="num">9</td><td class="num">20%</td>
+        <td><span class="pill pill-yellow">↑↓ Volatile</span></td>
+      </tr>
+      <tr style="background:#fff1e5">
+        <td><span class="pill pill-orange">Billing &amp; Invoicing</span></td>
+        <td class="num">0</td><td class="num">0%</td>
+        <td class="num">2</td><td class="num">3%</td>
+        <td class="num">0</td><td class="num">0%</td>
+        <td class="num"><strong>6</strong></td><td class="num"><strong>14%</strong></td>
+        <td><span class="pill pill-red">⚠ NEW spike in 264</span></td>
+      </tr>
+      <tr style="background:#fff1e5">
+        <td><span class="pill pill-orange">Usage &amp; Ratings</span></td>
+        <td class="num">0</td><td class="num">0%</td>
+        <td class="num">0</td><td class="num">0%</td>
+        <td class="num">0</td><td class="num">0%</td>
+        <td class="num"><strong>5</strong></td><td class="num"><strong>11%</strong></td>
+        <td><span class="pill pill-red">⚠ NEW in 264 only</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-yellow">Price Management</span></td>
+        <td class="num">3</td><td class="num">5%</td>
+        <td class="num">10</td><td class="num">13%</td>
+        <td class="num">1</td><td class="num">8%</td>
+        <td class="num">1</td><td class="num">2%</td>
+        <td><span class="pill pill-green">↓ Improved in 264</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-grey">Dev Support P2O</span></td>
+        <td class="num">10</td><td class="num">17%</td>
+        <td class="num">1</td><td class="num">1%</td>
+        <td class="num">1</td><td class="num">8%</td>
+        <td class="num">1</td><td class="num">2%</td>
+        <td><span class="pill pill-green">↓ Resolved</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-purple">Dynamic Revenue Orch.</span></td>
+        <td class="num">0</td><td class="num">0%</td>
+        <td class="num">4</td><td class="num">5%</td>
+        <td class="num">1</td><td class="num">8%</td>
+        <td class="num">2</td><td class="num">5%</td>
+        <td><span class="pill pill-yellow">→ Steady low</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-grey">Product Catalog Mgmt</span></td>
+        <td class="num">1</td><td class="num">2%</td>
+        <td class="num">2</td><td class="num">3%</td>
+        <td class="num">0</td><td class="num">0%</td>
+        <td class="num">3</td><td class="num">7%</td>
+        <td><span class="pill pill-yellow">↑ Small uptick</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-grey">CPQ / Other</span></td>
+        <td class="num">1</td><td class="num">2%</td>
+        <td class="num">7</td><td class="num">9%</td>
+        <td class="num">0</td><td class="num">0%</td>
+        <td class="num">2</td><td class="num">5%</td>
+        <td><span class="pill pill-grey">→ Mixed</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TOP ACCOUNTS PER RELEASE -->
+<div class="card" style="margin-bottom:16px">
+  <h3>🏢 Top Impacted Accounts — IR Cases (First 7 Days per Release)</h3>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:8px">
+
+    <!-- 258 accounts -->
+    <div>
+      <div style="font-size:11px;font-weight:700;color:#0969da;margin-bottom:6px;border-bottom:2px solid #0969da;padding-bottom:4px">258 · Winter '26</div>
+      <table>
+        <thead><tr><th>Account</th><th class="num">#</th></tr></thead>
+        <tbody>
+          <tr><td>WP Engine</td><td class="num">4</td></tr>
+          <tr><td>Lutron Electronics</td><td class="num">4</td></tr>
+          <tr><td>Infoblox</td><td class="num">2</td></tr>
+          <tr><td>TeamViewer</td><td class="num">2</td></tr>
+          <tr><td>DXC Technology</td><td class="num">2</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:6px;font-size:10px;color:var(--muted)">Primary bug: W-19589791 (Configurator)</div>
+    </div>
+
+    <!-- 260 accounts -->
+    <div>
+      <div style="font-size:11px;font-weight:700;color:#1a7f37;margin-bottom:6px;border-bottom:2px solid #1a7f37;padding-bottom:4px">260 · Spring '26</div>
+      <table>
+        <thead><tr><th>Account</th><th class="num">#</th></tr></thead>
+        <tbody>
+          <tr><td>WP Engine</td><td class="num">4</td></tr>
+          <tr><td>Bluvium Inc</td><td class="num">3</td></tr>
+          <tr><td>OSF Global Services</td><td class="num">3</td></tr>
+          <tr><td>Lutron Electronics</td><td class="num">3</td></tr>
+          <tr><td>Coastal Cloud</td><td class="num">2</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:6px;font-size:10px;color:var(--muted)">Primary bug: W-20892850 (Price), W-20858340 (Txn)</div>
+    </div>
+
+    <!-- 262 accounts -->
+    <div>
+      <div style="font-size:11px;font-weight:700;color:#9a6700;margin-bottom:6px;border-bottom:2px solid #9a6700;padding-bottom:4px">262 · Summer '26</div>
+      <table>
+        <thead><tr><th>Account</th><th class="num">#</th></tr></thead>
+        <tbody>
+          <tr><td>Natus Medical Inc</td><td class="num">2</td></tr>
+          <tr><td>Cloudity</td><td class="num">1</td></tr>
+          <tr><td>Siemens Corp</td><td class="num">1</td></tr>
+          <tr><td>Convergint Tech</td><td class="num">1</td></tr>
+          <tr><td>Neocol</td><td class="num">1</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:6px;font-size:10px;color:var(--muted)">Low IR volume — widest spread across accounts</div>
+    </div>
+
+    <!-- 264 accounts -->
+    <div>
+      <div style="font-size:11px;font-weight:700;color:#cf222e;margin-bottom:6px;border-bottom:2px solid #cf222e;padding-bottom:4px">264 · Winter '27</div>
+      <table>
+        <thead><tr><th>Account</th><th class="num">#</th></tr></thead>
+        <tbody>
+          <tr><td>RevCycle Limited</td><td class="num">3</td></tr>
+          <tr><td>AI inside Inc</td><td class="num">2</td></tr>
+          <tr><td>LiveRamp</td><td class="num">2</td></tr>
+          <tr><td>InformaOne</td><td class="num">2</td></tr>
+          <tr><td>Keka Technologies</td><td class="num">2</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:6px;font-size:10px;color:var(--muted)">Bell Canada (1 case) strategic watch</div>
+    </div>
+  </div>
+</div>
+
+<!-- 264 BUG STATUS TABLE -->
+<div class="card red-border" style="margin-bottom:16px">
+  <h3>🐛 264 RC Upgrade — Active Bug Status (as of Sep 15, 2026)</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Bug ID</th>
+        <th>Issue</th>
+        <th>Status</th>
+        <th>Fix Build</th>
+        <th># Cases</th>
+        <th>Topic</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="accent">W-24059609</td>
+        <td>Cross-context field mapping dropped</td>
+        <td><span class="pill pill-green">Fixed</span></td>
+        <td>266</td>
+        <td class="num">4</td>
+        <td><span class="pill pill-grey">Billing/Txn</span></td>
+      </tr>
+      <tr>
+        <td class="accent">W-23791512</td>
+        <td>Usage batch fails post-264</td>
+        <td><span class="pill pill-green">Closed</span></td>
+        <td>266</td>
+        <td class="num">4</td>
+        <td><span class="pill pill-grey">Usage</span></td>
+      </tr>
+      <tr>
+        <td class="accent">W-24031441</td>
+        <td>PSG cron job fails</td>
+        <td><span class="pill pill-yellow">QA In Progress</span></td>
+        <td>264.5</td>
+        <td class="num">2</td>
+        <td><span class="pill pill-grey">Configurator</span></td>
+      </tr>
+      <tr>
+        <td class="accent">W-24088655</td>
+        <td>Invoices not generating</td>
+        <td><span class="pill pill-green">Closed</span></td>
+        <td>264.e</td>
+        <td class="num">3</td>
+        <td><span class="pill pill-grey">Billing</span></td>
+      </tr>
+      <tr>
+        <td class="accent">W-24067780</td>
+        <td>Approval permissions post-264</td>
+        <td><span class="pill pill-red">Waiting</span></td>
+        <td>266</td>
+        <td class="num">1</td>
+        <td><span class="pill pill-grey">Adv Approvals</span></td>
+      </tr>
+      <tr>
+        <td class="accent">W-24137697</td>
+        <td>404 error on save/activate</td>
+        <td><span class="pill pill-red">In Progress</span></td>
+        <td>264.5</td>
+        <td class="num">—</td>
+        <td><span class="pill pill-grey">Configurator</span></td>
+      </tr>
+      <tr>
+        <td class="accent">W-24053522</td>
+        <td>DTP 2K line support</td>
+        <td><span class="pill pill-yellow">Ready for Review</span></td>
+        <td>266</td>
+        <td class="num">1</td>
+        <td><span class="pill pill-grey">Billing</span></td>
+      </tr>
+      <tr>
+        <td class="accent">W-24033420</td>
+        <td>PST concurrency lock</td>
+        <td><span class="pill pill-green">Closed</span></td>
+        <td>264.e</td>
+        <td class="num">1</td>
+        <td><span class="pill pill-grey">Configurator</span></td>
+      </tr>
+      <tr>
+        <td class="accent">W-24048302</td>
+        <td>Bell Canada CML errors</td>
+        <td><span class="pill pill-red">Triaged</span></td>
+        <td>—</td>
+        <td class="num">1</td>
+        <td><span class="pill pill-grey">Configurator</span></td>
+      </tr>
+      <tr>
+        <td class="accent">W-23919000</td>
+        <td>Flow Builder non-blocking error</td>
+        <td><span class="pill pill-yellow">Ready for Review</span></td>
+        <td>264.5</td>
+        <td class="num">1</td>
+        <td><span class="pill pill-grey">Configurator</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top:10px;padding:8px;background:#fff8c5;border-radius:6px;font-size:11px;color:#9a6700;border:1px solid #f5d845">
+    <strong>Build exposure:</strong> 264.5 = W-24031441 (PSG cron), W-24137697 (404 error), W-23919000 (Flow Builder) · <strong>266 = </strong>W-24059609, W-23791512, W-24067780, W-24053522 · <strong>Not yet scheduled:</strong> W-24048302 (Bell Canada)
+  </div>
+</div>
+
+<!-- COMPARISON SUMMARY TABLE -->
+<div class="card" style="margin-bottom:16px">
+  <h3>📊 Cross-Release Comparison Summary</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th class="num">258 (W'26)</th>
+        <th class="num">260 (Sp'26)</th>
+        <th class="num">262 (Su'26)</th>
+        <th class="num" style="background:#ffebe9">264 (W'27)</th>
+        <th>Callout</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>RC Inflow D1–7</strong></td>
+        <td class="num">444</td>
+        <td class="num">465</td>
+        <td class="num">427</td>
+        <td class="num" style="background:#fff0ef;color:#cf222e;font-weight:700">490</td>
+        <td>264 all-time high; +5.4% vs 260</td>
+      </tr>
+      <tr>
+        <td><strong>IR-Tagged Cases</strong></td>
+        <td class="num">60</td>
+        <td class="num" style="color:#cf222e;font-weight:700">75</td>
+        <td class="num" style="color:#1a7f37;font-weight:700">12</td>
+        <td class="num" style="background:#fff0ef">44</td>
+        <td>260 highest IR volume; 262 anomalously low</td>
+      </tr>
+      <tr>
+        <td><strong>IR Rate (%)</strong></td>
+        <td class="num">13.5%</td>
+        <td class="num" style="color:#cf222e;font-weight:700">16.1%</td>
+        <td class="num" style="color:#1a7f37;font-weight:700">2.8%</td>
+        <td class="num" style="background:#fff0ef">9.0%</td>
+        <td>264 = second-best IR rate (after 262)</td>
+      </tr>
+      <tr>
+        <td><strong>Sev1 (IR cases)</strong></td>
+        <td class="num" style="color:#cf222e;font-weight:700">23</td>
+        <td class="num">11</td>
+        <td class="num">6</td>
+        <td class="num" style="background:#fff0ef;color:#1a7f37">7</td>
+        <td>264 Sev1 near 262 low; 258 had worst Sev1 impact</td>
+      </tr>
+      <tr>
+        <td><strong>Unique Bugs (IR)</strong></td>
+        <td class="num">13</td>
+        <td class="num" style="color:#cf222e;font-weight:700">28</td>
+        <td class="num">10</td>
+        <td class="num" style="background:#fff0ef">10</td>
+        <td>260 had broadest bug surface; 264 = 262-level</td>
+      </tr>
+      <tr>
+        <td><strong>Unique GUS (IR)</strong></td>
+        <td class="num">25</td>
+        <td class="num">20</td>
+        <td class="num" style="color:#1a7f37;font-weight:700">9</td>
+        <td class="num" style="background:#fff0ef">19</td>
+        <td>264 investigations at 258 level — active tracking</td>
+      </tr>
+      <tr>
+        <td><strong>#1 Topic</strong></td>
+        <td class="num">Config 67%</td>
+        <td class="num">Config 45%</td>
+        <td class="num">Config 42%</td>
+        <td class="num" style="background:#fff0ef">Config 34%</td>
+        <td>Configurator dominance declining each release</td>
+      </tr>
+      <tr>
+        <td><strong>New Topic in Release</strong></td>
+        <td class="num">DevSupport P2O (17%)</td>
+        <td class="num">Price Mgmt (13%), DRO (5%)</td>
+        <td class="num">Txn Mgmt (33%)</td>
+        <td class="num" style="background:#fff0ef">Billing (14%), Usage (11%)</td>
+        <td>264 diversifies to Billing/Usage for first time</td>
+      </tr>
+      <tr>
+        <td><strong>D1 Inflow</strong></td>
+        <td class="num">58</td>
+        <td class="num">106</td>
+        <td class="num">11</td>
+        <td class="num" style="background:#fff0ef">10</td>
+        <td>264 slow start (Aug 29 weekend); ramped by D3</td>
+      </tr>
+      <tr>
+        <td><strong>Peak Day Inflow</strong></td>
+        <td class="num">D4: 113</td>
+        <td class="num">D4: 116</td>
+        <td class="num">D3: 86</td>
+        <td class="num" style="background:#fff0ef">D5: 113</td>
+        <td>264 peak shifted to D5; slower build vs 258/260</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- FOOTER -->
+<footer>Revenue Cloud Upgrade Cross-Release Dashboard · 258 / 260 / 262 / 264 · Data: OrgCS live query (Sep 15, 2026) · All RC-qualified cases · 7-day post-SB1 IST window</footer>
+
+</div><!-- /wrap -->
+
+<script>
+const RELEASES = ['258 (W\'26)','260 (Sp\'26)','262 (Su\'26)','264 (W\'27)'];
+const COLORS = ['#0969da','#1a7f37','#9a6700','#cf222e'];
+const COLORS_ALT = ['rgba(9,105,218,.15)','rgba(26,127,55,.15)','rgba(154,103,0,.15)','rgba(207,34,46,.15)'];
+
+const gridColor = 'rgba(208,215,222,.5)';
+const tickColor = '#8b949e';
+const def = (id, cfg) => new Chart(document.getElementById(id).getContext('2d'), cfg);
+
+// Overall RC inflow daily trend D1-D7
+// 258: D1=58 D2=6 D3=12 D4=113 D5=107 D6=101 D7=47
+// 260: D1=106 D2=6 D3=10 D4=116 D5=115 D6=69 D7=43
+// 262: D1=11 D2=6 D3=86 D4=98 D5=81 D6=85 D7=60
+// 264: D1=10 D2=36 D3=97 D4=103 D5=113 D6=76 D7=55
+const DAYS = ['D1','D2','D3','D4','D5','D6','D7'];
+
+def('inflowTrend',{type:'line',data:{labels:DAYS,datasets:[
+  {label:'258',data:[58,6,12,113,107,101,47],borderColor:'#0969da',backgroundColor:'rgba(9,105,218,.08)',tension:.3,pointRadius:3},
+  {label:'260',data:[106,6,10,116,115,69,43],borderColor:'#1a7f37',backgroundColor:'rgba(26,127,55,.08)',tension:.3,pointRadius:3},
+  {label:'262',data:[11,6,86,98,81,85,60],borderColor:'#9a6700',backgroundColor:'rgba(154,103,0,.08)',tension:.3,pointRadius:3},
+  {label:'264',data:[10,36,97,103,113,76,55],borderColor:'#cf222e',backgroundColor:'rgba(207,34,46,.08)',tension:.3,pointRadius:3,borderWidth:2.5}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:10,font:{size:11}}}},scales:{x:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}}},y:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}},title:{display:true,text:'Cases',color:tickColor,font:{size:11}}}}}});
+
+// IR cases comparison — bar chart total + rate
+def('irBars',{type:'bar',data:{labels:RELEASES,datasets:[
+  {label:'IR Cases (total)',data:[60,75,12,44],backgroundColor:COLORS,borderRadius:4},
+  {label:'IR Rate %',data:[13.5,16.1,2.8,9.0],type:'line',borderColor:'#8250df',backgroundColor:'rgba(130,80,223,.1)',yAxisID:'y1',tension:.3,pointRadius:4,pointBackgroundColor:'#8250df'}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:10,font:{size:11}}}},scales:{x:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}}},y:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}},title:{display:true,text:'IR Cases',color:tickColor,font:{size:11}}},y1:{position:'right',grid:{display:false},ticks:{color:'#8250df',font:{size:11},callback:v=>v+'%'},title:{display:true,text:'IR Rate %',color:'#8250df',font:{size:11}}}}}});
+
+// Topic breakdown grouped bar
+const TOPICS = ['Configurator','TxnMgmt','Price Mgmt','Billing','Usage & Ratings','DRO','Dev P2O'];
+const TOPIC_COLORS = ['#0969da','#8250df','#9a6700','#e16f42','#1a7f37','#cf222e','#656d76'];
+// Data per topic [258, 260, 262, 264]
+const TOPIC_DATA = [
+  [40,34,5,15],  // Configurator
+  [5,12,4,9],    // TxnMgmt
+  [3,10,1,1],    // Price
+  [0,2,0,6],     // Billing
+  [0,0,0,5],     // Usage
+  [0,4,1,2],     // DRO
+  [10,1,1,1],    // DevP2O
+];
+
+def('topicChart',{type:'bar',data:{labels:RELEASES,datasets: TOPICS.map((t,i)=>({
+  label:t,data:TOPIC_DATA[i],backgroundColor:TOPIC_COLORS[i]+'cc',borderRadius:3
+}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:8,font:{size:10}}}},scales:{x:{stacked:true,grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}}},y:{stacked:true,grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}},title:{display:true,text:'IR Cases',color:tickColor,font:{size:11}}}}}});
+
+// Sev breakdown stacked bar
+def('sevChart',{type:'bar',data:{labels:RELEASES,datasets:[
+  {label:'Sev1 Critical',data:[23,11,6,7],backgroundColor:'#cf222e',borderRadius:3},
+  {label:'Sev2 Urgent',data:[27,54,5,30],backgroundColor:'#e16f42',borderRadius:3},
+  {label:'Sev3 High',data:[9,6,1,5],backgroundColor:'#9a6700',borderRadius:3},
+  {label:'Sev4 Medium',data:[1,4,0,2],backgroundColor:'#d0d7de',borderRadius:3}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:8,font:{size:11}}}},scales:{x:{stacked:true,grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}}},y:{stacked:true,grid:{color:gridColor},ticks:{color:tickColor,font:{size:11}},title:{display:true,text:'IR Cases',color:tickColor,font:{size:11}}}}}});
+</script>
+</body>
+</html>
