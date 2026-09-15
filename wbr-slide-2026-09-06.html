@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 1280px; height: 720px;
+    font-family: Arial, 'Salesforce Sans', sans-serif;
+    background: #f0f4f8;
+    overflow: hidden;
+    font-size: 13px;
+  }
+
+  /* ── Header ── */
+  .hdr {
+    background: linear-gradient(90deg, #0070d2 0%, #032d60 100%);
+    height: 50px; padding: 0 18px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .hdr-left { display: flex; align-items: center; gap: 12px; }
+  .sf-badge {
+    background: white; border-radius: 50%;
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 800; color: #0070d2; flex-shrink: 0;
+  }
+  .hdr-title { color: white; font-size: 17px; font-weight: 300; letter-spacing: 0.01em; }
+  .hdr-title b { font-weight: 700; }
+  .hdr-right { display: flex; align-items: center; gap: 10px; }
+  .hdr-date { color: white; font-size: 13px; font-weight: 600; }
+
+  /* ── Body grid ── */
+  .body {
+    display: grid;
+    grid-template-columns: 388px 1fr;
+    gap: 9px; padding: 9px;
+    height: calc(720px - 50px);
+  }
+
+  /* ── Left panel ── */
+  .left { display: flex; flex-direction: column; gap: 8px; }
+
+  .card {
+    background: white;
+    border: 1px solid #d8dde6;
+    border-radius: 7px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    overflow: hidden;
+  }
+  .card-banner {
+    background: #e8f4fd; border-bottom: 1px solid #b0d4f5;
+    text-align: center; padding: 5px 8px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.09em;
+    color: #032d60; text-transform: uppercase;
+  }
+  .card-inner { padding: 10px 12px 8px; }
+
+  .chart-meta { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .chart-title { font-size: 12.5px; font-weight: 700; color: #032d60; }
+  .chart-sub { font-size: 9.5px; color: #706e6b; margin-top: 1px; }
+  .chart-val { text-align: right; }
+  .chart-val .cur { font-size: 12px; font-weight: 700; color: #181818; }
+  .chart-val .wow-g { font-size: 10.5px; font-weight: 700; color: #2e844a; }
+  .chart-val .wow-r { font-size: 10.5px; font-weight: 700; color: #ba0517; }
+
+  /* ── Right panel ── */
+  .right { display: flex; flex-direction: column; gap: 8px; }
+
+  /* Scorecard */
+  .sc-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .sc-table thead th {
+    background: #032d60; color: white;
+    padding: 5px 8px; font-size: 10px; font-weight: 700;
+    text-align: center; letter-spacing: 0.03em;
+  }
+  .sc-table thead th:first-child { text-align: left; padding-left: 10px; }
+  .sc-table tbody tr:nth-child(even) { background: #f4f6f9; }
+  .sc-table tbody td { padding: 4px 8px; border-bottom: 1px solid #eaecf0; color: #181818; }
+  .sc-table tbody td.lbl { padding-left: 10px; white-space: nowrap; }
+  .sc-table tbody td.tgt { text-align: center; color: #706e6b; }
+  .sc-table tbody td.val { text-align: center; font-weight: 700; }
+  .sc-table tbody td.g { text-align: center; font-weight: 700; color: #2e844a; background: #f0faf0; }
+  .sc-table tbody td.r { text-align: center; font-weight: 700; color: #ba0517; background: #fff2f2; }
+  .sc-table tbody td.n { text-align: center; color: #706e6b; }
+  .sc-table tbody td.val.hi { color: #2e844a; }
+
+  /* Highlights */
+  .hl-body { padding: 8px 12px; display: flex; flex-direction: column; gap: 5px; }
+  .hl { font-size: 11px; color: #181818; line-height: 1.42; padding-left: 13px; position: relative; }
+  .hl::before { content: '•'; position: absolute; left: 0; color: #0070d2; font-weight: 800; font-size: 13px; top: -1px; }
+  .hl b { color: #032d60; }
+  .hl .g { color: #2e844a; font-weight: 700; }
+  .hl .r { color: #ba0517; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="sf-badge">SF</div>
+    <div class="hdr-title"><b>Support Experience</b> | Overall Key Performance Indicators</div>
+  </div>
+  <div class="hdr-right">
+    <div class="sf-badge">SF</div>
+    <div class="hdr-date">September 12, 2026</div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="body">
+
+  <!-- ═══ LEFT: Charts ═══ -->
+  <div class="left">
+
+    <!-- Inflow Trend -->
+    <div class="card">
+      <div class="card-banner">Support Trend Analytics</div>
+      <div class="card-inner">
+        <div class="chart-meta">
+          <div>
+            <div class="chart-title">Inflow Trend (Support WoW)</div>
+            <div class="chart-sub">RC &amp; Industries · EMEA · India · APAC</div>
+          </div>
+          <div class="chart-val">
+            <div class="cur">Sep 6 &nbsp; Value: 962</div>
+            <div class="wow-g">−185 WoW ✅ (Green trend)</div>
+          </div>
+        </div>
+        <!-- LINE CHART: 8/16=1034, 8/23=912, 8/30=1158, 9/6=962 -->
+        <!-- y = 95 - ((v-850)/380)*80 -->
+        <!-- 1034 → 95-38.7=56.3 | 912 → 95-13=82 | 1158 → 95-64.7=30.3 | 962 → 95-23.5=71.5 -->
+        <svg width="362" height="112" viewBox="0 0 362 112">
+          <defs>
+            <linearGradient id="ig" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0070d2" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#0070d2" stop-opacity="0.02"/>
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="95" x2="362" y2="95" stroke="#eaecf0" stroke-width="1"/>
+          <line x1="0" y1="65" x2="362" y2="65" stroke="#eaecf0" stroke-width="1"/>
+          <line x1="0" y1="35" x2="362" y2="35" stroke="#eaecf0" stroke-width="1"/>
+          <!-- Area -->
+          <polygon points="28,56 138,82 248,30 338,72 338,95 28,95" fill="url(#ig)"/>
+          <!-- Line -->
+          <polyline points="28,56 138,82 248,30 338,72"
+            fill="none" stroke="#0070d2" stroke-width="2.5" stroke-linejoin="round"/>
+          <!-- Dots -->
+          <circle cx="28"  cy="56" r="4" fill="#0070d2"/>
+          <circle cx="138" cy="82" r="4" fill="#0070d2"/>
+          <circle cx="248" cy="30" r="4" fill="#0070d2"/>
+          <circle cx="338" cy="72" r="5" fill="#032d60" stroke="white" stroke-width="2"/>
+          <!-- Labels -->
+          <text x="28"  y="49"  text-anchor="middle" font-size="10" font-weight="600" fill="#181818">1,034</text>
+          <text x="138" y="79"  text-anchor="middle" font-size="10" font-weight="600" fill="#181818" dy="-1">912</text>
+          <text x="248" y="23"  text-anchor="middle" font-size="10" font-weight="600" fill="#181818">1,158</text>
+          <text x="338" y="64"  text-anchor="middle" font-size="10.5" font-weight="700" fill="#032d60">962</text>
+          <!-- X axis -->
+          <text x="28"  y="108" text-anchor="middle" font-size="9" fill="#706e6b">8/16/26</text>
+          <text x="138" y="108" text-anchor="middle" font-size="9" fill="#706e6b">8/23/26</text>
+          <text x="248" y="108" text-anchor="middle" font-size="9" fill="#706e6b">8/30/26</text>
+          <text x="338" y="108" text-anchor="middle" font-size="9" font-weight="700" fill="#032d60">Sep 6</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Sev1 Trend -->
+    <div class="card">
+      <div class="card-inner">
+        <div class="chart-meta">
+          <div>
+            <div class="chart-title">Sev 1 Inflow Trend (WoW)</div>
+            <div class="chart-sub">Overall · RCA Configurator outage spike Sep 6 🔴</div>
+          </div>
+          <div class="chart-val">
+            <div class="cur">Sep 6 Value: 110</div>
+            <div class="wow-r">+24 WoW · #icc-95079032 🔴</div>
+          </div>
+        </div>
+        <!-- BAR CHART: 8/16=96, 8/23=84, 8/30=134, 9/6=110 -->
+        <!-- bar h = (v/150)*78; y = 88 - h -->
+        <!-- 96→49.9,y=38 | 84→43.7,y=44 | 134→69.7,y=18 | 110→57.2,y=31 -->
+        <svg width="362" height="112" viewBox="0 0 362 112">
+          <line x1="0" y1="88" x2="362" y2="88" stroke="#eaecf0" stroke-width="1"/>
+          <line x1="0" y1="60" x2="362" y2="60" stroke="#eaecf0" stroke-width="1"/>
+          <line x1="0" y1="32" x2="362" y2="32" stroke="#eaecf0" stroke-width="1"/>
+          <!-- Bars -->
+          <rect x="14"  y="38" width="48" height="50" fill="#032d60" rx="3"/>
+          <rect x="114" y="44" width="48" height="44" fill="#032d60" rx="3"/>
+          <rect x="214" y="18" width="48" height="70" fill="#032d60" rx="3"/>
+          <rect x="300" y="31" width="48" height="57" fill="#ba0517" rx="3"/>
+          <!-- Trend line -->
+          <polyline points="38,38 138,44 238,18 324,31"
+            fill="none" stroke="#2e844a" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="38"  cy="38" r="3" fill="#2e844a"/>
+          <circle cx="138" cy="44" r="3" fill="#2e844a"/>
+          <circle cx="238" cy="18" r="3" fill="#2e844a"/>
+          <circle cx="324" cy="31" r="4" fill="#ba0517" stroke="white" stroke-width="1.5"/>
+          <!-- Labels -->
+          <text x="38"  y="32"  text-anchor="middle" font-size="10" font-weight="600" fill="#181818">96</text>
+          <text x="138" y="38"  text-anchor="middle" font-size="10" font-weight="600" fill="#181818">84</text>
+          <text x="238" y="12"  text-anchor="middle" font-size="10" font-weight="600" fill="#181818">134</text>
+          <text x="324" y="25"  text-anchor="middle" font-size="10.5" font-weight="700" fill="#ba0517">110</text>
+          <!-- X axis -->
+          <text x="38"  y="104" text-anchor="middle" font-size="9" fill="#706e6b">8/16/26</text>
+          <text x="138" y="104" text-anchor="middle" font-size="9" fill="#706e6b">8/23/26</text>
+          <text x="238" y="104" text-anchor="middle" font-size="9" fill="#706e6b">8/30/26</text>
+          <text x="324" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#ba0517">Sep 6</text>
+        </svg>
+      </div>
+    </div>
+
+  </div><!-- /left -->
+
+  <!-- ═══ RIGHT ═══ -->
+  <div class="right">
+
+    <!-- KPI Scorecard -->
+    <div class="card">
+      <div class="card-banner">KPI Scorecard</div>
+      <table class="sc-table">
+        <thead>
+          <tr>
+            <th style="width:36%;text-align:left;padding-left:10px;">KPI Metric</th>
+            <th style="width:13%;">Target</th>
+            <th style="width:22%;">Current (Sep 6)</th>
+            <th style="width:29%;">Week-over-Week (WoW) Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="lbl">📈 &nbsp;Support Inflow</td>
+            <td class="tgt">—</td>
+            <td class="val">962</td>
+            <td class="g">−185 &nbsp;✅</td>
+          </tr>
+          <tr>
+            <td class="lbl">✖ &nbsp;Closures</td>
+            <td class="tgt">—</td>
+            <td class="val">1,022</td>
+            <td class="g">+116 &nbsp;✅</td>
+          </tr>
+          <tr>
+            <td class="lbl">📊 &nbsp;Closure Productivity</td>
+            <td class="tgt">≥ 100%</td>
+            <td class="val hi">101% &nbsp;✅</td>
+            <td class="g">+22pp vs PW 79%</td>
+          </tr>
+          <tr>
+            <td class="lbl">📋 &nbsp;MTD Throughput</td>
+            <td class="tgt">≥ 2.0</td>
+            <td class="val hi">2.14 &nbsp;✅</td>
+            <td class="n">On track</td>
+          </tr>
+          <tr>
+            <td class="lbl">⏱ &nbsp;TTR (Time to Resolve)</td>
+            <td class="tgt"><b>10 days</b></td>
+            <td class="val hi">7.4</td>
+            <td class="g">Below target ✅</td>
+          </tr>
+          <tr>
+            <td class="lbl">☺ &nbsp;CSAT (Cust. Sat. Score)</td>
+            <td class="tgt">4.5</td>
+            <td class="val hi">4.72</td>
+            <td class="g">Above target ✅</td>
+          </tr>
+          <tr>
+            <td class="lbl">🚨 &nbsp;Escalation %</td>
+            <td class="tgt">&lt; 2%</td>
+            <td class="val">0.9%</td>
+            <td class="g">Within target ✅</td>
+          </tr>
+          <tr>
+            <td class="lbl">🔍 &nbsp;Investigations</td>
+            <td class="tgt">—</td>
+            <td class="val">75</td>
+            <td class="n">Inv. Rate 8.0%</td>
+          </tr>
+          <tr>
+            <td class="lbl">🐛 &nbsp;Bugs</td>
+            <td class="tgt">—</td>
+            <td class="val">68</td>
+            <td class="n">Bug Rate 7.3%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Highlights -->
+    <div class="card" style="flex:1;">
+      <div class="card-banner" style="text-align:left;padding-left:12px;">🔑 &nbsp;Highlights</div>
+      <div class="hl-body">
+        <div class="hl">
+          <b>Closure Efficiency:</b> <span class="g">Closure Productivity 101%</span> — team closed more than came in for the first time since the Aug 30 release surge (PW was +241 net build). MTD Throughput <span class="g">2.14</span> (target ≥ 2.0). Net flow −60. ✅
+        </div>
+        <div class="hl">
+          <b>Inflow ↓ −16% WoW:</b> All geos contracted. EMEA 448 (↓−113), India 353 (↓−53), APAC 161 (↓−30). India share nudged to 37% (+1.6pp) as EMEA absorbed fewer outage spikes.
+        </div>
+        <div class="hl">
+          <b>Strong CSAT — 4.72:</b> Holding consistent, no low-score alerts. Quality maintained despite elevated S1 environment.
+        </div>
+        <div class="hl">
+          <b>OmniStudio Normalising:</b> 213 → <span class="g">121 (↓ −43%)</span> — back to Aug 16–23 baseline. S1 close rate confirms clearing: 120 S1s closed vs 85 PW (+35 ✅).
+        </div>
+        <div class="hl">
+          <b>RCA – Product Configurator S1 Spike:</b> <span class="r">9 → 33 (+267% 🔴)</span> — EMEA carrying 26/33. Outage IR <b>#icc-95079032</b> active. CML API defects + Variant Configurator failures. Engineering engaged via GUS.
+        </div>
+        <div class="hl">
+          <b>Life Sciences — 4-Week Downtrend:</b> 153 → 140 → 137 → <span class="g">119 (↓ −22%)</span>. AstraZeneca 26→12, Mylan resolved, Beiersdorf normalising (post-impl stabilisation). Watch: Deloitte Global ↑ 4→15 (impl. partner) &amp; AbbVie new entrant (10 cases).
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /right -->
+
+</div><!-- /body -->
+</body>
+</html>
