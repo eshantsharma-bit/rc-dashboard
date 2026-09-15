@@ -275,8 +275,8 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
     <div class="chart-wrap"><canvas id="topicChart"></canvas></div>
   </div>
   <div class="card">
-    <h3>🔴 Sev1 IR Cases + Org Base Growth</h3>
-    <div class="chart-wrap"><canvas id="sevOrgChart"></canvas></div>
+    <h3>🐛 264 Daily: RC Inflow vs IR Cases + Bug Surfacing</h3>
+    <div class="chart-wrap"><canvas id="inflow264Chart"></canvas></div>
   </div>
 </div>
 
@@ -565,23 +565,70 @@ def('topicChart',{type:'bar',
         title:{display:true,text:'% of IR Cases',color:tc,font:{size:11}}}
     }}});
 
-// Sev1 IR + org base dual axis
-def('sevOrgChart',{type:'bar',
-  data:{labels:REL,datasets:[
-    {label:'Active Orgs',data:[765,1266,1632,1908],type:'bar',
-     backgroundColor:['#0969da22','#1a7f3722','#9a670022','#cf222e22'],
-     borderColor:COLS,borderWidth:1,borderRadius:4,yAxisID:'y1'},
-    {label:'Sev1 IR Cases',data:[23,11,6,7],type:'line',
-     borderColor:'#cf222e',backgroundColor:'rgba(207,34,46,.1)',
-     tension:.3,pointRadius:5,pointBackgroundColor:'#cf222e',borderWidth:2.5,yAxisID:'y'}
-  ]},
+// 264 daily: RC Inflow line + IR Cases line + Bug scatter dots
+// Day labels: D1=Aug 29 ... D7=Sep 4 (IST)
+const D264 = ['D1\nAug 29','D2\nAug 30','D3\nAug 31','D4\nSep 1','D5\nSep 2','D6\nSep 3','D7\nSep 4'];
+// Bug first-appearance per day index (0-based), label for tooltip
+const bugEvents = [
+  {day:0, bug:'W-24031441', topic:'Configurator'},
+  {day:2, bug:'W-24048302', topic:'Configurator'},
+  {day:2, bug:'W-23791512', topic:'Usage'},
+  {day:2, bug:'W-24059609', topic:'Billing'},
+  {day:2, bug:'W-24053522', topic:'Billing'},
+  {day:3, bug:'W-24067780', topic:'Adv Approvals'},
+  {day:4, bug:'W-24033420', topic:'Configurator'},
+  {day:4, bug:'W-24096152', topic:'PCM'},
+  {day:4, bug:'W-24088655', topic:'Billing'},
+  {day:4, bug:'W-23919000', topic:'Configurator'},
+  {day:5, bug:'W-24059609', topic:'TM'},  // additional case, bug already known
+];
+// Unique bug first-appearances only
+const uniqBugs = [];
+const seen264 = new Set();
+bugEvents.forEach(e=>{if(!seen264.has(e.bug)){seen264.add(e.bug);uniqBugs.push(e);}});
+// Map day index → inflow and IR values (for dot y-position = inflow at that day)
+const inflowByDay = [10,36,97,103,113,76,55];
+const irByDay264  = [2, 2, 10, 11,  8,  6,  5];
+const bugScatter = uniqBugs.map(e=>({x:e.day, y:inflowByDay[e.day], label:e.bug, topic:e.topic}));
+
+def('inflow264Chart',{
+  type:'line',
+  data:{
+    labels:D264,
+    datasets:[
+      {label:'RC Inflow',data:inflowByDay,
+       borderColor:'#0969da',backgroundColor:'rgba(9,105,218,.08)',
+       tension:.35,pointRadius:3,pointBackgroundColor:'#0969da',borderWidth:2,fill:true,order:2},
+      {label:'IR Cases',data:irByDay264,
+       borderColor:'#cf222e',backgroundColor:'rgba(207,34,46,.08)',
+       tension:.35,pointRadius:3,pointBackgroundColor:'#cf222e',borderWidth:2,fill:true,order:3},
+      {label:'Bug surfaced (new)',
+       type:'scatter',
+       data:bugScatter.map(b=>({x:b.x, y:b.y})),
+       backgroundColor:'#9a6700',borderColor:'#fff',
+       pointRadius:8,pointHoverRadius:10,borderWidth:2,order:1,
+       parsing:{xAxisKey:'x',yAxisKey:'y'}}
+    ]},
   options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{position:'top',labels:{boxWidth:10,font:{size:11}}}},
+    plugins:{
+      legend:{position:'top',labels:{boxWidth:10,font:{size:11}}},
+      tooltip:{callbacks:{
+        label(ctx){
+          if(ctx.datasetIndex===2){
+            const b=bugScatter[ctx.dataIndex];
+            return b ? `${b.bug} — ${b.topic}` : '';
+          }
+          return `${ctx.dataset.label}: ${ctx.parsed.y}`;
+        }
+      }}
+    },
     scales:{
-      x:{grid:{color:'rgba(208,215,222,.5)'},ticks:{color:tc,font:{size:11}}},
-      y:{grid:{color:'rgba(208,215,222,.5)'},ticks:{color:tc,font:{size:11}},title:{display:true,text:'Sev1 IR',color:'#cf222e',font:{size:11}}},
-      y1:{position:'right',grid:{display:false},ticks:{color:'#0969da',font:{size:11},callback:v=>v.toLocaleString()},
-        title:{display:true,text:'Active Orgs',color:'#0969da',font:{size:11}}}
+      x:{type:'linear',min:0,max:6,
+        ticks:{color:tc,font:{size:10},
+          callback:(v)=>D264[v]||''},
+        grid:{color:'rgba(208,215,222,.5)'}},
+      y:{grid:{color:'rgba(208,215,222,.5)'},ticks:{color:tc,font:{size:11}},
+        title:{display:true,text:'Cases',color:tc,font:{size:11}},min:0}
     }}});
 </script>
 </body>
