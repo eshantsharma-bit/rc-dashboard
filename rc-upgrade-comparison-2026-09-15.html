@@ -203,8 +203,8 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
       <tr><td>IR Rate (IR / Inflow)</td><td class="num"><strong>12.6%</strong></td><td class="num"><strong>12.0%</strong></td><td class="num" style="color:#1a7f37;font-weight:700">2.8%</td><td class="num" style="background:#fff0ef;font-weight:700">8.8%</td></tr>
       <tr><td>IR / Active Org</td><td class="num"><strong>8.2%</strong></td><td class="num"><strong>4.4%</strong></td><td class="num" style="color:#1a7f37;font-weight:700">0.7%</td><td class="num" style="background:#fff0ef;color:#1a7f37;font-weight:700">2.3%</td></tr>
       <tr><td>Sev1 IR</td><td class="num" style="color:#cf222e;font-weight:700">23</td><td class="num">11</td><td class="num">6</td><td class="num" style="background:#fff0ef;color:#1a7f37;font-weight:700">7</td></tr>
-      <tr><td>Unique Bugs</td><td class="num">14</td><td class="num" style="color:#cf222e;font-weight:700">29</td><td class="num">9</td><td class="num" style="background:#fff0ef;font-weight:700">13</td></tr>
-      <tr><td>Unique Bugs % (of IR)</td><td class="num">22%</td><td class="num" style="color:#cf222e;font-weight:700">52%</td><td class="num">75%</td><td class="num" style="background:#fff0ef;font-weight:700">30%</td></tr>
+      <tr><td>Unique Bugs</td><td class="num">14</td><td class="num" style="color:#cf222e;font-weight:700">29</td><td class="num">9</td><td class="num" style="background:#fff0ef;font-weight:700">15</td></tr>
+      <tr><td>Unique Bugs % (of IR)</td><td class="num">22%</td><td class="num" style="color:#cf222e;font-weight:700">52%</td><td class="num">75%</td><td class="num" style="background:#fff0ef;font-weight:700">35%</td></tr>
       <tr><td>#1 IR Topic</td><td class="num">Config 49%</td><td class="num">Config 38%</td><td class="num">Config 42%</td><td class="num" style="background:#fff0ef">Config 32%</td></tr>
       <tr><td>#2 IR Topic</td><td class="num">Txn Mgmt 25%</td><td class="num">Price Mgmt 18%</td><td class="num">Txn Mgmt 42%</td><td class="num" style="background:#fff0ef">Txn Mgmt 23%</td></tr>
       <tr><td>New IR Topics</td><td class="num" style="font-size:10px">Dev P2O</td><td class="num" style="font-size:10px">Price, DRO</td><td class="num" style="font-size:10px">Txn Mgmt</td><td class="num" style="background:#fff0ef;font-size:10px;color:#bc4c00;font-weight:700">Billing, Usage</td></tr>
@@ -279,7 +279,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
   <div>
     <div class="insight blue">
       <strong>📊 264 at a glance: 43 IR cases · 13 bugs · 35 cases with a bug attached</strong>
-      <span>Of 43 IR cases, <strong>29 have a bug ID attached</strong> — a 67% bug-coverage rate. 13 unique bugs identified in first 7 days. Top bug by case volume: <strong>W-24059609 (6 cases)</strong> — cross-context field mapping dropped post-264 upgrade; already fixed in 264.e.</span>
+      <span>Of 43 IR cases, <strong>37 have a bug ID attached</strong> — an 86% bug-coverage rate showing strong triage hygiene. 15 unique bugs identified in first 7 days. Top bug by case volume: <strong>W-24059609 (8 cases)</strong> — cross-context field mapping dropped post-264 upgrade; already fixed in 264.e.</span>
     </div>
     <div class="insight yellow">
       <strong>🔍 Product Catalog Management emerges as new watch area in 264</strong>
@@ -398,15 +398,15 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
 <!-- 264 BUG DEEP DIVE + PIPELINE -->
 <div class="grid-2">
   <div class="card red-border">
-    <h3>🐛 264 — Bugs by Case Count (29 of 43 IR cases have a bug · 13 unique bugs)</h3>
+    <h3>🐛 264 — Bugs by Case Count (37 of 43 IR cases have a bug · 15 unique bugs)</h3>
     <table>
       <thead>
         <tr><th>Bug</th><th>Cases</th><th>Topic</th><th>Fix Build</th><th>Status</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td class="accent">W-24059609</td><td class="num bold">6</td>
-          <td><span class="pill pill-purple">Txn Mgmt</span></td>
+          <td class="accent">W-24059609</td><td class="num bold">8</td>
+          <td><span class="pill pill-purple">Txn Mgmt / Billing</span></td>
           <td><span class="build-264e">264.e</span></td>
           <td><span class="pill pill-green">Closed</span></td>
         </tr>
@@ -415,6 +415,18 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
           <td><span class="pill pill-grey">PCM</span></td>
           <td><span class="build-264e">264.e</span></td>
           <td><span class="pill pill-green">Closed</span></td>
+        </tr>
+        <tr>
+          <td class="accent">W-24088655</td><td class="num bold">4</td>
+          <td><span class="pill pill-orange">Billing</span></td>
+          <td><span class="build-264e">264.e</span></td>
+          <td><span class="pill pill-green">Closed</span></td>
+        </tr>
+        <tr>
+          <td class="accent">W-24031441</td><td class="num bold">4</td>
+          <td><span class="pill pill-blue">Configurator</span></td>
+          <td><span class="build-2645">264.5</span></td>
+          <td><span class="pill pill-yellow">QA In Progress</span></td>
         </tr>
         <tr>
           <td class="accent">W-23791512</td><td class="num bold">4</td>
@@ -429,28 +441,22 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
           <td><span class="pill pill-green">Closed</span></td>
         </tr>
         <tr>
-          <td class="accent">W-24031441</td><td class="num bold">2</td>
+          <td class="accent">W-24156853</td><td class="num bold">1</td>
           <td><span class="pill pill-blue">Configurator</span></td>
-          <td><span class="build-2645">264.5</span></td>
-          <td><span class="pill pill-yellow">QA In Progress</span></td>
-        </tr>
-        <tr>
-          <td class="accent">W-24088655</td><td class="num bold">2</td>
-          <td><span class="pill pill-orange">Billing</span></td>
-          <td><span class="build-264e">264.e</span></td>
+          <td><span class="build-266">266</span></td>
           <td><span class="pill pill-green">Closed</span></td>
         </tr>
         <tr>
-          <td class="accent">W-24154865</td><td class="num bold">2</td>
-          <td><span class="pill pill-blue">Configurator</span></td>
+          <td class="accent">W-24154865</td><td class="num bold">1</td>
+          <td><span class="pill pill-blue">Configurator / CPQ</span></td>
           <td><span class="build-266">266</span></td>
           <td><span class="pill pill-green">Fixed</span></td>
         </tr>
         <tr>
-          <td class="accent">W-24067780</td><td class="num bold">1</td>
-          <td><span class="pill pill-grey">Adv Approvals</span></td>
-          <td><span class="build-2645">264.5</span></td>
-          <td><span class="pill pill-red">Waiting on PM</span></td>
+          <td class="accent">W-24132497</td><td class="num bold">1</td>
+          <td><span class="pill pill-grey">DRO</span></td>
+          <td><span class="build-266">266</span></td>
+          <td><span class="pill pill-green">Closed</span></td>
         </tr>
         <tr>
           <td class="accent">W-24102675</td><td class="num bold">1</td>
@@ -459,16 +465,22 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
           <td><span class="pill pill-yellow">Ready for Review</span></td>
         </tr>
         <tr>
+          <td class="accent">W-24067780</td><td class="num bold">1</td>
+          <td><span class="pill pill-grey">Adv Approvals</span></td>
+          <td><span class="build-2645">264.5</span></td>
+          <td><span class="pill pill-red">Waiting on PM</span></td>
+        </tr>
+        <tr>
           <td class="accent">W-24053522</td><td class="num bold">1</td>
           <td><span class="pill pill-orange">Billing</span></td>
           <td><span class="build-2645">264.5</span></td>
           <td><span class="pill pill-yellow">Ready for Review</span></td>
         </tr>
         <tr>
-          <td class="accent">W-24089962</td><td class="num bold">1</td>
-          <td><span class="pill pill-purple">Txn Mgmt</span></td>
-          <td><span class="build-none">New</span></td>
-          <td><span class="pill pill-red">New</span></td>
+          <td class="accent">W-24050344</td><td class="num bold">1</td>
+          <td><span class="pill pill-grey">DRO</span></td>
+          <td><span class="build-none">Closed</span></td>
+          <td><span class="pill pill-green">Closed</span></td>
         </tr>
         <tr>
           <td class="accent">W-24048302</td><td class="num bold">1</td>
@@ -483,10 +495,11 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
           <td><span class="pill pill-yellow">Ready for Review</span></td>
         </tr>
         <tr style="background:#f6f8fa;font-weight:700">
-          <td>Total</td><td class="num bold">30</td><td colspan="3" style="font-size:10px;color:var(--muted)">Open: W-24067780 (Waiting PM) · W-24031441 (QA) · W-24089962 (New) · W-24048302 (no build) · W-24053522 · W-23919000 · W-24102675</td>
+          <td>Total</td><td class="num bold">37</td><td colspan="3" style="font-size:10px;color:var(--muted)">Open: W-24031441 (QA/264.5) · W-24067780 (Waiting PM) · W-24048302 (no build/Triaged) · W-24053522 · W-23919000 · W-24102675</td>
         </tr>
       </tbody>
     </table>
+    <div style="margin-top:6px;font-size:10px;color:var(--muted)">Note: Bug__c corrections still propagating in OrgCS — dashboard uses pivot data as authoritative source.</div>
   </div>
 
   <div>
@@ -495,28 +508,28 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
       <h3>📦 264 Bug Fix Pipeline Status</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
         <div style="background:#dafbe1;border-radius:6px;padding:10px;text-align:center">
-          <div style="font-size:22px;font-weight:800;color:#1a7f37">6</div>
+          <div style="font-size:22px;font-weight:800;color:#1a7f37">9</div>
           <div style="font-size:10px;color:#1a7f37;font-weight:600">CLOSED</div>
-          <div style="font-size:10px;color:var(--muted)">264.e or 266</div>
+          <div style="font-size:10px;color:var(--muted)">264.e / 266 / Closed</div>
         </div>
         <div style="background:#fff8c5;border-radius:6px;padding:10px;text-align:center">
-          <div style="font-size:22px;font-weight:800;color:#9a6700">5</div>
+          <div style="font-size:22px;font-weight:800;color:#9a6700">4</div>
           <div style="font-size:10px;color:#9a6700;font-weight:600">IN PROGRESS</div>
           <div style="font-size:10px;color:var(--muted)">264.5 fix builds</div>
         </div>
         <div style="background:#ffebe9;border-radius:6px;padding:10px;text-align:center">
           <div style="font-size:22px;font-weight:800;color:#cf222e">2</div>
           <div style="font-size:10px;color:#cf222e;font-weight:600">NEEDS ACTION</div>
-          <div style="font-size:10px;color:var(--muted)">No build / Waiting / New</div>
+          <div style="font-size:10px;color:var(--muted)">No build / Waiting PM</div>
         </div>
       </div>
       <div style="font-size:11px;color:var(--muted);border-top:1px solid #eaeef2;padding-top:8px">
         <strong style="color:var(--text)">Key bugs explained:</strong><br><br>
-        <strong>W-24059609 (6 cases, Closed/264.e)</strong> — Cross-context custom field mapping silently dropped in 264. ContextNodeMapping fields not carried forward on upgrade, breaking Order→Asset field propagation.<br><br>
+        <strong>W-24059609 (8 cases, Closed/264.e)</strong> — Cross-context custom field mapping silently dropped in 264. ContextNodeMapping fields not carried forward on upgrade, breaking Order→Asset field propagation.<br><br>
         <strong>W-24096152 (5 cases, Closed/264.e)</strong> — Email sanitisation in product details API caused full search index rebuild failures. Customers saw deactivated products still visible in catalogs.<br><br>
-        <strong>W-23791512 (4 cases, Closed/266)</strong> — Post-264 upgrade, usage batch fails to retrieve net unit rates for ratable products. Affects Usage &amp; Ratings customers; fix in 266.<br><br>
-        <strong>W-24033420 (3 cases, Closed/264.e)</strong> — Asset Amendment/Cancellation flows throw unexpected errors due to timing changes in transaction commit. Fixed in emergency patch 264.e.<br><br>
-        <strong>W-24102675 (1 case, Ready for Review/264.5)</strong> — Ramp group hit validation missing proper Quote status, blocking following operations. P1 — in review for 264.5.
+        <strong>W-24088655 (4 cases, Closed/264.e)</strong> — Invoice generation fails when state/country field mapping is present on BillingSchedule. Fixed in emergency patch 264.e.<br><br>
+        <strong>W-24031441 (4 cases, QA/264.5)</strong> — PSG cron job fails to update custom Product Selling Groups with many modified state records. Still in QA — customers on custom PSG workflows impacted.<br><br>
+        <strong>W-23791512 (4 cases, Closed/266)</strong> — Post-264 upgrade, usage batch fails to retrieve net unit rates for ratable products. Affects Usage &amp; Ratings customers; fix in 266.
       </div>
     </div>
   </div>
