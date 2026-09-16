@@ -7,30 +7,34 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #222536;
-    --border: #2e3150;
-    --accent: #4f6ef7;
-    --accent2: #7c3aed;
-    --green: #22c55e;
-    --red: #ef4444;
-    --yellow: #f59e0b;
-    --orange: #f97316;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --emea: #4f6ef7;
-    --india: #a855f7;
-    --apac: #22c55e;
-    --rca: #4f6ef7;
-    --cpq: #f59e0b;
-    --billing: #22c55e;
+    --bg: #f3f2f2;
+    --surface: #ffffff;
+    --surface2: #f3f2f2;
+    --border: #dddbda;
+    --accent: #0070d2;
+    --accent-light: #e8f4fd;
+    --accent-dark: #005fb2;
+    --green: #2e844a;
+    --green-light: #eaf5ea;
+    --red: #ba0517;
+    --red-light: #fce9ea;
+    --yellow: #a8650e;
+    --yellow-light: #fef3e2;
+    --orange: #a8650e;
+    --text: #3e3e3c;
+    --muted: #706e6b;
+    --emea: #0070d2;
+    --india: #7b5ea7;
+    --apac: #2e844a;
+    --rca: #0070d2;
+    --cpq: #a8650e;
+    --billing: #2e844a;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Salesforce Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 14px;
     line-height: 1.5;
     min-height: 100vh;
@@ -39,98 +43,98 @@
   a:hover { text-decoration: underline; }
   .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
   .header {
-    background: linear-gradient(135deg, #1a1d27 0%, #0f1117 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 24px 0 20px;
-    margin-bottom: 28px;
+    background: linear-gradient(135deg, #0070d2 0%, #005fb2 100%);
+    border-bottom: 3px solid #005fb2;
+    padding: 22px 0 18px;
+    margin-bottom: 24px;
     position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,112,210,0.18);
   }
   .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-  .header-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
+  .header-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: rgba(255,255,255,0.75); text-transform: uppercase; margin-bottom: 5px; }
   .header h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
-  .header-meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 16px; }
+  .header-meta { font-size: 12px; color: rgba(255,255,255,0.8); display: flex; flex-wrap: wrap; gap: 16px; }
   .header-meta span { display: flex; align-items: center; gap: 5px; }
-  .badge { display: inline-block; padding: 2px 9px; border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; }
-  .badge-red { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
-  .badge-yellow { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
-  .badge-green { background: rgba(34,197,94,0.15); color: #86efac; border: 1px solid rgba(34,197,94,0.3); }
-  .badge-blue { background: rgba(79,110,247,0.15); color: #a5b4fc; border: 1px solid rgba(79,110,247,0.3); }
-  .badge-orange { background: rgba(249,115,22,0.15); color: #fdba74; border: 1px solid rgba(249,115,22,0.3); }
-  .metrics-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 12px; margin-bottom: 28px; }
-  .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 16px 14px; position: relative; overflow: hidden; }
-  .metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
-  .metric-card.red::before { background: var(--red); }
-  .metric-card.green::before { background: var(--green); }
-  .metric-card.yellow::before { background: var(--yellow); }
-  .metric-card.blue::before { background: var(--accent); }
-  .metric-card.orange::before { background: var(--orange); }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.03em; }
+  .badge-red { background: #fce9ea; color: #ba0517; border: 1px solid #f5b8bc; }
+  .badge-yellow { background: #fef3e2; color: #a8650e; border: 1px solid #f5d5a0; }
+  .badge-green { background: #eaf5ea; color: #2e844a; border: 1px solid #a3d9a5; }
+  .badge-blue { background: #e8f4fd; color: #0070d2; border: 1px solid #9dc8f0; }
+  .badge-orange { background: #fef3e2; color: #a8650e; border: 1px solid #f5d5a0; }
+  .badge-white { background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4); }
+  .metrics-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 16px 14px; position: relative; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: 8px 8px 0 0; }
+  .metric-card.red::before { background: #ba0517; }
+  .metric-card.green::before { background: #2e844a; }
+  .metric-card.yellow::before { background: #dd8a00; }
+  .metric-card.blue::before { background: #0070d2; }
+  .metric-card.orange::before { background: #dd8a00; }
   .metric-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
-  .metric-value { font-size: 32px; font-weight: 800; line-height: 1; margin-bottom: 6px; color: #fff; }
-  .metric-card.red .metric-value { color: #fca5a5; }
-  .metric-card.green .metric-value { color: #86efac; }
-  .metric-card.yellow .metric-value { color: #fcd34d; }
-  .metric-card.orange .metric-value { color: #fdba74; }
+  .metric-value { font-size: 32px; font-weight: 800; line-height: 1; margin-bottom: 6px; color: var(--text); }
+  .metric-card.red .metric-value { color: #ba0517; }
+  .metric-card.green .metric-value { color: #2e844a; }
+  .metric-card.yellow .metric-value { color: #a8650e; }
+  .metric-card.blue .metric-value { color: #0070d2; }
   .metric-sub { font-size: 11px; color: var(--muted); line-height: 1.4; }
   .metric-delta { font-size: 12px; font-weight: 700; margin-top: 4px; }
-  .delta-up-bad { color: var(--red); }
-  .delta-up-good { color: var(--green); }
-  .delta-down-good { color: var(--green); }
-  .delta-down-bad { color: var(--red); }
+  .delta-up-bad { color: #ba0517; }
+  .delta-up-good { color: #2e844a; }
+  .delta-down-good { color: #2e844a; }
+  .delta-down-bad { color: #ba0517; }
   .delta-neutral { color: var(--muted); }
-  .section { margin-bottom: 28px; }
-  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-  .section-header h2 { font-size: 15px; font-weight: 700; color: #fff; }
+  .section { margin-bottom: 24px; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+  .section-header h2 { font-size: 15px; font-weight: 700; color: var(--text); }
   .section-icon { font-size: 16px; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
   @media(max-width:768px) { .grid-2,.grid-3 { grid-template-columns: 1fr; } }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { background: var(--surface2); color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); }
-  td { padding: 9px 12px; border-bottom: 1px solid rgba(46,49,80,0.5); color: var(--text); vertical-align: middle; }
+  th { background: #f3f2f2; color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 12px; border-bottom: 1px solid #f0efee; color: var(--text); vertical-align: middle; }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(79,110,247,0.04); }
-  .tbl-highlight td { background: rgba(239,68,68,0.06); }
+  tr:hover td { background: #f8f7f6; }
   .num { font-variant-numeric: tabular-nums; font-weight: 600; }
-  .red-text { color: #fca5a5; font-weight: 700; }
-  .green-text { color: #86efac; }
-  .yellow-text { color: #fcd34d; }
+  .red-text { color: #ba0517; font-weight: 700; }
+  .green-text { color: #2e844a; font-weight: 600; }
+  .yellow-text { color: #a8650e; font-weight: 600; }
+  .blue-text { color: #0070d2; font-weight: 600; }
   .muted-text { color: var(--muted); }
-  .bar-wrap { width: 100%; background: var(--surface2); border-radius: 4px; height: 6px; overflow: hidden; }
+  .bar-wrap { width: 100%; background: #f3f2f2; border-radius: 4px; height: 6px; overflow: hidden; }
   .bar-fill { height: 100%; border-radius: 4px; }
-  .highlight-box { background: rgba(79,110,247,0.08); border: 1px solid rgba(79,110,247,0.25); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
-  .highlight-box.warn { background: rgba(239,68,68,0.07); border-color: rgba(239,68,68,0.25); }
-  .highlight-box.ok { background: rgba(34,197,94,0.07); border-color: rgba(34,197,94,0.25); }
-  .highlight-box.yellow { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.25); }
+  .highlight-box { background: var(--accent-light); border: 1px solid #9dc8f0; border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
+  .highlight-box.warn { background: var(--red-light); border-color: #f5b8bc; }
+  .highlight-box.ok { background: var(--green-light); border-color: #a3d9a5; }
+  .highlight-box.yellow { background: var(--yellow-light); border-color: #f5d5a0; }
+  .highlight-box.resolved { background: #f3f2f2; border-color: var(--border); }
   .hl-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
-  .hl-title.red { color: #fca5a5; }
-  .hl-title.green { color: #86efac; }
-  .hl-title.yellow { color: #fcd34d; }
-  .hl-title.blue { color: #a5b4fc; }
+  .hl-title.red { color: #ba0517; }
+  .hl-title.green { color: #2e844a; }
+  .hl-title.yellow { color: #a8650e; }
+  .hl-title.blue { color: #0070d2; }
+  .hl-title.muted { color: var(--muted); }
   .hl-body { font-size: 13px; color: var(--text); line-height: 1.5; }
-  .legend-strip { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 11px; color: var(--muted); margin-bottom: 24px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+  .legend-strip { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 11px; color: var(--muted); margin-bottom: 20px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
   .legend-strip strong { color: var(--text); }
   .chart-wrap { position: relative; height: 220px; }
   .chart-wrap-tall { position: relative; height: 260px; }
-  .stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
-  .stat-tile { background: var(--surface2); border-radius: 8px; padding: 12px 16px; flex: 1; min-width: 120px; }
-  .stat-tile-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-  .stat-tile-value { font-size: 22px; font-weight: 800; color: #fff; }
-  .region-tile { background: var(--surface2); border-radius: 10px; padding: 16px; }
-  .region-name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .region-tile { background: #f8f7f6; border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .region-name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
   .region-count { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
   .region-sub { font-size: 11px; color: var(--muted); }
-  .acct-row { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border-bottom: 1px solid rgba(46,49,80,0.5); }
+  .acct-row { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border-bottom: 1px solid #f0efee; }
   .acct-row:last-child { border-bottom: none; }
-  .acct-rank { font-size: 18px; font-weight: 800; color: var(--muted); min-width: 28px; }
+  .acct-rank { font-size: 18px; font-weight: 800; color: #c9c7c5; min-width: 28px; }
   .acct-body { flex: 1; }
   .acct-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
   .acct-meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
-  .acct-insight { font-size: 12px; color: #94a3b8; font-style: italic; }
+  .acct-insight { font-size: 12px; color: var(--muted); font-style: italic; }
   .acct-stats { display: flex; gap: 10px; flex-shrink: 0; text-align: right; }
-  .acct-stat { }
   .acct-stat-val { font-size: 18px; font-weight: 800; }
   .acct-stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; }
+  .outage-pill { display: inline-flex; align-items: center; gap: 5px; background: #f3f2f2; border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px; font-size: 11px; font-weight: 600; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -142,8 +146,8 @@
     <div class="header-meta">
       <span>📅 TW: Sep 7–13 &nbsp;|&nbsp; PW: Aug 31–Sep 6</span>
       <span>🌍 EMEA + India + APAC</span>
-      <span><span class="badge badge-red">S1 Surge ↑↑</span></span>
-      <span><span class="badge badge-blue">CSAT 4.58</span></span>
+      <span><span class="badge badge-white">S1 Spike — Outage Resolved ✓</span></span>
+      <span><span class="badge badge-white">CSAT 4.58</span></span>
     </div>
   </div>
 </div>
@@ -171,19 +175,19 @@
       <div class="metric-sub">vs 368 PW</div>
       <div class="metric-delta delta-down-good">−18 (−5%)</div>
     </div>
-    <div class="metric-card red">
+    <div class="metric-card yellow">
       <div class="metric-label">Sev1 Inflow</div>
       <div class="metric-value">62</div>
-      <div class="metric-sub">vs 47 PW</div>
-      <div class="metric-delta delta-up-bad">+15 (+32%) ↑↑</div>
+      <div class="metric-sub">~17 outage · ~45 organic</div>
+      <div class="metric-delta delta-neutral">Outage closed ✓</div>
     </div>
-    <div class="metric-card yellow">
+    <div class="metric-card blue">
       <div class="metric-label">Open Backlog</div>
       <div class="metric-value">323</div>
       <div class="metric-sub">live snapshot</div>
       <div class="metric-delta delta-down-good">−19 vs prior wk</div>
     </div>
-    <div class="metric-card red">
+    <div class="metric-card yellow">
       <div class="metric-label">Aged &gt;15d</div>
       <div class="metric-value">47</div>
       <div class="metric-sub">vs 39 last week</div>
@@ -207,19 +211,19 @@
       <div class="metric-sub">vs 25 PW</div>
       <div class="metric-delta delta-up-good">+17 ↑↑</div>
     </div>
-    <div class="metric-card orange">
+    <div class="metric-card blue">
       <div class="metric-label">EMEA S1</div>
       <div class="metric-value">41</div>
-      <div class="metric-sub">66% of all S1s</div>
-      <div class="metric-delta delta-up-bad">+17 vs PW (24) ↑↑</div>
+      <div class="metric-sub">incl. 17 outage cases (W-24117503)</div>
+      <div class="metric-delta delta-neutral">All outage cases closed ✓</div>
     </div>
   </div>
 
   <!-- HIGHLIGHTS -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;">
-    <div class="highlight-box warn">
-      <div class="hl-title red">🚨 EMEA S1 Surge — 4-Week High</div>
-      <div class="hl-body">EMEA S1 jumped 24→41 (+71% WoW), now 66% of all S1s. Driven by new accounts: Cato Networks (3×S1) and Paessler GmbH (4×S1) with no active swarms. Configurator is the primary sub-topic at 104 cases this week (39% of all RCA).</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+    <div class="highlight-box resolved">
+      <div class="hl-title muted">✅ S1 SPIKE — CONFIGURATOR OUTAGE (RESOLVED)</div>
+      <div class="hl-body">~17 of 41 EMEA S1s were a single platform incident: Configurator CML parsing failure ("Failed to parse response", W-24117503) filed across 16 accounts within a 5-hour window on Sep 7. All cases now <strong>Closed</strong>. Organic EMEA S1s for the week: ~24 — flat vs PW.</div>
     </div>
     <div class="highlight-box ok">
       <div class="hl-title green">✅ Engineering Engagement Up</div>
@@ -258,13 +262,13 @@
           <tr>
             <td>Aug 31–Sep 6 (PW)</td><td class="num">368</td><td class="num">47</td><td class="num">155</td><td class="num">268</td><td class="muted-text">73%</td><td class="num">84</td><td class="num">7</td><td class="muted-text">56.8%</td><td class="muted-text">31.5%</td><td class="muted-text">11.7%</td>
           </tr>
-          <tr style="background:rgba(79,110,247,0.07);font-weight:700;">
+          <tr style="background:#e8f4fd;font-weight:700;">
             <td>Sep 7–13 ★ (TW)</td>
-            <td class="num">350</td>
-            <td class="num red-text">62 ↑↑</td>
+            <td class="num blue-text">350</td>
+            <td><span class="num">62</span> <span class="outage-pill">~17 outage ✓</span></td>
             <td class="num">136</td>
             <td class="num">268</td>
-            <td style="color:#a5b4fc;font-weight:700;">77%</td>
+            <td class="blue-text">77%</td>
             <td class="num">69</td>
             <td class="num">6</td>
             <td class="muted-text">56.6%</td>
@@ -325,10 +329,10 @@
         <table>
           <thead><tr><th>Group</th><th>TW</th><th>PW</th><th>Δ</th><th>TW%</th></tr></thead>
           <tbody>
-            <tr><td style="color:#a5b4fc;font-weight:700;">RCA</td><td class="num">268</td><td class="num">268</td><td class="num green-text">→</td><td class="num" style="color:#a5b4fc;">77%</td></tr>
-            <tr><td style="color:#fcd34d;font-weight:700;">CPQ (Legacy)</td><td class="num">69</td><td class="num">84</td><td class="num green-text">−15</td><td class="muted-text">20%</td></tr>
-            <tr><td style="color:#86efac;font-weight:700;">Billing</td><td class="num">6</td><td class="num">7</td><td class="num muted-text">−1</td><td class="muted-text">2%</td></tr>
-            <tr><td class="muted-text">Other</td><td class="num">7</td><td class="num">9</td><td class="num muted-text">−2</td><td class="muted-text">2%</td></tr>
+            <tr><td style="color:#0070d2;font-weight:700;">RCA</td><td class="num">268</td><td class="num">268</td><td class="muted-text">→</td><td class="num blue-text">77%</td></tr>
+            <tr><td style="color:#a8650e;font-weight:700;">CPQ (Legacy)</td><td class="num">69</td><td class="num">84</td><td class="num green-text">−15</td><td class="muted-text">20%</td></tr>
+            <tr><td style="color:#2e844a;font-weight:700;">Billing</td><td class="num">6</td><td class="num">7</td><td class="muted-text">−1</td><td class="muted-text">2%</td></tr>
+            <tr><td class="muted-text">Other</td><td class="num">7</td><td class="num">9</td><td class="muted-text">−2</td><td class="muted-text">2%</td></tr>
           </tbody>
         </table>
       </div>
@@ -337,15 +341,15 @@
         <table>
           <thead><tr><th>Sub-Topic</th><th>TW</th><th>PW</th><th>Δ</th></tr></thead>
           <tbody>
-            <tr><td style="font-weight:600;">Product Configurator</td><td class="num red-text">104</td><td class="num">89</td><td class="num red-text">+15 ↑↑</td></tr>
+            <tr><td style="font-weight:600;">Product Configurator</td><td class="num blue-text">104</td><td class="num">89</td><td class="num blue-text">+15 ↑↑</td></tr>
             <tr><td>Transaction Management</td><td class="num">49</td><td class="num">57</td><td class="num green-text">−8</td></tr>
-            <tr><td>Price Management</td><td class="num">35</td><td class="num">37</td><td class="num muted-text">−2</td></tr>
+            <tr><td>Price Management</td><td class="num">35</td><td class="num">37</td><td class="muted-text">−2</td></tr>
             <tr><td>Product Catalog Mgmt</td><td class="num">19</td><td class="num">16</td><td class="num">+3</td></tr>
-            <tr><td>Dev Support (P2O)</td><td class="num">16</td><td class="num">15</td><td class="num muted-text">+1</td></tr>
+            <tr><td>Dev Support (P2O)</td><td class="num">16</td><td class="num">15</td><td class="muted-text">+1</td></tr>
             <tr><td>Billing &amp; Invoicing</td><td class="num">13</td><td class="num">26</td><td class="num green-text">−13 ↓↓</td></tr>
-            <tr><td>CLM</td><td class="num">9</td><td class="num">10</td><td class="num muted-text">−1</td></tr>
-            <tr><td>Document Generation</td><td class="num">7</td><td class="num">1</td><td class="num red-text">+6</td></tr>
-            <tr><td>Other RCA</td><td class="num">15</td><td class="num">13</td><td class="num muted-text">+2</td></tr>
+            <tr><td>CLM</td><td class="num">9</td><td class="num">10</td><td class="muted-text">−1</td></tr>
+            <tr><td>Document Generation</td><td class="num">7</td><td class="num">1</td><td class="num yellow-text">+6</td></tr>
+            <tr><td>Other RCA</td><td class="num">15</td><td class="num">13</td><td class="muted-text">+2</td></tr>
           </tbody>
         </table>
       </div>
@@ -358,9 +362,7 @@
       <span class="section-icon">📂</span>
       <h2>Open Backlog</h2>
     </div>
-
-    <!-- Region backlog tiles -->
-    <div class="grid-3" style="margin-bottom:16px;">
+    <div class="grid-3" style="margin-bottom:14px;">
       <div class="card" style="text-align:center;padding:16px;">
         <div style="font-size:11px;font-weight:700;color:var(--emea);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">EMEA</div>
         <div style="font-size:36px;font-weight:800;color:var(--emea);">157</div>
@@ -377,16 +379,15 @@
         <div style="font-size:11px;color:var(--muted);">9 aged &gt;15d (23.7%) ⚠</div>
       </div>
     </div>
-
     <div class="grid-2">
       <div class="card">
         <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;">P&amp;T Backlog Breakdown</div>
         <table>
           <thead><tr><th>P&amp;T</th><th>Open</th><th>Aged &gt;15d</th><th>Aged %</th></tr></thead>
           <tbody>
-            <tr><td style="color:#a5b4fc;font-weight:700;">RCA</td><td class="num">239</td><td class="num">36</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="bar-wrap" style="width:80px;"><div class="bar-fill" style="width:15%;background:var(--accent);"></div></div><span class="num">15%</span></div></td></tr>
-            <tr><td style="color:#fcd34d;font-weight:700;">Legacy CPQ</td><td class="num">70</td><td class="num">6</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="bar-wrap" style="width:80px;"><div class="bar-fill" style="width:9%;background:var(--cpq);"></div></div><span class="num">9%</span></div></td></tr>
-            <tr><td style="color:#86efac;font-weight:700;">Billing</td><td class="num">12</td><td class="num red-text">4</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="bar-wrap" style="width:80px;"><div class="bar-fill" style="width:33%;background:var(--red);"></div></div><span class="num red-text">33% ⚠</span></div></td></tr>
+            <tr><td style="color:#0070d2;font-weight:700;">RCA</td><td class="num">239</td><td class="num">36</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="bar-wrap" style="width:80px;"><div class="bar-fill" style="width:15%;background:#0070d2;"></div></div><span class="num">15%</span></div></td></tr>
+            <tr><td style="color:#a8650e;font-weight:700;">Legacy CPQ</td><td class="num">70</td><td class="num">6</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="bar-wrap" style="width:80px;"><div class="bar-fill" style="width:9%;background:#dd8a00;"></div></div><span class="num">9%</span></div></td></tr>
+            <tr><td style="color:#2e844a;font-weight:700;">Billing</td><td class="num">12</td><td class="num red-text">4</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="bar-wrap" style="width:80px;"><div class="bar-fill" style="width:33%;background:#ba0517;"></div></div><span class="num red-text">33% ⚠</span></div></td></tr>
           </tbody>
         </table>
       </div>
@@ -420,7 +421,7 @@
             <tr><td>Aug 17–23</td><td class="num">24</td><td class="num green-text">4.92</td><td class="num">22 (92%)</td><td class="num">0</td></tr>
             <tr><td>Aug 24–30</td><td class="num">18</td><td class="num">4.67</td><td class="num">15 (83%)</td><td class="num">1</td></tr>
             <tr><td>Aug 31–Sep 6</td><td class="num">18</td><td class="num">4.83</td><td class="num">17 (94%)</td><td class="num">1</td></tr>
-            <tr style="background:rgba(79,110,247,0.07);font-weight:700;">
+            <tr style="background:#e8f4fd;font-weight:700;">
               <td>Sep 7–13 ★</td><td class="num">19</td><td class="num yellow-text">4.58</td><td class="num">16 (84%)</td><td class="num red-text">2 ⚠</td>
             </tr>
           </tbody>
@@ -428,19 +429,19 @@
         <div style="margin-top:14px;">
           <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">TW by Region</div>
           <div style="display:flex;gap:12px;">
-            <div style="flex:1;text-align:center;background:var(--surface2);border-radius:8px;padding:10px;">
+            <div style="flex:1;text-align:center;background:#f8f7f6;border:1px solid var(--border);border-radius:8px;padding:10px;">
               <div style="font-size:10px;color:var(--emea);font-weight:700;text-transform:uppercase;margin-bottom:4px;">EMEA</div>
-              <div style="font-size:20px;font-weight:800;color:#fcd34d;">4.20</div>
+              <div style="font-size:20px;font-weight:800;color:#a8650e;">4.20</div>
               <div style="font-size:10px;color:var(--muted);">n=10 · 2 low scores</div>
             </div>
-            <div style="flex:1;text-align:center;background:var(--surface2);border-radius:8px;padding:10px;">
+            <div style="flex:1;text-align:center;background:#f8f7f6;border:1px solid var(--border);border-radius:8px;padding:10px;">
               <div style="font-size:10px;color:var(--india);font-weight:700;text-transform:uppercase;margin-bottom:4px;">India</div>
-              <div style="font-size:20px;font-weight:800;color:#86efac;">5.00</div>
+              <div style="font-size:20px;font-weight:800;color:#2e844a;">5.00</div>
               <div style="font-size:10px;color:var(--muted);">n=7 · perfect</div>
             </div>
-            <div style="flex:1;text-align:center;background:var(--surface2);border-radius:8px;padding:10px;">
+            <div style="flex:1;text-align:center;background:#f8f7f6;border:1px solid var(--border);border-radius:8px;padding:10px;">
               <div style="font-size:10px;color:var(--apac);font-weight:700;text-transform:uppercase;margin-bottom:4px;">APAC</div>
-              <div style="font-size:20px;font-weight:800;color:#86efac;">5.00</div>
+              <div style="font-size:20px;font-weight:800;color:#2e844a;">5.00</div>
               <div style="font-size:10px;color:var(--muted);">n=2 · perfect</div>
             </div>
           </div>
@@ -452,13 +453,13 @@
           <canvas id="csatChart"></canvas>
         </div>
         <div style="margin-top:8px;">
-          <div style="font-size:11px;font-weight:700;color:#fca5a5;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">⚠ Low CSAT (Score &lt;3)</div>
-          <div style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:10px 12px;margin-bottom:8px;">
-            <div style="font-size:12px;font-weight:700;">Capgemini FR — Score 2 · RCA</div>
+          <div style="font-size:11px;font-weight:700;color:#ba0517;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">⚠ Low CSAT (Score &lt;3)</div>
+          <div style="background:#fce9ea;border:1px solid #f5b8bc;border-radius:6px;padding:10px 12px;margin-bottom:8px;">
+            <div style="font-size:12px;font-weight:700;color:var(--text);">Capgemini FR — Score 2 · RCA</div>
             <div style="font-size:11px;color:var(--muted);margin-top:3px;">Partner enablement query bounced without resolution — routing failure, not product gap.</div>
           </div>
-          <div style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:10px 12px;">
-            <div style="font-size:12px;font-weight:700;">Synthesia Limited — Score 1 · CPQ</div>
+          <div style="background:#fce9ea;border:1px solid #f5b8bc;border-radius:6px;padding:10px 12px;">
+            <div style="font-size:12px;font-weight:700;color:var(--text);">Synthesia Limited — Score 1 · CPQ</div>
             <div style="font-size:11px;color:var(--muted);margin-top:3px;">"Complete lack of urgency" — wrong escalation path, timing/ownership failure.</div>
           </div>
         </div>
@@ -478,19 +479,20 @@
         <div class="acct-body">
           <div class="acct-name">SHIFTLOGIC.IO LIMITED</div>
           <div class="acct-meta">
-            <span style="color:var(--emea);">EMEA · APAC · India</span>
-            <span style="color:#a5b4fc;">RCA</span>
+            <span style="color:var(--emea);">EMEA</span>
+            <span style="color:#0070d2;">RCA</span>
             <span class="badge badge-blue" style="font-size:10px;">Implementation Partner</span>
+            <span class="outage-pill">2 S1s = outage (closed ✓)</span>
           </div>
-          <div class="acct-insight">RC implementation partner for JTL (Germany) — 8-week elevated volume pattern, current S2 no-path case aged 20d; ongoing active Red Account swarm channel from prior weeks.</div>
+          <div class="acct-insight">RC implementation partner for JTL (Germany) — 8-week elevated volume pattern. 2 S1s were part of the Sep 7 Configurator outage (W-24117503), now closed. Current open case: S2 aged 20d, no GUS.</div>
         </div>
         <div class="acct-stats">
           <div class="acct-stat" style="text-align:center;">
-            <div class="acct-stat-val" style="color:#a5b4fc;">8</div>
+            <div class="acct-stat-val blue-text">8</div>
             <div class="acct-stat-lbl">Cases</div>
           </div>
           <div class="acct-stat" style="text-align:center;margin-left:12px;">
-            <div class="acct-stat-val" style="color:#fca5a5;">2</div>
+            <div class="acct-stat-val" style="color:#706e6b;">2</div>
             <div class="acct-stat-lbl">S1s</div>
           </div>
         </div>
@@ -501,17 +503,17 @@
           <div class="acct-name">Ravyx – SIR Solutions</div>
           <div class="acct-meta">
             <span style="color:var(--apac);">APAC · EMEA</span>
-            <span style="color:#a5b4fc;">RCA</span>
+            <span style="color:#0070d2;">RCA</span>
           </div>
           <div class="acct-insight">No Slack swarm found; zero S1s and no Red flag suggest managed implementation questions — likely steady advisory volume from a partner or reseller.</div>
         </div>
         <div class="acct-stats">
           <div class="acct-stat" style="text-align:center;">
-            <div class="acct-stat-val" style="color:#a5b4fc;">6</div>
+            <div class="acct-stat-val blue-text">6</div>
             <div class="acct-stat-lbl">Cases</div>
           </div>
           <div class="acct-stat" style="text-align:center;margin-left:12px;">
-            <div class="acct-stat-val" style="color:var(--muted);">0</div>
+            <div class="acct-stat-val" style="color:#c9c7c5;">0</div>
             <div class="acct-stat-lbl">S1s</div>
           </div>
         </div>
@@ -522,18 +524,18 @@
           <div class="acct-name">Cato Networks</div>
           <div class="acct-meta">
             <span style="color:var(--emea);">EMEA</span>
-            <span style="color:#a5b4fc;">RCA · Configurator</span>
-            <span class="badge badge-red" style="font-size:10px;">New Spike</span>
+            <span style="color:#0070d2;">RCA · Configurator · Price Management</span>
+            <span class="badge badge-yellow" style="font-size:10px;">3 Organic S1s</span>
           </div>
-          <div class="acct-insight">3×S1 first appearance at this volume — Configurator-heavy pattern consistent with go-live or UAT milestone. Open S1 at 25.4d, no dedicated swarm yet.</div>
+          <div class="acct-insight">3 organic S1s (not outage) — Configurator and pricing issues. First appearance at this volume, consistent with a go-live or UAT milestone. Open S1 at 25d, no swarm yet.</div>
         </div>
         <div class="acct-stats">
           <div class="acct-stat" style="text-align:center;">
-            <div class="acct-stat-val" style="color:#a5b4fc;">6</div>
+            <div class="acct-stat-val blue-text">6</div>
             <div class="acct-stat-lbl">Cases</div>
           </div>
           <div class="acct-stat" style="text-align:center;margin-left:12px;">
-            <div class="acct-stat-val" style="color:#fca5a5;">3</div>
+            <div class="acct-stat-val red-text">3</div>
             <div class="acct-stat-lbl">S1s</div>
           </div>
         </div>
@@ -543,18 +545,18 @@
         <div class="acct-body">
           <div class="acct-name">Telenet Group <span class="badge badge-red" style="font-size:10px;">🔴 Red Account</span></div>
           <div class="acct-meta">
-            <span style="color:var(--emea);">EMEA · APAC · India</span>
-            <span style="color:#a5b4fc;">RCA · Promotions · CLM</span>
+            <span style="color:var(--emea);">EMEA</span>
+            <span style="color:#0070d2;">RCA · Promotions · CLM</span>
           </div>
           <div class="acct-insight">Active complex implementation — Promotions, Configurator, CLM. Oldest open case at 39.6d with no GUS. Active in Office Hours Sep 8 (Release 264 Product Dependencies). SA engagement confirmed via Slack.</div>
         </div>
         <div class="acct-stats">
           <div class="acct-stat" style="text-align:center;">
-            <div class="acct-stat-val" style="color:#a5b4fc;">6</div>
+            <div class="acct-stat-val blue-text">6</div>
             <div class="acct-stat-lbl">Cases</div>
           </div>
           <div class="acct-stat" style="text-align:center;margin-left:12px;">
-            <div class="acct-stat-val" style="color:var(--muted);">0</div>
+            <div class="acct-stat-val" style="color:#c9c7c5;">0</div>
             <div class="acct-stat-lbl">S1s</div>
           </div>
         </div>
@@ -562,20 +564,21 @@
       <div class="acct-row">
         <div class="acct-rank">5</div>
         <div class="acct-body">
-          <div class="acct-name">Paessler GmbH <span class="badge badge-red" style="font-size:10px;">New Spike</span></div>
+          <div class="acct-name">Paessler GmbH</div>
           <div class="acct-meta">
-            <span style="color:var(--emea);">EMEA · APAC · India</span>
-            <span style="color:#a5b4fc;">RCA · Configurator</span>
+            <span style="color:var(--emea);">EMEA</span>
+            <span style="color:#0070d2;">RCA · Configurator</span>
+            <span class="badge badge-yellow" style="font-size:10px;">4 Organic S1s</span>
           </div>
-          <div class="acct-insight">4×S1 in a single week — German monitoring software company, first time at this volume. Go-live or critical UAT event likely. Weekend on-call log (Sep 13) shows Paessler active. No swarm yet.</div>
+          <div class="acct-insight">4 organic S1s (not outage) — German monitoring software company, first time at this volume. Go-live or UAT event likely; weekend on-call activity Sep 13. No swarm opened yet.</div>
         </div>
         <div class="acct-stats">
           <div class="acct-stat" style="text-align:center;">
-            <div class="acct-stat-val" style="color:#a5b4fc;">5</div>
+            <div class="acct-stat-val blue-text">5</div>
             <div class="acct-stat-lbl">Cases</div>
           </div>
           <div class="acct-stat" style="text-align:center;margin-left:12px;">
-            <div class="acct-stat-val" style="color:#fca5a5;">4</div>
+            <div class="acct-stat-val red-text">4</div>
             <div class="acct-stat-lbl">S1s</div>
           </div>
         </div>
@@ -586,22 +589,24 @@
   <!-- S1 TREND CHART -->
   <div class="section">
     <div class="section-header">
-      <span class="section-icon">🚨</span>
+      <span class="section-icon">📈</span>
       <h2>Sev1 Trend — 4 Weeks by Region</h2>
     </div>
     <div class="card">
       <div class="chart-wrap-tall">
         <canvas id="s1Chart"></canvas>
       </div>
-      <div style="margin-top:12px;font-size:12px;color:var(--muted);">EMEA S1 at 4-week high: 20→15→24→<strong style="color:#fca5a5;">41</strong>. India pulled back 21→16. EMEA now 66% of all S1s. APAC contributed 5 this week — first notable APAC S1 presence.</div>
+      <div style="margin-top:12px;padding:10px 12px;background:#fef3e2;border:1px solid #f5d5a0;border-radius:6px;font-size:12px;color:var(--text);">
+        <strong style="color:#a8650e;">Note:</strong> Sep 7–13 EMEA total of 41 includes ~17 cases from the Sep 7 Configurator outage (W-24117503) — all now Closed. Organic EMEA S1s for the week: ~24 (flat vs PW 24). Cato Networks (3 organic S1s) and Paessler GmbH (4 organic S1s) are the watch accounts.
+      </div>
     </div>
   </div>
 
 </div><!-- /container -->
 
 <script>
-Chart.defaults.color = '#94a3b8';
-Chart.defaults.borderColor = 'rgba(46,49,80,0.6)';
+Chart.defaults.color = '#706e6b';
+Chart.defaults.borderColor = '#e0dedc';
 
 // RCA Share trend
 new Chart(document.getElementById('rcaShareChart'), {
@@ -611,30 +616,30 @@ new Chart(document.getElementById('rcaShareChart'), {
     datasets: [{
       label: 'RCA %',
       data: [70.7, 72.7, 72.8, 76.6],
-      borderColor: '#4f6ef7',
-      backgroundColor: 'rgba(79,110,247,0.1)',
+      borderColor: '#0070d2',
+      backgroundColor: 'rgba(0,112,210,0.08)',
       fill: true,
       tension: 0.35,
-      pointBackgroundColor: '#4f6ef7',
+      pointBackgroundColor: '#0070d2',
       pointRadius: 5,
       borderWidth: 2.5
     },{
       label: 'CPQ %',
       data: [24.1, 23.8, 22.8, 19.7],
-      borderColor: '#f59e0b',
-      backgroundColor: 'rgba(245,158,11,0.05)',
+      borderColor: '#dd8a00',
+      backgroundColor: 'rgba(221,138,0,0.05)',
       fill: false,
       tension: 0.35,
-      pointBackgroundColor: '#f59e0b',
+      pointBackgroundColor: '#dd8a00',
       pointRadius: 5,
       borderWidth: 2.5
     }]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } } },
+    plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 }, color: '#706e6b' } } },
     scales: {
-      y: { min: 15, max: 85, ticks: { callback: v => v+'%', font: { size: 11 } }, grid: { color: 'rgba(46,49,80,0.5)' } },
+      y: { min: 15, max: 85, ticks: { callback: v => v+'%', font: { size: 11 } }, grid: { color: '#f0efee' } },
       x: { ticks: { font: { size: 11 } }, grid: { display: false } }
     }
   }
@@ -647,8 +652,8 @@ new Chart(document.getElementById('csatChart'), {
     labels: ['Score 5','Score 4','Score 3','Score 2','Score 1'],
     datasets: [{
       data: [16, 1, 0, 1, 1],
-      backgroundColor: ['#22c55e','#4f6ef7','#f59e0b','#f97316','#ef4444'],
-      borderRadius: 5,
+      backgroundColor: ['#2e844a','#0070d2','#dd8a00','#e07616','#ba0517'],
+      borderRadius: 4,
       borderSkipped: false
     }]
   },
@@ -656,7 +661,7 @@ new Chart(document.getElementById('csatChart'), {
     responsive: true, maintainAspectRatio: false,
     plugins: { legend: { display: false } },
     scales: {
-      y: { ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: 'rgba(46,49,80,0.5)' } },
+      y: { ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: '#f0efee' } },
       x: { ticks: { font: { size: 11 } }, grid: { display: false } }
     }
   }
@@ -668,17 +673,18 @@ new Chart(document.getElementById('s1Chart'), {
   data: {
     labels: ['Aug 17–23','Aug 24–30','Aug 31–Sep 6','Sep 7–13 ★'],
     datasets: [
-      { label: 'EMEA', data: [20,15,24,41], backgroundColor: '#4f6ef7', borderRadius: 4 },
-      { label: 'India', data: [14,15,21,16], backgroundColor: '#a855f7', borderRadius: 4 },
-      { label: 'APAC', data: [3,0,2,5], backgroundColor: '#22c55e', borderRadius: 4 }
+      { label: 'EMEA (organic)', data: [20,15,24,24], backgroundColor: '#0070d2', borderRadius: 4 },
+      { label: 'EMEA (outage W-24117503)', data: [0,0,0,17], backgroundColor: '#9dc8f0', borderRadius: 4 },
+      { label: 'India', data: [14,15,21,16], backgroundColor: '#7b5ea7', borderRadius: 4 },
+      { label: 'APAC', data: [3,0,2,5], backgroundColor: '#2e844a', borderRadius: 4 }
     ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } } },
+    plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 }, color: '#706e6b' } } },
     scales: {
       x: { stacked: true, ticks: { font: { size: 11 } }, grid: { display: false } },
-      y: { stacked: true, ticks: { font: { size: 11 } }, grid: { color: 'rgba(46,49,80,0.5)' } }
+      y: { stacked: true, ticks: { font: { size: 11 } }, grid: { color: '#f0efee' } }
     }
   }
 });
