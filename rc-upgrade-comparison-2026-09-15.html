@@ -598,41 +598,31 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
 
 <!-- CROSS-RELEASE REPEAT ACCOUNTS -->
 <div class="card orange-border" style="margin-bottom:16px">
-  <h3>🔁 Cross-Release Repeat Accounts — Hit in 2+ Releases (first 7 days)</h3>
-  <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Accounts that raised IR cases in multiple upgrade windows signal a structural compatibility pattern — not a one-off regression. These accounts need proactive upgrade support in future releases.</div>
+  <h3>🔁 Cross-Release Repeat Accounts — Unique Bugs per Upgrade Window</h3>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Each cell = unique bugs attached to that account's IR cases in the first 7 days of that release. Repeat bug exposure across releases signals a structural compatibility pattern in the account's org configuration — not a one-off regression.</div>
   <table>
     <thead>
       <tr>
         <th>Account</th>
-        <th class="num" style="color:#0969da">258</th>
-        <th class="num" style="color:#1a7f37">260</th>
-        <th class="num" style="color:#9a6700">262</th>
-        <th class="num" style="color:#cf222e;background:#fff0ef">264</th>
-        <th class="num">Total Cases</th>
+        <th class="num" style="color:#0969da">258 Bugs</th>
+        <th class="num" style="color:#1a7f37">260 Bugs</th>
+        <th class="num" style="color:#9a6700">262 Bugs</th>
+        <th class="num" style="color:#cf222e;background:#fff0ef">264 Bugs</th>
+        <th class="num">Total Bugs</th>
         <th class="num">Releases Hit</th>
-        <th>Consistent Topic</th>
+        <th>Recurring Area</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td class="bold">Lutron Electronics</td>
-        <td class="num" style="color:#0969da;font-weight:700">4</td>
-        <td class="num" style="color:#1a7f37;font-weight:700">3</td>
+        <td class="num" style="color:#0969da;font-weight:700">3</td>
+        <td class="num" style="color:#1a7f37;font-weight:700">2</td>
         <td class="num" style="color:#9a6700;font-weight:700">1</td>
         <td class="num" style="background:#fff0ef;color:var(--muted)">—</td>
-        <td class="num bold">8</td>
+        <td class="num bold">6</td>
         <td class="num"><span class="pill pill-red">3 of 4</span></td>
         <td>Configurator / Txn Mgmt</td>
-      </tr>
-      <tr>
-        <td class="bold">Neocol</td>
-        <td class="num" style="color:var(--muted)">—</td>
-        <td class="num" style="color:#1a7f37;font-weight:700">2</td>
-        <td class="num" style="color:var(--muted)">—</td>
-        <td class="num" style="background:#fff0ef;color:#cf222e;font-weight:700">2</td>
-        <td class="num bold">4</td>
-        <td class="num"><span class="pill pill-orange">2 of 4</span></td>
-        <td>Configurator / Price Mgmt</td>
       </tr>
       <tr>
         <td class="bold">WP Engine</td>
@@ -645,39 +635,39 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 10px;b
         <td>Txn Mgmt / Configurator</td>
       </tr>
       <tr>
-        <td class="bold">Cloudity</td>
+        <td class="bold">Neocol</td>
         <td class="num" style="color:var(--muted)">—</td>
-        <td class="num" style="color:#1a7f37;font-weight:700">1</td>
-        <td class="num" style="color:#9a6700;font-weight:700">1</td>
-        <td class="num" style="background:#fff0ef;color:var(--muted)">—</td>
-        <td class="num bold">2</td>
-        <td class="num"><span class="pill pill-yellow">2 of 4</span></td>
-        <td>Price Mgmt</td>
+        <td class="num" style="color:#1a7f37;font-weight:700">2</td>
+        <td class="num" style="color:var(--muted)">—</td>
+        <td class="num" style="background:#fff0ef;color:#cf222e;font-weight:700">2</td>
+        <td class="num bold">4</td>
+        <td class="num"><span class="pill pill-orange">2 of 4</span></td>
+        <td>Configurator / Price Mgmt</td>
       </tr>
       <tr>
-        <td class="bold">OSF Global Services</td>
+        <td class="bold">Cloudity</td>
         <td class="num" style="color:var(--muted)">—</td>
-        <td class="num" style="color:#1a7f37;font-weight:700">3</td>
         <td class="num" style="color:var(--muted)">—</td>
+        <td class="num" style="color:#9a6700;font-weight:700">1</td>
         <td class="num" style="background:#fff0ef;color:var(--muted)">—</td>
-        <td class="num bold">3</td>
-        <td class="num"><span class="pill pill-grey">1 of 4</span></td>
-        <td>Price Mgmt / DRO</td>
+        <td class="num bold">1</td>
+        <td class="num"><span class="pill pill-yellow">1 of 4</span></td>
+        <td>Price Mgmt</td>
       </tr>
     </tbody>
   </table>
   <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
     <div class="insight red" style="margin-bottom:0">
-      <strong>Lutron Electronics — highest repeat risk</strong>
-      <span>Hit in 3 of 4 releases (258, 260, 262) across Configurator and Txn Mgmt topics. Consistent upgrade-related breakage despite bug fixes. Absent in 264 may reflect proactive outreach or delayed upgrade.</span>
+      <strong>Lutron Electronics — highest structural risk</strong>
+      <span>6 unique bugs across 3 releases (258, 260, 262). Consistently hitting Configurator and Txn Mgmt regressions. Not in 264 top 5 — may reflect delayed upgrade or proactive outreach. Flag for 266 pre-upgrade sandbox.</span>
     </div>
     <div class="insight orange" style="margin-bottom:0">
-      <strong>Neocol + WP Engine — persistent patterns</strong>
-      <span>Neocol hit 260 and 264. WP Engine hit 258 and 260. Both have bugs attached each time — structural configuration incompatibility rather than a one-time issue.</span>
+      <strong>WP Engine + Neocol — persistent bug exposure</strong>
+      <span>WP Engine: 6 unique bugs across 258 and 260 — all bug-backed, not config noise. Neocol: 2 bugs in 260, 2 in 264 — skipped 262 but recurred. Both show org-level incompatibility that survives bug fixes.</span>
     </div>
     <div class="insight yellow" style="margin-bottom:0">
-      <strong>Action: pre-upgrade proactive outreach</strong>
-      <span>Repeat accounts should be flagged for proactive outreach before 266 SB1. Suggest upgrade lab sessions or pre-prod sandbox validation with Lutron, Neocol, and WP Engine.</span>
+      <strong>Action: 266 pre-upgrade watch list</strong>
+      <span>Lutron, WP Engine, and Neocol should be on the 266 upgrade watch list. Recommend pre-SB1 sandbox validation or upgrade lab engagement before the next release window.</span>
     </div>
   </div>
 </div>
