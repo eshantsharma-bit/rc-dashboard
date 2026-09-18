@@ -36,7 +36,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 /* ── Chart card ── */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:14px}
 .card-title{font-size:13px;font-weight:700;margin-bottom:14px}
-.chart-wrap{position:relative;height:310px}
+.chart-wrap{position:relative;height:240px}
 .legend-row{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--muted)}
 .leg{display:flex;align-items:center;gap:6px}
 .leg-bar{width:13px;height:11px;border-radius:2px;flex-shrink:0}
@@ -180,6 +180,13 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;paddi
         <td class="cr-col-264 cr-val-bold">490</td>
       </tr>
       <tr>
+        <td>IR Cases</td>
+        <td>78</td>
+        <td>71</td>
+        <td class="cr-val-green">14</td>
+        <td class="cr-col-264 cr-val-red">54</td>
+      </tr>
+      <tr>
         <td>Unique Bugs</td>
         <td>15</td>
         <td class="cr-val-red">35</td>
@@ -214,27 +221,32 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;paddi
         <td>Txn Mgmt 43%</td>
         <td class="cr-col-264">Txn Mgmt 26%</td>
       </tr>
+      <tr>
+        <td>#3 IR Topic</td>
+        <td>Price Mgmt 4%</td>
+        <td>Price Mgmt 18%</td>
+        <td>DRO 7%</td>
+        <td class="cr-col-264">Billing 13%</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
 <!-- ── CROSS-RELEASE SUMMARY CHART ── -->
 <div class="card">
-  <div class="card-title">Cross-Release Summary — RC Inflow vs IR Cases (bars) · Unique Bugs (dotted line)</div>
+  <div class="card-title">RC Inflow vs IR Cases · Unique Bugs · Active Org Trend</div>
   <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
   <div class="legend-row">
-    <div class="leg"><div class="leg-bar" style="background:rgba(9,105,218,.25);border:1.5px solid #0969da"></div>RC Inflow</div>
-    <div class="leg"><div class="leg-bar" style="background:rgba(207,34,46,.45);border:1.5px solid #cf222e"></div>IR Cases</div>
+    <div class="leg"><div class="leg-bar" style="background:rgba(1,118,211,.28);border:1.5px solid #0176d3"></div>RC Inflow</div>
+    <div class="leg"><div class="leg-bar" style="background:rgba(194,57,52,.45);border:1.5px solid #c23934"></div>IR Cases</div>
     <div class="leg">
-      <div class="leg-dot-line"><div class="leg-dash"></div><div class="leg-dash" style="margin-left:3px"></div></div>
-      <div class="leg-dot" style="margin-left:4px"></div>Unique Bugs (right axis)
+      <div class="leg-dot-line"><div class="leg-dash" style="background:#8250df"></div><div class="leg-dash" style="margin-left:3px;background:#8250df"></div></div>
+      <div class="leg-dot" style="margin-left:4px;background:#8250df"></div>Unique Bugs (right axis)
     </div>
-  </div>
-  <div class="insight-grid">
-    <div class="ins green"><strong>262 — Historic low (2.8% IR rate)</strong>12 IR from 427 inflow. Unique bugs halved vs 260. Cleanest regression cycle in 4 releases.</div>
-    <div class="ins red"><strong>264 — Recovering but well above 262 (10.6%)</strong>54 IR from 490 inflow. IR rate 4× higher than 262. Concentrated in Product Configurator &amp; Transaction Management.</div>
-    <div class="ins blue"><strong>258 / 260 — Baseline era (12–12.6%)</strong>Similar inflow &amp; IR rates. 260 had 35 unique bugs — highest across all 4 releases, indicating broad multi-area regression.</div>
-    <div class="ins yellow"><strong>Bug count ≠ IR rate</strong>264 and 258 share the same unique bug count (15) yet 264 has fewer IR cases. 260's 35 bugs produced only slightly more IR than 258's 15 — volume per bug matters.</div>
+    <div class="leg">
+      <div class="leg-dot-line"><div class="leg-dash" style="background:#54698d"></div><div class="leg-dash" style="margin-left:3px;background:#54698d"></div></div>
+      <div class="leg-dot" style="margin-left:4px;background:#54698d;opacity:.5"></div>Active Orgs (right axis)
+    </div>
   </div>
 </div>
 
@@ -307,7 +319,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;paddi
 
   <!-- P&T Topics -->
   <div class="card" style="margin-bottom:0">
-    <div class="card-title">IR Cases by P&amp;T Topic — All Releases (first 7 days)</div>
+    <div class="card-title">Bug Cases by P&amp;T Topic — All Releases (first 7 days)</div>
     <div class="topic-wrap">
       <table class="topic-table">
         <thead>
@@ -346,12 +358,24 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;paddi
 <script>
 Chart.register(ChartDataLabels);
 
-const RELS   = ["258\nWinter '26","260\nSpring '26","262\nSummer '26","264\nWinter '27"];
-const COLS   = ['#0969da','#1a7f37','#9a6700','#cf222e'];
+function hexRgba(hex, a) {
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
 
+// Salesforce brand palette
+const SF_BLUE   = '#0176d3';
+const SF_RED    = '#c23934';
+const SF_PURPLE = '#8250df';
+const SF_SLATE  = '#54698d';
+const gc        = 'rgba(208,215,222,.4)';
+const tc        = '#706e6b';
+
+const RELS     = ["258\nWinter '26","260\nSpring '26","262\nSummer '26","264\nWinter '27"];
 const inflow   = [499, 465, 427, 490];
 const irCases  = [ 78,  71,  14,  54];
 const uniqBugs = [ 15,  32,  10,  15];
+const activeOrgs = [765, 1266, 1632, 1908];
 const irRates  = [15.6, 15.3, 3.3, 11.0];
 
 new Chart(document.getElementById('mainChart').getContext('2d'), {
@@ -360,42 +384,55 @@ new Chart(document.getElementById('mainChart').getContext('2d'), {
     datasets: [
       {
         type: 'bar', label: 'RC Inflow', data: inflow,
-        backgroundColor: COLS.map(c => hexRgba(c, 0.18)),
-        borderColor: COLS.map(c => hexRgba(c, 0.55)),
-        borderWidth: 1.5, borderRadius: 4, yAxisID: 'yLeft',
+        backgroundColor: hexRgba(SF_BLUE, 0.22),
+        borderColor: hexRgba(SF_BLUE, 0.60),
+        borderWidth: 1.5, borderRadius: 3, yAxisID: 'yLeft',
         datalabels: {
-          anchor:'end', align:'top', color: COLS,
-          font:{size:12,weight:'700'}, formatter: v => v
+          anchor:'end', align:'top', color: SF_BLUE,
+          font:{size:11,weight:'700'}, formatter: v => v
         }
       },
       {
         type: 'bar', label: 'IR Cases', data: irCases,
-        backgroundColor: irCases.map(() => hexRgba('#cf222e', 0.45)),
-        borderColor: irCases.map(() => hexRgba('#cf222e', 0.80)),
-        borderWidth: 1.5, borderRadius: 4, yAxisID: 'yLeft',
+        backgroundColor: hexRgba(SF_RED, 0.50),
+        borderColor: hexRgba(SF_RED, 0.85),
+        borderWidth: 1.5, borderRadius: 3, yAxisID: 'yLeft',
         datalabels: {
-          anchor:'end', align:'top', color:'#cf222e',
-          font:{size:11,weight:'800'},
-          formatter: (v,ctx) => v + '\n(' + irRates[ctx.dataIndex] + '%)'
+          anchor:'end', align:'top', color: SF_RED,
+          font:{size:10,weight:'800'},
+          formatter: (v,ctx) => v + ' (' + irRates[ctx.dataIndex] + '%)'
         }
       },
       {
         type: 'line', label: 'Unique Bugs', data: uniqBugs,
-        borderColor: '#8250df', backgroundColor: 'transparent',
-        borderWidth: 2.5, borderDash: [6,4], tension: 0.3,
-        pointRadius: 7, pointBackgroundColor: '#8250df',
-        pointBorderColor: '#fff', pointBorderWidth: 2,
+        borderColor: SF_PURPLE, backgroundColor: 'transparent',
+        borderWidth: 2, borderDash: [6,3], tension: 0.3,
+        pointRadius: 5, pointBackgroundColor: SF_PURPLE,
+        pointBorderColor: '#fff', pointBorderWidth: 1.5,
         fill: false, yAxisID: 'yRight',
         datalabels: {
-          anchor:'end', align:'right', color:'#8250df',
-          font:{size:11,weight:'700'}, formatter: v => v + ' bugs'
+          anchor:'end', align:'right', color: SF_PURPLE,
+          font:{size:10,weight:'700'}, formatter: v => v
+        }
+      },
+      {
+        type: 'line', label: 'Active Orgs', data: activeOrgs,
+        borderColor: hexRgba(SF_SLATE, 0.45),
+        backgroundColor: 'transparent',
+        borderWidth: 1.5, borderDash: [3,3], tension: 0.4,
+        pointRadius: 4, pointBackgroundColor: hexRgba(SF_SLATE, 0.45),
+        pointBorderColor: '#fff', pointBorderWidth: 1,
+        fill: false, yAxisID: 'yOrg',
+        datalabels: {
+          anchor:'end', align:'left', color: SF_SLATE,
+          font:{size:9,weight:'600'}, formatter: v => v.toLocaleString()
         }
       }
     ]
   },
   options: {
     responsive:true, maintainAspectRatio:false,
-    layout:{padding:{top:40,right:80,bottom:5}},
+    layout:{padding:{top:28,right:60,bottom:5,left:10}},
     plugins:{
       legend:{display:false},
       datalabels:{display:true},
@@ -405,44 +442,42 @@ new Chart(document.getElementById('mainChart').getContext('2d'), {
           label: ctx => {
             if (ctx.dataset.label==='IR Cases') return ` IR Cases: ${ctx.parsed.y} (${irRates[ctx.dataIndex]}%)`;
             if (ctx.dataset.label==='Unique Bugs') return ` Unique Bugs: ${ctx.parsed.y}`;
+            if (ctx.dataset.label==='Active Orgs') return ` Active Orgs: ${ctx.parsed.y.toLocaleString()}`;
             return ` ${ctx.dataset.label}: ${ctx.parsed.y}`;
           }
         }
       }
     },
     scales:{
-      x:{grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#8b949e',font:{size:11}}},
-      yLeft:{position:'left',grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#8b949e',font:{size:10}},
-        title:{display:true,text:'RC Inflow / IR Cases',color:'#8b949e',font:{size:10}},
-        suggestedMin:0,suggestedMax:600},
-      yRight:{position:'right',grid:{display:false},ticks:{color:'#8250df',font:{size:10}},
-        title:{display:true,text:'Unique Bugs',color:'#8250df',font:{size:10}},
-        suggestedMin:0,suggestedMax:42}
+      x:{grid:{color:gc},ticks:{color:tc,font:{size:11}}},
+      yLeft:{position:'left',grid:{color:gc},ticks:{color:tc,font:{size:10}},
+        title:{display:true,text:'RC Inflow / IR Cases',color:tc,font:{size:10}},
+        suggestedMin:0,suggestedMax:580},
+      yRight:{position:'right',grid:{display:false},ticks:{color:SF_PURPLE,font:{size:10}},
+        title:{display:true,text:'Unique Bugs',color:SF_PURPLE,font:{size:10}},
+        suggestedMin:0,suggestedMax:50},
+      yOrg:{position:'right',display:false,
+        suggestedMin:0,suggestedMax:2400}
     }
   }
 });
 
-function hexRgba(hex, a) {
-  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
-  return `rgba(${r},${g},${b},${a})`;
-}
-
-// ── P&T Topic table ──
+// ── Bug Cases by P&T Topic (cases where Bug# is linked) ──
 const TOPIC_DATA = [
   // [topic_label, 258, 260, 262, 264]
-  ['Product Configurator',       53, 27, 5, 17],
-  ['Transaction Management',      9, 16, 6, 14],
-  ['Billing & Invoicing',         0,  4, 0,  7],
-  ['Price Management',            3, 13, 1,  0],
-  ['Product Catalog Management',  1,  3, 0,  5],
+  ['Product Configurator',       46, 25, 5, 11],
+  ['Transaction Management',      9, 16, 6, 12],
+  ['Price Management',            2, 13, 1,  0],
+  ['Billing & Invoicing',         0,  4, 0,  5],
+  ['Product Catalog Management',  0,  2, 0,  5],
   ['Usage & Ratings',             0,  0, 0,  4],
   ['Dynamic Revenue Orch.',       0,  5, 1,  2],
-  ['Dev Support – Prod to Order', 10, 1, 0,  2],
+  ['Dev Supp – Prod to Order',    8,  1, 0,  1],
   ['Advanced Approvals',          0,  0, 0,  1],
-  ['Dev Support – Invoice to Cash',0, 0, 1,  0],
+  ['Dev Supp – Invoice to Cash',  0,  0, 1,  0],
   ['Salesforce CPQ',              2,  1, 0,  0],
 ];
-const maxVals = [53, 27, 6, 17];
+const maxVals = [46, 25, 6, 12];
 const relColors = ['#0969da','#1a7f37','#9a6700','#cf222e'];
 
 const tbody = document.getElementById('topicRows');
