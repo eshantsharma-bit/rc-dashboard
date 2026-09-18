@@ -107,7 +107,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;paddi
 
 <!-- ── TITLE ── -->
 <div class="page-title">264 RC Upgrade — First 7 Days Executive Summary</div>
-<div class="page-sub">Revenue Cloud · Post-SB1 first 7 days · All 4 releases (258 / 260 / 262 / 264) · OrgCS validated · Sep 2026</div>
+<div class="page-sub">Revenue Cloud (Core) — RCA/RCB · Post-SB1 first 7 days · All 4 releases (258 / 260 / 262 / 264) · OrgCS validated · Sep 2026</div>
 
 <!-- ── 264 KEY INSIGHTS ── -->
 <div class="insight-header">264 · First 7 Days Key Insights</div>
@@ -116,7 +116,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;paddi
   <div class="ki-card highlight">
     <div class="ki-label">Total IR Cases</div>
     <div class="ki-val">54</div>
-    <div class="ki-val-sub">10.6% IR rate · 490 inflow</div>
+    <div class="ki-val-sub">11.5% IR rate · 469 RCA/RCB inflow</div>
   </div>
 
   <div class="ki-card highlight">
@@ -173,11 +173,11 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;paddi
         <td class="cr-col-264 cr-val-red">1,908</td>
       </tr>
       <tr>
-        <td>RC Inflow (7d)</td>
-        <td class="cr-val-bold">499</td>
-        <td class="cr-val-bold">465</td>
-        <td class="cr-val-bold">427</td>
-        <td class="cr-col-264 cr-val-bold">490</td>
+        <td>RC Inflow (7d) <span style="font-size:10px;color:var(--muted);font-weight:400">(RCA/RCB)</span></td>
+        <td class="cr-val-bold">441</td>
+        <td class="cr-val-bold">459</td>
+        <td class="cr-val-bold">407</td>
+        <td class="cr-col-264 cr-val-bold">469</td>
       </tr>
       <tr>
         <td>IR Cases</td>
@@ -201,11 +201,11 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;paddi
         <td class="cr-col-264">46</td>
       </tr>
       <tr>
-        <td>Bug Coverage % <span style="font-size:10px;color:var(--muted);font-weight:400">(Cases w/ Bug / RC Inflow)</span></td>
-        <td>10.4%</td>
-        <td>11.4%</td>
-        <td class="cr-val-green">2.8%</td>
-        <td class="cr-col-264">9.4%</td>
+        <td>Bug Coverage % <span style="font-size:10px;color:var(--muted);font-weight:400">(Cases w/ Bug / RCA Inflow)</span></td>
+        <td>11.8%</td>
+        <td>11.5%</td>
+        <td class="cr-val-green">2.9%</td>
+        <td class="cr-col-264">9.8%</td>
       </tr>
       <tr>
         <td>#1 Inflow Topic <span style="font-size:10px;color:var(--muted);font-weight:400">(RCA/RCB only)</span></td>
@@ -353,7 +353,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;paddi
   </div>
 </div>
 
-<footer>264 RC Upgrade · First 7 Days Post-SB1 IST · OrgCS · Sep 2026 · CSV-validated</footer>
+<footer>264 RC Upgrade · First 7 Days Post-SB1 IST · Revenue Cloud (Core) RCA/RCB · OrgCS · Sep 2026 · CSV-validated</footer>
 
 <script>
 Chart.register(ChartDataLabels);
@@ -372,11 +372,11 @@ const gc        = 'rgba(208,215,222,.4)';
 const tc        = '#706e6b';
 
 const RELS     = ["258\nWinter '26","260\nSpring '26","262\nSummer '26","264\nWinter '27"];
-const inflow   = [499, 465, 427, 490];
+const inflow   = [441, 459, 407, 469];  // RCA/RCB only (Cloud__c LIKE 'Revenue Cloud (Core)%')
 const irCases  = [ 78,  71,  14,  54];
 const uniqBugs = [ 15,  32,  10,  15];
 const activeOrgs = [765, 1266, 1632, 1908];
-const irRates  = [15.6, 15.3, 3.3, 11.0];
+const irRates  = [17.7, 15.5, 3.4, 11.5];
 
 new Chart(document.getElementById('mainChart').getContext('2d'), {
   data: {
@@ -452,7 +452,7 @@ new Chart(document.getElementById('mainChart').getContext('2d'), {
       x:{grid:{color:gc},ticks:{color:tc,font:{size:11}}},
       yLeft:{position:'left',grid:{color:gc},ticks:{color:tc,font:{size:10}},
         title:{display:true,text:'RC Inflow / IR Cases',color:tc,font:{size:10}},
-        suggestedMin:0,suggestedMax:580},
+        suggestedMin:0,suggestedMax:540},
       yRight:{position:'right',grid:{display:false},ticks:{color:SF_PURPLE,font:{size:10}},
         title:{display:true,text:'Unique Bugs',color:SF_PURPLE,font:{size:10}},
         suggestedMin:0,suggestedMax:50},
