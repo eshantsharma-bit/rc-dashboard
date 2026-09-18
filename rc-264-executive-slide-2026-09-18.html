@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>264 RC Upgrade — First 7 Days Executive Summary</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root{
+  --bg:#f6f8fa;--surface:#ffffff;--border:#d0d7de;
+  --text:#1f2328;--muted:#656d76;
+  --blue:#0969da;--green:#1a7f37;--red:#cf222e;--yellow:#9a6700;--purple:#8250df;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;padding:24px 32px}
+
+/* ── Title ── */
+.page-title{font-size:20px;font-weight:800;margin-bottom:3px;color:var(--text)}
+.page-sub{font-size:11px;color:var(--muted);margin-bottom:18px}
+
+/* ── 264 Key Insights strip ── */
+.insight-header{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.ki-strip{display:grid;grid-template-columns:160px 160px 1fr;gap:10px;margin-bottom:18px}
+.ki-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 16px}
+.ki-card.highlight{border-color:#cf222e;background:#fff8f8}
+.ki-label{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
+.ki-val{font-size:28px;font-weight:800;color:var(--red);line-height:1}
+.ki-val-sub{font-size:10px;color:var(--muted);margin-top:3px}
+.bug-list{display:flex;flex-direction:column;gap:5px;margin-top:2px}
+.bug-row{display:flex;align-items:center;gap:7px;font-size:11px}
+.bug-num{font-size:10px;font-weight:700;background:#fff3cd;color:#9a6700;padding:2px 6px;border-radius:3px;min-width:22px;text-align:center}
+.bug-id{font-size:10px;color:var(--muted);font-family:monospace}
+.bug-desc{color:var(--text);flex:1}
+
+/* ── Chart card ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:700;margin-bottom:14px}
+.chart-wrap{position:relative;height:310px}
+.legend-row{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--muted)}
+.leg{display:flex;align-items:center;gap:6px}
+.leg-bar{width:13px;height:11px;border-radius:2px;flex-shrink:0}
+.leg-dot-line{display:flex;align-items:center;gap:2px}
+.leg-dash{width:7px;height:2px;background:var(--purple)}
+.leg-dot{width:7px;height:7px;border-radius:50%;background:var(--purple);flex-shrink:0}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.ins{border-left:3px solid;border-radius:0 6px 6px 0;padding:8px 11px;font-size:11px;line-height:1.6}
+.ins.green{background:#dafbe1;border-color:var(--green);color:#144620}
+.ins.red{background:#ffebe9;border-color:var(--red);color:#82071e}
+.ins.blue{background:#ddf4ff;border-color:var(--blue);color:#0a3069}
+.ins.yellow{background:#fff8c5;border-color:var(--yellow);color:#4d3300}
+.ins strong{display:block;font-size:11.5px;margin-bottom:2px}
+
+/* ── Two-col lower section ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+
+/* ── Top Accounts table ── */
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{background:#f6f8fa;text-align:left;padding:6px 8px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid var(--border)}
+td{padding:5px 8px;border-bottom:1px solid #eaecef;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.repeat{font-weight:700;color:var(--red)}
+.rank-badge{display:inline-block;width:17px;height:17px;border-radius:50%;background:var(--blue);color:#fff;font-size:9px;font-weight:700;text-align:center;line-height:17px;margin-right:4px}
+.bug-cnt{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:18px;border-radius:9px;background:#f6f8fa;border:1px solid var(--border);font-weight:700;font-size:10px;color:var(--text)}
+.bug-cnt.high{background:#ffebe9;border-color:#cf222e;color:var(--red)}
+.na{color:#ccc;font-size:10px}
+
+/* ── P&T Topic table ── */
+.topic-wrap{overflow-x:auto}
+.topic-table{width:100%;border-collapse:collapse;font-size:11px}
+.topic-table th{background:#f6f8fa;text-align:left;padding:6px 8px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid var(--border)}
+.topic-table th.rel{text-align:center}
+.topic-table td{padding:5px 8px;border-bottom:1px solid #eaecef;vertical-align:middle}
+.topic-table tr:last-child td{border-bottom:none}
+.topic-table td.rel{text-align:center}
+.cell-bar-wrap{display:flex;align-items:center;gap:5px;justify-content:center}
+.cell-bar{height:12px;border-radius:2px;min-width:2px}
+.cell-num{font-size:10px;font-weight:700;min-width:16px;text-align:center}
+.cell-empty{color:#d0d7de;font-size:10px;text-align:center}
+
+/* ── Speaker Notes ── */
+.notes-card{background:#fffdf0;border:1px solid #d4a900;border-radius:8px;padding:18px;margin-bottom:14px}
+.notes-title{font-size:12px;font-weight:700;color:#9a6700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.notes-body{font-size:12px;line-height:1.75;color:var(--text)}
+.notes-body p{margin-bottom:8px}
+.notes-body p:last-child{margin-bottom:0}
+.notes-body strong{color:var(--text)}
+
+footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;padding-top:10px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<!-- ── TITLE ── -->
+<div class="page-title">264 RC Upgrade — First 7 Days Executive Summary</div>
+<div class="page-sub">Revenue Cloud · Post-SB1 first 7 days · All 4 releases (258 / 260 / 262 / 264) · OrgCS validated · Sep 2026</div>
+
+<!-- ── 264 KEY INSIGHTS ── -->
+<div class="insight-header">264 · First 7 Days Key Insights</div>
+<div class="ki-strip">
+
+  <div class="ki-card highlight">
+    <div class="ki-label">Total IR Cases</div>
+    <div class="ki-val">54</div>
+    <div class="ki-val-sub">10.6% IR rate · 490 inflow</div>
+  </div>
+
+  <div class="ki-card highlight">
+    <div class="ki-label">Unique Bugs</div>
+    <div class="ki-val" style="color:var(--purple)">15</div>
+    <div class="ki-val-sub">Linked to IR cases</div>
+  </div>
+
+  <div class="ki-card">
+    <div class="ki-label">Top 3 Bugs by Case Count</div>
+    <div class="bug-list">
+      <div class="bug-row">
+        <span class="bug-num">11</span>
+        <span class="bug-id">W-24059609</span>
+        <span class="bug-desc">Net Unit Price null in Amendment Scenario</span>
+      </div>
+      <div class="bug-row">
+        <span class="bug-num">8</span>
+        <span class="bug-id">W-24096152</span>
+        <span class="bug-desc">Product Search Index Rebuild Failure</span>
+      </div>
+      <div class="bug-row">
+        <span class="bug-num">4</span>
+        <span class="bug-id">W-23791512</span>
+        <span class="bug-desc">Usage Summary Generation Failing</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── CROSS-RELEASE SUMMARY CHART ── -->
+<div class="card">
+  <div class="card-title">Cross-Release Summary — RC Inflow vs IR Cases (bars) · Unique Bugs (dotted line)</div>
+  <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+  <div class="legend-row">
+    <div class="leg"><div class="leg-bar" style="background:rgba(9,105,218,.25);border:1.5px solid #0969da"></div>RC Inflow</div>
+    <div class="leg"><div class="leg-bar" style="background:rgba(207,34,46,.45);border:1.5px solid #cf222e"></div>IR Cases</div>
+    <div class="leg">
+      <div class="leg-dot-line"><div class="leg-dash"></div><div class="leg-dash" style="margin-left:3px"></div></div>
+      <div class="leg-dot" style="margin-left:4px"></div>Unique Bugs (right axis)
+    </div>
+  </div>
+  <div class="insight-grid">
+    <div class="ins green"><strong>262 — Historic low (2.8% IR rate)</strong>12 IR from 427 inflow. Unique bugs halved vs 260. Cleanest regression cycle in 4 releases.</div>
+    <div class="ins red"><strong>264 — Recovering but well above 262 (10.6%)</strong>54 IR from 490 inflow. IR rate 4× higher than 262. Concentrated in Product Configurator &amp; Transaction Management.</div>
+    <div class="ins blue"><strong>258 / 260 — Baseline era (12–12.6%)</strong>Similar inflow &amp; IR rates. 260 had 35 unique bugs — highest across all 4 releases, indicating broad multi-area regression.</div>
+    <div class="ins yellow"><strong>Bug count ≠ IR rate</strong>264 and 258 share the same unique bug count (15) yet 264 has fewer IR cases. 260's 35 bugs produced only slightly more IR than 258's 15 — volume per bug matters.</div>
+  </div>
+</div>
+
+<!-- ── TWO-COL: ACCOUNTS + TOPICS ── -->
+<div class="two-col">
+
+  <!-- Top 5 Accounts -->
+  <div class="card" style="margin-bottom:0">
+    <div class="card-title">Top 5 Accounts — Impact per Release (bug count · first 7 days)</div>
+    <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Bug count per account, not case count. <strong style="color:var(--red)">Bold</strong> = appears in 2+ releases.</div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Account</th>
+          <th style="text-align:center">258</th>
+          <th style="text-align:center">260</th>
+          <th style="text-align:center">262</th>
+          <th style="text-align:center">264</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 258 top 5: Neocol(4), WP Engine(4), Lutron(3), DE-CIX(3), TeamViewer(2) -->
+        <!-- 260 top 5: Lutron(3), Neocol(3), Fair Isaac(3), Cloudity(2), Bluvium(2) -->
+        <!-- 262 top 5: Natus Medical(2), Neocol(1), Siemens(1), BC-data(1), Noltic(1) -->
+        <!-- 264 top 5: RevCycle(2), AI inside(2), SHIFTLOGIC(2), LiveRamp(2), Neocol(2) -->
+        <tr>
+          <td><span class="rank-badge">1</span></td>
+          <td class="repeat">Neocol</td>
+          <td style="text-align:center"><span class="bug-cnt high">4</span></td>
+          <td style="text-align:center"><span class="bug-cnt high">3</span></td>
+          <td style="text-align:center"><span class="bug-cnt">1</span></td>
+          <td style="text-align:center"><span class="bug-cnt">2</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge" style="background:var(--green)">2</span></td>
+          <td class="repeat">Lutron Electronics</td>
+          <td style="text-align:center"><span class="bug-cnt high">3</span></td>
+          <td style="text-align:center"><span class="bug-cnt high">3</span></td>
+          <td style="text-align:center"><span class="na">—</span></td>
+          <td style="text-align:center"><span class="na">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge" style="background:var(--yellow)">3</span></td>
+          <td>WP Engine, Inc</td>
+          <td style="text-align:center"><span class="bug-cnt high">4</span></td>
+          <td style="text-align:center"><span class="na">—</span></td>
+          <td style="text-align:center"><span class="na">—</span></td>
+          <td style="text-align:center"><span class="na">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge" style="background:var(--yellow)">4</span></td>
+          <td>Fair Isaac Corporation</td>
+          <td style="text-align:center"><span class="na">—</span></td>
+          <td style="text-align:center"><span class="bug-cnt high">3</span></td>
+          <td style="text-align:center"><span class="na">—</span></td>
+          <td style="text-align:center"><span class="na">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge" style="background:var(--purple)">5</span></td>
+          <td>RevCycle / AI inside / SHIFTLOGIC</td>
+          <td style="text-align:center"><span class="na">—</span></td>
+          <td style="text-align:center"><span class="na">—</span></td>
+          <td style="text-align:center"><span class="na">—</span></td>
+          <td style="text-align:center"><span class="bug-cnt">2</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- P&T Topics -->
+  <div class="card" style="margin-bottom:0">
+    <div class="card-title">IR Cases by P&amp;T Topic — All Releases (first 7 days)</div>
+    <div class="topic-wrap">
+      <table class="topic-table">
+        <thead>
+          <tr>
+            <th>P&amp;T Topic</th>
+            <th class="rel" style="color:#0969da">258</th>
+            <th class="rel" style="color:#1a7f37">260</th>
+            <th class="rel" style="color:#9a6700">262</th>
+            <th class="rel" style="color:#cf222e">264</th>
+          </tr>
+        </thead>
+        <tbody id="topicRows"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── SPEAKER NOTES ── -->
+<div class="notes-card">
+  <div class="notes-title">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="#9a6700"><path d="M0 2a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2h-2v2l-3-2H2a2 2 0 01-2-2V2z"/></svg>
+    Speaker Notes — Executive Summary
+  </div>
+  <div class="notes-body">
+    <p><strong>Opening:</strong> Release 264 (Winter '27) closed its first 7 days with 54 IR cases from 490 RC inflow — a 10.6% IR rate. While this is a clear step back from 262's exceptional 2.8%, it remains meaningfully better than the 258/260 baseline of ~12%. Two root causes account for the majority of volume.</p>
+    <p><strong>Top drivers:</strong> Bug W-24059609 (Net Unit Price null in Amendment) drove 11 cases in Product Configurator, and W-24096152 (PCM Index Rebuild Failure) drove 8 cases in Product Catalog Management. Together, these two bugs represent ~35% of all 264 IR cases. Fixes are already in progress — status to be confirmed at bridge call.</p>
+    <p><strong>Account impact:</strong> Neocol is the only account appearing in top-5 impact across all four releases, with 2 unique bugs in 264. Lutron Electronics was consistently impacted in 258 and 260 but has not reappeared in 262 or 264 — a positive signal for that customer's environment stability.</p>
+    <p><strong>Trend context:</strong> 262 (Summer '26) was an outlier — 12 IR from 427 inflow — driven by a highly focused regression scope. 264 reverted toward prior norms. The 260 unique-bug spike (35 bugs) was the broadest regression, but IR volume was only marginally higher than 258, showing that broad shallow regressions can be less damaging than a few deep ones.</p>
+    <p><strong>Ask / Next steps:</strong> (1) Confirm W-24059609 and W-24096152 fix ETA and backport plan. (2) Review whether Neocol needs proactive outreach given 4-release impact streak. (3) Use 262 playbook (tight pre-SB1 regression scope) as model for 266 planning.</p>
+  </div>
+</div>
+
+<footer>264 RC Upgrade · First 7 Days Post-SB1 IST · OrgCS · Sep 2026 · CSV-validated</footer>
+
+<script>
+Chart.register(ChartDataLabels);
+
+const RELS   = ["258\nWinter '26","260\nSpring '26","262\nSummer '26","264\nWinter '27"];
+const COLS   = ['#0969da','#1a7f37','#9a6700','#cf222e'];
+
+const inflow   = [499, 465, 427, 490];
+const irCases  = [ 78,  71,  14,  54];
+const uniqBugs = [ 15,  32,  10,  15];
+const irRates  = [15.6, 15.3, 3.3, 11.0];
+
+new Chart(document.getElementById('mainChart').getContext('2d'), {
+  data: {
+    labels: RELS,
+    datasets: [
+      {
+        type: 'bar', label: 'RC Inflow', data: inflow,
+        backgroundColor: COLS.map(c => hexRgba(c, 0.18)),
+        borderColor: COLS.map(c => hexRgba(c, 0.55)),
+        borderWidth: 1.5, borderRadius: 4, yAxisID: 'yLeft',
+        datalabels: {
+          anchor:'end', align:'top', color: COLS,
+          font:{size:12,weight:'700'}, formatter: v => v
+        }
+      },
+      {
+        type: 'bar', label: 'IR Cases', data: irCases,
+        backgroundColor: irCases.map(() => hexRgba('#cf222e', 0.45)),
+        borderColor: irCases.map(() => hexRgba('#cf222e', 0.80)),
+        borderWidth: 1.5, borderRadius: 4, yAxisID: 'yLeft',
+        datalabels: {
+          anchor:'end', align:'top', color:'#cf222e',
+          font:{size:11,weight:'800'},
+          formatter: (v,ctx) => v + '\n(' + irRates[ctx.dataIndex] + '%)'
+        }
+      },
+      {
+        type: 'line', label: 'Unique Bugs', data: uniqBugs,
+        borderColor: '#8250df', backgroundColor: 'transparent',
+        borderWidth: 2.5, borderDash: [6,4], tension: 0.3,
+        pointRadius: 7, pointBackgroundColor: '#8250df',
+        pointBorderColor: '#fff', pointBorderWidth: 2,
+        fill: false, yAxisID: 'yRight',
+        datalabels: {
+          anchor:'end', align:'right', color:'#8250df',
+          font:{size:11,weight:'700'}, formatter: v => v + ' bugs'
+        }
+      }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    layout:{padding:{top:40,right:80,bottom:5}},
+    plugins:{
+      legend:{display:false},
+      datalabels:{display:true},
+      tooltip:{
+        callbacks:{
+          title: ctx => RELS[ctx[0].dataIndex].replace('\n',' '),
+          label: ctx => {
+            if (ctx.dataset.label==='IR Cases') return ` IR Cases: ${ctx.parsed.y} (${irRates[ctx.dataIndex]}%)`;
+            if (ctx.dataset.label==='Unique Bugs') return ` Unique Bugs: ${ctx.parsed.y}`;
+            return ` ${ctx.dataset.label}: ${ctx.parsed.y}`;
+          }
+        }
+      }
+    },
+    scales:{
+      x:{grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#8b949e',font:{size:11}}},
+      yLeft:{position:'left',grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#8b949e',font:{size:10}},
+        title:{display:true,text:'RC Inflow / IR Cases',color:'#8b949e',font:{size:10}},
+        suggestedMin:0,suggestedMax:600},
+      yRight:{position:'right',grid:{display:false},ticks:{color:'#8250df',font:{size:10}},
+        title:{display:true,text:'Unique Bugs',color:'#8250df',font:{size:10}},
+        suggestedMin:0,suggestedMax:42}
+    }
+  }
+});
+
+function hexRgba(hex, a) {
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+// ── P&T Topic table ──
+const TOPIC_DATA = [
+  // [topic_label, 258, 260, 262, 264]
+  ['Product Configurator',       53, 27, 5, 17],
+  ['Transaction Management',      9, 16, 6, 14],
+  ['Billing & Invoicing',         0,  4, 0,  7],
+  ['Price Management',            3, 13, 1,  0],
+  ['Product Catalog Management',  1,  3, 0,  5],
+  ['Usage & Ratings',             0,  0, 0,  4],
+  ['Dynamic Revenue Orch.',       0,  5, 1,  2],
+  ['Dev Support – Prod to Order', 10, 1, 0,  2],
+  ['Advanced Approvals',          0,  0, 0,  1],
+  ['Dev Support – Invoice to Cash',0, 0, 1,  0],
+  ['Salesforce CPQ',              2,  1, 0,  0],
+];
+const maxVals = [53, 27, 6, 17];
+const relColors = ['#0969da','#1a7f37','#9a6700','#cf222e'];
+
+const tbody = document.getElementById('topicRows');
+TOPIC_DATA.forEach(([label, v258, v260, v262, v264]) => {
+  const vals = [v258, v260, v262, v264];
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td style="font-size:11px;color:var(--text)">${label}</td>` +
+    vals.map((v, i) => {
+      if (v === 0) return `<td class="rel"><span class="cell-empty">—</span></td>`;
+      const pct = Math.round((v / maxVals[i]) * 52);
+      return `<td class="rel"><div class="cell-bar-wrap">
+        <div class="cell-bar" style="width:${pct}px;background:${relColors[i]};opacity:.65"></div>
+        <span class="cell-num" style="color:${relColors[i]}">${v}</span>
+      </div></td>`;
+    }).join('');
+  tbody.appendChild(tr);
+});
+</script>
+</body>
+</html>
