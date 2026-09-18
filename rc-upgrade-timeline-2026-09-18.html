@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RC Upgrade — Weekly IR Timeline · SB1 → R0</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root{
+  --bg:#f6f8fa;--surface:#ffffff;--border:#d0d7de;
+  --text:#1f2328;--muted:#656d76;--accent:#0969da;
+  --green:#1a7f37;--red:#cf222e;--yellow:#9a6700;--orange:#bc4c00;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;padding:24px 28px}
+h1{font-size:17px;font-weight:700;margin-bottom:3px}
+.meta{font-size:11px;color:var(--muted);margin-bottom:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:16px}
+h2{font-size:13px;font-weight:700;margin-bottom:14px;color:var(--text)}
+.chart-wrap{position:relative;height:320px}
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:12px 14px}
+.kpi-label{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
+.kpi-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.kpi-val{font-size:16px;font-weight:800}
+.kpi-sub{font-size:10px;color:var(--muted)}
+.kpi-delta{font-size:10px;font-weight:600;padding:1px 5px;border-radius:3px}
+.delta-warn{background:#fff8c5;color:#9a6700}
+.delta-bad{background:#ffebe9;color:#cf222e}
+.delta-good{background:#dafbe1;color:#1a7f37}
+.legend-row{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--muted)}
+.leg{display:flex;align-items:center;gap:6px}
+.leg-line{width:20px;height:3px;flex-shrink:0;border-radius:2px}
+.leg-line.dashed{background:repeating-linear-gradient(90deg,currentColor 0px,currentColor 5px,transparent 5px,transparent 8px)}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.insight{border-left:3px solid;border-radius:0 6px 6px 0;padding:8px 12px;font-size:11px;line-height:1.6}
+.insight.red{background:#ffebe9;border-color:#cf222e;color:#cf222e}
+.insight.orange{background:#fff1e6;border-color:#bc4c00;color:#bc4c00}
+.insight.green{background:#dafbe1;border-color:#1a7f37;color:#1a7f37}
+.insight.blue{background:#ddf4ff;border-color:#0969da;color:#0969da}
+.insight strong{display:block;font-size:12px;margin-bottom:2px}
+.week-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+.week-table th{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);padding:6px 8px;border-bottom:2px solid var(--border);text-align:right}
+.week-table th:first-child{text-align:left}
+.week-table td{padding:5px 8px;border-bottom:1px solid var(--border);text-align:right}
+.week-table td:first-child{text-align:left;color:var(--muted);font-weight:600}
+.week-table tr:last-child td{border-bottom:none;font-weight:700}
+.w258{color:#0969da}.w260{color:#1a7f37}.w262{color:#9a6700}.w264{color:#cf222e}
+.cell-high{background:#ffebe9;color:#cf222e;font-weight:700;border-radius:3px;padding:1px 4px}
+.cell-low{background:#dafbe1;color:#1a7f37;border-radius:3px;padding:1px 4px}
+.cell-mid{background:#fff8c5;color:#9a6700;border-radius:3px;padding:1px 4px}
+.future{color:var(--muted);font-style:italic}
+.badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 6px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.badge-red{background:#ffebe9;color:#cf222e}
+.badge-warn{background:#fff8c5;color:#9a6700}
+.badge-green{background:#dafbe1;color:#1a7f37}
+.note{font-size:10px;color:var(--muted);margin-top:10px;line-height:1.6}
+footer{text-align:center;font-size:10px;color:var(--muted);margin-top:20px;padding-top:12px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<h1>RC Upgrade — IR Cases Weekly Timeline · SB1 → R0</h1>
+<div class="meta">IR case counts per week post-SB1 IST · 258 / 260 / 262 / 264 · OrgCS live · As of Sep 18, 2026 · 264 weeks 4–6 pending</div>
+
+<!-- KPI STRIP -->
+<div class="kpi-strip">
+  <div class="kpi">
+    <div class="kpi-label">258 · Winter '26</div>
+    <div class="kpi-row">
+      <span class="kpi-val w258">69</span><span class="kpi-sub">W1</span>
+      <span class="kpi-val" style="font-size:13px;color:var(--muted)">→ 5</span><span class="kpi-sub">W2</span>
+    </div>
+    <div style="margin-top:5px;font-size:10px;color:var(--muted)">Sharp drop after W1 · Total through R0: 100</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">260 · Spring '26</div>
+    <div class="kpi-row">
+      <span class="kpi-val w260">75</span><span class="kpi-sub">W1</span>
+      <span class="kpi-val" style="font-size:13px;color:var(--muted)">→ 22</span><span class="kpi-sub">W2</span>
+    </div>
+    <div style="margin-top:5px;font-size:10px;color:var(--muted)">Gradual decline · Total through R0: 119</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">262 · Summer '26</div>
+    <div class="kpi-row">
+      <span class="kpi-val w262">13</span><span class="kpi-sub">W1</span>
+      <span class="kpi-val" style="font-size:13px;color:var(--green)">→ 2</span><span class="kpi-sub">W2</span>
+    </div>
+    <div style="margin-top:5px;font-size:10px;color:var(--green)">Historic low · Near-zero after W1 · Total: 18</div>
+  </div>
+  <div class="kpi" style="border-color:#cf222e;background:#fff8f8">
+    <div class="kpi-label" style="color:#cf222e">264 · Winter '27 ★ LIVE</div>
+    <div class="kpi-row">
+      <span class="kpi-val w264">56</span><span class="kpi-sub">W1</span>
+      <span class="kpi-val" style="font-size:13px;color:#cf222e;font-weight:800">→ 49</span><span class="kpi-sub">W2</span>
+      <span class="badge badge-red">⚠ Sustained wave</span>
+    </div>
+    <div style="margin-top:5px;font-size:10px;color:#cf222e">W2 barely dropped · Through W3: 114 total</div>
+  </div>
+</div>
+
+<!-- MAIN TIMELINE CHART -->
+<div class="card">
+  <h2>📈 Weekly IR Cases — SB1 to R0 · Release Comparison</h2>
+  <div class="chart-wrap"><canvas id="timelineChart"></canvas></div>
+  <div class="legend-row">
+    <div class="leg"><div class="leg-line" style="background:#0969da;height:2.5px"></div><span style="color:#0969da;font-weight:600">258 Winter '26</span></div>
+    <div class="leg"><div class="leg-line" style="background:#1a7f37;height:2.5px"></div><span style="color:#1a7f37;font-weight:600">260 Spring '26</span></div>
+    <div class="leg"><div class="leg-line dashed" style="color:#9a6700;height:2.5px"></div><span style="color:#9a6700;font-weight:600">262 Summer '26</span></div>
+    <div class="leg"><div class="leg-line" style="background:#cf222e;height:3px"></div><span style="color:#cf222e;font-weight:700">264 Winter '27 (live — W4+ pending)</span></div>
+  </div>
+  <div class="note">* Week 1 = SB1 day through SB1+7d IST. Each release SB1 anchored at IST midnight. 264 W4–W6 data will populate as release progresses toward R0 (~Oct 3). Dashed portion of 264 line = projected future.</div>
+</div>
+
+<!-- DATA TABLE -->
+<div class="card">
+  <h2>📋 Week-by-Week IR Count Table</h2>
+  <table class="week-table">
+    <thead>
+      <tr>
+        <th>Week</th>
+        <th>Dates (relative)</th>
+        <th class="w258">258</th>
+        <th class="w260">260</th>
+        <th class="w262">262</th>
+        <th class="w264">264</th>
+        <th>Milestone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>W1</td>
+        <td>SB1 → SB1+7d</td>
+        <td><span class="cell-mid">69</span></td>
+        <td><span class="cell-high">75</span></td>
+        <td><span class="cell-low">13</span></td>
+        <td><span class="cell-mid">56</span></td>
+        <td>SB1 (sandbox 1)</td>
+      </tr>
+      <tr>
+        <td>W2</td>
+        <td>+7d → +14d</td>
+        <td><span class="cell-low">5</span></td>
+        <td><span class="cell-mid">22</span></td>
+        <td><span class="cell-low">2</span></td>
+        <td><span class="cell-high">49</span></td>
+        <td>SB2 / SB3</td>
+      </tr>
+      <tr>
+        <td>W3</td>
+        <td>+14d → +21d</td>
+        <td><span class="cell-low">3</span></td>
+        <td><span class="cell-low">5</span></td>
+        <td><span class="cell-low">0</span></td>
+        <td><span class="cell-mid">9</span></td>
+        <td>SB3 / SB4</td>
+      </tr>
+      <tr>
+        <td>W4</td>
+        <td>+21d → +28d</td>
+        <td><span class="cell-low">6</span></td>
+        <td><span class="cell-low">9</span></td>
+        <td><span class="cell-low">1</span></td>
+        <td class="future">—</td>
+        <td>SB4 / Regression</td>
+      </tr>
+      <tr>
+        <td>W5</td>
+        <td>+28d → +35d</td>
+        <td><span class="cell-mid">10</span></td>
+        <td><span class="cell-low">2</span></td>
+        <td><span class="cell-low">1</span></td>
+        <td class="future">—</td>
+        <td>~R0 window</td>
+      </tr>
+      <tr>
+        <td>W6</td>
+        <td>+35d → +42d</td>
+        <td><span class="cell-low">7</span></td>
+        <td><span class="cell-low">6</span></td>
+        <td><span class="cell-low">1</span></td>
+        <td class="future">—</td>
+        <td>Post-R0</td>
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td></td>
+        <td class="w258"><strong>100</strong></td>
+        <td class="w260"><strong>119</strong></td>
+        <td class="w262"><strong>18</strong></td>
+        <td class="w264"><strong>114+</strong></td>
+        <td>through W3 for 264</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- INSIGHTS -->
+<div class="card">
+  <h2>🔍 Key Signals</h2>
+  <div class="insight-grid">
+    <div class="insight red">
+      <strong>264 W2 sustained wave — anomalous (49 cases)</strong>
+      All prior releases dropped sharply after W1. 258 fell from 69→5, 260 from 75→22, 262 from 13→2. 264 barely budged: 56→49. W2 is almost equal to W1, signalling a second wave of orgs hitting upgrade bugs — likely a different cohort upgrading after the first batch, or new bug surfaces emerging post-SB2.
+    </div>
+    <div class="insight orange">
+      <strong>264 on pace to exceed 260's full-cycle total</strong>
+      Through W3, 264 already has 114 IR cases. 260's full 6-week total was 119. 258's was 100. 264 will likely close above both if W4–W6 pattern mirrors prior releases (even if it drops to ~5–10/week, total reaches 125+).
+    </div>
+    <div class="insight green">
+      <strong>W3 decline confirms the wave is breaking</strong>
+      264 dropped from 49 to 9 in W3 — a sign the second wave is receding. If W4 falls below 5, trajectory normalises toward 258/260 pattern. Key watch: does W4 hold below 5?
+    </div>
+    <div class="insight blue">
+      <strong>262 is the benchmark — achievable in 264?</strong>
+      262 had just 18 total IR cases across 6 weeks. The gap (114 vs 18 through 6 weeks) is structural: 264 has 2.5× more active upgrade orgs and introduced Billing + Usage as new regression surfaces. 262's low was partly due to fewer upgrade customers in scope.
+    </div>
+  </div>
+</div>
+
+<footer>RC Upgrade Timeline · 258 / 260 / 262 / 264 · Weekly IR cadence SB1→R0 · OrgCS live query · Sep 18, 2026</footer>
+
+<script>
+Chart.register(ChartDataLabels);
+
+const WEEKS = ['W1\nSB1', 'W2\nSB2/3', 'W3\nSB3/4', 'W4\nSB4/Reg', 'W5\n~R0', 'W6\nPost-R0'];
+const gc = 'rgba(208,215,222,.5)';
+const tc = '#8b949e';
+
+const ir258 = [69, 5, 3, 6, 10, 7];
+const ir260 = [75, 22, 5, 9, 2, 6];
+const ir262 = [13, 2, 0, 1, 1, 1];
+// 264: known W1-W3, W4-W6 null (future)
+const ir264_known = [56, 49, 9];
+const ir264_proj  = [null, null, null, null, null, null]; // placeholder future
+
+new Chart(document.getElementById('timelineChart').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: WEEKS,
+    datasets: [
+      {
+        label: '258 Winter \'26',
+        data: ir258,
+        borderColor: '#0969da',
+        backgroundColor: 'rgba(9,105,218,.08)',
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 5,
+        pointBackgroundColor: '#0969da',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        fill: false,
+        datalabels: {
+          display: ctx => ctx.dataIndex <= 2,
+          anchor: 'end', align: 'top',
+          color: '#0969da',
+          font: { size: 10, weight: '700' },
+          formatter: v => v
+        }
+      },
+      {
+        label: '260 Spring \'26',
+        data: ir260,
+        borderColor: '#1a7f37',
+        backgroundColor: 'rgba(26,127,55,.08)',
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 5,
+        pointBackgroundColor: '#1a7f37',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        fill: false,
+        datalabels: {
+          display: ctx => ctx.dataIndex <= 2,
+          anchor: 'end', align: 'top',
+          color: '#1a7f37',
+          font: { size: 10, weight: '700' },
+          formatter: v => v
+        }
+      },
+      {
+        label: '262 Summer \'26',
+        data: ir262,
+        borderColor: '#9a6700',
+        backgroundColor: 'rgba(154,103,0,.08)',
+        borderWidth: 2,
+        borderDash: [5,3],
+        tension: 0.3,
+        pointRadius: 5,
+        pointBackgroundColor: '#9a6700',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        fill: false,
+        datalabels: {
+          display: ctx => ctx.dataIndex <= 2,
+          anchor: 'end', align: 'bottom',
+          color: '#9a6700',
+          font: { size: 10, weight: '700' },
+          formatter: v => v
+        }
+      },
+      {
+        label: '264 Winter \'27 (live)',
+        data: [...ir264_known, null, null, null],
+        borderColor: '#cf222e',
+        backgroundColor: 'rgba(207,34,46,.06)',
+        borderWidth: 3,
+        tension: 0.3,
+        pointRadius: ctx => ctx.dataIndex < 3 ? 7 : 0,
+        pointBackgroundColor: '#cf222e',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        fill: false,
+        spanGaps: false,
+        datalabels: {
+          display: ctx => ctx.dataIndex < 3,
+          anchor: 'end',
+          align: ctx => ctx.dataIndex === 1 ? 'right' : 'top',
+          color: '#cf222e',
+          font: { size: 12, weight: '800' },
+          formatter: (v, ctx) => {
+            if (ctx.dataIndex === 1) return '49 ⚠';
+            return v;
+          }
+        }
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: { padding: { top: 40, right: 30, bottom: 10 } },
+    plugins: {
+      legend: { display: false },
+      datalabels: { display: true },
+      tooltip: {
+        callbacks: {
+          title: ctx => WEEKS[ctx[0].dataIndex].replace('\n', ' · '),
+          label: ctx => {
+            const v = ctx.parsed.y;
+            if (v === null) return ` ${ctx.dataset.label}: pending`;
+            return ` ${ctx.dataset.label}: ${v} IR cases`;
+          }
+        }
+      },
+      annotation: { annotations: {} }
+    },
+    scales: {
+      x: {
+        grid: { color: gc },
+        ticks: { color: tc, font: { size: 11 } }
+      },
+      y: {
+        grid: { color: gc },
+        ticks: { color: tc, font: { size: 10 } },
+        title: { display: true, text: 'IR Cases (weekly new)', color: tc, font: { size: 10 } },
+        suggestedMin: 0,
+        suggestedMax: 90
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
