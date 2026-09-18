@@ -116,7 +116,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;paddi
   <div class="ki-card highlight">
     <div class="ki-label">Total IR Cases</div>
     <div class="ki-val">54</div>
-    <div class="ki-val-sub">11.5% IR rate · 469 RCA/RCB inflow</div>
+    <div class="ki-val-sub">11.1% IR rate · 488 RCA/RCB inflow</div>
   </div>
 
   <div class="ki-card highlight">
@@ -174,10 +174,10 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;paddi
       </tr>
       <tr>
         <td>RC Inflow (7d) <span style="font-size:10px;color:var(--muted);font-weight:400">(RCA/RCB)</span></td>
-        <td class="cr-val-bold">441</td>
-        <td class="cr-val-bold">459</td>
-        <td class="cr-val-bold">407</td>
-        <td class="cr-col-264 cr-val-bold">469</td>
+        <td class="cr-val-bold">453</td>
+        <td class="cr-val-bold">470</td>
+        <td class="cr-val-bold">430</td>
+        <td class="cr-col-264 cr-val-bold">488</td>
       </tr>
       <tr>
         <td>IR Cases</td>
@@ -202,10 +202,10 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:16px;paddi
       </tr>
       <tr>
         <td>Bug Coverage % <span style="font-size:10px;color:var(--muted);font-weight:400">(Cases w/ Bug / RCA Inflow)</span></td>
-        <td>11.8%</td>
         <td>11.5%</td>
-        <td class="cr-val-green">2.9%</td>
-        <td class="cr-col-264">9.8%</td>
+        <td>11.3%</td>
+        <td class="cr-val-green">2.8%</td>
+        <td class="cr-col-264">9.4%</td>
       </tr>
       <tr>
         <td>#1 Inflow Topic <span style="font-size:10px;color:var(--muted);font-weight:400">(RCA/RCB only)</span></td>
@@ -372,11 +372,11 @@ const gc        = 'rgba(208,215,222,.4)';
 const tc        = '#706e6b';
 
 const RELS     = ["258\nWinter '26","260\nSpring '26","262\nSummer '26","264\nWinter '27"];
-const inflow   = [441, 459, 407, 469];  // RCA/RCB only (Cloud__c LIKE 'Revenue Cloud (Core)%')
+const inflow   = [453, 470, 430, 488];  // RCA/RCB only, source-validated
 const irCases  = [ 78,  71,  14,  54];
 const uniqBugs = [ 15,  32,  10,  15];
 const activeOrgs = [765, 1266, 1632, 1908];
-const irRates  = [17.7, 15.5, 3.4, 11.5];
+const irRates  = [17.2, 15.1, 3.3, 11.1];
 
 new Chart(document.getElementById('mainChart').getContext('2d'), {
   data: {
