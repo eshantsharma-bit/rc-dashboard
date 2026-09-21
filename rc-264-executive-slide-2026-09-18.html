@@ -48,7 +48,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .card-title{font-size:12px;font-weight:700;margin-bottom:12px;color:var(--text)}
 
 /* ── Chart ── */
-.chart-wrap{position:relative;height:230px}
+.chart-wrap{position:relative;height:250px}
 .legend-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:10px;color:var(--muted)}
 .leg{display:flex;align-items:center;gap:5px}
 .leg-bar{width:12px;height:10px;border-radius:2px;flex-shrink:0}
@@ -492,6 +492,7 @@ const irPerOrg=[10.2,5.6,0.9,2.8];
 const SF_GREEN='#1a7f37';
 
 new Chart(document.getElementById('mainChart').getContext('2d'),{
+  type:'bar',
   data:{
     labels:RELS,
     datasets:[
