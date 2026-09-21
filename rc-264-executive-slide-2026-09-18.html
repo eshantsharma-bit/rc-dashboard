@@ -65,8 +65,9 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .cr-table td:first-child{text-align:left;font-weight:500;color:var(--text);font-size:11px}
 .cr-table tr:last-child td{border-bottom:none}
 .cr-table tbody tr:hover{background:#f6f8fa}
-.cr-col-264{background:#fff8f8}
+.cr-col-264{background:#f0f7ff}
 .v-green{color:var(--green);font-weight:700}
+.v-blue{color:var(--blue);font-weight:700}
 .v-red{color:var(--red);font-weight:700}
 .v-bold{font-weight:700}
 .v-muted{color:var(--muted);font-size:10px;font-weight:400}
@@ -82,10 +83,10 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .g-table td{padding:5px 8px;border-bottom:1px solid #eaecef;vertical-align:middle}
 .g-table tr:last-child td{border-bottom:none}
 .g-table td.tc{text-align:center}
-.repeat{font-weight:700;color:var(--red)}
+.repeat{font-weight:700;color:var(--slate)}
 .rank-badge{display:inline-block;width:16px;height:16px;border-radius:50%;color:#fff;font-size:9px;font-weight:700;text-align:center;line-height:16px;margin-right:3px}
 .bcnt{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:17px;border-radius:8px;background:#f6f8fa;border:1px solid var(--border);font-weight:700;font-size:10px}
-.bcnt.hi{background:#ffebe9;border-color:#c23934;color:var(--red)}
+.bcnt.hi{background:#e8f4ff;border-color:#0176d3;color:var(--blue)}
 .na{color:#d0d7de;font-size:10px}
 
 /* ── P&T topic tags ── */
@@ -114,7 +115,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .spotlight-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .spot-card{border-radius:6px;padding:10px 12px;border:1px solid}
 .spot-card.usage{background:#f0f8ff;border-color:#0176d3}
-.spot-card.billing{background:#fff5f5;border-color:#c23934}
+.spot-card.billing{background:#faf0ff;border-color:#8250df}
 .spot-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
 .spot-bug{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.5}
 
@@ -137,23 +138,14 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 <div class="page-title">264 RC Upgrade — First 7 Days Executive Summary</div>
 <div class="page-sub">Revenue Cloud (Core) — RCA/RCB · Post-SB1 first 7 days · 258 / 260 / 262 / 264 · OrgCS validated · Sep 2026</div>
 
-<!-- ── BUG FIX STATUS BANNER (as of Sep 13) ── -->
-<div class="fix-banner">
-  <span style="font-size:10px;color:var(--muted);align-self:center;font-weight:600">Bug Status as of Sep 13:</span>
-  <span class="fb green"><span class="fb-dot" style="background:#1a7f37"></span>17 Closed / Fixed</span>
-  <span class="fb yellow"><span class="fb-dot" style="background:#9a6700"></span>2 QA In Progress</span>
-  <span class="fb red"><span class="fb-dot" style="background:#c23934"></span>3 Blocked / Waiting</span>
-  <span class="fb grey"><span class="fb-dot" style="background:#656d76"></span>1 Triaged</span>
-  <span class="fb" style="background:#f0e6ff;border-color:#8250df;color:#8250df"><span class="fb-dot" style="background:#8250df"></span>10 New Bug Logged (child W-IDs pending)</span>
-</div>
 
 <!-- ── 264 KEY INSIGHTS ── -->
 <div class="insight-header">264 · First 7 Days Key Insights</div>
 <div class="ki-strip">
 
-  <div class="ki-card hi-red">
+  <div class="ki-card" style="border-color:#0176d3;background:#f0f7ff">
     <div class="ki-label">IR Cases (Upgrade)</div>
-    <div class="ki-val" style="color:var(--red)">56</div>
+    <div class="ki-val" style="color:var(--blue)">56</div>
     <div class="ki-val-sub">11.5% of inflow</div>
   </div>
 
@@ -201,16 +193,16 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
   </div>
 
   <!-- Accounts 2+ -->
-  <div class="ki-card" style="border-color:#c23934;background:#fff8f8">
-    <div class="ki-label" style="color:var(--red)">Accounts · 2+ IR Bugs (264)</div>
-    <div class="ki-val" style="color:var(--red);font-size:28px;margin-bottom:4px">8</div>
+  <div class="ki-card" style="border-color:#0176d3;background:#f0f7ff">
+    <div class="ki-label" style="color:var(--blue)">Accounts · 2+ IR Bugs (264)</div>
+    <div class="ki-val" style="color:var(--blue);font-size:28px;margin-bottom:4px">8</div>
     <div class="bug-list">
-      <div class="bug-row"><span class="bug-num" style="background:#ffebe9;color:#c23934">2</span><span class="bug-desc" style="font-size:10px"><strong>Neocol</strong> <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
-      <div class="bug-row"><span class="bug-num" style="background:#ffebe9;color:#c23934">2</span><span class="bug-desc" style="font-size:10px">Genesys Cloud (RLM) <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
-      <div class="bug-row"><span class="bug-num" style="background:#ffebe9;color:#c23934">2</span><span class="bug-desc" style="font-size:10px">SHIFTLOGIC.IO <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
-      <div class="bug-row"><span class="bug-num" style="background:#ffebe9;color:#c23934">2</span><span class="bug-desc" style="font-size:10px">RevCycle Limited <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
-      <div class="bug-row"><span class="bug-num" style="background:#ffebe9;color:#c23934">2</span><span class="bug-desc" style="font-size:10px">LiveRamp, Inc</span></div>
-      <div class="bug-row"><span class="bug-num" style="background:#ffebe9;color:#c23934">2</span><span class="bug-desc" style="font-size:10px">Bell Canada · WebPT · AI inside</span></div>
+      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px"><strong>Neocol</strong> <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
+      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">Genesys Cloud (RLM) <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
+      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">SHIFTLOGIC.IO <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
+      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">RevCycle Limited <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
+      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">LiveRamp, Inc</span></div>
+      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">Bell Canada · WebPT · AI inside</span></div>
     </div>
   </div>
 
@@ -241,22 +233,22 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 
 <!-- ── CHART: RC Inflow vs IR Cases · Bugs · Active Org ── -->
 <div class="card">
-  <div class="card-title">RC Inflow vs IR Cases · Unique Bugs · Active Org Trend — First 7 Days Post-SB1</div>
+  <div class="card-title">RC Inflow · IR Cases (Upgrade) · Bug Confirm Rate — First 7 Days Post-SB1</div>
   <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
   <div class="legend-row">
     <div class="leg"><div class="leg-bar" style="background:rgba(1,118,211,.22);border:1.5px solid #0176d3"></div>RC Inflow (RCA/RCB)</div>
-    <div class="leg"><div class="leg-bar" style="background:rgba(194,57,52,.45);border:1.5px solid #c23934"></div>IR Cases</div>
+    <div class="leg"><div class="leg-bar" style="background:rgba(84,105,141,.28);border:1.5px solid #54698d"></div>IR Cases (Upgrade) — label shows count (rate%)</div>
     <div class="leg">
       <div class="leg-dash-line"><div class="leg-dash" style="background:var(--purple)"></div><div class="leg-dash" style="background:var(--purple);margin-left:2px"></div></div>
-      <div class="leg-dot" style="background:var(--purple);margin-left:3px"></div>Unique Bugs (right axis)
+      <div class="leg-dot" style="background:var(--purple);margin-left:3px"></div>Unique Bugs
     </div>
     <div class="leg">
       <div class="leg-dash-line"><div class="leg-dash" style="background:var(--slate);opacity:.5"></div><div class="leg-dash" style="background:var(--slate);opacity:.5;margin-left:2px"></div></div>
-      <div class="leg-dot" style="background:var(--slate);opacity:.5;margin-left:3px"></div>Active Orgs (right axis)
+      <div class="leg-dot" style="background:var(--slate);opacity:.5;margin-left:3px"></div>Active Orgs
     </div>
     <div class="leg">
       <div class="leg-dash-line"><div class="leg-dash" style="background:var(--green)"></div><div class="leg-dash" style="background:var(--green);margin-left:2px"></div></div>
-      <div class="leg-dot" style="background:var(--green);margin-left:3px"></div><strong>Bug Confirm Rate %</strong>
+      <div class="leg-dot" style="background:var(--green);margin-left:3px"></div><strong>Bug Confirm Rate % (right axis)</strong>
     </div>
   </div>
 </div>
@@ -274,14 +266,14 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
         <th style="color:#0176d3">258</th>
         <th style="color:#1a7f37">260</th>
         <th style="color:#9a6700">262</th>
-        <th style="color:#c23934;background:#fff8f8">264 ●</th>
+        <th style="color:#0176d3;background:#f0f7ff">264 ●</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>Active Orgs</td>
         <td>765</td><td>1,266</td><td>1,632</td>
-        <td class="cr-col-264 v-red">1,908</td>
+        <td class="cr-col-264 v-blue">1,908</td>
       </tr>
       <tr>
         <td>RC Inflow (7d) <span class="v-muted">RCA/RCB</span></td>
@@ -292,29 +284,23 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
         <td>IR Cases (Upgrade)</td>
         <td>78</td><td>71</td>
         <td class="v-green">14</td>
-        <td class="cr-col-264 v-red">56</td>
+        <td class="cr-col-264 v-blue">56</td>
       </tr>
-      <tr>
-        <td>IR Rate <span class="v-muted">(IR / Inflow)</span></td>
-        <td>17.2%</td><td>15.1%</td>
-        <td class="v-green">3.3%</td>
-        <td class="cr-col-264">11.5%</td>
-      </tr>
-      <tr style="background:#f0fff4">
+      <tr style="background:#f6f8fa">
         <td><strong>IR / Active Org</strong> <span class="v-muted">installed-base view</span></td>
         <td class="v-bold">10.2%</td><td class="v-bold">5.6%</td>
-        <td class="v-green v-bold">0.9%</td>
-        <td class="cr-col-264 v-green v-bold">2.8%</td>
+        <td class="v-bold v-green">0.9%</td>
+        <td class="cr-col-264 v-bold v-blue">2.8%</td>
       </tr>
       <tr>
         <td>Unique Bugs</td>
-        <td>15</td><td class="v-red">32</td>
+        <td>15</td><td>32</td>
         <td class="v-green">10</td>
-        <td class="cr-col-264">16</td>
+        <td class="cr-col-264 v-blue">16</td>
       </tr>
       <tr>
         <td>Bug Rate <span class="v-muted">(Unique Bugs / Inflow)</span></td>
-        <td>3.3%</td><td class="v-red">6.8%</td>
+        <td>3.3%</td><td>6.8%</td>
         <td class="v-green">2.3%</td>
         <td class="cr-col-264">3.1%</td>
       </tr>
@@ -322,25 +308,25 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
         <td>Cases with Bug</td>
         <td>52</td><td>53</td>
         <td class="v-green">12</td>
-        <td class="cr-col-264">54</td>
+        <td class="cr-col-264 v-blue">54</td>
       </tr>
       <tr>
         <td>Case → Engineering <span class="v-muted">(IR cases w/ GUS investigation)</span></td>
         <td>50</td><td>57</td>
         <td class="v-green">10</td>
-        <td class="cr-col-264">33</td>
+        <td class="cr-col-264 v-blue">33</td>
       </tr>
-      <tr style="background:#f0fff4">
+      <tr style="background:#f6f8fa">
         <td><strong>Bug Confirm Rate</strong> <span class="v-muted">(Cases w/ Bug / IR Cases)</span></td>
         <td class="v-bold">67%</td><td class="v-bold">75%</td>
         <td class="v-green v-bold">86%</td>
-        <td class="cr-col-264 v-bold" style="color:#1a7f37">96%</td>
+        <td class="cr-col-264 v-blue v-bold">96%</td>
       </tr>
       <tr>
         <td>Sev1 IR Cases</td>
-        <td class="v-red">23</td><td>11</td>
+        <td>23</td><td>11</td>
         <td class="v-green">6</td>
-        <td class="cr-col-264">7</td>
+        <td class="cr-col-264 v-blue">7</td>
       </tr>
       <tr>
         <td>#1 Inflow Topic <span class="v-muted">RCA/RCB</span></td>
@@ -354,14 +340,14 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
         <td>Price Mgmt <span class="v-muted">11%</span></td>
         <td>Txn Mgmt <span class="v-muted">18%</span></td>
         <td>Txn Mgmt <span class="v-muted">21%</span></td>
-        <td class="cr-col-264 v-red">Txn Mgmt <span class="v-muted">21%</span></td>
+        <td class="cr-col-264">Txn Mgmt <span class="v-muted">21%</span></td>
       </tr>
       <tr>
         <td>#3 Inflow Topic</td>
         <td>Txn Mgmt <span class="v-muted">8%</span></td>
         <td>Price Mgmt <span class="v-muted">15%</span></td>
         <td>Price Mgmt <span class="v-muted">14%</span></td>
-        <td class="cr-col-264 v-red">Price Mgmt <span class="v-muted">19%</span></td>
+        <td class="cr-col-264">Price Mgmt <span class="v-muted">19%</span></td>
       </tr>
     </tbody>
   </table>
@@ -374,7 +360,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
   <!-- Accounts impacted 2+ bug-linked IR cases per release -->
   <div class="card" style="margin-bottom:0">
     <div class="card-title">Accounts with 2+ Bug-Linked IR Cases — by Release (first 7 days)</div>
-    <div style="font-size:10px;color:var(--muted);margin-bottom:8px">IR cases with GUS Investigation linked. <span style="color:var(--red);font-weight:700">Red</span> = hit in 264. <span style="color:var(--orange);font-weight:700">●</span> = repeat across 2+ releases.</div>
+    <div style="font-size:10px;color:var(--muted);margin-bottom:8px"><span style="color:var(--blue);font-weight:700">Blue</span> = hit in 264. <span style="color:var(--orange);font-weight:700">●</span> = repeat across 2+ releases.</div>
     <table class="g-table">
       <thead>
         <tr>
@@ -382,7 +368,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
           <th class="tc" style="color:#0176d3">258</th>
           <th class="tc" style="color:#1a7f37">260</th>
           <th class="tc" style="color:#9a6700">262</th>
-          <th class="tc" style="color:#c23934">264</th>
+          <th class="tc" style="color:#0176d3">264</th>
         </tr>
       </thead>
       <tbody>
@@ -415,28 +401,28 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
           <td class="tc"><span class="bcnt hi">2</span></td>
         </tr>
         <tr>
-          <td style="color:var(--red);font-weight:600">WebPT.com (2nd org) <span class="sp-tag premier">Premier+</span></td>
+          <td style="color:var(--blue);font-weight:600">WebPT.com (2nd org) <span class="sp-tag premier">Premier+</span></td>
           <td class="tc"><span class="na">—</span></td>
           <td class="tc"><span class="na">—</span></td>
           <td class="tc"><span class="na">—</span></td>
           <td class="tc"><span class="bcnt hi">2</span></td>
         </tr>
         <tr>
-          <td style="color:var(--red);font-weight:600">LiveRamp, Inc <span class="sp-tag sig">Sig Success</span></td>
+          <td style="color:var(--blue);font-weight:600">LiveRamp, Inc <span class="sp-tag sig">Sig Success</span></td>
           <td class="tc"><span class="na">—</span></td>
           <td class="tc"><span class="na">—</span></td>
           <td class="tc"><span class="na">—</span></td>
           <td class="tc"><span class="bcnt hi">2</span></td>
         </tr>
         <tr>
-          <td style="color:var(--red);font-weight:600">Bell Canada <span class="sp-tag sig">Sig Success</span></td>
+          <td style="color:var(--blue);font-weight:600">Bell Canada <span class="sp-tag sig">Sig Success</span></td>
           <td class="tc"><span class="na">—</span></td>
           <td class="tc"><span class="na">—</span></td>
           <td class="tc"><span class="na">—</span></td>
           <td class="tc"><span class="bcnt hi">2</span></td>
         </tr>
         <tr>
-          <td style="color:var(--red);font-weight:600">AI inside Inc. <span class="sp-tag sig">Sig Success</span></td>
+          <td style="color:var(--blue);font-weight:600">AI inside Inc. <span class="sp-tag sig">Sig Success</span></td>
           <td class="tc"><span class="na">—</span></td>
           <td class="tc"><span class="na">—</span></td>
           <td class="tc"><span class="na">—</span></td>
@@ -461,23 +447,12 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
     <div style="font-size:10px;color:var(--muted);margin-top:7px">Source: CSV (Days=7d). <span style="color:var(--orange);font-weight:700">●</span> = hit in 2+ releases. 264 has 8 accounts with 2+ cases; 4 are repeat customers.</div>
   </div>
 
-  <!-- Bug Cases by P&T Topic -->
+  <!-- Bug Cases by P&T Topic — stacked bar concentration view -->
   <div class="card" style="margin-bottom:0">
-    <div class="card-title">Bug Cases by P&amp;T Topic — All Releases (first 7 days)</div>
-    <div class="topic-wrap">
-      <table class="g-table" id="topicTable">
-        <thead>
-          <tr>
-            <th>P&amp;T Topic</th>
-            <th class="tc" style="color:#0176d3">258</th>
-            <th class="tc" style="color:#1a7f37">260</th>
-            <th class="tc" style="color:#9a6700">262</th>
-            <th class="tc" style="color:#c23934">264</th>
-          </tr>
-        </thead>
-        <tbody id="topicRows"></tbody>
-      </table>
-    </div>
+    <div class="card-title">Bug Cases by P&amp;T Topic — Concentration Shift · First 7 Days</div>
+    <div style="font-size:10px;color:var(--muted);margin-bottom:10px">258 concentrated in 1–2 topics → 264 spread across 6. Each bar = 100% of that release's bug cases.</div>
+    <div style="position:relative;height:180px"><canvas id="topicChart"></canvas></div>
+    <div id="topicLegend" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-size:10px;color:var(--muted)"></div>
   </div>
 
 </div>
@@ -492,7 +467,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
       <div class="spot-bug">Batch job "Retrieve Net Unit Rates for Ratable Summary" fails post-264 upgrade. Affects tier-based usage products. All 4 cases: same root cause, global impact (incl. Japanese customer). Bug closed before GA.</div>
     </div>
     <div class="spot-card billing">
-      <div class="spot-title" style="color:#c23934">Billing &amp; Invoicing — 8 IR Cases · 3 Bugs</div>
+      <div class="spot-title" style="color:#8250df">Billing &amp; Invoicing — 8 IR Cases · 3 Bugs</div>
       <div style="font-size:11px;margin-bottom:4px">
         <span style="font-weight:700">W-24088655</span> <span class="gus-pill gus-closed">Closed ✓</span>
         <div class="spot-bug">generateInvoices fails when state/country picklist enabled. 3 cases. Closed.</div>
@@ -541,16 +516,16 @@ new Chart(document.getElementById('mainChart').getContext('2d'),{
        borderWidth:1.5,borderRadius:3,yAxisID:'yLeft',
        datalabels:{anchor:'end',align:'top',color:SF_BLUE,font:{size:11,weight:'700'},formatter:v=>v}},
       {type:'bar',label:'IR Cases (Upgrade)',data:irCases,
-       backgroundColor:hexRgba(SF_RED,0.48),borderColor:hexRgba(SF_RED,0.82),
+       backgroundColor:hexRgba(SF_SLATE,0.28),borderColor:hexRgba(SF_SLATE,0.65),
        borderWidth:1.5,borderRadius:3,yAxisID:'yLeft',
-       datalabels:{anchor:'end',align:'top',color:SF_RED,font:{size:10,weight:'800'},
+       datalabels:{anchor:'end',align:'top',color:SF_SLATE,font:{size:10,weight:'700'},
          formatter:(v,ctx)=>v+' ('+irRates[ctx.dataIndex]+'%)'}},
       {type:'line',label:'Unique Bugs',data:uniqBugs,
        borderColor:SF_PURPLE,backgroundColor:'transparent',
        borderWidth:2,borderDash:[6,3],tension:0.3,
        pointRadius:5,pointBackgroundColor:SF_PURPLE,pointBorderColor:'#fff',pointBorderWidth:1.5,
        fill:false,yAxisID:'yRight',
-       datalabels:{anchor:'end',align:'right',color:SF_PURPLE,font:{size:10,weight:'700'},formatter:v=>v}},
+       datalabels:{display:false}},
       {type:'line',label:'Active Orgs',data:activeOrgs,
        borderColor:hexRgba(SF_SLATE,0.40),backgroundColor:'transparent',
        borderWidth:1.5,borderDash:[3,3],tension:0.4,
@@ -561,11 +536,13 @@ new Chart(document.getElementById('mainChart').getContext('2d'),{
          formatter:v=>v.toLocaleString()}},
       {type:'line',label:'Bug Confirm Rate',data:bugConfirmRate,
        borderColor:'#1a7f37',backgroundColor:'transparent',
-       borderWidth:2,borderDash:[4,4],tension:0.3,
+       borderWidth:2.5,borderDash:[5,3],tension:0.3,
        pointRadius:5,pointBackgroundColor:'#1a7f37',pointBorderColor:'#fff',pointBorderWidth:1.5,
        fill:false,yAxisID:'yPct',
-       datalabels:{anchor:'end',align:'top',color:'#1a7f37',font:{size:10,weight:'700'},
-         formatter:v=>v+'%'}}
+       datalabels:{
+         anchor:'end',align:'top',color:'#1a7f37',font:{size:10,weight:'700'},
+         formatter:(v,ctx)=>ctx.dataIndex===3?v+'%\nBug Confirm':v+'%'
+       }}
     ]
   },
   options:{
@@ -597,46 +574,85 @@ new Chart(document.getElementById('mainChart').getContext('2d'),{
   }
 });
 
-// ── INFLOW TREND CHART (top 5 topics across releases) ──
-const TOPIC_COLORS={
-  'Config/Configurator':'#0176d3',
-  'Txn Mgmt':'#c23934',
-  'Price Mgmt':'#9a6700',
-  'Billing':'#8250df',
-  'PCM':'#1a7f37'
-};
-const REL_SHORT=["258","260","262","264"];
-
-// ── BUG CASES BY P&T TOPIC TABLE ──
-// Using OrgCS-corrected IR case counts (not CSV bug counts)
-const TOPIC_DATA=[
-  // [topic, 258, 260, 262, 264]  — IR cases with Bug# linked
-  ['Product Configurator', 46, 25,  5, 11],
-  ['Transaction Mgmt',      9, 16,  6, 12],
-  ['Price Management',      2, 13,  1,  0],
-  ['Billing & Invoicing',   0,  4,  0,  5],
-  ['PCM',                   0,  2,  0,  5],
-  ['Usage & Ratings',       0,  0,  0,  4],
-  ['DRO',                   0,  5,  1,  2],
-  ['Advanced Approvals',    0,  0,  0,  1],
-  ['Salesforce CPQ',        2,  1,  0,  1],
+// ── P&T TOPIC CONCENTRATION — 100% stacked horizontal bar ──
+// rows = P&T topics, datasets = releases
+// values = bug-linked IR cases per topic per release
+const TOPICS=['Product Configurator','Transaction Mgmt','Price Management','Billing & Invoicing','PCM','Usage & Ratings','DRO','Adv. Approvals','SF CPQ'];
+// per-topic counts per release [258, 260, 262, 264]
+const TOPIC_MATRIX=[
+  [46, 25,  5, 11],  // Config
+  [ 9, 16,  6, 12],  // TM
+  [ 2, 13,  1,  0],  // PM
+  [ 0,  4,  0,  5],  // Billing
+  [ 0,  2,  0,  5],  // PCM
+  [ 0,  0,  0,  4],  // UR  ◆ new in 264
+  [ 0,  5,  1,  2],  // DRO
+  [ 0,  0,  0,  1],  // AA  ◆ new in 264
+  [ 2,  1,  0,  1],  // CPQ
 ];
-const maxV=[46,25,6,12];
-const relC=['#0176d3','#1a7f37','#9a6700','#c23934'];
+const REL_LABELS=["258 · Winter '26","260 · Spring '26","262 · Summer '26","264 · Winter '27"];
+// topic palette — SF-consistent
+const TOPIC_PAL=[
+  '#0176d3','#54698d','#9a6700','#8250df',
+  '#1a7f37','#2e7d32','#e8910a','#c23934','#706e6b'
+];
 
-const tbody=document.getElementById('topicRows');
-TOPIC_DATA.forEach(([label,...vals])=>{
-  const tr=document.createElement('tr');
-  tr.innerHTML=`<td style="font-size:11px">${label}</td>`+
-    vals.map((v,i)=>{
-      if(v===0) return `<td class="tc"><span style="color:#d0d7de;font-size:10px">—</span></td>`;
-      const w=Math.round((v/maxV[i])*50);
-      return `<td class="tc"><div style="display:flex;align-items:center;gap:4px;justify-content:center">
-        <div style="width:${w}px;height:11px;border-radius:2px;background:${relC[i]};opacity:.6;min-width:2px"></div>
-        <span style="font-size:10px;font-weight:700;color:${relC[i]}">${v}</span>
-      </div></td>`;
-    }).join('');
-  tbody.appendChild(tr);
+// Build per-release totals for % calc
+const relTotals=[0,1,2,3].map(ri=>TOPIC_MATRIX.reduce((s,row)=>s+row[ri],0));
+
+// Build datasets: one per topic, values = % share per release
+const topicDatasets=TOPICS.map((label,ti)=>({
+  label,
+  data:[0,1,2,3].map(ri=>relTotals[ri]===0?0:Math.round(TOPIC_MATRIX[ti][ri]/relTotals[ri]*100)),
+  rawCounts:[0,1,2,3].map(ri=>TOPIC_MATRIX[ti][ri]),
+  backgroundColor:TOPIC_PAL[ti],
+  borderColor:'#fff',
+  borderWidth:1,
+  borderRadius:0,
+  datalabels:{
+    display:(ctx)=>ctx.dataset.rawCounts[ctx.dataIndex]>0,
+    color:'#fff',font:{size:9,weight:'700'},
+    formatter:(v)=>v>5?v+'%':''
+  }
+}));
+
+new Chart(document.getElementById('topicChart').getContext('2d'),{
+  type:'bar',
+  data:{labels:REL_LABELS,datasets:topicDatasets},
+  options:{
+    indexAxis:'y',
+    responsive:true,maintainAspectRatio:false,
+    layout:{padding:{right:8}},
+    plugins:{
+      legend:{display:false},
+      datalabels:{display:true},
+      tooltip:{callbacks:{
+        title:ctx=>REL_LABELS[ctx[0].dataIndex],
+        label:ctx=>{
+          const raw=ctx.dataset.rawCounts[ctx.dataIndex];
+          return raw>0?` ${ctx.dataset.label}: ${raw} cases (${ctx.parsed.x}%)`:null;
+        }
+      },filter:item=>item.dataset.rawCounts[item.dataIndex]>0}
+    },
+    scales:{
+      x:{stacked:true,max:100,grid:{color:'rgba(208,215,222,.3)'},
+        ticks:{color:'#706e6b',font:{size:9},callback:v=>v+'%'}},
+      y:{stacked:true,grid:{display:false},
+        ticks:{color:'#1f2328',font:{size:10,weight:'500'}}}
+    }
+  }
+});
+
+// Render topic legend
+const legEl=document.getElementById('topicLegend');
+TOPICS.forEach((label,i)=>{
+  const hasData=TOPIC_MATRIX[i].some(v=>v>0);
+  if(!hasData) return;
+  const isNew=i===5||i===6&&false||i===7;
+  const span=document.createElement('span');
+  span.style.cssText='display:flex;align-items:center;gap:3px';
+  span.innerHTML=`<span style="width:9px;height:9px;border-radius:2px;background:${TOPIC_PAL[i]};flex-shrink:0;display:inline-block"></span>${label}${isNew?' <span style="font-size:8px;color:#8250df;font-weight:700">◆</span>':''}`;
+  legEl.appendChild(span);
 });
 </script>
 </body>
