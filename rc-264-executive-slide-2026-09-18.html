@@ -88,9 +88,6 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .bcnt.hi{background:#ffebe9;border-color:#c23934;color:var(--red)}
 .na{color:#d0d7de;font-size:10px}
 
-/* ── Bug trend & inflow trend ── */
-.trend-wrap{position:relative;height:180px}
-
 /* ── GUS status pill ── */
 .gus-pill{display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;white-space:nowrap}
 .gus-closed{background:#dafbe1;color:#1a7f37}
@@ -333,17 +330,6 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
   </table>
 </div>
 
-<!-- ── INFLOW TREND + BUG TREND side by side ── -->
-<div class="two-col">
-  <div class="card" style="margin-bottom:0">
-    <div class="card-title">Top 5 Inflow Topics — Trend across Releases</div>
-    <div class="trend-wrap"><canvas id="inflowTrendChart"></canvas></div>
-  </div>
-  <div class="card" style="margin-bottom:0">
-    <div class="card-title">Top 5 Bug Topics — Trend across Releases</div>
-    <div class="trend-wrap"><canvas id="bugTrendChart"></canvas></div>
-  </div>
-</div>
 
 <!-- ── TWO-COL: TOP ACCOUNTS + BUG CASES BY TOPIC ── -->
 <div class="two-col">
@@ -630,79 +616,7 @@ const TOPIC_COLORS={
   'Billing':'#8250df',
   'PCM':'#1a7f37'
 };
-const inflowTrendData=[
-  {label:'Config/Configurator', data:[241,188,124,137]},
-  {label:'Txn Mgmt',            data:[38, 83, 89, 102]},
-  {label:'Price Mgmt',          data:[52, 69, 60,  95]},
-  {label:'Billing',             data:[10, 30, 36,  39]},
-  {label:'PCM',                 data:[14, 28, 19,  24]},
-];
 const REL_SHORT=["258","260","262","264"];
-
-new Chart(document.getElementById('inflowTrendChart').getContext('2d'),{
-  type:'line',
-  data:{
-    labels:REL_SHORT,
-    datasets:inflowTrendData.map(d=>({
-      label:d.label,data:d.data,
-      borderColor:TOPIC_COLORS[d.label],
-      backgroundColor:hexRgba(TOPIC_COLORS[d.label],0.07),
-      borderWidth:2,tension:0.3,
-      pointRadius:4,pointBackgroundColor:TOPIC_COLORS[d.label],
-      pointBorderColor:'#fff',pointBorderWidth:1.5,
-      datalabels:{display:false}
-    }))
-  },
-  options:{
-    responsive:true,maintainAspectRatio:false,
-    layout:{padding:{top:8,right:12,bottom:4}},
-    plugins:{
-      legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:10,padding:8,color:tc}},
-      datalabels:{display:false},
-      tooltip:{callbacks:{title:ctx=>'Release '+ctx[0].label}}
-    },
-    scales:{
-      x:{grid:{color:gc},ticks:{color:tc,font:{size:10}}},
-      y:{grid:{color:gc},ticks:{color:tc,font:{size:9}},suggestedMin:0,suggestedMax:270}
-    }
-  }
-});
-
-// ── BUG TREND CHART (top bug topics across releases, by unique bug count) ──
-const bugTrendData=[
-  {label:'Config/Configurator', data:[13,19, 5, 8]},
-  {label:'Txn Mgmt',            data:[ 6, 8, 4, 3]},
-  {label:'Billing',             data:[ 0, 3, 0, 3]},
-  {label:'Price Mgmt',          data:[ 2, 5, 1, 0]},
-  {label:'DRO',                 data:[ 0, 3, 1, 2]},
-];
-
-new Chart(document.getElementById('bugTrendChart').getContext('2d'),{
-  type:'bar',
-  data:{
-    labels:REL_SHORT,
-    datasets:bugTrendData.map(d=>({
-      label:d.label,data:d.data,
-      backgroundColor:hexRgba(TOPIC_COLORS[d.label]||'#656d76',0.55),
-      borderColor:TOPIC_COLORS[d.label]||'#656d76',
-      borderWidth:1.2,borderRadius:2,
-      datalabels:{display:false}
-    }))
-  },
-  options:{
-    responsive:true,maintainAspectRatio:false,
-    layout:{padding:{top:8,right:8,bottom:4}},
-    plugins:{
-      legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:10,padding:8,color:tc}},
-      datalabels:{display:false},
-      tooltip:{callbacks:{title:ctx=>'Release '+ctx[0].label+' · '+ctx[0].dataset.label}}
-    },
-    scales:{
-      x:{stacked:true,grid:{color:gc},ticks:{color:tc,font:{size:10}}},
-      y:{stacked:true,grid:{color:gc},ticks:{color:tc,font:{size:9}},suggestedMin:0,suggestedMax:30}
-    }
-  }
-});
 
 // ── BUG CASES BY P&T TOPIC TABLE ──
 // Using OrgCS-corrected IR case counts (not CSV bug counts)
