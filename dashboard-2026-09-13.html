@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RC Weekly · Sep 13–19, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #f3f3f3; --surface: #ffffff; --border: #dddbda;
+  --accent: #0176d3; --accent2: #9050e9;
+  --green: #2e844a; --red: #ba0517; --yellow: #dd7a01; --orange: #dd7a01;
+  --text: #181818; --muted: #706e6b;
+  --emea: #0176d3; --india: #9050e9; --apac: #06a59a;
+  --rca: #0176d3; --cpq: #dd7a01;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; font-size: 13px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+.card.alert-border { border-color: #ba0517; }
+.card.warn-border { border-color: #dd7a01; }
+.card.good-border { border-color: #2e844a; }
+.kpi-row { display: grid; grid-template-columns: repeat(6,1fr); gap: 12px; margin-bottom: 16px; }
+.kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; }
+.kpi .val { font-size: 28px; font-weight: 700; }
+.kpi .label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.kpi .delta { font-size: 11px; margin-top: 2px; }
+.kpi.alert { border-color: #ba0517; background: #fef0ef; }
+.kpi.warn { border-color: #dd7a01; background: #fef8e1; }
+.kpi.good { border-color: #2e844a; background: #edf7f0; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { background: #f3f3f3; border-bottom: 2px solid var(--border); padding: 6px 8px; text-align: left; font-weight: 600; }
+td { border-bottom: 1px solid #eee; padding: 5px 8px; }
+.pill { display: inline-block; padding: 1px 7px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+.pill-red { background: #fef0ef; color: #ba0517; }
+.pill-blue { background: #e8f4fd; color: #0176d3; }
+.pill-orange { background: #fef8e1; color: #dd7a01; }
+.pill-purple { background: #f0ebff; color: #9050e9; }
+.pill-teal { background: #e0f5f5; color: #06a59a; }
+.pill-green { background: #edf7f0; color: #2e844a; }
+.insight { padding: 10px 12px; border-left: 4px solid; border-radius: 4px; margin: 8px 0; font-size: 12px; line-height: 1.6; }
+.insight.red { border-color: #ba0517; background: #fef0ef; }
+.insight.yellow { border-color: #dd7a01; background: #fef8e1; }
+.insight.green { border-color: #2e844a; background: #edf7f0; }
+.insight.blue { border-color: #0176d3; background: #e8f4fd; }
+.insight.purple { border-color: #9050e9; background: #f0ebff; }
+.insight.teal { border-color: #06a59a; background: #e0f5f5; }
+.header { background: var(--accent); color: #fff; padding: 20px 24px; border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+.header h1 { font-size: 20px; font-weight: 700; }
+.header .meta { font-size: 12px; opacity: 0.85; margin-top: 4px; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+.badge-red { background: #fef0ef; color: #ba0517; border: 1px solid #ba0517; }
+.badge-green { background: #edf7f0; color: #2e844a; border: 1px solid #2e844a; }
+.badge-yellow { background: #fef8e1; color: #dd7a01; border: 1px solid #dd7a01; }
+.badge-purple { background: #f0ebff; color: #9050e9; border: 1px solid #9050e9; }
+.badge-teal { background: #e0f5f5; color: #06a59a; border: 1px solid #06a59a; }
+.tw-col { background: rgba(1,118,211,.06); }
+.highlight-row { background: rgba(1,118,211,.06); font-weight: 600; }
+.red-row { background: #fef0ef; }
+.section-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.section-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 16px; }
+.chart-wrap { position: relative; height: 200px; }
+.chart-wrap-tall { position: relative; height: 240px; }
+.footnote { font-size: 10px; color: var(--muted); margin-top: 6px; font-style: italic; }
+.story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.good-news { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+.good-cell { background: #edf7f0; border: 1px solid #a8d5b5; border-radius: 6px; padding: 8px 10px; font-size: 11px; color: #2e844a; }
+.good-cell strong { display: block; font-size: 16px; font-weight: 700; }
+footer { text-align: center; font-size: 11px; color: var(--muted); padding: 20px 0 10px; border-top: 1px solid var(--border); margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ════ 1. HEADER ════ -->
+<div class="header">
+  <div>
+    <h1>⚡ Revenue Cloud · Weekly Executive Dashboard · Sep 13–19, 2026</h1>
+    <div class="meta">TW: Sep 13–19 &nbsp;|&nbsp; PW: Sep 6–12 &nbsp;|&nbsp; Data: OrgCS live query (Sep 21) &nbsp;|&nbsp; EMEA + India + APAC</div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+    <span class="badge badge-green">✅ Inflow ↓14% WoW</span>
+    <span class="badge badge-red">🐛 W-24059609 — 4 accounts</span>
+    <span class="badge badge-yellow">⚠️ Bell Canada exec escalation</span>
+    <span class="badge badge-green">⭐ CSAT 4.83 ↑</span>
+  </div>
+</div>
+
+<!-- ════ 2. KPI ROW ════ -->
+<div class="kpi-row">
+  <div class="kpi good">
+    <div class="val" style="color:#2e844a">304</div>
+    <div class="label">Total Inflow</div>
+    <div class="delta" style="color:#2e844a">↓50 vs PW (354)</div>
+  </div>
+  <div class="kpi warn">
+    <div class="val" style="color:#ba0517">35</div>
+    <div class="label">Sev1 Critical</div>
+    <div class="delta" style="color:#2e844a">↓26 vs PW (61)</div>
+  </div>
+  <div class="kpi warn">
+    <div class="val" style="color:#dd7a01">119</div>
+    <div class="label">Sev2 Urgent</div>
+    <div class="delta" style="color:#2e844a">↓20 vs PW (139)</div>
+  </div>
+  <div class="kpi good">
+    <div class="val" style="color:#2e844a">292</div>
+    <div class="label">Open Backlog</div>
+    <div class="delta" style="color:#2e844a">↓21 vs PW (313)</div>
+  </div>
+  <div class="kpi warn">
+    <div class="val" style="color:#dd7a01">58</div>
+    <div class="label">Aged &gt;15d</div>
+    <div class="delta" style="color:#ba0517">↑11 vs PW (47)</div>
+  </div>
+  <div class="kpi good">
+    <div class="val" style="color:#2e844a">4.83</div>
+    <div class="label">CSAT (n=18)</div>
+    <div class="delta" style="color:#2e844a">↑ vs PW (4.62)</div>
+  </div>
+</div>
+
+<!-- ════ 3. EXECUTIVE STORY ════ -->
+<div class="card">
+  <div class="section-title">📰 Executive Story</div>
+  <div class="story-grid">
+    <div class="insight green">
+      <strong>✅ Inflow normalises post-outage spike</strong><br>
+      TW inflow at 304 cases — down 50 WoW (↓14%) after the Sep 7 Configurator outage drove an artificial PW spike (354). This is a healthy reset. RCA remains the volume driver at 70% share (213 cases). Configurator holds top sub-topic position (69 TW, up from 47 PW).
+    </div>
+    <div class="insight yellow">
+      <strong>⚠️ Bell Canada — Exec Escalation Active</strong><br>
+      Bell Canada hit two RC outages in three weeks (30+ hrs total downtime). Latest: 262.14.12 regression blocked B2C order/quote flow Sep 6–8. Fix deployed (262.14.13). Bell exec leadership (Ajitesh Prasad, Michael Rodriguez, Eva Krohn) are engaged. Exec connect being arranged. Bell had 3 TW cases + 4 PW — low volume but high relationship risk.
+    </div>
+    <div class="insight red">
+      <strong>🐛 Multi-Customer Bug W-24059609 — 4 Accounts</strong><br>
+      A single bug hit Cloudity, RevCycle Limited, Trane Technologies, and Intrado Life &amp; Safety this week — spanning Product Configurator, Transaction Management, and Product Catalog Management. Cross-area defect warrants engineering priority review and proactive customer comms.
+    </div>
+    <div class="insight red">
+      <strong>🔴 Aged Backlog Up — No-Path Cases at 16</strong><br>
+      Aged &gt;15d rose to 58 (↑11 WoW). 16 no-path cases (Working, no GUS/Bug). Highest-priority: Equans S1 CPQ (32d, no GUS), Parker Hannifin S2 RCA (32d, red account, no GUS), PwC S2 RCA (31d, no GUS). EMEA carries 6 of 16 no-path cases.
+    </div>
+  </div>
+  <div class="good-news">
+    <div class="good-cell"><strong>4.83</strong>CSAT TW — best in 4 weeks</div>
+    <div class="good-cell"><strong>↓14%</strong>Inflow WoW — normalised</div>
+    <div class="good-cell"><strong>↓21</strong>Open backlog vs PW</div>
+    <div class="good-cell"><strong>35 S1</strong>↓43% vs PW (61 outage-inflated)</div>
+  </div>
+</div>
+
+<!-- ════ 4. KEY METRICS TABLE ════ -->
+<div class="card">
+  <div class="section-title">📊 Key Metrics — 4-Week Trend</div>
+  <table>
+    <tr>
+      <th>KPI</th><th>Target</th>
+      <th class="tw-col">★ TW Sep 13–19</th>
+      <th>PW Sep 6–12</th>
+      <th>W-2 Aug 30–Sep 5</th>
+      <th>W-3 Aug 23–29</th>
+    </tr>
+    <tr>
+      <td>Support Inflow</td><td>≤330</td>
+      <td class="tw-col"><strong>304</strong></td><td>354</td><td>366</td><td>281</td>
+    </tr>
+    <tr>
+      <td>Sev1 Critical</td><td>≤25</td>
+      <td class="tw-col"><strong>35</strong></td><td>61</td><td>45</td><td>31</td>
+    </tr>
+    <tr>
+      <td style="padding-left:16px;color:#0176d3">↳ EMEA Sev1</td><td>—</td>
+      <td class="tw-col"><strong>22</strong></td><td>41 <span style="font-size:10px;color:#dd7a01">(+17 outage)</span></td><td>24</td><td>18</td>
+    </tr>
+    <tr>
+      <td style="padding-left:16px;color:#9050e9">↳ India Sev1</td><td>—</td>
+      <td class="tw-col"><strong>9</strong></td><td>16</td><td>17</td><td>10</td>
+    </tr>
+    <tr>
+      <td style="padding-left:16px;color:#06a59a">↳ APAC Sev1</td><td>—</td>
+      <td class="tw-col"><strong>4</strong></td><td>4</td><td>4</td><td>3</td>
+    </tr>
+    <tr>
+      <td>Sev2 Urgent</td><td>—</td>
+      <td class="tw-col"><strong>119</strong></td><td>139</td><td>143</td><td>107</td>
+    </tr>
+    <tr style="background:#edf7f0">
+      <td>RCA Inflow (% share)</td><td>—</td>
+      <td class="tw-col"><strong>213 (70%)</strong></td><td>271 (77%)</td><td>269 (73%)</td><td>203 (72%)</td>
+    </tr>
+    <tr style="background:#fef8e1">
+      <td>CPQ Inflow (% share)</td><td>—</td>
+      <td class="tw-col"><strong>69 (23%)</strong></td><td>69 (19%)</td><td>83 (23%)</td><td>71 (25%)</td>
+    </tr>
+    <tr style="background:#edf7f0">
+      <td>CSAT Score</td><td>≥4.5</td>
+      <td class="tw-col"><strong>4.83</strong></td><td>4.62</td><td>4.83</td><td>4.62</td>
+    </tr>
+    <tr style="background:#fef8e1">
+      <td>Aged &gt;15d (open)</td><td>≤45</td>
+      <td class="tw-col"><strong>58 ↑</strong></td><td>47</td><td>—</td><td>—</td>
+    </tr>
+    <tr style="background:#edf7f0">
+      <td>Open Backlog</td><td>≤320</td>
+      <td class="tw-col"><strong>292 ✅</strong></td><td>313</td><td>—</td><td>—</td>
+    </tr>
+    <tr>
+      <td>GUS Filed (inflow)</td><td>—</td>
+      <td class="tw-col"><strong>9</strong></td><td>55</td><td>36</td><td>—</td>
+    </tr>
+    <tr>
+      <td>Bugs Filed (inflow)</td><td>—</td>
+      <td class="tw-col"><strong>14</strong></td><td>47</td><td>29</td><td>—</td>
+    </tr>
+  </table>
+  <p class="footnote">PW S1=61 includes ~19 outage-linked cases (Sep 7 Configurator incident W-24117503). Organic EMEA S1 PW ≈22. GUS/Bug TW low relative to S1 count — hygiene watch item.</p>
+</div>
+
+<!-- ════ 5. CHARTS ════ -->
+<div class="grid-3" style="margin-bottom:16px">
+  <div class="card">
+    <div class="section-title">📈 4-Week Inflow Trend</div>
+    <div class="chart-wrap"><canvas id="inflowChart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="section-title">⭐ CSAT Trend</div>
+    <div class="chart-wrap"><canvas id="csatChart"></canvas></div>
+    <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px;text-align:center">
+      <div style="background:#e8f4fd;border-radius:4px;padding:4px"><strong>EMEA</strong><br>4.75 (n=12)</div>
+      <div style="background:#f0ebff;border-radius:4px;padding:4px"><strong>India</strong><br>5.00 (n=2)</div>
+      <div style="background:#e0f5f5;border-radius:4px;padding:4px"><strong>APAC</strong><br>5.00 (n=4)</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="section-title">📦 P&amp;T Volume Share TW</div>
+    <div class="chart-wrap"><canvas id="ptChart"></canvas></div>
+    <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px;text-align:center">
+      <div style="background:#e8f4fd;border-radius:4px;padding:4px"><strong>RCA 70%</strong><br>213 cases</div>
+      <div style="background:#fef8e1;border-radius:4px;padding:4px"><strong>CPQ 23%</strong><br>69 cases</div>
+      <div style="background:#f0ebff;border-radius:4px;padding:4px"><strong>Billing 3%</strong><br>10 cases</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ 6. P&T TREND + REGION ════ -->
+<div class="grid-2" style="margin-bottom:16px">
+  <div class="card">
+    <div class="section-title">📦 P&amp;T 4-Week Trend</div>
+    <div class="chart-wrap"><canvas id="ptTrendChart"></canvas></div>
+    <table style="margin-top:10px">
+      <tr><th>Group</th><th class="tw-col">TW</th><th>PW</th><th>Δ</th><th class="tw-col">TW%</th></tr>
+      <tr><td>RCA</td><td class="tw-col"><strong>213</strong></td><td>271</td><td style="color:#2e844a">↓58</td><td class="tw-col">70%</td></tr>
+      <tr><td>CPQ</td><td class="tw-col"><strong>69</strong></td><td>69</td><td style="color:#706e6b">→0</td><td class="tw-col">23%</td></tr>
+      <tr><td>Billing</td><td class="tw-col"><strong>10</strong></td><td>7</td><td style="color:#ba0517">↑3</td><td class="tw-col">3%</td></tr>
+      <tr><td>Other</td><td class="tw-col"><strong>12</strong></td><td>7</td><td style="color:#ba0517">↑5</td><td class="tw-col">4%</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="section-title">🌍 Region Split — 4 Weeks</div>
+    <div class="chart-wrap"><canvas id="regionChart"></canvas></div>
+    <table style="margin-top:10px">
+      <tr><th>Region</th><th class="tw-col">TW</th><th>PW</th><th>W-2</th><th>W-3</th></tr>
+      <tr><td><span class="pill pill-blue">EMEA</span></td><td class="tw-col"><strong>181 (60%)</strong></td><td>202 (57%)</td><td>208 (57%)</td><td>167 (59%)</td></tr>
+      <tr><td><span class="pill pill-purple">India</span></td><td class="tw-col"><strong>93 (31%)</strong></td><td>117 (33%)</td><td>123 (34%)</td><td>85 (30%)</td></tr>
+      <tr><td><span class="pill pill-teal">APAC</span></td><td class="tw-col"><strong>30 (10%)</strong></td><td>35 (10%)</td><td>35 (10%)</td><td>29 (10%)</td></tr>
+    </table>
+    <p class="footnote">APAC included for all 4 weeks. Region split stable — EMEA consistently 57–60%.</p>
+  </div>
+</div>
+
+<!-- ════ 7. RCA DEEP DIVE ════ -->
+<div class="card alert-border">
+  <div class="section-title">🔍 RCA Deep Dive — Revenue Cloud Core (70% share)</div>
+  <div class="grid-2">
+    <div>
+      <div class="section-subtitle">Sub-Topic Breakdown (TW vs PW)</div>
+      <table>
+        <tr><th>Sub-Topic</th><th class="tw-col">TW</th><th>PW</th><th>Δ</th></tr>
+        <tr><td>Product Configurator</td><td class="tw-col"><strong>69</strong></td><td>47</td><td style="color:#ba0517">↑22</td></tr>
+        <tr><td>Transaction Management</td><td class="tw-col"><strong>51</strong></td><td>26</td><td style="color:#ba0517">↑25</td></tr>
+        <tr><td>Price Management</td><td class="tw-col"><strong>26</strong></td><td>26</td><td style="color:#706e6b">→</td></tr>
+        <tr><td>Dev Support P2O</td><td class="tw-col"><strong>17</strong></td><td>9</td><td style="color:#ba0517">↑8</td></tr>
+        <tr><td>Billing &amp; Invoicing</td><td class="tw-col"><strong>14</strong></td><td>8</td><td style="color:#ba0517">↑6</td></tr>
+        <tr><td>Product Catalog Mgmt</td><td class="tw-col"><strong>10</strong></td><td>13</td><td style="color:#2e844a">↓3</td></tr>
+        <tr><td>Contract Lifecycle Mgmt</td><td class="tw-col"><strong>10</strong></td><td>8</td><td style="color:#ba0517">↑2</td></tr>
+        <tr><td>Advanced Approvals</td><td class="tw-col"><strong>5</strong></td><td>3</td><td style="color:#ba0517">↑2</td></tr>
+        <tr><td>Document Generation</td><td class="tw-col"><strong>3</strong></td><td>6</td><td style="color:#2e844a">↓3</td></tr>
+        <tr><td>Usage &amp; Ratings</td><td class="tw-col"><strong>3</strong></td><td>4</td><td style="color:#2e844a">↓1</td></tr>
+        <tr><td>Other RCA</td><td class="tw-col"><strong>5</strong></td><td>2</td><td style="color:#ba0517">↑3</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="section-subtitle">Account Deep Dives</div>
+      <div class="insight red" style="margin-bottom:8px">
+        <strong>TDC Net A/S — 11 cases TW (↑ from 5 PW)</strong> — Largest volume spike this week.<br>
+        Primarily Product Configurator + Transaction Management. Trend: 0 W-3 → 0 W-2 → 5 PW → <strong>11 TW</strong> — sharp ramp in 2 weeks. No active swarm found in Slack. No GUS on most cases. Possible new deployment phase or go-live prep issue. 🔴 Watch: volume acceleration without engineering engagement is a risk signal.
+      </div>
+      <div class="insight yellow" style="margin-bottom:8px">
+        <strong>Vp PLC — 10 cases TW (↑ from 4 PW)</strong> — GUS W-24218873 open.<br>
+        9 RCA + 1 CPQ. GUS W-24218873: Configurator latency (catalog browse slow, qty changes unresponsive; PCM cache + non-blocking UI already tried). Still open, production impacted. Trend: 2 W-2 → 4 PW → <strong>10 TW</strong> — accelerating. Performance Monitor confirmed this case on Sep 17.
+      </div>
+      <div class="insight yellow">
+        <strong>Equinix — 6 cases TW (↑ from 1 PW)</strong> — GUS W-24208097 + W-24208146.<br>
+        S1 open: 474605356 (Configurator, L3 cache error). DRO case also open (W-24208146). Equinix had 63 Q2 cases vs 108 Q1 — decline trend, but TW spike needs monitoring. RCAT: was in Q2 top-10 improving, Q3 may be reverting.
+      </div>
+      <div class="insight blue" style="margin-top:8px">
+        <strong>🐛 W-24059609 — Cross-Account Bug (4 accounts, TW)</strong><br>
+        Cloudity + RevCycle + Trane Technologies + Intrado Life &amp; Safety all filed cases linked to this bug. Sub-topics span Configurator, TxnMgmt, and Product Catalog — indicates a broad platform defect. Engineering priority escalation recommended.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ 8. ACCOUNT INFLOW TREND ════ -->
+<div class="card">
+  <div class="section-title">📈 Account Inflow Trend — Top Accounts (W-2 → PW → TW)</div>
+  <p class="section-subtitle">Accounts with 3+ cases across TW+PW. W-3 data not available (outside 3-week query window).</p>
+  <table>
+    <tr>
+      <th>Account</th><th>W-2 Aug 30–Sep 5</th><th>PW Sep 6–12</th><th class="tw-col">★ TW Sep 13–19</th><th>Trend</th><th>Primary P&amp;T</th>
+    </tr>
+    <tr class="red-row"><td><strong>TDC Net A/S</strong></td><td>6</td><td>5</td><td class="tw-col"><strong>11</strong></td><td>🔴 ↑↑ Accelerating</td><td>Configurator / TxnMgmt</td></tr>
+    <tr class="red-row"><td><strong>Vp PLC</strong></td><td>2</td><td>4</td><td class="tw-col"><strong>10</strong></td><td>🔴 ↑↑ Accelerating</td><td>RCA (GUS W-24218873)</td></tr>
+    <tr><td>SHIFTLOGIC.IO</td><td>9</td><td>8</td><td class="tw-col"><strong>4</strong></td><td>🟢 ↓ Stabilising</td><td>Dev Support P2O</td></tr>
+    <tr><td>Cloudity</td><td>3</td><td>5</td><td class="tw-col"><strong>5</strong></td><td>🟡 → Stable</td><td>TxnMgmt / Configurator</td></tr>
+    <tr><td>Equinix, Inc.</td><td>0</td><td>1</td><td class="tw-col"><strong>6</strong></td><td>🔴 ↑↑ Spike</td><td>Configurator / DRO</td></tr>
+    <tr><td>Accenture LLP</td><td>5</td><td>3</td><td class="tw-col"><strong>4</strong></td><td>🟡 → Stable</td><td>Price Management</td></tr>
+    <tr><td>LiveRamp, Inc</td><td>5</td><td>2</td><td class="tw-col"><strong>4</strong></td><td>🟡 ↑ Rising</td><td>Configurator</td></tr>
+    <tr><td>Bell Canada</td><td>1</td><td>4</td><td class="tw-col"><strong>3</strong></td><td>🟡 → Declining (but exec risk)</td><td>TxnMgmt / DRO</td></tr>
+    <tr><td>PwC</td><td>3</td><td>2</td><td class="tw-col"><strong>4</strong></td><td>🟡 ↑ Rising</td><td>Billing &amp; Invoicing</td></tr>
+    <tr><td>Bluvium Inc</td><td>10</td><td>4</td><td class="tw-col"><strong>2</strong></td><td>🟢 ↓ Stabilising</td><td>Billing</td></tr>
+    <tr><td>RevCycle Limited</td><td>3</td><td>4</td><td class="tw-col"><strong>3</strong></td><td>🟡 → + Bug W-24059609</td><td>TxnMgmt</td></tr>
+    <tr><td>PostNL Holding BV</td><td>5</td><td>3</td><td class="tw-col"><strong>3</strong></td><td>🟡 ↓ Stabilising</td><td>Contract Lifecycle Mgmt</td></tr>
+  </table>
+  <div class="insight yellow" style="margin-top:8px">
+    <strong>Watch: 3 accelerating accounts this week</strong> — TDC Net A/S (11), Vp PLC (10), Equinix (6). All three show step-change increases with no corresponding GUS engagement. Combined they account for 27 of 304 TW cases (9%). Proactive SA/CSM outreach recommended for TDC Net and Vp PLC before volume compounds further.
+  </div>
+</div>
+
+<!-- ════ 9. RELEASE / IR TREND ════ -->
+<div class="card warn-border">
+  <div class="section-title">🚀 Release &amp; IR Trend Check</div>
+  <div class="grid-2">
+    <div>
+      <div class="section-subtitle">Known Active Bugs with Multiple Cases (TW)</div>
+      <table>
+        <tr><th>Bug</th><th>Accounts Impacted</th><th>Sub-Topic</th></tr>
+        <tr class="red-row">
+          <td><strong>W-24059609</strong></td>
+          <td>Cloudity · RevCycle · Trane · Intrado</td>
+          <td>Configurator + TxnMgmt + PCM</td>
+        </tr>
+        <tr>
+          <td>W-24225816</td>
+          <td>Cato Networks</td>
+          <td>RCA / TxnMgmt</td>
+        </tr>
+        <tr>
+          <td>W-24208097</td>
+          <td>Equinix (GUS)</td>
+          <td>Configurator (L3 cache)</td>
+        </tr>
+        <tr>
+          <td>W-24218873</td>
+          <td>Vp PLC (GUS)</td>
+          <td>Configurator (latency)</td>
+        </tr>
+        <tr>
+          <td>W-23632289</td>
+          <td>ECi</td>
+          <td>Billing &amp; Invoicing</td>
+        </tr>
+      </table>
+      <p class="footnote">W-24059609 is the only confirmed multi-customer bug this week. All others are single-account.</p>
+    </div>
+    <div>
+      <div class="section-subtitle">Bell Canada — Release 262.14.12 Regression (Prior Week, Active)</div>
+      <div class="insight yellow">
+        <strong>INC-000023811 · 262.14.12 regression</strong><br>
+        Rule-check on product add exceeded payload limits → blocked new products/quotes on Bell CAN50 PROD B2C. ~30hr outage Sep 6–8. Fix: 262.14.13 deployed and confirmed resolved. Root cause of trigger not yet fully confirmed.<br><br>
+        <strong>Exec escalation status:</strong> Gordon McCance flagged to David Fan + Jeff Amann on Sep 8. Bell execs (Eva Krohn, Ajitesh Prasad, Michael Rodriguez) formally requesting exec connect. RCA investigation ongoing.
+      </div>
+      <div class="section-subtitle" style="margin-top:10px">Configurator — 4-Week Volume Signal</div>
+      <div class="insight blue">
+        Product Configurator has grown for 4 consecutive weeks: W-3 ~55 → W-2 ~80 → PW 47 (outage-masked) → TW 69. The TW number likely understates organic demand since Sep 7 outage cases were closed without follow-on. Underlying trend points to continued escalation — engineering review of Configurator performance (L3 cache, payload limits) warranted.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ 10. OPEN BACKLOG + AGED ════ -->
+<div class="grid-2" style="margin-bottom:16px">
+  <div class="card">
+    <div class="section-title">📋 Open Backlog Snapshot</div>
+    <table>
+      <tr><th>Metric</th><th>Count</th></tr>
+      <tr><td>Total Open (non-SP)</td><td><strong>292</strong></td></tr>
+      <tr><td>EMEA Open</td><td>146 (50%)</td></tr>
+      <tr><td>India Open</td><td>119 (41%)</td></tr>
+      <tr><td>APAC Open</td><td>27 (9%)</td></tr>
+      <tr class="red-row"><td>Aged &gt;15d ★</td><td><strong>58 ↑</strong></td></tr>
+      <tr><td>Sev1 Open</td><td><strong>33</strong></td></tr>
+      <tr class="red-row"><td>No-Path (Working, no GUS/Bug)</td><td><strong>16</strong></td></tr>
+      <tr><td>Red Account Open</td><td>4 (Parker Hannifin ×2, ADT, Valcourt)</td></tr>
+    </table>
+    <table style="margin-top:12px">
+      <tr><th>P&amp;T</th><th>Open</th><th>Aged &gt;15d</th><th>Aged%</th></tr>
+      <tr><td>RCA</td><td>221</td><td>43</td><td>19%</td></tr>
+      <tr><td>CPQ</td><td>54</td><td>10</td><td>19%</td></tr>
+      <tr><td>Billing</td><td>15</td><td>5</td><td>33%</td></tr>
+    </table>
+    <p class="footnote">Billing aged rate (33%) highest of all P&amp;T groups — 5 of 15 open Billing cases are stale.</p>
+  </div>
+  <div class="card">
+    <div class="section-title">⏱ Aged &gt;15d — No-Path Cases (16)</div>
+    <p class="section-subtitle">Working · No GUS · No Bug — engineering not formally engaged</p>
+    <table>
+      <tr><th>Case #</th><th>Account</th><th>Age</th><th>Sev</th><th>P&amp;T</th><th>Region</th></tr>
+      <tr class="red-row"><td>474421757</td><td>Equans</td><td>32d</td><td><span class="pill pill-red">S1</span></td><td>CPQ</td><td>EMEA</td></tr>
+      <tr><td>474422751</td><td>Parker Hannifin ★</td><td>32d</td><td><span class="pill pill-orange">S2</span></td><td>RCA</td><td>EMEA</td></tr>
+      <tr><td>474430482</td><td>PwC</td><td>31d</td><td><span class="pill pill-orange">S2</span></td><td>RCA</td><td>India</td></tr>
+      <tr><td>474499112</td><td>InsightSoftware</td><td>20d</td><td><span class="pill pill-orange">S2</span></td><td>CPQ</td><td>India</td></tr>
+      <tr><td>474492065</td><td>Salesfive GmbH</td><td>21d</td><td>S4</td><td>RCA</td><td>EMEA</td></tr>
+      <tr><td>474506210</td><td>ADT LLC ★</td><td>20d</td><td>S3</td><td>RCA</td><td>EMEA</td></tr>
+      <tr><td>474523314</td><td>YOTTA Data Services</td><td>18d</td><td><span class="pill pill-orange">S2</span></td><td>CPQ</td><td>India</td></tr>
+      <tr><td>474523631</td><td>Aveva SAS</td><td>18d</td><td>S3</td><td>CPQ</td><td>India</td></tr>
+      <tr><td>474527837</td><td>Parker Hannifin ★</td><td>18d</td><td>S3</td><td>RCA</td><td>EMEA</td></tr>
+      <tr><td>474532058</td><td>Valcourt Group ★</td><td>17d</td><td>S3</td><td>RCA</td><td>EMEA</td></tr>
+      <tr><td>474533759</td><td>WebPT.com</td><td>17d</td><td>S3</td><td>RCA</td><td>India</td></tr>
+      <tr><td>474534975</td><td>Purac Biochem BV</td><td>17d</td><td><span class="pill pill-orange">S2</span></td><td>RCA</td><td>EMEA</td></tr>
+      <tr><td>474535032</td><td>Sinch US Greenfield</td><td>17d</td><td><span class="pill pill-orange">S2</span></td><td>RCA</td><td>EMEA</td></tr>
+      <tr><td>474401108</td><td>Lion Group</td><td>34d</td><td>S4</td><td>RCA</td><td>India</td></tr>
+      <tr><td>474490682</td><td>PwC GLS</td><td>21d</td><td>S3</td><td>RCA</td><td>India</td></tr>
+      <tr><td>474523376</td><td>Telstra Health CRM</td><td>18d</td><td>S4</td><td>Billing</td><td>India</td></tr>
+    </table>
+    <p class="footnote">★ = Red Account. S1 no-path: Equans (32d, EMEA, CPQ) — highest priority.</p>
+  </div>
+</div>
+
+<!-- ════ 11. CSAT ════ -->
+<div class="card good-border">
+  <div class="section-title">⭐ CSAT Analysis — TW Sep 13–19</div>
+  <div class="grid-2">
+    <div>
+      <div class="section-subtitle">4-Week Trend</div>
+      <table>
+        <tr><th>Week</th><th>n</th><th>Avg</th><th>Score 5</th><th>Score &lt;3</th></tr>
+        <tr><td>W-3 Aug 23–29</td><td>16</td><td>4.62</td><td>13 (81%)</td><td>1</td></tr>
+        <tr><td>W-2 Aug 30–Sep 5</td><td>18</td><td>4.83</td><td>17 (94%)</td><td>1</td></tr>
+        <tr><td>PW Sep 6–12</td><td>21</td><td>4.62</td><td>18 (86%)</td><td>2</td></tr>
+        <tr class="highlight-row"><td>★ TW Sep 13–19</td><td>18</td><td><strong>4.83</strong></td><td>17 (94%)</td><td>1</td></tr>
+      </table>
+      <div class="section-subtitle" style="margin-top:10px">TW by P&amp;T</div>
+      <table>
+        <tr><th>P&amp;T</th><th>n</th><th>Avg</th></tr>
+        <tr><td>RCA</td><td>10</td><td>4.70</td></tr>
+        <tr><td>CPQ</td><td>7</td><td>5.00</td></tr>
+        <tr><td>Billing</td><td>0</td><td>—</td></tr>
+        <tr><td>Other</td><td>1</td><td>5.00</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="section-subtitle">⚠️ Low CSAT Alert — TW</div>
+      <div class="insight red">
+        <strong>Case 474564238 · Voyado AB · Score: 2/5</strong><br>
+        P&amp;T: RCA · No customer comment provided.<br>
+        This is the sole low CSAT response this week. No comment makes root cause analysis difficult — recommend reaching out to the customer for feedback context.
+      </div>
+      <div class="section-subtitle" style="margin-top:10px">Notable Positive Feedback (TW)</div>
+      <div class="insight green">
+        <strong>Xenogenix (3× Score 5, EMEA)</strong> — Three consecutive 5s this week. Customer comments: "Sohag was excellent... hope to interact with him on future cases" · "thorough work, got what we needed" · "support experience was positive even without the outcome we wanted."
+      </div>
+      <div class="insight green">
+        <strong>Palo Alto Networks LTS (Score 5)</strong> — "explored different alternatives, found the solution I wasn't aware of with all my CPQ years of experience." Exceptional CPQ case resolution.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ 12. SEV1 OPEN + CASES TO WATCH ════ -->
+<div class="card warn-border">
+  <div class="section-title">🚨 Open Sev1 Cases — 33 Total</div>
+  <p class="section-subtitle">Inflow S1 TW: 35 new cases &nbsp;|&nbsp; Open S1 (all ages): 33 currently open</p>
+  <table>
+    <tr><th>Case #</th><th>Account</th><th>Age (d)</th><th>P&amp;T</th><th>GUS</th><th>Bug</th><th>Status</th><th>Region</th></tr>
+    <tr class="red-row"><td>474317097</td><td>LabCorp</td><td>40d</td><td>RCA</td><td>W-23861712</td><td>—</td><td>NMI</td><td>EMEA</td></tr>
+    <tr class="red-row"><td>474421757</td><td>Equans</td><td>32d</td><td>CPQ</td><td>—</td><td>—</td><td>Working</td><td>EMEA</td></tr>
+    <tr><td>474493136</td><td>Accenture LLP</td><td>21d</td><td>RCA</td><td>W-24149822</td><td>—</td><td>Working</td><td>EMEA</td></tr>
+    <tr><td>474526204</td><td>Juno Rocket</td><td>18d</td><td>RCA</td><td>W-24206989</td><td>—</td><td>Working</td><td>India</td></tr>
+    <tr><td>474540662</td><td>Experian Financial</td><td>16d</td><td>CPQ</td><td>—</td><td>—</td><td>NMI</td><td>India</td></tr>
+    <tr><td>474553176</td><td>Tecan Trading AG</td><td>13d</td><td>RCA</td><td>—</td><td>—</td><td>Working</td><td>EMEA</td></tr>
+    <tr><td>474559861</td><td>Cato Networks</td><td>12d</td><td>RCA</td><td>—</td><td>—</td><td>NMI</td><td>EMEA</td></tr>
+    <tr><td>474568605</td><td>Wolters Kluwer AU</td><td>11d</td><td>CPQ</td><td>—</td><td>—</td><td>Working</td><td>India</td></tr>
+    <tr><td>474569746</td><td>Cato Networks</td><td>11d</td><td>RCA</td><td>W-24175212</td><td>W-24225816</td><td>Working</td><td>EMEA</td></tr>
+    <tr><td>474605356</td><td>Equinix, Inc.</td><td>5d</td><td>RCA</td><td>W-24208097</td><td>—</td><td>Working</td><td>EMEA</td></tr>
+    <tr><td>474618363</td><td>ECi</td><td>4d</td><td>Billing</td><td>W-23554160</td><td>W-23632289</td><td>Working</td><td>India</td></tr>
+    <tr><td>474620323</td><td>ISACA</td><td>4d</td><td>RCA</td><td>W-24242585</td><td>—</td><td>Working</td><td>EMEA</td></tr>
+    <tr><td colspan="8" style="font-size:11px;color:#706e6b;padding:4px 8px">+ 21 additional S1 cases (ages 0–6d) — majority NMI or new</td></tr>
+  </table>
+  <div class="insight red" style="margin-top:8px">
+    <strong>Priority flag:</strong> Equans (474421757) — S1, 32d, no GUS/Bug, CPQ, Working. Longest open S1 with no engineering engagement. Immediate investigation required.
+  </div>
+</div>
+
+<!-- ════ 13. TOP 5 ACCOUNTS ════ -->
+<div class="card">
+  <div class="section-title">🏢 Top 5 Accounts — TW Inflow</div>
+  <table>
+    <tr><th>Rank</th><th>Account</th><th>TW Cases</th><th>PW Cases</th><th>Trend</th><th>Key P&amp;T</th><th>Open S1</th><th>GUS/Bug</th></tr>
+    <tr class="red-row"><td>1</td><td><strong>TDC Net A/S</strong></td><td>11</td><td>5</td><td>🔴 ↑120%</td><td>Configurator · TxnMgmt</td><td>—</td><td>No GUS on most</td></tr>
+    <tr class="red-row"><td>2</td><td><strong>Vp PLC</strong></td><td>10</td><td>4</td><td>🔴 ↑150%</td><td>RCA / Configurator</td><td>1 (S2)</td><td>GUS W-24218873</td></tr>
+    <tr><td>3</td><td>Equinix, Inc.</td><td>6</td><td>1</td><td>🔴 Spike</td><td>Configurator · DRO</td><td>1 (S1)</td><td>GUS W-24208097</td></tr>
+    <tr><td>4</td><td>Cloudity</td><td>5</td><td>5</td><td>🟡 Stable</td><td>TxnMgmt · Configurator</td><td>—</td><td>Bug W-24059609</td></tr>
+    <tr><td>5</td><td>SHIFTLOGIC.IO</td><td>4</td><td>8</td><td>🟢 ↓ Stabilising</td><td>Dev Support P2O</td><td>—</td><td>—</td></tr>
+  </table>
+  <p class="footnote">RCAT sheet inaccessible this run (browser tool unavailable). RCAT context for TDC Net, Vp PLC, Equinix to be added when sheet is next accessible.</p>
+</div>
+
+<!-- ════ 14. TOP 10 OLDEST OPEN CASES ════ -->
+<div class="card warn-border">
+  <div class="section-title">🕐 Top 10 Oldest Open Cases</div>
+  <table>
+    <tr><th>Case #</th><th>Account</th><th>Age (d)</th><th>Status</th><th>Sev</th><th>P&amp;T</th><th>GUS</th><th>Bug</th><th>Region</th></tr>
+    <tr><td>473973212</td><td>MYOB Australia</td><td>83d</td><td>Working</td><td>S2</td><td>RCA</td><td>W-23766576</td><td>—</td><td>APAC</td></tr>
+    <tr><td>474192524</td><td>Infoblox</td><td>55d</td><td>Working</td><td>S2</td><td>RCA</td><td>W-23726465</td><td>W-24059609</td><td>India</td></tr>
+    <tr><td>474280564</td><td>ADNOC Global Trading</td><td>45d</td><td>Working</td><td>S2</td><td>RCA</td><td>W-23843844</td><td>W-24008880</td><td>EMEA</td></tr>
+    <tr><td>474280881</td><td>Integrated Decisions</td><td>45d</td><td>NMI</td><td>S2</td><td>Billing</td><td>W-23827328</td><td>W-23980272</td><td>India</td></tr>
+    <tr><td>474297698</td><td>RevCycle Limited</td><td>41d</td><td>Working</td><td>S2</td><td>RCA</td><td>W-23902414</td><td>—</td><td>APAC</td></tr>
+    <tr class="red-row"><td>474317097</td><td>LabCorp</td><td>40d</td><td>NMI</td><td><span class="pill pill-red">S1</span></td><td>RCA</td><td>W-23861712</td><td>—</td><td>EMEA</td></tr>
+    <tr class="red-row"><td>474401108</td><td>Lion Group</td><td>34d</td><td>Working</td><td>S4</td><td>RCA</td><td>—</td><td>—</td><td>India</td></tr>
+    <tr><td>474402232</td><td>TeamViewer GmbH</td><td>34d</td><td>NMI</td><td>S2</td><td>RCA</td><td>W-24148558</td><td>—</td><td>India</td></tr>
+    <tr><td>474409560</td><td>Trimble Illuminate</td><td>33d</td><td>Working</td><td>S2</td><td>Billing</td><td>W-24230262</td><td>W-23282875</td><td>India</td></tr>
+    <tr><td>474409781</td><td>The Property Platform</td><td>33d</td><td>Working</td><td>S4</td><td>RCA</td><td>W-24147310</td><td>—</td><td>APAC</td></tr>
+  </table>
+</div>
+
+<!-- ════ 15. FOOTER ════ -->
+<footer>Revenue Cloud Weekly Dashboard · Sep 13–19, 2026 · Data: OrgCS live query (Sep 21) · EMEA + India + APAC · Manager-filtered</footer>
+</div>
+
+<script>
+const def = (id, cfg) => new Chart(document.getElementById(id).getContext('2d'), cfg);
+const wks = ['Aug 23–29','Aug 30–Sep 5','Sep 6–12','Sep 13–19'];
+const gridColor = 'rgba(0,0,0,.08)';
+const tickColor = '#706e6b';
+
+// Inflow trend
+def('inflowChart', {type:'bar', data:{labels:wks, datasets:[{
+  label:'Inflow',
+  data:[281,366,354,304],
+  backgroundColor:['rgba(1,118,211,.4)','rgba(1,118,211,.4)','rgba(1,118,211,.4)','rgba(186,5,23,.7)'],
+  borderColor:['#0176d3','#0176d3','#0176d3','#ba0517'],
+  borderWidth:1
+}]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,min:200,grid:{color:gridColor},ticks:{color:tickColor}},x:{grid:{display:false},ticks:{color:tickColor}}}}});
+
+// CSAT trend
+def('csatChart', {type:'line', data:{labels:wks, datasets:[{
+  label:'CSAT',
+  data:[4.62,4.83,4.62,4.83],
+  borderColor:'#2e844a', backgroundColor:'rgba(46,132,74,.1)',
+  borderWidth:2, pointRadius:4, tension:0.3, fill:true
+}]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:4.0,max:5.0,grid:{color:gridColor},ticks:{color:tickColor}},x:{grid:{display:false},ticks:{color:tickColor}}}}});
+
+// P&T doughnut
+def('ptChart', {type:'doughnut', data:{
+  labels:['RCA','CPQ','Billing','Other'],
+  datasets:[{data:[213,69,10,12], backgroundColor:['rgba(1,118,211,.75)','rgba(221,122,1,.75)','rgba(144,80,233,.75)','rgba(144,144,144,.4)'], borderWidth:1}]
+}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+
+// P&T trend stacked bar
+def('ptTrendChart', {type:'bar', data:{labels:wks, datasets:[
+  {label:'RCA', data:[203,269,271,213], backgroundColor:'rgba(1,118,211,.6)'},
+  {label:'CPQ', data:[71,83,69,69], backgroundColor:'rgba(221,122,1,.6)'},
+  {label:'Billing', data:[6,4,7,10], backgroundColor:'rgba(144,80,233,.6)'},
+  {label:'Other', data:[1,10,7,12], backgroundColor:'rgba(144,144,144,.4)'}
+]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}},scales:{x:{stacked:true,grid:{display:false},ticks:{color:tickColor}},y:{stacked:true,grid:{color:gridColor},ticks:{color:tickColor}}}}});
+
+// Region trend line
+def('regionChart', {type:'line', data:{labels:wks, datasets:[
+  {label:'EMEA', data:[167,208,202,181], borderColor:'#0176d3', backgroundColor:'rgba(1,118,211,.1)', borderWidth:2, pointRadius:3, tension:0.3},
+  {label:'India', data:[85,123,117,93], borderColor:'#9050e9', backgroundColor:'rgba(144,80,233,.1)', borderWidth:2, pointRadius:3, tension:0.3},
+  {label:'APAC', data:[29,35,35,30], borderColor:'#06a59a', backgroundColor:'rgba(6,165,154,.1)', borderWidth:2, pointRadius:3, tension:0.3}
+]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}},scales:{y:{beginAtZero:false,min:0,grid:{color:gridColor},ticks:{color:tickColor}},x:{grid:{display:false},ticks:{color:tickColor}}}}});
+</script>
+</body>
+</html>
