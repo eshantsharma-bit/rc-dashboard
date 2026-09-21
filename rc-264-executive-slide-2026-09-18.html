@@ -152,7 +152,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 <div class="ki-strip">
 
   <div class="ki-card hi-red">
-    <div class="ki-label">IR Cases</div>
+    <div class="ki-label">IR Cases (Upgrade)</div>
     <div class="ki-val" style="color:var(--red)">56</div>
     <div class="ki-val-sub">11.5% of inflow</div>
   </div>
@@ -254,6 +254,10 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
       <div class="leg-dash-line"><div class="leg-dash" style="background:var(--slate);opacity:.5"></div><div class="leg-dash" style="background:var(--slate);opacity:.5;margin-left:2px"></div></div>
       <div class="leg-dot" style="background:var(--slate);opacity:.5;margin-left:3px"></div>Active Orgs (right axis)
     </div>
+    <div class="leg">
+      <div class="leg-dash-line"><div class="leg-dash" style="background:var(--green)"></div><div class="leg-dash" style="background:var(--green);margin-left:2px"></div></div>
+      <div class="leg-dot" style="background:var(--green);margin-left:3px"></div><strong>Bug Confirm Rate %</strong>
+    </div>
   </div>
 </div>
 
@@ -285,7 +289,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
         <td class="cr-col-264 v-bold">488</td>
       </tr>
       <tr>
-        <td>IR Cases</td>
+        <td>IR Cases (Upgrade)</td>
         <td>78</td><td>71</td>
         <td class="v-green">14</td>
         <td class="cr-col-264 v-red">56</td>
@@ -298,9 +302,9 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
       </tr>
       <tr style="background:#f0fff4">
         <td><strong>IR / Active Org</strong> <span class="v-muted">installed-base view</span></td>
-        <td>10.2%</td><td>5.6%</td>
-        <td class="v-green">0.9%</td>
-        <td class="cr-col-264 v-green"><strong>2.8%</strong></td>
+        <td class="v-bold">10.2%</td><td class="v-bold">5.6%</td>
+        <td class="v-green v-bold">0.9%</td>
+        <td class="cr-col-264 v-green v-bold">2.8%</td>
       </tr>
       <tr>
         <td>Unique Bugs</td>
@@ -328,15 +332,9 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
       </tr>
       <tr style="background:#f0fff4">
         <td><strong>Bug Confirm Rate</strong> <span class="v-muted">(Cases w/ Bug / IR Cases)</span></td>
-        <td>67%</td><td>75%</td>
-        <td class="v-green">86%</td>
-        <td class="cr-col-264 v-bold" style="color:#1a7f37"><strong>96%</strong></td>
-      </tr>
-      <tr>
-        <td>Bug Coverage % <span class="v-muted">(Cases w/ Bug / Inflow)</span></td>
-        <td>11.5%</td><td>11.3%</td>
-        <td class="v-green">2.8%</td>
-        <td class="cr-col-264">11.1%</td>
+        <td class="v-bold">67%</td><td class="v-bold">75%</td>
+        <td class="v-green v-bold">86%</td>
+        <td class="cr-col-264 v-bold" style="color:#1a7f37">96%</td>
       </tr>
       <tr>
         <td>Sev1 IR Cases</td>
@@ -346,86 +344,24 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
       </tr>
       <tr>
         <td>#1 Inflow Topic <span class="v-muted">RCA/RCB</span></td>
-        <td>Config <span class="v-muted">241</span></td>
-        <td>Config <span class="v-muted">188</span></td>
-        <td>Config <span class="v-muted">124</span></td>
-        <td class="cr-col-264">Config <span class="v-muted">137</span></td>
+        <td>Config <span class="v-muted">53%</span></td>
+        <td>Config <span class="v-muted">40%</span></td>
+        <td>Config <span class="v-muted">29%</span></td>
+        <td class="cr-col-264">Config <span class="v-muted">28%</span></td>
       </tr>
       <tr>
         <td>#2 Inflow Topic</td>
-        <td>Price Mgmt <span class="v-muted">52</span></td>
-        <td>Txn Mgmt <span class="v-muted">83</span></td>
-        <td>Txn Mgmt <span class="v-muted">89</span></td>
-        <td class="cr-col-264 v-red">Txn Mgmt <span style="font-size:10px;font-weight:400">102</span></td>
+        <td>Price Mgmt <span class="v-muted">11%</span></td>
+        <td>Txn Mgmt <span class="v-muted">18%</span></td>
+        <td>Txn Mgmt <span class="v-muted">21%</span></td>
+        <td class="cr-col-264 v-red">Txn Mgmt <span class="v-muted">21%</span></td>
       </tr>
       <tr>
         <td>#3 Inflow Topic</td>
-        <td>Txn Mgmt <span class="v-muted">38</span></td>
-        <td>Price Mgmt <span class="v-muted">69</span></td>
-        <td>Price Mgmt <span class="v-muted">60</span></td>
-        <td class="cr-col-264 v-red">Price Mgmt <span style="font-size:10px;font-weight:400">95</span></td>
-      </tr>
-      <!-- ── BUG CASES BY P&T TOPIC divider ── -->
-      <tr>
-        <td colspan="5" style="background:#f0f5fc;padding:4px 10px;font-size:9.5px;font-weight:700;color:#0176d3;letter-spacing:.3px;border-top:2px solid #d0d7de">
-          BUG CASES BY P&amp;T TOPIC — all releases, first 7 days &nbsp;<span style="font-weight:400;color:#656d76;font-size:9px">◆ = new area in 264 &nbsp;·&nbsp; * a case spanning 2 topics counts in both rows</span>
-        </td>
-      </tr>
-      <tr>
-        <td>Product Configurator</td>
-        <td class="tc v-bold" style="color:#0176d3">49</td>
-        <td class="tc v-bold" style="color:#1a7f37">32</td>
-        <td class="tc" style="color:#9a6700">5</td>
-        <td class="cr-col-264 tc v-bold" style="color:#c23934">16</td>
-      </tr>
-      <tr>
-        <td>Transaction Mgmt</td>
-        <td class="tc" style="color:#0176d3">10</td>
-        <td class="tc v-bold" style="color:#1a7f37">22</td>
-        <td class="tc" style="color:#9a6700">4</td>
-        <td class="cr-col-264 tc v-bold" style="color:#c23934">8</td>
-      </tr>
-      <tr>
-        <td>Price Management</td>
-        <td class="tc" style="color:#0176d3">2</td>
-        <td class="tc v-bold" style="color:#1a7f37">11</td>
-        <td class="tc" style="color:#9a6700">1</td>
-        <td class="cr-col-264 tc v-green">1</td>
-      </tr>
-      <tr>
-        <td>Billing &amp; Invoicing</td>
-        <td class="tc" style="color:#0176d3">1</td>
-        <td class="tc" style="color:#1a7f37">4</td>
-        <td class="tc v-muted">—</td>
-        <td class="cr-col-264 tc v-bold" style="color:#c23934">4</td>
-      </tr>
-      <tr>
-        <td>PCM</td>
-        <td class="tc" style="color:#0176d3">1</td>
-        <td class="tc" style="color:#1a7f37">2</td>
-        <td class="tc" style="color:#9a6700">1</td>
-        <td class="cr-col-264 tc v-bold" style="color:#c23934">9</td>
-      </tr>
-      <tr style="background:#f3eeff">
-        <td style="color:#8250df;font-weight:700">Usage &amp; Ratings ◆</td>
-        <td class="tc v-muted">—</td>
-        <td class="tc v-muted">—</td>
-        <td class="tc v-muted">—</td>
-        <td class="cr-col-264 tc v-bold" style="color:#8250df;background:#ede8ff">3</td>
-      </tr>
-      <tr>
-        <td>DRO</td>
-        <td class="tc v-muted">—</td>
-        <td class="tc" style="color:#1a7f37">4</td>
-        <td class="tc v-muted">—</td>
-        <td class="cr-col-264 tc" style="color:#c23934">2</td>
-      </tr>
-      <tr style="background:#f3eeff">
-        <td style="color:#8250df;font-weight:700">Advanced Approvals ◆</td>
-        <td class="tc v-muted">—</td>
-        <td class="tc" style="color:#1a7f37">1</td>
-        <td class="tc" style="color:#9a6700">1</td>
-        <td class="cr-col-264 tc v-bold" style="color:#8250df;background:#ede8ff">1</td>
+        <td>Txn Mgmt <span class="v-muted">8%</span></td>
+        <td>Price Mgmt <span class="v-muted">15%</span></td>
+        <td>Price Mgmt <span class="v-muted">14%</span></td>
+        <td class="cr-col-264 v-red">Price Mgmt <span class="v-muted">19%</span></td>
       </tr>
     </tbody>
   </table>
@@ -573,65 +509,6 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
   </div>
 </div>
 
-<!-- ── P&T CLASSIFIER CROSS-CHECK ── -->
-<div class="card">
-  <div class="card-title">Price Management — Inflow Surge with Zero IR · P&amp;T Classifier Cross-Check</div>
-  <div class="mistag-note">OrgCS shows 95 PM inflow cases in 264 first 7 days — highest ever. Yet IR = 1 (Sev1, investigation defunct). Classifier analysis confirms: PM cases are adoption-driven growth, not upgrade regression. Pricing engine held through the upgrade. However, 4 cases were likely mis-tagged across areas:</div>
-  <table class="g-table">
-    <thead>
-      <tr>
-        <th>Case</th>
-        <th>Tagged As</th>
-        <th>Subject Signal</th>
-        <th>Classifier Verdict</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="font-family:monospace;font-size:10px">474496882</td>
-        <td>Product Configurator</td>
-        <td style="font-size:10px">pricing-rating endpoint: contextRuntimeEntityAttribute is null</td>
-        <td><span class="gus-pill" style="background:#fff3cd;color:#9a6700">Price Management</span> — pricing-rating endpoint is PM boundary</td>
-      </tr>
-      <tr>
-        <td style="font-family:monospace;font-size:10px">474537669</td>
-        <td>Product Configurator</td>
-        <td style="font-size:10px">Context definition mapping: Product to Quote Line Item</td>
-        <td><span class="gus-pill" style="background:#ddf4ff;color:#0176d3">Transaction Mgmt</span> — CD-to-field mapping is TM per boundary rules</td>
-      </tr>
-      <tr>
-        <td style="font-family:monospace;font-size:10px">474513895</td>
-        <td>Product Configurator</td>
-        <td style="font-size:10px">Search index rebuild fails — deactivated products visible</td>
-        <td><span class="gus-pill" style="background:#f0e6ff;color:#8250df">Product Catalog Mgmt</span> — PCM index rebuild is PCM, not Configurator</td>
-      </tr>
-      <tr>
-        <td style="font-family:monospace;font-size:10px">474527853</td>
-        <td>Product Configurator</td>
-        <td style="font-size:10px">Cannot rebuild Revenue Cloud search index — timeout</td>
-        <td><span class="gus-pill" style="background:#f0e6ff;color:#8250df">Product Catalog Mgmt</span> — same PCM index bug (W-24096152)</td>
-      </tr>
-    </tbody>
-  </table>
-  <div style="font-size:10px;color:var(--muted);margin-top:8px">After correction: Config ~13 IR · TM ~15–16 IR · PCM ~7 IR · PM still 1 IR. PM surge = adoption growth signal, not a bug. Price Mgmt inflow 52→69→60→95 across releases is a healthy indicator of expanding customer investment in pricing capabilities.</div>
-</div>
-
-<!-- ── SPEAKER NOTES ── -->
-<div class="notes-card">
-  <div class="notes-title">
-    <svg width="13" height="13" viewBox="0 0 16 16" fill="#9a6700"><path d="M0 2a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2h-2v2l-3-2H2a2 2 0 01-2-2V2z"/></svg>
-    Speaker Notes — Executive Summary
-  </div>
-  <div class="notes-body">
-    <p><strong>Opening:</strong> 264's headline IR rate of 11.5% looks like a step back from 262. But the honest installed-base measure — IR per active org — tells a different story: 2.8%, identical to 262's celebrated 2.8% IR/inflow rate, and 4× better than 258's 10.2%. 1,908 orgs upgraded in preview; 56 filed IR cases. That is strong signal coverage at scale.</p>
-    <p><strong>Bug quality:</strong> 16 unique bugs, 3.1% bug rate — on par with 258 (3.3%) and dramatically better than 260 (6.8%). Top 2 bugs (W-24059609, W-24096152) account for 36% of all IR volume. Both are closed before GA. Of 31 total investigations, 17 are closed or fixed. The 10 "New Bug Logged" closures need child W-IDs statused before GA readiness is confirmed.</p>
-    <p><strong>Engineering escalation:</strong> 33 of 56 IR cases (59%) were escalated to engineering with GUS investigations. Of those, 54 cases had bugs confirmed — a 96% Bug Confirm Rate, the highest across all 4 releases (258: 67%, 260: 75%, 262: 86%). This means nearly every case that reached engineering was validated as a real bug, signalling high triage precision.</p>
-    <p><strong>New areas — Usage &amp; Billing:</strong> For the first time across these 4 releases, Usage and Billing both generated meaningful IR volume (4 + 8 cases). Both areas had bugs confirmed and closed. The exception: W-24053522 (Invoice AJG) is QA In Progress — this is the only open GA risk from a confirmed bug.</p>
-    <p><strong>Sev1:</strong> 7 Sev1 cases — second lowest ever (258 had 23). 5 of 7 bugs closed before GA. 1 (W-24067780, Guidewire Approvals) is Waiting on PM — needs a named owner and patch ETA before this call closes.</p>
-    <p><strong>Ask / Next steps:</strong> (1) Confirm W-24053522 patch ETA — only open GA risk. (2) Pull child W-IDs from 10 "New Bug Logged" investigations and status them. (3) Assign owner to W-24067780 (Approvals, Waiting on PM). (4) Apply 262's pre-SB1 scope discipline as model for 266 — bug breadth (15 bugs) was controlled; execution at scale (1,908 orgs) held.</p>
-  </div>
-</div>
-
 <footer>264 RC Upgrade · First 7 Days Post-SB1 IST · Revenue Cloud Core RCA/RCB · OrgCS + GUS validated · Sep 2026</footer>
 
 <script>
@@ -653,6 +530,7 @@ const irCases=[78,71,14,56];
 const uniqBugs=[15,32,10,16];
 const activeOrgs=[765,1266,1632,1908];
 const irRates=[17.2,15.1,3.3,11.5];
+const bugConfirmRate=[67,75,86,96];
 
 new Chart(document.getElementById('mainChart').getContext('2d'),{
   data:{
@@ -662,7 +540,7 @@ new Chart(document.getElementById('mainChart').getContext('2d'),{
        backgroundColor:hexRgba(SF_BLUE,0.20),borderColor:hexRgba(SF_BLUE,0.55),
        borderWidth:1.5,borderRadius:3,yAxisID:'yLeft',
        datalabels:{anchor:'end',align:'top',color:SF_BLUE,font:{size:11,weight:'700'},formatter:v=>v}},
-      {type:'bar',label:'IR Cases',data:irCases,
+      {type:'bar',label:'IR Cases (Upgrade)',data:irCases,
        backgroundColor:hexRgba(SF_RED,0.48),borderColor:hexRgba(SF_RED,0.82),
        borderWidth:1.5,borderRadius:3,yAxisID:'yLeft',
        datalabels:{anchor:'end',align:'top',color:SF_RED,font:{size:10,weight:'800'},
@@ -680,7 +558,14 @@ new Chart(document.getElementById('mainChart').getContext('2d'),{
        pointBorderColor:'#fff',pointBorderWidth:1,
        fill:false,yAxisID:'yOrg',
        datalabels:{anchor:'end',align:'left',color:SF_SLATE,font:{size:9,weight:'600'},
-         formatter:v=>v.toLocaleString()}}
+         formatter:v=>v.toLocaleString()}},
+      {type:'line',label:'Bug Confirm Rate',data:bugConfirmRate,
+       borderColor:'#1a7f37',backgroundColor:'transparent',
+       borderWidth:2,borderDash:[4,4],tension:0.3,
+       pointRadius:5,pointBackgroundColor:'#1a7f37',pointBorderColor:'#fff',pointBorderWidth:1.5,
+       fill:false,yAxisID:'yPct',
+       datalabels:{anchor:'end',align:'top',color:'#1a7f37',font:{size:10,weight:'700'},
+         formatter:v=>v+'%'}}
     ]
   },
   options:{
@@ -690,9 +575,10 @@ new Chart(document.getElementById('mainChart').getContext('2d'),{
       tooltip:{callbacks:{
         title:ctx=>RELS[ctx[0].dataIndex].replace('\n',' '),
         label:ctx=>{
-          if(ctx.dataset.label==='IR Cases') return ' IR Cases: '+ctx.parsed.y+' ('+irRates[ctx.dataIndex]+'%)';
+          if(ctx.dataset.label==='IR Cases (Upgrade)') return ' IR Cases: '+ctx.parsed.y+' ('+irRates[ctx.dataIndex]+'%)';
           if(ctx.dataset.label==='Unique Bugs') return ' Unique Bugs: '+ctx.parsed.y;
           if(ctx.dataset.label==='Active Orgs') return ' Active Orgs: '+ctx.parsed.y.toLocaleString();
+          if(ctx.dataset.label==='Bug Confirm Rate') return ' Bug Confirm Rate: '+ctx.parsed.y+'%';
           return ' '+ctx.dataset.label+': '+ctx.parsed.y;
         }
       }}
@@ -700,12 +586,13 @@ new Chart(document.getElementById('mainChart').getContext('2d'),{
     scales:{
       x:{grid:{color:gc},ticks:{color:tc,font:{size:11}}},
       yLeft:{position:'left',grid:{color:gc},ticks:{color:tc,font:{size:10}},
-        title:{display:true,text:'RC Inflow / IR Cases',color:tc,font:{size:10}},
+        title:{display:true,text:'RC Inflow / IR Cases (Upgrade)',color:tc,font:{size:10}},
         suggestedMin:0,suggestedMax:540},
       yRight:{position:'right',grid:{display:false},ticks:{color:SF_PURPLE,font:{size:10}},
         title:{display:true,text:'Unique Bugs',color:SF_PURPLE,font:{size:10}},
         suggestedMin:0,suggestedMax:48},
-      yOrg:{position:'right',display:false,suggestedMin:0,suggestedMax:2400}
+      yOrg:{position:'right',display:false,suggestedMin:0,suggestedMax:2400},
+      yPct:{position:'right',display:false,suggestedMin:0,suggestedMax:120}
     }
   }
 });
