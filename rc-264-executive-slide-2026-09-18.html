@@ -137,22 +137,27 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 <!-- ── TITLE ── -->
 <div class="page-title">264 RC Upgrade — First 7 Days Executive Summary</div>
 <div class="page-sub">Revenue Cloud (Core) — RCA/RCB · Post-SB1 first 7 days · 258 / 260 / 262 / 264 · OrgCS validated · Sep 2026</div>
+<div style="margin:8px 0 14px;padding:10px 16px;background:#f0f7ff;border-left:4px solid #0176d3;border-radius:0 6px 6px 0;font-size:12px;line-height:1.6;color:var(--text)">
+  <strong style="color:#0176d3">2.5× more orgs upgraded in 264 vs 258</strong> — yet absolute IR count held nearly flat (78 → 56).
+  IR per active org fell <strong>10.2% → 2.8%</strong> — best-ever across all four releases.
+  Bug Confirm Rate hit <strong>96%</strong> in 264, up from 67% in 258, signalling sharply improved triage precision.
+</div>
 
 
 <!-- ── 264 KEY INSIGHTS ── -->
 <div class="insight-header">264 · First 7 Days Key Insights</div>
 <div class="ki-strip">
 
+  <div class="ki-card hi-green" style="border-width:2px">
+    <div class="ki-label" style="color:var(--green)">IR / Active Org</div>
+    <div class="ki-val" style="color:var(--green);font-size:30px">2.8%</div>
+    <div class="ki-val-sub" style="color:var(--green);font-weight:600">best-ever · 258 was 10.2%</div>
+  </div>
+
   <div class="ki-card" style="border-color:#0176d3;background:#f0f7ff">
     <div class="ki-label">IR Cases (Upgrade)</div>
     <div class="ki-val" style="color:var(--blue)">56</div>
     <div class="ki-val-sub">11.5% of inflow</div>
-  </div>
-
-  <div class="ki-card hi-green">
-    <div class="ki-label">IR / Active Org</div>
-    <div class="ki-val" style="color:var(--green)">2.8%</div>
-    <div class="ki-val-sub">best-ever · 258 was 10.2%</div>
   </div>
 
   <div class="ki-card">
@@ -233,22 +238,20 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 
 <!-- ── CHART: RC Inflow vs IR Cases · Bugs · Active Org ── -->
 <div class="card">
-  <div class="card-title">RC Inflow · Cases with Bug · Bug Confirm Rate — First 7 Days Post-SB1</div>
+  <div class="card-title">IR / Active Org % · Unique Bugs Trend — Release over Release (First 7 Days Post-SB1)</div>
+  <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Installed-base view: IR cases per org upgraded. 2.5× more orgs in 264 vs 258 — IR/Org still fell 10.2% → 2.8%.</div>
   <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
   <div class="legend-row">
-    <div class="leg"><div class="leg-bar" style="background:rgba(1,118,211,.22);border:1.5px solid #0176d3"></div>RC Inflow (RCA/RCB)</div>
-    <div class="leg"><div class="leg-bar" style="background:rgba(84,105,141,.28);border:1.5px solid #54698d"></div>Cases with Bug — label shows count (bug rate%)</div>
-    <div class="leg">
-      <div class="leg-dash-line"><div class="leg-dash" style="background:var(--purple)"></div><div class="leg-dash" style="background:var(--purple);margin-left:2px"></div></div>
-      <div class="leg-dot" style="background:var(--purple);margin-left:3px"></div>Unique Bugs
-    </div>
-    <div class="leg">
-      <div class="leg-dash-line"><div class="leg-dash" style="background:var(--slate);opacity:.5"></div><div class="leg-dash" style="background:var(--slate);opacity:.5;margin-left:2px"></div></div>
-      <div class="leg-dot" style="background:var(--slate);opacity:.5;margin-left:3px"></div>Active Orgs
-    </div>
     <div class="leg">
       <div class="leg-dash-line"><div class="leg-dash" style="background:var(--green)"></div><div class="leg-dash" style="background:var(--green);margin-left:2px"></div></div>
-      <div class="leg-dot" style="background:var(--green);margin-left:3px"></div><strong>Bug Confirm Rate % (right axis)</strong>
+      <div class="leg-dot" style="background:var(--green);margin-left:3px"></div><strong>IR / Active Org %</strong> (left axis)
+    </div>
+    <div class="leg">
+      <div class="leg-dash-line"><div class="leg-dash" style="background:var(--purple)"></div><div class="leg-dash" style="background:var(--purple);margin-left:2px"></div></div>
+      <div class="leg-dot" style="background:var(--purple);margin-left:3px"></div>Unique Bugs (right axis)
+    </div>
+    <div class="leg" style="margin-left:auto;font-size:10px;color:var(--muted)">
+      <em>Tooltip: hover for IR Cases, Inflow, Active Orgs per release</em>
     </div>
   </div>
 </div>
@@ -298,24 +301,6 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
         <td class="v-green">10</td>
         <td class="cr-col-264 v-blue">16</td>
       </tr>
-      <tr>
-        <td>Bug Rate <span class="v-muted">(Unique Bugs / Inflow)</span></td>
-        <td>3.3%</td><td>6.8%</td>
-        <td class="v-green">2.3%</td>
-        <td class="cr-col-264">3.1%</td>
-      </tr>
-      <tr>
-        <td>Cases with Bug</td>
-        <td>52</td><td>53</td>
-        <td class="v-green">12</td>
-        <td class="cr-col-264 v-blue">54</td>
-      </tr>
-      <tr>
-        <td>Case → Engineering <span class="v-muted">(IR cases w/ GUS investigation)</span></td>
-        <td>50</td><td>57</td>
-        <td class="v-green">10</td>
-        <td class="cr-col-264 v-blue">33</td>
-      </tr>
       <tr style="background:#f6f8fa">
         <td><strong>Bug Confirm Rate</strong> <span class="v-muted">(Cases w/ Bug / IR Cases)</span></td>
         <td class="v-bold">67%</td><td class="v-bold">75%</td>
@@ -327,27 +312,6 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
         <td>23</td><td>11</td>
         <td class="v-green">6</td>
         <td class="cr-col-264 v-blue">7</td>
-      </tr>
-      <tr>
-        <td>#1 Inflow Topic <span class="v-muted">RCA/RCB</span></td>
-        <td>Config <span class="v-muted">53%</span></td>
-        <td>Config <span class="v-muted">40%</span></td>
-        <td>Config <span class="v-muted">29%</span></td>
-        <td class="cr-col-264">Config <span class="v-muted">28%</span></td>
-      </tr>
-      <tr>
-        <td>#2 Inflow Topic</td>
-        <td>Price Mgmt <span class="v-muted">11%</span></td>
-        <td>Txn Mgmt <span class="v-muted">18%</span></td>
-        <td>Txn Mgmt <span class="v-muted">21%</span></td>
-        <td class="cr-col-264">Txn Mgmt <span class="v-muted">21%</span></td>
-      </tr>
-      <tr>
-        <td>#3 Inflow Topic</td>
-        <td>Txn Mgmt <span class="v-muted">8%</span></td>
-        <td>Price Mgmt <span class="v-muted">15%</span></td>
-        <td>Price Mgmt <span class="v-muted">14%</span></td>
-        <td class="cr-col-264">Price Mgmt <span class="v-muted">19%</span></td>
       </tr>
     </tbody>
   </table>
@@ -509,7 +473,7 @@ const gc='rgba(208,215,222,.4)', tc='#706e6b';
 const RELS=["258\nWinter '26","260\nSpring '26","262\nSummer '26","264\nWinter '27"];
 const COLS=['#0176d3','#1a7f37','#9a6700','#c23934'];
 
-// ── MAIN CHART ──
+// ── MAIN CHART — dual-line: IR/Active Org % + Unique Bugs ──
 const inflow=[453,470,430,488];
 const irCases=[78,71,14,56];
 const uniqBugs=[15,32,10,16];
@@ -518,70 +482,72 @@ const activeOrgs=[765,1266,1632,1908];
 const irRates=[17.2,15.1,3.3,11.5];
 const bugRates=[3.3,6.8,2.3,3.1];
 const bugConfirmRate=[67,75,86,96];
+// IR / Active Org %: irCases / activeOrgs * 100
+const irPerOrg=[10.2,5.6,0.9,2.8];
+
+const SF_GREEN='#1a7f37';
 
 new Chart(document.getElementById('mainChart').getContext('2d'),{
   data:{
     labels:RELS,
     datasets:[
-      {type:'bar',label:'RC Inflow',data:inflow,
-       backgroundColor:hexRgba(SF_BLUE,0.20),borderColor:hexRgba(SF_BLUE,0.55),
-       borderWidth:1.5,borderRadius:3,yAxisID:'yLeft',
-       datalabels:{anchor:'end',align:'top',color:SF_BLUE,font:{size:11,weight:'700'},formatter:v=>v}},
-      {type:'bar',label:'Cases with Bug',data:casesWithBug,
-       backgroundColor:hexRgba(SF_SLATE,0.28),borderColor:hexRgba(SF_SLATE,0.65),
-       borderWidth:1.5,borderRadius:3,yAxisID:'yLeft',
-       datalabels:{anchor:'end',align:'top',color:SF_SLATE,font:{size:10,weight:'700'},
-         formatter:(v,ctx)=>v+' ('+bugRates[ctx.dataIndex]+'%)'}},
+      {type:'line',label:'IR / Active Org %',data:irPerOrg,
+       borderColor:SF_GREEN,backgroundColor:hexRgba(SF_GREEN,0.07),
+       borderWidth:3,tension:0.25,fill:true,
+       pointRadius:7,pointBackgroundColor:SF_GREEN,pointBorderColor:'#fff',pointBorderWidth:2,
+       yAxisID:'yLeft',
+       datalabels:{
+         anchor:'end',align:(ctx)=>ctx.dataIndex===2?'bottom':'top',
+         color:SF_GREEN,font:{size:12,weight:'800'},
+         formatter:(v,ctx)=>{
+           const labels=['10.2%','5.6%','0.9%','2.8% ✓'];
+           return labels[ctx.dataIndex];
+         }
+       }},
       {type:'line',label:'Unique Bugs',data:uniqBugs,
        borderColor:SF_PURPLE,backgroundColor:'transparent',
-       borderWidth:2,borderDash:[6,3],tension:0.3,
+       borderWidth:2,borderDash:[6,3],tension:0.25,
        pointRadius:5,pointBackgroundColor:SF_PURPLE,pointBorderColor:'#fff',pointBorderWidth:1.5,
        fill:false,yAxisID:'yRight',
-       datalabels:{display:false}},
-      {type:'line',label:'Active Orgs',data:activeOrgs,
-       borderColor:hexRgba(SF_SLATE,0.40),backgroundColor:'transparent',
-       borderWidth:1.5,borderDash:[3,3],tension:0.4,
-       pointRadius:4,pointBackgroundColor:hexRgba(SF_SLATE,0.40),
-       pointBorderColor:'#fff',pointBorderWidth:1,
-       fill:false,yAxisID:'yOrg',
-       datalabels:{anchor:'end',align:'left',color:SF_SLATE,font:{size:9,weight:'600'},
-         formatter:v=>v.toLocaleString()}},
-      {type:'line',label:'Bug Confirm Rate',data:bugConfirmRate,
-       borderColor:'#1a7f37',backgroundColor:'transparent',
-       borderWidth:2.5,borderDash:[5,3],tension:0.3,
-       pointRadius:5,pointBackgroundColor:'#1a7f37',pointBorderColor:'#fff',pointBorderWidth:1.5,
-       fill:false,yAxisID:'yPct',
        datalabels:{
-         anchor:'end',align:'top',color:'#1a7f37',font:{size:10,weight:'700'},
-         formatter:(v,ctx)=>ctx.dataIndex===3?v+'%\nBug Confirm':v+'%'
+         anchor:'end',align:(ctx)=>ctx.dataIndex===1?'right':'top',
+         color:SF_PURPLE,font:{size:10,weight:'700'},
+         formatter:(v,ctx)=>v+' bugs'
        }}
     ]
   },
   options:{
     responsive:true,maintainAspectRatio:false,
-    layout:{padding:{top:26,right:58,bottom:5,left:8}},
-    plugins:{legend:{display:false},datalabels:{display:true},
+    layout:{padding:{top:34,right:50,bottom:10,left:8}},
+    plugins:{
+      legend:{display:false},
+      datalabels:{display:true},
       tooltip:{callbacks:{
         title:ctx=>RELS[ctx[0].dataIndex].replace('\n',' '),
         label:ctx=>{
-          if(ctx.dataset.label==='Cases with Bug') return ' Cases with Bug: '+ctx.parsed.y+' ('+bugRates[ctx.dataIndex]+'% bug rate)';
-          if(ctx.dataset.label==='Unique Bugs') return ' Unique Bugs: '+ctx.parsed.y;
-          if(ctx.dataset.label==='Active Orgs') return ' Active Orgs: '+ctx.parsed.y.toLocaleString();
-          if(ctx.dataset.label==='Bug Confirm Rate') return ' Bug Confirm Rate: '+ctx.parsed.y+'%';
+          const i=ctx.dataIndex;
+          if(ctx.dataset.label==='IR / Active Org %')
+            return [' IR/Active Org: '+irPerOrg[i]+'%',
+                    ' IR Cases: '+irCases[i]+' / '+activeOrgs[i].toLocaleString()+' orgs',
+                    ' RC Inflow: '+inflow[i]];
+          if(ctx.dataset.label==='Unique Bugs')
+            return [' Unique Bugs: '+uniqBugs[i],
+                    ' Bug Rate: '+bugRates[i]+'%',
+                    ' Bug Confirm Rate: '+bugConfirmRate[i]+'%'];
           return ' '+ctx.dataset.label+': '+ctx.parsed.y;
         }
       }}
     },
     scales:{
       x:{grid:{color:gc},ticks:{color:tc,font:{size:11}}},
-      yLeft:{position:'left',grid:{color:gc},ticks:{color:tc,font:{size:10}},
-        title:{display:true,text:'RC Inflow / Cases with Bug',color:tc,font:{size:10}},
-        suggestedMin:0,suggestedMax:540},
-      yRight:{position:'right',grid:{display:false},ticks:{color:SF_PURPLE,font:{size:10}},
+      yLeft:{position:'left',grid:{color:gc},
+        ticks:{color:SF_GREEN,font:{size:10},callback:v=>v+'%'},
+        title:{display:true,text:'IR Cases / Active Org %',color:SF_GREEN,font:{size:10,weight:'600'}},
+        suggestedMin:0,suggestedMax:13},
+      yRight:{position:'right',grid:{display:false},
+        ticks:{color:SF_PURPLE,font:{size:10}},
         title:{display:true,text:'Unique Bugs',color:SF_PURPLE,font:{size:10}},
-        suggestedMin:0,suggestedMax:48},
-      yOrg:{position:'right',display:false,suggestedMin:0,suggestedMax:2400},
-      yPct:{position:'right',display:false,suggestedMin:0,suggestedMax:120}
+        suggestedMin:0,suggestedMax:45}
     }
   }
 });
