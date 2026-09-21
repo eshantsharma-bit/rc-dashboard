@@ -440,7 +440,56 @@ footer { text-align: center; font-size: 11px; color: var(--muted); padding: 20px
   </div>
 </div>
 
-<!-- ════ 11. CSAT ════ -->
+<!-- ════ 11. SIGNATURE VOLUME TREND ════ -->
+<div class="card">
+  <div class="section-title">🏅 Signature &amp; Premier — 4-Week Volume Trend</div>
+  <div class="grid-2">
+    <div>
+      <div class="section-subtitle">Volume by Tier</div>
+      <table>
+        <tr><th>Week</th><th>Total</th><th class="tw-col">Signature</th><th>Premier</th><th>Sig %</th><th>Sig WoW</th></tr>
+        <tr><td>W-3 Aug 23–29</td><td>281</td><td class="tw-col">54</td><td>111</td><td>19%</td><td>—</td></tr>
+        <tr><td>W-2 Aug 30–Sep 5</td><td>366</td><td class="tw-col">89</td><td>152</td><td>24%</td><td style="color:#ba0517">↑65%</td></tr>
+        <tr><td>PW Sep 6–12</td><td>354</td><td class="tw-col">76</td><td>153</td><td>21%</td><td style="color:#2e844a">↓15%</td></tr>
+        <tr class="highlight-row"><td>★ TW Sep 13–19</td><td>304</td><td class="tw-col"><strong>76</strong></td><td>118</td><td><strong>25%</strong></td><td style="color:#706e6b">→ flat</td></tr>
+      </table>
+      <p class="footnote">Signature flat WoW but +41% vs W-3 baseline (54→76). Premier fell −23% WoW (153→118) — accounts for most of overall inflow drop.</p>
+      <div class="section-subtitle" style="margin-top:10px">Signature — Region Split (TW vs PW)</div>
+      <table>
+        <tr><th>Region</th><th class="tw-col">TW</th><th>PW</th><th>Δ</th></tr>
+        <tr><td><span class="pill pill-blue">EMEA</span></td><td class="tw-col"><strong>41</strong></td><td>33</td><td style="color:#ba0517">↑8 (+24%)</td></tr>
+        <tr><td><span class="pill pill-purple">India</span></td><td class="tw-col"><strong>31</strong></td><td>38</td><td style="color:#2e844a">↓7 (−18%)</td></tr>
+        <tr><td><span class="pill pill-teal">APAC</span></td><td class="tw-col"><strong>4</strong></td><td>5</td><td style="color:#706e6b">→ flat</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="section-subtitle">Signature — P&amp;T Breakdown (TW)</div>
+      <table>
+        <tr><th>P&amp;T</th><th class="tw-col">TW Sig</th><th>PW Sig</th><th>Δ</th><th>Sig% of P&amp;T</th></tr>
+        <tr><td>RCA</td><td class="tw-col"><strong>51</strong></td><td>55</td><td style="color:#2e844a">↓4</td><td>24% of 213 RCA</td></tr>
+        <tr><td>CPQ</td><td class="tw-col"><strong>18</strong></td><td>16</td><td style="color:#ba0517">↑2</td><td>26% of 69 CPQ</td></tr>
+        <tr><td>Billing</td><td class="tw-col"><strong>2</strong></td><td>2</td><td style="color:#706e6b">→</td><td>20% of 10</td></tr>
+        <tr><td>Other</td><td class="tw-col"><strong>5</strong></td><td>3</td><td style="color:#ba0517">↑2</td><td>—</td></tr>
+      </table>
+      <div class="section-subtitle" style="margin-top:10px">Signature Sev1 Trend</div>
+      <table>
+        <tr><th>Week</th><th>Sig S1</th><th>Sig S2</th><th>S1 as % of Sig</th></tr>
+        <tr><td>W-3 Aug 23–29</td><td>6</td><td>28</td><td>11%</td></tr>
+        <tr><td>W-2 Aug 30–Sep 5</td><td>14</td><td>59</td><td>16%</td></tr>
+        <tr><td>PW Sep 6–12</td><td>54</td><td>22</td><td>71% <span style="font-size:10px;color:#dd7a01">(outage)</span></td></tr>
+        <tr class="highlight-row"><td>★ TW Sep 13–19</td><td><strong>42</strong></td><td>34</td><td><strong>55%</strong></td></tr>
+      </table>
+      <p class="footnote">Sig S1 rate at 55% TW — elevated vs baseline (11–16%) but normalising from PW outage peak (71%). EMEA Signature S1 driving: 41 EMEA Sig cases vs 33 PW.</p>
+      <div class="insight yellow" style="margin-top:8px">
+        <strong>Where Signature is growing: EMEA RCA</strong><br>
+        EMEA Signature up 24% WoW (33→41). RCA is 67% of all Signature volume (51/76). Configurator + Transaction Management are the sub-topic drivers — same pattern as overall inflow. India Signature cooling (−18%) as outage-linked PW cases close out. APAC Signature stable at low volume.
+      </div>
+    </div>
+  </div>
+  <div class="chart-wrap-tall" style="margin-top:12px"><canvas id="sigTrendChart"></canvas></div>
+</div>
+
+<!-- ════ 12. CSAT ════ -->
 <div class="card good-border">
   <div class="section-title">⭐ CSAT Analysis — TW Sep 13–19</div>
   <div class="grid-2">
@@ -577,6 +626,13 @@ def('ptTrendChart', {type:'bar', data:{labels:wks, datasets:[
   {label:'Billing', data:[6,4,7,10], backgroundColor:'rgba(144,80,233,.6)'},
   {label:'Other', data:[1,10,7,12], backgroundColor:'rgba(144,144,144,.4)'}
 ]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}},scales:{x:{stacked:true,grid:{display:false},ticks:{color:tickColor}},y:{stacked:true,grid:{color:gridColor},ticks:{color:tickColor}}}}});
+
+// Signature vs Premier vs Non-Premium stacked bar
+def('sigTrendChart', {type:'bar', data:{labels:wks, datasets:[
+  {label:'Signature', data:[54,89,76,76], backgroundColor:'rgba(46,132,74,.75)', borderWidth:1},
+  {label:'Premier', data:[111,152,153,118], backgroundColor:'rgba(1,118,211,.55)', borderWidth:1},
+  {label:'Non-Premium', data:[116,125,125,110], backgroundColor:'rgba(144,144,144,.35)', borderWidth:1}
+]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}},scales:{x:{stacked:true,grid:{display:false},ticks:{color:tickColor}},y:{stacked:true,grid:{color:gridColor},ticks:{color:tickColor},title:{display:true,text:'Cases',color:tickColor,font:{size:10}}}}}});
 
 // Region trend line
 def('regionChart', {type:'line', data:{labels:wks, datasets:[
