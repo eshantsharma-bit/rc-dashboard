@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RC Signature · Top 10 Accounts · Sep 1–19 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --border: #d0d7de;
+    --border-light: #e8ecf0;
+    --text: #1f2328;
+    --text-muted: #656d76;
+    --text-light: #8b949e;
+    --accent: #0969da;
+    --accent-light: #ddf4ff;
+    --green: #1a7f37;
+    --green-light: #dafbe1;
+    --red: #cf222e;
+    --red-light: #ffebe9;
+    --orange: #bc4c00;
+    --orange-light: #fff1e5;
+    --yellow: #9a6700;
+    --yellow-light: #fff8c5;
+    --purple: #6639ba;
+    --purple-light: #fbefff;
+    --rca-color: #0969da;
+    --cpq-color: #9a3412;
+    --rcb-color: #1a7f37;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+
+  .page-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 20px 32px; }
+  .page-header h1 { font-size: 20px; font-weight: 600; color: var(--text); }
+  .page-header .meta { color: var(--text-muted); font-size: 12px; margin-top: 4px; }
+  .badges { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-blue { background: var(--accent-light); color: var(--accent); }
+  .badge-red { background: var(--red-light); color: var(--red); }
+  .badge-orange { background: var(--orange-light); color: var(--orange); }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-yellow { background: var(--yellow-light); color: var(--yellow); }
+  .badge-purple { background: var(--purple-light); color: var(--purple); }
+
+  .main { max-width: 1280px; margin: 0 auto; padding: 24px 32px; }
+
+  /* Summary table */
+  .section-title { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; margin-top: 28px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+
+  table.summary { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.summary thead th { background: var(--bg); padding: 8px 12px; text-align: left; font-weight: 600; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  table.summary tbody tr { border-bottom: 1px solid var(--border-light); }
+  table.summary tbody tr:last-child { border-bottom: none; }
+  table.summary tbody tr:hover { background: var(--bg); }
+  table.summary td { padding: 9px 12px; vertical-align: middle; }
+  .rank-num { font-weight: 700; color: var(--text-muted); font-size: 12px; width: 28px; }
+  .acct-name { font-weight: 600; color: var(--text); }
+  .rcat-badge { display: inline-block; padding: 1px 6px; border-radius: 10px; font-size: 10px; font-weight: 700; margin-left: 6px; }
+  .rcat-active { background: var(--red-light); color: var(--red); }
+  .rcat-passive { background: var(--yellow-light); color: var(--yellow); }
+  .red-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--red); margin-left: 4px; vertical-align: middle; }
+  .num { font-variant-numeric: tabular-nums; }
+  .open-cnt { font-weight: 600; color: var(--red); }
+  .open-zero { color: var(--text-light); }
+  .pill { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; font-weight: 500; }
+  .pill-rca { background: #ddf4ff; color: var(--rca-color); }
+  .pill-cpq { background: #fff1e5; color: var(--cpq-color); }
+  .pill-rcb { background: #dafbe1; color: var(--rcb-color); }
+  .mini-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; width: 80px; }
+  .mini-bar-rca { background: var(--rca-color); }
+  .mini-bar-rcb { background: var(--rcb-color); }
+  .mini-bar-cpq { background: var(--cpq-color); }
+  .ir-tag { font-size: 11px; color: var(--text-muted); }
+  .ir-264 { color: var(--orange); font-weight: 600; }
+  .ir-95 { color: var(--purple); font-weight: 600; }
+  .warn { color: var(--orange); font-weight: 600; }
+
+  /* Account cards */
+  .account-grid { display: flex; flex-direction: column; gap: 20px; }
+  .acct-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .acct-card.watch-card { border-left: 3px solid var(--red); }
+  .acct-card.rcat-card { border-left: 3px solid var(--orange); }
+  .acct-card.clean-card { border-left: 3px solid var(--green); }
+
+  .acct-header { display: flex; align-items: flex-start; justify-content: space-between; padding: 16px 20px 12px; border-bottom: 1px solid var(--border-light); }
+  .acct-header-left h2 { font-size: 15px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  .acct-header-left .meta-row { display: flex; gap: 12px; margin-top: 5px; flex-wrap: wrap; }
+  .meta-chip { font-size: 11px; color: var(--text-muted); background: var(--bg); border: 1px solid var(--border-light); border-radius: 4px; padding: 1px 7px; }
+  .acct-header-right { display: flex; gap: 8px; align-items: flex-start; }
+
+  .metrics-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 1px; background: var(--border-light); border-bottom: 1px solid var(--border-light); }
+  .metric-cell { background: var(--surface); padding: 10px 14px; }
+  .metric-cell .label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600; margin-bottom: 2px; }
+  .metric-cell .value { font-size: 18px; font-weight: 700; color: var(--text); }
+  .metric-cell .value.red { color: var(--red); }
+  .metric-cell .value.green { color: var(--green); }
+  .metric-cell .value.orange { color: var(--orange); }
+  .metric-cell .value.muted { color: var(--text-muted); }
+
+  .acct-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .acct-body-left { padding: 14px 18px; border-right: 1px solid var(--border-light); }
+  .acct-body-right { padding: 14px 18px; }
+  .subsection-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); margin-bottom: 8px; }
+
+  .topic-list { list-style: none; }
+  .topic-list li { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; border-bottom: 1px solid var(--border-light); font-size: 12px; }
+  .topic-list li:last-child { border-bottom: none; }
+  .topic-name { color: var(--text); flex: 1; }
+  .topic-count { font-weight: 700; font-variant-numeric: tabular-nums; min-width: 20px; text-align: right; }
+
+  .case-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .case-table th { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); padding: 4px 8px; border-bottom: 1px solid var(--border-light); text-align: left; }
+  .case-table td { padding: 4px 8px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+  .case-table tr:last-child td { border-bottom: none; }
+  .case-table .case-num { font-family: ui-monospace, monospace; color: var(--accent); font-weight: 600; }
+  .sev-l1 { background: var(--red-light); color: var(--red); padding: 1px 5px; border-radius: 4px; font-weight: 700; font-size: 10px; }
+  .sev-l3 { background: var(--yellow-light); color: var(--yellow); padding: 1px 5px; border-radius: 4px; font-weight: 700; font-size: 10px; }
+  .sev-l4 { background: var(--bg); color: var(--text-muted); padding: 1px 5px; border-radius: 4px; font-size: 10px; }
+  .sev-blank { background: var(--bg); color: var(--text-light); padding: 1px 5px; border-radius: 4px; font-size: 10px; }
+  .status-open { color: var(--red); font-weight: 600; }
+  .status-closed { color: var(--text-light); }
+  .id-tag { font-family: ui-monospace, monospace; font-size: 10px; color: var(--accent); }
+  .id-none { color: var(--text-light); }
+
+  .insight-box { background: var(--bg); border: 1px solid var(--border-light); border-radius: 6px; padding: 10px 14px; margin-top: 12px; font-size: 12px; line-height: 1.55; }
+  .insight-box.warning { background: var(--orange-light); border-color: #f0972a; }
+  .insight-box.positive { background: var(--green-light); border-color: #89d397; }
+  .insight-box.info { background: var(--accent-light); border-color: #93c9ff; }
+  .insight-box.watch { background: var(--red-light); border-color: #ffada8; }
+  .insight-label { font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; }
+  .insight-label.warn-lbl { color: var(--orange); }
+  .insight-label.pos-lbl { color: var(--green); }
+  .insight-label.info-lbl { color: var(--accent); }
+  .insight-label.watch-lbl { color: var(--red); }
+
+  .rcat-box { background: #fff8f0; border: 1px solid #f0972a; border-radius: 6px; padding: 10px 14px; margin-top: 12px; font-size: 12px; }
+  .rcat-box .rcat-header { font-weight: 700; font-size: 11px; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
+  .rcat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; }
+  .rcat-row { font-size: 12px; }
+  .rcat-label { color: var(--text-muted); font-size: 11px; }
+  .rcat-val { color: var(--text); font-weight: 500; }
+
+  .action-tag { display: inline-block; background: var(--red-light); color: var(--red); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .action-low { background: var(--green-light); color: var(--green); }
+
+  .chart-wrap { padding: 16px 20px; border-top: 1px solid var(--border-light); }
+
+  footer { text-align: center; color: var(--text-muted); font-size: 11px; padding: 24px; border-top: 1px solid var(--border); margin-top: 32px; }
+
+  @media (max-width: 768px) {
+    .acct-body { grid-template-columns: 1fr; }
+    .acct-body-left { border-right: none; border-bottom: 1px solid var(--border-light); }
+    .main { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Revenue Cloud Signature &middot; Top 10 Accounts &middot; Sep 1–19, 2026</h1>
+  <div class="meta">Signature / Premier tier &middot; All regions &middot; P2 (Level 2 – Urgent) excluded &middot; Source: CSV &middot; Sep 22, 2026</div>
+  <div class="badges">
+    <span class="badge badge-blue">1,078 non-P2 cases total</span>
+    <span class="badge badge-red">KnowBe4: 11 open, 0 investigations ⚠</span>
+    <span class="badge badge-orange">AI inside Inc: RCAT Active · go-live delayed · 474587128 due 9/23</span>
+    <span class="badge badge-green">Cloudity &amp; Corporate Visions: 264 bugs resolved ✓</span>
+    <span class="badge badge-purple">95079032 incident visible in TDC, SHIFTLOGIC, LiveRamp</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Summary Table -->
+  <div class="section-title">Volume Summary</div>
+  <div class="card">
+    <table class="summary">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Account</th>
+          <th>Cases</th>
+          <th>L1</th>
+          <th>L3</th>
+          <th>L4</th>
+          <th>Open</th>
+          <th>Mix</th>
+          <th>GUS</th>
+          <th>Bug</th>
+          <th>IR Tag</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Row 1: TDC Net -->
+        <tr>
+          <td class="rank-num">1</td>
+          <td class="acct-name">TDC Net A/S</td>
+          <td class="num">24</td>
+          <td class="num">—</td><td class="num">—</td><td class="num">24</td>
+          <td class="num open-zero">2</td>
+          <td>
+            <div class="mini-bar">
+              <div class="mini-bar-rca" style="width:96%"></div>
+              <div class="mini-bar-cpq" style="width:4%"></div>
+            </div>
+          </td>
+          <td class="num">3</td><td class="num">2</td>
+          <td><span class="ir-95">95079032</span></td>
+          <td><span class="badge badge-green" style="font-size:10px">Monitor</span></td>
+        </tr>
+        <!-- Row 2: SHIFTLOGIC -->
+        <tr>
+          <td class="rank-num">2</td>
+          <td class="acct-name">SHIFTLOGIC.IO LIMITED</td>
+          <td class="num">18</td>
+          <td class="num">4</td><td class="num">1</td><td class="num">13</td>
+          <td class="num open-zero">0</td>
+          <td>
+            <div class="mini-bar">
+              <div class="mini-bar-rca" style="width:94%"></div>
+              <div class="mini-bar-cpq" style="width:6%"></div>
+            </div>
+          </td>
+          <td class="num">1</td><td class="num">1</td>
+          <td><span class="ir-95">95079032</span></td>
+          <td><span class="badge badge-green" style="font-size:10px">Healthy</span></td>
+        </tr>
+        <!-- Row 3: KnowBe4 -->
+        <tr>
+          <td class="rank-num">3</td>
+          <td class="acct-name">KnowBe4, Inc <span style="color:var(--red);font-size:12px">⚠</span></td>
+          <td class="num">15</td>
+          <td class="num">—</td><td class="num">1</td><td class="num">3</td>
+          <td class="num open-cnt">11</td>
+          <td>
+            <div class="mini-bar">
+              <div class="mini-bar-rca" style="width:53%"></div>
+              <div class="mini-bar-cpq" style="width:47%"></div>
+            </div>
+          </td>
+          <td class="num warn">0</td><td class="num warn">0</td>
+          <td class="id-none">—</td>
+          <td><span class="action-tag">Act Now</span></td>
+        </tr>
+        <!-- Row 4: Ravyx -->
+        <tr>
+          <td class="rank-num">4</td>
+          <td class="acct-name">Ravyx - SIR Solutions</td>
+          <td class="num">14</td>
+          <td class="num">—</td><td class="num">—</td><td class="num">14</td>
+          <td class="num open-zero">3</td>
+          <td>
+            <div class="mini-bar">
+              <div class="mini-bar-rca" style="width:93%"></div>
+              <div class="mini-bar-cpq" style="width:7%"></div>
+            </div>
+          </td>
+          <td class="num warn">0</td><td class="num warn">0</td>
+          <td class="id-none">—</td>
+          <td><span class="badge badge-blue" style="font-size:10px">Confirm tier</span></td>
+        </tr>
+        <!-- Row 5: Cloudity -->
+        <tr>
+          <td class="rank-num">5</td>
+          <td class="acct-name">Cloudity</td>
+          <td class="num">14</td>
+          <td class="num">5</td><td class="num">7</td><td class="num">2</td>
+          <td class="num open-zero">3</td>
+          <td>
+            <div class="mini-bar">
+              <div class="mini-bar-rca" style="width:93%"></div>
+              <div class="mini-bar-rcb" style="width:7%"></div>
+            </div>
+          </td>
+          <td class="num">3</td><td class="num">2</td>
+          <td><span class="ir-264">264 RC (2)</span></td>
+          <td><span class="badge badge-green" style="font-size:10px">Bugs resolved</span></td>
+        </tr>
+        <!-- Row 6: AI inside -->
+        <tr>
+          <td class="rank-num">6</td>
+          <td class="acct-name">AI inside Inc. <span class="rcat-badge rcat-active">RCAT Active</span></td>
+          <td class="num">11</td>
+          <td class="num">—</td><td class="num">9</td><td class="num">2</td>
+          <td class="num open-cnt">3</td>
+          <td>
+            <div class="mini-bar">
+              <div class="mini-bar-rca" style="width:73%"></div>
+              <div class="mini-bar-rcb" style="width:18%"></div>
+              <div class="mini-bar-cpq" style="width:9%"></div>
+            </div>
+          </td>
+          <td class="num warn">0</td><td class="num">1</td>
+          <td><span class="ir-264">264 RC (1)</span></td>
+          <td><span class="action-tag">Track 9/23</span></td>
+        </tr>
+        <!-- Row 7: Intrado -->
+        <tr>
+          <td class="rank-num">7</td>
+          <td class="acct-name">Intrado Life &amp; Safety, Inc</td>
+          <td class="num">11</td>
+          <td class="num">1</td><td class="num">—</td><td class="num">10</td>
+          <td class="num open-zero" style="color:var(--green)">0</td>
+          <td>
+            <div class="mini-bar">
+              <div class="mini-bar-rca" style="width:100%"></div>
+            </div>
+          </td>
+          <td class="num warn">0</td><td class="num warn">0</td>
+          <td class="id-none">—</td>
+          <td><span class="badge badge-green" style="font-size:10px">All closed</span></td>
+        </tr>
+        <!-- Row 8: Corp Visions -->
+        <tr>
+          <td class="rank-num">8</td>
+          <td class="acct-name">Corporate Visions Inc</td>
+          <td class="num">10</td>
+          <td class="num">1</td><td class="num">2</td><td class="num">7</td>
+          <td class="num open-zero" style="color:var(--green)">0</td>
+          <td>
+            <div class="mini-bar">
+              <div class="mini-bar-rca" style="width:100%"></div>
+            </div>
+          </td>
+          <td class="num">2</td><td class="num">2</td>
+          <td><span class="ir-264">264 RC (2)</span></td>
+          <td><span class="badge badge-green" style="font-size:10px">Resolved</span></td>
+        </tr>
+        <!-- Row 9: Bluvium -->
+        <tr>
+          <td class="rank-num">9</td>
+          <td class="acct-name">Bluvium Inc</td>
+          <td class="num">10</td>
+          <td class="num">9</td><td class="num">1</td><td class="num">—</td>
+          <td class="num open-zero">1</td>
+          <td>
+            <div class="mini-bar">
+              <div class="mini-bar-rca" style="width:60%"></div>
+              <div class="mini-bar-rcb" style="width:40%"></div>
+            </div>
+          </td>
+          <td class="num warn">0</td><td class="num">1</td>
+          <td><span class="ir-264">264 RC (1)</span></td>
+          <td><span class="badge badge-blue" style="font-size:10px">Check open L1</span></td>
+        </tr>
+        <!-- Row 10: LiveRamp -->
+        <tr>
+          <td class="rank-num">10</td>
+          <td class="acct-name">LiveRamp, Inc <span class="rcat-badge rcat-passive">RCAT Passive</span><span class="red-dot" title="Open Red Account"></span></td>
+          <td class="num">9</td>
+          <td class="num">2</td><td class="num">3</td><td class="num">4</td>
+          <td class="num open-zero">1</td>
+          <td>
+            <div class="mini-bar">
+              <div class="mini-bar-rca" style="width:100%"></div>
+            </div>
+          </td>
+          <td class="num">1</td><td class="num warn">0</td>
+          <td><span class="ir-95">95079032</span></td>
+          <td><span class="badge badge-green" style="font-size:10px">Post go-live</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Chart row -->
+  <div class="section-title" style="margin-top:28px">Case Volume by Account</div>
+  <div class="card" style="padding:20px">
+    <canvas id="volChart" height="90"></canvas>
+  </div>
+
+  <!-- Account Deep Dives -->
+  <div class="section-title" style="margin-top:32px">Account Deep Dives</div>
+  <div class="account-grid">
+
+    <!-- #1 TDC Net A/S -->
+    <div class="acct-card clean-card">
+      <div class="acct-header">
+        <div class="acct-header-left">
+          <h2>#1 &nbsp; TDC Net A/S</h2>
+          <div class="meta-row">
+            <span class="meta-chip">Premier+</span>
+            <span class="meta-chip">EMEA primary</span>
+            <span class="meta-chip">All RCA</span>
+            <span class="meta-chip">Red: No</span>
+          </div>
+        </div>
+        <div class="acct-header-right">
+          <span class="badge badge-green">24 cases · 83% closed</span>
+        </div>
+      </div>
+      <div class="metrics-row">
+        <div class="metric-cell"><div class="label">Total</div><div class="value">24</div></div>
+        <div class="metric-cell"><div class="label">L1</div><div class="value muted">0</div></div>
+        <div class="metric-cell"><div class="label">Open</div><div class="value muted">2</div></div>
+        <div class="metric-cell"><div class="label">GUS filed</div><div class="value">3</div></div>
+        <div class="metric-cell"><div class="label">Bug filed</div><div class="value">2</div></div>
+        <div class="metric-cell"><div class="label">RCA</div><div class="value">23</div></div>
+      </div>
+      <div class="acct-body">
+        <div class="acct-body-left">
+          <div class="subsection-title">Top Topics</div>
+          <ul class="topic-list">
+            <li><span class="topic-name">Product Configurator</span><span class="topic-count">9</span></li>
+            <li><span class="topic-name">Developer Support – P2O</span><span class="topic-count">6</span></li>
+            <li><span class="topic-name">Product Catalog Management</span><span class="topic-count">4</span></li>
+            <li><span class="topic-name">Transaction Management</span><span class="topic-count">4</span></li>
+            <li><span class="topic-name">SF CPQ</span><span class="topic-count">1</span></li>
+          </ul>
+          <div class="insight-box positive" style="margin-top:10px">
+            <div class="insight-label pos-lbl">Signal</div>
+            All L4-Medium — developer education and usage questions, not regressions. 21 of 24 cases had no investigation needed (resolved as config / education). One 95079032 incident case (474544695) closed. The 2 open cases are in NMI state.
+          </div>
+        </div>
+        <div class="acct-body-right">
+          <div class="subsection-title">Bug / GUS Filed</div>
+          <table class="case-table">
+            <tr><th>Case</th><th>Topic</th><th>GUS</th><th>Bug</th></tr>
+            <tr><td class="case-num">474544695</td><td>Configurator · 95079032</td><td class="id-tag">W-24112150</td><td class="id-tag">W-24117503</td></tr>
+            <tr><td class="case-num">474525409</td><td>Configurator · CML Visual Builder</td><td class="id-tag">W-24097864</td><td class="id-tag">W-24129618</td></tr>
+            <tr><td class="case-num">474609xxx</td><td>Product Configurator</td><td class="id-tag">W-24216333</td><td class="id-none">—</td></tr>
+          </table>
+          <div class="insight-box info" style="margin-top:10px">
+            <div class="insight-label info-lbl">Action</div>
+            Low urgency. Resolve 2 NMI cases. PCM attribute/catalog questions (4 cases) — check if a knowledge article exists; recurring pattern suggests an adoption gap, not a product defect.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #2 SHIFTLOGIC -->
+    <div class="acct-card clean-card">
+      <div class="acct-header">
+        <div class="acct-header-left">
+          <h2>#2 &nbsp; SHIFTLOGIC.IO LIMITED</h2>
+          <div class="meta-row">
+            <span class="meta-chip">Standard / Partner Premier</span>
+            <span class="meta-chip">EMEA primary</span>
+            <span class="meta-chip">RCA dominant</span>
+            <span class="meta-chip">Red: No</span>
+          </div>
+        </div>
+        <div class="acct-header-right">
+          <span class="badge badge-green">18 cases · 100% closed</span>
+        </div>
+      </div>
+      <div class="metrics-row">
+        <div class="metric-cell"><div class="label">Total</div><div class="value">18</div></div>
+        <div class="metric-cell"><div class="label">L1</div><div class="value orange">4</div></div>
+        <div class="metric-cell"><div class="label">Open</div><div class="value green">0</div></div>
+        <div class="metric-cell"><div class="label">GUS filed</div><div class="value">1</div></div>
+        <div class="metric-cell"><div class="label">Bug filed</div><div class="value">1</div></div>
+        <div class="metric-cell"><div class="label">RCA</div><div class="value">17</div></div>
+      </div>
+      <div class="acct-body">
+        <div class="acct-body-left">
+          <div class="subsection-title">Top Topics</div>
+          <ul class="topic-list">
+            <li><span class="topic-name">Product Configurator</span><span class="topic-count">6</span></li>
+            <li><span class="topic-name">Price Management</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Developer Support – P2O</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Contract Lifecycle Management</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Transaction Management</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Product Catalog Management</span><span class="topic-count">1</span></li>
+          </ul>
+        </div>
+        <div class="acct-body-right">
+          <div class="subsection-title">95079032 Incident Case</div>
+          <table class="case-table">
+            <tr><th>Case</th><th>Sev</th><th>Topic</th><th>GUS</th><th>Bug</th></tr>
+            <tr><td class="case-num">474543832</td><td><span class="sev-l1">L1</span></td><td>Configurator · CML</td><td class="id-tag">W-24112150</td><td class="id-tag">W-24117503</td></tr>
+          </table>
+          <div class="insight-box positive" style="margin-top:10px">
+            <div class="insight-label pos-lbl">Signal</div>
+            100% closure rate — strongest resolution signal in top 10. All 4 L1s resolved, including the 95079032 incident. Price Management (2 cases) and Configurator context-def deployment failures (6 cases) resolved without investigation filing — likely education/workaround.
+          </div>
+          <div class="insight-box info" style="margin-top:8px">
+            <div class="insight-label info-lbl">Action</div>
+            Review if the Price Management procedure activation pattern (474500319, 474502865) shares a root cause. If so, log a GUS to benefit the broader customer base.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #3 KnowBe4 WATCH -->
+    <div class="acct-card watch-card">
+      <div class="acct-header">
+        <div class="acct-header-left">
+          <h2>#3 &nbsp; KnowBe4, Inc &nbsp; <span style="color:var(--red);font-size:14px">⚠ Watch</span></h2>
+          <div class="meta-row">
+            <span class="meta-chip">Signature Success</span>
+            <span class="meta-chip">Region unassigned</span>
+            <span class="meta-chip">Mixed RCA + CPQ</span>
+            <span class="meta-chip">Red: No</span>
+          </div>
+        </div>
+        <div class="acct-header-right">
+          <span class="badge badge-red">11 open · 0 GUS/Bug</span>
+        </div>
+      </div>
+      <div class="metrics-row">
+        <div class="metric-cell"><div class="label">Total</div><div class="value">15</div></div>
+        <div class="metric-cell"><div class="label">L1</div><div class="value muted">0</div></div>
+        <div class="metric-cell"><div class="label">Open</div><div class="value red">11</div></div>
+        <div class="metric-cell"><div class="label">GUS filed</div><div class="value red">0</div></div>
+        <div class="metric-cell"><div class="label">Bug filed</div><div class="value red">0</div></div>
+        <div class="metric-cell"><div class="label">CPQ</div><div class="value">7</div></div>
+      </div>
+      <div class="acct-body">
+        <div class="acct-body-left">
+          <div class="subsection-title">Top Topics</div>
+          <ul class="topic-list">
+            <li><span class="topic-name">Revenue – Salesforce CPQ</span><span class="topic-count">7</span></li>
+            <li><span class="topic-name">Product Catalog Management</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Subscription Management</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Revenue – Salesforce Contracts</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Dynamic Revenue Orchestration</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">Transaction Management</span><span class="topic-count">1</span></li>
+          </ul>
+          <div class="insight-box watch" style="margin-top:10px">
+            <div class="insight-label watch-lbl">Sep 11 Batch — 9 cases in 30 min</div>
+            Cases 474576411–474576520 opened 05:17–05:28 UTC Sep 11. All blank severity, all still Working at 11+ days. Multi-product spread (CPQ, Contracts, Sub Management, PCM) — likely migration engagement or new org build.
+          </div>
+        </div>
+        <div class="acct-body-right">
+          <div class="subsection-title">Open Cases</div>
+          <table class="case-table">
+            <tr><th>Case</th><th>Sev</th><th>Topic</th><th>Age</th></tr>
+            <tr><td class="case-num">474528830</td><td><span class="sev-l4">L4</span></td><td>Dynamic Rev Orchestration</td><td class="warn">18.8d</td></tr>
+            <tr><td class="case-num">474576411</td><td><span class="sev-blank">—</span></td><td>Salesforce CPQ</td><td class="warn">11.5d</td></tr>
+            <tr><td class="case-num">474576469</td><td><span class="sev-blank">—</span></td><td>Salesforce CPQ</td><td class="warn">11.5d</td></tr>
+            <tr><td class="case-num">474576475</td><td><span class="sev-blank">—</span></td><td>Product Catalog Management</td><td class="warn">11.5d</td></tr>
+            <tr><td class="case-num">474576495</td><td><span class="sev-blank">—</span></td><td>Subscription Management</td><td class="warn">11.5d</td></tr>
+            <tr><td class="case-num">474576498</td><td><span class="sev-blank">—</span></td><td>Subscription Management</td><td class="warn">11.5d</td></tr>
+            <tr><td class="case-num">474576504</td><td><span class="sev-blank">—</span></td><td>Salesforce CPQ</td><td class="warn">11.5d</td></tr>
+            <tr><td class="case-num">474576508</td><td><span class="sev-blank">—</span></td><td>Salesforce Contracts</td><td class="warn">11.5d</td></tr>
+            <tr><td class="case-num">474576512</td><td><span class="sev-blank">—</span></td><td>Salesforce Contracts</td><td class="warn">11.5d</td></tr>
+            <tr><td class="case-num">474576520</td><td><span class="sev-blank">—</span></td><td>Product Catalog Management</td><td class="warn">11.5d</td></tr>
+            <tr><td class="case-num">474602301</td><td><span class="sev-l3">L3</span></td><td>Transaction Management</td><td>6.7d</td></tr>
+          </table>
+          <div class="insight-box warning" style="margin-top:10px">
+            <div class="insight-label warn-lbl">Action — Immediate</div>
+            Assign severity to the 9 blank-sev cases and verify owner assignment. DRO case 474528830 (18 days) needs investigation triage this week. Sig Success account with 11 open and 0 investigations logged is the highest-risk open position in this top 10.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #4 Ravyx -->
+    <div class="acct-card">
+      <div class="acct-header">
+        <div class="acct-header-left">
+          <h2>#4 &nbsp; Ravyx - SIR Solutions</h2>
+          <div class="meta-row">
+            <span class="meta-chip">Standard tier</span>
+            <span class="meta-chip">AMER / EMEA split</span>
+            <span class="meta-chip">RCA dominant</span>
+            <span class="meta-chip">Red: No</span>
+          </div>
+        </div>
+        <div class="acct-header-right">
+          <span class="badge badge-blue">14 cases · All L4</span>
+        </div>
+      </div>
+      <div class="metrics-row">
+        <div class="metric-cell"><div class="label">Total</div><div class="value">14</div></div>
+        <div class="metric-cell"><div class="label">L1</div><div class="value muted">0</div></div>
+        <div class="metric-cell"><div class="label">Open</div><div class="value muted">3</div></div>
+        <div class="metric-cell"><div class="label">GUS filed</div><div class="value muted">0</div></div>
+        <div class="metric-cell"><div class="label">Bug filed</div><div class="value muted">0</div></div>
+        <div class="metric-cell"><div class="label">RCA</div><div class="value">13</div></div>
+      </div>
+      <div class="acct-body">
+        <div class="acct-body-left">
+          <div class="subsection-title">Top Topics</div>
+          <ul class="topic-list">
+            <li><span class="topic-name">Developer Support – P2O</span><span class="topic-count">4</span></li>
+            <li><span class="topic-name">Product Configurator</span><span class="topic-count">3</span></li>
+            <li><span class="topic-name">Advanced Approvals</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Price Management</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Usage &amp; Ratings</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">Billing Developer Support</span><span class="topic-count">1</span></li>
+          </ul>
+        </div>
+        <div class="acct-body-right">
+          <div class="insight-box info">
+            <div class="insight-label info-lbl">Signal</div>
+            Standard-tier account. The mixed P2O Dev Support + Configurator + Advanced Approvals spread across AMER and EMEA is consistent with a consulting SI partner managing multiple client orgs. All L4, 11 of 14 closed. No IR tag — no release regression signal.
+          </div>
+          <div class="insight-box info" style="margin-top:8px">
+            <div class="insight-label info-lbl">Action</div>
+            Confirm whether Ravyx is a consulting partner. Resolve the 3 NMI cases. No investigation triage required absent confirmed defects.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #5 Cloudity -->
+    <div class="acct-card clean-card">
+      <div class="acct-header">
+        <div class="acct-header-left">
+          <h2>#5 &nbsp; Cloudity</h2>
+          <div class="meta-row">
+            <span class="meta-chip">Partner Premier</span>
+            <span class="meta-chip">EMEA primary</span>
+            <span class="meta-chip">RCA + RCB</span>
+            <span class="meta-chip">Red: No</span>
+            <span class="meta-chip" style="background:#fff8f0;color:var(--orange)">264 RC Upgrade × 2</span>
+          </div>
+        </div>
+        <div class="acct-header-right">
+          <span class="badge badge-green">264 bugs both Closed ✓</span>
+        </div>
+      </div>
+      <div class="metrics-row">
+        <div class="metric-cell"><div class="label">Total</div><div class="value">14</div></div>
+        <div class="metric-cell"><div class="label">L1</div><div class="value orange">5</div></div>
+        <div class="metric-cell"><div class="label">Open</div><div class="value muted">3</div></div>
+        <div class="metric-cell"><div class="label">GUS filed</div><div class="value">3</div></div>
+        <div class="metric-cell"><div class="label">Bug filed</div><div class="value">2</div></div>
+        <div class="metric-cell"><div class="label">RCA</div><div class="value">13</div></div>
+      </div>
+      <div class="acct-body">
+        <div class="acct-body-left">
+          <div class="subsection-title">Top Topics</div>
+          <ul class="topic-list">
+            <li><span class="topic-name">Transaction Management</span><span class="topic-count">4</span></li>
+            <li><span class="topic-name">Price Management</span><span class="topic-count">3</span></li>
+            <li><span class="topic-name">Product Configurator</span><span class="topic-count">3</span></li>
+            <li><span class="topic-name">Product Catalog Management</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">Billing &amp; Invoicing</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">Salesforce Contracts</span><span class="topic-count">1</span></li>
+          </ul>
+          <div class="insight-box positive" style="margin-top:10px">
+            <div class="insight-label pos-lbl">264 Regression — Resolved</div>
+            474516014 (Billing, W-24061982 / W-24088655 ✓ Closed) and 474590957 (Configurator, W-24001055 / W-24059609 ✓ Closed). Both bugs confirmed fixed. All 5 L1s closed.
+          </div>
+        </div>
+        <div class="acct-body-right">
+          <div class="subsection-title">Open Cases</div>
+          <table class="case-table">
+            <tr><th>Case</th><th>Sev</th><th>Topic</th><th>Status</th><th>Age</th></tr>
+            <tr><td class="case-num">474595802</td><td><span class="sev-l3">L3</span></td><td>Transaction Mgmt</td><td class="status-open">Working</td><td>7.2d</td></tr>
+            <tr><td class="case-num">474598332</td><td><span class="sev-l3">L3</span></td><td>Transaction Mgmt</td><td class="status-open">NMI</td><td>7.0d</td></tr>
+            <tr><td class="case-num">474620496</td><td><span class="sev-l3">L3</span></td><td>Price Management</td><td class="status-open">Working</td><td>4.9d</td></tr>
+          </table>
+          <div class="insight-box info" style="margin-top:10px">
+            <div class="insight-label info-lbl">Action</div>
+            Log investigations on 474595802 and 474620496 if still open next week. No GUS filed on any of the 3 open cases. Overall clean 264 story — both regression bugs closed, partner actively building.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #6 AI inside Inc — RCAT Active -->
+    <div class="acct-card rcat-card">
+      <div class="acct-header">
+        <div class="acct-header-left">
+          <h2>#6 &nbsp; AI inside Inc. &nbsp; <span class="rcat-badge rcat-active">RCAT Active</span><span class="red-dot" title="Open Red Account"></span></h2>
+          <div class="meta-row">
+            <span class="meta-chip">Signature Success</span>
+            <span class="meta-chip">Japan (10/11)</span>
+            <span class="meta-chip">RCA + RCB</span>
+            <span class="meta-chip" style="background:var(--red-light);color:var(--red)">Red Account</span>
+          </div>
+        </div>
+        <div class="acct-header-right">
+          <span class="badge badge-orange">Go-live delayed · 474587128 due 9/23</span>
+        </div>
+      </div>
+      <div class="metrics-row">
+        <div class="metric-cell"><div class="label">Total</div><div class="value">11</div></div>
+        <div class="metric-cell"><div class="label">L3</div><div class="value orange">9</div></div>
+        <div class="metric-cell"><div class="label">Open</div><div class="value red">3</div></div>
+        <div class="metric-cell"><div class="label">GUS filed</div><div class="value red">0</div></div>
+        <div class="metric-cell"><div class="label">Bug filed</div><div class="value">1</div></div>
+        <div class="metric-cell"><div class="label">Usage &amp; Ratings</div><div class="value">5</div></div>
+      </div>
+      <div class="acct-body">
+        <div class="acct-body-left">
+          <div class="subsection-title">Top Topics</div>
+          <ul class="topic-list">
+            <li><span class="topic-name">Usage &amp; Ratings</span><span class="topic-count">5</span></li>
+            <li><span class="topic-name">Billing &amp; Invoicing</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Product Catalog Management</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">Transaction Management</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">Price Management</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">CPQ Developer Support</span><span class="topic-count">1</span></li>
+          </ul>
+
+          <div class="rcat-box" style="margin-top:10px">
+            <div class="rcat-header">RCAT — Sep 21, 2026</div>
+            <div class="rcat-grid">
+              <div class="rcat-row"><div class="rcat-label">Sponsor</div><div class="rcat-val">Shashank Singh <span class="badge badge-green" style="font-size:10px">Active</span></div></div>
+              <div class="rcat-row"><div class="rcat-label">Success Architect</div><div class="rcat-val">Kiran Kumari Golagana <span class="badge badge-green" style="font-size:10px">Active</span></div></div>
+              <div class="rcat-row"><div class="rcat-label">Go-live (planned)</div><div class="rcat-val">8/7/2026 <span style="color:var(--red)">delayed</span></div></div>
+              <div class="rcat-row"><div class="rcat-label">Stage</div><div class="rcat-val">Implementation</div></div>
+              <div class="rcat-row"><div class="rcat-label">RCAT sentiment</div><div class="rcat-val">Yellow → <span style="color:var(--red);font-weight:700">Red (SA view)</span></div></div>
+              <div class="rcat-row"><div class="rcat-label">ACV</div><div class="rcat-val">$85,594</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="acct-body-right">
+          <div class="subsection-title">Open Cases</div>
+          <table class="case-table">
+            <tr><th>Case</th><th>Sev</th><th>Topic</th><th>Age</th><th>Bug</th></tr>
+            <tr><td class="case-num">474542782</td><td><span class="sev-l4">L4</span></td><td>Product Catalog Management</td><td class="warn">15.4d</td><td class="id-none">—</td></tr>
+            <tr><td class="case-num">474549779</td><td><span class="sev-l4">L4</span></td><td>Transaction Management</td><td class="warn">14.3d</td><td class="id-none">—</td></tr>
+            <tr><td class="case-num" style="color:var(--red)">474587128</td><td><span class="sev-l3">L3</span></td><td>Usage &amp; Ratings ⚡</td><td class="warn">8.4d</td><td class="id-none">—</td></tr>
+          </table>
+          <div class="insight-box warning" style="margin-top:10px">
+            <div class="insight-label warn-lbl">474587128 — Due 9/23 (Token Billing Rounding)</div>
+            Token rounding mismatch: customer expects truncation (0–999 tokens = 0 JPY), RC defaults to nearest-rounding. SA proposed rating-procedure customization; ProServ confirmed workaround; customer testing. SA flagged knock-on risk: tiered pricing, commitments, UOM-to-token conversion must be validated before go-live sign-off.
+          </div>
+          <div class="insight-box warning" style="margin-top:8px">
+            <div class="insight-label warn-lbl">Action</div>
+            Track 474587128 validation by 9/23. Log GUS on 474542782 (PCM, 15d) and 474549779 (TM, 14d) — both open with no investigation filed. With go-live past planned date, every open defect is a potential blocker. SA should have full triage list before next go-live date is committed.
+          </div>
+          <div class="insight-box info" style="margin-top:8px">
+            <div class="insight-label info-lbl">264 Regression</div>
+            474502252 tagged 264 RC Upgrade, Bug W-23791512 — <strong>Closed ✓</strong>. No ongoing release-regression risk.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #7 Intrado -->
+    <div class="acct-card clean-card">
+      <div class="acct-header">
+        <div class="acct-header-left">
+          <h2>#7 &nbsp; Intrado Life &amp; Safety, Inc</h2>
+          <div class="meta-row">
+            <span class="meta-chip">Premier+</span>
+            <span class="meta-chip">AMER primary</span>
+            <span class="meta-chip">All RCA</span>
+            <span class="meta-chip">Red: No</span>
+          </div>
+        </div>
+        <div class="acct-header-right">
+          <span class="badge badge-green">11 cases · All closed · No IR</span>
+        </div>
+      </div>
+      <div class="metrics-row">
+        <div class="metric-cell"><div class="label">Total</div><div class="value">11</div></div>
+        <div class="metric-cell"><div class="label">L1</div><div class="value">1</div></div>
+        <div class="metric-cell"><div class="label">Open</div><div class="value green">0</div></div>
+        <div class="metric-cell"><div class="label">GUS filed</div><div class="value muted">0</div></div>
+        <div class="metric-cell"><div class="label">Bug filed</div><div class="value muted">0</div></div>
+        <div class="metric-cell"><div class="label">RCA</div><div class="value">11</div></div>
+      </div>
+      <div class="acct-body">
+        <div class="acct-body-left">
+          <div class="subsection-title">Top Topics</div>
+          <ul class="topic-list">
+            <li><span class="topic-name">Product Configurator</span><span class="topic-count">3</span></li>
+            <li><span class="topic-name">Transaction Management</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Contract Lifecycle Management</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Usage &amp; Ratings</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">Product Catalog Management</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">Price Management / DocGen</span><span class="topic-count">1 ea</span></li>
+          </ul>
+        </div>
+        <div class="acct-body-right">
+          <div class="insight-box positive">
+            <div class="insight-label pos-lbl">Account Health: Excellent</div>
+            All 11 cases closed — including one L1-Critical (474554976, CLM, resolved in 2.9 days). Zero GUS/Bug filed reflects clean resolution without escalating to product team. No IR tag — no release regression involvement. Strong account health signal for the window.
+          </div>
+          <div class="insight-box info" style="margin-top:8px">
+            <div class="insight-label info-lbl">Action</div>
+            None. Monitor only.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #8 Corporate Visions -->
+    <div class="acct-card clean-card">
+      <div class="acct-header">
+        <div class="acct-header-left">
+          <h2>#8 &nbsp; Corporate Visions Inc</h2>
+          <div class="meta-row">
+            <span class="meta-chip">Premier+</span>
+            <span class="meta-chip">AMER</span>
+            <span class="meta-chip">All RCA</span>
+            <span class="meta-chip" style="background:#fff8f0;color:var(--orange)">264 RC Upgrade × 2</span>
+          </div>
+        </div>
+        <div class="acct-header-right">
+          <span class="badge badge-green">All closed · 264 bugs resolved ✓</span>
+        </div>
+      </div>
+      <div class="metrics-row">
+        <div class="metric-cell"><div class="label">Total</div><div class="value">10</div></div>
+        <div class="metric-cell"><div class="label">L1</div><div class="value">1</div></div>
+        <div class="metric-cell"><div class="label">Open</div><div class="value green">0</div></div>
+        <div class="metric-cell"><div class="label">GUS filed</div><div class="value">2</div></div>
+        <div class="metric-cell"><div class="label">Bug filed</div><div class="value">2</div></div>
+        <div class="metric-cell"><div class="label">TM cases</div><div class="value">6</div></div>
+      </div>
+      <div class="acct-body">
+        <div class="acct-body-left">
+          <div class="subsection-title">Top Topics</div>
+          <ul class="topic-list">
+            <li><span class="topic-name">Transaction Management</span><span class="topic-count">6</span></li>
+            <li><span class="topic-name">Product Configurator</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">OmniStudio</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">Contract Lifecycle Management</span><span class="topic-count">1</span></li>
+          </ul>
+        </div>
+        <div class="acct-body-right">
+          <div class="subsection-title">264 RC Upgrade Cases</div>
+          <table class="case-table">
+            <tr><th>Case</th><th>Topic</th><th>GUS</th><th>Bug</th><th>Status</th></tr>
+            <tr><td class="case-num">474520784</td><td>Transaction Mgmt</td><td class="id-none">—</td><td class="id-tag">W-24059609 ✓</td><td class="status-closed">Closed</td></tr>
+            <tr><td class="case-num">474615017</td><td>Transaction Mgmt</td><td class="id-tag">W-24080865</td><td class="id-none">—</td><td class="status-closed">Closed</td></tr>
+          </table>
+          <div class="insight-box info" style="margin-top:10px">
+            <div class="insight-label info-lbl">Watch — OmniStudio</div>
+            474535771 (OmniStudio, L3, GUS W-24116899, Bug W-24187318, 17.9d age) — separate from 264 release. W-24187318 not in 264 bug registry. Verify current bug status; case age suggests it may have been open at cut-off.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #9 Bluvium -->
+    <div class="acct-card">
+      <div class="acct-header">
+        <div class="acct-header-left">
+          <h2>#9 &nbsp; Bluvium Inc</h2>
+          <div class="meta-row">
+            <span class="meta-chip">Partner Premier</span>
+            <span class="meta-chip">India + EMEA</span>
+            <span class="meta-chip">RCA + RCB</span>
+            <span class="meta-chip" style="background:#fff8f0;color:var(--orange)">264 RC Upgrade × 1</span>
+          </div>
+        </div>
+        <div class="acct-header-right">
+          <span class="badge badge-blue">9 L1-Critical · 9/10 closed</span>
+        </div>
+      </div>
+      <div class="metrics-row">
+        <div class="metric-cell"><div class="label">Total</div><div class="value">10</div></div>
+        <div class="metric-cell"><div class="label">L1</div><div class="value orange">9</div></div>
+        <div class="metric-cell"><div class="label">Open</div><div class="value muted">1</div></div>
+        <div class="metric-cell"><div class="label">GUS filed</div><div class="value red">0</div></div>
+        <div class="metric-cell"><div class="label">Bug filed</div><div class="value">1</div></div>
+        <div class="metric-cell"><div class="label">Billing</div><div class="value">4</div></div>
+      </div>
+      <div class="acct-body">
+        <div class="acct-body-left">
+          <div class="subsection-title">Top Topics</div>
+          <ul class="topic-list">
+            <li><span class="topic-name">Billing &amp; Invoicing</span><span class="topic-count">4</span></li>
+            <li><span class="topic-name">Product Configurator</span><span class="topic-count">2</span></li>
+            <li><span class="topic-name">Usage &amp; Ratings</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">Transaction Management</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">Document Generation</span><span class="topic-count">1</span></li>
+            <li><span class="topic-name">OmniStudio</span><span class="topic-count">1</span></li>
+          </ul>
+        </div>
+        <div class="acct-body-right">
+          <div class="subsection-title">Open Case</div>
+          <table class="case-table">
+            <tr><th>Case</th><th>Sev</th><th>Topic</th><th>Age</th></tr>
+            <tr><td class="case-num">474577832</td><td><span class="sev-l1">L1</span></td><td>Billing &amp; Invoicing</td><td class="warn">11.2d</td></tr>
+          </table>
+          <div class="insight-box warning" style="margin-top:10px">
+            <div class="insight-label warn-lbl">Signal — 9 L1s, 0 GUS filed</div>
+            High L1 severity declared across 9 of 10 cases but zero GUS logged. For a partner account with Billing cluster (4 cases), confirm whether known bug links (264 regression or otherwise) were checked during triage. 264-tagged case 474499238 (Usage &amp; Ratings, W-23791512 ✓ Closed) is resolved.
+          </div>
+          <div class="insight-box info" style="margin-top:8px">
+            <div class="insight-label info-lbl">Action</div>
+            Follow up on 474577832 (open L1 Billing, 11.2d). Review the 4 Billing L1 cases for bug linkage — zero GUS on a Billing cluster this size warrants a spot check.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- #10 LiveRamp — RCAT Passive -->
+    <div class="acct-card rcat-card">
+      <div class="acct-header">
+        <div class="acct-header-left">
+          <h2>#10 &nbsp; LiveRamp, Inc &nbsp; <span class="rcat-badge rcat-passive">RCAT Passive</span><span class="red-dot" title="Open Red Account"></span></h2>
+          <div class="meta-row">
+            <span class="meta-chip">Signature Success</span>
+            <span class="meta-chip">AMER primary</span>
+            <span class="meta-chip">All RCA</span>
+            <span class="meta-chip" style="background:var(--red-light);color:var(--red)">Red Account</span>
+          </div>
+        </div>
+        <div class="acct-header-right">
+          <span class="badge badge-green">Go-live Complete · 5/11/2026</span>
+        </div>
+      </div>
+      <div class="metrics-row">
+        <div class="metric-cell"><div class="label">Total</div><div class="value">9</div></div>
+        <div class="metric-cell"><div class="label">L1</div><div class="value">2</div></div>
+        <div class="metric-cell"><div class="label">Open</div><div class="value muted">1</div></div>
+        <div class="metric-cell"><div class="label">GUS filed</div><div class="value">1</div></div>
+        <div class="metric-cell"><div class="label">Bug filed</div><div class="value muted">0</div></div>
+        <div class="metric-cell"><div class="label">RCA</div><div class="value">9</div></div>
+      </div>
+      <div class="acct-body">
+        <div class="acct-body-left">
+          <div class="subsection-title">Top Topics</div>
+          <ul class="topic-list">
+            <li><span class="topic-name">Product Configurator</span><span class="topic-count">4</span></li>
+            <li><span class="topic-name">Transaction Management</span><span class="topic-count">4</span></li>
+            <li><span class="topic-name">Price Management</span><span class="topic-count">1</span></li>
+          </ul>
+
+          <div class="rcat-box" style="margin-top:12px">
+            <div class="rcat-header">RCAT — Sep 21, 2026</div>
+            <div class="rcat-grid">
+              <div class="rcat-row"><div class="rcat-label">Sponsor</div><div class="rcat-val">Karim Alimohamed <span class="badge badge-yellow" style="font-size:10px">Passive</span></div></div>
+              <div class="rcat-row"><div class="rcat-label">Success Architect</div><div class="rcat-val">Maria Taylor <span class="badge badge-green" style="font-size:10px">Completed</span></div></div>
+              <div class="rcat-row"><div class="rcat-label">Go-live</div><div class="rcat-val">5/11/2026 ✓</div></div>
+              <div class="rcat-row"><div class="rcat-label">Stage</div><div class="rcat-val">Complete</div></div>
+              <div class="rcat-row"><div class="rcat-label">Sentiment</div><div class="rcat-val">Green</div></div>
+              <div class="rcat-row"><div class="rcat-label">ACV</div><div class="rcat-val">$289,200</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="acct-body-right">
+          <div class="subsection-title">Cases</div>
+          <table class="case-table">
+            <tr><th>Case</th><th>Sev</th><th>Topic</th><th>Status</th><th>Age</th><th>GUS</th></tr>
+            <tr><td class="case-num">474547741</td><td><span class="sev-l1">L1</span></td><td>Configurator · 95079032</td><td class="status-closed">Closed</td><td>0.8d</td><td class="id-tag">W-24112150</td></tr>
+            <tr><td class="case-num">474622158</td><td><span class="sev-l1">L1</span></td><td>Configurator · CML attribute</td><td class="status-closed">Closed</td><td>0.3d</td><td class="id-none">—</td></tr>
+            <tr><td class="case-num">474623365</td><td><span class="sev-l3">L3</span></td><td>Transaction Management</td><td class="status-open">Working</td><td>4.6d</td><td class="id-none">—</td></tr>
+            <tr><td class="case-num">474498088</td><td><span class="sev-l3">L3</span></td><td>Product Configurator</td><td class="status-closed">Closed</td><td>2.0d</td><td class="id-none">—</td></tr>
+            <tr><td class="case-num">474516276</td><td><span class="sev-l3">L3</span></td><td>Transaction Management</td><td class="status-closed">Closed</td><td>8.1d</td><td class="id-none">—</td></tr>
+          </table>
+          <div class="insight-box positive" style="margin-top:10px">
+            <div class="insight-label pos-lbl">Post Go-live Health</div>
+            SA engagement completed. Go-live 5/11/2026 successful. Both L1s resolved quickly (0.8d, 0.3d). The one open case (474623365, TM, L3, 4.6d) is routine post-go-live support.
+          </div>
+          <div class="insight-box info" style="margin-top:8px">
+            <div class="insight-label info-lbl">Note — RCAT vs CSV count</div>
+            RCAT canvas shows 5 cases; CSV shows 9 non-P2 in Sep 1–19. Discrepancy: RCAT snapshots open/RC-tagged cases at a point in time; CSV includes all closed inflow. Red Account flag is residual from pre-go-live — assess for removal.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end account-grid -->
+
+</div><!-- end main -->
+
+<footer>Revenue Cloud Signature &middot; Top 10 Accounts Deep Dive &middot; Sep 1–19, 2026 &middot; Source: CSV &middot; P2 (Level 2–Urgent) excluded &middot; Generated Sep 22, 2026</footer>
+
+<script>
+// Volume bar chart
+const ctx = document.getElementById('volChart').getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: [
+      'TDC Net A/S', 'SHIFTLOGIC.IO', 'KnowBe4, Inc', 'Ravyx - SIR',
+      'Cloudity', 'AI inside Inc.', 'Intrado L&S', 'Corp Visions', 'Bluvium Inc', 'LiveRamp'
+    ],
+    datasets: [
+      {
+        label: 'RCA',
+        data: [23, 17, 8, 13, 13, 8, 11, 10, 6, 9],
+        backgroundColor: '#0969da',
+        borderRadius: 3,
+      },
+      {
+        label: 'RCB',
+        data: [0, 0, 0, 0, 1, 2, 0, 0, 4, 0],
+        backgroundColor: '#1a7f37',
+        borderRadius: 3,
+      },
+      {
+        label: 'CPQ Package',
+        data: [1, 1, 7, 1, 0, 1, 0, 0, 0, 0],
+        backgroundColor: '#9a3412',
+        borderRadius: 3,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12 } },
+      tooltip: {
+        callbacks: {
+          afterBody: function(ctx) {
+            const idx = ctx[0].dataIndex;
+            const opens = [2, 0, 11, 3, 3, 3, 0, 0, 1, 1];
+            return `Open: ${opens[idx]}`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 } } },
+      y: { stacked: true, beginAtZero: true, grid: { color: '#e8ecf0' }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
