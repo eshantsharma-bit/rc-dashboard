@@ -463,6 +463,84 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
   </div>
 </div>
 
+<!-- ── 264 BUG STATUS ── -->
+<div class="card">
+  <div class="card-title">264 Bug Status — GUS Live Pull (Sep 22, 2026)</div>
+  <div style="font-size:10px;color:var(--muted);margin-bottom:10px">
+    16 bugs tracked · 13 Closed/Fixed · 1 QA In Progress · 1 Waiting on PM · 1 Triaged (no build scheduled)
+  </div>
+  <table style="width:100%;border-collapse:collapse;font-size:11px">
+    <thead>
+      <tr style="background:#f3f3f3;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em">
+        <th style="padding:5px 8px;text-align:left;font-weight:600;border-bottom:1px solid #e5e5e5;width:90px">Bug #</th>
+        <th style="padding:5px 8px;text-align:left;font-weight:600;border-bottom:1px solid #e5e5e5">Subject</th>
+        <th style="padding:5px 4px;text-align:center;font-weight:600;border-bottom:1px solid #e5e5e5;white-space:nowrap;width:36px">Pri</th>
+        <th style="padding:5px 8px;text-align:center;font-weight:600;border-bottom:1px solid #e5e5e5;white-space:nowrap;width:70px">Fix Build</th>
+        <th style="padding:5px 8px;text-align:center;font-weight:600;border-bottom:1px solid #e5e5e5;white-space:nowrap;width:120px">Status</th>
+      </tr>
+    </thead>
+    <tbody id="bugStatusBody"></tbody>
+  </table>
+  <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;font-size:10px">
+    <span><span class="gus-pill gus-closed">Closed ✓</span> Fix shipped</span>
+    <span><span class="gus-pill" style="background:#d1fae5;color:#065f46;border-color:#6ee7b7">Fixed</span> Fix in QA / staging</span>
+    <span><span class="gus-pill" style="background:#dbeafe;color:#1e40af;border-color:#93c5fd">QA In Progress</span> Active QA</span>
+    <span><span class="gus-pill" style="background:#fef3c7;color:#92400e;border-color:#fcd34d">Triaged</span> No build scheduled</span>
+    <span><span class="gus-pill" style="background:#fee2e2;color:#991b1b;border-color:#fca5a5">Waiting</span> Blocked on PM / Customer</span>
+  </div>
+</div>
+
+<script>
+const BUG_DATA=[
+  {id:'W-23791512',subj:'[Usage][264 upgrade] Retrieve Net Unit Rates batch fails post-upgrade',pri:'P1',build:'266',status:'Closed'},
+  {id:'W-23919000',subj:'[264 patch] Flow Builder Non-Blocking field shows error with {!S01_DataManager.isNonBlockingEnabled}',pri:'P1',build:'264.5',status:'Fixed'},
+  {id:'W-24031441',subj:'SB1 Investigation: PSG cron job fails to update custom PSG with many modified stages',pri:'P2',build:'264.5',status:'QA In Progress'},
+  {id:'W-24033420',subj:'[Patch Backport] Control PST concurrency lock (264, W-21777087) via org value',pri:'P1',build:'264.e',status:'Closed'},
+  {id:'W-24048302',subj:'Bell Canada — CML Errors not showing as expected',pri:'P1',build:'—',status:'Triaged'},
+  {id:'W-24050344',subj:'[DRO] ScreenFlow Invocation fails in LaunchFlowForManualTaskAction',pri:'P1',build:'264.e',status:'Closed'},
+  {id:'W-24053522',subj:'[264.5][AJG] DTP & Recovery API enhancement: 2k line support (from 200)',pri:'P1',build:'264.5',status:'Closed'},
+  {id:'W-24059609',subj:'Cross-context custom field mapping silently dropped in 264 — ContextNodeMapping',pri:'P2',build:'266',status:'Closed'},
+  {id:'W-24067780',subj:'Read/Write Permissions from Approval Submission Object not carried to Approval Context',pri:'P1',build:'264.6',status:'Waiting'},
+  {id:'W-24088655',subj:'[Upgrade] invoices not generated when state/country picklist enabled',pri:'P1',build:'264.e',status:'Closed'},
+  {id:'W-24096152',subj:'Email sanitisation causing issues in product details API',pri:'P1',build:'264.e',status:'Closed'},
+  {id:'W-24102675',subj:'Ramp group hit validation — missing proper Quote status, causing blocking of order',pri:'P1',build:'264.5',status:'Closed'},
+  {id:'W-24105749',subj:'[264][Guidewire] Creating a Group on Quote fails — configurator error',pri:'P1',build:'264.5',status:'Closed'},
+  {id:'W-24132497',subj:'[266] Fulfillment Order warning: Asset line items not in expected state',pri:'P3',build:'266',status:'Closed'},
+  {id:'W-24154865',subj:'[264][STLE] Editing group name no longer marks cell dirty or shows Save button',pri:'P1',build:'264.5',status:'Closed'},
+  {id:'W-24156853',subj:'[RLM][Configurator][Pricing Summary] Monthly Total shows full-term prorated amount',pri:'P2',build:'266',status:'Closed'},
+];
+
+const STATUS_STYLE={
+  'Closed':    'background:#f0fdf4;color:#166534;border-color:#86efac;font-weight:700',
+  'Fixed':     'background:#d1fae5;color:#065f46;border-color:#6ee7b7;font-weight:700',
+  'QA In Progress':'background:#dbeafe;color:#1e40af;border-color:#93c5fd',
+  'Triaged':   'background:#fef3c7;color:#92400e;border-color:#fcd34d',
+  'Waiting':   'background:#fee2e2;color:#991b1b;border-color:#fca5a5;font-weight:700',
+};
+const PRI_STYLE={
+  'P1':'color:#c23934;font-weight:700',
+  'P2':'color:#9a6700;font-weight:700',
+  'P3':'color:var(--muted)',
+};
+const DONE=['Closed','Fixed'];
+const tbody=document.getElementById('bugStatusBody');
+BUG_DATA.forEach((b,i)=>{
+  const done=DONE.includes(b.status);
+  const tr=document.createElement('tr');
+  tr.style.background=i%2===0?'#fff':'#fafafa';
+  if(!done) tr.style.background='#fffbeb';
+  tr.innerHTML=`
+    <td style="padding:5px 8px;font-family:monospace;font-size:10px;color:#0176d3;white-space:nowrap">${b.id}</td>
+    <td style="padding:5px 8px;color:var(--text);line-height:1.35">${b.subj}</td>
+    <td style="padding:5px 4px;text-align:center;font-size:10px;${PRI_STYLE[b.pri]||''}">${b.pri}</td>
+    <td style="padding:5px 8px;text-align:center;font-size:10px;font-family:monospace;color:var(--muted)">${b.build}</td>
+    <td style="padding:5px 8px;text-align:center">
+      <span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;border:1px solid transparent;${STATUS_STYLE[b.status]||''}">${b.status}${b.status==='Closed'?' ✓':''}</span>
+    </td>`;
+  tbody.appendChild(tr);
+});
+</script>
+
 <footer>264 RC Upgrade · First 7 Days Post-SB1 IST · Revenue Cloud Core RCA/RCB · OrgCS + GUS validated · Sep 2026</footer>
 
 <script>
