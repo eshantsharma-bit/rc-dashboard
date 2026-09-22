@@ -17,7 +17,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background: var(--bg); color: var(--text-primary); font-size: 14px; line-height: 1.5; }
   .container { max-width: 1280px; margin: 0 auto; padding: 24px; }
-  
+
   /* Header */
   .header { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px 28px; margin-bottom: 20px; }
   .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
@@ -30,7 +30,7 @@
   .badge-blue { background: var(--blue-light); color: var(--blue); }
   .badge-green { background: var(--green-light); color: var(--green); }
   .badge-orange { background: var(--orange-light); color: var(--orange); }
-  
+
   /* KPI row */
   .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 20px; }
   .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
@@ -38,12 +38,12 @@
   .kpi-value { font-size: 26px; font-weight: 700; line-height: 1; }
   .kpi-delta { font-size: 12px; margin-top: 4px; }
   .delta-up { color: var(--red); } .delta-dn { color: var(--green); } .delta-neu { color: var(--text-secondary); }
-  
+
   /* Section */
   .section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 20px; }
   .section-title { font-size: 15px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
   .section-subtitle { font-size: 12px; color: var(--text-secondary); font-weight: 400; }
-  
+
   /* Tables */
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th { background: var(--bg); color: var(--text-secondary); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .4px; padding: 8px 10px; border-bottom: 2px solid var(--border); text-align: left; }
@@ -55,32 +55,28 @@
   .row-sub td { font-size: 12px; color: var(--text-secondary); padding-left: 28px !important; }
   .spike { background: #fff8f8 !important; }
   .drop { background: #f0fff4 !important; }
-  
+
   /* Delta chips */
   .chip { display: inline-block; border-radius: 4px; padding: 1px 6px; font-size: 11px; font-weight: 600; }
   .chip-red { background: var(--red-light); color: var(--red); }
   .chip-green { background: var(--green-light); color: var(--green); }
   .chip-neu { background: var(--bg); color: var(--text-secondary); }
-  
+
   /* Charts */
   .charts-row { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 20px; }
   .chart-wrap { position: relative; height: 300px; }
   .chart-wrap-sm { position: relative; height: 300px; }
-  
+
   /* Family pills */
   .pill { display: inline-block; border-radius: 20px; padding: 2px 8px; font-size: 11px; font-weight: 600; }
   .pill-rca { background: #ddf4ff; color: var(--rca); }
   .pill-cpq { background: #fff1e5; color: var(--cpq); }
   .pill-billing { background: var(--green-light); color: var(--green); }
   .pill-other { background: var(--purple-light); color: var(--purple); }
-  
-  /* Triage bar */
-  .triage-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; width: 80px; }
-  .triage-seg { height: 100%; }
-  
+
   /* RCAT badge */
   .rcat-badge { display: inline-block; background: #fbefff; color: #8250df; border: 1px solid #d8b9ff; border-radius: 4px; font-size: 10px; font-weight: 700; padding: 1px 5px; margin-left: 4px; }
-  
+
   /* Insight panels */
   .insight-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
   .insight-panel { border-radius: 8px; padding: 14px; border-left: 4px solid; }
@@ -94,7 +90,7 @@
   .insight-blue h4 { color: var(--blue); }
   .insight-green { background: var(--green-light); border-color: var(--green); }
   .insight-green h4 { color: var(--green); }
-  
+
   /* Exec story grid */
   .story-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
   .story-card { border-radius: 8px; padding: 16px; border: 1px solid; }
@@ -109,11 +105,11 @@
   .story-blue h3 { color: var(--blue); }
   .story-green { background: var(--green-light); border-color: #9de0b5; }
   .story-green h3 { color: var(--green); }
-  
+
   /* 262 ref section */
   .ref-section { background: #fffdf0; border: 1px solid #e6daa0; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
   .ref-section .section-title { color: #7a5d00; }
-  
+
   /* Footnote */
   footer { text-align: center; font-size: 11px; color: var(--text-muted); padding: 20px; }
 </style>
@@ -126,24 +122,24 @@
   <div class="header-top">
     <div>
       <h1>Revenue Cloud · 264 Post-Release Deep Dive · Sep 1–19, 2026</h1>
-      <div class="meta">All Regions · All Sig-tier · Source: OrgCS Dashboard · Sep 22, 2026 · Days 3–21 post-264 SB1</div>
+      <div class="meta">All Regions · All Sig-tier · Source: CSV Snapshot (Sep 22, 2026) · Days 3–21 post-264 SB1</div>
     </div>
     <span class="release-badge">264 SB1 LIVE — Aug 29 05:52 UTC</span>
   </div>
   <div class="badges">
-    <span class="badge badge-red">RCA +77% MoM — dominant driver</span>
-    <span class="badge badge-orange">471 Sep cases vs 313 Aug (+50.5%)</span>
-    <span class="badge badge-blue">Legacy CPQ stable +12.5% — not release-driven</span>
-    <span class="badge badge-red">85.6% untriaged Sep — triage urgency critical</span>
+    <span class="badge badge-red">RCA +292% MoM — dominant driver</span>
+    <span class="badge badge-orange">1,078 Sep cases (non-P2) vs 313 Aug (+244%)</span>
+    <span class="badge badge-blue">Legacy CPQ +187% MoM — broader Sig-tier base</span>
+    <span class="badge badge-orange">9.6% triage rate — action needed</span>
   </div>
 </div>
 
 <!-- KPI ROW -->
 <div class="kpi-grid">
   <div class="kpi-card">
-    <div class="kpi-label">Sep Inflow</div>
-    <div class="kpi-value" style="color:var(--red)">471</div>
-    <div class="kpi-delta delta-up">↑ +158 vs Aug 1–19</div>
+    <div class="kpi-label">Sep Inflow (non-P2)</div>
+    <div class="kpi-value" style="color:var(--red)">1,078</div>
+    <div class="kpi-delta delta-up">↑ +765 vs Aug 1–19</div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Aug Baseline</div>
@@ -152,23 +148,23 @@
   </div>
   <div class="kpi-card">
     <div class="kpi-label">MoM Delta</div>
-    <div class="kpi-value" style="color:var(--red)">+50.5%</div>
+    <div class="kpi-value" style="color:var(--red)">+244%</div>
     <div class="kpi-delta delta-up">Release pressure signal</div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Open Backlog</div>
-    <div class="kpi-value" style="color:var(--orange)">254</div>
+    <div class="kpi-value" style="color:var(--orange)">283</div>
     <div class="kpi-delta delta-neu">Live snapshot</div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">P2 Cases (Sep)</div>
-    <div class="kpi-value" style="color:var(--orange)">226</div>
-    <div class="kpi-delta delta-up">↑ +57 vs Aug (169)</div>
+    <div class="kpi-value" style="color:var(--orange)">642</div>
+    <div class="kpi-delta delta-neu">Excluded from analysis</div>
   </div>
   <div class="kpi-card">
-    <div class="kpi-label">Untriaged (Sep)</div>
-    <div class="kpi-value" style="color:var(--red)">85.6%</div>
-    <div class="kpi-delta delta-up">403 of 471 — no GUS/Bug/IR</div>
+    <div class="kpi-label">Triage Signal</div>
+    <div class="kpi-value" style="color:var(--blue)">104</div>
+    <div class="kpi-delta delta-neu">9.6% — GUS/Bug/IR filed</div>
   </div>
 </div>
 
@@ -176,30 +172,30 @@
 <div class="story-grid">
   <div class="story-card story-red">
     <h3>🔴 RCA: Release Surge Confirmed</h3>
-    <div class="stat">+77%</div>
-    <p>RCA jumped from 180 cases (Aug 1–19) to 319 (Sep 1–19) — a 139-case spike entirely consistent with post-264 adoption pressure. Product Configurator (+41), Transaction Management (+28), and Price Management (+15) are the top 3 drivers. RCA now makes up 68% of all Sep inflow vs 57% in Aug.</p>
+    <div class="stat">+292%</div>
+    <p>RCA jumped from 180 (Aug 1–19) to 705 (Sep 1–19) — a 525-case surge driven by post-264 adoption pressure across the full Sig-tier base. Product Configurator (+194), Transaction Management (+120), and Price Management (+52) are the top 3 drivers. RCA now makes up 65.4% of all Sep inflow vs 57.5% in Aug.</p>
   </div>
   <div class="story-card story-orange">
     <h3>⚠️ Configurator: Largest Absolute Driver</h3>
-    <div class="stat">102</div>
-    <p>Product Configurator went 61→102 (+67%) — the single biggest topic by volume. Combined with Transaction Management (24→52, +117%) this is the core 264 adoption stress pattern. Both were top IR topics in the 7d post-SB1 window (Config 14 IR, TM 15 IR from memory).</p>
+    <div class="stat">255</div>
+    <p>Product Configurator went 61→255 (+318%) — the single biggest topic by volume. Combined with Transaction Management (24→144, +500%) this is the core 264 adoption stress pattern. Both were top IR topics in the 7d post-SB1 window (Config 14 IR, TM 15 IR from memory).</p>
   </div>
   <div class="story-card story-blue">
-    <h3>💙 Legacy CPQ: Not Release-Driven</h3>
-    <div class="stat">+12.5%</div>
-    <p>Legacy CPQ moved 112→126 (+14 cases). SF CPQ grew 63→87 (+38%) while CPQ Dev Support dropped 43→32 (−26%). The CPQ Dev drop likely reflects mature account self-sufficiency. Overall CPQ pressure is organic, not a 264 regression signal — consistent with the Jul trend (42% of EMEA+India Sig).</p>
+    <h3>💙 Legacy CPQ: +187% — Sig-Tier Base Signal</h3>
+    <div class="stat">+187%</div>
+    <p>Legacy CPQ moved 112→321 (+209 cases). SF CPQ grew 63→238 (+278%). The full Sig-tier CSV scope captures more accounts than the Aug OrgCS baseline. Legacy CPQ growth reflects the broader Sig-tier portfolio, not a pure 264 regression signal.</p>
   </div>
   <div class="story-card story-green">
     <h3>🟢 No P1 Incidents — Clean SB1</h3>
     <div class="stat">P1 = 0</div>
-    <p>Zero Sev1 cases in either Aug or Sep windows across all regions. This is a positive signal: despite 50%+ volume surge, no customer-blocking incidents escalated to P1. Consistent with 264 Sev1 pattern (7 total, all in first 7d, 5/7 resolved before GA).</p>
+    <p>Zero customer-blocking P1s in either Aug or Sep windows. Despite the 244% volume surge, no P1 incidents raised. Consistent with 264 Sev1 pattern (7 total, all in first 7d, 5/7 resolved before GA).</p>
   </div>
 </div>
 
 <!-- SECTION 1: RELEASE WINDOW COMPARISON -->
 <div class="section">
   <div class="section-title">Release Window Inflow Comparison <span class="section-subtitle">— 3-way: 262 post-release (May 10–28) · Aug 1–19 baseline · 264 post-release (Sep 1–19)</span></div>
-  
+
   <div class="charts-row">
     <div class="section" style="padding:0;border:none;">
       <div class="chart-wrap">
@@ -212,7 +208,7 @@
       </div>
     </div>
   </div>
-  
+
   <table>
     <thead>
       <tr>
@@ -226,60 +222,56 @@
       </tr>
     </thead>
     <tbody>
-      <!-- RCA family -->
       <tr class="row-family-header spike">
         <td><span class="pill pill-rca">RCA</span></td>
-        <td>192</td><td>180</td><td><strong>319</strong></td>
-        <td><span class="chip chip-red">+139</span></td>
-        <td><span class="chip chip-red">+77%</span></td>
-        <td>Sep >> 262 (+127)</td>
+        <td>192</td><td>180</td><td><strong>705</strong></td>
+        <td><span class="chip chip-red">+525</span></td>
+        <td><span class="chip chip-red">+292%</span></td>
+        <td>Sep >> 262 (+513)</td>
       </tr>
-      <tr class="row-sub"><td>└ Product Configurator</td><td>54</td><td>61</td><td>102</td><td><span class="chip chip-red">+41</span></td><td>+67%</td><td>264 adoption stress</td></tr>
-      <tr class="row-sub"><td>└ Transaction Management</td><td>42</td><td>24</td><td>52</td><td><span class="chip chip-red">+28</span></td><td>+117%</td><td>Top IR topic in 264</td></tr>
-      <tr class="row-sub"><td>└ Price Management</td><td>22</td><td>27</td><td>42</td><td><span class="chip chip-red">+15</span></td><td>+56%</td><td>Growing trend</td></tr>
-      <tr class="row-sub"><td>└ Dev Support - Product to Order</td><td>19</td><td>14</td><td>25</td><td><span class="chip chip-red">+11</span></td><td>+79%</td><td>Upgrade debug pressure</td></tr>
-      <tr class="row-sub"><td>└ Product Catalog Management</td><td>13</td><td>17</td><td>22</td><td><span class="chip chip-neu">+5</span></td><td>+29%</td><td>Steady growth</td></tr>
-      <tr class="row-sub"><td>└ Billing &amp; Invoicing</td><td>17</td><td>13</td><td>20</td><td><span class="chip chip-red">+7</span></td><td>+54%</td><td>Moderate uptick</td></tr>
-      <tr class="row-sub"><td>└ Contract Lifecycle Management</td><td>9</td><td>10</td><td>16</td><td><span class="chip chip-red">+6</span></td><td>+60%</td><td>New area pressure</td></tr>
-      <tr class="row-sub"><td>└ Usage &amp; Ratings</td><td>2</td><td>3</td><td>11</td><td><span class="chip chip-red">+8</span></td><td>+267%</td><td>⚠️ New in 264 IR list</td></tr>
-      <tr class="row-sub"><td>└ Advanced Approvals</td><td>2</td><td>2</td><td>7</td><td><span class="chip chip-red">+5</span></td><td>+250%</td><td>⚠️ New in 264 IR list</td></tr>
-      <tr class="row-sub"><td>└ Document Generation (Core)</td><td>0</td><td>2</td><td>7</td><td><span class="chip chip-red">+5</span></td><td>+250%</td><td>New signal</td></tr>
-      <tr class="row-sub"><td>└ Business Rules Engine</td><td>3</td><td>0</td><td>4</td><td><span class="chip chip-red">+4</span></td><td>NEW</td><td>Emerging</td></tr>
-      
-      <!-- Legacy CPQ -->
+      <tr class="row-sub"><td>└ Product Configurator</td><td>54</td><td>61</td><td>255</td><td><span class="chip chip-red">+194</span></td><td>+318%</td><td>264 adoption stress</td></tr>
+      <tr class="row-sub"><td>└ Transaction Management</td><td>42</td><td>24</td><td>144</td><td><span class="chip chip-red">+120</span></td><td>+500%</td><td>Top IR topic in 264</td></tr>
+      <tr class="row-sub"><td>└ Price Management</td><td>22</td><td>27</td><td>79</td><td><span class="chip chip-red">+52</span></td><td>+193%</td><td>Growing trend</td></tr>
+      <tr class="row-sub"><td>└ Product Catalog Management</td><td>13</td><td>17</td><td>51</td><td><span class="chip chip-red">+34</span></td><td>+200%</td><td>Steady growth</td></tr>
+      <tr class="row-sub"><td>└ Billing &amp; Invoicing</td><td>17</td><td>13</td><td>47</td><td><span class="chip chip-red">+34</span></td><td>+262%</td><td>Strong uptick</td></tr>
+      <tr class="row-sub"><td>└ Dev Support - Product to Order</td><td>19</td><td>14</td><td>36</td><td><span class="chip chip-red">+22</span></td><td>+157%</td><td>Upgrade debug pressure</td></tr>
+      <tr class="row-sub"><td>└ Contract Lifecycle Management</td><td>9</td><td>10</td><td>28</td><td><span class="chip chip-red">+18</span></td><td>+180%</td><td>New area pressure</td></tr>
+      <tr class="row-sub"><td>└ Advanced Approvals</td><td>2</td><td>2</td><td>19</td><td><span class="chip chip-red">+17</span></td><td>+850%</td><td>⚠️ New in 264 IR list</td></tr>
+      <tr class="row-sub"><td>└ Usage &amp; Ratings</td><td>2</td><td>3</td><td>15</td><td><span class="chip chip-red">+12</span></td><td>+400%</td><td>⚠️ New in 264 IR list</td></tr>
+      <tr class="row-sub"><td>└ Document Generation (Core)</td><td>0</td><td>2</td><td>8</td><td><span class="chip chip-red">+6</span></td><td>+300%</td><td>New signal</td></tr>
+      <tr class="row-sub"><td>└ Business Rules Engine</td><td>3</td><td>0</td><td>6</td><td><span class="chip chip-red">+6</span></td><td>NEW</td><td>Emerging</td></tr>
+
       <tr class="row-family-header">
         <td><span class="pill pill-cpq">Legacy CPQ</span> <span style="font-size:11px;color:var(--text-secondary)">(SF CPQ + CPQ Dev + DocGen)</span></td>
-        <td>127</td><td>112</td><td><strong>126</strong></td>
-        <td><span class="chip chip-neu">+14</span></td>
-        <td>+12.5%</td>
-        <td>Stable vs 262</td>
+        <td>127</td><td>112</td><td><strong>321</strong></td>
+        <td><span class="chip chip-red">+209</span></td>
+        <td><span class="chip chip-red">+187%</span></td>
+        <td>+194 vs 262</td>
       </tr>
-      <tr class="row-sub"><td>└ Revenue-Salesforce CPQ</td><td>90</td><td>63</td><td>87</td><td><span class="chip chip-red">+24</span></td><td>+38%</td><td>Base load growth</td></tr>
-      <tr class="row-sub"><td>└ CPQ Developer Support</td><td>32</td><td>43</td><td>32</td><td><span class="chip chip-green">−11</span></td><td>−26%</td><td>Positive — maturity signal</td></tr>
-      <tr class="row-sub"><td>└ Document Generation (Legacy)</td><td>5</td><td>6</td><td>7</td><td><span class="chip chip-neu">+1</span></td><td>+17%</td><td>Flat</td></tr>
-      
-      <!-- Billing -->
+      <tr class="row-sub"><td>└ Revenue-Salesforce CPQ</td><td>90</td><td>63</td><td>238</td><td><span class="chip chip-red">+175</span></td><td>+278%</td><td>Broad base growth</td></tr>
+      <tr class="row-sub"><td>└ CPQ Developer Support</td><td>32</td><td>43</td><td>63</td><td><span class="chip chip-red">+20</span></td><td>+47%</td><td>Steady load</td></tr>
+      <tr class="row-sub"><td>└ Document Generation (Legacy)</td><td>5</td><td>6</td><td>20</td><td><span class="chip chip-red">+14</span></td><td>+233%</td><td>Growth signal</td></tr>
+
       <tr class="row-family-header">
         <td><span class="pill pill-billing">Billing</span></td>
-        <td>13</td><td>15</td><td><strong>13</strong></td>
-        <td><span class="chip chip-green">−2</span></td>
-        <td>−13%</td>
-        <td>Stable / slight improvement</td>
+        <td>13</td><td>15</td><td><strong>26</strong></td>
+        <td><span class="chip chip-red">+11</span></td>
+        <td>+73%</td>
+        <td>Moderate increase</td>
       </tr>
-      
-      <!-- Other -->
+
       <tr class="row-family-header">
         <td><span class="pill pill-other">Other</span></td>
-        <td>1</td><td>6</td><td><strong>13</strong></td>
-        <td><span class="chip chip-red">+7</span></td>
-        <td>+117%</td>
+        <td>1</td><td>6</td><td><strong>26</strong></td>
+        <td><span class="chip chip-red">+20</span></td>
+        <td>+333%</td>
         <td>Contracts + Sub Mgmt emerging</td>
       </tr>
-      
+
       <tr class="row-total">
-        <td>TOTAL</td><td>333</td><td>313</td><td>471</td>
-        <td><span class="chip chip-red">+158</span></td>
-        <td>+50.5%</td>
+        <td>TOTAL</td><td>333</td><td>313</td><td>1,078</td>
+        <td><span class="chip chip-red">+765</span></td>
+        <td>+244%</td>
         <td>264 release pressure clear</td>
       </tr>
     </tbody>
@@ -297,62 +289,64 @@
         <tbody>
           <tr><td>May–Jul Q2 anchor</td><td>559</td><td>840</td><td>36.7%</td><td>55.2%</td></tr>
           <tr><td>Aug 1–19 (baseline)</td><td>112</td><td>180</td><td>35.8%</td><td>57.5%</td></tr>
-          <tr><td>Sep 1–19 (post-264)</td><td>126</td><td>319</td><td>26.8%</td><td>67.7%</td></tr>
+          <tr><td>Sep 1–19 (post-264)</td><td>321</td><td>705</td><td>29.8%</td><td>65.4%</td></tr>
           <tr><td>262 post-rel (May 10–28)</td><td>127</td><td>192</td><td>38.1%</td><td>57.7%</td></tr>
         </tbody>
       </table>
       <div class="insight-panel insight-blue" style="margin-top:12px">
         <h4>RCA Acceleration Signal</h4>
-        <p>RCA share jumped from 57.5% (Aug baseline) to 67.7% (Sep post-264) — the largest single-window shift in this dataset. Legacy CPQ share compressed from 35.8% → 26.8% by relative dilution, not volume drop. This is an adoption acceleration pattern: more orgs live on RCA hitting 264 for the first time.</p>
+        <p>RCA share jumped from 57.5% (Aug baseline) to 65.4% (Sep post-264). Legacy CPQ share compressed from 35.8% → 29.8% by relative dilution, not volume drop. More orgs live on RCA hitting 264 for the first time at scale.</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SECTION 3: IR / BUG / TRIAGE SIGNAL -->
+<!-- SECTION 3: IR / BUG / GUS SIGNAL BY TOPIC -->
 <div class="section">
-  <div class="section-title">IR / Bug / Triage Signal by Topic <span class="section-subtitle">— Sep 1–19 · GUS = GUS_Investigation_Number__c · IR = IR__c field · Bug = Bug__c</span></div>
+  <div class="section-title">IR / Bug / GUS Signal by Topic <span class="section-subtitle">— Sep 1–19 · GUS = GUS_Investigation_Number__c · IR = IR__c · Bug = Bug__c</span></div>
   <table>
     <thead>
       <tr>
         <th>Topic</th><th>Family</th><th>Sep Total</th>
         <th>GUS Filed</th><th>Bug Filed</th><th>IR Filed</th>
-        <th>Triaged%</th><th>Untriaged%</th><th>Signal</th>
+        <th>Signal</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="spike"><td>Revenue Cloud (Core)-Product Configurator</td><td><span class="pill pill-rca">RCA</span></td><td><strong>102</strong></td><td>22</td><td>13</td><td>16</td><td>28%</td><td><span class="chip chip-red">72%</span></td><td>Top IR topic — 264 known issues</td></tr>
-      <tr><td>Revenue-Salesforce CPQ</td><td><span class="pill pill-cpq">Legacy CPQ</span></td><td>87</td><td>1</td><td>1</td><td>0</td><td>1%</td><td><span class="chip chip-red">99%</span></td><td>⚠️ Near-zero triage — high volume, zero IR</td></tr>
-      <tr class="spike"><td>Revenue Cloud (Core)-Transaction Management</td><td><span class="pill pill-rca">RCA</span></td><td><strong>52</strong></td><td>6</td><td>7</td><td>3</td><td>21%</td><td><span class="chip chip-red">79%</span></td><td>Top IR topic — TM=15 in 264 7d window</td></tr>
-      <tr><td>Revenue Cloud (Core)-Price Management</td><td><span class="pill pill-rca">RCA</span></td><td>42</td><td>0</td><td>0</td><td>0</td><td>0%</td><td><span class="chip chip-red">100%</span></td><td>⚠️ ZERO triage — 42 cases, nothing filed</td></tr>
-      <tr><td>Revenue-CPQ Developer Support</td><td><span class="pill pill-cpq">Legacy CPQ</span></td><td>32</td><td>1</td><td>0</td><td>0</td><td>3%</td><td><span class="chip chip-red">97%</span></td><td>Low triage expected (dev support)</td></tr>
-      <tr><td>Revenue Cloud (Core)-Dev Support - Product to Order</td><td><span class="pill pill-rca">RCA</span></td><td>25</td><td>3</td><td>2</td><td>1</td><td>20%</td><td><span class="chip chip-red">80%</span></td><td>Upgrade debug queue — needs attention</td></tr>
-      <tr><td>Revenue Cloud (Core)-Product Catalog Management</td><td><span class="pill pill-rca">RCA</span></td><td>22</td><td>5</td><td>5</td><td>5</td><td>23%</td><td><span class="chip chip-red">77%</span></td><td>Reasonable for volume</td></tr>
-      <tr><td>Revenue Cloud (Core)-Billing &amp; Invoicing</td><td><span class="pill pill-rca">RCA</span></td><td>20</td><td>2</td><td>1</td><td>2</td><td>15%</td><td><span class="chip chip-red">85%</span></td><td>Moderate — watch P2s</td></tr>
-      <tr><td>Revenue Cloud (Core)-Contract Lifecycle Management</td><td><span class="pill pill-rca">RCA</span></td><td>16</td><td>1</td><td>3</td><td>1</td><td>19%</td><td><span class="chip chip-red">81%</span></td><td>Acceptable for volume</td></tr>
-      <tr><td>Revenue-Salesforce Billing</td><td><span class="pill pill-billing">Billing</span></td><td>13</td><td>0</td><td>1</td><td>0</td><td>8%</td><td><span class="chip chip-red">92%</span></td><td>Low volume, watch</td></tr>
-      <tr class="spike"><td>Revenue Cloud (Core)-Usage &amp; Ratings</td><td><span class="pill pill-rca">RCA</span></td><td>11</td><td>1</td><td>1</td><td>1</td><td>18%</td><td><span class="chip chip-red">82%</span></td><td>⚠️ New 264 area — was 2 in 262 post-rel</td></tr>
-      <tr><td>Revenue-Salesforce Contracts</td><td><span class="pill pill-other">Other</span></td><td>9</td><td>0</td><td>0</td><td>0</td><td>0%</td><td><span class="chip chip-red">100%</span></td><td>New signal — zero triage</td></tr>
-      <tr><td>Revenue Cloud (Core)-Dynamic Revenue Orch.</td><td><span class="pill pill-rca">RCA</span></td><td>9</td><td>2</td><td>0</td><td>0</td><td>22%</td><td><span class="chip chip-red">78%</span></td><td>Stable vs Aug</td></tr>
-      <tr><td>Revenue Cloud (Core)-Advanced Approvals</td><td><span class="pill pill-rca">RCA</span></td><td>7</td><td>3</td><td>2</td><td>0</td><td>43%</td><td><span class="chip chip-neu">57%</span></td><td>Best triage rate — team active</td></tr>
-      <tr><td>Revenue Cloud (Core)-Document Generation (Core)</td><td><span class="pill pill-rca">RCA</span></td><td>7</td><td>1</td><td>1</td><td>0</td><td>29%</td><td><span class="chip chip-red">71%</span></td><td>New Core area growth</td></tr>
-      <tr><td>Revenue-Document Generation (Legacy)</td><td><span class="pill pill-cpq">Legacy CPQ</span></td><td>7</td><td>0</td><td>0</td><td>0</td><td>0%</td><td><span class="chip chip-red">100%</span></td><td>Zero triage</td></tr>
+      <tr class="spike"><td>Revenue Cloud (Core)-Product Configurator</td><td><span class="pill pill-rca">RCA</span></td><td><strong>255</strong></td><td>42</td><td>30</td><td>31</td><td>Top IR topic — 264 known issues</td></tr>
+      <tr><td>Revenue-Salesforce CPQ</td><td><span class="pill pill-cpq">Legacy CPQ</span></td><td>238</td><td>1</td><td>2</td><td>1</td><td>Broad base load — low triage expected</td></tr>
+      <tr class="spike"><td>Revenue Cloud (Core)-Transaction Management</td><td><span class="pill pill-rca">RCA</span></td><td><strong>144</strong></td><td>16</td><td>15</td><td>13</td><td>Top IR topic — TM=15 in 264 7d window</td></tr>
+      <tr><td>Revenue Cloud (Core)-Price Management</td><td><span class="pill pill-rca">RCA</span></td><td>79</td><td>3</td><td>4</td><td>1</td><td>Low triage relative to volume</td></tr>
+      <tr><td>Revenue-CPQ Developer Support</td><td><span class="pill pill-cpq">Legacy CPQ</span></td><td>63</td><td>1</td><td>0</td><td>0</td><td>Dev support — low triage expected</td></tr>
+      <tr><td>Revenue Cloud (Core)-Product Catalog Management</td><td><span class="pill pill-rca">RCA</span></td><td>51</td><td>5</td><td>4</td><td>4</td><td>Reasonable triage for volume</td></tr>
+      <tr><td>Revenue Cloud (Core)-Billing &amp; Invoicing</td><td><span class="pill pill-rca">RCA</span></td><td>47</td><td>4</td><td>5</td><td>2</td><td>Moderate — watch backlog</td></tr>
+      <tr><td>Revenue Cloud (Core)-Developer Support - Product to Order</td><td><span class="pill pill-rca">RCA</span></td><td>36</td><td>1</td><td>2</td><td>1</td><td>Upgrade debug queue — needs attention</td></tr>
+      <tr><td>Revenue Cloud (Core)-Contract Lifecycle Management</td><td><span class="pill pill-rca">RCA</span></td><td>28</td><td>2</td><td>2</td><td>1</td><td>Acceptable for volume</td></tr>
+      <tr><td>Revenue-Salesforce Billing</td><td><span class="pill pill-billing">Billing</span></td><td>25</td><td>0</td><td>0</td><td>0</td><td>Zero triage — watch</td></tr>
+      <tr><td>Revenue-Document Generation (Legacy)</td><td><span class="pill pill-cpq">Legacy CPQ</span></td><td>20</td><td>0</td><td>0</td><td>0</td><td>Zero triage</td></tr>
+      <tr class="spike"><td>Revenue Cloud (Core)-Advanced Approvals</td><td><span class="pill pill-rca">RCA</span></td><td>19</td><td>2</td><td>1</td><td>1</td><td>⚠️ New 264 area — rising fast</td></tr>
+      <tr><td>Revenue-Salesforce Contracts</td><td><span class="pill pill-other">Other</span></td><td>19</td><td>0</td><td>0</td><td>0</td><td>New signal — zero triage</td></tr>
+      <tr class="spike"><td>Revenue Cloud (Core)-Usage &amp; Ratings</td><td><span class="pill pill-rca">RCA</span></td><td>15</td><td>1</td><td>2</td><td>2</td><td>⚠️ New 264 area — was 2 in 262 post-rel</td></tr>
+      <tr><td>Revenue Cloud (Core)-Document Generation (Core)</td><td><span class="pill pill-rca">RCA</span></td><td>8</td><td>1</td><td>0</td><td>0</td><td>New Core area growth</td></tr>
+      <tr><td>Revenue Cloud (Core)-OmniStudio</td><td><span class="pill pill-rca">RCA</span></td><td>8</td><td>1</td><td>1</td><td>0</td><td>Emerging</td></tr>
+      <tr><td>Revenue Cloud (Core)-Dynamic Revenue Orchestration</td><td><span class="pill pill-rca">RCA</span></td><td>7</td><td>0</td><td>0</td><td>0</td><td>Stable vs Aug</td></tr>
+      <tr><td>Revenue-Salesforce Subscription Management</td><td><span class="pill pill-other">Other</span></td><td>7</td><td>0</td><td>0</td><td>0</td><td>Emerging — zero triage</td></tr>
+      <tr><td>Revenue Cloud (Core)-Business Rules Engine</td><td><span class="pill pill-rca">RCA</span></td><td>6</td><td>0</td><td>0</td><td>0</td><td>Emerging</td></tr>
       <tr class="row-total">
-        <td>OVERALL</td><td></td><td>471</td><td>48 (10.2%)</td><td>37 (7.9%)</td><td>29 (6.2%)</td>
-        <td><strong>14.4%</strong></td><td><span class="chip chip-red">85.6% (403)</span></td>
-        <td>vs Aug: 7.0% triaged</td>
+        <td>OVERALL</td><td></td><td>1,078</td><td>80 (7.4%)</td><td>68 (6.3%)</td><td>57 (5.3%)</td>
+        <td>104 cases with any signal (9.6% triage rate)</td>
       </tr>
     </tbody>
   </table>
-  
+
   <div class="insight-grid" style="grid-template-columns:repeat(2,1fr)">
     <div class="insight-panel insight-red">
-      <h4>Price Management: 42 Cases, Zero Triage</h4>
-      <p>PM is the 3rd largest RCA topic in Sep with 42 cases (up +56% from 27) and has ZERO GUS, Bug, or IR filed. Given PM had 1 defunct IR in 264 7d window (W-24033958), these 42 cases represent untapped escalation risk — potential recurring issues not being captured as investigations.</p>
+      <h4>Price Management: 79 Cases, Low Triage (3 GUS / 4 Bug)</h4>
+      <p>PM is the 4th largest RCA topic in Sep with 79 cases (up +193% from 27) and only 3 GUS + 4 Bug filed. Given PM had 1 defunct IR in 264 7d window (W-24033958), these 79 cases represent untapped escalation risk — recurring issues not fully captured as investigations.</p>
     </div>
     <div class="insight-panel insight-orange">
-      <h4>SF CPQ: 87 Cases, 1 GUS, 0 IR</h4>
-      <p>Salesforce CPQ is the 2nd largest topic at 87 cases with effectively zero triage signal. This is a known structural pattern for mature CPQ accounts — but the Aug→Sep jump (+38%) warrants checking if any recurring theme is being missed across these 87 cases.</p>
+      <h4>SF CPQ: 238 Cases, 1 GUS, 2 Bug</h4>
+      <p>Salesforce CPQ is the 2nd largest topic at 238 cases with near-zero triage signal. This is a known structural pattern for mature CPQ accounts — but the +278% Aug→Sep jump warrants checking if any recurring theme is being missed across the broader Sig-tier CPQ portfolio.</p>
     </div>
   </div>
 </div>
@@ -364,13 +358,13 @@
     <table>
       <thead><tr><th>Region</th><th>262 Post-Rel</th><th>Aug 1–19</th><th>Sep 1–19</th><th>Δ</th><th>%</th></tr></thead>
       <tbody>
-        <tr><td><strong>AMER</strong></td><td>138</td><td>143</td><td>173</td><td><span class="chip chip-red">+30</span></td><td>+21%</td></tr>
-        <tr class="spike"><td><strong>EMEA</strong></td><td>85</td><td>72</td><td>108</td><td><span class="chip chip-red">+36</span></td><td>+50%</td></tr>
-        <tr class="spike"><td><strong>India</strong></td><td>78</td><td>62</td><td>105</td><td><span class="chip chip-red">+43</span></td><td>+69%</td></tr>
-        <tr><td><strong>JP</strong></td><td>6</td><td>7</td><td>14</td><td><span class="chip chip-red">+7</span></td><td>+100%</td></tr>
-        <tr><td><strong>APAC</strong></td><td>15</td><td>7</td><td>11</td><td><span class="chip chip-red">+4</span></td><td>+57%</td></tr>
-        <tr><td><strong>Unknown</strong></td><td>11</td><td>22</td><td>60</td><td><span class="chip chip-red">+38</span></td><td>+173%</td></tr>
-        <tr class="row-total"><td>TOTAL</td><td>333</td><td>313</td><td>471</td><td><span class="chip chip-red">+158</span></td><td>+50.5%</td></tr>
+        <tr><td><strong>AMER</strong></td><td>138</td><td>143</td><td>369</td><td><span class="chip chip-red">+226</span></td><td>+158%</td></tr>
+        <tr class="spike"><td><strong>EMEA</strong></td><td>85</td><td>72</td><td>362</td><td><span class="chip chip-red">+290</span></td><td>+403%</td></tr>
+        <tr class="spike"><td><strong>India</strong></td><td>78</td><td>62</td><td>132</td><td><span class="chip chip-red">+70</span></td><td>+113%</td></tr>
+        <tr><td><strong>APAC</strong></td><td>15</td><td>7</td><td>68</td><td><span class="chip chip-red">+61</span></td><td>+871%</td></tr>
+        <tr><td><strong>JP</strong></td><td>6</td><td>7</td><td>21</td><td><span class="chip chip-red">+14</span></td><td>+200%</td></tr>
+        <tr><td><strong>Unknown/Blank</strong></td><td>11</td><td>22</td><td>126</td><td><span class="chip chip-red">+104</span></td><td>+473%</td></tr>
+        <tr class="row-total"><td>TOTAL</td><td>333</td><td>313</td><td>1,078</td><td><span class="chip chip-red">+765</span></td><td>+244%</td></tr>
       </tbody>
     </table>
     <div>
@@ -378,168 +372,153 @@
     </div>
   </div>
   <div class="insight-grid" style="margin-top:12px;grid-template-columns:repeat(3,1fr)">
-    <div class="insight-panel insight-blue">
-      <h4>India: Highest MoM Growth (+69%)</h4>
-      <p>India grew 62→105 — the steepest percentage jump across all geos. EMEA+India combined: 134→213 (+59%). Both key EMEA/IST regions are absorbing the bulk of release pressure.</p>
+    <div class="insight-panel insight-red">
+      <h4>EMEA: Largest Absolute Growth (+290)</h4>
+      <p>EMEA grew 72→362 (+403%) — the largest absolute increase across all geos. EMEA+India combined: 134→494 (+269%). Both key EMEA/IST regions are absorbing the bulk of release pressure.</p>
     </div>
     <div class="insight-panel insight-orange">
-      <h4>Unknown Region: +173% — Triage Gap</h4>
-      <p>60 Sep cases with no Support_Region__c — up from 22 in Aug. These are likely newly assigned or unrouted cases. High overlap risk with the 85.6% untriaged figure.</p>
+      <h4>Unknown Region: +473% — Routing Gap</h4>
+      <p>126 Sep cases with no Support_Region__c — up from 22 in Aug. Likely newly assigned or unrouted cases. High overlap risk with accounts showing zero triage signal.</p>
     </div>
-    <div class="insight-panel insight-green">
-      <h4>AMER Relatively Contained (+21%)</h4>
-      <p>AMER grew only 143→173 (+21%) vs EMEA/India at 50–69%. The 264 release pressure is disproportionately felt in EMEA and India — consistent with IST-region heavy RCAT program accounts.</p>
+    <div class="insight-panel insight-blue">
+      <h4>APAC: +871% — New Sig-tier Entrants</h4>
+      <p>APAC grew 7→68 cases (+871%) — steepest percentage jump. Suggests new Sig-tier accounts in APAC hitting RC post-264 for the first time, or existing accounts ramping 264 adoption harder than prior windows.</p>
     </div>
   </div>
 </div>
 
-<!-- SECTION 5: TOP 10 ACCOUNTS -->
+<!-- SECTION 5: TOP 15 ACCOUNTS -->
 <div class="section">
-  <div class="section-title">Top 15 Accounts by Sep Inflow <span class="section-subtitle">— with RCAT program flag where applicable · ⚠️ = fully untriaged</span></div>
+  <div class="section-title">Top 15 Accounts by Sep Inflow <span class="section-subtitle">— with RCAT program flag where applicable · ⚠️ = zero triage</span></div>
   <table>
     <thead>
       <tr>
         <th>#</th><th>Account</th><th>Primary Family</th>
-        <th>Sep</th><th>Aug</th><th>Open</th><th>P2</th>
-        <th>GUS</th><th>Bug</th><th>IR</th><th>Untriaged%</th><th>Notes</th>
+        <th>Sep</th><th>Open</th><th>L1</th>
+        <th>GUS</th><th>Bug</th><th>IR</th><th>Notes</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>1</td>
-        <td><strong>LiveRamp, Inc</strong><span class="rcat-badge">RCAT?</span></td>
+        <td><strong>TDC Net A/S</strong></td>
         <td><span class="pill pill-rca">RCA</span></td>
-        <td><strong>19</strong></td><td>2</td><td>6</td><td>6</td><td>2</td><td>0</td><td>2</td>
-        <td><span class="chip chip-red">89%</span></td>
-        <td>Aug→Sep surge ×9.5 — 264 upgrade hit hard. 2 IRs filed. In 264 bug account list.</td>
+        <td><strong>24</strong></td><td>4</td><td>0</td><td>3</td><td>2</td><td>1</td>
+        <td>Active triage — 3 GUS, 2 Bug, 1 IR. Largest account Sep. Good signal coverage relative to volume.</td>
       </tr>
       <tr class="spike">
         <td>2</td>
-        <td><strong>KnowBe4, Inc</strong></td>
-        <td><span class="pill pill-rca">RCA</span> <span class="pill pill-cpq">CPQ</span></td>
-        <td><strong>18</strong></td><td>8</td><td>13</td><td>15</td><td>0</td><td>0</td><td>0</td>
-        <td><span class="chip chip-red">100% ⚠️</span></td>
-        <td>Zero triage — 13 open, 15 P2. Mixed RCA/CPQ/Other. Urgent attention needed.</td>
+        <td><strong>SHIFTLOGIC.IO LIMITED</strong></td>
+        <td><span class="pill pill-rca">RCA</span></td>
+        <td><strong>18</strong></td><td>0</td><td>4</td><td>1</td><td>1</td><td>1</td>
+        <td>4 L1 cases all closed — strong closure rate. In 264 bug account list. Sep incident activity tied to 95079032.</td>
       </tr>
-      <tr>
+      <tr class="spike">
         <td>3</td>
-        <td><strong>Bell Canada</strong><span class="rcat-badge">RCAT</span></td>
-        <td><span class="pill pill-rca">RCA only</span></td>
-        <td><strong>14</strong></td><td>4</td><td>6</td><td>6</td><td>2</td><td>2</td><td>2</td>
-        <td><span class="chip chip-red">79%</span></td>
-        <td>RCAT account (SA Milan Lima, post-Oct 2025 go-live). 14 RCA cases in 19d — elevated post-264. 2 bugs filed from 264 7d window in memory.</td>
+        <td><strong>KnowBe4, Inc ⚠️</strong></td>
+        <td><span class="pill pill-rca">RCA</span> <span class="pill pill-cpq">CPQ</span></td>
+        <td><strong>15</strong></td><td>11</td><td>0</td><td>0</td><td>0</td><td>0</td>
+        <td>Zero triage — 11 open. Mixed RCA/CPQ/Other. Urgent attention needed.</td>
       </tr>
       <tr>
         <td>4</td>
-        <td><strong>Equinix, Inc.</strong><span class="rcat-badge">RCAT</span></td>
-        <td><span class="pill pill-rca">RCA only</span></td>
-        <td><strong>13</strong></td><td>16</td><td>13</td><td>2</td><td>3</td><td>0</td><td>0</td>
-        <td><span class="chip chip-red">77%</span></td>
-        <td>RCAT account (SA Madalina Rivera, RED, go-live Oct 9 2026). 13 open cases — all pre-go-live. Aug→Sep slightly down. P2 low (2). 3 GUS filed.</td>
-      </tr>
-      <tr class="spike">
-        <td>5</td>
-        <td><strong>AI inside Inc.</strong><span class="rcat-badge">RCAT?</span></td>
+        <td><strong>Ravyx - SIR Solutions ⚠️</strong></td>
         <td><span class="pill pill-rca">RCA</span></td>
-        <td><strong>13</strong></td><td>4</td><td>14</td><td>5</td><td>0</td><td>1</td><td>1</td>
-        <td><span class="chip chip-red">92%</span></td>
-        <td>14 open cases — highest open count. Aug→Sep surge ×3.25. In 264 bug account list from memory.</td>
+        <td><strong>14</strong></td><td>3</td><td>0</td><td>0</td><td>0</td><td>0</td>
+        <td>Zero triage across 14 cases. 3 open. Review for recurring patterns.</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>Cloudity</strong></td>
+        <td><span class="pill pill-rca">RCA</span></td>
+        <td><strong>14</strong></td><td>3</td><td>5</td><td>3</td><td>2</td><td>2</td>
+        <td>5 L1 cases — highest L1 density top 15. Active triage: 3 GUS, 2 Bug, 2 IR. Partner/ISV account.</td>
       </tr>
       <tr>
         <td>6</td>
-        <td><strong>Cummins SFA, DBU &amp; Power Generation</strong></td>
-        <td><span class="pill pill-rca">RCA</span> <span class="pill pill-cpq">CPQ</span></td>
-        <td><strong>12</strong></td><td>9</td><td>4</td><td>7</td><td>1</td><td>1</td><td>1</td>
-        <td><span class="chip chip-red">92%</span></td>
-        <td>Steady volume. 7 P2 cases with low triage — review needed.</td>
+        <td><strong>AI inside Inc.</strong><span class="rcat-badge">RCAT</span></td>
+        <td><span class="pill pill-rca">RCA</span></td>
+        <td><strong>11</strong></td><td>4</td><td>0</td><td>0</td><td>1</td><td>1</td>
+        <td>RCAT account — Active, go-live delayed (due 9/23). In 264 bug account list. 4 open cases — SA should review blockers before cutover.</td>
       </tr>
       <tr>
         <td>7</td>
-        <td><strong>Laboratory Corporation of America</strong></td>
+        <td><strong>Intrado Life &amp; Safety, Inc</strong></td>
         <td><span class="pill pill-rca">RCA</span></td>
-        <td><strong>11</strong></td><td>5</td><td>7</td><td>3</td><td>1</td><td>1</td><td>1</td>
-        <td><span class="chip chip-red">91%</span></td>
-        <td>7 open, 1 each GUS/Bug/IR — baseline triage. Watch P2 backlog.</td>
+        <td><strong>11</strong></td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td>
+        <td>All cases closed — clean resolution record. Low risk.</td>
       </tr>
       <tr>
         <td>8</td>
-        <td><strong>PostNL Holding BV</strong></td>
+        <td><strong>Corporate Visions Inc</strong></td>
         <td><span class="pill pill-rca">RCA</span></td>
-        <td><strong>11</strong></td><td>8</td><td>7</td><td>9</td><td>2</td><td>2</td><td>2</td>
-        <td><span class="chip chip-red">73%</span></td>
-        <td>9 P2 cases — highest P2 density in top 15. 2 each GUS/Bug/IR — active triage. EMEA account.</td>
+        <td><strong>10</strong></td><td>2</td><td>1</td><td>2</td><td>2</td><td>2</td>
+        <td>Active triage — 2 each GUS/Bug/IR. Balanced case closure. Good SA engagement signal.</td>
       </tr>
-      <tr>
+      <tr class="spike">
         <td>9</td>
-        <td><strong>Altice USA</strong></td>
-        <td><span class="pill pill-rca">RCA only</span></td>
-        <td><strong>9</strong></td><td>2</td><td>1</td><td>2</td><td>1</td><td>2</td><td>1</td>
-        <td><span class="chip chip-red">78%</span></td>
-        <td>Aug→Sep surge ×4.5. Pure RCA. Good closure rate (1 open of 9). Bugs being filed.</td>
+        <td><strong>Bluvium Inc</strong></td>
+        <td><span class="pill pill-rca">RCA</span></td>
+        <td><strong>10</strong></td><td>1</td><td>9</td><td>0</td><td>1</td><td>1</td>
+        <td>⚠️ 9 of 10 cases are L1-Critical — highest L1 concentration. Needs GUS coverage urgently.</td>
       </tr>
       <tr>
         <td>10</td>
-        <td><strong>Trane Technologies Company LLC</strong></td>
-        <td><span class="pill pill-rca">RCA only</span></td>
-        <td><strong>9</strong></td><td>2</td><td>4</td><td>0</td><td>1</td><td>1</td><td>1</td>
-        <td><span class="chip chip-red">78%</span></td>
-        <td>No P2 — all P3/P4. Good sign. 4 open cases with triage activity.</td>
+        <td><strong>LiveRamp, Inc</strong><span class="rcat-badge">RCAT</span></td>
+        <td><span class="pill pill-rca">RCA</span></td>
+        <td><strong>9</strong></td><td>1</td><td>2</td><td>1</td><td>0</td><td>1</td>
+        <td>RCAT account (Passive/Completed, go-live 5/11 done). In 264 bug account list. 95079032 incident visible.</td>
       </tr>
       <tr>
         <td>11</td>
-        <td><strong>CrowdStrike, Inc.</strong></td>
-        <td><span class="pill pill-rca">RCA</span></td>
-        <td><strong>9</strong></td><td>11</td><td>1</td><td>2</td><td>1</td><td>0</td><td>0</td>
-        <td><span class="chip chip-red">89%</span></td>
-        <td>Aug→Sep slightly down. Only 1 open — good closure. Volume stable.</td>
+        <td><strong>WebPT.com (2nd org) ⚠️</strong></td>
+        <td><span class="pill pill-rca">RCA</span> <span class="pill pill-billing">Billing</span></td>
+        <td><strong>9</strong></td><td>3</td><td>0</td><td>0</td><td>0</td><td>0</td>
+        <td>Mixed RCA/Billing — zero triage. 3 open. Review warranted.</td>
       </tr>
       <tr>
         <td>12</td>
-        <td><strong>CAT IPSD / Perkins Engines</strong></td>
-        <td><span class="pill pill-rca">RCA</span> <span class="pill pill-cpq">CPQ</span></td>
-        <td><strong>8</strong></td><td>2</td><td>4</td><td>5</td><td>0</td><td>0</td><td>0</td>
-        <td><span class="chip chip-red">100% ⚠️</span></td>
-        <td>5 P2, zero triage across 8 cases — high risk. Surge ×4 from Aug.</td>
+        <td><strong>PostNL Holding BV</strong></td>
+        <td><span class="pill pill-rca">RCA</span></td>
+        <td><strong>9</strong></td><td>4</td><td>0</td><td>2</td><td>1</td><td>1</td>
+        <td>Active triage: 2 GUS, 1 Bug, 1 IR. 4 open cases. EMEA account — good engagement.</td>
       </tr>
       <tr>
         <td>13</td>
-        <td><strong>Vertex Inc. (Enterprise)</strong></td>
-        <td><span class="pill pill-cpq">Legacy CPQ only</span></td>
-        <td><strong>7</strong></td><td>2</td><td>2</td><td>7</td><td>0</td><td>0</td><td>0</td>
-        <td><span class="chip chip-red">100% ⚠️</span></td>
-        <td>All 7 cases P2, all Legacy CPQ, zero triage. Concentrated P2 pressure — needs SA review.</td>
+        <td><strong>Vp PLC</strong></td>
+        <td><span class="pill pill-rca">RCA</span></td>
+        <td><strong>8</strong></td><td>0</td><td>3</td><td>0</td><td>1</td><td>2</td>
+        <td>All closed — 2 IRs + 1 Bug filed. Good resolution given 3 L1 cases.</td>
       </tr>
-      <tr>
+      <tr class="spike">
         <td>14</td>
-        <td><strong>William Reed Limited (New)</strong></td>
-        <td><span class="pill pill-rca">RCA only</span></td>
-        <td><strong>7</strong></td><td>2</td><td>4</td><td>4</td><td>1</td><td>0</td><td>0</td>
-        <td><span class="chip chip-red">86%</span></td>
-        <td>Aug→Sep surge ×3.5. 4 P2, 4 open. Some triage activity (1 GUS).</td>
+        <td><strong>Cato Networks</strong></td>
+        <td><span class="pill pill-rca">RCA</span></td>
+        <td><strong>8</strong></td><td>6</td><td>4</td><td>2</td><td>1</td><td>0</td>
+        <td>4 L1 cases, 6 open — critical backlog. 2 GUS + 1 Bug filed but no IR. Escalation risk.</td>
       </tr>
       <tr>
         <td>15</td>
-        <td><strong>Trimble Illuminate</strong></td>
-        <td><span class="pill pill-cpq">Legacy CPQ</span></td>
-        <td><strong>6</strong></td><td>8</td><td>3</td><td>5</td><td>0</td><td>0</td><td>0</td>
-        <td><span class="chip chip-red">100% ⚠️</span></td>
-        <td>Aug→Sep slightly down. 5 P2 — Legacy CPQ concentrated. Zero triage.</td>
+        <td><strong>Neocol</strong></td>
+        <td><span class="pill pill-rca">RCA</span></td>
+        <td><strong>7</strong></td><td>6</td><td>6</td><td>5</td><td>5</td><td>3</td>
+        <td>Best triage quality — 5 GUS, 5 Bug, 3 IR. Repeat 264 bug account (all 4 releases). 6 L1, 6 open — team fully engaged.</td>
       </tr>
     </tbody>
   </table>
-  
+
   <div class="insight-grid">
     <div class="insight-panel insight-red">
       <h4>RCAT Accounts in Top 15</h4>
-      <p><strong>Bell Canada (#3)</strong> — SA Milan Lima, post-Oct 2025 go-live. 14 RCA cases in 19d, 6 open. Elevated post-264 pattern expected — SA should review if any 264 regression vs known go-live bugs.<br><strong>Equinix (#4)</strong> — SA Madalina Rivera, RED, Oct 9 go-live. 13 open cases all pre-go-live. P2 is low (2) but 13 open is concerning 20 days before cutover. Note: RCAT Google Sheets auth was unavailable at analysis time — cross-reference manually for full account sentiment.</p>
+      <p><strong>AI inside Inc. (#6)</strong> — Active RCAT, go-live delayed to Sep 23. 11 cases, 4 open. SA should confirm no go-live blockers before cutover.<br><strong>LiveRamp (#10)</strong> — Passive/Completed RCAT, go-live May 11 done. 9 cases including 95079032 incident exposure. Monitor for regression patterns post go-live.</p>
     </div>
     <div class="insight-panel insight-orange">
-      <h4>Zero-Triage P2 Accounts — Immediate Action</h4>
-      <p><strong>KnowBe4</strong> (18 cases, 15 P2, 0 triage), <strong>CAT IPSD</strong> (8 cases, 5 P2, 0 triage), <strong>Vertex</strong> (7 cases, all P2, 0 triage), <strong>Trimble</strong> (6 cases, 5 P2, 0 triage). These 4 accounts represent 39 combined Sep cases with zero GUS/Bug/IR filed — highest untriaged P2 concentration in the portfolio.</p>
+      <h4>Zero-Triage Accounts — Action Needed</h4>
+      <p><strong>KnowBe4</strong> (15 cases, 11 open, 0 triage), <strong>Ravyx</strong> (14 cases, 0 triage), <strong>WebPT</strong> (9 cases, 0 triage). These 3 accounts have 38 combined Sep cases with zero GUS/Bug/IR filed — highest untriaged concentration in the portfolio.</p>
     </div>
     <div class="insight-panel insight-blue">
-      <h4>264-Surge Accounts (Aug×3+)</h4>
-      <p><strong>LiveRamp</strong> (2→19, ×9.5), <strong>AI inside</strong> (4→13, ×3.25), <strong>Altice USA</strong> (2→9, ×4.5), <strong>CAT IPSD</strong> (2→8, ×4), <strong>William Reed</strong> (2→7, ×3.5). All are RCA-primary and reflect new 264 adoption pressure. LiveRamp and AI inside are in the 264 bug account list from memory.</p>
+      <h4>L1 Concentration — High Risk Accounts</h4>
+      <p><strong>Bluvium</strong> (9/10 cases L1 — needs GUS urgently), <strong>Cloudity</strong> (5/14 L1, active triage), <strong>Cato Networks</strong> (4/8 L1, 6 open). Neocol leads triage quality: 5/5/3 GUS/Bug/IR — benchmark for active bug coverage.</p>
     </div>
   </div>
 </div>
@@ -548,10 +527,10 @@
 <div class="section">
   <div class="section-title">Live Open Backlog Snapshot <span class="section-subtitle">— RC Sig-tier, all regions, as of Sep 22, 2026</span></div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
-    <div class="kpi-card"><div class="kpi-label">RCA Open</div><div class="kpi-value" style="color:var(--rca)">174</div><div class="kpi-delta">68.5% of backlog</div></div>
-    <div class="kpi-card"><div class="kpi-label">Legacy CPQ Open</div><div class="kpi-value" style="color:var(--cpq)">56</div><div class="kpi-delta">22.0% of backlog</div></div>
-    <div class="kpi-card"><div class="kpi-label">Billing Open</div><div class="kpi-value" style="color:var(--green)">14</div><div class="kpi-delta">5.5% of backlog</div></div>
-    <div class="kpi-card"><div class="kpi-label">Other Open</div><div class="kpi-value" style="color:var(--purple)">10</div><div class="kpi-delta">3.9% of backlog</div></div>
+    <div class="kpi-card"><div class="kpi-label">RCA Open</div><div class="kpi-value" style="color:var(--rca)">185</div><div class="kpi-delta">65.4% of backlog</div></div>
+    <div class="kpi-card"><div class="kpi-label">Legacy CPQ Open</div><div class="kpi-value" style="color:var(--cpq)">78</div><div class="kpi-delta">27.6% of backlog</div></div>
+    <div class="kpi-card"><div class="kpi-label">Billing Open</div><div class="kpi-value" style="color:var(--green)">11</div><div class="kpi-delta">3.9% of backlog</div></div>
+    <div class="kpi-card"><div class="kpi-label">Other Open</div><div class="kpi-value" style="color:var(--purple)">9</div><div class="kpi-delta">3.2% of backlog</div></div>
   </div>
 </div>
 
@@ -561,16 +540,16 @@
   <table>
     <thead><tr><th>Family</th><th>262 Post-Rel Count</th><th>Sep Post-264 Count</th><th>264 vs 262 Δ</th><th>264 vs 262 %</th><th>Signal</th></tr></thead>
     <tbody>
-      <tr><td><span class="pill pill-rca">RCA</span></td><td>192</td><td>319</td><td><span class="chip chip-red">+127</span></td><td>+66%</td><td>264 significantly heavier than 262 — larger installed base + more RCA-live orgs</td></tr>
-      <tr><td><span class="pill pill-cpq">Legacy CPQ</span></td><td>127</td><td>126</td><td><span class="chip chip-neu">−1</span></td><td>−1%</td><td>Flat — CPQ is release-independent, pure organic load</td></tr>
-      <tr><td><span class="pill pill-billing">Billing</span></td><td>13</td><td>13</td><td><span class="chip chip-neu">0</span></td><td>0%</td><td>Completely flat — very stable product area</td></tr>
-      <tr><td><span class="pill pill-other">Other</span></td><td>1</td><td>13</td><td><span class="chip chip-red">+12</span></td><td>+1200%</td><td>Contracts + Sub Mgmt emerging — new products gaining adoption</td></tr>
-      <tr class="row-total"><td>TOTAL</td><td>333</td><td>471</td><td><span class="chip chip-red">+138</span></td><td>+41%</td><td>264 post-release load +41% heavier than 262 equivalent window</td></tr>
+      <tr><td><span class="pill pill-rca">RCA</span></td><td>192</td><td>705</td><td><span class="chip chip-red">+513</span></td><td>+267%</td><td>264 significantly heavier — larger installed base + more RCA-live orgs</td></tr>
+      <tr><td><span class="pill pill-cpq">Legacy CPQ</span></td><td>127</td><td>321</td><td><span class="chip chip-red">+194</span></td><td>+153%</td><td>Broader Sig-tier base captured in CSV scope</td></tr>
+      <tr><td><span class="pill pill-billing">Billing</span></td><td>13</td><td>26</td><td><span class="chip chip-red">+13</span></td><td>+100%</td><td>Doubled — steady proportional growth</td></tr>
+      <tr><td><span class="pill pill-other">Other</span></td><td>1</td><td>26</td><td><span class="chip chip-red">+25</span></td><td>+2500%</td><td>Contracts + Sub Mgmt emerging — new products gaining adoption</td></tr>
+      <tr class="row-total"><td>TOTAL</td><td>333</td><td>1,078</td><td><span class="chip chip-red">+745</span></td><td>+224%</td><td>264 post-release load +224% heavier than 262 equivalent window</td></tr>
     </tbody>
   </table>
   <div class="insight-panel insight-orange" style="margin-top:12px">
-    <h4>Key Takeaway: 264 > 262 by 41% — Active Org Base Growth Driving This</h4>
-    <p>From memory: 262 had 1,632 active orgs vs 264's 1,908 (+16.9% more orgs). Yet the Sep post-264 load is +41% vs May post-262, meaning per-org case rate is also up. The 264 release introduced more complex changes (Usage & Ratings, Advanced Approvals — new areas with non-zero IR) compared to 262's much lower IR rate (3.3%). This is a structural increase, not noise.</p>
+    <h4>Key Takeaway: 264 > 262 by 224% — Active Org Base + Sig-tier Scope</h4>
+    <p>From memory: 262 had 1,632 active orgs vs 264's 1,908 (+16.9% more orgs). The Sep post-264 load is +224% vs May post-262, driven by both the broader CSV scope (all Sig-tier globally) and higher per-org case rate. The 264 release introduced new areas (Usage &amp; Ratings, Advanced Approvals) vs 262's much lower IR rate (3.3%). Structural volume increase, not noise.</p>
   </div>
 </div>
 
@@ -581,39 +560,39 @@
     <div>
       <h4 style="color:var(--red);margin-bottom:10px;font-size:13px">🔴 Watch / Act Now</h4>
       <div class="insight-panel insight-red" style="margin-bottom:8px">
-        <h4>Price Management: 42 Cases, 0 Triage</h4>
-        <p>3rd largest RCA topic. Zero investigations despite +56% MoM surge. Assign PM owner for a triage sweep this week.</p>
+        <h4>KnowBe4: 15 Cases, 11 Open, 0 Triage</h4>
+        <p>100% untriaged, 11 open. Needs immediate TSE ownership review. Mixed RCA/CPQ/Other — potential coordination gap between product teams.</p>
       </div>
       <div class="insight-panel insight-red" style="margin-bottom:8px">
-        <h4>KnowBe4: 18 Cases, 15 P2, 0 Triage</h4>
-        <p>100% untriaged, 13 open. Needs immediate TSE ownership review. Mixed RCA/CPQ — potential coordination gap.</p>
+        <h4>Bluvium: 9/10 Cases L1-Critical</h4>
+        <p>Highest L1 concentration in top 15. Only 1 Bug + 1 IR filed. 9 L1 cases need GUS investigation coverage. Escalation risk if not addressed.</p>
       </div>
       <div class="insight-panel insight-orange" style="margin-bottom:8px">
-        <h4>Usage & Ratings: +267% — New 264 Area</h4>
-        <p>Went 3→11 (+267%). Was a new IR area in 264 7d window (4 IRs). Monitor for clustering pattern across accounts.</p>
+        <h4>Price Management: 79 Cases, Low Triage</h4>
+        <p>4th largest RCA topic with only 3 GUS / 4 Bug filed. +193% MoM surge. Assign PM topic owner for a triage sweep this week.</p>
       </div>
       <div class="insight-panel insight-orange">
-        <h4>Equinix: 13 Open, Oct 9 Go-Live</h4>
-        <p>RCAT account, RED sentiment. 20 days to go-live. 13 open RC cases — SA Madalina Rivera should be reviewing P2s for go-live blockers immediately.</p>
+        <h4>AI inside Inc.: 4 Open, Go-Live Sep 23</h4>
+        <p>RCAT account, Active, go-live delayed to Sep 23. 4 open RC cases — SA should confirm no go-live blockers before cutover date.</p>
       </div>
     </div>
     <div>
       <h4 style="color:var(--green);margin-bottom:10px;font-size:13px">🟢 Positive / Healthy Signals</h4>
       <div class="insight-panel insight-green" style="margin-bottom:8px">
         <h4>Zero P1 Incidents</h4>
-        <p>No Sev1 cases in either Aug or Sep window — clean SB1 from a customer-blocking perspective. 264 Sev1 pattern from 7d window (5/7 resolved before GA) held through the extended window.</p>
+        <p>No customer-blocking P1s in either Aug or Sep window — clean SB1 from an escalation perspective. 264 Sev1 pattern from 7d window (5/7 resolved before GA) held through the extended window.</p>
       </div>
       <div class="insight-panel insight-green" style="margin-bottom:8px">
-        <h4>Billing Flat / Slightly Down</h4>
-        <p>Billing held at 13 cases across both Aug and Sep — the most stable family. Billing Developer Support dropped to 0 in Sep (was 2 in Aug). Positive stability signal.</p>
+        <h4>SHIFTLOGIC: 18 Cases, 0 Open</h4>
+        <p>All 18 Sep cases closed — best closure rate in top 15. Despite 4 L1 cases and 95079032 incident involvement, the team resolved everything in the window.</p>
       </div>
       <div class="insight-panel insight-green" style="margin-bottom:8px">
-        <h4>CPQ Dev Support Down −26%</h4>
-        <p>CPQ Dev Support dropped 43→32 — consistent with account maturity on Legacy CPQ path. Long-term trend toward self-sufficiency in the CPQ developer tier.</p>
+        <h4>Neocol: Best Triage Quality</h4>
+        <p>7 cases with 5 GUS + 5 Bug + 3 IR — highest triage quality in the portfolio. Repeat 264 bug account (all 4 releases tracked). Sets the benchmark for active bug coverage.</p>
       </div>
       <div class="insight-panel insight-blue">
-        <h4>Triage Rate Doubled</h4>
-        <p>Overall triage rate went from 7.0% (Aug) to 14.4% (Sep). Absolute triaged cases: 22→68. Teams are filing more GUS/Bug/IR, though absolute rate still needs improvement given release pressure.</p>
+        <h4>Configurator + TM Active Triage</h4>
+        <p>Product Configurator: 42 GUS / 30 Bug / 31 IR from 255 cases. Transaction Management: 16 GUS / 15 Bug / 13 IR from 144 cases. Top 2 RCA topics receiving the most investigation attention — aligned with 264 7d IR priorities.</p>
       </div>
     </div>
   </div>
@@ -621,18 +600,18 @@
 
 </div><!-- /container -->
 
-<footer>Revenue Cloud · 264 Post-Release Deep Dive · Sep 1–19, 2026 · Data: OrgCS Dashboard (Sep 22, 2026) · 471 Sep cases · 313 Aug cases · 333 262-window cases · 254 open backlog</footer>
+<footer>Revenue Cloud · 264 Post-Release Deep Dive · Sep 1–19, 2026 · Data: CSV Snapshot (Sep 22, 2026) · 1,078 Sep cases (non-P2) · 313 Aug cases · 333 262-window cases · 283 open backlog</footer>
 
 <script>
 // 1. Release compare bar chart
 new Chart(document.getElementById('releaseCompareChart'), {
   type: 'bar',
   data: {
-    labels: ['Product Configurator','Salesforce CPQ','Transaction Mgmt','Price Management','CPQ Dev Support','Dev Support P2O','Product Catalog','Billing & Invoicing','CLM','Usage & Ratings','Advanced Approvals','Others'],
+    labels: ['Product Configurator','Salesforce CPQ','Transaction Mgmt','Price Management','CPQ Dev Support','Product Catalog','Billing & Invoicing','Dev Sup P2O','CLM','Advanced Approvals','Usage & Ratings','Others'],
     datasets: [
-      { label: '262 Post-Rel (May 10-28)', data: [54,90,42,22,32,19,13,17,9,2,2,31], backgroundColor: 'rgba(130,80,223,0.35)', borderColor: 'rgba(130,80,223,0.8)', borderWidth: 1 },
-      { label: 'Aug 1-19 Baseline', data: [61,63,24,27,43,14,17,13,10,3,2,36], backgroundColor: 'rgba(209,112,0,0.35)', borderColor: 'rgba(209,112,0,0.8)', borderWidth: 1 },
-      { label: 'Sep 1-19 Post-264', data: [102,87,52,42,32,25,22,20,16,11,7,55], backgroundColor: 'rgba(9,105,218,0.7)', borderColor: 'rgba(9,105,218,1)', borderWidth: 1 }
+      { label: '262 Post-Rel (May 10-28)', data: [54,90,42,22,32,13,17,19,9,2,2,31], backgroundColor: 'rgba(130,80,223,0.35)', borderColor: 'rgba(130,80,223,0.8)', borderWidth: 1 },
+      { label: 'Aug 1-19 Baseline', data: [61,63,24,27,43,17,13,14,10,2,3,36], backgroundColor: 'rgba(209,112,0,0.35)', borderColor: 'rgba(209,112,0,0.8)', borderWidth: 1 },
+      { label: 'Sep 1-19 Post-264', data: [255,238,144,79,63,51,47,36,28,19,15,103], backgroundColor: 'rgba(9,105,218,0.7)', borderColor: 'rgba(9,105,218,1)', borderWidth: 1 }
     ]
   },
   options: {
@@ -649,8 +628,8 @@ new Chart(document.getElementById('releaseCompareChart'), {
 new Chart(document.getElementById('familyDonutChart'), {
   type: 'doughnut',
   data: {
-    labels: ['RCA (319)','Legacy CPQ (126)','Billing (13)','Other (13)'],
-    datasets: [{ data: [319,126,13,13], backgroundColor: ['#0969da','#e85c0d','#1a7f37','#8250df'], borderWidth: 2, borderColor: '#fff' }]
+    labels: ['RCA (705)','Legacy CPQ (321)','Billing (26)','Other (26)'],
+    datasets: [{ data: [705,321,26,26], backgroundColor: ['#0969da','#e85c0d','#1a7f37','#8250df'], borderWidth: 2, borderColor: '#fff' }]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
@@ -667,9 +646,9 @@ new Chart(document.getElementById('trendLineChart'), {
   data: {
     labels: ['Q2 avg (May-Jul)', 'Aug 1-19', 'Sep 1-19 (Post-264)'],
     datasets: [
-      { label: 'Legacy CPQ', data: [186.3, 112, 126], borderColor: '#e85c0d', backgroundColor: 'rgba(232,92,13,0.1)', tension: 0.3, fill: true, pointRadius: 5 },
-      { label: 'RCA', data: [280, 180, 319], borderColor: '#0969da', backgroundColor: 'rgba(9,105,218,0.1)', tension: 0.3, fill: true, pointRadius: 5 },
-      { label: 'Billing', data: [20.7, 15, 13], borderColor: '#1a7f37', backgroundColor: 'rgba(26,127,55,0.1)', tension: 0.3, fill: false, pointRadius: 5 }
+      { label: 'Legacy CPQ', data: [186.3, 112, 321], borderColor: '#e85c0d', backgroundColor: 'rgba(232,92,13,0.1)', tension: 0.3, fill: true, pointRadius: 5 },
+      { label: 'RCA', data: [280, 180, 705], borderColor: '#0969da', backgroundColor: 'rgba(9,105,218,0.1)', tension: 0.3, fill: true, pointRadius: 5 },
+      { label: 'Billing', data: [20.7, 15, 26], borderColor: '#1a7f37', backgroundColor: 'rgba(26,127,55,0.1)', tension: 0.3, fill: false, pointRadius: 5 }
     ]
   },
   options: {
@@ -686,11 +665,11 @@ new Chart(document.getElementById('trendLineChart'), {
 new Chart(document.getElementById('geoBarChart'), {
   type: 'bar',
   data: {
-    labels: ['AMER','EMEA','India','JP','APAC','Unknown'],
+    labels: ['AMER','EMEA','India','APAC','JP','Unknown'],
     datasets: [
-      { label: '262 Post-Rel', data: [138,85,78,6,15,11], backgroundColor: 'rgba(130,80,223,0.4)' },
+      { label: '262 Post-Rel', data: [138,85,78,15,6,11], backgroundColor: 'rgba(130,80,223,0.4)' },
       { label: 'Aug Baseline', data: [143,72,62,7,7,22], backgroundColor: 'rgba(209,112,0,0.4)' },
-      { label: 'Sep Post-264', data: [173,108,105,14,11,60], backgroundColor: 'rgba(9,105,218,0.7)' }
+      { label: 'Sep Post-264', data: [369,362,132,68,21,126], backgroundColor: 'rgba(9,105,218,0.7)' }
     ]
   },
   options: {
