@@ -41,7 +41,7 @@
   .badges { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
   .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
   .badge-blue { background: var(--accent-light); color: var(--accent); }
-  .badge-red { background: var(--orange-light); color: var(--orange); }
+  .badge-red { background: var(--red-light); color: var(--red); }
   .badge-orange { background: var(--orange-light); color: var(--orange); }
   .badge-green { background: var(--green-light); color: var(--green); }
   .badge-yellow { background: var(--yellow-light); color: var(--yellow); }
@@ -62,11 +62,11 @@
   .rank-num { font-weight: 700; color: var(--text-muted); font-size: 12px; width: 28px; }
   .acct-name { font-weight: 600; color: var(--text); }
   .rcat-badge { display: inline-block; padding: 1px 6px; border-radius: 10px; font-size: 10px; font-weight: 700; margin-left: 6px; }
-  .rcat-active { background: var(--orange-light); color: var(--orange); }
+  .rcat-active { background: var(--red-light); color: var(--red); }
   .rcat-passive { background: var(--yellow-light); color: var(--yellow); }
-  .red-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); margin-left: 4px; vertical-align: middle; }
+  .red-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--red); margin-left: 4px; vertical-align: middle; }
   .num { font-variant-numeric: tabular-nums; }
-  .open-cnt { font-weight: 600; color: var(--orange); }
+  .open-cnt { font-weight: 600; color: var(--red); }
   .open-zero { color: var(--text-light); }
   .pill { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; font-weight: 500; }
   .pill-rca { background: #ddf4ff; color: var(--rca-color); }
@@ -84,8 +84,8 @@
   /* Account cards */
   .account-grid { display: flex; flex-direction: column; gap: 20px; }
   .acct-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-  .acct-card.watch-card { border-left: 3px solid var(--orange); }
-  .acct-card.rcat-card { border-left: 3px solid var(--yellow); }
+  .acct-card.watch-card { border-left: 3px solid var(--red); }
+  .acct-card.rcat-card { border-left: 3px solid var(--orange); }
   .acct-card.clean-card { border-left: 3px solid var(--green); }
 
   .acct-header { display: flex; align-items: flex-start; justify-content: space-between; padding: 16px 20px 12px; border-bottom: 1px solid var(--border-light); }
@@ -98,7 +98,7 @@
   .metric-cell { background: var(--surface); padding: 10px 14px; }
   .metric-cell .label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600; margin-bottom: 2px; }
   .metric-cell .value { font-size: 18px; font-weight: 700; color: var(--text); }
-  .metric-cell .value.red { color: var(--orange); }
+  .metric-cell .value.red { color: var(--red); }
   .metric-cell .value.green { color: var(--green); }
   .metric-cell .value.orange { color: var(--orange); }
   .metric-cell .value.muted { color: var(--text-muted); }
@@ -119,11 +119,11 @@
   .case-table td { padding: 4px 8px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
   .case-table tr:last-child td { border-bottom: none; }
   .case-table .case-num { font-family: ui-monospace, monospace; color: var(--accent); font-weight: 600; }
-  .sev-l1 { background: var(--orange-light); color: var(--orange); padding: 1px 5px; border-radius: 4px; font-weight: 700; font-size: 10px; }
+  .sev-l1 { background: var(--red-light); color: var(--red); padding: 1px 5px; border-radius: 4px; font-weight: 700; font-size: 10px; }
   .sev-l3 { background: var(--yellow-light); color: var(--yellow); padding: 1px 5px; border-radius: 4px; font-weight: 700; font-size: 10px; }
   .sev-l4 { background: var(--bg); color: var(--text-muted); padding: 1px 5px; border-radius: 4px; font-size: 10px; }
   .sev-blank { background: var(--bg); color: var(--text-light); padding: 1px 5px; border-radius: 4px; font-size: 10px; }
-  .status-open { color: var(--orange); font-weight: 600; }
+  .status-open { color: var(--red); font-weight: 600; }
   .status-closed { color: var(--text-light); }
   .id-tag { font-family: ui-monospace, monospace; font-size: 10px; color: var(--accent); }
   .id-none { color: var(--text-light); }
@@ -132,12 +132,12 @@
   .insight-box.warning { background: var(--orange-light); border-color: #f0972a; }
   .insight-box.positive { background: var(--green-light); border-color: #89d397; }
   .insight-box.info { background: var(--accent-light); border-color: #93c9ff; }
-  .insight-box.watch { background: var(--orange-light); border-color: #f0972a; }
+  .insight-box.watch { background: var(--red-light); border-color: #ffada8; }
   .insight-label { font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; }
   .insight-label.warn-lbl { color: var(--orange); }
   .insight-label.pos-lbl { color: var(--green); }
   .insight-label.info-lbl { color: var(--accent); }
-  .insight-label.watch-lbl { color: var(--orange); }
+  .insight-label.watch-lbl { color: var(--red); }
 
   .rcat-box { background: #fff8f0; border: 1px solid #f0972a; border-radius: 6px; padding: 10px 14px; margin-top: 12px; font-size: 12px; }
   .rcat-box .rcat-header { font-weight: 700; font-size: 11px; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
@@ -146,7 +146,7 @@
   .rcat-label { color: var(--text-muted); font-size: 11px; }
   .rcat-val { color: var(--text); font-weight: 500; }
 
-  .action-tag { display: inline-block; background: var(--orange-light); color: var(--orange); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; border: 1px solid #f0972a; }
+  .action-tag { display: inline-block; background: var(--red-light); color: var(--red); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
   .action-low { background: var(--green-light); color: var(--green); }
 
   .chart-wrap { padding: 16px 20px; border-top: 1px solid var(--border-light); }
@@ -167,57 +167,10 @@
   <div class="meta">Signature / Premier tier &middot; All regions &middot; P2 (Level 2 – Urgent) excluded &middot; Source: CSV &middot; Sep 22, 2026</div>
   <div class="badges">
     <span class="badge badge-blue">1,078 non-P2 cases total</span>
-    <span class="badge badge-orange">KnowBe4: 11 open, 0 investigations ⚠</span>
+    <span class="badge badge-red">KnowBe4: 11 open, 0 investigations ⚠</span>
     <span class="badge badge-orange">AI inside Inc: RCAT Active · go-live delayed · 474587128 due 9/23</span>
     <span class="badge badge-green">Cloudity &amp; Corporate Visions: 264 bugs resolved ✓</span>
     <span class="badge badge-purple">95079032 incident visible in TDC, SHIFTLOGIC, LiveRamp</span>
-  </div>
-</div>
-
-<!-- Key Observations -->
-<style>
-  .obs-band { background: #f0f6ff; border-bottom: 1px solid #c8daff; padding: 18px 32px 20px; }
-  .obs-band-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--accent); margin-bottom: 12px; }
-  .obs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .obs-card { background: var(--surface); border: 1px solid #c8daff; border-radius: 8px; padding: 11px 14px; display: flex; gap: 10px; }
-  .obs-pip { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-  .obs-pip-orange { background: var(--orange); }
-  .obs-pip-blue { background: var(--accent); }
-  .obs-pip-green { background: var(--green); }
-  .obs-pip-purple { background: var(--purple); }
-  .obs-pip-yellow { background: var(--yellow); }
-  .obs-text { font-size: 12px; line-height: 1.55; color: var(--text); }
-  .obs-text strong { font-weight: 600; }
-  @media (max-width: 860px) { .obs-grid { grid-template-columns: 1fr 1fr; } .obs-band { padding: 14px 18px; } }
-  @media (max-width: 560px) { .obs-grid { grid-template-columns: 1fr; } }
-</style>
-<div class="obs-band">
-  <div class="obs-band-title">Key Observations — Sep 1–19</div>
-  <div class="obs-grid">
-    <div class="obs-card">
-      <div class="obs-pip obs-pip-orange"></div>
-      <div class="obs-text"><strong>KnowBe4 is the watch account.</strong> Sig Success, 11 of 15 cases open, 0 GUS/Bug logged. Nine cases burst-opened Sep 11 with blank severity and no owner assigned. Oldest open case (DRO) is 18+ days. Needs triage this week.</div>
-    </div>
-    <div class="obs-card">
-      <div class="obs-pip obs-pip-orange"></div>
-      <div class="obs-text"><strong>AI inside Inc. go-live is delayed.</strong> Planned 8/7/2026, still in Implementation. RCAT SA view is Red despite Yellow sentiment. Token billing rounding workaround (474587128) due 9/23. PCM (15d) and TM (14d) open cases have no GUS filed.</div>
-    </div>
-    <div class="obs-card">
-      <div class="obs-pip obs-pip-green"></div>
-      <div class="obs-text"><strong>264 regression exposure fully cleared.</strong> Cloudity and Corporate Visions both had 264-tagged L1 cases — linked bugs W-24059609 and W-24088655 are both Closed/Fixed. No remaining open release-regression risk in the top 10.</div>
-    </div>
-    <div class="obs-card">
-      <div class="obs-pip obs-pip-blue"></div>
-      <div class="obs-text"><strong>TDC Net A/S is high volume, low risk.</strong> 24 cases all L4-Medium, 22 closed. Configurator + PCM + P2O Dev Support pattern is developer education, not defects. Only 3 of 24 needed investigation. One 95079032 incident case — closed.</div>
-    </div>
-    <div class="obs-card">
-      <div class="obs-pip obs-pip-green"></div>
-      <div class="obs-text"><strong>SHIFTLOGIC shows strongest resolution.</strong> 18 cases 100% closed including 4 L1-Criticals. All resolved within the window — including the 95079032 CML incident. Zero open cases remaining.</div>
-    </div>
-    <div class="obs-card">
-      <div class="obs-pip obs-pip-yellow"></div>
-      <div class="obs-text"><strong>LiveRamp is post go-live, RCAT Passive.</strong> SA engagement closed, go-live 5/11/2026 complete. One open L3 TM case is routine post-production support. Red Account flag is residual — assess for removal.</div>
-    </div>
   </div>
 </div>
 
@@ -281,7 +234,7 @@
         <!-- Row 3: KnowBe4 -->
         <tr>
           <td class="rank-num">3</td>
-          <td class="acct-name">KnowBe4, Inc <span style="color:var(--orange);font-size:12px">⚠</span></td>
+          <td class="acct-name">KnowBe4, Inc <span style="color:var(--red);font-size:12px">⚠</span></td>
           <td class="num">15</td>
           <td class="num">—</td><td class="num">1</td><td class="num">3</td>
           <td class="num open-cnt">11</td>
@@ -539,7 +492,7 @@
     <div class="acct-card watch-card">
       <div class="acct-header">
         <div class="acct-header-left">
-          <h2>#3 &nbsp; KnowBe4, Inc &nbsp; <span style="color:var(--orange);font-size:14px">⚠ Watch</span></h2>
+          <h2>#3 &nbsp; KnowBe4, Inc &nbsp; <span style="color:var(--red);font-size:14px">⚠ Watch</span></h2>
           <div class="meta-row">
             <span class="meta-chip">Signature Success</span>
             <span class="meta-chip">Region unassigned</span>
@@ -714,7 +667,7 @@
             <span class="meta-chip">Signature Success</span>
             <span class="meta-chip">Japan (10/11)</span>
             <span class="meta-chip">RCA + RCB</span>
-            <span class="meta-chip" style="background:var(--orange-light);color:var(--orange)">Red Account</span>
+            <span class="meta-chip" style="background:var(--red-light);color:var(--red)">Red Account</span>
           </div>
         </div>
         <div class="acct-header-right">
@@ -746,9 +699,9 @@
             <div class="rcat-grid">
               <div class="rcat-row"><div class="rcat-label">Sponsor</div><div class="rcat-val">Shashank Singh <span class="badge badge-green" style="font-size:10px">Active</span></div></div>
               <div class="rcat-row"><div class="rcat-label">Success Architect</div><div class="rcat-val">Kiran Kumari Golagana <span class="badge badge-green" style="font-size:10px">Active</span></div></div>
-              <div class="rcat-row"><div class="rcat-label">Go-live (planned)</div><div class="rcat-val">8/7/2026 <span style="color:var(--orange)">delayed</span></div></div>
+              <div class="rcat-row"><div class="rcat-label">Go-live (planned)</div><div class="rcat-val">8/7/2026 <span style="color:var(--red)">delayed</span></div></div>
               <div class="rcat-row"><div class="rcat-label">Stage</div><div class="rcat-val">Implementation</div></div>
-              <div class="rcat-row"><div class="rcat-label">RCAT sentiment</div><div class="rcat-val">Yellow → <span style="color:var(--orange);font-weight:700">Red (SA view)</span></div></div>
+              <div class="rcat-row"><div class="rcat-label">RCAT sentiment</div><div class="rcat-val">Yellow → <span style="color:var(--red);font-weight:700">Red (SA view)</span></div></div>
               <div class="rcat-row"><div class="rcat-label">ACV</div><div class="rcat-val">$85,594</div></div>
             </div>
           </div>
@@ -759,7 +712,7 @@
             <tr><th>Case</th><th>Sev</th><th>Topic</th><th>Age</th><th>Bug</th></tr>
             <tr><td class="case-num">474542782</td><td><span class="sev-l4">L4</span></td><td>Product Catalog Management</td><td class="warn">15.4d</td><td class="id-none">—</td></tr>
             <tr><td class="case-num">474549779</td><td><span class="sev-l4">L4</span></td><td>Transaction Management</td><td class="warn">14.3d</td><td class="id-none">—</td></tr>
-            <tr><td class="case-num" style="color:var(--orange)">474587128</td><td><span class="sev-l3">L3</span></td><td>Usage &amp; Ratings ⚡</td><td class="warn">8.4d</td><td class="id-none">—</td></tr>
+            <tr><td class="case-num" style="color:var(--red)">474587128</td><td><span class="sev-l3">L3</span></td><td>Usage &amp; Ratings ⚡</td><td class="warn">8.4d</td><td class="id-none">—</td></tr>
           </table>
           <div class="insight-box warning" style="margin-top:10px">
             <div class="insight-label warn-lbl">474587128 — Due 9/23 (Token Billing Rounding)</div>
@@ -938,7 +891,7 @@
             <span class="meta-chip">Signature Success</span>
             <span class="meta-chip">AMER primary</span>
             <span class="meta-chip">All RCA</span>
-            <span class="meta-chip" style="background:var(--orange-light);color:var(--orange)">Red Account</span>
+            <span class="meta-chip" style="background:var(--red-light);color:var(--red)">Red Account</span>
           </div>
         </div>
         <div class="acct-header-right">
