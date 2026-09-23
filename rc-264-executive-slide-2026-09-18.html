@@ -199,17 +199,23 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 
   <!-- New P&T areas -->
   <div class="ki-card" style="border-color:#8250df;background:#faf0ff">
-    <div class="ki-label" style="color:var(--purple)">New Area in 264 Upgrade</div>
+    <div class="ki-label" style="color:var(--purple)">New Areas in 264 Upgrade</div>
     <div style="font-size:9px;color:var(--muted);margin-bottom:8px">Not seen in 258 / 260 / 262</div>
     <div class="bug-list">
       <div class="bug-row">
         <span class="bug-num" style="background:#f0e6ff;color:#8250df">4</span>
         <div style="flex:1;min-width:0">
           <div style="font-size:10px;font-weight:700">Usage &amp; Ratings</div>
-          <div style="font-size:9px;color:var(--muted)">W-23791512 · Closed ✓</div>
+          <div style="font-size:9px;color:var(--muted)">W-23791512</div>
         </div>
       </div>
-      <div style="font-size:9px;color:var(--muted);margin-top:6px;line-height:1.4">1st release with Usage &amp; Ratings generating upgrade cases. All 4 cases tied to W-23791512 (batch rating job failure) — closed before GA.</div>
+      <div class="bug-row">
+        <span class="bug-num" style="background:#f0e6ff;color:#8250df">1</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:10px;font-weight:700">Advanced Approvals</div>
+          <div style="font-size:9px;color:var(--muted)">W-24067780</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -337,22 +343,22 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
   <div class="spotlight-grid">
     <div class="spot-card usage">
       <div class="spot-title" style="color:#0176d3">Usage &amp; Ratings — 4 Upgrade Cases · 1 Bug</div>
-      <div style="font-size:11px;font-weight:700">W-23791512 <span class="gus-pill gus-closed">Closed ✓</span></div>
-      <div class="spot-bug">Batch job "Retrieve Net Unit Rates for Ratable Summary" fails post-264 upgrade. Affects tier-based usage products. All 4 cases: same root cause, global impact (incl. Japanese customer). Bug closed before GA.</div>
+      <div style="font-size:11px;font-weight:700">W-23791512</div>
+      <div class="spot-bug">Batch job "Retrieve Net Unit Rates for Ratable Summary" fails post-264 upgrade. Affects tier-based usage products. All 4 cases: same root cause, global impact (incl. Japanese customer).</div>
     </div>
     <div class="spot-card billing">
       <div class="spot-title" style="color:#8250df">Billing &amp; Invoicing — 7 Cases · 3 Bugs (Emerged in 264)</div>
       <div style="font-size:11px;margin-bottom:4px">
-        <span style="font-weight:700">W-24088655</span> <span class="gus-pill gus-closed">Closed ✓</span>
-        <div class="spot-bug">generateInvoices fails when state/country picklist enabled. 3 cases. Closed.</div>
+        <span style="font-weight:700">W-24088655</span>
+        <div class="spot-bug">generateInvoices fails when state/country picklist enabled. 3 cases.</div>
       </div>
       <div style="font-size:11px;margin-bottom:4px">
-        <span style="font-weight:700">W-24059609</span> <span class="gus-pill gus-closed">Closed ✓</span>
-        <div class="spot-bug">Context mapping to Billing Schedule/BSG broken. 1 case. Closed.</div>
+        <span style="font-weight:700">W-24059609</span>
+        <div class="spot-bug">Context mapping to Billing Schedule/BSG broken. 1 case.</div>
       </div>
       <div style="font-size:11px">
-        <span style="font-weight:700">W-24053522</span> <span class="gus-pill gus-qa">QA In Progress ⚠</span>
-        <div class="spot-bug">Invoice billing period mismatch (AJG 2k line enhancement). 1 case. Not yet shipped — GA risk.</div>
+        <span style="font-weight:700">W-24053522</span>
+        <div class="spot-bug">Invoice billing period mismatch (AJG 2k line enhancement). 1 case.</div>
       </div>
     </div>
   </div>
