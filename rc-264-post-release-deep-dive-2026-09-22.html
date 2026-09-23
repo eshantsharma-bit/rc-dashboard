@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RC Post-Release Deep Dive — 262 vs 264</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root {
     --bg: #f6f8fa;
@@ -58,8 +57,6 @@
 
   .section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 24px; box-shadow: var(--shadow); }
   .section-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
-
-  .chart-wrap { position: relative; height: 300px; }
 
   .ir-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
   .ir-block-title { font-size: 13px; font-weight: 600; margin-bottom: 12px; padding: 6px 10px; border-radius: 6px; }
@@ -207,17 +204,6 @@
     </div>
   </div>
 
-  <!-- Daily Inflow Trend -->
-  <div class="section">
-    <div class="section-title">Daily Case Inflow — Days 3–21 Post-SB1</div>
-    <div class="chart-wrap">
-      <canvas id="inflow-chart"></canvas>
-    </div>
-    <div style="display:flex;gap:24px;margin-top:12px;font-size:12px;color:var(--muted);">
-      <span><span style="display:inline-block;width:12px;height:3px;background:var(--accent-264);vertical-align:middle;margin-right:4px;border-radius:2px;"></span>264 — Sep 1–19 (Days 3–21)</span>
-      <span><span style="display:inline-block;width:12px;height:3px;background:var(--accent-262);border-style:dashed;vertical-align:middle;margin-right:4px;border-radius:2px;"></span>262 — May 11–29 (Days 3–21)</span>
-    </div>
-  </div>
 
   <!-- IR Section -->
   <div class="section">
@@ -655,66 +641,5 @@
 
 </div>
 
-<script>
-const dayLabels = ['D3','D4','D5','D6','D7','D8','D9','D10','D11','D12','D13','D14','D15','D16','D17','D18','D19','D20','D21'];
-const data264  = [33,55,44,17,6,1,34,26,34,27,37,10,3,15,34,35,30,29,8];
-const data262  = [24,29,25,28,27,9,1,20,25,37,24,14,6,0,9,20,19,16,0];
-const dates264 = ['Sep 1','Sep 2','Sep 3','Sep 4','Sep 5','Sep 6','Sep 7','Sep 8','Sep 9','Sep 10','Sep 11','Sep 12','Sep 13','Sep 14','Sep 15','Sep 16','Sep 17','Sep 18','Sep 19'];
-const dates262 = ['May 11','May 12','May 13','May 14','May 15','May 16','May 17','May 18','May 19','May 20','May 21','May 22','May 23','May 24','May 25','May 26','May 27','May 28','May 29'];
-
-const ctx = document.getElementById('inflow-chart').getContext('2d');
-new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: dayLabels,
-    datasets: [
-      {
-        label: '264',
-        data: data264,
-        borderColor: '#0969da',
-        backgroundColor: 'rgba(9,105,218,0.08)',
-        borderWidth: 2.5,
-        pointRadius: 4,
-        pointHoverRadius: 6,
-        fill: true,
-        tension: 0.3
-      },
-      {
-        label: '262',
-        data: data262,
-        borderColor: '#1a7f37',
-        backgroundColor: 'rgba(26,127,55,0.06)',
-        borderWidth: 2,
-        pointRadius: 3,
-        pointHoverRadius: 5,
-        borderDash: [5, 3],
-        fill: true,
-        tension: 0.3
-      }
-    ]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          title: (items) => {
-            const i = items[0].dataIndex;
-            return `Day ${i+3}  ·  264: ${dates264[i]}  ·  262: ${dates262[i]}`;
-          },
-          label: (item) => ` ${item.dataset.label}: ${item.raw} cases`
-        }
-      }
-    },
-    scales: {
-      x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 }, color: '#656d76' } },
-      y: { beginAtZero: true, grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 }, color: '#656d76', stepSize: 10 } }
-    }
-  }
-});
-</script>
 </body>
 </html>
