@@ -138,9 +138,9 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 <div class="page-title">264 RC Upgrade — First 7 Days Executive Summary</div>
 <div class="page-sub">Revenue Cloud (Core) — RCA/RCB · Post-SB1 first 7 days · 258 / 260 / 262 / 264 · OrgCS validated · Sep 2026</div>
 <div style="margin:8px 0 14px;padding:10px 16px;background:#f0f7ff;border-left:4px solid #0176d3;border-radius:0 6px 6px 0;font-size:12px;line-height:1.6;color:var(--text)">
-  <strong style="color:#0176d3">2.5× more orgs upgraded in 264 vs 258</strong> — yet absolute IR count held nearly flat (78 → 56).
-  IR per active org fell <strong>10.2% → 2.8%</strong> — best-ever across all four releases.
-  Bug Confirm Rate hit <strong>96%</strong> in 264, up from 67% in 258, signalling sharply improved triage precision.
+  <strong style="color:#0176d3">2.5× more orgs in 264 vs 258</strong> — yet absolute Upgrade cases held nearly flat (78 → 56).
+  Upgrade cases per active org fell <strong>10.2% → 2.9%</strong> — best-ever across all four releases.
+  Bug Confirm Rate of upgrade case hit <strong>96%</strong> in 264, up from 67% in 258, signalling sharply improved triage precision to engineering team.
 </div>
 
 
@@ -149,13 +149,13 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 <div class="ki-strip">
 
   <div class="ki-card hi-green" style="border-width:2px">
-    <div class="ki-label" style="color:var(--green)">IR / Active Org</div>
-    <div class="ki-val" style="color:var(--green);font-size:30px">2.8%</div>
+    <div class="ki-label" style="color:var(--green)">Upgrade Cases / Active Org</div>
+    <div class="ki-val" style="color:var(--green);font-size:30px">2.9%</div>
     <div class="ki-val-sub" style="color:var(--green);font-weight:600">best-ever · 258 was 10.2%</div>
   </div>
 
   <div class="ki-card" style="border-color:#0176d3;background:#f0f7ff">
-    <div class="ki-label">IR Cases (Upgrade)</div>
+    <div class="ki-label">Upgrade Cases</div>
     <div class="ki-val" style="color:var(--blue)">56</div>
     <div class="ki-val-sub">11.5% of inflow</div>
   </div>
@@ -171,7 +171,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
     <div class="ki-label">Top 3 Bugs · Case Volume</div>
     <div class="bug-list" style="margin-top:6px">
       <div class="bug-row">
-        <span class="bug-num">11</span>
+        <span class="bug-num">12</span>
         <div style="flex:1;min-width:0">
           <div style="font-size:10px;font-weight:700;color:var(--text)">W-24059609</div>
           <div style="font-size:9.5px;color:var(--muted)">Context mapping to BS/BSG</div>
@@ -199,7 +199,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 
   <!-- Accounts 2+ -->
   <div class="ki-card" style="border-color:#0176d3;background:#f0f7ff">
-    <div class="ki-label" style="color:var(--blue)">Accounts · 2+ IR Bugs (264)</div>
+    <div class="ki-label" style="color:var(--blue)">Accounts · 2+ Upgrade Bugs (264)</div>
     <div class="ki-val" style="color:var(--blue);font-size:28px;margin-bottom:4px">8</div>
     <div class="bug-list">
       <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px"><strong>Neocol</strong> <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
@@ -213,7 +213,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 
   <!-- New P&T areas -->
   <div class="ki-card" style="border-color:#8250df;background:#faf0ff">
-    <div class="ki-label" style="color:var(--purple)">New Areas in 264 IR</div>
+    <div class="ki-label" style="color:var(--purple)">New Areas in 264 Upgrade</div>
     <div style="font-size:9px;color:var(--muted);margin-bottom:8px">Not seen in 258 / 260 / 262</div>
     <div class="bug-list">
       <div class="bug-row">
@@ -238,8 +238,8 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 
 <!-- ── CHART: RC Inflow vs IR Cases · Bugs · Active Org ── -->
 <div class="card">
-  <div class="card-title">RC Inflow &amp; Bug Cases · IR/Active Org % &amp; Bug Confirm Rate — First 7 Days Post-SB1</div>
-  <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Bars = volume (left axis). Lines = quality rates (right axis). 2.5× more orgs in 264 vs 258 — IR/Org fell 10.2% → 2.8% while Bug Confirm Rate rose 67% → 96%.</div>
+  <div class="card-title">RC Inflow &amp; Cases with Bug · Upgrade Cases / Active Org % — First 7 Days Post-SB1</div>
+  <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Bars = volume (left axis). Line = upgrade cases per active org % (right axis). 2.5× more orgs in 264 vs 258 — Upgrade Cases/Org fell 10.2% → 2.9%.</div>
   <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
   <div class="legend-row">
     <div class="leg">
@@ -249,11 +249,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
       <div style="width:14px;height:12px;background:#54698d;border-radius:2px;flex-shrink:0"></div>&nbsp;Cases w/ Bug (bars, left)
     </div>
     <div class="leg">
-      <div class="leg-dot" style="background:var(--green)"></div><strong>IR / Active Org %</strong> (line, right)
-    </div>
-    <div class="leg">
-      <div class="leg-dash-line"><div class="leg-dash" style="background:var(--purple)"></div><div class="leg-dash" style="background:var(--purple);margin-left:2px"></div></div>
-      <div class="leg-dot" style="background:var(--purple);margin-left:3px"></div>Bug Confirm Rate % (line, right)
+      <div class="leg-dot" style="background:var(--green)"></div><strong>Upgrade Cases / Active Org %</strong> (line, right)
     </div>
     <div class="leg" style="margin-left:auto;font-size:10px;color:var(--muted)">
       <em>Hover for full detail per release</em>
@@ -289,16 +285,22 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
         <td class="cr-col-264 v-bold">488</td>
       </tr>
       <tr>
-        <td>IR Cases (Upgrade)</td>
+        <td>Upgrade Cases</td>
         <td>78</td><td>71</td>
         <td class="v-green">14</td>
         <td class="cr-col-264 v-blue">56</td>
       </tr>
+      <tr>
+        <td>Cases with Bug</td>
+        <td>67</td><td>68</td>
+        <td class="v-green">14</td>
+        <td class="cr-col-264 v-blue">54</td>
+      </tr>
       <tr style="background:#f6f8fa">
-        <td><strong>IR / Active Org</strong> <span class="v-muted">installed-base view</span></td>
+        <td><strong>Upgrade Cases / Active Org</strong> <span class="v-muted">installed-base view</span></td>
         <td class="v-bold">10.2%</td><td class="v-bold">5.6%</td>
         <td class="v-bold v-green">0.9%</td>
-        <td class="cr-col-264 v-bold v-blue">2.8%</td>
+        <td class="cr-col-264 v-bold v-blue">2.9%</td>
       </tr>
       <tr>
         <td>Unique Bugs</td>
@@ -306,14 +308,8 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
         <td class="v-green">10</td>
         <td class="cr-col-264 v-blue">16</td>
       </tr>
-      <tr style="background:#f6f8fa">
-        <td><strong>Bug Confirm Rate</strong> <span class="v-muted">(Cases w/ Bug / IR Cases)</span></td>
-        <td class="v-bold">67%</td><td class="v-bold">75%</td>
-        <td class="v-green v-bold">86%</td>
-        <td class="cr-col-264 v-blue v-bold">96%</td>
-      </tr>
       <tr>
-        <td>Sev1 IR Cases</td>
+        <td>Sev1 Upgrade Cases</td>
         <td>23</td><td>11</td>
         <td class="v-green">6</td>
         <td class="cr-col-264 v-blue">7</td>
@@ -418,7 +414,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 
   <!-- Bug Cases by P&T Topic -->
   <div class="card" style="margin-bottom:0">
-    <div class="card-title">Bug Cases by P&amp;T Topic — All Releases (first 7 days)</div>
+    <div class="card-title">Cases with Bug by P&amp;T Topic — All Releases (first 7 days)</div>
     <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Bar width = relative share within release. <span style="color:#8250df;font-weight:700">◆</span> = new area in 264.</div>
     <table class="g-table" id="topicTable">
       <thead>
@@ -438,15 +434,15 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 
 <!-- ── USAGE & BILLING SPOTLIGHT ── -->
 <div class="card">
-  <div class="card-title">264 New Area Spotlight — Usage &amp; Billing Emerging in IR (not seen in 258/260/262)</div>
+  <div class="card-title">264 New Area Spotlight — Usage &amp; Billing Emerging in Upgrade Cases (not seen in 258/260/262)</div>
   <div class="spotlight-grid">
     <div class="spot-card usage">
-      <div class="spot-title" style="color:#0176d3">Usage &amp; Ratings — 4 IR Cases · 1 Bug</div>
+      <div class="spot-title" style="color:#0176d3">Usage &amp; Ratings — 4 Upgrade Cases · 1 Bug</div>
       <div style="font-size:11px;font-weight:700">W-23791512 <span class="gus-pill gus-closed">Closed ✓</span></div>
       <div class="spot-bug">Batch job "Retrieve Net Unit Rates for Ratable Summary" fails post-264 upgrade. Affects tier-based usage products. All 4 cases: same root cause, global impact (incl. Japanese customer). Bug closed before GA.</div>
     </div>
     <div class="spot-card billing">
-      <div class="spot-title" style="color:#8250df">Billing &amp; Invoicing — 8 IR Cases · 3 Bugs</div>
+      <div class="spot-title" style="color:#8250df">Billing &amp; Invoicing — 7 Upgrade Cases · 3 Bugs</div>
       <div style="font-size:11px;margin-bottom:4px">
         <span style="font-weight:700">W-24088655</span> <span class="gus-pill gus-closed">Closed ✓</span>
         <div class="spot-bug">generateInvoices fails when state/country picklist enabled. 3 cases. Closed.</div>
@@ -583,16 +579,14 @@ const gc='rgba(208,215,222,.4)', tc='#706e6b';
 const RELS=["258\nWinter '26","260\nSpring '26","262\nSummer '26","264\nWinter '27"];
 const COLS=['#0176d3','#1a7f37','#9a6700','#c23934'];
 
-// ── MAIN CHART — combo: bars (Inflow + Cases w/Bug) + lines (IR/Org % + Bug Confirm Rate %) ──
+// ── MAIN CHART — combo: bars (Inflow + Cases w/Bug) + line (Upgrade Cases / Active Org %) ──
 const inflow=[453,470,430,488];
-const irCases=[78,71,14,56];
+const upgradeCases=[78,71,14,56];
 const uniqBugs=[15,32,10,16];
-const casesWithBug=[52,53,12,54];
+const casesWithBug=[67,68,14,54];
 const activeOrgs=[765,1266,1632,1908];
-const irRates=[17.2,15.1,3.3,11.5];
 const bugRates=[3.3,6.8,2.3,3.1];
-const bugConfirmRate=[67,75,86,96];
-const irPerOrg=[10.2,5.6,0.9,2.8];
+const irPerOrg=[10.2,5.6,0.9,2.9];
 
 const SF_GREEN='#1a7f37';
 
@@ -612,23 +606,15 @@ new Chart(document.getElementById('mainChart').getContext('2d'),{
        borderRadius:3,yAxisID:'yCount',order:2,
        datalabels:{anchor:'end',align:'end',color:'#54698d',font:{size:10,weight:'700'},
          formatter:v=>v}},
-      // ── lines (right axis — percentages) ──
-      {type:'line',label:'IR / Active Org %',data:irPerOrg,
+      // ── line (right axis — upgrade cases / active org %) ──
+      {type:'line',label:'Upgrade Cases / Active Org %',data:irPerOrg,
        borderColor:SF_GREEN,backgroundColor:'transparent',
        borderWidth:3,tension:0.3,fill:false,
        pointRadius:6,pointBackgroundColor:SF_GREEN,pointBorderColor:'#fff',pointBorderWidth:2,
        yAxisID:'yPct',order:1,
        datalabels:{anchor:'end',align:(ctx)=>ctx.dataIndex===2?'bottom':'top',
          color:SF_GREEN,font:{size:11,weight:'800'},
-         formatter:(v,ctx)=>{const l=['10.2%','5.6%','0.9%','2.8% ✓'];return l[ctx.dataIndex];}}},
-      {type:'line',label:'Bug Confirm Rate %',data:bugConfirmRate,
-       borderColor:SF_PURPLE,backgroundColor:'transparent',
-       borderWidth:2,borderDash:[6,3],tension:0.3,fill:false,
-       pointRadius:5,pointBackgroundColor:SF_PURPLE,pointBorderColor:'#fff',pointBorderWidth:1.5,
-       yAxisID:'yPct',order:1,
-       datalabels:{anchor:'end',align:(ctx)=>ctx.dataIndex===0?'bottom':'top',
-         color:SF_PURPLE,font:{size:10,weight:'700'},
-         formatter:v=>v+'%'}}
+         formatter:(v,ctx)=>{const l=['10.2%','5.6%','0.9%','2.9% ✓'];return l[ctx.dataIndex];}}}
     ]
   },
   options:{
@@ -645,10 +631,8 @@ new Chart(document.getElementById('mainChart').getContext('2d'),{
             return [' RC Inflow: '+inflow[i],' Active Orgs: '+activeOrgs[i].toLocaleString()];
           if(ctx.dataset.label==='Cases w/ Bug')
             return [' Cases w/ Bug: '+casesWithBug[i],' Bug Rate: '+bugRates[i]+'%'];
-          if(ctx.dataset.label==='IR / Active Org %')
-            return [' IR/Active Org: '+irPerOrg[i]+'%',' IR Cases: '+irCases[i]];
-          if(ctx.dataset.label==='Bug Confirm Rate %')
-            return [' Bug Confirm Rate: '+bugConfirmRate[i]+'%',' Unique Bugs: '+uniqBugs[i]];
+          if(ctx.dataset.label==='Upgrade Cases / Active Org %')
+            return [' Upgrade Cases/Active Org: '+irPerOrg[i]+'%',' Upgrade Cases: '+upgradeCases[i],' Active Orgs: '+activeOrgs[i].toLocaleString()];
           return ' '+ctx.dataset.label+': '+ctx.parsed.y;
         }
       }}
@@ -667,20 +651,21 @@ new Chart(document.getElementById('mainChart').getContext('2d'),{
   }
 });
 
-// ── BUG CASES BY P&T TOPIC — mini-bar table ──
+// ── CASES WITH BUG BY P&T TOPIC — mini-bar table ──
 const TOPIC_DATA=[
   // [topic, isNew264, 258, 260, 262, 264]
-  ['Product Configurator', false, 46, 25,  5, 11],
-  ['Transaction Mgmt',     false,  9, 16,  6, 12],
+  ['Product Configurator', false, 46, 25,  5, 15],
+  ['Transaction Mgmt',     false,  9, 16,  5, 15],
   ['Price Management',     false,  2, 13,  1,  0],
-  ['Billing & Invoicing',  false,  0,  4,  0,  5],
+  ['Dev - P2O',            false,  8,  1,  0,  4],
+  ['Billing & Invoicing',  false,  0,  4,  0,  7],
+  ['DRO',                  false,  0,  5,  1,  2],
   ['PCM',                  false,  0,  2,  0,  5],
   ['Usage & Ratings',      true,   0,  0,  0,  4],
-  ['DRO',                  false,  0,  5,  1,  2],
-  ['Adv. Approvals',       true,   0,  0,  0,  1],
-  ['SF CPQ',               false,  2,  1,  0,  1],
+  ['Advanced Approvals',   true,   0,  1,  0,  1],
+  ['Invoice to Cash',      false,  0,  0,  1,  0],
 ];
-const maxV=[46, 25, 6, 12];
+const maxV=[46, 25, 6, 15];
 const relC=['#0176d3','#1a7f37','#9a6700','#0176d3'];
 
 const tbody=document.getElementById('topicRows');
