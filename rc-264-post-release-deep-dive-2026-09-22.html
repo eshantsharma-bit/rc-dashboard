@@ -28,7 +28,6 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
-  a { color: var(--accent-264); text-decoration: none; }
 
   .page-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 20px 32px; display: flex; align-items: flex-start; justify-content: space-between; }
   .page-header h1 { font-size: 20px; font-weight: 600; }
@@ -39,7 +38,6 @@
 
   .container { max-width: 1280px; margin: 0 auto; padding: 24px 32px; }
 
-  /* KPI Grid */
   .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
   .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; box-shadow: var(--shadow); }
   .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 8px; }
@@ -51,25 +49,19 @@
   .kpi-divider { width: 1px; background: var(--border); height: 28px; }
   .kpi-delta { font-size: 12px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
   .kpi-delta.up { background: #ffebe9; color: #82071e; }
-  .kpi-delta.down { background: #d1f8d9; color: #116329; }
+  .kpi-delta.neutral { background: #f6f8fa; color: #656d76; }
 
-  /* Window reference banner */
   .window-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 20px; margin-bottom: 24px; display: flex; gap: 40px; }
   .window-item { display: flex; flex-direction: column; gap: 2px; }
   .window-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
   .window-val { font-size: 13px; font-weight: 500; }
 
-  /* Sections */
   .section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 24px; box-shadow: var(--shadow); }
-  .section-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .section-title .icon { width: 18px; height: 18px; opacity: 0.7; }
+  .section-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
 
-  /* Chart wrapper */
   .chart-wrap { position: relative; height: 300px; }
 
-  /* IR Section */
   .ir-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .ir-block { }
   .ir-block-title { font-size: 13px; font-weight: 600; margin-bottom: 12px; padding: 6px 10px; border-radius: 6px; }
   .ir-block-title.outage { background: var(--tag-outage-bg); color: var(--tag-outage-text); }
   .ir-block-title.upgrade { background: var(--tag-upgrade-bg); color: var(--tag-upgrade-text); }
@@ -77,14 +69,11 @@
   .ir-stat { text-align: center; }
   .ir-stat .num { font-size: 24px; font-weight: 700; }
   .ir-stat .lbl { font-size: 11px; color: var(--muted); }
-  .ir-acct-list { font-size: 12px; }
-  .ir-acct-list li { padding: 4px 0; border-bottom: 1px solid var(--bg); list-style: none; display: flex; justify-content: space-between; }
+  .ir-acct-list li { padding: 4px 0; border-bottom: 1px solid var(--bg); list-style: none; display: flex; justify-content: space-between; font-size: 12px; }
   .ir-acct-list li:last-child { border-bottom: none; }
   .ir-bugs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   .ir-bug-tag { font-size: 11px; padding: 2px 6px; border-radius: 4px; background: #f6f8fa; border: 1px solid var(--border); font-family: ui-monospace, monospace; }
-  .ir-none { color: var(--muted); font-size: 13px; padding: 12px; text-align: center; background: var(--bg); border-radius: 6px; }
 
-  /* P&T Table */
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   thead th { background: var(--bg); padding: 8px 12px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); border-bottom: 2px solid var(--border); }
   thead th.num { text-align: right; }
@@ -98,34 +87,22 @@
   .tag-upgrade { background: var(--tag-upgrade-bg); color: var(--tag-upgrade-text); }
   .heat-bar { display: inline-block; height: 8px; border-radius: 4px; margin-right: 6px; vertical-align: middle; }
   .heat-264 { background: var(--accent-264); opacity: 0.7; }
-  .heat-262 { background: var(--accent-262); opacity: 0.7; }
+  tr.subtotal td { background: #f0f6ff; font-weight: 600; border-top: 2px solid var(--border); }
 
-  /* Top Accounts */
-  .acct-table tbody td.acct-name { font-weight: 500; }
-  .delta-badge { font-size: 11px; font-weight: 600; padding: 1px 5px; border-radius: 4px; }
-
-  /* GEO */
   .geo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
   .geo-bars { display: flex; flex-direction: column; gap: 8px; }
   .geo-row { display: flex; align-items: center; gap: 8px; font-size: 13px; }
   .geo-label { width: 60px; font-weight: 500; }
   .geo-bar-track { flex: 1; height: 14px; background: var(--bg); border-radius: 7px; overflow: hidden; }
-  .geo-bar-fill { height: 100%; border-radius: 7px; transition: width 0.3s; }
+  .geo-bar-fill { height: 100%; border-radius: 7px; }
   .geo-count { width: 40px; text-align: right; color: var(--muted); font-size: 12px; }
   .geo-pct { width: 36px; text-align: right; font-size: 11px; color: var(--muted); }
 
-  /* Scope note */
   .scope-note { background: #fffae6; border: 1px solid #e6c200; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #5a4500; margin-bottom: 24px; }
-
-  /* Two col layout */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-
-  /* Totals sub-row in table */
-  tr.subtotal td { background: #f0f6ff; font-weight: 600; border-top: 2px solid var(--border); }
 
   @media (max-width: 900px) {
     .kpi-grid { grid-template-columns: repeat(2,1fr); }
-    .ir-grid, .geo-grid, .two-col { grid-template-columns: 1fr; }
+    .ir-grid, .geo-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -135,7 +112,7 @@
   <div>
     <h1>Revenue Cloud — Post-Release Case Analysis</h1>
     <div class="meta">
-      Signature Success · Sev 1–3 only (P2 excluded) · Days 3–21 post-SB1
+      Signature Success · All severities · Days 3–21 post-SB1
       &nbsp;|&nbsp; <span class="badge badge-264">264 Release</span> Sep 1–19, 2026
       &nbsp;vs&nbsp; <span class="badge badge-262">262 Release</span> May 11–29, 2026
     </div>
@@ -146,7 +123,7 @@
 <div class="container">
 
   <div class="scope-note">
-    <strong>Scope:</strong> Success Plan contains "Signature" · Severity Level ≠ Level 2 - Urgent · Release window Days 3–21 post-SB1 · Source: CSV export Sep 23 2026
+    <strong>Scope:</strong> Success Plan contains "Signature" · All severity levels · Release window Days 3–21 post-SB1 · Source: CSV export Sep 23 2026
   </div>
 
   <!-- KPI Grid -->
@@ -155,43 +132,43 @@
       <div class="kpi-label">Total Cases</div>
       <div class="kpi-row">
         <div>
-          <div class="kpi-val c264">266</div>
+          <div class="kpi-val c264">478</div>
           <div class="kpi-sub">264 release (Sep 1–19)</div>
         </div>
         <div class="kpi-divider"></div>
         <div>
-          <div class="kpi-val c262">178</div>
+          <div class="kpi-val c262">333</div>
           <div class="kpi-sub">262 release (May 11–29)</div>
         </div>
       </div>
-      <div style="margin-top:8px;"><span class="kpi-delta up">+50% YoY</span></div>
+      <div style="margin-top:8px;"><span class="kpi-delta up">+44% vs 262</span></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">IR-Linked Cases</div>
       <div class="kpi-row">
         <div>
-          <div class="kpi-val c264">15</div>
-          <div class="kpi-sub">264 (5.6% of total)</div>
+          <div class="kpi-val c264">29</div>
+          <div class="kpi-sub">264 (6.1% of total)</div>
         </div>
         <div class="kpi-divider"></div>
         <div>
-          <div class="kpi-val c262">1</div>
-          <div class="kpi-sub">262 (0.6% of total)</div>
+          <div class="kpi-val c262">3</div>
+          <div class="kpi-sub">262 (0.9% of total)</div>
         </div>
       </div>
-      <div style="margin-top:8px;"><span class="kpi-delta up">9 outage · 6 upgrade (264)</span></div>
+      <div style="margin-top:8px;"><span class="kpi-delta up">10 outage · 19 upgrade (264)</span></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">RCA Volume</div>
       <div class="kpi-row">
         <div>
-          <div class="kpi-val c264">163</div>
-          <div class="kpi-sub">264 (61%)</div>
+          <div class="kpi-val c264">325</div>
+          <div class="kpi-sub">264 (68%)</div>
         </div>
         <div class="kpi-divider"></div>
         <div>
-          <div class="kpi-val c262">100</div>
-          <div class="kpi-sub">262 (56%)</div>
+          <div class="kpi-val c262">192</div>
+          <div class="kpi-sub">262 (58%)</div>
         </div>
       </div>
       <div class="kpi-sub" style="margin-top:8px;">Revenue Cloud (Core) topics</div>
@@ -200,13 +177,13 @@
       <div class="kpi-label">CPQ Package Volume</div>
       <div class="kpi-row">
         <div>
-          <div class="kpi-val c264">103</div>
-          <div class="kpi-sub">264 (39%)</div>
+          <div class="kpi-val c264">153</div>
+          <div class="kpi-sub">264 (32%)</div>
         </div>
         <div class="kpi-divider"></div>
         <div>
-          <div class="kpi-val c262">78</div>
-          <div class="kpi-sub">262 (44%)</div>
+          <div class="kpi-val c262">141</div>
+          <div class="kpi-sub">262 (42%)</div>
         </div>
       </div>
       <div class="kpi-sub" style="margin-top:8px;">Legacy Revenue (CPQ, Billing, DocGen…)</div>
@@ -225,7 +202,7 @@
     </div>
     <div class="window-item">
       <div class="window-label">Comparable metric</div>
-      <div class="window-val">Same day-offset window, same Sig Success filter, same P2 exclusion</div>
+      <div class="window-val">Same day-offset window · Same Signature Success filter</div>
     </div>
   </div>
 
@@ -237,8 +214,7 @@
     </div>
     <div style="display:flex;gap:24px;margin-top:12px;font-size:12px;color:var(--muted);">
       <span><span style="display:inline-block;width:12px;height:3px;background:var(--accent-264);vertical-align:middle;margin-right:4px;border-radius:2px;"></span>264 — Sep 1–19 (Days 3–21)</span>
-      <span><span style="display:inline-block;width:12px;height:3px;background:var(--accent-262);vertical-align:middle;margin-right:4px;border-radius:2px;border-style:dashed;"></span>262 — May 11–29 (Days 3–21)</span>
-      <span>Weekend days shown on axis · Flat days (Sat/Sun) are expected</span>
+      <span><span style="display:inline-block;width:12px;height:3px;background:var(--accent-262);border-style:dashed;vertical-align:middle;margin-right:4px;border-radius:2px;"></span>262 — May 11–29 (Days 3–21)</span>
     </div>
   </div>
 
@@ -247,21 +223,20 @@
     <div class="section-title">Incident Reports (IR) — Customer Impact</div>
     <div class="ir-grid">
 
-      <!-- 264 outage IR -->
-      <div class="ir-block">
-        <div class="ir-block-title outage">264 — Outage IRs (IR 95079032 &amp; 95390343)</div>
+      <div>
+        <div class="ir-block-title outage">264 — Outage IRs (95079032 &amp; 95390343)</div>
         <div class="ir-stat-row">
-          <div class="ir-stat"><div class="num" style="color:var(--accent-outage)">9</div><div class="lbl">Cases</div></div>
-          <div class="ir-stat"><div class="num" style="color:var(--accent-outage)">8</div><div class="lbl">Unique Accounts</div></div>
+          <div class="ir-stat"><div class="num" style="color:var(--accent-outage)">10</div><div class="lbl">Cases</div></div>
+          <div class="ir-stat"><div class="num" style="color:var(--accent-outage)">9</div><div class="lbl">Unique Accounts</div></div>
           <div class="ir-stat"><div class="num" style="color:var(--accent-outage)">3</div><div class="lbl">Bugs Linked</div></div>
         </div>
         <ul class="ir-acct-list">
+          <li><span>LiveRamp, Inc</span><span>2 cases</span></li>
           <li><span>Pets Insurance Services Ltd</span><span>2 cases</span></li>
-          <li><span>Altice USA (formerly Cablevision)</span><span>1 case</span></li>
-          <li><span>Milestone Systems A/S</span><span>1 case</span></li>
+          <li><span>Bell Canada</span><span>1 case</span></li>
           <li><span>Laboratory Corporation of America</span><span>1 case</span></li>
-          <li><span>Bridgestone Mobility Solutions B.V.</span><span>1 case</span></li>
-          <li><span style="color:var(--muted)">+ 3 more accounts</span><span></span></li>
+          <li><span>Milestone Systems A/S</span><span>1 case</span></li>
+          <li><span style="color:var(--muted)">+ 4 more accounts</span><span></span></li>
         </ul>
         <div class="ir-bugs">
           <span class="ir-bug-tag">W-24210811</span>
@@ -270,21 +245,20 @@
         </div>
       </div>
 
-      <!-- 264 upgrade IR -->
-      <div class="ir-block">
+      <div>
         <div class="ir-block-title upgrade">264 — Release Upgrade IR (264 RC Upgrade)</div>
         <div class="ir-stat-row">
-          <div class="ir-stat"><div class="num" style="color:var(--accent-upgrade)">6</div><div class="lbl">Cases</div></div>
-          <div class="ir-stat"><div class="num" style="color:var(--accent-upgrade)">6</div><div class="lbl">Unique Accounts</div></div>
+          <div class="ir-stat"><div class="num" style="color:var(--accent-upgrade)">19</div><div class="lbl">Cases</div></div>
+          <div class="ir-stat"><div class="num" style="color:var(--accent-upgrade)">16</div><div class="lbl">Unique Accounts</div></div>
           <div class="ir-stat"><div class="num" style="color:var(--accent-upgrade)">3</div><div class="lbl">Bugs Linked</div></div>
         </div>
         <ul class="ir-acct-list">
+          <li><span>AI inside Inc.</span><span>2 cases</span></li>
+          <li><span>Cummins SFA, DBU &amp; Power Generation</span><span>2 cases</span></li>
+          <li><span>PostNL Holding BV</span><span>2 cases</span></li>
+          <li><span>Trane Technologies Company LLC</span><span>2 cases</span></li>
           <li><span>Eaton Main</span><span>1 case</span></li>
-          <li><span>Fortinet, Inc.</span><span>1 case</span></li>
-          <li><span>Convergint Technologies LLC</span><span>1 case</span></li>
-          <li><span>PostNL Holding BV</span><span>1 case</span></li>
-          <li><span>PricewaterhouseCoopers Global Licensing</span><span>1 case</span></li>
-          <li><span style="color:var(--muted)">+ 1 more account</span><span></span></li>
+          <li><span style="color:var(--muted)">+ 11 more accounts</span><span></span></li>
         </ul>
         <div class="ir-bugs">
           <span class="ir-bug-tag">W-24104434</span>
@@ -298,7 +272,7 @@
       <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--muted);">262 Release — IR Cases</div>
       <div style="display:flex;align-items:center;gap:16px;">
         <span class="tag tag-upgrade">262 RC Upgrade</span>
-        <span style="font-size:13px;">1 case · 1 unique account (Capital One Services, LLC) · Bug: <code style="font-size:11px;background:var(--bg);padding:2px 4px;border-radius:3px;">W-22438729</code></span>
+        <span style="font-size:13px;">3 cases · 3 unique accounts · Bug: <code style="font-size:11px;background:var(--bg);padding:2px 4px;border-radius:3px;">W-22438729</code></span>
       </div>
     </div>
   </div>
@@ -319,152 +293,150 @@
         </tr>
       </thead>
       <tbody>
-        <!-- RCA subtotal -->
         <tr class="subtotal">
           <td colspan="2">RCA (Revenue Cloud Core) Total</td>
-          <td class="num">163</td>
-          <td class="num">100</td>
-          <td class="num">+63</td>
-          <td class="num">15</td>
+          <td class="num">325</td>
+          <td class="num">192</td>
+          <td class="num">+133</td>
+          <td class="num">29</td>
+          <td class="num">37</td>
+        </tr>
+        <tr>
+          <td><span class="heat-bar heat-264" style="width:96px;"></span>Product Configurator</td>
+          <td><span class="tag tag-rca">RCA</span></td>
+          <td class="num">105</td>
+          <td class="num">54</td>
+          <td class="num" style="color:var(--accent-outage)">+51</td>
           <td class="num">16</td>
-        </tr>
-        <tr>
-          <td><span class="heat-bar heat-264" style="width:88px;"></span>Product Configurator</td>
-          <td><span class="tag tag-rca">RCA</span></td>
-          <td class="num">59</td>
-          <td class="num">30</td>
-          <td class="num" style="color:var(--accent-outage);">+29</td>
-          <td class="num">9</td>
-          <td class="num">7</td>
-        </tr>
-        <tr>
-          <td><span class="heat-bar heat-264" style="width:40px;"></span>Transaction Management</td>
-          <td><span class="tag tag-rca">RCA</span></td>
-          <td class="num">27</td>
-          <td class="num">25</td>
-          <td class="num">+2</td>
-          <td class="num">1</td>
-          <td class="num">3</td>
-        </tr>
-        <tr>
-          <td><span class="heat-bar heat-264" style="width:24px;"></span>Price Management</td>
-          <td><span class="tag tag-rca">RCA</span></td>
-          <td class="num">16</td>
-          <td class="num">9</td>
-          <td class="num">+7</td>
-          <td class="num">0</td>
-          <td class="num">0</td>
-        </tr>
-        <tr>
-          <td><span class="heat-bar heat-264" style="width:21px;"></span>Product Catalog Management</td>
-          <td><span class="tag tag-rca">RCA</span></td>
           <td class="num">14</td>
-          <td class="num">6</td>
-          <td class="num" style="color:var(--accent-outage);">+8</td>
+        </tr>
+        <tr>
+          <td><span class="heat-bar heat-264" style="width:52px;"></span>Transaction Management</td>
+          <td><span class="tag tag-rca">RCA</span></td>
+          <td class="num">54</td>
+          <td class="num">42</td>
+          <td class="num">+12</td>
           <td class="num">3</td>
-          <td class="num">3</td>
-        </tr>
-        <tr>
-          <td><span class="heat-bar heat-264" style="width:14px;"></span>Contract Lifecycle Management</td>
-          <td><span class="tag tag-rca">RCA</span></td>
-          <td class="num">9</td>
-          <td class="num">6</td>
-          <td class="num">+3</td>
-          <td class="num">1</td>
-          <td class="num">2</td>
-        </tr>
-        <tr>
-          <td><span class="heat-bar heat-264" style="width:12px;"></span>Developer Support (P2O)</td>
-          <td><span class="tag tag-rca">RCA</span></td>
           <td class="num">8</td>
-          <td class="num">10</td>
-          <td class="num" style="color:var(--accent-262);">−2</td>
+        </tr>
+        <tr>
+          <td><span class="heat-bar heat-264" style="width:40px;"></span>Price Management</td>
+          <td><span class="tag tag-rca">RCA</span></td>
+          <td class="num">41</td>
+          <td class="num">22</td>
+          <td class="num">+19</td>
           <td class="num">0</td>
           <td class="num">0</td>
         </tr>
         <tr>
-          <td><span class="heat-bar heat-264" style="width:12px;"></span>Billing &amp; Invoicing</td>
+          <td><span class="heat-bar heat-264" style="width:24px;"></span>Developer Support (P2O)</td>
           <td><span class="tag tag-rca">RCA</span></td>
-          <td class="num">8</td>
-          <td class="num">5</td>
-          <td class="num">+3</td>
-          <td class="num">0</td>
-          <td class="num">0</td>
-        </tr>
-        <tr>
-          <td><span class="heat-bar heat-264" style="width:12px;"></span>Usage &amp; Ratings</td>
-          <td><span class="tag tag-rca">RCA</span></td>
-          <td class="num">8</td>
-          <td class="num">2</td>
+          <td class="num">25</td>
+          <td class="num">19</td>
           <td class="num">+6</td>
           <td class="num">1</td>
+          <td class="num">2</td>
+        </tr>
+        <tr>
+          <td><span class="heat-bar heat-264" style="width:22px;"></span>Product Catalog Management</td>
+          <td><span class="tag tag-rca">RCA</span></td>
+          <td class="num">23</td>
+          <td class="num">13</td>
+          <td class="num">+10</td>
+          <td class="num">5</td>
+          <td class="num">5</td>
+        </tr>
+        <tr>
+          <td><span class="heat-bar heat-264" style="width:20px;"></span>Billing &amp; Invoicing</td>
+          <td><span class="tag tag-rca">RCA</span></td>
+          <td class="num">21</td>
+          <td class="num">17</td>
+          <td class="num">+4</td>
+          <td class="num">2</td>
           <td class="num">1</td>
         </tr>
-        <!-- CPQ subtotal -->
+        <tr>
+          <td><span class="heat-bar heat-264" style="width:16px;"></span>Contract Lifecycle Management</td>
+          <td><span class="tag tag-rca">RCA</span></td>
+          <td class="num">16</td>
+          <td class="num">9</td>
+          <td class="num">+7</td>
+          <td class="num">1</td>
+          <td class="num">3</td>
+        </tr>
+        <tr>
+          <td><span class="heat-bar heat-264" style="width:11px;"></span>Usage &amp; Ratings</td>
+          <td><span class="tag tag-rca">RCA</span></td>
+          <td class="num">11</td>
+          <td class="num">2</td>
+          <td class="num">+9</td>
+          <td class="num">1</td>
+          <td class="num">1</td>
+        </tr>
         <tr class="subtotal">
           <td colspan="2">CPQ Package (Legacy Revenue) Total</td>
-          <td class="num">103</td>
-          <td class="num">78</td>
-          <td class="num">+25</td>
+          <td class="num">153</td>
+          <td class="num">141</td>
+          <td class="num">+12</td>
           <td class="num">0</td>
-          <td class="num">8</td>
+          <td class="num">2</td>
         </tr>
         <tr>
-          <td><span class="heat-bar heat-264" style="width:95px;"></span>Salesforce CPQ</td>
+          <td><span class="heat-bar heat-264" style="width:84px;"></span>Salesforce CPQ</td>
           <td><span class="tag tag-cpq">CPQ Package</span></td>
-          <td class="num">63</td>
-          <td class="num">56</td>
-          <td class="num">+7</td>
+          <td class="num">87</td>
+          <td class="num">90</td>
+          <td class="num" style="color:var(--accent-262)">−3</td>
           <td class="num">0</td>
           <td class="num">1</td>
         </tr>
         <tr>
-          <td><span class="heat-bar heat-264" style="width:33px;"></span>CPQ Developer Support</td>
+          <td><span class="heat-bar heat-264" style="width:32px;"></span>CPQ Developer Support</td>
           <td><span class="tag tag-cpq">CPQ Package</span></td>
-          <td class="num">22</td>
-          <td class="num">15</td>
-          <td class="num">+7</td>
+          <td class="num">33</td>
+          <td class="num">32</td>
+          <td class="num">+1</td>
           <td class="num">0</td>
           <td class="num">0</td>
         </tr>
         <tr>
-          <td><span class="heat-bar heat-264" style="width:9px;"></span>Salesforce Billing</td>
+          <td><span class="heat-bar heat-264" style="width:13px;"></span>Salesforce Billing</td>
           <td><span class="tag tag-cpq">CPQ Package</span></td>
-          <td class="num">6</td>
-          <td class="num">4</td>
-          <td class="num">+2</td>
+          <td class="num">13</td>
+          <td class="num">13</td>
           <td class="num">0</td>
           <td class="num">0</td>
+          <td class="num">1</td>
         </tr>
         <tr>
           <td><span class="heat-bar heat-264" style="width:9px;"></span>Salesforce Contracts</td>
           <td><span class="tag tag-cpq">CPQ Package</span></td>
-          <td class="num">6</td>
+          <td class="num">9</td>
           <td class="num">0</td>
-          <td class="num">+6</td>
+          <td class="num">+9</td>
           <td class="num">0</td>
           <td class="num">0</td>
         </tr>
         <tr>
-          <td><span class="heat-bar heat-264" style="width:5px;"></span>Document Generation</td>
+          <td><span class="heat-bar heat-264" style="width:7px;"></span>Document Generation</td>
           <td><span class="tag tag-cpq">CPQ Package</span></td>
-          <td class="num">3</td>
-          <td class="num">2</td>
-          <td class="num">+1</td>
+          <td class="num">7</td>
+          <td class="num">5</td>
+          <td class="num">+2</td>
           <td class="num">0</td>
           <td class="num">0</td>
         </tr>
       </tbody>
     </table>
     <div style="font-size:11px;color:var(--muted);margin-top:10px;">
-      RCA = Revenue Cloud (Core) topics · CPQ Package = Legacy Revenue topics (SF CPQ, Billing, DocGen, Contracts…) · IR/Bug columns reflect 264 release only
+      RCA = Revenue Cloud (Core) topics · CPQ Package = Legacy Revenue topics (SF CPQ, Billing, DocGen…) · IR/Bug columns reflect 264 release only
     </div>
   </div>
 
   <!-- Top 10 Accounts -->
   <div class="section">
     <div class="section-title">Top 10 Accounts — 264 Release (Sep 1–19)</div>
-    <table class="acct-table">
+    <table>
       <thead>
         <tr>
           <th>#</th>
@@ -478,80 +450,80 @@
       <tbody>
         <tr>
           <td>1</td>
-          <td class="acct-name">KnowBe4, Inc</td>
-          <td class="num">15</td>
+          <td style="font-weight:500">LiveRamp, Inc</td>
+          <td class="num">20</td>
           <td class="num">0</td>
-          <td class="num">0</td>
-          <td>—</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td class="acct-name">AI inside Inc.</td>
-          <td class="num">11</td>
-          <td class="num">1</td>
-          <td class="num">0</td>
-          <td><span class="tag tag-upgrade">Release Upgrade</span></td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td class="acct-name">PostNL Holding BV</td>
-          <td class="num">9</td>
-          <td class="num">1</td>
           <td class="num">2</td>
-          <td><span class="tag tag-upgrade">Release Upgrade</span></td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td class="acct-name">LiveRamp, Inc</td>
-          <td class="num">9</td>
-          <td class="num">0</td>
-          <td class="num">1</td>
           <td><span class="tag tag-outage">Outage IR</span></td>
         </tr>
         <tr>
-          <td>5</td>
-          <td class="acct-name">Vertex Inc. (Enterprise)</td>
-          <td class="num">7</td>
+          <td>2</td>
+          <td style="font-weight:500">KnowBe4, Inc</td>
+          <td class="num">18</td>
           <td class="num">0</td>
           <td class="num">0</td>
           <td>—</td>
         </tr>
         <tr>
+          <td>3</td>
+          <td style="font-weight:500">Bell Canada</td>
+          <td class="num">14</td>
+          <td class="num">2</td>
+          <td class="num">3</td>
+          <td><span class="tag tag-outage">Outage IR</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td style="font-weight:500">Cummins SFA, DBU &amp; Power Generation</td>
+          <td class="num">13</td>
+          <td class="num">1</td>
+          <td class="num">1</td>
+          <td><span class="tag tag-upgrade">Release Upgrade</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td style="font-weight:500">AI inside Inc.</td>
+          <td class="num">13</td>
+          <td class="num">1</td>
+          <td class="num">0</td>
+          <td><span class="tag tag-upgrade">Release Upgrade</span></td>
+        </tr>
+        <tr>
           <td>6</td>
-          <td class="acct-name">Cummins SFA, DBU &amp; Power Generation</td>
-          <td class="num">7</td>
-          <td class="num">0</td>
-          <td class="num">0</td>
+          <td style="font-weight:500">Equinix, Inc.</td>
+          <td class="num">13</td>
+          <td class="num">1</td>
+          <td class="num">2</td>
           <td>—</td>
         </tr>
         <tr>
           <td>7</td>
-          <td class="acct-name">Bell Canada</td>
-          <td class="num">7</td>
-          <td class="num">0</td>
-          <td class="num">2</td>
-          <td>—</td>
+          <td style="font-weight:500">Laboratory Corporation of America Holdings</td>
+          <td class="num">11</td>
+          <td class="num">1</td>
+          <td class="num">1</td>
+          <td><span class="tag tag-outage">Outage IR</span></td>
         </tr>
         <tr>
           <td>8</td>
-          <td class="acct-name">CAT IPSD/Perkins Engines Company Limited</td>
-          <td class="num">5</td>
-          <td class="num">0</td>
-          <td class="num">0</td>
-          <td>—</td>
+          <td style="font-weight:500">PostNL Holding BV</td>
+          <td class="num">11</td>
+          <td class="num">2</td>
+          <td class="num">2</td>
+          <td><span class="tag tag-upgrade">Release Upgrade</span></td>
         </tr>
         <tr>
           <td>9</td>
-          <td class="acct-name">Trimble Illuminate</td>
-          <td class="num">5</td>
-          <td class="num">0</td>
-          <td class="num">0</td>
-          <td>—</td>
+          <td style="font-weight:500">Trane Technologies Company LLC</td>
+          <td class="num">10</td>
+          <td class="num">1</td>
+          <td class="num">1</td>
+          <td><span class="tag tag-upgrade">Release Upgrade</span></td>
         </tr>
         <tr>
           <td>10</td>
-          <td class="acct-name">ADT LLC</td>
-          <td class="num">5</td>
+          <td style="font-weight:500">CrowdStrike, Inc.</td>
+          <td class="num">9</td>
           <td class="num">0</td>
           <td class="num">1</td>
           <td>—</td>
@@ -568,102 +540,99 @@
     <div class="section-title">GEO Distribution</div>
     <div class="geo-grid">
       <div>
-        <div style="font-size:13px;font-weight:600;margin-bottom:12px;"><span class="badge badge-264">264</span> — 266 cases (excl. 62 unassigned)</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px;"><span class="badge badge-264">264</span> — 478 cases (413 assigned GEO)</div>
         <div class="geo-bars">
           <div class="geo-row">
             <div class="geo-label">AMER</div>
-            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:88%;background:var(--accent-264);opacity:0.7;"></div></div>
-            <div class="geo-count">91</div>
-            <div class="geo-pct">44%</div>
+            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:87%;background:var(--accent-264);opacity:0.7;"></div></div>
+            <div class="geo-count">179</div>
+            <div class="geo-pct">43%</div>
           </div>
           <div class="geo-row">
             <div class="geo-label">EMEA</div>
-            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:58%;background:var(--accent-264);opacity:0.7;"></div></div>
-            <div class="geo-count">60</div>
-            <div class="geo-pct">29%</div>
+            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:50%;background:var(--accent-264);opacity:0.7;"></div></div>
+            <div class="geo-count">104</div>
+            <div class="geo-pct">25%</div>
           </div>
           <div class="geo-row">
             <div class="geo-label">India</div>
-            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:35%;background:var(--accent-264);opacity:0.7;"></div></div>
-            <div class="geo-count">36</div>
-            <div class="geo-pct">17%</div>
+            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:50%;background:var(--accent-264);opacity:0.7;"></div></div>
+            <div class="geo-count">104</div>
+            <div class="geo-pct">25%</div>
           </div>
           <div class="geo-row">
             <div class="geo-label">JP</div>
-            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:12%;background:var(--accent-264);opacity:0.7;"></div></div>
-            <div class="geo-count">12</div>
-            <div class="geo-pct">6%</div>
+            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:7%;background:var(--accent-264);opacity:0.7;"></div></div>
+            <div class="geo-count">14</div>
+            <div class="geo-pct">3%</div>
           </div>
           <div class="geo-row">
             <div class="geo-label">APAC</div>
-            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:5%;background:var(--accent-264);opacity:0.7;"></div></div>
-            <div class="geo-count">5</div>
-            <div class="geo-pct">2%</div>
+            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:6%;background:var(--accent-264);opacity:0.7;"></div></div>
+            <div class="geo-count">12</div>
+            <div class="geo-pct">3%</div>
           </div>
           <div class="geo-row">
-            <div class="geo-label" style="color:var(--muted);">Unassigned</div>
-            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:60%;background:#ccc;"></div></div>
-            <div class="geo-count" style="color:var(--muted);">62</div>
-            <div class="geo-pct" style="color:var(--muted);">—</div>
+            <div class="geo-label" style="color:var(--muted)">Unassigned</div>
+            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:31%;background:#ccc;"></div></div>
+            <div class="geo-count" style="color:var(--muted)">65</div>
+            <div class="geo-pct" style="color:var(--muted)">—</div>
           </div>
         </div>
       </div>
       <div>
-        <div style="font-size:13px;font-weight:600;margin-bottom:12px;"><span class="badge badge-262">262</span> — 178 cases (excl. 11 unassigned)</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px;"><span class="badge badge-262">262</span> — 333 cases (322 assigned GEO)</div>
         <div class="geo-bars">
           <div class="geo-row">
             <div class="geo-label">AMER</div>
-            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:75%;background:var(--accent-262);opacity:0.7;"></div></div>
-            <div class="geo-count">63</div>
-            <div class="geo-pct">38%</div>
+            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:86%;background:var(--accent-262);opacity:0.7;"></div></div>
+            <div class="geo-count">138</div>
+            <div class="geo-pct">43%</div>
           </div>
           <div class="geo-row">
             <div class="geo-label">EMEA</div>
-            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:55%;background:var(--accent-262);opacity:0.7;"></div></div>
-            <div class="geo-count">46</div>
-            <div class="geo-pct">27%</div>
-          </div>
-          <div class="geo-row">
-            <div class="geo-label">India</div>
-            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:51%;background:var(--accent-262);opacity:0.7;"></div></div>
-            <div class="geo-count">43</div>
+            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:53%;background:var(--accent-262);opacity:0.7;"></div></div>
+            <div class="geo-count">85</div>
             <div class="geo-pct">26%</div>
           </div>
           <div class="geo-row">
-            <div class="geo-label">JP</div>
-            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:11%;background:var(--accent-262);opacity:0.7;"></div></div>
-            <div class="geo-count">9</div>
-            <div class="geo-pct">5%</div>
+            <div class="geo-label">India</div>
+            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:49%;background:var(--accent-262);opacity:0.7;"></div></div>
+            <div class="geo-count">78</td>
+            <div class="geo-pct">24%</div>
           </div>
           <div class="geo-row">
             <div class="geo-label">APAC</div>
-            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:7%;background:var(--accent-262);opacity:0.7;"></div></div>
-            <div class="geo-count">6</div>
-            <div class="geo-pct">4%</div>
+            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:9%;background:var(--accent-262);opacity:0.7;"></div></div>
+            <div class="geo-count">15</div>
+            <div class="geo-pct">5%</div>
           </div>
           <div class="geo-row">
-            <div class="geo-label" style="color:var(--muted);">Unassigned</div>
-            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:13%;background:#ccc;"></div></div>
-            <div class="geo-count" style="color:var(--muted);">11</div>
-            <div class="geo-pct" style="color:var(--muted);">—</div>
+            <div class="geo-label">JP</div>
+            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:4%;background:var(--accent-262);opacity:0.7;"></div></div>
+            <div class="geo-count">6</div>
+            <div class="geo-pct">2%</div>
+          </div>
+          <div class="geo-row">
+            <div class="geo-label" style="color:var(--muted)">Unassigned</div>
+            <div class="geo-bar-track"><div class="geo-bar-fill" style="width:7%;background:#ccc;"></div></div>
+            <div class="geo-count" style="color:var(--muted)">11</div>
+            <div class="geo-pct" style="color:var(--muted)">—</div>
           </div>
         </div>
       </div>
     </div>
     <div style="font-size:11px;color:var(--muted);margin-top:12px;">
-      GEO % calculated against assigned cases only (excludes blank region rows) · 264 has 62 unassigned vs 11 in 262
+      GEO % calculated against assigned cases only · 264 has 65 unassigned vs 11 in 262
     </div>
   </div>
 
-</div><!-- /container -->
+</div>
 
 <script>
-// ---- Daily Inflow Chart ----
 const dayLabels = ['D3','D4','D5','D6','D7','D8','D9','D10','D11','D12','D13','D14','D15','D16','D17','D18','D19','D20','D21'];
-const data264  = [14,29,22,14,4,1,21,14,18,10,25,5,2,10,14,24,17,17,5];
-const data262  = [13,18,10,17,17,7,1,12,11,21,12,9,1,0,2,10,6,11,0];
-
-// Tooltip labels with actual dates
+const data264  = [33,55,44,17,6,1,34,26,34,27,37,10,3,15,34,35,30,29,8];
+const data262  = [24,29,25,28,27,9,1,20,25,37,24,14,6,0,9,20,19,16,0];
 const dates264 = ['Sep 1','Sep 2','Sep 3','Sep 4','Sep 5','Sep 6','Sep 7','Sep 8','Sep 9','Sep 10','Sep 11','Sep 12','Sep 13','Sep 14','Sep 15','Sep 16','Sep 17','Sep 18','Sep 19'];
 const dates262 = ['May 11','May 12','May 13','May 14','May 15','May 16','May 17','May 18','May 19','May 20','May 21','May 22','May 23','May 24','May 25','May 26','May 27','May 28','May 29'];
 
@@ -674,7 +643,7 @@ new Chart(ctx, {
     labels: dayLabels,
     datasets: [
       {
-        label: '264 (Sep 1–19)',
+        label: '264',
         data: data264,
         borderColor: '#0969da',
         backgroundColor: 'rgba(9,105,218,0.08)',
@@ -685,7 +654,7 @@ new Chart(ctx, {
         tension: 0.3
       },
       {
-        label: '262 (May 11–29)',
+        label: '262',
         data: data262,
         borderColor: '#1a7f37',
         backgroundColor: 'rgba(26,127,55,0.06)',
@@ -706,26 +675,17 @@ new Chart(ctx, {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          title: function(items) {
-            const idx = items[0].dataIndex;
-            return `Day ${idx+3} · 264: ${dates264[idx]} · 262: ${dates262[idx]}`;
+          title: (items) => {
+            const i = items[0].dataIndex;
+            return `Day ${i+3}  ·  264: ${dates264[i]}  ·  262: ${dates262[i]}`;
           },
-          label: function(item) {
-            return ` ${item.dataset.label}: ${item.raw} cases`;
-          }
+          label: (item) => ` ${item.dataset.label}: ${item.raw} cases`
         }
       }
     },
     scales: {
-      x: {
-        grid: { color: '#f0f0f0' },
-        ticks: { font: { size: 11 }, color: '#656d76' }
-      },
-      y: {
-        beginAtZero: true,
-        grid: { color: '#f0f0f0' },
-        ticks: { font: { size: 11 }, color: '#656d76', stepSize: 5 }
-      }
+      x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 }, color: '#656d76' } },
+      y: { beginAtZero: true, grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 }, color: '#656d76', stepSize: 10 } }
     }
   }
 });
