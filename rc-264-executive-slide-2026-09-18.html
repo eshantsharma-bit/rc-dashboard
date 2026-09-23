@@ -140,7 +140,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 <div style="margin:8px 0 14px;padding:10px 16px;background:#f0f7ff;border-left:4px solid #0176d3;border-radius:0 6px 6px 0;font-size:12px;line-height:1.6;color:var(--text)">
   <strong style="color:#0176d3">2.5× more orgs in 264 vs 258</strong> — yet absolute Upgrade cases held nearly flat (78 → 56).
   Upgrade cases per active org fell <strong>10.2% → 2.9%</strong> — best-ever across all four releases.
-  Bug Confirm Rate of upgrade case hit <strong>96%</strong> in 264, up from 67% in 258, signalling sharply improved triage precision to engineering team.
+  Bug Confirm Rate of upgrade case hit <strong>96%</strong> in 264, up from 67% in 258, signalling sharply improved engineering signal quality.
 </div>
 
 
@@ -150,20 +150,20 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 
   <div class="ki-card hi-green" style="border-width:2px">
     <div class="ki-label" style="color:var(--green)">Upgrade Cases / Active Org</div>
-    <div class="ki-val" style="color:var(--green);font-size:30px">2.9%</div>
+    <div class="ki-val" style="color:var(--green);font-size:30px">1.0%</div>
     <div class="ki-val-sub" style="color:var(--green);font-weight:600">best-ever · 258 was 10.2%</div>
   </div>
 
   <div class="ki-card" style="border-color:#0176d3;background:#f0f7ff">
     <div class="ki-label">Upgrade Cases</div>
-    <div class="ki-val" style="color:var(--blue)">56</div>
-    <div class="ki-val-sub">11.5% of inflow</div>
+    <div class="ki-val" style="color:var(--blue)">19</div>
+    <div class="ki-val-sub">4.0% of inflow</div>
   </div>
 
   <div class="ki-card">
     <div class="ki-label">Bug Rate</div>
-    <div class="ki-val" style="color:var(--purple)">3.1%</div>
-    <div class="ki-val-sub">16 bugs · 488 inflow</div>
+    <div class="ki-val" style="color:var(--purple)">15.1%</div>
+    <div class="ki-val-sub">16 bugs · 478 inflow</div>
   </div>
 
   <!-- Top 3 bugs with P&T tags -->
@@ -171,15 +171,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
     <div class="ki-label">Top 3 Bugs · Case Volume</div>
     <div class="bug-list" style="margin-top:6px">
       <div class="bug-row">
-        <span class="bug-num">12</span>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:10px;font-weight:700;color:var(--text)">W-24059609</div>
-          <div style="font-size:9.5px;color:var(--muted)">Context mapping to BS/BSG</div>
-          <div style="margin-top:2px"><span class="pt-tag tm">Txn Mgmt</span><span class="pt-tag bi">Billing</span></div>
-        </div>
-      </div>
-      <div class="bug-row">
-        <span class="bug-num">8</span>
+        <span class="bug-num">5</span>
         <div style="flex:1;min-width:0">
           <div style="font-size:10px;font-weight:700;color:var(--text)">W-24096152</div>
           <div style="font-size:9.5px;color:var(--muted)">Search index rebuild failure</div>
@@ -189,9 +181,17 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
       <div class="bug-row">
         <span class="bug-num">4</span>
         <div style="flex:1;min-width:0">
-          <div style="font-size:10px;font-weight:700;color:var(--text)">W-23791512</div>
-          <div style="font-size:9.5px;color:var(--muted)">Batch rating job failing</div>
-          <div style="margin-top:2px"><span class="pt-tag ur">Usage &amp; Ratings</span></div>
+          <div style="font-size:10px;font-weight:700;color:var(--text)">W-24059609</div>
+          <div style="font-size:9.5px;color:var(--muted)">Context mapping to BS/BSG</div>
+          <div style="margin-top:2px"><span class="pt-tag tm">Txn Mgmt</span><span class="pt-tag cfg">Configurator</span></div>
+        </div>
+      </div>
+      <div class="bug-row">
+        <span class="bug-num">2</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:10px;font-weight:700;color:var(--text)">W-24149822</div>
+          <div style="font-size:9.5px;color:var(--muted)">Browse catalog — missing assets</div>
+          <div style="margin-top:2px"><span class="pt-tag cfg">Configurator</span></div>
         </div>
       </div>
     </div>
@@ -200,14 +200,11 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
   <!-- Accounts 2+ -->
   <div class="ki-card" style="border-color:#0176d3;background:#f0f7ff">
     <div class="ki-label" style="color:var(--blue)">Accounts · 2+ Upgrade Bugs (264)</div>
-    <div class="ki-val" style="color:var(--blue);font-size:28px;margin-bottom:4px">8</div>
+    <div class="ki-val" style="color:var(--blue);font-size:28px;margin-bottom:4px">3</div>
     <div class="bug-list">
-      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px"><strong>Neocol</strong> <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
-      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">Genesys Cloud (RLM) <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
-      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">SHIFTLOGIC.IO <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
-      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">RevCycle Limited <span style="color:var(--orange);font-size:9px;font-weight:700">●</span></span></div>
-      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">LiveRamp, Inc</span></div>
-      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">Bell Canada · WebPT · AI inside</span></div>
+      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">Genesys Cloud (RLM)</span></div>
+      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">PostNL Holding BV</span></div>
+      <div class="bug-row"><span class="bug-num" style="background:#e8f4ff;color:#0176d3">2</span><span class="bug-desc" style="font-size:10px">InformaOne</span></div>
     </div>
   </div>
 
@@ -217,20 +214,20 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
     <div style="font-size:9px;color:var(--muted);margin-bottom:8px">Not seen in 258 / 260 / 262</div>
     <div class="bug-list">
       <div class="bug-row">
-        <span class="bug-num" style="background:#f0e6ff;color:#8250df">4</span>
+        <span class="bug-num" style="background:#f0e6ff;color:#8250df">1</span>
         <div style="flex:1;min-width:0">
           <div style="font-size:10px;font-weight:700">Usage &amp; Ratings</div>
           <div style="font-size:9px;color:var(--muted)">W-23791512 · Closed ✓</div>
         </div>
       </div>
       <div class="bug-row">
-        <span class="bug-num" style="background:#f0e6ff;color:#8250df">1</span>
+        <span class="bug-num" style="background:#f0e6ff;color:#8250df">3</span>
         <div style="flex:1;min-width:0">
-          <div style="font-size:10px;font-weight:700">Adv. Approvals</div>
-          <div style="font-size:9px;color:var(--orange)">W-24067780 · Waiting PM ⚠</div>
+          <div style="font-size:10px;font-weight:700">Contract Lifecycle</div>
+          <div style="font-size:9px;color:var(--muted)">W-24104434 · In Review</div>
         </div>
       </div>
-      <div style="font-size:9px;color:var(--muted);margin-top:6px;line-height:1.4">1st release with Billing + Usage both generating IR</div>
+      <div style="font-size:9px;color:var(--muted);margin-top:6px;line-height:1.4">1st release with Usage &amp; Contract Lifecycle generating upgrade cases</div>
     </div>
   </div>
 
@@ -280,27 +277,27 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
         <td class="cr-col-264 v-blue">1,908</td>
       </tr>
       <tr>
-        <td>RC Inflow (7d) <span class="v-muted">RCA/RCB</span></td>
-        <td class="v-bold">453</td><td class="v-bold">470</td><td class="v-bold">430</td>
-        <td class="cr-col-264 v-bold">488</td>
+        <td>RC Inflow (7d) <span class="v-muted">Sig Success</span></td>
+        <td class="v-bold">453</td><td class="v-bold">470</td><td class="v-bold">333</td>
+        <td class="cr-col-264 v-bold">478</td>
       </tr>
       <tr>
         <td>Upgrade Cases</td>
         <td>78</td><td>71</td>
-        <td class="v-green">14</td>
-        <td class="cr-col-264 v-blue">56</td>
+        <td class="v-green">3</td>
+        <td class="cr-col-264 v-blue">19</td>
       </tr>
       <tr>
         <td>Cases with Bug</td>
         <td>67</td><td>68</td>
-        <td class="v-green">14</td>
-        <td class="cr-col-264 v-blue">54</td>
+        <td class="v-green">49</td>
+        <td class="cr-col-264 v-blue">72</td>
       </tr>
       <tr style="background:#f6f8fa">
         <td><strong>Upgrade Cases / Active Org</strong> <span class="v-muted">installed-base view</span></td>
         <td class="v-bold">10.2%</td><td class="v-bold">5.6%</td>
-        <td class="v-bold v-green">0.9%</td>
-        <td class="cr-col-264 v-bold v-blue">2.9%</td>
+        <td class="v-bold v-green">0.2%</td>
+        <td class="cr-col-264 v-bold v-blue">1.0%</td>
       </tr>
       <tr>
         <td>Unique Bugs</td>
@@ -462,7 +459,7 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 <!-- ── 264 BUG STATUS ── -->
 <div class="card">
   <div class="card-title">264 Bug Status — GUS Live Pull (Sep 23, 2026)</div>
-  <div style="font-size:10px;color:var(--muted);margin-bottom:10px">16 bugs · 12 Closed · 4 open (ERR)</div>
+  <div style="font-size:10px;color:var(--muted);margin-bottom:10px">16 bugs · 4 ERR (off-cycle patch via 264.e · all closed) · 4 still open</div>
   <table style="width:100%;border-collapse:collapse;font-size:11px">
     <thead>
       <tr style="background:#f6f8fa;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em">
@@ -481,21 +478,21 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
 // cases = count of upgrade cases linked to this bug (7-day window, RCA/RCB)
 const BUG_DATA=[
   {id:'W-24059609',subj:'Cross-context custom field mapping silently dropped — ContextNodeMapping',cases:12,build:'266',   status:'Closed', err:false},
-  {id:'W-24096152',subj:'Email sanitisation causing issues in product details API',             cases:8, build:'264.e', status:'Closed', err:false},
+  {id:'W-24096152',subj:'Email sanitisation in product details API broke catalog search',       cases:8, build:'264.e', status:'Closed', err:true},
   {id:'W-23791512',subj:'Retrieve Net Unit Rates for Ratable Summary batch fails post-upgrade', cases:4, build:'266',   status:'Closed', err:false},
-  {id:'W-24088655',subj:'Invoices not generated when state/country picklist enabled',           cases:3, build:'264.e', status:'Closed', err:false},
+  {id:'W-24088655',subj:'Invoices not generated when state/country picklist enabled',           cases:3, build:'264.e', status:'Closed', err:true},
   {id:'W-24053522',subj:'DTP & Recovery API: 2k line support enhancement (AJG)',               cases:2, build:'264.5', status:'Closed', err:false},
   {id:'W-24105749',subj:'Creating a Group on Quote fails — configurator error (Guidewire)',     cases:2, build:'264.5', status:'Closed', err:false},
   {id:'W-24102675',subj:'Ramp group validation — missing Quote status, blocking order',         cases:2, build:'264.5', status:'Closed', err:false},
-  {id:'W-24033420',subj:'PST concurrency lock control via org value (patch backport)',          cases:2, build:'264.e', status:'Closed', err:false},
-  {id:'W-24050344',subj:'ScreenFlow invocation fails in LaunchFlowForManualTaskAction (DRO)',   cases:2, build:'264.e', status:'Closed', err:false},
+  {id:'W-24033420',subj:'PST concurrency lock disabled by default — org-level control via custom value', cases:2, build:'264.e', status:'Closed', err:true},
+  {id:'W-24050344',subj:'ScreenFlow invocation fails in LaunchFlowForManualTaskAction (DRO)',   cases:2, build:'264.e', status:'Closed', err:true},
   {id:'W-24154865',subj:'Editing group name no longer marks cell dirty or shows Save button',   cases:2, build:'264.5', status:'Closed', err:false},
   {id:'W-24156853',subj:'Pricing Summary monthly total shows full-term prorated amount (RLM)',  cases:2, build:'266',   status:'Closed', err:false},
   {id:'W-24132497',subj:'Fulfillment Order warning: asset line items not in expected state',    cases:1, build:'266',   status:'Closed', err:false},
-  {id:'W-23919000',subj:'Flow Builder Non-Blocking field error with isNonBlockingEnabled',      cases:2, build:'264.5', status:'Fixed',  err:true},
-  {id:'W-24031441',subj:'PSG cron job fails to update custom PSG with many modified stages',    cases:2, build:'264.5', status:'QA In Progress', err:true},
-  {id:'W-24067780',subj:'Read/Write Permissions from Approval Submission Object not carried',   cases:2, build:'264.6', status:'Waiting on PM',   err:true},
-  {id:'W-24048302',subj:'Bell Canada — CML Errors not showing as expected',                     cases:2, build:'—',    status:'Triaged', err:true},
+  {id:'W-23919000',subj:'Flow Builder Non-Blocking field error with isNonBlockingEnabled',      cases:2, build:'264.5', status:'Fixed',  err:false},
+  {id:'W-24031441',subj:'PSG cron job fails to update custom PSG with many modified stages',    cases:2, build:'264.5', status:'QA In Progress', err:false},
+  {id:'W-24067780',subj:'Read/Write Permissions from Approval Submission Object not carried',   cases:2, build:'264.6', status:'Waiting on PM',   err:false},
+  {id:'W-24048302',subj:'Bell Canada — CML Errors not showing as expected',                     cases:2, build:'—',    status:'In Review', err:false},
 ];
 
 const STATUS_STYLE={
@@ -503,7 +500,7 @@ const STATUS_STYLE={
   'Fixed':         'color:#0176d3;font-weight:600',
   'QA In Progress':'color:#9a6700;font-weight:600',
   'Waiting on PM': 'color:#54698d;font-weight:600',
-  'Triaged':       'color:#54698d',
+  'In Review':     'color:#54698d',
 };
 const tbody=document.getElementById('bugTableBody');
 BUG_DATA.forEach((b,i)=>{
@@ -536,13 +533,14 @@ const RELS=["258\nWinter '26","260\nSpring '26","262\nSummer '26","264\nWinter '
 const COLS=['#0176d3','#1a7f37','#9a6700','#0176d3'];
 
 // ── MAIN CHART — combo: bars (Inflow + Cases w/Bug) + line (Upgrade Cases / Active Org %) ──
-const inflow=[453,470,430,488];
-const upgradeCases=[78,71,14,56];
+// Source: OrgCS (258/260) + CSV Signature Success (262/264)
+const inflow=[453,470,333,478];
+const upgradeCases=[78,71,3,19];
 const uniqBugs=[15,32,10,16];
-const casesWithBug=[67,68,14,54];
+const casesWithBug=[67,68,49,72];
 const activeOrgs=[765,1266,1632,1908];
-const bugRates=[3.3,6.8,2.3,3.1];
-const irPerOrg=[10.2,5.6,0.9,2.9];
+const bugRates=[14.8,14.5,14.7,15.1];
+const irPerOrg=[10.2,5.6,0.2,1.0];
 
 const SF_GREEN='#1a7f37';
 
@@ -570,7 +568,7 @@ new Chart(document.getElementById('mainChart').getContext('2d'),{
        yAxisID:'yPct',order:1,
        datalabels:{anchor:'end',align:(ctx)=>ctx.dataIndex===2?'bottom':'top',
          color:SF_GREEN,font:{size:11,weight:'800'},
-         formatter:(v,ctx)=>{const l=['10.2%','5.6%','0.9%','2.9% ✓'];return l[ctx.dataIndex];}}}
+         formatter:(v,ctx)=>{const l=['10.2%','5.6%','0.2%','1.0% ✓'];return l[ctx.dataIndex];}}}
     ]
   },
   options:{
@@ -608,29 +606,45 @@ new Chart(document.getElementById('mainChart').getContext('2d'),{
 });
 
 // ── CASES WITH BUG BY P&T TOPIC — mini-bar table ──
+// Format: [label, isNew264, isSection, 258, 260, 262, 264]
+// isSection=true → section header row (no bar cells)
+// 258/260 = OrgCS all-tiers; 262/264 = CSV Signature Success
 const TOPIC_DATA=[
-  // [topic, isNew264, 258, 260, 262, 264]
-  ['Product Configurator', false, 46, 25,  5, 15],
-  ['Transaction Mgmt',     false,  9, 16,  5, 15],
-  ['Price Management',     false,  2, 13,  1,  0],
-  ['Dev - P2O',            false,  8,  1,  0,  4],
-  ['Billing & Invoicing',  false,  0,  4,  0,  7],
-  ['DRO',                  false,  0,  5,  1,  2],
-  ['PCM',                  false,  0,  2,  0,  5],
-  ['Usage & Ratings',      true,   0,  0,  0,  4],
-  ['Advanced Approvals',   true,   0,  1,  0,  1],
-  ['Invoice to Cash',      false,  0,  0,  1,  0],
+  // ── Revenue Cloud Core ─────────────────────────────────────────
+  ['Revenue Cloud Core',    false, true,   0,  0,  0,  0],
+  ['Product Configurator',  false, false, 46, 25, 10, 30],
+  ['Transaction Mgmt',      false, false,  9, 16,  7, 13],
+  ['Price Management',      false, false,  2, 13,  6,  1],
+  ['Dev — P2O',             false, false,  8,  1,  2,  5],
+  ['Billing & Invoicing',   false, false,  0,  4,  3,  3],
+  ['PCM',                   false, false,  0,  2,  1,  5],
+  ['DRO',                   false, false,  0,  5,  2,  2],
+  ['Advanced Approvals',    false, false,  0,  1,  1,  3],
+  ['Contract Lifecycle',    true,  false,  0,  0,  0,  3],
+  ['Usage & Ratings',       true,  false,  0,  0,  1,  2],
+  ['Document Generation',   true,  false,  0,  0,  0,  2],
+  // ── Legacy CPQ Package ─────────────────────────────────────────
+  ['Legacy CPQ Package',    false, true,   0,  0,  0,  0],
+  ['Salesforce CPQ',        false, false, 12, 18, 13,  1],
+  ['CPQ Dev Support',       false, false,  3,  7,  1,  1],
+  ['Salesforce Billing',    false, false,  2,  3,  1,  1],
 ];
-const maxV=[46, 25, 6, 15];
+const maxV=[46, 25, 13, 30];
 const relC=['#0176d3','#1a7f37','#9a6700','#0176d3'];
 
 const tbody=document.getElementById('topicRows');
-TOPIC_DATA.forEach(([label,isNew,...vals])=>{
+TOPIC_DATA.forEach(([label,isNew,isSection,...vals])=>{
   const tr=document.createElement('tr');
+  if(isSection){
+    tr.style.cssText='background:#f6f8fa;';
+    tr.innerHTML=`<td colspan="5" style="padding:5px 8px 3px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">${label}</td>`;
+    tbody.appendChild(tr);
+    return;
+  }
   if(isNew) tr.style.background='#faf0ff';
   const labelHtml=isNew
-    ?`<td style="font-size:11px;color:#8250df;font-weight:600">${label} <span style="font-size:9px">◆</span></td>`
-    :`<td style="font-size:11px">${label}</td>`;
+    ?`<td style="font-size:11px;color:#8250df;font-weight:600;padding-left:14px">${label} <span style="font-size:9px">◆</span></td>`
+    :`<td style="font-size:11px;padding-left:14px">${label}</td>`;
   tr.innerHTML=labelHtml+vals.map((v,i)=>{
     if(v===0) return `<td class="tc"><span style="color:#d0d7de;font-size:10px">—</span></td>`;
     const w=Math.round((v/maxV[i])*44);
