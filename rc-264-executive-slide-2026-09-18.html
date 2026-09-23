@@ -456,66 +456,6 @@ footer{text-align:center;font-size:10px;color:var(--muted);margin-top:14px;paddi
   </div>
 </div>
 
-<!-- ── 264 BUG STATUS ── -->
-<div class="card">
-  <div class="card-title">264 Bug Status — GUS Live Pull (Sep 23, 2026)</div>
-  <div style="font-size:10px;color:var(--muted);margin-bottom:10px">16 bugs · 4 ERR (off-cycle patch via 264.e · all closed) · 4 still open</div>
-  <table style="width:100%;border-collapse:collapse;font-size:11px">
-    <thead>
-      <tr style="background:#f6f8fa;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em">
-        <th style="padding:5px 8px;text-align:left;font-weight:600;border-bottom:1px solid var(--border);width:90px">Bug #</th>
-        <th style="padding:5px 8px;text-align:left;font-weight:600;border-bottom:1px solid var(--border)">Subject</th>
-        <th style="padding:5px 4px;text-align:center;font-weight:600;border-bottom:1px solid var(--border);width:52px">Cases</th>
-        <th style="padding:5px 8px;text-align:center;font-weight:600;border-bottom:1px solid var(--border);width:70px">Fix Build</th>
-        <th style="padding:5px 8px;text-align:center;font-weight:600;border-bottom:1px solid var(--border);width:110px">Status</th>
-      </tr>
-    </thead>
-    <tbody id="bugTableBody"></tbody>
-  </table>
-</div>
-
-<script>
-// cases = count of upgrade cases linked to this bug (7-day window, RCA/RCB)
-const BUG_DATA=[
-  {id:'W-24059609',subj:'Cross-context custom field mapping silently dropped — ContextNodeMapping',cases:12,build:'266',   status:'Closed', err:false},
-  {id:'W-24096152',subj:'Email sanitisation in product details API broke catalog search',       cases:8, build:'264.e', status:'Closed', err:true},
-  {id:'W-23791512',subj:'Retrieve Net Unit Rates for Ratable Summary batch fails post-upgrade', cases:4, build:'266',   status:'Closed', err:false},
-  {id:'W-24088655',subj:'Invoices not generated when state/country picklist enabled',           cases:3, build:'264.e', status:'Closed', err:true},
-  {id:'W-24053522',subj:'DTP & Recovery API: 2k line support enhancement (AJG)',               cases:2, build:'264.5', status:'Closed', err:false},
-  {id:'W-24105749',subj:'Creating a Group on Quote fails — configurator error (Guidewire)',     cases:2, build:'264.5', status:'Closed', err:false},
-  {id:'W-24102675',subj:'Ramp group validation — missing Quote status, blocking order',         cases:2, build:'264.5', status:'Closed', err:false},
-  {id:'W-24033420',subj:'PST concurrency lock disabled by default — org-level control via custom value', cases:2, build:'264.e', status:'Closed', err:true},
-  {id:'W-24050344',subj:'ScreenFlow invocation fails in LaunchFlowForManualTaskAction (DRO)',   cases:2, build:'264.e', status:'Closed', err:true},
-  {id:'W-24154865',subj:'Editing group name no longer marks cell dirty or shows Save button',   cases:2, build:'264.5', status:'Closed', err:false},
-  {id:'W-24156853',subj:'Pricing Summary monthly total shows full-term prorated amount (RLM)',  cases:2, build:'266',   status:'Closed', err:false},
-  {id:'W-24132497',subj:'Fulfillment Order warning: asset line items not in expected state',    cases:1, build:'266',   status:'Closed', err:false},
-  {id:'W-23919000',subj:'Flow Builder Non-Blocking field error with isNonBlockingEnabled',      cases:2, build:'264.5', status:'Fixed',  err:false},
-  {id:'W-24031441',subj:'PSG cron job fails to update custom PSG with many modified stages',    cases:2, build:'264.5', status:'QA In Progress', err:false},
-  {id:'W-24067780',subj:'Read/Write Permissions from Approval Submission Object not carried',   cases:2, build:'264.6', status:'Waiting on PM',   err:false},
-  {id:'W-24048302',subj:'Bell Canada — CML Errors not showing as expected',                     cases:2, build:'—',    status:'In Review', err:false},
-];
-
-const STATUS_STYLE={
-  'Closed':        'color:#1a7f37;font-weight:700',
-  'Fixed':         'color:#0176d3;font-weight:600',
-  'QA In Progress':'color:#9a6700;font-weight:600',
-  'Waiting on PM': 'color:#54698d;font-weight:600',
-  'In Review':     'color:#54698d',
-};
-const tbody=document.getElementById('bugTableBody');
-BUG_DATA.forEach((b,i)=>{
-  const tr=document.createElement('tr');
-  tr.style.background=i%2===0?'#fff':'#fafafa';
-  const errBadge=b.err?` <span style="font-size:9px;font-weight:700;color:#54698d;border:1px solid #d0d7de;border-radius:3px;padding:0 4px;margin-left:4px">ERR</span>`:'';
-  tr.innerHTML=`
-    <td style="padding:5px 8px;font-family:monospace;font-size:10px;color:#0176d3;white-space:nowrap">${b.id}${errBadge}</td>
-    <td style="padding:5px 8px;color:var(--text);line-height:1.35">${b.subj}</td>
-    <td style="padding:5px 4px;text-align:center;font-size:11px;font-weight:700;color:var(--text)">${b.cases}</td>
-    <td style="padding:5px 8px;text-align:center;font-size:10px;font-family:monospace;color:var(--muted)">${b.build}</td>
-    <td style="padding:5px 8px;font-size:10px;${STATUS_STYLE[b.status]||''}">${b.status}${b.status==='Closed'?' ✓':''}</td>`;
-  tbody.appendChild(tr);
-});
-</script>
 
 <footer>264 RC Upgrade · First 7 Days Post-SB1 IST · Revenue Cloud Core RCA/RCB · OrgCS + GUS validated · Sep 2026</footer>
 
