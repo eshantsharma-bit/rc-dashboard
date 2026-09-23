@@ -85,6 +85,7 @@
   .tag-cpq { background: var(--tag-cpq-bg); color: var(--tag-cpq-text); }
   .tag-outage { background: var(--tag-outage-bg); color: var(--tag-outage-text); }
   .tag-upgrade { background: var(--tag-upgrade-bg); color: var(--tag-upgrade-text); }
+  .tag-rcat { background: #ffebe9; color: #82071e; border: 1px solid #f1aeb5; }
   .heat-bar { display: inline-block; height: 8px; border-radius: 4px; margin-right: 6px; vertical-align: middle; }
   .heat-264 { background: var(--accent-264); opacity: 0.7; }
   tr.subtotal td { background: #f0f6ff; font-weight: 600; border-top: 2px solid var(--border); }
@@ -445,16 +446,20 @@
           <th class="num">Bugs</th>
           <th class="num">GUS Inv.</th>
           <th>IR Flag</th>
+          <th>RCAT</th>
+          <th>Primary Topic</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr style="background:#fff8f8;">
           <td>1</td>
           <td style="font-weight:500">LiveRamp, Inc</td>
           <td class="num">20</td>
           <td class="num">0</td>
           <td class="num">2</td>
           <td><span class="tag tag-outage">Outage IR</span></td>
+          <td><span class="tag tag-rcat">Red Account</span></td>
+          <td style="font-size:12px;">Product Configurator (9) · Transaction Management (5)</td>
         </tr>
         <tr>
           <td>2</td>
@@ -463,14 +468,18 @@
           <td class="num">0</td>
           <td class="num">0</td>
           <td>—</td>
+          <td>—</td>
+          <td style="font-size:12px;">Salesforce CPQ (7) · Dev Support P2O (2)</td>
         </tr>
-        <tr>
+        <tr style="background:#fff8f8;">
           <td>3</td>
           <td style="font-weight:500">Bell Canada</td>
           <td class="num">14</td>
           <td class="num">2</td>
           <td class="num">3</td>
           <td><span class="tag tag-outage">Outage IR</span></td>
+          <td><span class="tag tag-rcat">Red Account</span></td>
+          <td style="font-size:12px;">Product Configurator (6) · Transaction Management (4)</td>
         </tr>
         <tr>
           <td>4</td>
@@ -479,14 +488,18 @@
           <td class="num">1</td>
           <td class="num">1</td>
           <td><span class="tag tag-upgrade">Release Upgrade</span></td>
+          <td>—</td>
+          <td style="font-size:12px;">Product Configurator (5) · Price Management (3)</td>
         </tr>
-        <tr>
+        <tr style="background:#fff8f8;">
           <td>5</td>
           <td style="font-weight:500">AI inside Inc.</td>
           <td class="num">13</td>
           <td class="num">1</td>
           <td class="num">0</td>
           <td><span class="tag tag-upgrade">Release Upgrade</span></td>
+          <td><span class="tag tag-rcat">Red Account</span></td>
+          <td style="font-size:12px;">Usage &amp; Ratings (6) · Billing &amp; Invoicing (3)</td>
         </tr>
         <tr>
           <td>6</td>
@@ -495,6 +508,8 @@
           <td class="num">1</td>
           <td class="num">2</td>
           <td>—</td>
+          <td>—</td>
+          <td style="font-size:12px;">Product Configurator (6) · Transaction Management (4)</td>
         </tr>
         <tr>
           <td>7</td>
@@ -503,6 +518,8 @@
           <td class="num">1</td>
           <td class="num">1</td>
           <td><span class="tag tag-outage">Outage IR</span></td>
+          <td>—</td>
+          <td style="font-size:12px;">Contract Lifecycle Mgmt (5) · CPQ Dev Support (1)</td>
         </tr>
         <tr>
           <td>8</td>
@@ -511,6 +528,8 @@
           <td class="num">2</td>
           <td class="num">2</td>
           <td><span class="tag tag-upgrade">Release Upgrade</span></td>
+          <td>—</td>
+          <td style="font-size:12px;">Contract Lifecycle Mgmt (5) · Product Configurator (4)</td>
         </tr>
         <tr>
           <td>9</td>
@@ -519,19 +538,26 @@
           <td class="num">1</td>
           <td class="num">1</td>
           <td><span class="tag tag-upgrade">Release Upgrade</span></td>
+          <td>—</td>
+          <td style="font-size:12px;">Product Configurator (3) · Transaction Management (2)</td>
         </tr>
-        <tr>
+        <tr style="background:#fff8f8;">
           <td>10</td>
           <td style="font-weight:500">CrowdStrike, Inc.</td>
           <td class="num">9</td>
           <td class="num">0</td>
           <td class="num">1</td>
           <td>—</td>
+          <td><span class="tag tag-rcat">Red Account</span></td>
+          <td style="font-size:12px;">Product Configurator (6) · Salesforce CPQ (1)</td>
         </tr>
       </tbody>
     </table>
-    <div style="font-size:11px;color:var(--muted);margin-top:10px;">
-      Outage IR = linked to IR 95079032 or 95390343 · Release Upgrade = linked to 264 RC Upgrade IR
+    <div style="font-size:11px;color:var(--muted);margin-top:10px;display:flex;gap:16px;flex-wrap:wrap;">
+      <span><span class="tag tag-rcat" style="font-size:10px;">Red Account</span> = Open Red Account flagged in case data (RCAT monitored)</span>
+      <span>Outage IR = linked to IR 95079032 or 95390343</span>
+      <span>Release Upgrade = linked to 264 RC Upgrade IR</span>
+      <span>Primary Topic counts are case counts within this account</span>
     </div>
   </div>
 
