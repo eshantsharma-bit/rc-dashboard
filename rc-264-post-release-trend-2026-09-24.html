@@ -218,7 +218,7 @@
           <div class="kpi-sub">262 (0.9%)</div>
         </div>
       </div>
-      <div style="margin-top:8px;font-size:11px;color:var(--muted);">10 outage · 19 release upgrade</div>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted);">10 Outage (UC IDs) · 19 Upgrade (IR field)</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">RCA Volume</div>
@@ -290,7 +290,7 @@
         <canvas id="dailyChart"></canvas>
       </div>
       <div style="margin-top:8px;font-size:11px;color:var(--muted);text-align:center;">
-        Sep 7 = Outage spike (9 cases, EMEA) &nbsp;|&nbsp; Sep 1–3 = Upgrade UC heavy (12 of 19 cases)
+        Sep 7 = Outage spike (9 cases, EMEA · IR = UC IDs) &nbsp;|&nbsp; Sep 1–3 = Upgrade heavy (12 of 19 cases · IR = 264 RC Upgrade)
       </div>
     </div>
   </div>
@@ -362,10 +362,10 @@
           <th class="num">264 Cases</th>
           <th class="num">262 Cases</th>
           <th class="num">Δ</th>
-          <th class="num">Outage UC (264)</th>
-          <th class="num">Upgrade UC (264)</th>
+          <th class="num" title="IR = UC IDs 95079032 / 95390343">Outage (264)</th>
+          <th class="num" title="IR = 264 RC Upgrade">Upgrade (264)</th>
           <th class="num">Total UC (264)</th>
-          <th class="num">UC as % of Region</th>
+          <th class="num">UC % of Region</th>
         </tr></thead>
         <tbody>
           <tr><td><span class="tag tag-amer">AMER</span></td><td class="num">179</td><td class="num">138</td><td class="num" style="color:#e8c07a;">+41</td><td class="num">1</td><td class="num">4</td><td class="num">5</td><td class="num">2.8%</td></tr>
@@ -395,8 +395,8 @@
         <th class="num">264 Cases</th>
         <th class="num">262 Cases</th>
         <th class="num">Δ</th>
-        <th class="num">Outage UC</th>
-        <th class="num">Upgrade UC</th>
+        <th class="num" title="IR = UC IDs 95079032 / 95390343">Outage</th>
+        <th class="num" title="IR = 264 RC Upgrade">Upgrade</th>
         <th class="num">Bugs (264)</th>
       </tr></thead>
       <tbody>
@@ -487,7 +487,17 @@
 
   <!-- Upgrade Cases Detail — 264 vs 262 -->
   <div class="card mb20" style="border-top:3px solid var(--gold);">
-    <div class="section-title">🚨 Upgrade Cases — Customer Impact Detail</div>
+    <div class="section-title">🚨 Upgrade Cases — 264 vs 262 Comparison</div>
+
+    <!-- Definition callout -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+      <div style="background:rgba(200,148,58,0.08);border:1px solid rgba(200,148,58,0.3);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--card-mid);">
+        <span style="font-weight:700;color:#e8c07a;">Outage Cases</span> — IR field contains specific UC IDs: <code style="font-size:11px;background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;">95079032</code> or <code style="font-size:11px;background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;">95390343</code>. These are incident-driven and unrelated to upgrade activity.
+      </div>
+      <div style="background:rgba(77,168,240,0.08);border:1px solid rgba(77,168,240,0.3);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--card-mid);">
+        <span style="font-weight:700;color:#4DA8F0;">Upgrade Cases</span> — IR field contains <code style="font-size:11px;background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;">264 RC Upgrade</code> or <code style="font-size:11px;background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;">262_RC_Upgrade</code>. These are cases directly linked to the release upgrade activity.
+      </div>
+    </div>
 
     <!-- 264 vs 262 summary row -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
@@ -496,17 +506,17 @@
         <div style="display:flex;gap:24px;flex-wrap:wrap;">
           <div style="text-align:center;">
             <div style="font-size:26px;font-weight:700;color:#e8c07a;">10</div>
-            <div style="font-size:11px;color:var(--card-dim);">Outage UC cases</div>
-            <div style="font-size:10px;color:var(--card-dim);margin-top:2px;">UC IDs 95079032 · 95390343</div>
+            <div style="font-size:11px;color:var(--card-dim);">Outage cases</div>
+            <div style="font-size:10px;color:var(--card-dim);margin-top:2px;">IR = UC IDs 95079032 / 95390343</div>
           </div>
           <div style="text-align:center;">
             <div style="font-size:26px;font-weight:700;color:#4DA8F0;">19</div>
-            <div style="font-size:11px;color:var(--card-dim);">264 RC Upgrade cases</div>
-            <div style="font-size:10px;color:var(--card-dim);margin-top:2px;">16 unique accounts</div>
+            <div style="font-size:11px;color:var(--card-dim);">Upgrade cases</div>
+            <div style="font-size:10px;color:var(--card-dim);margin-top:2px;">IR = 264 RC Upgrade · 16 accounts</div>
           </div>
           <div style="text-align:center;">
             <div style="font-size:26px;font-weight:700;color:#fff;">29</div>
-            <div style="font-size:11px;color:var(--card-dim);">Total UC-linked (6.9%)</div>
+            <div style="font-size:11px;color:var(--card-dim);">Total (6.9% of 421)</div>
           </div>
         </div>
       </div>
@@ -515,17 +525,17 @@
         <div style="display:flex;gap:24px;flex-wrap:wrap;">
           <div style="text-align:center;">
             <div style="font-size:26px;font-weight:700;color:var(--card-mid);">0</div>
-            <div style="font-size:11px;color:var(--card-dim);">Outage UC cases</div>
-            <div style="font-size:10px;color:var(--card-dim);margin-top:2px;">No outage UC IDs</div>
+            <div style="font-size:11px;color:var(--card-dim);">Outage cases</div>
+            <div style="font-size:10px;color:var(--card-dim);margin-top:2px;">No outage UC IDs in 262 window</div>
           </div>
           <div style="text-align:center;">
             <div style="font-size:26px;font-weight:700;color:#a371f7;">3</div>
-            <div style="font-size:11px;color:var(--card-dim);">262 RC Upgrade cases</div>
-            <div style="font-size:10px;color:var(--card-dim);margin-top:2px;">3 unique accounts · 1 bug (W-22438729)</div>
+            <div style="font-size:11px;color:var(--card-dim);">Upgrade cases</div>
+            <div style="font-size:10px;color:var(--card-dim);margin-top:2px;">IR = 262_RC_Upgrade · 3 accounts · Bug: W-22438729</div>
           </div>
           <div style="text-align:center;">
             <div style="font-size:26px;font-weight:700;color:var(--card-mid);">3</div>
-            <div style="font-size:11px;color:var(--card-dim);">Total UC-linked (0.9%)</div>
+            <div style="font-size:11px;color:var(--card-dim);">Total (0.9% of 323)</div>
           </div>
         </div>
       </div>
@@ -534,10 +544,10 @@
     <div class="uc-grid">
       <!-- Outage block -->
       <div class="uc-block">
-        <div class="uc-block-title outage">Outage Upgrade Cases — 264 · 10 cases · 9 accounts</div>
+        <div class="uc-block-title outage">Outage — 264 · 10 cases · 9 accounts · IR = UC IDs</div>
         <div class="insight yellow" style="margin-bottom:10px;">
           <strong>Sep 7 (Mon) — 9 of 10 cases opened same day.</strong>
-          EMEA: 9 cases · AMER: 1 case. Topic: Product Configurator (9 cases), Transaction Management (1). Linked to UC IDs 95079032 and 95390343. 262 had 0 outage UCs.
+          EMEA: 9 cases · AMER: 1 case. Topic: Product Configurator (9), Transaction Management (1). IR field linked to UC IDs 95079032 and 95390343. 262 had 0 outage cases.
         </div>
         <table class="data-table">
           <thead><tr>
@@ -563,10 +573,10 @@
 
       <!-- Release Upgrade block -->
       <div class="uc-block">
-        <div class="uc-block-title upgrade">264 RC Upgrade Cases — 19 cases · 16 accounts</div>
+        <div class="uc-block-title upgrade">Upgrade — 264 · 19 cases · 16 accounts · IR = 264 RC Upgrade</div>
         <div class="insight blue" style="margin-bottom:10px;">
           <strong>India: 11 of 19 cases (58%). Early-window concentrated — 12 of 19 in Days 3–5 (Sep 1–3).</strong>
-          Topics: Product Configurator (6), Product Catalog Management (5), Transaction Management (2). 262 RC Upgrade had 3 cases across 3 accounts.
+          Topics: Product Configurator (6), Product Catalog Management (5), Transaction Management (2). 262_RC_Upgrade had 3 cases across 3 accounts.
         </div>
         <table class="data-table">
           <thead><tr>

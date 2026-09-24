@@ -173,7 +173,7 @@
           <div class="kpi-sub">262 (0.9% of total)</div>
         </div>
       </div>
-      <div style="margin-top:8px;"><span class="kpi-delta up">10 outage · 19 upgrade (264)</span></div>
+      <div style="margin-top:8px;font-size:12px;color:var(--card-dim);">10 Outage (IR = UC IDs) · 19 Upgrade (IR = 264 RC Upgrade)</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">RCA Volume</div>
@@ -242,10 +242,18 @@
   <!-- IR Section -->
   <div class="section">
     <div class="section-title">Upgrade Cases — Customer Impact</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+      <div style="background:rgba(200,148,58,0.08);border:1px solid rgba(200,148,58,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--card-mid);">
+        <span style="font-weight:700;color:#e8c07a;">Outage Cases</span> — IR field = <code style="font-size:12px;background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;">95079032</code> or <code style="font-size:12px;background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;">95390343</code>. Incident-driven, not upgrade activity.
+      </div>
+      <div style="background:rgba(77,168,240,0.08);border:1px solid rgba(77,168,240,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--card-mid);">
+        <span style="font-weight:700;color:#4DA8F0;">Upgrade Cases</span> — IR field = <code style="font-size:12px;background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;">264 RC Upgrade</code> or <code style="font-size:12px;background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;">262_RC_Upgrade</code>. Directly linked to release upgrade.
+      </div>
+    </div>
     <div class="ir-grid">
 
       <div>
-        <div class="ir-block-title outage">264 — Outage IRs (95079032 &amp; 95390343)</div>
+        <div class="ir-block-title outage">264 — Outage · IR = UC IDs 95079032 / 95390343</div>
         <div class="ir-stat-row">
           <div class="ir-stat"><div class="num" style="color:#e8c07a">10</div><div class="lbl">Cases</div></div>
           <div class="ir-stat"><div class="num" style="color:#e8c07a">9</div><div class="lbl">Unique Accounts</div></div>
@@ -267,7 +275,7 @@
       </div>
 
       <div>
-        <div class="ir-block-title upgrade">264 — Release Upgrade Cases (264 RC Upgrade)</div>
+        <div class="ir-block-title upgrade">264 — Upgrade · IR = 264 RC Upgrade</div>
         <div class="ir-stat-row">
           <div class="ir-stat"><div class="num" style="color:#4DA8F0">19</div><div class="lbl">Cases</div></div>
           <div class="ir-stat"><div class="num" style="color:#4DA8F0">16</div><div class="lbl">Unique Accounts</div></div>
@@ -290,10 +298,10 @@
     </div>
 
     <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
-      <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--muted);">262 Release — Upgrade Cases</div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--card-dim);">262 Release — Upgrade (IR = 262_RC_Upgrade) &nbsp;·&nbsp; No outage UC IDs in 262 window</div>
       <div style="display:flex;align-items:center;gap:16px;">
-        <span class="tag tag-upgrade">262 RC Upgrade</span>
-        <span style="font-size:13px;">3 cases · 3 unique accounts · Bug: <code style="font-size:11px;background:var(--bg);padding:2px 4px;border-radius:3px;">W-22438729</code></span>
+        <span class="tag tag-upgrade">IR = 262_RC_Upgrade</span>
+        <span style="font-size:13px;color:var(--card-mid);">3 cases · 3 unique accounts · Bug: <code style="font-size:11px;background:rgba(255,255,255,0.07);padding:2px 6px;border-radius:3px;">W-22438729</code></span>
       </div>
     </div>
   </div>
@@ -309,7 +317,7 @@
           <th class="num">264 Cases</th>
           <th class="num">262 Cases</th>
           <th class="num">Δ</th>
-          <th class="num">264 Upgrade Cases</th>
+          <th class="num" title="IR = UC IDs (outage) or 264 RC Upgrade (upgrade)">264 UC (Outage + Upgrade)</th>
           <th class="num">264 Bug</th>
         </tr>
       </thead>
@@ -584,8 +592,8 @@
       </tbody>
     </table>
     <div style="font-size:11px;color:var(--muted);margin-top:10px;display:flex;gap:16px;flex-wrap:wrap;">
-      <span>Outage Upgrade Case = linked to Upgrade Case 95079032 or 95390343</span>
-      <span>Release Upgrade = linked to 264 RC Upgrade Case</span>
+      <span>Outage = IR field contains UC IDs 95079032 or 95390343</span>
+      <span>Upgrade = IR field contains 264 RC Upgrade or 262_RC_Upgrade</span>
       <span>Primary Topic counts are case counts within this account</span>
     </div>
   </div>
