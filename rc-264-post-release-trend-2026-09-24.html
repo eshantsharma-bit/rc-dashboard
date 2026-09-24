@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RC 264 Post-Release Trend — Aug 1–Sep 19, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:#f6f8fa; --surface:#ffffff; --border:#d0d7de;
+    --text:#1f2328; --muted:#656d76; --accent:#0969da;
+    --green:#1a7f37; --red:#cf222e; --yellow:#9a6700; --orange:#bc4c00;
+    --accent-264:#0969da; --accent-262:#8250df;
+    --shadow:0 1px 3px rgba(31,35,40,.1);
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; font-size:13px; }
+  a { color:var(--accent); text-decoration:none; }
+
+  /* Layout */
+  .page-header { background:var(--surface); border-bottom:1px solid var(--border); padding:20px 32px; display:flex; align-items:flex-start; justify-content:space-between; }
+  .page-header h1 { font-size:18px; font-weight:700; }
+  .page-header .meta { font-size:12px; color:var(--muted); margin-top:4px; }
+  .container { max-width:1280px; margin:0 auto; padding:24px 32px; }
+
+  /* Badges */
+  .badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:600; padding:3px 8px; border-radius:20px; border:1px solid; }
+  .badge-264 { background:#ddf4ff; color:#0969da; border-color:#80ccff; }
+  .badge-262 { background:#fbefff; color:#8250df; border-color:#d2a8ff; }
+  .badge-red { background:#ffebe9; color:#cf222e; border-color:#ffcecb; }
+  .badge-green { background:#dafbe1; color:#1a7f37; border-color:#aceebb; }
+  .badge-yellow { background:#fff8c5; color:#9a6700; border-color:#f5d845; }
+  .badge-orange { background:#fff1e5; color:#bc4c00; border-color:#ffc896; }
+
+  /* Scope note */
+  .scope-note { background:#fffae6; border:1px solid #e6c200; border-radius:6px; padding:10px 14px; font-size:12px; color:#5a4500; margin-bottom:24px; }
+
+  /* KPI grid */
+  .kpi-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-bottom:24px; }
+  .kpi-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px 20px; box-shadow:var(--shadow); }
+  .kpi-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-bottom:8px; }
+  .kpi-row { display:flex; align-items:baseline; gap:16px; }
+  .kpi-val { font-size:28px; font-weight:700; line-height:1; }
+  .kpi-val.c264 { color:var(--accent-264); }
+  .kpi-val.c262 { color:var(--accent-262); }
+  .kpi-sub { font-size:11px; color:var(--muted); margin-top:3px; }
+  .kpi-divider { width:1px; background:var(--border); height:28px; }
+  .kpi-delta { font-size:12px; font-weight:600; padding:2px 6px; border-radius:4px; }
+  .kpi-delta.up { background:#ffebe9; color:#82071e; }
+  .kpi-delta.down { background:#dafbe1; color:#1a7f37; }
+  .kpi-delta.neutral { background:#f6f8fa; color:#656d76; }
+
+  /* Cards */
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:20px; box-shadow:var(--shadow); }
+  .card.red-border { border-color:#ffcecb; border-width:2px; }
+  .card.orange-border { border-color:#ffc896; border-width:2px; }
+  .card.blue-border { border-color:#80ccff; border-width:2px; }
+  .section-title { font-size:14px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+
+  /* Grid layouts */
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-bottom:20px; }
+  .mb20 { margin-bottom:20px; }
+
+  /* Tables */
+  .data-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .data-table th { background:#f6f8fa; color:var(--muted); font-weight:600; text-transform:uppercase; font-size:10px; letter-spacing:.05em; padding:7px 10px; border-bottom:1px solid var(--border); text-align:left; }
+  .data-table th.num, .data-table td.num { text-align:right; }
+  .data-table td { padding:7px 10px; border-bottom:1px solid #eaeef2; vertical-align:middle; }
+  .data-table tr:last-child td { border-bottom:none; }
+  .data-table tr:hover td { background:#f6f8fa; }
+  .subtotal td { font-weight:700; background:#f6f8fa; font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); }
+  .grand-total td { font-weight:700; background:#eaf3ff; font-size:12px; border-top:2px solid var(--border); }
+
+  /* Tags */
+  .tag { display:inline-block; font-size:10px; font-weight:600; padding:1px 6px; border-radius:10px; white-space:nowrap; }
+  .tag-outage { background:#ffebe9; color:#82071e; border:1px solid #ffcecb; }
+  .tag-upgrade { background:#fff8c5; color:#9a6700; border:1px solid #f5d845; }
+  .tag-rcat-done { background:#dafbe1; color:#1a7f37; border:1px solid #aceebb; }
+  .tag-rcat-active { background:#fff8c5; color:#9a6700; border:1px solid #f5d845; }
+  .tag-amer { background:#ddf4ff; color:#0550ae; border:1px solid #80ccff; }
+  .tag-emea { background:#fbefff; color:#6e40c9; border:1px solid #d2a8ff; }
+  .tag-india { background:#fff1e5; color:#bc4c00; border:1px solid #ffc896; }
+  .tag-jp { background:#f6f8fa; color:#656d76; border:1px solid #d0d7de; }
+
+  /* Insight panels */
+  .insight { border-radius:6px; padding:10px 14px; margin-bottom:12px; font-size:12px; border-left:3px solid; }
+  .insight.red { background:#ffebe9; border-color:#cf222e; }
+  .insight.yellow { background:#fff8c5; border-color:#9a6700; }
+  .insight.green { background:#dafbe1; border-color:#1a7f37; }
+  .insight.blue { background:#ddf4ff; border-color:#0969da; }
+  .insight.purple { background:#fbefff; border-color:#8250df; }
+  .insight.orange { background:#fff1e5; border-color:#bc4c00; }
+  .insight strong { display:block; margin-bottom:3px; }
+
+  /* Day spike annotation */
+  .day-spike { display:inline-block; background:#ffebe9; color:#cf222e; border:1px solid #ffcecb; border-radius:4px; padding:1px 6px; font-size:11px; font-weight:700; }
+
+  /* Region impact tiles */
+  .region-tiles { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:16px; }
+  .region-tile { border:1px solid var(--border); border-radius:6px; padding:10px; text-align:center; }
+  .region-tile .r-name { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; margin-bottom:4px; }
+  .region-tile .r-total { font-size:18px; font-weight:700; color:var(--text); }
+  .region-tile .r-sub { font-size:10px; color:var(--muted); margin-top:2px; }
+  .region-tile .r-uc { font-size:11px; font-weight:600; margin-top:6px; }
+  .region-tile.high-outage { border-color:#ffcecb; background:#ffebe9; }
+  .region-tile.high-upgrade { border-color:#ffc896; background:#fff1e5; }
+  .region-tile.low { border-color:#d0d7de; background:#f6f8fa; }
+
+  /* UC blocks */
+  .uc-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  .uc-block { border:1px solid var(--border); border-radius:6px; padding:14px; }
+  .uc-block-title { font-size:12px; font-weight:700; padding:4px 8px; border-radius:4px; margin-bottom:10px; display:inline-block; }
+  .uc-block-title.outage { background:#ffebe9; color:#82071e; }
+  .uc-block-title.upgrade { background:#fff8c5; color:#9a6700; }
+
+  /* Chart wrapper */
+  .chart-wrap { position:relative; }
+
+  /* Timeline strip */
+  .timeline-strip { display:flex; gap:2px; margin-bottom:4px; }
+  .tday { flex:1; text-align:center; font-size:9px; color:var(--muted); padding:2px 0; border-radius:2px; }
+  .tday.outage-day { background:#ffebe9; color:#cf222e; font-weight:700; }
+  .tday.upgrade-day { background:#fff8c5; color:#9a6700; font-weight:600; }
+  .tday.normal { background:#f6f8fa; }
+
+  /* Footer */
+  footer { text-align:center; padding:20px; font-size:11px; color:var(--muted); border-top:1px solid var(--border); margin-top:8px; }
+
+  @media(max-width:900px) {
+    .kpi-grid { grid-template-columns:repeat(2,1fr); }
+    .grid-2, .grid-3 { grid-template-columns:1fr; }
+    .region-tiles { grid-template-columns:repeat(2,1fr); }
+    .uc-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <h1>Revenue Cloud — 264 Post-Release Trend Analysis</h1>
+    <div class="meta">
+      Signature Success · All severities · Excludes Accelerator Delivery Request
+      &nbsp;|&nbsp; <span class="badge badge-264">264</span> Sep 1–19, 2026 (Days 3–21 post-SB1 Aug 29)
+      &nbsp;vs&nbsp; <span class="badge badge-262">262</span> May 10–30, 2026 (Days 2–22 post-SB1 May 8)
+    </div>
+  </div>
+  <div style="font-size:12px;color:var(--muted);text-align:right;">Generated Sep 24, 2026</div>
+</div>
+
+<div class="container">
+
+  <div class="scope-note">
+    <strong>Scope:</strong> Success Plan contains "Signature" · All severity levels · Excludes Accelerator Delivery Request · Source: CSV export Sep 24, 2026 · 264 window = 19 days (Sep 1–19) · 262 window = 21 days (May 10–30)
+  </div>
+
+  <!-- KPI Grid -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Total Cases</div>
+      <div class="kpi-row">
+        <div>
+          <div class="kpi-val c264">421</div>
+          <div class="kpi-sub">264 (Sep 1–19)</div>
+        </div>
+        <div class="kpi-divider"></div>
+        <div>
+          <div class="kpi-val c262">323</div>
+          <div class="kpi-sub">262 (May 10–30)</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;"><span class="kpi-delta up">+30% vs 262</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Unique Accounts</div>
+      <div class="kpi-row">
+        <div>
+          <div class="kpi-val c264">150</div>
+          <div class="kpi-sub">264 release</div>
+        </div>
+        <div class="kpi-divider"></div>
+        <div>
+          <div class="kpi-val c262">119</div>
+          <div class="kpi-sub">262 release</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;"><span class="kpi-delta up">+26% vs 262</span></div>
+    </div>
+    <div class="kpi-card" style="border-color:#ffcecb;">
+      <div class="kpi-label">Upgrade Cases Linked</div>
+      <div class="kpi-row">
+        <div>
+          <div class="kpi-val c264">29</div>
+          <div class="kpi-sub">264 (6.9% of total)</div>
+        </div>
+        <div class="kpi-divider"></div>
+        <div>
+          <div class="kpi-val c262">3</div>
+          <div class="kpi-sub">262 (0.9%)</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--muted);">10 outage · 19 release upgrade</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">RCA Volume</div>
+      <div class="kpi-row">
+        <div>
+          <div class="kpi-val c264">283</div>
+          <div class="kpi-sub">264 (67%)</div>
+        </div>
+        <div class="kpi-divider"></div>
+        <div>
+          <div class="kpi-val c262">172</div>
+          <div class="kpi-sub">262 (53%)</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;"><span class="kpi-delta up">+65% vs 262</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">CPQ Package Volume</div>
+      <div class="kpi-row">
+        <div>
+          <div class="kpi-val c264">118</div>
+          <div class="kpi-sub">264 (28%)</div>
+        </div>
+        <div class="kpi-divider"></div>
+        <div>
+          <div class="kpi-val c262">134</div>
+          <div class="kpi-sub">262 (41%)</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;"><span class="kpi-delta down">−12% vs 262</span></div>
+    </div>
+  </div>
+
+  <!-- Weekly Trend + Daily Volume -->
+  <div class="grid-2 mb20">
+    <div class="card">
+      <div class="section-title">📈 Weekly Inflow Trend — Post-SB1 (3 Weeks)</div>
+      <div class="chart-wrap" style="height:220px;">
+        <canvas id="weeklyChart"></canvas>
+      </div>
+      <div style="margin-top:12px;">
+        <table class="data-table">
+          <thead><tr>
+            <th>Week</th>
+            <th>264 Dates</th>
+            <th class="num"><span style="color:var(--accent-264);">264</span></th>
+            <th>262 Dates</th>
+            <th class="num"><span style="color:var(--accent-262);">262</span></th>
+            <th class="num">Δ</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>W1 (Days 3–9)</td><td>Sep 1–7</td><td class="num">176</td><td>May 10–16</td><td class="num">137</td><td class="num" style="color:#cf222e;">+39</td></tr>
+            <tr><td>W2 (Days 10–16)</td><td>Sep 8–14</td><td class="num">124</td><td>May 17–23</td><td class="num">125</td><td class="num" style="color:var(--muted);">−1</td></tr>
+            <tr><td>W3 (Days 17–21)</td><td>Sep 15–19</td><td class="num">121</td><td>May 24–30</td><td class="num">61</td><td class="num" style="color:#cf222e;">+60</td></tr>
+            <tr class="grand-total"><td colspan="2">Total</td><td class="num">421</td><td></td><td class="num">323</td><td class="num" style="color:#cf222e;">+98</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">📅 Daily Case Volume — 264 Release (Sep 1–19)</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">
+        <span class="tag tag-outage">⬛ Outage day</span>&nbsp;
+        <span class="tag tag-upgrade">■ Upgrade UC day</span>&nbsp;
+        <span style="background:#f6f8fa;border:1px solid #d0d7de;padding:1px 6px;border-radius:10px;font-size:10px;font-weight:600;">■ Normal</span>
+      </div>
+      <div class="chart-wrap" style="height:200px;">
+        <canvas id="dailyChart"></canvas>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--muted);text-align:center;">
+        Sep 7 = Outage spike (9 cases, EMEA) &nbsp;|&nbsp; Sep 1–3 = Upgrade UC heavy (12 of 19 cases)
+      </div>
+    </div>
+  </div>
+
+  <!-- Upgrade Cases Section -->
+  <div class="card red-border mb20">
+    <div class="section-title">🚨 Upgrade Cases — Customer Impact Detail (264 Release)</div>
+
+    <div class="uc-grid">
+      <!-- Outage block -->
+      <div class="uc-block">
+        <div class="uc-block-title outage">Outage Upgrade Cases — 10 cases · 9 accounts</div>
+        <div class="insight red" style="margin-bottom:10px;">
+          <strong>Sep 7 (Mon) was the peak outage day — 9 of 10 cases opened same day.</strong>
+          EMEA-dominant: 9 EMEA cases + 1 AMER. Root topic: Product Configurator (9 cases) + Transaction Management (1 case). Linked to Upgrade Case IDs 95079032 and 95390343.
+        </div>
+        <table class="data-table">
+          <thead><tr>
+            <th>Account</th>
+            <th>Region</th>
+            <th>P&T Topic</th>
+            <th>Date</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>Bell Canada</td><td><span class="tag tag-emea">EMEA</span></td><td>Product Configurator</td><td>Sep 7</td></tr>
+            <tr><td>Altice USA (Cablevision)</td><td><span class="tag tag-emea">EMEA</span></td><td>Product Configurator</td><td>Sep 7</td></tr>
+            <tr><td>Pets Insurance Services</td><td><span class="tag tag-emea">EMEA</span></td><td>Product Configurator</td><td>Sep 7</td></tr>
+            <tr><td>Pets Insurance Services</td><td><span class="tag tag-emea">EMEA</span></td><td>Product Configurator</td><td>Sep 7</td></tr>
+            <tr><td>Milestone Systems A/S</td><td><span class="tag tag-emea">EMEA</span></td><td>Product Configurator</td><td>Sep 7</td></tr>
+            <tr><td>Laboratory Corp of America</td><td><span class="tag tag-emea">EMEA</span></td><td>Product Configurator</td><td>Sep 7</td></tr>
+            <tr><td>Bridgestone Mobility Solutions</td><td><span class="tag tag-emea">EMEA</span></td><td>Product Configurator</td><td>Sep 7</td></tr>
+            <tr><td>Bank Vontobel AG</td><td><span class="tag tag-emea">EMEA</span></td><td>Product Configurator</td><td>Sep 7</td></tr>
+            <tr><td>Verint Americas Inc.</td><td><span class="tag tag-emea">EMEA</span></td><td>Transaction Management</td><td>Sep 7</td></tr>
+            <tr><td>LiveRamp, Inc</td><td><span class="tag tag-amer">AMER</span></td><td>Product Configurator</td><td>Sep 16</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Release Upgrade block -->
+      <div class="uc-block">
+        <div class="uc-block-title upgrade">Release Upgrade Cases — 19 cases · 16 accounts</div>
+        <div class="insight yellow" style="margin-bottom:10px;">
+          <strong>India-dominant: 11 of 19 cases handled by India team.</strong>
+          Heavy early-window concentration — 12 of 19 cases in Days 3–5 (Sep 1–3). Key topics: Product Configurator (6), Product Catalog Management (5), Transaction Management (2). Linked to 264 RC Upgrade.
+        </div>
+        <table class="data-table">
+          <thead><tr>
+            <th>Account</th>
+            <th>Region</th>
+            <th>P&T Topic</th>
+            <th>Date</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>Bell Canada</td><td><span class="tag tag-india">India</span></td><td>Product Configurator</td><td>Sep 1</td></tr>
+            <tr><td>Eaton Main</td><td><span class="tag tag-india">India</span></td><td>Product Catalog Mgmt</td><td>Sep 1</td></tr>
+            <tr><td>PostNL Holding BV</td><td><span class="tag tag-emea">EMEA</span></td><td>Product Configurator</td><td>Sep 2</td></tr>
+            <tr><td>PostNL Holding BV</td><td><span class="tag tag-emea">EMEA</span></td><td>Product Configurator</td><td>Sep 2</td></tr>
+            <tr><td>Genesys Cloud Services</td><td><span class="tag tag-india">India</span></td><td>Product Catalog Mgmt</td><td>Sep 2</td></tr>
+            <tr><td>Fortinet, Inc.</td><td><span class="tag tag-amer">AMER</span></td><td>Product Catalog Mgmt</td><td>Sep 2</td></tr>
+            <tr><td>Convergint Technologies</td><td><span class="tag tag-amer">AMER</span></td><td>Product Catalog Mgmt</td><td>Sep 2</td></tr>
+            <tr><td>Cummins SFA</td><td><span class="tag tag-india">India</span></td><td>Product Catalog Mgmt</td><td>Sep 2</td></tr>
+            <tr><td>Milestone Systems A/S</td><td><span class="tag tag-emea">EMEA</span></td><td>Product Configurator</td><td>Sep 3</td></tr>
+            <tr><td>LiveRamp, Inc</td><td><span class="tag tag-india">India</span></td><td>Product Configurator</td><td>Sep 3</td></tr>
+            <tr><td>Wolters Kluwer Legal</td><td><span class="tag tag-india">India</span></td><td>Product Configurator</td><td>Sep 3</td></tr>
+            <tr><td>InformaOne</td><td><span class="tag tag-india">India</span></td><td>Product Configurator</td><td>Sep 7</td></tr>
+            <tr><td>Trane Technologies</td><td><span class="tag tag-india">India</span></td><td>Transaction Management</td><td>Sep 8</td></tr>
+            <tr><td>PointClickCare Technologies</td><td><span class="tag tag-amer">AMER</span></td><td>Transaction Management</td><td>Sep 9</td></tr>
+            <tr><td>PwC Global Licensing</td><td><span class="tag tag-india">India</span></td><td>Contract Lifecycle Mgmt</td><td>Sep 10</td></tr>
+            <tr><td>Genesys Cloud Services</td><td><span class="tag tag-amer">AMER</span></td><td>Dev Support P2O</td><td>Sep 12</td></tr>
+            <tr><td>InformaOne</td><td><span class="tag tag-india">India</span></td><td>Billing &amp; Invoicing</td><td>Sep 15</td></tr>
+            <tr><td>S&amp;P Financial Services</td><td><span class="tag tag-india">India</span></td><td>Billing &amp; Invoicing</td><td>Sep 17</td></tr>
+            <tr><td>AI inside Inc.</td><td><span class="tag tag-jp">JP</span></td><td>Usage &amp; Ratings</td><td>Sep 19</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Regional Impact -->
+  <div class="card mb20">
+    <div class="section-title">🌍 Regional Impact — 264 Release</div>
+    <div class="region-tiles">
+      <div class="region-tile low">
+        <div class="r-name">AMER</div>
+        <div class="r-total">179</div>
+        <div class="r-sub">43% of total</div>
+        <div class="r-uc" style="color:#9a6700;">1 outage · 4 upgrade</div>
+      </div>
+      <div class="region-tile high-outage">
+        <div class="r-name" style="color:#82071e;">EMEA 🔴</div>
+        <div class="r-total">104</div>
+        <div class="r-sub">25% of total</div>
+        <div class="r-uc" style="color:#cf222e;font-weight:700;">9 outage · 3 upgrade</div>
+      </div>
+      <div class="region-tile high-upgrade">
+        <div class="r-name" style="color:#bc4c00;">India 🟠</div>
+        <div class="r-total">104</div>
+        <div class="r-sub">25% of total</div>
+        <div class="r-uc" style="color:#bc4c00;font-weight:700;">0 outage · 11 upgrade</div>
+      </div>
+      <div class="region-tile low">
+        <div class="r-name">JP</div>
+        <div class="r-total">14</div>
+        <div class="r-sub">3% of total</div>
+        <div class="r-uc" style="color:var(--muted);">0 outage · 1 upgrade</div>
+      </div>
+      <div class="region-tile low">
+        <div class="r-name">APAC</div>
+        <div class="r-total">12</div>
+        <div class="r-sub">3% of total</div>
+        <div class="r-uc" style="color:var(--muted);">0 outage · 0 upgrade</div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:0;">
+      <div>
+        <div class="insight red">
+          <strong>EMEA — Highest outage impact (9 of 10 outage cases)</strong>
+          All 9 EMEA outage cases opened on Sep 7 (Mon), concentrated in Product Configurator. Accounts: Bell Canada, Altice USA, Pets Insurance, Milestone Systems, Laboratory Corp of America, Bridgestone Mobility, Bank Vontobel. EMEA UC rate: 9% of EMEA total vs 0.6% for India.
+        </div>
+        <div class="insight purple">
+          <strong>EMEA total volume up vs 262</strong>
+          264: 104 cases vs 262: 85 cases — +22% increase in EMEA inflow, amplified by the Sep 7 outage cluster.
+        </div>
+      </div>
+      <div>
+        <div class="insight orange">
+          <strong>India — Highest release upgrade impact (11 of 19 upgrade cases)</strong>
+          India accounted for 58% of all 264 RC Upgrade-linked cases, concentrated in Product Configurator and Product Catalog Management. 264 India: 104 cases vs 262: 78 — +33% volume growth.
+        </div>
+        <div class="insight blue">
+          <strong>AMER — Highest absolute volume</strong>
+          264: 179 cases (43%) vs 262: 138 cases (+30%). Moderate upgrade exposure (4 cases), no outage impact. Largest contributor to overall 264 vs 262 volume delta.
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;">
+      <table class="data-table">
+        <thead><tr>
+          <th>Region</th>
+          <th class="num">264 Cases</th>
+          <th class="num">262 Cases</th>
+          <th class="num">Δ</th>
+          <th class="num">Outage UC (264)</th>
+          <th class="num">Upgrade UC (264)</th>
+          <th class="num">Total UC (264)</th>
+          <th class="num">UC as % of Region</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><span class="tag tag-amer">AMER</span></td><td class="num">179</td><td class="num">138</td><td class="num" style="color:#cf222e;">+41</td><td class="num">1</td><td class="num">4</td><td class="num">5</td><td class="num">2.8%</td></tr>
+          <tr><td><span class="tag tag-emea">EMEA</span></td><td class="num">104</td><td class="num">85</td><td class="num" style="color:#cf222e;">+19</td><td class="num" style="color:#cf222e;font-weight:700;">9</td><td class="num">3</td><td class="num" style="color:#cf222e;font-weight:700;">12</td><td class="num" style="color:#cf222e;font-weight:700;">11.5%</td></tr>
+          <tr><td><span class="tag tag-india">India</span></td><td class="num">104</td><td class="num">78</td><td class="num" style="color:#cf222e;">+26</td><td class="num">0</td><td class="num" style="color:#bc4c00;font-weight:700;">11</td><td class="num" style="color:#bc4c00;font-weight:700;">11</td><td class="num" style="color:#bc4c00;font-weight:700;">10.6%</td></tr>
+          <tr><td><span class="tag tag-jp">JP</span></td><td class="num">14</td><td class="num">6</td><td class="num" style="color:#cf222e;">+8</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">7.1%</td></tr>
+          <tr><td>APAC</td><td class="num">12</td><td class="num">15</td><td class="num" style="color:#1a7f37;">−3</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0%</td></tr>
+          <tr class="grand-total"><td>Total</td><td class="num">421</td><td class="num">323</td><td class="num" style="color:#cf222e;">+98</td><td class="num">10</td><td class="num">19</td><td class="num">29</td><td class="num">6.9%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- P&T Breakdown -->
+  <div class="card mb20">
+    <div class="section-title">📊 P&T Topic Breakdown — 264 Release</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">
+      RCA = Revenue Cloud (Core) excl. Billing + Salesforce Contracts + Sub Mgmt &nbsp;·&nbsp;
+      RCB = Billing &amp; Invoicing &nbsp;·&nbsp;
+      CPQ = Legacy Revenue (SF CPQ, DocGen, Billing pkg…) &nbsp;·&nbsp;
+      Upgrade Case / Bug counts reflect 264 release only
+    </div>
+    <table class="data-table">
+      <thead><tr>
+        <th>Bucket</th>
+        <th>P&T Topic</th>
+        <th class="num">264 Cases</th>
+        <th class="num">262 Cases</th>
+        <th class="num">Δ</th>
+        <th class="num">Outage UC</th>
+        <th class="num">Upgrade UC</th>
+        <th class="num">Bugs (264)</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Product Configurator</td><td class="num">92</td><td class="num">—</td><td class="num">—</td><td class="num" style="color:#cf222e;font-weight:700;">9</td><td class="num">7</td><td class="num">14</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Transaction Management</td><td class="num">52</td><td class="num">—</td><td class="num">—</td><td class="num" style="color:#cf222e;">1</td><td class="num">2</td><td class="num">8</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Price Management</td><td class="num">40</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Developer Support – P2O</td><td class="num">25</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">1</td><td class="num">2</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Product Catalog Management</td><td class="num">16</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num" style="color:#bc4c00;font-weight:700;">5</td><td class="num">5</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Contract Lifecycle Management</td><td class="num">16</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">1</td><td class="num">3</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Usage &amp; Ratings</td><td class="num">11</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">1</td><td class="num">1</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Advanced Approvals</td><td class="num">7</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">0</td><td class="num">2</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Document Generation (Core)</td><td class="num">7</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Salesforce Contracts</td><td class="num">6</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Dynamic Revenue Orchestration</td><td class="num">6</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Business Rules Engine</td><td class="num">3</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Dev Support – Invoice to Cash</td><td class="num">1</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td><span class="badge badge-264" style="font-size:9px;">RCA</span></td><td>Salesforce Subscription Mgmt</td><td class="num">1</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr class="subtotal"><td colspan="2">RCA Total</td><td class="num">283</td><td class="num">172</td><td class="num" style="color:#cf222e;">+111</td><td class="num">10</td><td class="num">17</td><td class="num">36</td></tr>
+
+        <tr><td><span style="background:#fbefff;color:#6e40c9;border:1px solid #d2a8ff;font-size:9px;font-weight:600;padding:1px 5px;border-radius:10px;">RCB</span></td><td>Billing &amp; Invoicing</td><td class="num">20</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">2</td><td class="num">1</td></tr>
+        <tr class="subtotal"><td colspan="2">RCB Total</td><td class="num">20</td><td class="num">17</td><td class="num" style="color:#cf222e;">+3</td><td class="num">0</td><td class="num">2</td><td class="num">1</td></tr>
+
+        <tr><td><span style="background:#fff1e5;color:#bc4c00;border:1px solid #ffc896;font-size:9px;font-weight:600;padding:1px 5px;border-radius:10px;">CPQ</span></td><td>Salesforce CPQ</td><td class="num">67</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
+        <tr><td><span style="background:#fff1e5;color:#bc4c00;border:1px solid #ffc896;font-size:9px;font-weight:600;padding:1px 5px;border-radius:10px;">CPQ</span></td><td>CPQ Developer Support</td><td class="num">32</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td><span style="background:#fff1e5;color:#bc4c00;border:1px solid #ffc896;font-size:9px;font-weight:600;padding:1px 5px;border-radius:10px;">CPQ</span></td><td>Salesforce Billing</td><td class="num">13</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
+        <tr><td><span style="background:#fff1e5;color:#bc4c00;border:1px solid #ffc896;font-size:9px;font-weight:600;padding:1px 5px;border-radius:10px;">CPQ</span></td><td>Document Generation</td><td class="num">6</td><td class="num">—</td><td class="num">—</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr class="subtotal"><td colspan="2">CPQ Package Total</td><td class="num">118</td><td class="num">134</td><td class="num" style="color:#1a7f37;">−16</td><td class="num">0</td><td class="num">0</td><td class="num">2</td></tr>
+
+        <tr class="grand-total"><td colspan="2">Grand Total</td><td class="num">421</td><td class="num">323</td><td class="num" style="color:#cf222e;">+98</td><td class="num">10</td><td class="num">19</td><td class="num">39</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Top Accounts + Severity -->
+  <div class="grid-2 mb20">
+    <div class="card">
+      <div class="section-title">🏢 Top 10 Accounts — 264 Release</div>
+      <table class="data-table">
+        <thead><tr>
+          <th>Account</th>
+          <th class="num">Cases</th>
+          <th>Primary Topic</th>
+          <th>UC</th>
+          <th>RCAT</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><strong>LiveRamp, Inc</strong></td><td class="num">20</td><td>Product Configurator</td><td><span class="tag tag-outage">Outage</span> <span class="tag tag-upgrade">Upgrade</span></td><td><span class="tag tag-rcat-done">Complete</span></td></tr>
+          <tr><td><strong>Bell Canada</strong></td><td class="num">14</td><td>Product Configurator</td><td><span class="tag tag-outage">Outage</span> <span class="tag tag-upgrade">Upgrade</span></td><td><span class="tag tag-rcat-done">Complete</span></td></tr>
+          <tr><td>Equinix, Inc.</td><td class="num">13</td><td>Product Configurator</td><td>—</td><td>—</td></tr>
+          <tr><td>AI inside Inc.</td><td class="num">12</td><td>Usage &amp; Ratings</td><td><span class="tag tag-upgrade">Upgrade</span></td><td><span class="tag tag-rcat-active">Active</span></td></tr>
+          <tr><td>PostNL Holding BV</td><td class="num">11</td><td>Contract Lifecycle Mgmt</td><td><span class="tag tag-upgrade">Upgrade ×2</span></td><td>—</td></tr>
+          <tr><td>Cummins SFA</td><td class="num">10</td><td>Price Management</td><td><span class="tag tag-upgrade">Upgrade</span></td><td>—</td></tr>
+          <tr><td>Laboratory Corp of America</td><td class="num">10</td><td>Contract Lifecycle Mgmt</td><td><span class="tag tag-outage">Outage</span></td><td>—</td></tr>
+          <tr><td>Trane Technologies</td><td class="num">10</td><td>Product Configurator</td><td><span class="tag tag-upgrade">Upgrade</span></td><td>—</td></tr>
+          <tr><td>CrowdStrike, Inc.</td><td class="num">9</td><td>Product Configurator</td><td>—</td><td><span class="tag tag-rcat-done">Complete</span></td></tr>
+          <tr><td>Altice USA (Cablevision)</td><td class="num">8</td><td>Product Configurator</td><td><span class="tag tag-outage">Outage</span></td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="section-title">⚡ Severity Distribution</div>
+      <div class="chart-wrap" style="height:180px;">
+        <canvas id="sevChart"></canvas>
+      </div>
+      <table class="data-table" style="margin-top:12px;">
+        <thead><tr>
+          <th>Severity</th>
+          <th class="num">264</th>
+          <th class="num">% 264</th>
+          <th class="num">262</th>
+          <th class="num">% 262</th>
+          <th class="num">Δ</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Level 1 – Critical</td><td class="num">56</td><td class="num">13%</td><td class="num">38</td><td class="num">12%</td><td class="num" style="color:#cf222e;">+18</td></tr>
+          <tr><td>Level 2 – Urgent</td><td class="num">212</td><td class="num">50%</td><td class="num">155</td><td class="num">48%</td><td class="num" style="color:#cf222e;">+57</td></tr>
+          <tr><td>Level 3 – High</td><td class="num">95</td><td class="num">23%</td><td class="num">63</td><td class="num">19%</td><td class="num" style="color:#cf222e;">+32</td></tr>
+          <tr><td>Level 4 – Medium</td><td class="num">58</td><td class="num">14%</td><td class="num">67</td><td class="num">21%</td><td class="num" style="color:#1a7f37;">−9</td></tr>
+          <tr class="grand-total"><td>Total</td><td class="num">421</td><td class="num">100%</td><td class="num">323</td><td class="num">100%</td><td class="num" style="color:#cf222e;">+98</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Key Insights Summary -->
+  <div class="card blue-border mb20">
+    <div class="section-title">💡 Key Insights Summary</div>
+    <div class="grid-2" style="margin-bottom:0;">
+      <div>
+        <div class="insight red">
+          <strong>264 inflow 30% higher than 262 (421 vs 323)</strong>
+          Driven primarily by W1 surge (+39 cases in Days 3–9) and sustained W3 volume (121 vs 62 for 262). Product Configurator alone = 92 cases (22% of total).
+        </div>
+        <div class="insight red">
+          <strong>Sep 7 — Single-day outage cluster (9 EMEA cases)</strong>
+          Upgrade Case 95079032 and 95390343 triggered 9 EMEA customer cases on the same day. 90% concentrated in Product Configurator. EMEA UC rate was 11.5% vs overall 6.9%.
+        </div>
+        <div class="insight orange">
+          <strong>India — Release upgrade-heavy (11 of 19 upgrade cases)</strong>
+          India handled the majority of 264 RC Upgrade-linked cases, particularly Product Configurator and Product Catalog Management. 58% of all upgrade UC cases were India-managed.
+        </div>
+      </div>
+      <div>
+        <div class="insight yellow">
+          <strong>Product Configurator — Highest UC concentration</strong>
+          92 cases total, 9 outage UC + 7 upgrade UC = 16 total UC cases. Also 14 bug-linked cases. Single highest-risk topic in 264.
+        </div>
+        <div class="insight yellow">
+          <strong>Product Catalog Management — Upgrade UC hotspot</strong>
+          16 cases but 5 of 19 upgrade UC cases (26%). All 5 within first 2 days of window (Sep 2). Accounts: Eaton, Genesys, Fortinet, Convergint, Cummins.
+        </div>
+        <div class="insight green">
+          <strong>CPQ Package volume declining — positive signal</strong>
+          264 CPQ: 118 cases (28%) vs 262: 134 (41%) — −12% absolute drop, −13pp share shift. No upgrade case exposure in CPQ bucket. RCA mix shift indicates 264 native adoption growth.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>Revenue Cloud 264 Post-Release Trend · Aug 1–Sep 19, 2026 vs 262 May 10–30, 2026 · Source: CSV export Sep 24, 2026 · Signature Success · Excludes Accelerator</footer>
+
+<script>
+Chart.defaults.font.family = "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#656d76';
+
+// Weekly trend
+new Chart(document.getElementById('weeklyChart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['W1 (Days 3–9)', 'W2 (Days 10–16)', 'W3 (Days 17–21)'],
+    datasets: [
+      {
+        label: '264',
+        data: [176, 124, 121],
+        backgroundColor: 'rgba(9,105,218,.65)',
+        borderRadius: 4
+      },
+      {
+        label: '262',
+        data: [137, 125, 61],
+        backgroundColor: 'rgba(130,80,223,.4)',
+        borderRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: { mode: 'index' }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color: 'rgba(208,215,222,.5)' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Daily volume
+const dailyLabels = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19'];
+const dailyData = [30,52,43,15,4,1,31,25,27,26,20,8,3,15,33,29,28,25,6];
+// Sep 7 = index 6 is outage day (red), Sep 1-3 and scattered upgrade days
+const dailyColors = dailyData.map((v, i) => {
+  if (i === 6) return 'rgba(207,34,46,.8)';   // Sep 7 outage
+  if ([0,1,2,7,8,9,11,14,16].includes(i)) return 'rgba(154,103,0,.5)'; // upgrade UC days
+  return 'rgba(9,105,218,.4)';
+});
+
+new Chart(document.getElementById('dailyChart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: dailyLabels.map(d => 'Sep ' + d),
+    datasets: [{
+      label: 'Cases',
+      data: dailyData,
+      backgroundColor: dailyColors,
+      borderRadius: 3
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          afterLabel: ctx => {
+            const i = ctx.dataIndex;
+            if (i === 6) return '⚠ Outage UC day (9 cases, EMEA)';
+            if ([0,1,2].includes(i)) return '↑ Upgrade UC cluster';
+            return '';
+          }
+        }
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color: 'rgba(208,215,222,.5)' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Severity chart
+new Chart(document.getElementById('sevChart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['L1-Critical','L2-Urgent','L3-High','L4-Medium'],
+    datasets: [
+      { label: '264', data: [56,212,95,58], backgroundColor: 'rgba(9,105,218,.65)', borderRadius: 3 },
+      { label: '262', data: [38,155,63,67], backgroundColor: 'rgba(130,80,223,.4)', borderRadius: 3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' }, tooltip: { mode: 'index' } },
+    scales: {
+      y: { beginAtZero: true, grid: { color: 'rgba(208,215,222,.5)' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
