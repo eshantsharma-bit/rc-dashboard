@@ -441,8 +441,8 @@
     </table>
   </div>
 
-  <!-- Top Accounts + Severity -->
-  <div class="grid-2 mb20">
+  <!-- Top Accounts -->
+  <div class="mb20">
     <div class="card">
       <div class="section-title">🏢 Top 10 Accounts — 264 Release</div>
       <table class="data-table">
@@ -469,29 +469,6 @@
       </table>
     </div>
 
-    <div class="card">
-      <div class="section-title">⚡ Severity Distribution</div>
-      <div class="chart-wrap" style="height:180px;">
-        <canvas id="sevChart"></canvas>
-      </div>
-      <table class="data-table" style="margin-top:12px;">
-        <thead><tr>
-          <th>Severity</th>
-          <th class="num">264</th>
-          <th class="num">% 264</th>
-          <th class="num">262</th>
-          <th class="num">% 262</th>
-          <th class="num">Δ</th>
-        </tr></thead>
-        <tbody>
-          <tr><td>Level 1 – Critical</td><td class="num">57</td><td class="num">13%</td><td class="num">39</td><td class="num">11%</td><td class="num" style="color:#e8c07a;">+18</td></tr>
-          <tr><td>Level 2 – Urgent</td><td class="num">236</td><td class="num">52%</td><td class="num">164</td><td class="num">48%</td><td class="num" style="color:#e8c07a;">+72</td></tr>
-          <tr><td>Level 3 – High</td><td class="num">99</td><td class="num">22%</td><td class="num">66</td><td class="num">19%</td><td class="num" style="color:#e8c07a;">+33</td></tr>
-          <tr><td>Level 4 – Medium</td><td class="num">63</td><td class="num">14%</td><td class="num">73</td><td class="num">21%</td><td class="num" style="color:#5fd38d;">−10</td></tr>
-          <tr class="grand-total"><td>Total</td><td class="num">455</td><td class="num">100%</td><td class="num">342</td><td class="num">100%</td><td class="num" style="color:#e8c07a;">+113</td></tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 
   <!-- Upgrade Cases Detail — 264 vs 262 -->
@@ -553,7 +530,7 @@
     <div class="uc-grid">
       <!-- Outage block -->
       <div class="uc-block">
-        <div class="uc-block-title outage">Outage — 264 · 10 cases · 9 accounts · IR = UC IDs</div>
+        <div class="uc-block-title outage">Outage — 264 · 10 cases</div>
         <div class="insight yellow" style="margin-bottom:10px;">
           <strong>Sep 7 (Mon) — 9 of 10 cases opened same day.</strong>
           EMEA: 9 cases · AMER: 1 case (Sep 16). Topic: Product Configurator (9), Transaction Management (1). IR field linked to UC IDs 95079032 and 95390343. 262 had 0 outage cases.
@@ -582,7 +559,7 @@
 
       <!-- Release Upgrade block -->
       <div class="uc-block">
-        <div class="uc-block-title upgrade">Upgrade — 264 · 24 cases · 18 accounts · IR = 264 RC Upgrade</div>
+        <div class="uc-block-title upgrade">Upgrade — 264 · 24 cases</div>
         <div class="insight blue" style="margin-bottom:10px;">
           <strong>India: 12 of 24 cases (50%). Early-window concentrated — 10 of 24 in Days 1–4 (Aug 30–Sep 2).</strong>
           Topics: Product Configurator (8), Product Catalog Management (5), Billing &amp; Invoicing (3), Transaction Management (3). 262_RC_Upgrade had 3 cases across 3 accounts.
@@ -725,26 +702,6 @@ new Chart(document.getElementById('dailyChart').getContext('2d'), {
     scales: {
       y: { beginAtZero: true, stacked: true, grid: { color: 'rgba(255,255,255,0.08)' } },
       x: { stacked: true, grid: { display: false }, ticks: { maxRotation: 45, font: { size: 10 } } }
-    }
-  }
-});
-
-// Severity chart
-new Chart(document.getElementById('sevChart').getContext('2d'), {
-  type: 'bar',
-  data: {
-    labels: ['L1-Critical','L2-Urgent','L3-High','L4-Medium'],
-    datasets: [
-      { label: '264', data: [57,236,99,63], backgroundColor: 'rgba(77,168,240,.75)', borderRadius: 3 },
-      { label: '262', data: [39,164,66,73], backgroundColor: 'rgba(163,113,247,.55)', borderRadius: 3 }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { position: 'top' }, tooltip: { mode: 'index' } },
-    scales: {
-      y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.08)' } },
-      x: { grid: { display: false } }
     }
   }
 });
