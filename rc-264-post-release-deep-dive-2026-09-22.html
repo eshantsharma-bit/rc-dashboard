@@ -28,7 +28,7 @@
       radial-gradient(ellipse 65% 55% at 0% 100%, rgba(0,0,0,0.35) 0%, transparent 60%),
       linear-gradient(155deg,#0c2a3a 0%,#1a5a7a 40%,#0f1e30 100%);
     background-attachment:fixed; min-height:100vh;
-    color:var(--text); font-size:14px; line-height:1.5;
+    color:var(--text); font-size:15px; line-height:1.5;
   }
 
   .page-header {
@@ -37,8 +37,8 @@
     padding:20px 32px; display:flex; align-items:flex-start; justify-content:space-between;
     position:sticky; top:0; z-index:10;
   }
-  .page-header h1 { font-size:20px; font-weight:700; color:#fff; }
-  .page-header .meta { font-size:12px; color:var(--card-dim); margin-top:4px; }
+  .page-header h1 { font-size:22px; font-weight:700; color:#fff; }
+  .page-header .meta { font-size:13px; color:var(--card-dim); margin-top:4px; }
   .badge { display:inline-block; padding:3px 9px; border-radius:12px; font-size:11px; font-weight:600; }
   .badge-264 { background:rgba(77,168,240,0.18); color:#4DA8F0; border:1px solid rgba(77,168,240,0.4); }
   .badge-262 { background:rgba(93,211,141,0.18); color:#5dd38d; border:1px solid rgba(93,211,141,0.4); }
@@ -53,15 +53,15 @@
     transition:transform 0.18s ease, box-shadow 0.18s ease;
   }
   .kpi-card:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.45); }
-  .kpi-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.10em; color:var(--card-dim); margin-bottom:10px; }
+  .kpi-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.10em; color:var(--card-dim); margin-bottom:10px; }
   .kpi-row { display:flex; align-items:baseline; gap:16px; }
-  .kpi-val { font-size:30px; font-weight:700; line-height:1; }
+  .kpi-val { font-size:32px; font-weight:700; line-height:1; }
   .kpi-val.c264 { color:#4DA8F0; }
   .kpi-val.c262 { color:#5dd38d; }
-  .kpi-sub { font-size:12px; color:var(--card-dim); margin-top:4px; }
+  .kpi-sub { font-size:13px; color:var(--card-dim); margin-top:4px; }
   .kpi-divider { width:1px; background:var(--card-border); height:28px; }
   .kpi-delta { font-size:11px; font-weight:700; padding:2px 7px; border-radius:20px; }
-  .kpi-delta.up { background:rgba(224,82,82,0.18); color:#ff9090; }
+  .kpi-delta.up { background:rgba(200,148,58,0.18); color:#e8c07a; }
   .kpi-delta.neutral { background:rgba(255,255,255,0.08); color:var(--card-dim); }
 
   .window-banner {
@@ -76,7 +76,7 @@
     background:var(--card-bg); border:1px solid var(--card-border);
     border-radius:14px; padding:20px 24px; margin-bottom:24px; box-shadow:var(--shadow);
   }
-  .section-title { font-size:15px; font-weight:700; margin-bottom:16px; color:#fff; }
+  .section-title { font-size:17px; font-weight:700; margin-bottom:16px; color:#fff; }
 
   .ir-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
   .ir-block-title { font-size:13px; font-weight:700; margin-bottom:12px; padding:6px 12px; border-radius:20px; display:inline-block; }
@@ -91,11 +91,11 @@
   .ir-bugs { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
   .ir-bug-tag { font-size:11px; padding:2px 8px; border-radius:4px; background:rgba(255,255,255,0.06); border:1px solid var(--card-border); font-family:ui-monospace,monospace; color:var(--card-mid); }
 
-  table { width:100%; border-collapse:collapse; font-size:13px; }
-  thead th { background:rgba(255,255,255,0.05); padding:9px 12px; text-align:left; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--card-dim); border-bottom:1px solid var(--card-border); }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  thead th { background:rgba(255,255,255,0.05); padding:10px 13px; text-align:left; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; color:var(--card-dim); border-bottom:1px solid var(--card-border); }
   thead th.num { text-align:right; }
   tbody tr:hover td { background:rgba(255,255,255,0.04); }
-  tbody td { padding:9px 12px; border-bottom:1px solid rgba(255,255,255,0.05); color:var(--card-mid); }
+  tbody td { padding:10px 13px; border-bottom:1px solid rgba(255,255,255,0.05); color:var(--card-mid); }
   tbody td.num { text-align:right; font-variant-numeric:tabular-nums; }
   .tag { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:700; }
   .tag-rca { background:rgba(77,168,240,0.15); color:#4DA8F0; border:1px solid rgba(77,168,240,0.35); }
@@ -142,10 +142,6 @@
 </div>
 
 <div class="container">
-
-  <div class="scope-note">
-    <strong>Scope:</strong> Success Plan contains "Signature" · All severity levels · Excludes Accelerator Delivery Request record type · Release window Days 3–21 post-SB1 · Source: CSV export Sep 23 2026
-  </div>
 
   <!-- KPI Grid -->
   <div class="kpi-grid">
@@ -251,9 +247,9 @@
       <div>
         <div class="ir-block-title outage">264 — Outage IRs (95079032 &amp; 95390343)</div>
         <div class="ir-stat-row">
-          <div class="ir-stat"><div class="num" style="color:var(--accent-outage)">10</div><div class="lbl">Cases</div></div>
-          <div class="ir-stat"><div class="num" style="color:var(--accent-outage)">9</div><div class="lbl">Unique Accounts</div></div>
-          <div class="ir-stat"><div class="num" style="color:var(--accent-outage)">3</div><div class="lbl">Bugs Linked</div></div>
+          <div class="ir-stat"><div class="num" style="color:#e8c07a">10</div><div class="lbl">Cases</div></div>
+          <div class="ir-stat"><div class="num" style="color:#e8c07a">9</div><div class="lbl">Unique Accounts</div></div>
+          <div class="ir-stat"><div class="num" style="color:#e8c07a">3</div><div class="lbl">Bugs Linked</div></div>
         </div>
         <ul class="ir-acct-list">
           <li><span>LiveRamp, Inc</span><span>2 cases</span></li>
@@ -273,9 +269,9 @@
       <div>
         <div class="ir-block-title upgrade">264 — Release Upgrade Cases (264 RC Upgrade)</div>
         <div class="ir-stat-row">
-          <div class="ir-stat"><div class="num" style="color:var(--accent-upgrade)">19</div><div class="lbl">Cases</div></div>
-          <div class="ir-stat"><div class="num" style="color:var(--accent-upgrade)">16</div><div class="lbl">Unique Accounts</div></div>
-          <div class="ir-stat"><div class="num" style="color:var(--accent-upgrade)">3</div><div class="lbl">Bugs Linked</div></div>
+          <div class="ir-stat"><div class="num" style="color:#4DA8F0">19</div><div class="lbl">Cases</div></div>
+          <div class="ir-stat"><div class="num" style="color:#4DA8F0">16</div><div class="lbl">Unique Accounts</div></div>
+          <div class="ir-stat"><div class="num" style="color:#4DA8F0">3</div><div class="lbl">Bugs Linked</div></div>
         </div>
         <ul class="ir-acct-list">
           <li><span>AI inside Inc.</span><span>2 cases</span></li>
@@ -331,7 +327,7 @@
           <td><span class="tag tag-rca">RCA</span></td>
           <td class="num">92</td>
           <td class="num">51</td>
-          <td class="num" style="color:var(--accent-outage)">+41</td>
+          <td class="num" style="color:#e8c07a">+41</td>
           <td class="num">16</td>
           <td class="num">14</td>
         </tr>
@@ -530,7 +526,7 @@
           <td style="font-weight:500">PostNL Holding BV</td>
           <td class="num">11</td><td class="num">2</td><td class="num">2</td>
           <td><span class="tag tag-upgrade">Upgrade UC ×2</span></td>
-          <td><span style="color:#ff9090;font-weight:700;font-size:11px;">Not Assigned</span></td>
+          <td><span style="color:var(--card-dim);font-weight:700;font-size:11px;">Not Assigned</span></td>
           <td>—</td>
           <td>—</td>
           <td style="font-size:11px;">Sponsor Passive · 9/18: 8 W'27 cases flagged as blockers</td>
