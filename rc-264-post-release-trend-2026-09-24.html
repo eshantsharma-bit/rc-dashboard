@@ -353,59 +353,60 @@
 
   <!-- Regional Impact -->
   <div class="card mb20">
-    <div class="section-title">🌍 Regional Impact — 264 Release</div>
+    <div class="section-title">🌍 Regional Volume — 264 Release</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">UC-linked = cases with Upgrade Case field populated (outage or release UC). All other cases reflect organic inflow — volume delta vs 262 is not attributable to the release unless UC-linked.</div>
     <div class="region-tiles">
       <div class="region-tile low">
         <div class="r-name">AMER</div>
         <div class="r-total">179</div>
-        <div class="r-sub">43% of total</div>
-        <div class="r-uc" style="color:#9a6700;">1 outage · 4 upgrade</div>
+        <div class="r-sub">43% of total · +41 vs 262</div>
+        <div class="r-uc" style="color:#9a6700;">5 UC-linked (2.8%)</div>
       </div>
       <div class="region-tile high-outage">
         <div class="r-name" style="color:#82071e;">EMEA 🔴</div>
         <div class="r-total">104</div>
-        <div class="r-sub">25% of total</div>
-        <div class="r-uc" style="color:#cf222e;font-weight:700;">9 outage · 3 upgrade</div>
+        <div class="r-sub">25% of total · +19 vs 262</div>
+        <div class="r-uc" style="color:#cf222e;font-weight:700;">12 UC-linked (11.5%)</div>
       </div>
       <div class="region-tile high-upgrade">
         <div class="r-name" style="color:#bc4c00;">India 🟠</div>
         <div class="r-total">104</div>
-        <div class="r-sub">25% of total</div>
-        <div class="r-uc" style="color:#bc4c00;font-weight:700;">0 outage · 11 upgrade</div>
+        <div class="r-sub">25% of total · +26 vs 262</div>
+        <div class="r-uc" style="color:#bc4c00;font-weight:700;">11 UC-linked (10.6%)</div>
       </div>
       <div class="region-tile low">
         <div class="r-name">JP</div>
         <div class="r-total">14</div>
-        <div class="r-sub">3% of total</div>
-        <div class="r-uc" style="color:var(--muted);">0 outage · 1 upgrade</div>
+        <div class="r-sub">3% of total · +8 vs 262</div>
+        <div class="r-uc" style="color:var(--muted);">1 UC-linked (7.1%)</div>
       </div>
       <div class="region-tile low">
         <div class="r-name">APAC</div>
         <div class="r-total">12</div>
-        <div class="r-sub">3% of total</div>
-        <div class="r-uc" style="color:var(--muted);">0 outage · 0 upgrade</div>
+        <div class="r-sub">3% of total · −3 vs 262</div>
+        <div class="r-uc" style="color:var(--muted);">0 UC-linked</div>
       </div>
     </div>
 
     <div class="grid-2" style="margin-bottom:0;">
       <div>
         <div class="insight red">
-          <strong>EMEA — Highest outage impact (9 of 10 outage cases)</strong>
-          All 9 EMEA outage cases opened on Sep 7 (Mon), concentrated in Product Configurator. Accounts: Bell Canada, Altice USA, Pets Insurance, Milestone Systems, Laboratory Corp of America, Bridgestone Mobility, Bank Vontobel. EMEA UC rate: 9% of EMEA total vs 0.6% for India.
+          <strong>EMEA — 12 release-attributed cases (11.5% of EMEA total)</strong>
+          9 outage UC cases (Upgrade Cases 95079032 / 95390343) all opened on Sep 7 — Product Configurator across 8 accounts. A further 3 cases are linked to 264 RC Upgrade. The remaining 92 EMEA cases (88.5%) are organic — volume vs 262 (+19 cases) is not attributable to the release.
         </div>
         <div class="insight purple">
-          <strong>EMEA total volume up vs 262</strong>
-          264: 104 cases vs 262: 85 cases — +22% increase in EMEA inflow, amplified by the Sep 7 outage cluster.
+          <strong>EMEA organic volume: 92 cases (88.5% of EMEA total)</strong>
+          264 EMEA total: 104 vs 262: 85 (+19 cases). Only 12 of those carry an Upgrade Case link — the rest reflect customer-driven inflow independent of the release event.
         </div>
       </div>
       <div>
         <div class="insight orange">
-          <strong>India — Highest release upgrade impact (11 of 19 upgrade cases)</strong>
-          India accounted for 58% of all 264 RC Upgrade-linked cases, concentrated in Product Configurator and Product Catalog Management. 264 India: 104 cases vs 262: 78 — +33% volume growth.
+          <strong>India — 11 release-attributed cases (10.6% of India total)</strong>
+          All 11 are linked to 264 RC Upgrade (0 outage UC). Concentrated in Product Configurator and Product Catalog Management, mostly Days 3–5. The remaining 93 India cases (89.4%) are organic — India's +26 case growth vs 262 is not release-driven in the absence of a UC link.
         </div>
         <div class="insight blue">
-          <strong>AMER — Highest absolute volume</strong>
-          264: 179 cases (43%) vs 262: 138 cases (+30%). Moderate upgrade exposure (4 cases), no outage impact. Largest contributor to overall 264 vs 262 volume delta.
+          <strong>AMER — 5 release-attributed cases (2.8% of AMER total)</strong>
+          1 outage UC + 4 upgrade UC cases. AMER's volume of 179 cases vs 262's 138 (+41 cases) is largely organic — only 5 carry a UC link. AMER is the highest-volume region and the primary driver of overall 264 vs 262 growth, driven by product adoption not release impact.
         </div>
       </div>
     </div>
