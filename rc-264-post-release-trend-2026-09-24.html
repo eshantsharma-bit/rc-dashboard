@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RC 264 Post-Release Trend — Aug 30–Sep 19, 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
   :root {
     --gold:#C8943A;
@@ -297,9 +298,7 @@
     <div class="card">
       <div class="section-title">📅 Daily Case Volume — 264 Release (Aug 30–Sep 19)</div>
       <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">
-        <span class="tag tag-outage">⬛ Outage day</span>&nbsp;
-        <span class="tag tag-upgrade">■ Upgrade UC day</span>&nbsp;
-        <span style="background:rgba(77,168,240,0.15);border:1px solid rgba(77,168,240,0.35);color:#4DA8F0;padding:1px 6px;border-radius:10px;font-size:10px;font-weight:700;">■ Normal</span>
+        Bars split by type — proportional stack per day
       </div>
       <div class="chart-wrap" style="height:200px;">
         <canvas id="dailyChart"></canvas>
@@ -314,7 +313,7 @@
   <div class="card mb20">
     <div class="section-title">🌍 Regional Volume — 264 Release</div>
     <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">UC-linked = cases with Upgrade Case field populated (outage or release UC). All other cases reflect organic inflow — volume delta vs 262 is not attributable to the release unless UC-linked.</div>
-    <div class="region-tiles">
+    <div class="region-tiles" style="grid-template-columns:repeat(4,1fr);">
       <div class="region-tile low">
         <div class="r-name">AMER</div>
         <div class="r-total">196</div>
@@ -334,39 +333,10 @@
         <div class="r-uc" style="color:#f0a870;font-weight:700;">12 UC-linked (10.9%)</div>
       </div>
       <div class="region-tile low">
-        <div class="r-name">JP</div>
-        <div class="r-total">17</div>
-        <div class="r-sub">4% of total · +8 vs 262</div>
-        <div class="r-uc" style="color:var(--muted);">2 UC-linked (11.8%)</div>
-      </div>
-      <div class="region-tile low">
         <div class="r-name">APAC</div>
         <div class="r-total">14</div>
         <div class="r-sub">3% of total · −1 vs 262</div>
         <div class="r-uc" style="color:var(--muted);">2 UC-linked (14.3%)</div>
-      </div>
-    </div>
-
-    <div class="grid-2" style="margin-bottom:0;">
-      <div>
-        <div class="insight yellow">
-          <strong>EMEA — 12 release-attributed cases (10.5% of EMEA total)</strong>
-          9 outage UC cases (UC IDs 95079032 / 95390343) all opened on Sep 7 — Product Configurator across 8 accounts. A further 3 cases are linked to 264 RC Upgrade. The remaining 102 EMEA cases (89.5%) are organic — volume vs 262 (+25 cases) is not attributable to the release.
-        </div>
-        <div class="insight purple">
-          <strong>EMEA organic volume: 102 cases (89.5% of EMEA total)</strong>
-          264 EMEA total: 114 vs 262: 89 (+25 cases). Only 12 of those carry an Upgrade Case link — the rest reflect customer-driven inflow independent of the release event.
-        </div>
-      </div>
-      <div>
-        <div class="insight orange">
-          <strong>India — 12 release-attributed cases (10.9% of India total)</strong>
-          All 12 are linked to 264 RC Upgrade (0 outage UC). Concentrated in Product Configurator and Product Catalog Management, mostly Days 2–5. The remaining 98 India cases (89.1%) are organic — India's +27 case growth vs 262 is not release-driven in the absence of a UC link.
-        </div>
-        <div class="insight blue">
-          <strong>AMER — 6 release-attributed cases (3.1% of AMER total)</strong>
-          1 outage UC + 5 upgrade UC cases. AMER's volume of 196 cases vs 262's 145 (+51 cases) is largely organic — only 6 carry a UC link. AMER is the highest-volume region and the primary driver of overall 264 vs 262 growth, driven by product adoption not release impact.
-        </div>
       </div>
     </div>
 
@@ -386,7 +356,6 @@
           <tr><td><span class="tag tag-amer">AMER</span></td><td class="num">196</td><td class="num">145</td><td class="num" style="color:#e8c07a;">+51</td><td class="num">1</td><td class="num">5</td><td class="num">6</td><td class="num">3.1%</td></tr>
           <tr><td><span class="tag tag-emea">EMEA</span></td><td class="num">114</td><td class="num">89</td><td class="num" style="color:#e8c07a;">+25</td><td class="num" style="color:#e8c07a;font-weight:700;">9</td><td class="num">3</td><td class="num" style="color:#e8c07a;font-weight:700;">12</td><td class="num" style="color:#e8c07a;font-weight:700;">10.5%</td></tr>
           <tr><td><span class="tag tag-india">India</span></td><td class="num">110</td><td class="num">83</td><td class="num" style="color:#e8c07a;">+27</td><td class="num">0</td><td class="num" style="color:#f0a870;font-weight:700;">12</td><td class="num" style="color:#f0a870;font-weight:700;">12</td><td class="num" style="color:#f0a870;font-weight:700;">10.9%</td></tr>
-          <tr><td><span class="tag tag-jp">JP</span></td><td class="num">17</td><td class="num">9</td><td class="num" style="color:#e8c07a;">+8</td><td class="num">0</td><td class="num">2</td><td class="num">2</td><td class="num">11.8%</td></tr>
           <tr><td>APAC</td><td class="num">14</td><td class="num">15</td><td class="num" style="color:#5fd38d;">−1</td><td class="num">0</td><td class="num">2</td><td class="num">2</td><td class="num">14.3%</td></tr>
           <tr class="grand-total"><td>Total</td><td class="num">455</td><td class="num">342</td><td class="num" style="color:#e8c07a;">+113</td><td class="num">10</td><td class="num">24</td><td class="num">34</td><td class="num">7.5%</td></tr>
         </tbody>
@@ -445,6 +414,33 @@
     </table>
   </div>
 
+  <!-- Top UC Cases -->
+  <div class="card mb20" style="border-top:3px solid var(--gold);">
+    <div class="section-title">⚠ Top UC Accounts — Multi-Case (Outage + Upgrade · 264 Release)</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Accounts with 2 or more UC-linked cases (IR = UC IDs or 264 RC Upgrade)</div>
+    <table class="data-table">
+      <thead><tr>
+        <th>Account</th>
+        <th class="num" title="IR = UC IDs 95079032 / 95390343">Outage</th>
+        <th class="num" title="IR = 264 RC Upgrade">Upgrade</th>
+        <th class="num">Total UC</th>
+        <th>Primary Topic</th>
+        <th>Region(s)</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><strong>Bell Canada</strong></td><td class="num" style="color:#e8c07a;">1</td><td class="num" style="color:#4DA8F0;">2</td><td class="num" style="color:#fff;font-weight:700;">3</td><td>Product Configurator</td><td><span class="tag tag-emea">EMEA</span> <span class="tag tag-amer" style="background:rgba(77,168,240,0.10);color:#6abfe8;border-color:rgba(77,168,240,0.25);">APAC</span></td></tr>
+        <tr><td>Pets Insurance Services Ltd</td><td class="num" style="color:#e8c07a;">2</td><td class="num">0</td><td class="num" style="font-weight:700;">2</td><td>Product Configurator</td><td><span class="tag tag-emea">EMEA</span></td></tr>
+        <tr><td>Altice USA (formerly Cablevision)</td><td class="num" style="color:#e8c07a;">1</td><td class="num" style="color:#4DA8F0;">1</td><td class="num" style="font-weight:700;">2</td><td>Transaction Management</td><td><span class="tag tag-emea">EMEA</span> <span class="tag tag-amer" style="background:rgba(77,168,240,0.10);color:#6abfe8;border-color:rgba(77,168,240,0.25);">APAC</span></td></tr>
+        <tr><td>AI inside Inc.</td><td class="num">0</td><td class="num" style="color:#4DA8F0;">2</td><td class="num" style="font-weight:700;">2</td><td>Usage &amp; Ratings / DRO</td><td><span class="tag tag-jp">JP</span></td></tr>
+        <tr><td>Genesys Cloud Services</td><td class="num">0</td><td class="num" style="color:#4DA8F0;">2</td><td class="num" style="font-weight:700;">2</td><td>Product Catalog Management</td><td><span class="tag tag-india">India</span> <span class="tag tag-amer">AMER</span></td></tr>
+        <tr><td>Milestone Systems A/S</td><td class="num" style="color:#e8c07a;">1</td><td class="num" style="color:#4DA8F0;">1</td><td class="num" style="font-weight:700;">2</td><td>Product Configurator</td><td><span class="tag tag-emea">EMEA</span></td></tr>
+        <tr><td>PostNL Holding BV</td><td class="num">0</td><td class="num" style="color:#4DA8F0;">2</td><td class="num" style="font-weight:700;">2</td><td>Product Configurator</td><td><span class="tag tag-emea">EMEA</span></td></tr>
+        <tr><td>InformaOne</td><td class="num">0</td><td class="num" style="color:#4DA8F0;">2</td><td class="num" style="font-weight:700;">2</td><td>Product Configurator / Billing</td><td><span class="tag tag-india">India</span></td></tr>
+        <tr><td>LiveRamp, Inc</td><td class="num" style="color:#e8c07a;">1</td><td class="num" style="color:#4DA8F0;">1</td><td class="num" style="font-weight:700;">2</td><td>Product Configurator</td><td><span class="tag tag-amer">AMER</span> <span class="tag tag-emea">EMEA</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
   <!-- Top Accounts + Severity -->
   <div class="grid-2 mb20">
     <div class="card">
@@ -457,20 +453,18 @@
           <th>UC</th>
           <th>SA</th>
           <th>RCAT</th>
-          <th>Sentiment</th>
-          <th>Notes</th>
         </tr></thead>
         <tbody>
-          <tr><td><strong>LiveRamp, Inc</strong></td><td class="num">20</td><td>Product Configurator</td><td><span class="tag tag-outage">Outage</span> <span class="tag tag-upgrade">Upgrade</span></td><td>—</td><td><span class="tag tag-rcat-done">Complete</span></td><td>—</td><td>—</td></tr>
-          <tr><td><strong>Bell Canada</strong></td><td class="num">16</td><td>Product Configurator</td><td><span class="tag tag-outage">Outage</span> <span class="tag tag-upgrade">Upgrade ×2</span></td><td>—</td><td><span class="tag tag-rcat-done">Complete</span></td><td>—</td><td>—</td></tr>
-          <tr><td>AI inside Inc.</td><td class="num">15</td><td>Usage &amp; Ratings</td><td><span class="tag tag-upgrade">Upgrade ×2</span></td><td><span style="color:#5fd38d;font-weight:700;font-size:11px;">Engaged</span></td><td><span class="tag tag-rcat-active">Active</span></td><td>—</td><td>—</td></tr>
-          <tr><td>Equinix, Inc.</td><td class="num">15</td><td>Product Configurator</td><td>—</td><td><span style="color:#5fd38d;font-weight:700;font-size:11px;">Engaged</span></td><td><span class="tag tag-rcat-active">Active</span></td><td>🔴 Red</td><td style="font-size:11px;">RC ACV $710K · Go-Live 10/9/26 · Self-impl</td></tr>
-          <tr><td>Cummins SFA</td><td class="num">11</td><td>Price Management</td><td><span class="tag tag-upgrade">Upgrade</span></td><td>—</td><td>—</td><td>—</td><td style="font-size:11px;">Dreamforce: RCA expansion to Power division, configurator deep dive interest</td></tr>
-          <tr><td>PostNL Holding BV</td><td class="num">11</td><td>Contract Lifecycle Mgmt</td><td><span class="tag tag-upgrade">Upgrade ×2</span></td><td><span style="color:var(--card-dim);font-weight:700;font-size:11px;">Not Assigned</span></td><td>—</td><td>—</td><td style="font-size:11px;">Sponsor Passive · 9/18: 8 W'27 cases flagged as blockers</td></tr>
-          <tr><td>Altice USA (Cablevision)</td><td class="num">10</td><td>Transaction Management</td><td><span class="tag tag-outage">Outage</span> <span class="tag tag-upgrade">Upgrade</span></td><td><span style="color:#5fd38d;font-weight:700;font-size:11px;">Engaged</span></td><td><span class="tag tag-rcat-active">Active</span></td><td>🔴 Red</td><td style="font-size:11px;">Post-go-live bugs · RC ACV $78K · Partner: Optimum</td></tr>
-          <tr><td>Trane Technologies</td><td class="num">10</td><td>Product Configurator</td><td><span class="tag tag-upgrade">Upgrade</span></td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-          <tr><td>Laboratory Corp of America</td><td class="num">10</td><td>Contract Lifecycle Mgmt</td><td><span class="tag tag-outage">Outage</span></td><td><span style="color:#5fd38d;font-weight:700;font-size:11px;">Engaged</span></td><td><span class="tag tag-rcat-active">Active</span></td><td>🟡 Yellow</td><td style="font-size:11px;">Hypercare · Escalations on product defects · Path to green: resolve open cases</td></tr>
-          <tr><td>CrowdStrike, Inc.</td><td class="num">9</td><td>Product Configurator</td><td>—</td><td>—</td><td><span class="tag tag-rcat-done">Complete</span></td><td>—</td><td>—</td></tr>
+          <tr><td><strong>LiveRamp, Inc</strong></td><td class="num">20</td><td>Product Configurator</td><td><span class="tag tag-outage">Outage</span> <span class="tag tag-upgrade">Upgrade</span></td><td>—</td><td><span class="tag tag-rcat-done">Complete</span></td></tr>
+          <tr><td><strong>Bell Canada</strong></td><td class="num">16</td><td>Product Configurator</td><td><span class="tag tag-outage">Outage</span> <span class="tag tag-upgrade">Upgrade ×2</span></td><td>—</td><td><span class="tag tag-rcat-done">Complete</span></td></tr>
+          <tr><td>AI inside Inc.</td><td class="num">15</td><td>Usage &amp; Ratings</td><td><span class="tag tag-upgrade">Upgrade ×2</span></td><td><span style="color:#5fd38d;font-weight:700;font-size:11px;">Engaged</span></td><td><span class="tag tag-rcat-active">Active</span></td></tr>
+          <tr><td>Equinix, Inc.</td><td class="num">15</td><td>Product Configurator</td><td>—</td><td><span style="color:#5fd38d;font-weight:700;font-size:11px;">Engaged</span></td><td><span class="tag tag-rcat-active">Active</span></td></tr>
+          <tr><td>Cummins SFA</td><td class="num">11</td><td>Price Management</td><td><span class="tag tag-upgrade">Upgrade</span></td><td>—</td><td>—</td></tr>
+          <tr><td>PostNL Holding BV</td><td class="num">11</td><td>Contract Lifecycle Mgmt</td><td><span class="tag tag-upgrade">Upgrade ×2</span></td><td><span style="color:var(--card-dim);font-weight:700;font-size:11px;">Not Assigned</span></td><td>—</td></tr>
+          <tr><td>Altice USA (Cablevision)</td><td class="num">10</td><td>Transaction Management</td><td><span class="tag tag-outage">Outage</span> <span class="tag tag-upgrade">Upgrade</span></td><td><span style="color:#5fd38d;font-weight:700;font-size:11px;">Engaged</span></td><td><span class="tag tag-rcat-active">Active</span></td></tr>
+          <tr><td>Trane Technologies</td><td class="num">10</td><td>Product Configurator</td><td><span class="tag tag-upgrade">Upgrade</span></td><td>—</td><td>—</td></tr>
+          <tr><td>Laboratory Corp of America</td><td class="num">10</td><td>Contract Lifecycle Mgmt</td><td><span class="tag tag-outage">Outage</span></td><td><span style="color:#5fd38d;font-weight:700;font-size:11px;">Engaged</span></td><td><span class="tag tag-rcat-active">Active</span></td></tr>
+          <tr><td>CrowdStrike, Inc.</td><td class="num">9</td><td>Product Configurator</td><td>—</td><td>—</td><td><span class="tag tag-rcat-done">Complete</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -640,7 +634,10 @@ Chart.defaults.font.family = "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-s
 Chart.defaults.font.size = 12;
 Chart.defaults.color = '#8FA5BC';
 
-// Weekly trend
+// Register datalabels plugin
+Chart.register(ChartDataLabels);
+
+// Weekly trend — with value labels above each bar
 new Chart(document.getElementById('weeklyChart').getContext('2d'), {
   type: 'bar',
   data: {
@@ -664,55 +661,70 @@ new Chart(document.getElementById('weeklyChart').getContext('2d'), {
     responsive: true, maintainAspectRatio: false,
     plugins: {
       legend: { position: 'top' },
-      tooltip: { mode: 'index' }
+      tooltip: { mode: 'index' },
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+        offset: 2,
+        font: { size: 11, weight: '700' },
+        color: ctx => ctx.datasetIndex === 0 ? '#4DA8F0' : '#a371f7',
+        formatter: v => v
+      }
     },
     scales: {
-      y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.08)' } },
+      y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.08)' }, max: 210 },
       x: { grid: { display: false } }
     }
   }
 });
 
 // Daily volume
-// 21 days: Aug 30–Sep 19
+// 21 days: Aug 30–Sep 19 — stacked: Normal / Upgrade UC / Outage UC
 const dailyLabels = ['Aug 30','Aug 31','Sep 1','Sep 2','Sep 3','Sep 4','Sep 5','Sep 6','Sep 7','Sep 8','Sep 9','Sep 10','Sep 11','Sep 12','Sep 13','Sep 14','Sep 15','Sep 16','Sep 17','Sep 18','Sep 19'];
-const dailyData = [5,31,30,52,42,15,4,1,31,25,27,26,20,8,3,15,33,29,28,24,6];
-// Sep 7 = index 8 is outage day; Aug 30-31 and Sep 1-2 have upgrade UC cases
-const dailyColors = dailyData.map((v, i) => {
-  if (i === 8) return 'rgba(224,82,82,.9)';   // Sep 7 outage
-  if ([0,1,2,3,6,8,9,10,12,14,16,18].includes(i)) return 'rgba(200,148,58,.7)'; // upgrade UC days
-  return 'rgba(77,168,240,.55)';
-});
+const normalData  = [4,27,28,45,39,15,4,1,21,24,26,25,20,7,3,15,32,28,27,24,6];
+const upgradeData = [1,4,2,7,3,0,0,0,1,1,1,1,0,1,0,0,1,0,1,0,0];
+const outageData  = [0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,1,0,0,0];
 
 new Chart(document.getElementById('dailyChart').getContext('2d'), {
   type: 'bar',
   data: {
     labels: dailyLabels,
-    datasets: [{
-      label: 'Cases',
-      data: dailyData,
-      backgroundColor: dailyColors,
-      borderRadius: 3
-    }]
+    datasets: [
+      {
+        label: 'Outage UC',
+        data: outageData,
+        backgroundColor: 'rgba(224,82,82,.85)',
+        stack: 'stack'
+      },
+      {
+        label: 'Upgrade UC',
+        data: upgradeData,
+        backgroundColor: 'rgba(200,148,58,.80)',
+        stack: 'stack'
+      },
+      {
+        label: 'Normal',
+        data: normalData,
+        backgroundColor: 'rgba(77,168,240,.55)',
+        stack: 'stack'
+      }
+    ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          afterLabel: ctx => {
-            const i = ctx.dataIndex;
-            if (i === 8) return '⚠ Outage UC day (9 cases, EMEA)';
-            if ([0,1,2,3].includes(i)) return '↑ Upgrade UC cluster (Aug 30–Sep 2)';
-            return '';
-          }
+      legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } },
+      tooltip: { mode: 'index', callbacks: {
+        footer: items => {
+          const total = items.reduce((s,i) => s + i.parsed.y, 0);
+          return 'Total: ' + total;
         }
-      }
+      }},
+      datalabels: { display: false }
     },
     scales: {
-      y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.08)' } },
-      x: { grid: { display: false }, ticks: { maxRotation: 45, font: { size: 10 } } }
+      y: { beginAtZero: true, stacked: true, grid: { color: 'rgba(255,255,255,0.08)' } },
+      x: { stacked: true, grid: { display: false }, ticks: { maxRotation: 45, font: { size: 10 } } }
     }
   }
 });
