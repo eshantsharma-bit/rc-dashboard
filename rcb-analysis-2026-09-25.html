@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCB Support Analysis · Feb–Sep 24 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #f6f8fa; --surface: #ffffff; --border: #d0d7de;
+  --text: #1f2328; --muted: #656d76; --accent: #0969da;
+  --green: #1a7f37; --red: #cf222e; --yellow: #9a6700; --orange: #bc4c00;
+  --purple: #8250df;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;background:var(--bg);color:var(--text);line-height:1.5;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* ── TABS ── */
+.tab-nav{display:flex;gap:0;border-bottom:2px solid var(--border);background:var(--surface);padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.tab-btn{padding:12px 18px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s;}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-btn:hover{color:var(--text);}
+.tab-pane{display:none;padding:24px;max-width:1400px;margin:0 auto;}
+.tab-pane.active{display:block;}
+
+/* ── HEADER ── */
+.page-header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
+.page-header h1{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.page-header .meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.badge-row{display:flex;gap:6px;flex-wrap:wrap;}
+
+/* ── BADGES / PILLS ── */
+.badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;}
+.badge-red{background:#ffebe9;color:#cf222e;border:1px solid #ffcecb;}
+.badge-orange{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896;}
+.badge-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845;}
+.badge-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb;}
+.badge-blue{background:#ddf4ff;color:#0969da;border:1px solid #80ccff;}
+.badge-purple{background:#fbefff;color:#8250df;border:1px solid #d8b4fe;}
+.pill{display:inline-block;padding:1px 7px;border-radius:12px;font-size:11px;font-weight:600;}
+.pill-red{background:#ffebe9;color:#cf222e;}
+.pill-orange{background:#fff1e5;color:#bc4c00;}
+.pill-yellow{background:#fff8c5;color:#9a6700;}
+.pill-green{background:#dafbe1;color:#1a7f37;}
+.pill-blue{background:#ddf4ff;color:#0969da;}
+.pill-purple{background:#fbefff;color:#8250df;}
+.pill-grey{background:#f6f8fa;color:#656d76;border:1px solid #d0d7de;}
+
+/* ── KPI CARDS ── */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px;}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.kpi.alert{border-color:#ffcecb;background:#ffebe9;}
+.kpi.warn{border-color:#f5d845;background:#fff8c5;}
+.kpi.good{border-color:#aceebb;background:#dafbe1;}
+.kpi .label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;}
+.kpi .value{font-size:26px;font-weight:700;line-height:1.2;margin-top:4px;}
+.kpi .sub{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* ── CARDS / GRID ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px;}
+.card h3{font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.card.red-border{border-color:#ffcecb;border-left:4px solid #cf222e;}
+.card.orange-border{border-color:#ffc896;border-left:4px solid #bc4c00;}
+.card.yellow-border{border-color:#f5d845;border-left:4px solid #9a6700;}
+.card.green-border{border-color:#aceebb;border-left:4px solid #1a7f37;}
+.card.purple-border{border-color:#d8b4fe;border-left:4px solid #8250df;}
+.card.blue-border{border-color:#80ccff;border-left:4px solid #0969da;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+@media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;} .kpi-row{grid-template-columns:repeat(3,1fr);}}
+
+/* ── TABLES ── */
+.data-table{width:100%;border-collapse:collapse;font-size:12px;}
+.data-table th{background:#f6f8fa;color:#656d76;font-weight:600;padding:7px 10px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap;}
+.data-table td{padding:7px 10px;border-bottom:1px solid #eaeef2;vertical-align:top;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr:hover td{background:#f6f8fa;}
+.data-table td.num{text-align:right;font-variant-numeric:tabular-nums;}
+.data-table .row-crit td{background:#ffebe9;}
+.data-table .row-high td{background:#fff8c5;}
+.data-table .row-live td{background:#dafbe1;}
+
+/* ── INSIGHT PANELS ── */
+.insight{padding:10px 14px;border-radius:6px;border-left:4px solid;margin-bottom:10px;font-size:12px;line-height:1.6;}
+.insight.red{background:#ffebe9;border-color:#cf222e;color:#cf222e;}
+.insight.orange{background:#fff1e5;border-color:#bc4c00;color:#bc4c00;}
+.insight.yellow{background:#fff8c5;border-color:#9a6700;color:#9a6700;}
+.insight.green{background:#dafbe1;border-color:#1a7f37;color:#1a7f37;}
+.insight.blue{background:#ddf4ff;border-color:#0969da;color:#0969da;}
+.insight.purple{background:#fbefff;border-color:#8250df;color:#8250df;}
+.insight strong{color:var(--text);}
+
+/* ── DETAIL PANEL (drill-down) ── */
+.detail-panel{display:none;background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;padding:14px;margin-top:8px;font-size:12px;}
+.detail-panel.open{display:block;}
+.detail-toggle{cursor:pointer;color:var(--accent);font-weight:600;font-size:12px;}
+.detail-toggle:hover{text-decoration:underline;}
+
+/* ── SECTION TITLES ── */
+.section-title{font-size:15px;font-weight:700;margin:20px 0 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);padding-bottom:8px;}
+
+/* ── RISK BADGE ── */
+.risk-crit{color:#cf222e;font-weight:700;}
+.risk-high{color:#bc4c00;font-weight:700;}
+.risk-med{color:#9a6700;font-weight:700;}
+.risk-low{color:#1a7f37;font-weight:700;}
+
+/* ── VOC QUOTE ── */
+.voc-quote{background:#fff8c5;border-left:4px solid #9a6700;padding:10px 14px;border-radius:0 6px 6px 0;font-size:12px;margin-bottom:10px;font-style:italic;}
+.voc-quote .attr{font-size:11px;color:var(--muted);font-style:normal;margin-top:4px;}
+
+/* ── STATUS DOTS ── */
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;}
+.dot-red{background:#cf222e;}
+.dot-green{background:#1a7f37;}
+.dot-yellow{background:#9a6700;}
+.dot-grey{background:#656d76;}
+
+footer{background:var(--surface);border-top:1px solid var(--border);padding:12px 24px;font-size:11px;color:var(--muted);text-align:center;}
+canvas{max-height:220px;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE HEADER
+═══════════════════════════════════════════════ -->
+<div class="page-header">
+  <div>
+    <h1>🔴 Revenue Cloud Billing — Support Analysis</h1>
+    <div class="meta">Feb 1 – Sep 24, 2026 · 682+ cases · OrgCS + Slack + Adoption CSV · Prepared Sep 25, 2026</div>
+  </div>
+  <div class="badge-row">
+    <span class="badge badge-red">🚨 26 Critical Cases Open — Sep 1 Patch</span>
+    <span class="badge badge-orange">⚠️ EUR 1M+ Pipeline Frozen — TeamViewer</span>
+    <span class="badge badge-yellow">5 264 Regressions Active</span>
+    <span class="badge badge-purple">52.5% Confirmed Bug Rate</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB NAV
+═══════════════════════════════════════════════ -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('exec')">📊 Executive Summary</button>
+  <button class="tab-btn" onclick="switchTab('accounts')">🏢 Top 20 Accounts</button>
+  <button class="tab-btn" onclick="switchTab('issues')">🐛 Issue Categories & Bugs</button>
+  <button class="tab-btn" onclick="switchTab('deepdive')">🔍 Account Deep Dives</button>
+  <button class="tab-btn" onclick="switchTab('slack')">💬 Slack Escalations</button>
+  <button class="tab-btn" onclick="switchTab('sa')">👤 SA Engagement Gaps</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB 1 — EXECUTIVE SUMMARY
+═══════════════════════════════════════════════ -->
+<div id="tab-exec" class="tab-pane active">
+
+  <!-- KPI ROW -->
+  <div style="margin-top:8px;"></div>
+  <div class="kpi-row">
+    <div class="kpi alert">
+      <div class="label">Total Cases (est.)</div>
+      <div class="value">682+</div>
+      <div class="sub">80 case-level verified · Feb–Sep 24</div>
+    </div>
+    <div class="kpi alert">
+      <div class="label">Critical Open (Sep)</div>
+      <div class="value" style="color:#cf222e;">20</div>
+      <div class="sub">All from Sep 1 patch · 0 resolved</div>
+    </div>
+    <div class="kpi alert">
+      <div class="label">Escalated Open</div>
+      <div class="value" style="color:#cf222e;">26</div>
+      <div class="sub">Sep cluster · 100% open rate</div>
+    </div>
+    <div class="kpi warn">
+      <div class="label">Confirmed Bugs</div>
+      <div class="value" style="color:#bc4c00;">42</div>
+      <div class="sub">52.5% of verified cases</div>
+    </div>
+    <div class="kpi warn">
+      <div class="label">264 Regressions</div>
+      <div class="value" style="color:#9a6700;">5</div>
+      <div class="sub">Active defects · 264.5 patch pending</div>
+    </div>
+    <div class="kpi alert">
+      <div class="label">Revenue at Risk</div>
+      <div class="value" style="color:#cf222e;">$12M+</div>
+      <div class="sub">Peraton blocked · $280K rec gap</div>
+    </div>
+  </div>
+
+  <!-- TOP 3 FINDINGS -->
+  <div class="section-title">🚨 Top 3 Findings Requiring Immediate Attention</div>
+  <div class="insight red">
+    <strong>1. September 1 Patch Catastrophe — 26 Escalated Cases, 20 Critical, ALL Open</strong><br>
+    The Sep 1 patch triggered a cascade of simultaneous critical failures across a US government/defense contractor cohort.
+    Invoice consolidation broken (200x volume explosion), duplicate invoices for 30% of subscriptions, scope filter bypassed,
+    payment API HTTP 500, tax engine $0 on all line items, metadata corruption from 264.2 hotfix, NA44 pod failure,
+    data fix script zeroed <code>InvoiceBalance__c</code> on 180,000 records, 14 invoices wrongly voided ($280K reconciliation gap),
+    847 invoices still carrying $0 tax. September month-end close at risk across multiple accounts.
+    Zero of these 26 escalated cases are closed as of Sep 24.
+  </div>
+  <div class="insight orange">
+    <strong>2. 264 Release Regression Wave — 5 Confirmed Defects</strong><br>
+    (a) <strong>W-24061982</strong> — InvoiceGeneratorStep null crash on NZ state/country picklist (Halter, Case 474499222) · ERR under review, 264.5 patch targeted<br>
+    (b) <strong>W-24086592</strong> — Billing Schedule NBD off-by-one for UTC+12/+13 (Halter/RevCycle, 479 affected production records)<br>
+    (c) INVALID_FIELD SOQL cross-entity bug introduced at 264 SB1 rollout (Cloudity, Case 474516014)<br>
+    (d) <strong>W-CaZfAA0</strong> — InvoiceRunBatch API signature change breaking extension classes (AIG, Case 55314107)<br>
+    (e) <strong>a3s5e000000CaZpAA0</strong> — BSI status not updating in batch path → 1,680 accounts unbilled at month-end (Expleo, 55316083)
+  </div>
+  <div class="insight yellow">
+    <strong>3. TeamViewer — CIO/CRO Escalation, EUR 1M+ Pipeline Frozen, ITSM Deal Lost to ServiceNow</strong><br>
+    CIO and CRO have directly called Salesforce VP. Confirmed lost deal: ITSM investment gone to ServiceNow.
+    EUR 160K Sig Success + EUR 135K PSP + EUR 232K B2B Commerce + USD 260K Qualified + EUR 490K Data Cloud/MC + ~EUR 300K Agentic Transformation all on hold.
+    No active Signature plan. SA sponsor request open in #rcat-request-a-sponsor since Sep 23–24.
+  </div>
+
+  <!-- OVERALL HEALTH -->
+  <div class="section-title">📋 Overall Health Assessment</div>
+  <div class="insight red">
+    <strong>CRITICAL.</strong> Revenue Cloud Billing is under the highest escalation stress of the Feb–Sep 2026 window. Three persistent structural fragilities:
+    (1) Custom synchronous automations on billing objects reliably interrupt the billing batch engine — top root cause class in the period;
+    (2) Avalara tax integration is a recurring failure point (SSL expiry, zero-mapping, timeout, jurisdiction errors);
+    (3) Usage Management silent failures provide no diagnostic signal when underlying data is corrupted.
+    Confirmed bug rate of <strong>52.5%</strong> is abnormally high for a GA product.
+  </div>
+
+  <!-- RECOMMENDED ACTIONS -->
+  <div class="section-title">✅ Recommended Actions (Prioritized)</div>
+  <div class="card">
+    <table class="data-table">
+      <thead><tr><th>Priority</th><th>Action</th><th>Owner</th><th>Deadline</th></tr></thead>
+      <tbody>
+        <tr class="row-crit"><td><span class="pill pill-red">P0</span></td><td>Convene Sep 1 patch war room: single DRI across all 26 Critical open cases; unified recovery tracker for all affected accounts</td><td>Billing Engineering + GHO</td><td><strong>Immediately</strong></td></tr>
+        <tr class="row-crit"><td><span class="pill pill-red">P0</span></td><td>Confirm 264.5 patch Production rollout completion (Sep 21–26 window) — verify Halter/RevCycle NZ state crash + NBD off-by-one resolved in production</td><td>Pramod Kumar / Billing Release</td><td><strong>Sep 26</strong></td></tr>
+        <tr class="row-high"><td><span class="pill pill-orange">P1</span></td><td>Assign SA sponsor to TeamViewer; respond to #rcat-request-a-sponsor; establish structured recovery plan before CIO escalation reaches C-suite</td><td>SA leadership</td><td>Sep 26</td></tr>
+        <tr class="row-high"><td><span class="pill pill-orange">P1</span></td><td>Resolve the 847 invoices with $0 tax and $280K revenue reconciliation gap (14 wrongly voided invoices); communicate timeline to affected accounts</td><td>GHO + Billing Engineering</td><td>Sep 30</td></tr>
+        <tr class="row-high"><td><span class="pill pill-orange">P1</span></td><td>File/escalate W-20106626 (DDS+TM integration gap, status: New, no committed date) — Veeam $5–10M AOV Signature account evaluating customization</td><td>Padmaja Velamuri (PM)</td><td>Oct 1</td></tr>
+        <tr><td><span class="pill pill-yellow">P2</span></td><td>Publish cross-customer advisory for custom synchronous Flows/Triggers on Invoice and BillingSchedule objects — top root cause class in the period</td><td>Prateek Sethi (PM) + Support TLs</td><td>Oct 7</td></tr>
+        <tr><td><span class="pill pill-yellow">P2</span></td><td>Establish SA coverage for Milestone Systems, Bluebeam, MYOB — all three are production-live Premier+/Signature with no SA assigned</td><td>SA leadership</td><td>Oct 15</td></tr>
+        <tr><td><span class="pill pill-yellow">P2</span></td><td>Track partial rollover capping request (backlogged since release 258, raised again by ZoomInfo Sep 15–21) — provide committed timeline or WAD declaration</td><td>Kumar Abhijit (PM)</td><td>Oct 15</td></tr>
+        <tr><td><span class="pill pill-green">P3</span></td><td>Resolve JTL Software P0 invoice run stoppage (Red Account, EUR 300K ACV + EUR 285K pipeline at risk)</td><td>Prateek Sethi + Billing Eng</td><td>Oct 1</td></tr>
+        <tr><td><span class="pill pill-green">P3</span></td><td>Complete BC-data fix deployment (silent overage billing skip, deployment planned end of Sep 2026) and confirm success</td><td>GHO + Rohan Sarap (Eng)</td><td>Sep 30</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- VOLUME + SEVERITY CHARTS -->
+  <div class="section-title">📈 Case Volume & Severity</div>
+  <div class="grid-3">
+    <div class="card">
+      <h3>📅 Verified Cases by Period</h3>
+      <canvas id="chartVolume"></canvas>
+    </div>
+    <div class="card">
+      <h3>🎯 Severity Distribution (80 verified)</h3>
+      <canvas id="chartSeverity"></canvas>
+    </div>
+    <div class="card">
+      <h3>📂 Issue Categories (80 verified)</h3>
+      <canvas id="chartCategories"></canvas>
+    </div>
+  </div>
+
+  <!-- OPEN / CLOSED SNAPSHOT -->
+  <div class="grid-2">
+    <div class="card">
+      <h3>🔓 Open vs. Closed (80 verified cases)</h3>
+      <table class="data-table">
+        <thead><tr><th>Period</th><th>Total</th><th class="num">Open</th><th class="num">Closed</th><th class="num">Open %</th></tr></thead>
+        <tbody>
+          <tr><td>Jul 14–31 2026</td><td>51</td><td class="num">4</td><td class="num">47</td><td class="num" style="color:#1a7f37;">7.8%</td></tr>
+          <tr class="row-crit"><td>Sep 1–24 2026</td><td>28</td><td class="num" style="color:#cf222e;font-weight:700;">28</td><td class="num">0</td><td class="num" style="color:#cf222e;font-weight:700;">100%</td></tr>
+          <tr><td><strong>Total 80</strong></td><td><strong>80</strong></td><td class="num"><strong>32</strong></td><td class="num"><strong>47</strong></td><td class="num">40.0%</td></tr>
+        </tbody>
+      </table>
+      <div class="insight red" style="margin-top:10px;">100% open rate for all September cases — no resolution in the first 24 days of the month.</div>
+    </div>
+    <div class="card">
+      <h3>📦 Full Dataset Estimates</h3>
+      <table class="data-table">
+        <thead><tr><th>Month</th><th>Verified</th><th>Estimate</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Feb 2026</td><td>1</td><td>Low</td><td>Single case in explicit dataset</td></tr>
+          <tr><td>Mar–May 2026</td><td>0</td><td>—</td><td>Unquantified (Feb–May batch total not provided)</td></tr>
+          <tr><td>Jun 2026</td><td>0</td><td>~130–150</td><td>Part of 332-case Jun–Jul batch</td></tr>
+          <tr><td>Jul 2026</td><td>51</td><td>~180–200</td><td>Jul 14–31 fully enumerated</td></tr>
+          <tr><td>Aug 2026</td><td>0</td><td>~175–200</td><td>Part of 350-case Aug–Sep batch</td></tr>
+          <tr class="row-crit"><td>Sep 1–24 2026</td><td>28</td><td>~150–180</td><td>All open; highest severity concentration</td></tr>
+          <tr><td><strong>Total</strong></td><td><strong>80</strong></td><td><strong>~682+</strong></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /tab-exec -->
+
+<!-- ═══════════════════════════════════════════════
+     TAB 2 — TOP 20 ACCOUNTS
+═══════════════════════════════════════════════ -->
+<div id="tab-accounts" class="tab-pane">
+  <div style="margin-top:8px;"></div>
+  <div class="insight blue" style="margin-bottom:16px;">
+    <strong>Production Status legend:</strong>
+    <span class="pill pill-green">LIVE</span> = Billing Entity Records &gt; 0 in adoption CSV &nbsp;·&nbsp;
+    <span class="pill pill-yellow">SANDBOX</span> = Provisioned, Billing ER = 0 &nbsp;·&nbsp;
+    <span class="pill pill-grey">UNKNOWN</span> = Not found in adoption CSV / org ID mismatch.
+    All top-20 accounts return UNKNOWN — US Gov/Defense org IDs not present in commercial adoption CSV.
+  </div>
+
+  <div class="card">
+    <h3>🏢 Top 20 Accounts by Case Volume — Click row for details</h3>
+    <table class="data-table" id="accountTable">
+      <thead>
+        <tr>
+          <th>#</th><th>Account</th><th>Cases</th><th>Sev Mix</th><th>Open</th>
+          <th>Prod Status</th><th>Billing ER</th><th>BUG Links</th><th>Slack</th><th>SA</th><th>Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr onclick="toggleDetail('d1')" style="cursor:pointer;">
+          <td>1</td><td><span class="detail-toggle">Atea</span></td><td>8</td>
+          <td><span class="pill pill-yellow">0C</span> <span class="pill pill-orange">7H</span> <span class="pill pill-grey">1M</span></td>
+          <td>1</td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>2 (a3s)</td><td><span class="pill pill-green">Yes</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-high">HIGH</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d1" class="detail-panel">
+          <strong>Jul cluster · 8 cases.</strong> Primary issue: Invoice created but not linked to BSI causing duplicate billing (a3s5e000000CaZQAA0 — closed). Escalated case in Jul. 1 case still open. No SA coverage found. Org ID: 0015e00000K2aGnAAJ.
+        </div></td></tr>
+
+        <tr onclick="toggleDetail('d2')" style="cursor:pointer;">
+          <td>2</td><td><span class="detail-toggle">Siemens Industry Software</span></td><td>8</td>
+          <td><span class="pill pill-yellow">0C</span> <span class="pill pill-orange">7H</span> <span class="pill pill-grey">1M</span></td>
+          <td>1</td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>1 (a3s)</td><td><span class="pill pill-grey">None</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-high">HIGH</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d2" class="detail-panel">
+          <strong>Jul cluster · 8 cases.</strong> 1 GUS bug (a3s-series). 1 open case. No Slack escalation confirmed. No SA coverage. Org ID: 0015e00000BLCYSAA5.
+        </div></td></tr>
+
+        <tr class="row-crit" onclick="toggleDetail('d3')" style="cursor:pointer;">
+          <td>3</td><td><span class="detail-toggle">⚠️ AIG</span></td><td>8</td>
+          <td><span class="pill pill-yellow">0C</span> <span class="pill pill-orange">7H</span> <span class="pill pill-grey">1M</span></td>
+          <td><strong>3</strong></td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>4 (a3s)</td><td><span class="pill pill-red">ESCALATED</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-crit">CRITICAL</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d3" class="detail-panel">
+          <strong>3 open escalated cases including month-end close blocker.</strong><br>
+          Case 55301294 — 4x performance regression (a3s5e000000CaZLAA0 — <em>still open</em>)<br>
+          Case 55314107 — InvoiceRunBatch API signature change broke AIG's extension class (a3s5e000000CaZfAA0 — <em>still open</em>)<br>
+          Case 55318091 — July month-end close readiness rollup: multiple unresolved blockers<br>
+          <strong>Action:</strong> Confirm resolution status of these 3 cases. If still open, assign senior SA immediately. Verify API change fix included in 264.4/264.5.
+        </div></td></tr>
+
+        <tr onclick="toggleDetail('d4')" style="cursor:pointer;">
+          <td>4</td><td><span class="detail-toggle">GE Vernova</span></td><td>7</td>
+          <td><span class="pill pill-yellow">0C</span> <span class="pill pill-orange">3H</span> <span class="pill pill-grey">4M</span></td>
+          <td>1</td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>1 (a3s)</td><td><span class="pill pill-orange">Yes</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-high">HIGH</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d4" class="detail-panel">
+          <strong>Key issue:</strong> 3,500 migrated billing accounts not generating invoices (a3s5e000000CajZAAS — closed). Migration path defect (a3s5e000000CajUAAQ — closed). 1 open case. Case 55293027 confirmed. Org ID: 0015e00000LF9VgAAL.
+        </div></td></tr>
+
+        <tr onclick="toggleDetail('d5')" style="cursor:pointer;">
+          <td>5</td><td><span class="detail-toggle">Vertiv</span></td><td>5</td>
+          <td><span class="pill pill-yellow">0C</span> <span class="pill pill-orange">2H</span> <span class="pill pill-grey">3M</span></td>
+          <td>0</td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>1 (a3s)</td><td><span class="pill pill-orange">Sev1</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-high">HIGH</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d5" class="detail-panel">
+          Case 55298822 — NullPointerException in InvoiceRunBatch.execute post-Summer 26 (a3s5e000000CaZGAA0 — <em>closed</em>). All 5 cases closed. Sev1 resolved. Org ID: 0015e00000K2YYtAAP.
+        </div></td></tr>
+
+        <tr onclick="toggleDetail('d6')" style="cursor:pointer;">
+          <td>6</td><td><span class="detail-toggle">NuStar Energy</span></td><td>5</td>
+          <td><span class="pill pill-yellow">0C</span> <span class="pill pill-orange">2H</span> <span class="pill pill-grey">3M</span></td>
+          <td>0</td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>1 (a3s)</td><td><span class="pill pill-grey">None</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-med">MEDIUM</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d6" class="detail-panel">All 5 cases closed. No confirmed Slack escalation. 1 a3s GUS link. No SA. Org ID: 0015e00000K1oq2AAB.</div></td></tr>
+
+        <tr onclick="toggleDetail('d7')" style="cursor:pointer;">
+          <td>7</td><td><span class="detail-toggle">Paychex</span></td><td>4</td>
+          <td><span class="pill pill-yellow">0C</span> <span class="pill pill-orange">2H</span> <span class="pill pill-grey">2M</span></td>
+          <td>1</td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>0</td><td><span class="pill pill-grey">None</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-med">MEDIUM</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d7" class="detail-panel">1 open case. No GUS links filed. No Slack escalation confirmed. No SA. Org ID: 0015e00000Ku2VAAAZ.</div></td></tr>
+
+        <tr onclick="toggleDetail('d8')" style="cursor:pointer;">
+          <td>8</td><td><span class="detail-toggle">Agiliti</span></td><td>3</td>
+          <td><span class="pill pill-yellow">0C</span> <span class="pill pill-orange">2H</span> <span class="pill pill-grey">1M</span></td>
+          <td>0</td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>1 (a3s)</td><td><span class="pill pill-grey">None</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-med">MEDIUM</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d8" class="detail-panel">All 3 cases closed. 1 a3s GUS link. No confirmed Slack escalation. No SA. Org ID: 0015e00000Kw6ElAAJ.</div></td></tr>
+
+        <tr class="row-high" onclick="toggleDetail('d9')" style="cursor:pointer;">
+          <td>9</td><td><span class="detail-toggle">⚠️ Expleo Group</span></td><td>3</td>
+          <td><span class="pill pill-yellow">0C</span> <span class="pill pill-orange">2H</span> <span class="pill pill-grey">1M</span></td>
+          <td><strong>1</strong></td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>1 (a3s)</td><td><span class="pill pill-red">ESCALATED</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-high">HIGH</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d9" class="detail-panel">
+          Case 55316083 — 1,680 of 4,200 accounts not invoiced at July month-end (a3s5e000000CaZpAA0 — <em>OPEN</em>). Slack: 1,680 invoicing gap escalated in billing channel. No SA. Org ID: 0015e00000I0NTNAA3.
+        </div></td></tr>
+
+        <tr class="row-crit" onclick="toggleDetail('d10')" style="cursor:pointer;">
+          <td>10</td><td><span class="detail-toggle">🔴 Saic</span></td><td>2</td>
+          <td><span class="pill pill-red">1C</span> <span class="pill pill-orange">2H</span></td>
+          <td><strong>2</strong></td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>2 (W)</td><td><span class="pill pill-red">CRITICAL</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-crit">CRITICAL</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d10" class="detail-panel">
+          <strong>Sep 1 patch cluster.</strong> Case 46489486 — Billing scheduler deleted post pod migration (W-16081800 — <em>OPEN</em>). Both Critical, both escalated, both open. US Gov/Defense contractor. No SA.
+        </div></td></tr>
+
+        <tr class="row-crit" onclick="toggleDetail('d11')" style="cursor:pointer;">
+          <td>11</td><td><span class="detail-toggle">🔴 ICF International</span></td><td>2</td>
+          <td><span class="pill pill-red">2C</span> <span class="pill pill-orange">2H</span></td>
+          <td><strong>2</strong></td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>2 (W)</td><td><span class="pill pill-red">CRITICAL</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-crit">CRITICAL</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d11" class="detail-panel">
+          <strong>Sep 1 patch cluster.</strong> Case 46489542 — Payment API HTTP 500 complete outage (W-16087000). Case 46490186 — 847 invoices still with $0 tax as of Sep 23 (W-16131200). Both Critical, both open. No SA.
+        </div></td></tr>
+
+        <tr class="row-crit" onclick="toggleDetail('d12')" style="cursor:pointer;">
+          <td>12</td><td><span class="detail-toggle">Altera Digital Health</span></td><td>2</td>
+          <td><span class="pill pill-yellow">0C</span> <span class="pill pill-orange">2H</span></td>
+          <td><strong>2</strong></td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>2 (W)</td><td><span class="pill pill-orange">1 Escalated</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-high">HIGH</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d12" class="detail-panel">Sep 1 patch cluster. 2 open cases. 2 W-series bugs. No SA. Org ID: 0015g000027BAA0.</div></td></tr>
+
+        <tr class="row-crit" onclick="toggleDetail('d13')" style="cursor:pointer;">
+          <td>13</td><td><span class="detail-toggle">🔴 Peraton ($12M blocked)</span></td><td>2</td>
+          <td><span class="pill pill-red">2C</span> <span class="pill pill-orange">2H</span></td>
+          <td><strong>2</strong></td><td><span class="pill pill-grey">UNKNOWN</span></td><td>—</td>
+          <td>2 (W)</td><td><span class="pill pill-red">CRITICAL · $12M</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-crit">CRITICAL</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d13" class="detail-panel">
+          <strong>$12M billing blocked. Sep 1 patch cluster.</strong><br>
+          Case 46489598 — Duplicate invoices for 30% of subscriptions (W-16089600 — <em>OPEN</em>)<br>
+          Case 46489962 — Recovery plan: 45,000 invoices, $12M billing blocked (W-16118200 — <em>OPEN</em>)<br>
+          Data fix script erroneous zeroed InvoiceBalance__c on 180,000 records (cross-account, Case 46490018). Both Critical, both escalated. No SA.
+        </div></td></tr>
+
+        <tr class="row-crit" onclick="toggleDetail('d14')" style="cursor:pointer;">
+          <td>14–20</td><td colspan="2"><span class="detail-toggle">Sep 1 Patch Cluster (Leidos, Engility, Caliburn, KBR, ECS Federal, ManTech, others)</span></td>
+          <td colspan="3"><span class="pill pill-red">All Critical</span> <span class="pill pill-red">All Open</span> <span class="pill pill-grey">All UNKNOWN</span></td>
+          <td>—</td><td>1 W-series each</td><td><span class="pill pill-red">CRITICAL</span></td><td><span class="pill pill-red">None</span></td>
+          <td><span class="risk-crit">CRITICAL</span></td>
+        </tr>
+        <tr><td colspan="11"><div id="d14" class="detail-panel">
+          <table class="data-table">
+            <thead><tr><th>Account</th><th>Case</th><th>W-Number</th><th>Issue</th></tr></thead>
+            <tbody>
+              <tr><td>Leidos</td><td>46489458</td><td>W-16079200</td><td>Invoice consolidation broken — 200x volume explosion</td></tr>
+              <tr><td>Engility</td><td>46489514</td><td>W-16084400</td><td>Tax engine $0 on all line items</td></tr>
+              <tr><td>Caliburn International</td><td>46489626</td><td>W-16092200</td><td>Billing run scope filter bypassed</td></tr>
+              <tr><td>KBR</td><td>46489654</td><td>W-16094800</td><td>340 credit memo auto-reversals after 24 hours</td></tr>
+              <tr><td>ECS Federal</td><td>46489682</td><td>W-16097400</td><td>Billing config metadata corruption from 264.2 hotfix</td></tr>
+              <tr><td>ManTech International</td><td>46489710</td><td>W-16100000</td><td>Avalara SSL cert expired, tax calculation stopped</td></tr>
+              <tr><td>Perspecta</td><td>46489738</td><td>W-16102600</td><td>4,500 invoices for wrong billing period</td></tr>
+              <tr><td>VSE Corporation</td><td>46489822</td><td>W-16107800</td><td>All billing runs failing on NA44 pod (platform-level)</td></tr>
+              <tr><td>Tetra Tech</td><td>46489906</td><td>W-16115600</td><td>Emergency month-end close blocked, 15,000 invoices needed</td></tr>
+            </tbody>
+          </table>
+          All accounts are US Government/Defense contractors. All cases Critical, all escalated, all open as of Sep 24.
+        </div></td></tr>
+
+      </tbody>
+    </table>
+  </div>
+</div><!-- /tab-accounts -->
+
+<!-- ═══════════════════════════════════════════════
+     TAB 3 — ISSUE CATEGORIES & BUGS
+═══════════════════════════════════════════════ -->
+<div id="tab-issues" class="tab-pane">
+  <div style="margin-top:8px;"></div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>📂 Category Breakdown (80 verified cases)</h3>
+      <table class="data-table">
+        <thead><tr><th>Category</th><th class="num">Count</th><th class="num">%</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr class="row-crit"><td>Product Bug (GUS/defect confirmed)</td><td class="num">42</td><td class="num" style="color:#cf222e;font-weight:700;">52.5%</td><td>Dominant; driven by Jul 264.3 + Sep 1 patch cluster</td></tr>
+          <tr><td>Data/Calculation Error</td><td class="num">10</td><td class="num">12.5%</td><td>Wrong billing period, $0 balances, GL discrepancy</td></tr>
+          <tr><td>Unclassified (insufficient evidence)</td><td class="num">10</td><td class="num">12.5%</td><td>No GUS, no clear root cause</td></tr>
+          <tr><td>Configuration/Implementation</td><td class="num">8</td><td class="num">10.0%</td><td>Advance billing, proration, PS billing, trial</td></tr>
+          <tr><td>Performance/Scalability</td><td class="num">4</td><td class="num">5.0%</td><td>Heap, DML 151, CPU timeout, throughput</td></tr>
+          <tr><td>Customization Issue</td><td class="num">3</td><td class="num">3.75%</td><td>Custom triggers/flows interfering with billing batch</td></tr>
+          <tr><td>Integration Issue</td><td class="num">2</td><td class="num">2.5%</td><td>Avalara, payment gateway</td></tr>
+          <tr><td>UI/UX Issue</td><td class="num">1</td><td class="num">1.25%</td><td>Single cosmetic/display case</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>🔁 Top 10 Recurring Issue Themes</h3>
+      <table class="data-table">
+        <thead><tr><th>#</th><th>Theme</th><th class="num">Count</th></tr></thead>
+        <tbody>
+          <tr class="row-crit"><td>1</td><td>Invoice Run / Batch Failure (complete, partial, stuck, scope filter ignored)</td><td class="num">27</td></tr>
+          <tr class="row-high"><td>2</td><td>Post-Patch / Release Regressions (Summer 26, Sep 1 patch, 264.2, 264.3, 264 SB1)</td><td class="num">11</td></tr>
+          <tr class="row-high"><td>3</td><td>Tax Calculation Errors (Avalara zero-return, wrong jurisdiction, SSL expiry, timeout)</td><td class="num">10</td></tr>
+          <tr><td>4</td><td>Performance / Governor Limits (heap, DML 151, CPU timeout, throughput)</td><td class="num">9</td></tr>
+          <tr><td>5</td><td>Configuration / How-To (advance billing, proration, PS billing, trial)</td><td class="num">9</td></tr>
+          <tr><td>6</td><td>Data Integrity (wrong billing period, $0 balances, wrong account)</td><td class="num">8</td></tr>
+          <tr><td>7</td><td>Month-End Close Blockers (multi-issue rollup, emergency escalations)</td><td class="num">7</td></tr>
+          <tr><td>8</td><td>Credit Memo Issues (auto-apply failure, wrong routing, 24-hr reversal)</td><td class="num">6</td></tr>
+          <tr><td>9</td><td>Billing Schedule Item Not Updating to Invoiced Status</td><td class="num">3</td></tr>
+          <tr><td>10</td><td>Duplicate Invoice Generation</td><td class="num">3</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- BUG REGISTRY — SEP 1 PATCH -->
+  <div class="section-title">🔴 Sep 1 Patch — W-Series Bug Registry (27 IDs, All Open)</div>
+  <div class="card red-border">
+    <table class="data-table">
+      <thead><tr><th>W-Number</th><th>Description</th><th>Case</th><th>Account</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>W-16079200</td><td>Invoice consolidation broken — 200x volume explosion</td><td>46489458</td><td>Leidos</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16081800</td><td>Billing scheduler deleted post pod migration</td><td>46489486</td><td>Saic</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16084400</td><td>Tax engine returning $0 — Sep 1 data mapping failure</td><td>46489514</td><td>Engility</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16087000</td><td>Payment application API HTTP 500 complete outage</td><td>46489542</td><td>ICF International</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16089600</td><td>Duplicate invoices for 30% of subscriptions</td><td>46489598</td><td>Peraton</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16092200</td><td>Billing run scope filter bypassed</td><td>46489626</td><td>Caliburn International</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16094800</td><td>340 credit memo applications auto-reversing after 24 hours</td><td>46489654</td><td>KBR</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16097400</td><td>Billing config metadata corruption from 264.2 hotfix</td><td>46489682</td><td>ECS Federal</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16100000</td><td>Avalara SSL cert expired, tax calculation stopped</td><td>46489710</td><td>ManTech International</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16102600</td><td>4,500 invoices for wrong billing period</td><td>46489738</td><td>Perspecta</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16105200</td><td>50+ billing engine deadlocks per hour</td><td>46489794</td><td>Alion Science</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16107800</td><td>All billing runs failing on NA44 pod (platform-level)</td><td>46489822</td><td>VSE Corporation</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16110400</td><td>Custom trigger compile error blocking invoice creation</td><td>46489850</td><td>PAE Government Services</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16113000</td><td>September billing run at 1,200/hr vs 10,000/hr normal</td><td>46489878</td><td>Accenture Federal</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16115600</td><td>Emergency month-end close blocked, 15,000 invoices needed</td><td>46489906</td><td>Tetra Tech</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16118200</td><td>Recovery plan: 45,000 invoices, $12M billing blocked</td><td>46489962</td><td>Peraton</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16120800</td><td>Invoice line item trigger recursion stack overflow (1,001 levels)</td><td>46489990</td><td>KGS Group</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16123400</td><td>8,500 invoices outstanding, $0 tax on 2,400 accounts</td><td>46490046</td><td>CALIBER Systems</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16126000</td><td>Tax recalculation batch timing out after 300 records</td><td>46490102</td><td>Parsons Corporation</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16128600</td><td>InvoiceBalance__c zeroed on 180,000 records by data fix script</td><td>46490018</td><td>Cross-account</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16131200</td><td>847 invoices still with $0 tax as of Sep 23</td><td>46490186</td><td>ICF International</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16133800</td><td>$280K revenue reconciliation: 14 invoices wrongly voided</td><td>46490214</td><td>Serco Group</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr><td>W-16136400 through W-16146800</td><td>Additional Sep cluster variants (5 IDs)</td><td>Various</td><td>Various Sep accounts</td><td><span class="pill pill-red">Open</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BUG REGISTRY — 264.x REGRESSIONS -->
+  <div class="section-title">🟠 264.x Release Regressions — a3s-Series + Named W-Series</div>
+  <div class="card orange-border">
+    <table class="data-table">
+      <thead><tr><th>GUS ID</th><th>Description</th><th>Cases</th><th>Account</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>a3s5e000000CaZGAA0</td><td>NullPointerException in InvoiceRunBatch.execute post-Summer 26</td><td>55298822</td><td>Vertiv</td><td><span class="pill pill-green">Closed</span></td></tr>
+        <tr class="row-crit"><td>a3s5e000000CaZLAA0</td><td>Systemic Summer 26 performance regression (4x slower)</td><td>55301294</td><td>AIG</td><td><span class="pill pill-red">OPEN</span></td></tr>
+        <tr><td>a3s5e000000CaZQAA0</td><td>Invoice created but not linked to BSI, duplicate billing</td><td>55308259</td><td>Atea</td><td><span class="pill pill-green">Closed</span></td></tr>
+        <tr class="row-crit"><td>a3s5e000000CaZfAA0</td><td>InvoiceRunBatch API signature change breaking extension classes</td><td>55314107</td><td>AIG</td><td><span class="pill pill-red">OPEN</span></td></tr>
+        <tr class="row-crit"><td>a3s5e000000CaZpAA0</td><td>1,680 of 4,200 accounts not invoiced at July month-end</td><td>55316083</td><td>Expleo Group</td><td><span class="pill pill-red">OPEN</span></td></tr>
+        <tr><td>a3s5e000000CajUAAQ</td><td>Invoice consolidation / migration path defect</td><td>55293027</td><td>GE Vernova</td><td><span class="pill pill-green">Closed</span></td></tr>
+        <tr class="row-high"><td>W-24061982</td><td>InvoiceGeneratorStep null crash — NZ state/country picklist (264)</td><td>474499222</td><td>Halter</td><td><span class="pill pill-yellow">ERR · 264.5 targeted</span></td></tr>
+        <tr class="row-high"><td>W-24086592</td><td>Billing Schedule NBD off-by-one for UTC+12/+13 — 479 prod records</td><td>474460647</td><td>Halter/RevCycle</td><td><span class="pill pill-yellow">264.5 targeted</span></td></tr>
+        <tr><td>W-23791512</td><td>264 regression (nature not disclosed)</td><td>474499920</td><td>Halter</td><td><span class="pill pill-green">Fixed in 264.4</span></td></tr>
+        <tr><td>W-24059609</td><td>Adding products to quote fails (Configurator/TM/PCM)</td><td>Multiple</td><td>Trane Technologies + others</td><td><span class="pill pill-orange">Open</span></td></tr>
+        <tr class="row-high"><td>W-20106626</td><td>DDS not integrated with TM for subscription/prorated lines</td><td>474158410</td><td>Veeam</td><td><span class="pill pill-red">New — no committed date</span></td></tr>
+        <tr><td>GUS WI a07EE00002fsqRAYAY</td><td>Recovery Run advances NBD instead of marking Completely Billed</td><td>474174371</td><td>GE Appliances</td><td><span class="pill pill-orange">Filed · status unknown</span></td></tr>
+        <tr><td>AL-264-P0</td><td>ASP Time-Zone Awareness — PeriodBoundaryDay UTC derivation</td><td>474399881</td><td>TeamViewer, Halter</td><td><span class="pill pill-yellow">Targeted Release 264 · per 264.5</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SUSPECTED DEFECTS -->
+  <div class="section-title">⚠️ Suspected Defects (Repeated Pattern, No Resolution)</div>
+  <div class="card yellow-border">
+    <table class="data-table">
+      <thead><tr><th>Pattern</th><th>Evidence</th><th>Accounts Affected</th></tr></thead>
+      <tbody>
+        <tr><td><code>INVOICE_GENERATION_FAILED + UNKNOWN_EXCEPTION</code></td><td>Surface error masking diverse root causes</td><td>Halter (474499222), Capital One (ErrorId 1886906278), prior case 473587970</td></tr>
+        <tr><td>Recovery Run advancing NBD instead of marking Completely Billed when BS hits Billed Through Period</td><td>GUS WI a07EE00002fsqRAYAY — product bug, not customer config</td><td>GE Appliances + any account with Evergreen BSs</td></tr>
+        <tr><td>IBR stuck in "Started" with no self-service reset mechanism</td><td>AI Inside — engineering confirmed no supported reset path</td><td>Any account with custom Flow on IBR</td></tr>
+        <tr><td>Consumption Overage batch "Completed With Failures" — blank Error field</td><td>BC-data (474634987) — confirmed architectural behavior</td><td>Any usage management customer post-migration</td></tr>
+        <tr><td><code>INVALID_FIELD: No such column 'BillingScheduleNumber' on entity 'Order'</code></td><td>Cloudity (474516014) — 264 SB1 regression</td><td>264-wave customers</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /tab-issues -->
+
+<!-- ═══════════════════════════════════════════════
+     TAB 4 — ACCOUNT DEEP DIVES
+═══════════════════════════════════════════════ -->
+<div id="tab-deepdive" class="tab-pane">
+  <div style="margin-top:8px;"></div>
+  <div class="insight blue">Click any account header to expand/collapse its full deep dive.</div>
+  <div style="margin-bottom:12px;"></div>
+
+  <!-- AIG -->
+  <div class="card red-border" style="margin-bottom:12px;">
+    <h3 onclick="toggleDetail('dd-aig')" style="cursor:pointer;" class="detail-toggle">
+      🔴 Account 1 — AIG &nbsp;<span class="badge badge-red">CRITICAL</span> &nbsp;<span class="badge badge-grey" style="background:#f6f8fa;border:1px solid #d0d7de;color:#656d76;">8 Cases · 3 Open</span>
+    </h3>
+    <div id="dd-aig" class="detail-panel open" style="display:block;">
+      <div class="grid-2">
+        <div>
+          <strong>Org ID:</strong> 0015e00000K2OZdAAN &nbsp;·&nbsp; <strong>Prod Status:</strong> <span class="pill pill-grey">UNKNOWN</span><br><br>
+          <table class="data-table">
+            <thead><tr><th>Case</th><th>Issue</th><th>GUS</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr class="row-crit"><td>55301294</td><td>Systemic 4x performance regression post-Summer 26</td><td>a3s5e000000CaZLAA0</td><td><span class="pill pill-red">OPEN</span></td></tr>
+              <tr class="row-crit"><td>55314107</td><td>InvoiceRunBatch API signature change broke extension class</td><td>a3s5e000000CaZfAA0</td><td><span class="pill pill-red">OPEN</span></td></tr>
+              <tr class="row-crit"><td>55318091</td><td>July month-end close rollup — multiple unresolved blockers</td><td>—</td><td><span class="pill pill-red">OPEN</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="insight red"><strong>SA Engagement:</strong> None found. AIG is the only account in the Jul cluster with 3 simultaneous open escalated cases as of Jul 31.</div>
+          <div class="insight yellow"><strong>Action:</strong> Confirm whether Cases 55301294, 55314107, 55318091 resolved in Aug–Sep. If still open, assign senior SA. Verify API signature change (a3s5e000000CaZfAA0) was patched in 264.4 or 264.5.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERATON -->
+  <div class="card red-border" style="margin-bottom:12px;">
+    <h3 onclick="toggleDetail('dd-peraton')" style="cursor:pointer;" class="detail-toggle">
+      🔴 Account 2 — Peraton ($12M Blocked) &nbsp;<span class="badge badge-red">CRITICAL</span> &nbsp;<span class="badge badge-grey" style="background:#f6f8fa;border:1px solid #d0d7de;color:#656d76;">2 Cases · 2 Open</span>
+    </h3>
+    <div id="dd-peraton" class="detail-panel">
+      <div class="grid-2">
+        <div>
+          <strong>Org ID:</strong> 0015g000027CAA1 &nbsp;·&nbsp; <strong>Prod Status:</strong> <span class="pill pill-grey">UNKNOWN</span> (US Gov/Defense)<br><br>
+          <table class="data-table">
+            <thead><tr><th>Case</th><th>Issue</th><th>W-Number</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr class="row-crit"><td>46489598</td><td>Duplicate invoices for 30% of subscriptions</td><td>W-16089600</td><td><span class="pill pill-red">OPEN</span></td></tr>
+              <tr class="row-crit"><td>46489962</td><td>Recovery plan: 45,000 invoices, $12M billing blocked</td><td>W-16118200</td><td><span class="pill pill-red">OPEN</span></td></tr>
+            </tbody>
+          </table>
+          <div class="insight red" style="margin-top:8px;">Data fix script run to remediate duplicates subsequently zeroed <code>InvoiceBalance__c</code> on 180,000 records (Case 46490018 — cross-account impact).</div>
+        </div>
+        <div>
+          <div class="insight red"><strong>SA Engagement:</strong> None found.</div>
+          <div class="insight yellow"><strong>Action:</strong> Escalate to GHO immediately with dedicated recovery plan. Engineering sign-off required for 45,000-invoice remediation. InvoiceBalance__c zeroing must be resolved in parallel.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VEEAM -->
+  <div class="card orange-border" style="margin-bottom:12px;">
+    <h3 onclick="toggleDetail('dd-veeam')" style="cursor:pointer;" class="detail-toggle">
+      ⚠️ Account 3 — Veeam Software &nbsp;<span class="badge badge-orange">HIGH</span> &nbsp;<span class="badge badge-green">LIVE · 15,691 Billing ER</span>
+    </h3>
+    <div id="dd-veeam" class="detail-panel">
+      <div class="grid-2">
+        <div>
+          <strong>Org ID:</strong> 00Da500000K7XDq &nbsp;·&nbsp; <strong>Prod Status:</strong> <span class="pill pill-green">LIVE</span><br>
+          <strong>Billing ER:</strong> 15,691 current · 440,939 cumulative · 45,186 transactions · 37 MAU<br><br>
+          <table class="data-table">
+            <thead><tr><th>Case</th><th>Issue</th><th>W-Number</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr class="row-high"><td>474217168</td><td>DDS Net Unit Price — Sev-1, May 2026</td><td>—</td><td><span class="pill pill-orange">Open</span></td></tr>
+              <tr class="row-high"><td>474158410</td><td>DDS+TM integration gap — closed after 50+ days without resolution</td><td>W-20106626</td><td><span class="pill pill-yellow">Closed / Escalated to CSM</span></td></tr>
+              <tr><td>474020033</td><td>CLM amendment error — root cause identified</td><td>W-14488859</td><td><span class="pill pill-green">Closed Fixed</span></td></tr>
+            </tbody>
+          </table>
+          <div class="insight orange" style="margin-top:8px;">ATHR delivered Sep 5–9. 130 Cognizant-built flows identified as automation conflict sources — these are a time bomb.</div>
+        </div>
+        <div>
+          <div class="voc-quote">"Is this Spring/Summer '27?"
+            <div class="attr">— Evan Colyer (Veeam), contacting CSM directly about W-20106626 delivery timeline, Sep 14–15</div>
+          </div>
+          <div class="voc-quote">"The case was closed yesterday after more than 50 days. We concluded that the customer's requirement is a product enhancement." — framing Veeam found unacceptable.
+            <div class="attr">— Anita Kumari (Support)</div>
+          </div>
+          <div class="insight green"><strong>SA:</strong> Frank Shapiro (fshapiro@salesforce.com) — ACTIVE. Monthly cadence, bi-weekly check-ins. RCAT: #rcat-veeam-internal (C0B1VDSUAKZ).</div>
+          <div class="insight yellow"><strong>Action:</strong> Escalate W-20106626 to PM Padmaja Velamuri with committed timeline before next cadence call. If Spring/Summer '27, say so directly — customer needs a build-vs-wait decision. Address 130 Cognizant flows in ATHR remediation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HALTER -->
+  <div class="card orange-border" style="margin-bottom:12px;">
+    <h3 onclick="toggleDetail('dd-halter')" style="cursor:pointer;" class="detail-toggle">
+      ⚠️ Account 4 — Halter Limited &nbsp;<span class="badge badge-orange">HIGH</span> &nbsp;<span class="badge badge-yellow">9 Open Cases as of Sep 3</span>
+    </h3>
+    <div id="dd-halter" class="detail-panel">
+      <div class="grid-2">
+        <div>
+          <strong>Org ID:</strong> 00DBm00000CaNFJ (AUS18S sandbox/preview) &nbsp;·&nbsp; <strong>Prod Status:</strong> <span class="pill pill-grey">UNKNOWN</span> (APAC go-live target)<br><br>
+          <table class="data-table">
+            <thead><tr><th>Case</th><th>Issue</th><th>W-Number</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr class="row-crit"><td>474499222</td><td>InvoiceGeneratorStep null crash — NZ state/country picklist</td><td>W-24061982</td><td><span class="pill pill-yellow">ERR · 264.5 targeted</span></td></tr>
+              <tr class="row-high"><td>474460647</td><td>NBD off-by-one for NZ timezone — 479 prod BSs affected</td><td>W-24086592</td><td><span class="pill pill-yellow">264.5 targeted</span></td></tr>
+              <tr><td>474499920</td><td>264 regression</td><td>W-23791512</td><td><span class="pill pill-green">Fixed in 264.4</span></td></tr>
+              <tr><td>474439949</td><td>Usage-asset renewal limitation</td><td>W-24085826</td><td><span class="pill pill-grey">WAD</span></td></tr>
+              <tr><td>474257410</td><td>Renewals pulling expired assets</td><td>W-23918026</td><td><span class="pill pill-grey">WAD</span></td></tr>
+              <tr><td>474208757</td><td>Under investigation</td><td>W-24084377</td><td><span class="pill pill-orange">Open</span></td></tr>
+              <tr><td>474523630</td><td>Unsupported configuration</td><td>W-24089616</td><td><span class="pill pill-orange">Under review</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="voc-quote">"yes, its a confirmed regression, sure will create a new bug and push the fix in 266. no potential workaround other than disabling the state/country picklist which the customer is not okay with"
+            <div class="attr">— Siddhant Gupta (Engineering), Sep, #rlm-office-hours</div>
+          </div>
+          <div class="insight orange">Dedicated channel: <strong>#halter-industry-case-escalations</strong> — highest internal support attention tier. ERR being pursued with leadership approval.</div>
+          <div class="insight red"><strong>SA:</strong> None confirmed. Eshant Sharma (Support) is primary internal coordinator.</div>
+          <div class="insight yellow"><strong>Actions:</strong> (1) Confirm 264.5 patch on Halter org by Sep 26. (2) Confirm edit-permission pilot for 479 affected BSs. (3) Evaluate SA assignment and Red Account review given 9 open cases + 2 WAD limitations blocking go-live.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAMVIEWER -->
+  <div class="card orange-border" style="margin-bottom:12px;">
+    <h3 onclick="toggleDetail('dd-tv')" style="cursor:pointer;" class="detail-toggle">
+      ⚠️ Account 5 — TeamViewer Germany &nbsp;<span class="badge badge-red">CUSTOMER RELATIONSHIP CRITICAL</span> &nbsp;<span class="badge badge-orange">EUR 1M+ Pipeline Frozen</span>
+    </h3>
+    <div id="dd-tv" class="detail-panel">
+      <div class="grid-2">
+        <div>
+          <strong>Prod Status:</strong> <span class="pill pill-green">LIVE</span> on Revenue Cloud Advanced<br>
+          <strong>Case 474399881:</strong> Aug 2026, RCA, Sev-2, no GUS filed as of Eshant's August review, 15.1d age.<br>
+          <strong>Prior Sev-1:</strong> PeriodBoundaryDay UTC derivation bug (engineering fix: AL-264-P0)<br>
+          <strong>Sep 16 platform outage:</strong> status.salesforce.com incident 20004433 — full day of lost webshop sales<br><br>
+          <strong>Pipeline on hold:</strong><br>
+          <span class="pill pill-orange">EUR 160K</span> Signature Success &nbsp;·&nbsp;
+          <span class="pill pill-orange">EUR 135K</span> PSP &nbsp;·&nbsp;
+          <span class="pill pill-orange">EUR 232K</span> B2B Commerce<br>
+          <span class="pill pill-orange">USD 260K</span> Qualified &nbsp;·&nbsp;
+          <span class="pill pill-orange">EUR 490K</span> Data Cloud/MC &nbsp;·&nbsp;
+          <span class="pill pill-orange">~EUR 300K</span> Agentic Transformation<br>
+          <span class="pill pill-red">ITSM deal LOST to ServiceNow — "massive investment" partnership</span>
+        </div>
+        <div>
+          <div class="voc-quote">"the customer is still super dissatisfied with Revenue Cloud and under the impression that until it operates at an acceptable level it is still SFDC's obligation to fix that"
+            <div class="attr">— Marcel Metz (AE), Sep 23, #rcat-request-a-sponsor</div>
+          </div>
+          <div class="voc-quote">"Currently all investments are on hold due to them needing to focus on making Revenue Cloud work."
+            <div class="attr">— Marcel Metz, Sep 24</div>
+          </div>
+          <div class="voc-quote">"all additional projects are not going to happen, especially since we lost trust mainly on the USER/Business side"
+            <div class="attr">— Marcel Metz, Sep 23</div>
+          </div>
+          <div class="insight red"><strong>SA:</strong> No formal assignment. SA sponsor request OPEN in #rcat-request-a-sponsor (Sep 23–24). Nishant Sagar (SA) + Ravi Polisetty (PM) in RCAT internal channel — formal assignment status unclear.</div>
+          <div class="insight yellow"><strong>Actions (urgent):</strong> (1) Assign SA — respond to #rcat-request-a-sponsor by Sep 26. (2) CIO/CRO executive call with Salesforce VP by Oct 3. (3) Written recovery roadmap with committed timelines. (4) Evaluate Signature Success offer.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GE APPLIANCES -->
+  <div class="card orange-border" style="margin-bottom:12px;">
+    <h3 onclick="toggleDetail('dd-gea')" style="cursor:pointer;" class="detail-toggle">
+      ⚠️ Account 6 — GE Appliances (Haier) &nbsp;<span class="badge badge-orange">HIGH</span> &nbsp;<span class="badge badge-green">LIVE · 7,151 Billing ER · 421 MAU</span>
+    </h3>
+    <div id="dd-gea" class="detail-panel">
+      <div class="grid-2">
+        <div>
+          <strong>Org ID:</strong> 00D4P000000xZeh &nbsp;·&nbsp; <strong>Prod Status:</strong> <span class="pill pill-green">LIVE</span><br>
+          <strong>Billing ER:</strong> 7,151 current · 49,698 cumulative · 32,852 transactions · 421 MAU<br><br>
+          <table class="data-table">
+            <thead><tr><th>Case</th><th>Issue</th><th>GUS</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr class="row-crit"><td>474023488</td><td>Sev-1 Jul 7 — Billing Schedules missed since Feb 2026 (InvoiceRunMatchingValue misconfiguration)</td><td>—</td><td><span class="pill pill-green">Resolved</span></td></tr>
+              <tr class="row-crit"><td>474174371</td><td>Sev-1 Jul 25 — Billing Batch Run failures; Recovery Run product bug</td><td>a07EE00002fsqRAYAY</td><td><span class="pill pill-orange">Open (bug)</span></td></tr>
+              <tr><td>474174122</td><td>Proactive monitoring — Synchronous Callout Failures</td><td>—</td><td><span class="pill pill-green">Resolved</span></td></tr>
+            </tbody>
+          </table>
+          <div class="insight orange" style="margin-top:8px;">Custom BillingScheduleTrigger fires <code>System.LimitException: Too many SOQL queries: 101</code> during IBR's Draft-to-Posted step. ~5 months of missed revenue billing since Feb 2026.</div>
+        </div>
+        <div>
+          <div class="insight red"><strong>SA:</strong> None found. Two dedicated Sev-1 channels. CIC engaged both times.</div>
+          <div class="insight orange">Recovery Run product bug (GUS a07EE00002fsqRAYAY): incorrectly advances NBD instead of marking Completely Billed when BS has reached Billed Through Period — creates infinite re-trigger loop. This will recur on any Evergreen BS account.</div>
+          <div class="insight yellow"><strong>Actions:</strong> (1) Confirm committed fix date for Recovery Run bug. (2) Publish known issue advisory for custom triggers on BillingSchedule objects — 101 SOQL pattern confirmed at 3+ accounts. (3) Evaluate SA assignment.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLUEBEAM -->
+  <div class="card yellow-border" style="margin-bottom:12px;">
+    <h3 onclick="toggleDetail('dd-bluebeam')" style="cursor:pointer;" class="detail-toggle">
+      Account 7 — Bluebeam Inc. &nbsp;<span class="badge badge-yellow">MEDIUM-HIGH</span> &nbsp;<span class="badge badge-green">LIVE · 74,885 Billing ER · 24,890 MAU</span>
+    </h3>
+    <div id="dd-bluebeam" class="detail-panel">
+      <strong>Org ID:</strong> 00Dam00001FRF7s &nbsp;·&nbsp; <strong>Prod Status:</strong> <span class="pill pill-green">LIVE</span> — Highest transaction volume in confirmed-live accounts (1,211,049 cumulative · 217,825 transactions)<br><br>
+      3 Sev-1 cases in the period: 473430946 (May, resolved Jun 5), 473236044 (earlier), 473989194 (Jul 1). Proactive monitoring force sync cases Sep 24–25. Premier+ support tier.<br><br>
+      <div class="insight red"><strong>SA:</strong> None found. Premier+ support only. Given highest production transaction volume + 3 Sev-1s + no SA — most significant SA gap for a confirmed-live account in the dataset.</div>
+      <div class="insight yellow"><strong>Action:</strong> Prioritize for SA assignment review. Proactive monitoring on Sep 24–25 confirms Salesforce is already watching — SA closes the loop from reactive to proactive.</div>
+    </div>
+  </div>
+
+</div><!-- /tab-deepdive -->
+
+<!-- ═══════════════════════════════════════════════
+     TAB 5 — SLACK ESCALATIONS
+═══════════════════════════════════════════════ -->
+<div id="tab-slack" class="tab-pane">
+  <div style="margin-top:8px;"></div>
+
+  <!-- RED FLAGS -->
+  <div class="section-title">🚨 Red Flags Requiring Immediate Follow-Up</div>
+  <div class="card red-border">
+    <table class="data-table">
+      <thead><tr><th>Flag</th><th>Account</th><th>Channel</th><th>Action Required</th></tr></thead>
+      <tbody>
+        <tr class="row-crit"><td>CIO/CRO calling Salesforce VP directly; ITSM deal lost to ServiceNow; EUR 1M+ pipeline frozen</td><td>TeamViewer</td><td>#rcat-teamviewer-internal (C094QRF33SS)<br>#rcat-request-a-sponsor</td><td>Assign SA by Sep 26; exec call by Oct 3</td></tr>
+        <tr class="row-crit"><td>$12M billing blocked; 45,000 invoices in recovery plan</td><td>Peraton</td><td>Case 46489962</td><td>GHO DRI + engineering data fix; daily status</td></tr>
+        <tr class="row-crit"><td>847 invoices with $0 tax unresolved as of Sep 23</td><td>ICF International + others</td><td>Cases 46490046, 46490186</td><td>Tax recalculation batch fix + manual review</td></tr>
+        <tr class="row-crit"><td>$280K revenue reconciliation gap (14 invoices wrongly voided)</td><td>Serco Group</td><td>Case 46490214</td><td>Engineering-led void reversal; revenue documentation</td></tr>
+        <tr class="row-crit"><td>200x invoice volume explosion from consolidation bug</td><td>Leidos</td><td>Case 46489458</td><td>Immediate engineering fix; batch cleanup plan</td></tr>
+        <tr class="row-high"><td>JTL Software P0 invoice run stopped; Red Account; EUR 300K ACV + EUR 285K pipeline</td><td>JTL Software GmbH</td><td>#red-jtl-software-gmbh-sales-implementation-2026-06-12</td><td>Escalate to Prateek Sethi + Billing Eng immediately</td></tr>
+        <tr class="row-high"><td>DDS+TM integration gap: $5–10M AOV Signature account evaluating custom build; W-20106626 status: New</td><td>Veeam</td><td>#rcat-veeam-internal (C0B1VDSUAKZ)</td><td>PM roadmap commitment by Oct 1</td></tr>
+        <tr class="row-high"><td>BC-data silent overage billing skip; fix deployment planned "end of Sep 2026"</td><td>BC-data</td><td>#rlm-office-hours + #rev-gho-est-pst-apac</td><td>Confirm deployment by Sep 30</td></tr>
+        <tr class="row-high"><td>Halter: 9 open cases; 264.5 patch rollout Sep 21–26; NZ state crash unresolved</td><td>Halter</td><td>#halter-industry-case-escalations (C0BUMEZQREW)</td><td>Verify 264.5 patch on Halter org by Sep 26</td></tr>
+        <tr class="row-crit"><td>InvoiceBalance__c zeroed on 180,000 records by erroneous data fix script</td><td>Cross-account Sep cluster</td><td>Case 46490018</td><td>Scope of impact audit; reversal plan from backup</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- VOC -->
+  <div class="section-title">💬 VOC / Customer Dissatisfaction Signals</div>
+  <div class="grid-2">
+    <div>
+      <div class="voc-quote">"The customer is still super dissatisfied with Revenue Cloud and under the impression that until it operates at an acceptable level it is still SFDC's obligation to fix that."
+        <div class="attr">— Marcel Metz (AE), TeamViewer, Sep 23, #rcat-request-a-sponsor</div>
+      </div>
+      <div class="voc-quote">"Currently all investments are on hold due to them needing to focus on making Revenue Cloud work."
+        <div class="attr">— Marcel Metz (AE), TeamViewer, Sep 24</div>
+      </div>
+      <div class="voc-quote">"all additional projects are not going to happen, especially since we lost trust mainly on the USER/Business side"
+        <div class="attr">— Marcel Metz (AE), TeamViewer, Sep 23</div>
+      </div>
+      <div class="voc-quote">"the relationship is over."
+        <div class="attr">— CEO of Valpac, July 2026 call; EVP Meredith Schmidt engaged; Red Account channel</div>
+      </div>
+    </div>
+    <div>
+      <div class="voc-quote">"Is this Spring/Summer '27?"
+        <div class="attr">— Evan Colyer (Veeam), contacting CSM directly about W-20106626 delivery, Sep 14–15, #rcat-veeam-internal</div>
+      </div>
+      <div class="voc-quote">"The case was closed yesterday after more than 50 days. We concluded the case that the customer's requirement is a product enhancement." — framing Veeam found unacceptable.
+        <div class="attr">— Anita Kumari (Support), case closure note</div>
+      </div>
+      <div class="voc-quote">"This is in production and raised as sig sev1 stopping their business."
+        <div class="attr">— Pratibha Rajpoot (Support), Capital One, Aug 12, #rlm-office-hours</div>
+      </div>
+      <div class="voc-quote">"seems to [be a] release issue. we removed entire customization still the error coming"
+        <div class="attr">— Gulla Bharath Kumar (Support), Halter, Sep 1, #rlm-office-hours</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTION BLOCKERS -->
+  <div class="section-title">🔒 Active Production Blockers (as of Sep 24)</div>
+  <div class="card red-border">
+    <table class="data-table">
+      <thead><tr><th>Blocker</th><th>Account(s)</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr class="row-crit"><td>26 open Critical/escalated cases from Sep 1 patch — no resolutions</td><td>Leidos, Saic, Peraton, ICF, Caliburn, KBR, ECS, ManTech, Perspecta, Alion, VSE, PAE, Accenture Federal, Tetra Tech, KGS, CALIBER, Parsons, Serco + others</td><td><span class="pill pill-red">All Open</span></td></tr>
+        <tr class="row-crit"><td>September month-end close at risk</td><td>Tetra Tech (15K invoices), Peraton ($12M), CALIBER (8,500 outstanding)</td><td><span class="pill pill-red">All Open</span></td></tr>
+        <tr class="row-high"><td>IBR stuck in "Started" — no self-service reset mechanism</td><td>AI Inside + any account hitting this pattern</td><td><span class="pill pill-red">No fix committed</span></td></tr>
+        <tr class="row-high"><td>BC-data overage billing skip</td><td>BC-data</td><td><span class="pill pill-yellow">Fix deployment pending Sep 30</span></td></tr>
+        <tr class="row-high"><td>JTL invoice run stopped (P0) — Red Account</td><td>JTL Software GmbH</td><td><span class="pill pill-red">Open</span></td></tr>
+        <tr class="row-high"><td>Kaseya IBR stuck at "Invoice Tax Calculation In Progress"</td><td>Kaseya</td><td><span class="pill pill-orange">Open; swarm Sep 22</span></td></tr>
+        <tr class="row-high"><td>SP Global invoice scheduler failing (serialization + query row limit)</td><td>SP Global (474603157)</td><td><span class="pill pill-orange">Open; GHO filed</span></td></tr>
+        <tr><td>Bridgestone Webfleet Decision Table tax lookup failure</td><td>Bridgestone Webfleet (474646846)</td><td><span class="pill pill-orange">Open; sandbox</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- WORKAROUNDS -->
+  <div class="section-title">🔧 Engineering-Sanctioned Workarounds in Use</div>
+  <div class="card yellow-border">
+    <table class="data-table">
+      <thead><tr><th>Workaround</th><th>Issue</th><th>Risk</th></tr></thead>
+      <tbody>
+        <tr class="row-high"><td>Leave NZ State field blank / disable State&amp;Country picklists</td><td>Halter NZ InvoiceGeneratorStep crash (W-24061982)</td><td>Not acceptable to customer long-term</td></tr>
+        <tr class="row-high"><td>Custom date field on OID + clone context def mapping</td><td>Halter NBD off-by-one for new records (W-24086592)</td><td>Fixes only new records; 479 existing BSs still incorrect</td></tr>
+        <tr><td>Populate Bill To Contact on Billing Profile</td><td>Capital One IBR stuck / TransactionEntityObjectMap error</td><td>Root cause unclear; fragile</td></tr>
+        <tr><td>Make custom Flows asynchronous on Invoice/BillingSchedule objects</td><td>Governor limit interference (ECi, GE Appliances, AI Inside)</td><td>Customer must implement; no product enforcement</td></tr>
+        <tr><td>BSCreationEnabled LAP via GUS approval</td><td>Milestone Systems legal entity migration (474103667)</td><td>Gated process; not self-service</td></tr>
+        <tr><td>Scenario 3 only (DDS to Net Unit Price)</td><td>Veeam DDS+TM integration gap (W-20106626)</td><td>All other scenarios cause downstream rev rec/cancellation issues</td></tr>
+        <tr><td>Percentage computation wrapper for split billing</td><td>Norweld flat-amount Billing Arrangement limitation (474005314)</td><td>Feature gap; not in roadmap</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /tab-slack -->
+
+<!-- ═══════════════════════════════════════════════
+     TAB 6 — SA ENGAGEMENT GAPS
+═══════════════════════════════════════════════ -->
+<div id="tab-sa" class="tab-pane">
+  <div style="margin-top:8px;"></div>
+
+  <div class="section-title">👤 SA Coverage — Confirmed Production-Live Billing Accounts</div>
+  <div class="card">
+    <table class="data-table">
+      <thead><tr><th>Account</th><th>Org ID</th><th>Billing ER (current)</th><th>MAU</th><th>SA Assigned</th><th>Status</th><th>Risk</th></tr></thead>
+      <tbody>
+        <tr class="row-crit"><td><strong>Bluebeam</strong></td><td>00Dam00001FRF7s</td><td class="num">74,885</td><td class="num">24,890</td><td>None</td><td><span class="pill pill-red">GAP</span></td><td><span class="risk-high">HIGH — 3 Sev-1s, highest txn volume</span></td></tr>
+        <tr class="row-crit"><td><strong>GE Appliances</strong></td><td>00D4P000000xZeh</td><td class="num">7,151</td><td class="num">421</td><td>None</td><td><span class="pill pill-red">GAP</span></td><td><span class="risk-high">HIGH — 2 Sev-1s, Recovery Run bug</span></td></tr>
+        <tr class="row-high"><td><strong>UpKeep</strong></td><td>00D1N000001Ql9k</td><td class="num"><strong>174,463</strong></td><td class="num">68</td><td>None</td><td><span class="pill pill-red">GAP</span></td><td><span class="risk-med">MEDIUM — highest current ER, zero Slack footprint</span></td></tr>
+        <tr class="row-high"><td><strong>CNC Software</strong></td><td>00DDp000001Q5F3</td><td class="num">17,120</td><td class="num">115</td><td>None</td><td><span class="pill pill-red">GAP</span></td><td><span class="risk-med">MEDIUM — 2 Sev-1s + Sev-2, red account alerts</span></td></tr>
+        <tr class="row-high"><td><strong>Milestone Systems</strong></td><td>00Dd1000000bzfj</td><td class="num">38</td><td class="num">—</td><td>None</td><td><span class="pill pill-red">GAP</span></td><td><span class="risk-med">MEDIUM — Premier+, legal entity migration blocker</span></td></tr>
+        <tr class="row-high"><td><strong>MYOB Australia</strong></td><td>00D28000000L5ov</td><td class="num">Confirmed large</td><td class="num">—</td><td>None</td><td><span class="pill pill-red">GAP</span></td><td><span class="risk-med">MEDIUM — 1st APAC RCA customer, red account</span></td></tr>
+        <tr><td>Trane Technologies</td><td>00D3i000000GTi6</td><td class="num">84</td><td class="num">2</td><td>Pending</td><td><span class="pill pill-yellow">PENDING OU VP</span></td><td><span class="risk-med">MEDIUM — awaiting Kathleen Blackwelder approval</span></td></tr>
+        <tr><td>Coates Group</td><td>00D1N000001RS1R</td><td class="num">28,739</td><td class="num">40</td><td>None</td><td><span class="pill pill-orange">GAP</span></td><td><span class="risk-low">LOW-MEDIUM — no active escalation</span></td></tr>
+        <tr class="row-live"><td>Veeam Software</td><td>00Da500000K7XDq</td><td class="num">15,691</td><td class="num">37</td><td>Frank Shapiro</td><td><span class="pill pill-green">ACTIVE ✓</span></td><td><span class="risk-low">Covered</span></td></tr>
+        <tr class="row-live"><td>Parker Hannifin</td><td>00DHs000001RTwd</td><td class="num">Needs check</td><td class="num">—</td><td>Paul O'Malley</td><td><span class="pill pill-green">ACTIVE ✓</span></td><td><span class="risk-low">Covered</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TOP 3 GAPS -->
+  <div class="section-title">⚠️ Top 3 Coverage Gaps</div>
+  <div class="grid-3">
+    <div class="card red-border">
+      <h3>🔴 Bluebeam</h3>
+      <p><strong>74,885 ER · 24,890 MAU · 1.2M cumulative transactions</strong></p>
+      <p>3 Sev-1 cases in the period. No SA, no RCAT channel. Highest production transaction volume in confirmed-live adoption CSV accounts.</p>
+      <div class="insight red">Single most significant SA coverage gap for a confirmed production-live account.</div>
+    </div>
+    <div class="card orange-border">
+      <h3>🟠 GE Appliances (Haier)</h3>
+      <p><strong>7,151 ER · 421 MAU · 32,852 transactions</strong></p>
+      <p>2 Sev-1s in a single month. Recovery Run product bug (a07EE00002fsqRAYAY) means recurrent billing failures until engineering ships the fix. No SA.</p>
+      <div class="insight orange">CIC engaged both times — reactive-only coverage for a production-live 421-MAU account.</div>
+    </div>
+    <div class="card yellow-border">
+      <h3>🟡 UpKeep</h3>
+      <p><strong>174,463 ER (highest current ER in CSV) · 71,474 transactions · 68 MAU</strong></p>
+      <p>Zero Slack footprint — either genuinely healthy or silently experiencing problems not reaching Slack. No SA.</p>
+      <div class="insight yellow">Given the production scale, a proactive SA check is warranted regardless.</div>
+    </div>
+  </div>
+
+  <!-- SA ROSTER -->
+  <div class="section-title">📋 RCB SA Roster Notes</div>
+  <div class="card">
+    <table class="data-table">
+      <thead><tr><th>SA</th><th>Slack ID</th><th>Accounts</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr class="row-live"><td><strong>Frank Shapiro</strong></td><td>U01G85HGR8A</td><td>Veeam (primary)</td><td>De facto RCB billing architecture authority. Consulted across #rlm-office-hours, #support-rev-billing, and swarm threads beyond named accounts. Single highest-leverage RCB SA in the organization.</td></tr>
+        <tr class="row-live"><td><strong>Paul O'Malley</strong></td><td>WFBGJP4AH</td><td>Parker Hannifin</td><td>Strong RCA/scale expertise. 15K quote line beta, APEX pre-hook analysis.</td></tr>
+        <tr class="row-high"><td><strong>Aaron Eichhorst</strong></td><td>U01E3KDA9HV</td><td>Workday, Optimizely</td><td>Promoted to SA August 7, 2026. "One of the few deep Revenue Cloud Billing experts we have" — Ryan Penrod. Available as additional RCB capacity for gap accounts.</td></tr>
+      </tbody>
+    </table>
+    <div class="insight yellow" style="margin-top:12px;"><strong>Coverage gap:</strong> Only 2 active RCB SAs (Shapiro, O'Malley) + Eichhorst as a third with different accounts. <strong>APAC/EMEA geography has no confirmed RCB-specialist SA</strong> — explains why MYOB (APAC) and Milestone (EMEA) lack coverage.</div>
+  </div>
+
+</div><!-- /tab-sa -->
+
+<footer>Revenue Cloud Billing Support Analysis · Feb 1 – Sep 24, 2026 · Data: OrgCS + Slack + Adoption CSV · Prepared Sep 25, 2026 · 682+ cases · 11 research agents · <a href="https://eshantsharma-bit.github.io/rc-dashboard/" style="color:#0969da;">RC Dashboard Hub</a></footer>
+
+<!-- ═══════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════ -->
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function toggleDetail(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+  if (el.classList.contains('open')) {
+    el.style.display = 'block';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+// ── Charts ──
+window.addEventListener('load', () => {
+  // Volume chart
+  new Chart(document.getElementById('chartVolume').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ['Feb','Mar-May','Jun','Jul','Aug','Sep 1-24'],
+      datasets: [{
+        label: 'Estimated Cases',
+        data: [1, 0, 140, 190, 185, 165],
+        backgroundColor: ['#d0d7de','#d0d7de','rgba(88,166,255,.65)','rgba(88,166,255,.65)','rgba(88,166,255,.65)','rgba(248,81,73,.65)'],
+        borderRadius: 4
+      }]
+    },
+    options: {
+      plugins: {legend:{display:false}, tooltip:{callbacks:{label: ctx => ctx.raw === 0 ? 'Unquantified' : `~${ctx.raw} cases`}}},
+      scales: {y:{grid:{color:'#d0d7de'},ticks:{color:'#656d76'}}, x:{grid:{display:false},ticks:{color:'#656d76'}}}
+    }
+  });
+
+  // Severity doughnut
+  new Chart(document.getElementById('chartSeverity').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Critical (20)','High (52)','Medium (6)','Low (2)'],
+      datasets: [{
+        data: [20, 52, 6, 2],
+        backgroundColor: ['#cf222e','#bc4c00','#9a6700','#1a7f37'],
+        borderWidth: 2, borderColor: '#ffffff'
+      }]
+    },
+    options: {
+      plugins: {legend:{position:'bottom', labels:{font:{size:11}, color:'#656d76'}}},
+      cutout: '60%'
+    }
+  });
+
+  // Categories bar
+  new Chart(document.getElementById('chartCategories').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ['Product Bug','Data Error','Unclassified','Config/Impl','Performance','Customization','Integration','UI/UX'],
+      datasets: [{
+        label: 'Cases',
+        data: [42, 10, 10, 8, 4, 3, 2, 1],
+        backgroundColor: ['#cf222e','#bc4c00','#9a6700','rgba(88,166,255,.65)','rgba(163,113,247,.65)','rgba(88,166,255,.45)','#d0d7de','#d0d7de'],
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      plugins: {legend:{display:false}},
+      scales: {x:{grid:{color:'#d0d7de'},ticks:{color:'#656d76'}}, y:{grid:{display:false},ticks:{color:'#656d76',font:{size:11}}}}
+    }
+  });
+});
+</script>
+</body>
+</html>
