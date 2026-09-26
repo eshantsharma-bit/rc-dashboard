@@ -55,6 +55,18 @@
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
   .mono { font-family: monospace; font-size: 11px; }
+  /* Account story panel */
+  .story-row td { padding: 0 !important; border-bottom: 2px solid var(--accent) !important; background: #f0f7ff; }
+  .story-panel { display: flex; gap: 12px; align-items: flex-start; padding: 10px 14px; }
+  .story-phase { background: var(--accent); color: white; padding: 3px 10px; border-radius: 10px; font-size: 10px; font-weight: 700; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .story-body { flex: 1; font-size: 12px; line-height: 1.6; }
+  .story-action-box { background: #fff8c5; border-left: 3px solid #d4a72c; padding: 7px 10px; font-size: 11px; flex: 0 0 260px; line-height: 1.5; }
+  .acct-link { cursor: pointer; color: var(--accent); }
+  .acct-link:hover { text-decoration: underline; }
+  /* Bug registry group headers */
+  .grp-hdr { background: var(--bg2); border-top: 2px solid var(--border); padding: 6px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text2); margin-bottom: 0; }
+  .grp-hdr.bugs { border-top-color: var(--red); color: var(--red); }
+  .grp-hdr.inv { border-top-color: var(--accent); color: var(--accent); }
 </style>
 </head>
 <body>
@@ -88,33 +100,58 @@
   <div class="card">
     <h2>Top 25 Accounts by Case Volume (Feb&ndash;Sep 2026)</h2>
     <table>
-      <thead><tr><th>#</th><th>Account</th><th>Total</th><th>Open</th><th>Sev-1</th><th>Open S1</th><th>GUS/Bug</th><th>Red Acct</th><th>Region</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td><strong>ECi</strong></td><td>35</td><td>3</td><td><span class="badge s1">21</span></td><td><span class="red-flag">2</span></td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
-        <tr><td>2</td><td><strong>STANDARD &amp; POORS FINANCIAL SERVICES LLC</strong></td><td>34</td><td>0</td><td>0</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
-        <tr><td>3</td><td><strong>Bluvium Inc</strong></td><td>32</td><td>1</td><td><span class="badge s1">15</span></td><td><span class="red-flag">1</span></td><td>&mdash;</td><td>&mdash;</td><td>India</td></tr>
-        <tr><td>4</td><td><strong>Thunder Consulting, Inc</strong></td><td>29</td><td>0</td><td>0</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
-        <tr><td>5</td><td><strong>Kaseya - New Org</strong></td><td>28</td><td>0</td><td>0</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
-        <tr><td>6</td><td><strong>Cloudity</strong></td><td>28</td><td>0</td><td>1</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>EMEA</td></tr>
-        <tr><td>7</td><td><strong>Capital One Services, LLC</strong></td><td>22</td><td>0</td><td>2</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
-        <tr><td>8</td><td><strong>Bluebeam Inc 3rd Org</strong></td><td>20</td><td>0</td><td>5</td><td>&mdash;</td><td>YES</td><td><span class="red-flag">YES</span></td><td>AMER</td></tr>
-        <tr><td>9</td><td><strong>AI inside Inc.</strong></td><td>20</td><td>2</td><td>0</td><td>&mdash;</td><td>YES</td><td><span class="red-flag">YES</span></td><td>JP</td></tr>
-        <tr><td>10</td><td><strong>PwC</strong></td><td>16</td><td>4</td><td>4</td><td><span class="red-flag">2</span></td><td>&mdash;</td><td>&mdash;</td><td>AMER</td></tr>
-        <tr><td>11</td><td><strong>Aleysian LLC</strong></td><td>16</td><td>0</td><td>0</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>AMER</td></tr>
-        <tr><td>12</td><td><strong>WebPT.com (2nd org)</strong></td><td>16</td><td>3</td><td>0</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
-        <tr><td>13</td><td><strong>Infor (US) LLC (Main)</strong></td><td>15</td><td>2</td><td>0</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>AMER</td></tr>
-        <tr><td>14</td><td><strong>SHIFTLOGIC.IO LIMITED</strong></td><td>15</td><td>1</td><td><span class="badge s1">12</span></td><td>1*</td><td>YES</td><td><span class="red-flag">YES</span></td><td>EMEA</td></tr>
-        <tr><td>15</td><td><strong>DynaCap Consulting ApS</strong></td><td>14</td><td>0</td><td>1</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>EMEA</td></tr>
-        <tr><td>16</td><td><strong>JTL-Software-GmbH</strong></td><td>13</td><td>1</td><td>1</td><td>&mdash;</td><td>YES</td><td><span class="red-flag">YES</span></td><td>EMEA</td></tr>
-        <tr><td>17</td><td><strong>BC-data</strong></td><td>13</td><td>1</td><td>0</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>EMEA</td></tr>
-        <tr><td>18</td><td><strong>Arthur J. Gallagher &amp; Co.</strong></td><td>13</td><td>1</td><td>2</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
-        <tr><td>19</td><td><strong>William Reed Limited (New)</strong></td><td>12</td><td>2</td><td>1</td><td>&mdash;</td><td>YES</td><td><span class="red-flag">YES</span></td><td>EMEA</td></tr>
-        <tr><td>20</td><td><strong>RevCycle Limited</strong></td><td>12</td><td>0</td><td>2</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>APAC</td></tr>
-        <tr><td>21</td><td><strong>Qualifacts Systems Inc</strong></td><td>11</td><td>0</td><td>8</td><td>&mdash;</td><td>YES</td><td><span class="red-flag">YES</span></td><td>AMER</td></tr>
-        <tr><td>22</td><td><strong>Digicert, Inc</strong></td><td>11</td><td>0</td><td>0</td><td>&mdash;</td><td>YES</td><td><span class="red-flag">YES</span></td><td>AMER</td></tr>
-        <tr><td>23</td><td><strong>Conceal</strong></td><td>10</td><td>0</td><td>3</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
-        <tr><td>24</td><td><strong>CNC Software, Inc.</strong></td><td>10</td><td>1</td><td>2</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
-        <tr><td>25</td><td><strong>Altitude Venture Holdings Inc</strong></td><td>10</td><td>1</td><td>3</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>AMER</td></tr>
+      <thead><tr><th>#</th><th>Account <span style="font-size:10px;font-weight:400;color:var(--text2)">(click for story)</span></th><th>Total</th><th>Open</th><th>Sev-1</th><th>Open S1</th><th>GUS/Bug</th><th>Red Acct</th><th>Region</th></tr></thead>
+      <tbody id="acct-tbody">
+        <tr onclick="toggleStory('eci')"><td>1</td><td><span class="acct-link"><strong>ECi</strong></span></td><td>35</td><td>3</td><td><span class="badge s1">21</span></td><td><span class="red-flag">2</span></td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-eci" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase">&#128308; CRITICAL</span><div class="story-body"><strong>ECi</strong> &mdash; #1 RCB account (35 cases, 21 Sev-1s). Steady escalation from Apr through Aug, now 2 concurrent open Sev-1s. <strong>W-23554160</strong> (Payment Balance fields) is an active go-live blocker &mdash; perf tests failed Sep 23, no ETA, customer code freeze passed. New Sev-1 <strong>474663345</strong> opened Sep 24, unassigned. Top feature gaps: Payment fields in List View (W-23554160), Invoice stuck posted (W-23726348), TJ entries missing (W-22357449).</div><div class="story-action-box"><strong>SA/PM action:</strong> Force Q4 eng milestone on W-23554160 (Priyanka Kerhalkar). Confirm 474663345 engineer assignment. ECi is your highest-risk account this week.</div></div></td></tr>
+        <tr onclick="toggleStory('sp')"><td>2</td><td><span class="acct-link"><strong>STANDARD &amp; POORS FINANCIAL SERVICES LLC</strong></span></td><td>34</td><td>0</td><td>0</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-sp" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--green)">&#10003; STABLE</span><div class="story-body"><strong>S&amp;P</strong> (Signature Success) &mdash; consistent 3–7 cases/month, all 34 closed. Multiple GUS links but no Sev-1s. Covers diverse billing workflows: Credit Memo approvals (W-21318564), Debit Memo invoice generation (W-22209034), Billing Batch Scheduler (W-22928654), ReferenceEntityItem population, Legal Entity bulk updates. <strong>Pattern:</strong> steady advanced-user edge cases, not a risk account.</div><div class="story-action-box"><strong>SA/PM action:</strong> Low urgency. Monitor for any shift in volume or Sev-1 introduction. Currently healthy.</div></div></td></tr>
+        <tr onclick="toggleStory('bluvium')"><td>3</td><td><span class="acct-link"><strong>Bluvium Inc</strong></span></td><td>32</td><td>1</td><td><span class="badge s1">15</span></td><td><span class="red-flag">1</span></td><td>&mdash;</td><td>&mdash;</td><td>India</td></tr>
+        <tr class="story-row" id="story-bluvium" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase">&#128308; ACTIVE S1</span><div class="story-body"><strong>Bluvium Inc</strong> (India, Partner Premier) &mdash; 15 Sev-1s over 8 months, 2nd highest. All except 1 closed. Resurged Aug–Sep (6 cases each after quiet Jul). Open Sev-1 <strong>474654995</strong> (Sep 23) owned by Divyanshu Tiwari &mdash; same engineer also owns ECi 474663345. <strong>0 GUS bugs filed</strong> despite 15 Sev-1s &mdash; possible under-investigation gap.</div><div class="story-action-box"><strong>SA/PM action:</strong> Check capacity risk (Tiwari dual Sev-1). Review why no GUS items logged despite this case volume — are issues WAD or being swallowed?</div></div></td></tr>
+        <tr onclick="toggleStory('thunder')"><td>4</td><td><span class="acct-link"><strong>Thunder Consulting, Inc</strong></span></td><td>29</td><td>0</td><td>0</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-thunder" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--green)">&#8595; DECLINING</span><div class="story-body"><strong>Thunder Consulting</strong> (Partner Premier) &mdash; peaked May–Jun (9, 5) and steadily declining. All 29 cases closed. Strong GUS engagement: W-23154491 (Billing Portal Saved Payment), W-23161682 (Simplified Cancel Transaction), W-22450767 (Billing Experience Cloud User permissions), W-23554160 (Payment Balance fields — also an ECi blocker). <strong>Pattern:</strong> implementation-phase churn, now stabilizing post-go-live.</div><div class="story-action-box"><strong>SA/PM action:</strong> Monitor for recurrence. Confirm customer fully live. W-23554160 shared with ECi — resolution here unblocks both.</div></div></td></tr>
+        <tr onclick="toggleStory('kaseya')"><td>5</td><td><span class="acct-link"><strong>Kaseya - New Org</strong></span></td><td>28</td><td>0</td><td>0</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-kaseya" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--green)">&#10003; RESOLVED</span><div class="story-body"><strong>Kaseya</strong> (Signature Success) &mdash; 6 Feb, 8 Mar, then steadily dropped to 0 Jul–Sep. Classic onboarding arc. Key issues resolved: Ingest API with non-US addresses (W-21963276), Custom Field auto-population (W-21748027), Unable to apply payment cross-currency (W-22447273), Credit Memo creation (W-22809459). All cases closed.</div><div class="story-action-box"><strong>SA/PM action:</strong> Account stabilized. No action required unless volume resurges. Good success story: onboarding pain resolved within 5 months.</div></div></td></tr>
+        <tr onclick="toggleStory('cloudity')"><td>6</td><td><span class="acct-link"><strong>Cloudity</strong></span></td><td>28</td><td>0</td><td>1</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>EMEA</td></tr>
+        <tr class="story-row" id="story-cloudity" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--green)">&#10003; STABLE</span><div class="story-body"><strong>Cloudity</strong> (EMEA, Partner Premier, Synaos project) &mdash; front-loaded onboarding burst: 15 Feb, 8 Mar, then dropped to 0 Jun–Aug. Sep Sev-1 (474516014) was the 264 State/Country picklist regression (W-24088655), not a Cloudity-specific issue. Closed post-ERR. Account stable post-onboarding. All 28 cases closed.</div><div class="story-action-box"><strong>SA/PM action:</strong> Confirm ERR-33509 patch deployed for their org. No further action needed — textbook partner onboarding curve.</div></div></td></tr>
+        <tr onclick="toggleStory('capone')"><td>7</td><td><span class="acct-link"><strong>Capital One Services, LLC</strong></span></td><td>22</td><td>0</td><td>2</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-capone" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--yellow)">&#8595; DECLINING</span><div class="story-body"><strong>Capital One</strong> (Signature Success) &mdash; peaked Apr (8 cases) then declined consistently. 2 Sev-1s both closed. GUS issues: Billing Schedule generation on renewal (W-21740087), Invoice Lines missing TJ entries (W-22357449), Unable to view Credit Memo approval related list (W-21318564). All 22 cases closed. <strong>Pattern:</strong> complex Billing+Renewal implementation now past peak friction.</div><div class="story-action-box"><strong>SA/PM action:</strong> Low risk currently. W-22357449 (TJ entries missing) — confirm permanent fix held as Capital One continues usage.</div></div></td></tr>
+        <tr onclick="toggleStory('bluebeam')"><td>8</td><td><span class="acct-link"><strong>Bluebeam Inc 3rd Org</strong></span></td><td>20</td><td>0</td><td>5</td><td>&mdash;</td><td>YES</td><td><span class="red-flag">YES</span></td><td>AMER</td></tr>
+        <tr class="story-row" id="story-bluebeam" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--yellow)">&#128993; WATCH</span><div class="story-body"><strong>Bluebeam</strong> (Red Account, AMER) &mdash; 5 Sev-1s all closed. Low volume now (2/mo or less). 8 Red Account flags in history. No currently open Sev-1s. GUS-linked cases: Billing schedule/invoice issues. Red Account designation still active &mdash; monitor for recurrence.</div><div class="story-action-box"><strong>SA/PM action:</strong> All cases closed. Maintain Red Account monitoring posture. No immediate action.</div></div></td></tr>
+        <tr onclick="toggleStory('aiinside')"><td>9</td><td><span class="acct-link"><strong>AI inside Inc.</strong></span></td><td>20</td><td>2</td><td>0</td><td>&mdash;</td><td>YES</td><td><span class="red-flag">YES</span></td><td>JP</td></tr>
+        <tr class="story-row" id="story-aiinside" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase">&#9888; AGED OPEN</span><div class="story-body"><strong>AI inside Inc.</strong> (Japan, Red Account) &mdash; 10 aged cases (most of any account), 2 still open. Case <strong>474067997</strong> is 74 days old at Solution Provided status &mdash; needs customer confirmation to close. Case <strong>474378215</strong> at 42d NMI. GUS items: InvoiceLine issue (W-23453305/W-23489162), Invoice follow-up (W-23645420/W-24047789), AI inside billing follow-up (W-23933045). Red Account flag. JP timezone adds response latency.</div><div class="story-action-box"><strong>SA/PM action:</strong> Push customer to close 474067997 (74d SP). Follow up on 474378215 (42d NMI). Japan-region SLA sensitivity.</div></div></td></tr>
+        <tr onclick="toggleStory('pwc')"><td>10</td><td><span class="acct-link"><strong>PwC</strong></span></td><td>16</td><td>4</td><td>4</td><td><span class="red-flag">2</span></td><td>&mdash;</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-pwc" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase">&#128308; CRITICAL</span><div class="story-body"><strong>PwC</strong> (Partner Premier) &mdash; was quiet Jan–Jun (0–1/mo), suddenly hit 4 Aug + 7 Sep. Two Sev-1s opened <strong>same day Sep 24</strong>, both Transaction Management, both unassigned (Skills Queue initial owner). Swarm channels live but no engineer engaged yet. Pattern suggests an active go-live hitting blockers hard. <strong>Dual same-product same-day Sev-1 is rare and high-risk.</strong></div><div class="story-action-box"><strong>SA/PM action:</strong> Immediately confirm engineer assignment on 474666900 &amp; 474667205. AE Ben Helmers. This needs senior RCB engineer, not queue assignment.</div></div></td></tr>
+        <tr onclick="toggleStory('aleysian')"><td>11</td><td><span class="acct-link"><strong>Aleysian LLC</strong></span></td><td>16</td><td>0</td><td>0</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-aleysian" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--green)">&#8595; DECLINING</span><div class="story-body"><strong>Aleysian LLC</strong> (Partner Premier) &mdash; peaked Jul (6 cases) then dropped to 0 Sep. All 16 cases closed, no Sev-1s. No GUS/Bug links. Implementation-phase activity, now resolved. Low risk.</div><div class="story-action-box"><strong>SA/PM action:</strong> None required. Account stabilized.</div></div></td></tr>
+        <tr onclick="toggleStory('webpt')"><td>12</td><td><span class="acct-link"><strong>WebPT.com (2nd org)</strong></span></td><td>16</td><td>3</td><td>0</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-webpt" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase">&#9650; ACCELERATING</span><div class="story-body"><strong>WebPT</strong> (Signature Success) &mdash; dormant until May, then 3 Jul, 5 Aug, 7 Sep. Fastest-growing new entrant. 3 open cases including 474533759 (21d aged, Working). GUS items: custom field setup (W-23948929/W-23994067). Sep volume suggests active go-live phase. No Sev-1s yet but trajectory is concerning.</div><div class="story-action-box"><strong>SA/PM action:</strong> Proactive outreach. Close 474533759 (21d Working, no GUS). This account will likely produce a Sev-1 if not proactively engaged.</div></div></td></tr>
+        <tr onclick="toggleStory('infor')"><td>13</td><td><span class="acct-link"><strong>Infor (US) LLC (Main)</strong></span></td><td>15</td><td>2</td><td>0</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-infor" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--text2)">&#8594; STABLE</span><div class="story-body"><strong>Infor</strong> (Signature Success) &mdash; consistent 2–3/month. 2 open cases (474638025 S4, 474649279 S4 NMI). No Sev-1s, no GUS/Bug links. Low-severity steady-state usage. No escalation risk.</div><div class="story-action-box"><strong>SA/PM action:</strong> Routine monitoring. Close the 2 open S4 cases when ready.</div></div></td></tr>
+        <tr onclick="toggleStory('shiftlogic')"><td>14</td><td><span class="acct-link"><strong>SHIFTLOGIC.IO LIMITED</strong></span></td><td>15</td><td>1</td><td><span class="badge s1">12</span></td><td>1*</td><td>YES</td><td><span class="red-flag">YES</span></td><td>EMEA</td></tr>
+        <tr class="story-row" id="story-shiftlogic" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--red)">&#128308; RED + 12 S1s</span><div class="story-body"><strong>SHIFTLOGIC</strong> (EMEA, Partner, Red Account) &mdash; 12 Sev-1s, persistent 1–3 cases/month across all 8 months. Open case 474656333 at Solution Provided (Sev-1). GUS linked: W-24001055/W-24059609 (cannot pass Order/OrderItem info to BS/BSG level). <strong>Red Account flag active.</strong> This partner account shows structural, recurring RCB friction — not just onboarding spikes.</div><div class="story-action-box"><strong>SA/PM action:</strong> Close 474656333 (S1 at Solution Provided). Investigate why this partner keeps hitting Sev-1s — likely a product gap in their specific use case.</div></div></td></tr>
+        <tr onclick="toggleStory('dynacap')"><td>15</td><td><span class="acct-link"><strong>DynaCap Consulting ApS</strong></span></td><td>14</td><td>0</td><td>1</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>EMEA</td></tr>
+        <tr class="story-row" id="story-dynacap" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--green)">&#8595; DECLINING</span><div class="story-body"><strong>DynaCap Consulting</strong> (EMEA, Partner) &mdash; peaked Apr (4 cases) then steadily declined to 0 Sep. All 14 cases closed, 1 historical Sev-1 closed. No GUS/Bug links. Classic implementation arc now complete.</div><div class="story-action-box"><strong>SA/PM action:</strong> None required. Stabilized post-onboarding.</div></div></td></tr>
+        <tr onclick="toggleStory('jtl')"><td>16</td><td><span class="acct-link"><strong>JTL-Software-GmbH</strong></span></td><td>13</td><td>1</td><td>1</td><td>&mdash;</td><td>YES</td><td><span class="red-flag">YES</span></td><td>EMEA</td></tr>
+        <tr class="story-row" id="story-jtl" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase">&#9650; RESURGING</span><div class="story-body"><strong>JTL-Software</strong> (EMEA, Red Account) &mdash; was quiet Apr–Jul (0–1/mo), now 3 Aug + 4 Sep. Open case 474665363 (S2, NMI). GUS: W-21806512 (Billing schedules not generated for renewal orders). Red Account flag. Sep surge suggests a new implementation wave or feature adoption hitting limits.</div><div class="story-action-box"><strong>SA/PM action:</strong> Monitor closely. Sep resurge on a Red Account = early warning. Confirm 474665363 is actively worked.</div></div></td></tr>
+        <tr onclick="toggleStory('bcdata')"><td>17</td><td><span class="acct-link"><strong>BC-data</strong></span></td><td>13</td><td>1</td><td>0</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>EMEA</td></tr>
+        <tr class="story-row" id="story-bcdata" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase">&#9650; ACCELERATING</span><div class="story-body"><strong>BC-data</strong> (EMEA) &mdash; 0–1/month Feb–Jul, then 3 Aug + 6 Sep. Fastest EMEA acceleration in the dataset. GUS linked cases in Aug–Sep. 1 open case (474632764, S4 Working). Pattern strongly suggests active implementation/go-live phase starting Aug.</div><div class="story-action-box"><strong>SA/PM action:</strong> Proactive check-in. Prevent an escalation by engaging before first Sev-1 hits. This is Sep's emerging account to watch.</div></div></td></tr>
+        <tr onclick="toggleStory('gallagher')"><td>18</td><td><span class="acct-link"><strong>Arthur J. Gallagher &amp; Co.</strong></span></td><td>13</td><td>1</td><td>2</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-gallagher" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--text2)">&#8594; STABLE</span><div class="story-body"><strong>Arthur J. Gallagher</strong> (Signature Success) &mdash; consistent 1–3/month, peaked Aug (5). 2 historical Sev-1s both closed: 474466321 (W-24002332 CurrencyIsoCode on Page Layouts) and 473199042 (W-22005308 OOTB Tax). 1 open routine case 474631331 (S3, Working). Stable engagement pattern.</div><div class="story-action-box"><strong>SA/PM action:</strong> Routine. Confirm 474631331 progressing. No escalation risk.</div></div></td></tr>
+        <tr onclick="toggleStory('williamreed')"><td>19</td><td><span class="acct-link"><strong>William Reed Limited (New)</strong></span></td><td>12</td><td>2</td><td>1</td><td>&mdash;</td><td>YES</td><td><span class="red-flag">YES</span></td><td>EMEA</td></tr>
+        <tr class="story-row" id="story-williamreed" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase">&#9888; OPEN AGED</span><div class="story-body"><strong>William Reed</strong> (EMEA, Red Account) &mdash; 2 open cases including 474516761 (S2, NMI, 23d aged) with W-24216321 (Credit Memo application issue). Historical Sev-1 closed. Sep saw 3 new cases after quiet Jul–Aug. Red Account flag. Credit Memo apply issues are a recurring EMEA theme.</div><div class="story-action-box"><strong>SA/PM action:</strong> Follow up on 474516761 (23d NMI, W-24216321). Confirm Credit Memo fix is customer-confirmed.</div></div></td></tr>
+        <tr onclick="toggleStory('revcycle')"><td>20</td><td><span class="acct-link"><strong>RevCycle Limited</strong></span></td><td>12</td><td>0</td><td>2</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>APAC</td></tr>
+        <tr class="story-row" id="story-revcycle" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--text2)">&#8594; INTERMITTENT</span><div class="story-body"><strong>RevCycle Limited</strong> (APAC, Premier) &mdash; manages Halter (NZ customer). All 12 cases closed. Hit 264 picklist bug hard (Sep 3, "absolute priority"). GUS: W-24086592 (Order product/BS date not aligned), W-24159964 (external invoices erroring), W-24262323/W-24272757 (void $0 invoice — Fixed in W-24262323). Stable post-patch.</div><div class="story-action-box"><strong>SA/PM action:</strong> None currently. All cases closed. Confirm ERR-33509 deployed for Halter org.</div></div></td></tr>
+        <tr onclick="toggleStory('qualifacts')"><td>21</td><td><span class="acct-link"><strong>Qualifacts Systems Inc</strong></span></td><td>11</td><td>0</td><td><span class="badge s1">8</span></td><td>&mdash;</td><td>YES</td><td><span class="red-flag">YES</span></td><td>AMER</td></tr>
+        <tr class="story-row" id="story-qualifacts" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--yellow)">&#128993; WATCH — HISTORY</span><div class="story-body"><strong>Qualifacts</strong> (Red Account) &mdash; 8 Sev-1s all in May (massive cluster: Entitlement Refresh failing W-22572493/W-22656587/W-23399960, Transaction Journal stuck W-22601833, Preview Invoices broken W-23985796). All closed by Jun. Zero Sev-1s since. This account had a catastrophic May that resolved — but batch reliability issues are historically recurrent.</div><div class="story-action-box"><strong>SA/PM action:</strong> Watch for Entitlement Refresh or TJ batch recurrence. If volume upticks, treat as high priority given May history.</div></div></td></tr>
+        <tr onclick="toggleStory('digicert')"><td>22</td><td><span class="acct-link"><strong>Digicert, Inc</strong></span></td><td>11</td><td>0</td><td>0</td><td>&mdash;</td><td>YES</td><td><span class="red-flag">YES</span></td><td>AMER</td></tr>
+        <tr class="story-row" id="story-digicert" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--green)">&#10003; STABLE</span><div class="story-body"><strong>Digicert</strong> (Red Account, AMER) &mdash; consistent 2/month, no Sev-1s. GUS: W-22397981 (deleting records issue), W-21963276 (Ingest API non-US address), W-23260370/W-23299958 (unexpected error). All 11 cases closed. Red Account designation but currently low risk.</div><div class="story-action-box"><strong>SA/PM action:</strong> Monitoring only. Volume stable. No open cases.</div></div></td></tr>
+        <tr onclick="toggleStory('conceal')"><td>23</td><td><span class="acct-link"><strong>Conceal</strong></span></td><td>10</td><td>0</td><td>3</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-conceal" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--green)">&#10003; RESOLVED</span><div class="story-body"><strong>Conceal</strong> (AMER) &mdash; 3 Sev-1s all closed. Peaked Apr (4 cases). Issues: Invoice Batch stuck Queueing (W-22599766), Rating process timezone issue (W-23191137 — "Never" status, timezone WAD). All resolved, 0 cases since Jun. Clean post-implementation exit.</div><div class="story-action-box"><strong>SA/PM action:</strong> W-23191137 timezone issue marked "Never Fix" — if Conceal asks again, set expectation proactively.</div></div></td></tr>
+        <tr onclick="toggleStory('cnc')"><td>24</td><td><span class="acct-link"><strong>CNC Software, Inc.</strong></span></td><td>10</td><td>1</td><td>2</td><td>&mdash;</td><td>YES</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-cnc" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase">&#9650; ACCELERATING</span><div class="story-body"><strong>CNC Software</strong> (AMER) &mdash; 1/month Apr–Aug, now 4 in Sep. 2 historical Sev-1s closed. 1 open (474666059, S4 Solution Provided). Sep acceleration: 4 cases in partial month. GUS: W-24017488 (voiding invoice issue). Trending toward becoming a concern if pace continues.</div><div class="story-action-box"><strong>SA/PM action:</strong> Close 474666059 (Sol Prov). Proactive outreach if Sep pace holds — 4 cases in &lt;4 weeks is an inflection signal.</div></div></td></tr>
+        <tr onclick="toggleStory('altitude')"><td>25</td><td><span class="acct-link"><strong>Altitude Venture Holdings Inc</strong></span></td><td>10</td><td>1</td><td>3</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>AMER</td></tr>
+        <tr class="story-row" id="story-altitude" style="display:none"><td colspan="9"><div class="story-panel"><span class="story-phase" style="background:var(--green)">&#8595; DECLINING</span><div class="story-body"><strong>Altitude Venture</strong> (AMER) &mdash; peaked Feb (4 cases), now occasional. 3 Sev-1s all closed. 1 open case 474424255 (S2, Solution Provided, 36d aged). No GUS/Bug links. Pattern: early platform learner, now mostly resolved.</div><div class="story-action-box"><strong>SA/PM action:</strong> Close 474424255 (36d Solution Provided). No active risk.</div></div></td></tr>
       </tbody>
     </table>
     <div style="margin-top:8px;font-size:11px;color:var(--text2)">* SHIFTLOGIC open S1 474656333 shows &ldquo;Solution Provided&rdquo; status</div>
@@ -171,16 +208,12 @@
         <tr><td><strong>Bluvium Inc</strong></td><td>1</td><td>6</td><td>9</td><td>1</td><td>3</td><td>0</td><td>6</td><td>6</td><td>32</td><td class="red-flag">&#8593; Resurging</td></tr>
         <tr><td><strong>Thunder Consulting</strong></td><td>0</td><td>1</td><td>3</td><td>9</td><td>5</td><td>8</td><td>1</td><td>2</td><td>29</td><td style="color:var(--green)">&#8595; Declining</td></tr>
         <tr><td><strong>Kaseya - New Org</strong></td><td>6</td><td>8</td><td>4</td><td>5</td><td>5</td><td>0</td><td>0</td><td>0</td><td>28</td><td style="color:var(--green)">&#8595; Resolved</td></tr>
-        <tr><td><strong>Cloudity</strong></td><td>15</td><td>8</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td>1</td><td>28</td><td style="color:var(--green)">&#8595; Resolved</td></tr>
         <tr><td><strong>Capital One</strong></td><td>2</td><td>6</td><td>8</td><td>3</td><td>1</td><td>1</td><td>1</td><td>0</td><td>22</td><td style="color:var(--green)">&#8595; Declining</td></tr>
         <tr><td><strong>Bluebeam Inc 3rd Org</strong></td><td>4</td><td>3</td><td>4</td><td>4</td><td>2</td><td>0</td><td>2</td><td>1</td><td>20</td><td style="color:var(--text2)">&rarr; Low activity</td></tr>
         <tr><td><strong>AI inside Inc.</strong></td><td>0</td><td>0</td><td>4</td><td>3</td><td>6</td><td>3</td><td>1</td><td>3</td><td>20</td><td style="color:var(--text2)">&rarr; Stable</td></tr>
         <tr><td><strong>WebPT.com (2nd org)</strong></td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>3</td><td>5</td><td>7</td><td>16</td><td class="red-flag">&#8593; Accelerating</td></tr>
         <tr><td><strong>PwC</strong></td><td>2</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>4</td><td>7</td><td>16</td><td class="red-flag">&#8593; Accelerating + 2 open S1s</td></tr>
-        <tr><td><strong>Aleysian LLC</strong></td><td>0</td><td>2</td><td>1</td><td>1</td><td>3</td><td>6</td><td>3</td><td>0</td><td>16</td><td style="color:var(--green)">&#8595; Declining</td></tr>
-        <tr><td><strong>SHIFTLOGIC.IO</strong></td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>2</td><td>3</td><td>15</td><td style="color:var(--text2)">&rarr; Persistent (Red)</td></tr>
         <tr><td><strong>Infor (US) LLC</strong></td><td>2</td><td>3</td><td>1</td><td>3</td><td>3</td><td>1</td><td>0</td><td>2</td><td>15</td><td style="color:var(--text2)">&rarr; Stable</td></tr>
-        <tr><td><strong>DynaCap Consulting</strong></td><td>2</td><td>1</td><td>4</td><td>1</td><td>3</td><td>1</td><td>2</td><td>0</td><td>14</td><td style="color:var(--green)">&#8595; Declining</td></tr>
         <tr><td><strong>JTL-Software-GmbH</strong></td><td>2</td><td>3</td><td>0</td><td>1</td><td>0</td><td>0</td><td>3</td><td>4</td><td>13</td><td class="red-flag">&#8593; Resurging (Red)</td></tr>
         <tr><td><strong>BC-data</strong></td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>3</td><td>6</td><td>13</td><td class="red-flag">&#8593; Accelerating</td></tr>
         <tr><td><strong>Arthur J. Gallagher</strong></td><td>1</td><td>3</td><td>1</td><td>1</td><td>1</td><td>0</td><td>5</td><td>1</td><td>13</td><td style="color:var(--text2)">&rarr; Stable</td></tr>
@@ -191,6 +224,13 @@
         <tr><td><strong>Conceal</strong></td><td>1</td><td>1</td><td>4</td><td>3</td><td>1</td><td>0</td><td>0</td><td>0</td><td>10</td><td style="color:var(--green)">&#8595; Resolved</td></tr>
         <tr><td><strong>CNC Software</strong></td><td>0</td><td>0</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td><td>4</td><td>10</td><td class="red-flag">&#8593; Accelerating</td></tr>
         <tr><td><strong>Altitude Venture</strong></td><td>4</td><td>0</td><td>2</td><td>2</td><td>0</td><td>1</td><td>1</td><td>0</td><td>10</td><td style="color:var(--green)">&#8595; Declining</td></tr>
+        <tr><td colspan="11" style="background:#f8f0ff;padding:5px 10px;font-size:10px;font-weight:700;color:var(--purple);letter-spacing:.5px;text-transform:uppercase;border-top:2px solid var(--purple)">&#128101; Partner / SI Accounts (Success Plan: Partner Premier) &mdash; case volume reflects implementation activity, not pure product defects</td></tr>
+        <tr style="background:#fdf6ff"><td><strong>Cloudity</strong> <span style="font-size:10px;color:var(--purple)">[Partner]</span></td><td>15</td><td>8</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td>1</td><td>28</td><td style="color:var(--green)">&#8595; Resolved (post-onboarding)</td></tr>
+        <tr style="background:#fdf6ff"><td><strong>Bluvium Inc</strong> <span style="font-size:10px;color:var(--purple)">[Partner]</span></td><td>1</td><td>6</td><td>9</td><td>1</td><td>3</td><td>0</td><td>6</td><td>6</td><td>32</td><td class="red-flag">&#8593; Resurging + open S1</td></tr>
+        <tr style="background:#fdf6ff"><td><strong>Thunder Consulting</strong> <span style="font-size:10px;color:var(--purple)">[Partner]</span></td><td>0</td><td>1</td><td>3</td><td>9</td><td>5</td><td>8</td><td>1</td><td>2</td><td>29</td><td style="color:var(--green)">&#8595; Declining</td></tr>
+        <tr style="background:#fdf6ff"><td><strong>Aleysian LLC</strong> <span style="font-size:10px;color:var(--purple)">[Partner]</span></td><td>0</td><td>2</td><td>1</td><td>1</td><td>3</td><td>6</td><td>3</td><td>0</td><td>16</td><td style="color:var(--green)">&#8595; Declining</td></tr>
+        <tr style="background:#fdf6ff"><td><strong>SHIFTLOGIC.IO</strong> <span style="font-size:10px;color:var(--purple)">[Partner]</span></td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>2</td><td>3</td><td>15</td><td style="color:var(--text2)">&rarr; Persistent (Red)</td></tr>
+        <tr style="background:#fdf6ff"><td><strong>DynaCap Consulting</strong> <span style="font-size:10px;color:var(--purple)">[Partner]</span></td><td>2</td><td>1</td><td>4</td><td>1</td><td>3</td><td>1</td><td>2</td><td>0</td><td>14</td><td style="color:var(--green)">&#8595; Declining</td></tr>
       </tbody>
     </table>
     <div style="margin-top:8px;font-size:11px;color:var(--text2)">* Sep = partial through Sep 24, 2026</div>
@@ -215,6 +255,42 @@
   <b>W-24088655</b> (3 cases, 2 Sev-1s): Invoices fail when State/Country picklist enabled with non-US/CA addresses &mdash; 264 upgrade regression. ERR-33509 filed Sep 3 for emergency patch. Cases: 474512307 (S&amp;P), 474516014 (Cloudity, Sev-1), 474531876 (Veyor Digital, Sev-1). Verify all resolved post-ERR.<br><br>
   <b>W-24061982</b> (3 cases): Same root cause &mdash; closed as &ldquo;New Bug &rarr; W-24088655.&rdquo; Cases: 474499222 (RevCycle/Halter), 474516014 (Cloudity), 474517898 (InformaOne).<br><br>
   <b>W-23554160</b> (2 cases): Payment Balance/Applied/Unapplied fields not available in List View or Formula fields. Feature gap, performance tests failing as of Sep 23, no ETA committed. Cases: 474124582 (Thunder), 474618363 (ECi &mdash; active Sev-1 go-live blocker).
+  </div>
+  <div class="card">
+    <h2>GUS Work Item Analysis &mdash; By Record Type &amp; Resolution</h2>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:12px">102 W-numbers mapped to GUS. Categorized by record type and resolution to surface PM action lanes.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div>
+        <div class="grp-hdr bugs" style="border-radius:6px 6px 0 0;margin-bottom:0">A. Product Defects &mdash; Bug Record Type (37)</div>
+        <table>
+          <thead><tr><th>Status</th><th>Count</th><th>PM Signal</th></tr></thead>
+          <tbody>
+            <tr><td>New (unfixed)</td><td><span style="color:var(--red);font-weight:700">6</span></td><td>Active bugs awaiting engineering fix — prioritize</td></tr>
+            <tr><td>Fixed</td><td>14</td><td>Verify customer cases resolved post-fix</td></tr>
+            <tr><td>Closed</td><td>12</td><td>Closed records — confirm ERR/patch deployed</td></tr>
+            <tr><td>Never (Won't Fix)</td><td>2</td><td>W-23191137: timezone WAD; set expectation</td></tr>
+            <tr><td>Duplicate</td><td>1</td><td>W-23858701: follow master bug for status</td></tr>
+            <tr><td>Not a Bug</td><td>1</td><td>W-24084271: pricing/billing freq by design</td></tr>
+            <tr><td>App Bug Fix</td><td>1</td><td>Fixed via app-level change</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="grp-hdr inv" style="border-radius:6px 6px 0 0;margin-bottom:0">B&ndash;G. Investigations (46 total) + User Stories (16)</div>
+        <table>
+          <thead><tr><th>Resolution Group</th><th>Count</th><th>PM Action</th></tr></thead>
+          <tbody>
+            <tr style="background:#ffd7d5"><td><strong>B. Closed &rarr; New Bug Logged</strong></td><td>18</td><td>Follow the linked bug — customer blocked on real defect</td></tr>
+            <tr style="background:#fff8c5"><td><strong>C. No Fix &mdash; WAD / Will Not Fix</strong></td><td>8</td><td>Needs customer comms — expectation management + docs</td></tr>
+            <tr style="background:#dafbe1"><td><strong>D. Resolved Without Code Change</strong></td><td>8</td><td>Knowledge article candidate — prevent repeat cases</td></tr>
+            <tr><td><strong>E. Resolved With Internal Tools</strong></td><td>4</td><td>Platform gap — evaluate if tooling should be customer-facing</td></tr>
+            <tr><td><strong>F. No Fix &mdash; Feature Request</strong></td><td>8</td><td>Surface to PM roadmap + IdeaExchange link</td></tr>
+            <tr style="background:#ddf4ff"><td><strong>G. Active / Acknowledged</strong></td><td><span style="color:var(--accent);font-weight:700">2</span></td><td>W-24286890 (Deloitte, SI Sep 24) · W-24301325 (Deloitte, SI Sep 25)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="warn-box" style="margin-top:12px"><strong>Key PM opportunity &mdash; Investigations NOT closed as "New Bug Logged" (26 of 46):</strong> These represent cases where engineering investigated and found no code defect. 8 are "No Fix WAD/WNF" — customers hitting platform limits by design. 8 are "Resolved Without Code Change" — fixable with better docs or support content. 4 needed internal tooling (platform gap signal). 8 are feature requests: surface immediately to roadmap &amp; IdeaExchange.</div>
   </div>
   <div class="card">
     <h2>Full Bug Registry &mdash; All W-numbers with Case Links</h2>
@@ -714,6 +790,12 @@ function show(n) {
   document.querySelectorAll('.section').forEach(function(s,i){ s.classList.toggle('active', i===n); });
   document.querySelectorAll('.tab').forEach(function(t,i){ t.classList.toggle('active', i===n); });
 }
+function toggleStory(id) {
+  var row = document.getElementById('story-' + id);
+  if (!row) return;
+  var isVisible = row.style.display !== 'none';
+  row.style.display = isVisible ? 'none' : 'table-row';
+}
 
 new Chart(document.getElementById('sevChart'), {
   type: 'doughnut',
@@ -740,14 +822,22 @@ new Chart(document.getElementById('momTopAccounts'), {
     datasets: [
       { label: 'ECi', data: [0,1,5,3,6,6,10,4], borderColor: '#cf222e', tension: 0.3, fill: false, borderWidth: 2 },
       { label: 'S&P', data: [7,3,5,4,4,5,4,2], borderColor: '#0969da', tension: 0.3, fill: false },
-      { label: 'Bluvium Inc', data: [1,6,9,1,3,0,6,6], borderColor: '#8250df', tension: 0.3, fill: false },
-      { label: 'PwC', data: [2,0,1,1,0,1,4,7], borderColor: '#d4a72c', tension: 0.3, fill: false, borderDash: [4,2], borderWidth: 2 },
+      { label: 'PwC', data: [2,0,1,1,0,1,4,7], borderColor: '#d4a72c', tension: 0.3, fill: false, borderWidth: 2 },
       { label: 'WebPT.com', data: [0,0,0,1,0,3,5,7], borderColor: '#bc4c00', tension: 0.3, fill: false, borderDash: [4,2] },
-      { label: 'Cloudity', data: [15,8,2,2,0,0,0,1], borderColor: '#1a7f37', tension: 0.3, fill: false },
-      { label: 'BC-data', data: [0,1,1,1,1,0,3,6], borderColor: '#0550ae', tension: 0.3, fill: false, borderDash: [2,2] }
+      { label: 'Capital One', data: [2,6,8,3,1,1,1,0], borderColor: '#8250df', tension: 0.3, fill: false },
+      { label: 'AI inside', data: [0,0,4,3,6,3,1,3], borderColor: '#1a7f37', tension: 0.3, fill: false },
+      { label: 'BC-data', data: [0,1,1,1,1,0,3,6], borderColor: '#0550ae', tension: 0.3, fill: false, borderDash: [2,2] },
+      { label: 'Qualifacts', data: [0,0,0,8,2,0,1,0], borderColor: '#cf222e', tension: 0.3, fill: false, borderDash: [6,3], borderWidth: 1 }
     ]
   },
-  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 20 } } }, scales: { y: { beginAtZero: true } } }
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 20 } },
+      title: { display: true, text: 'Direct customers only — partner accounts excluded', font: { size: 10 }, color: '#8250df', padding: { bottom: 6 } }
+    },
+    scales: { y: { beginAtZero: true } }
+  }
 });
 
 new Chart(document.getElementById('featureChart'), {
