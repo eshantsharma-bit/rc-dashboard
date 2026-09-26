@@ -80,21 +80,256 @@
 </header>
 
 <div class="tabs">
-  <div class="tab active" onclick="show(0)">Top 20 Accounts</div>
-  <div class="tab" onclick="show(1)">Month-over-Month</div>
-  <div class="tab" onclick="show(2)">Bug Registry</div>
-  <div class="tab" onclick="show(3)">Aged &amp; Swarm Cases</div>
-  <div class="tab" onclick="show(4)">Open Cases</div>
-  <div class="tab" onclick="show(5)">Issue Categorization</div>
-  <div class="tab" onclick="show(6)">VOC &amp; Escalations</div>
-  <div class="tab" onclick="show(7)">SA Engagement</div>
-  <div class="tab" onclick="show(8)">Account Deep Dives</div>
-  <div class="tab" onclick="show(9)">Appendix</div>
+  <div class="tab active" onclick="show(0)">&#127968; Overview</div>
+  <div class="tab" onclick="show(1)">Top 25 Accounts</div>
+  <div class="tab" onclick="show(2)">Month-over-Month</div>
+  <div class="tab" onclick="show(3)">Bug Registry</div>
+  <div class="tab" onclick="show(4)">Aged &amp; Swarm Cases</div>
+  <div class="tab" onclick="show(5)">Open Cases</div>
+  <div class="tab" onclick="show(6)">Issue Categorization</div>
+  <div class="tab" onclick="show(7)">VOC &amp; Escalations</div>
+  <div class="tab" onclick="show(8)">SA Engagement</div>
+  <div class="tab" onclick="show(9)">Account Deep Dives</div>
+  <div class="tab" onclick="show(10)">Appendix</div>
 </div>
 
 <div class="content">
 
-<!-- TAB 0: TOP 20 ACCOUNTS -->
+<!-- TAB 0: OVERVIEW -->
+<div class="section active" id="s-overview">
+
+  <!-- Row 1: Headline stats -->
+  <div class="stat-row">
+    <div class="stat"><div class="val">886</div><div class="lbl">Total Cases · Feb–Sep 24</div></div>
+    <div class="stat"><div class="val" style="color:var(--accent)">110</div><div class="lbl">Avg cases / month</div></div>
+    <div class="stat"><div class="val" style="color:var(--red)">129</div><div class="lbl">Sev-1 cases (14.6%)</div></div>
+    <div class="stat"><div class="val" style="color:var(--red)">6</div><div class="lbl">Open Sev-1s now</div></div>
+    <div class="stat"><div class="val" style="color:var(--yellow)">39</div><div class="lbl">Total open cases</div></div>
+    <div class="stat"><div class="val" style="color:var(--yellow)">91</div><div class="lbl">Cases aged &gt;20 days</div></div>
+    <div class="stat"><div class="val">90</div><div class="lbl">Cases with GUS/Bug link</div></div>
+    <div class="stat"><div class="val">102</div><div class="lbl">Distinct W-numbers</div></div>
+  </div>
+
+  <!-- Row 2: Active alerts -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+    <div class="alert-box" style="margin:0;cursor:pointer" onclick="show(5)">
+      <strong>&#128308; ECi — 2 open Sev-1s</strong><br>
+      W-23554160 go-live blocker: perf tests failed Sep 23, no ETA. New Sev-1 474663345 opened Sep 24, unassigned. 35 total cases, 21 Sev-1s — highest in dataset.
+    </div>
+    <div class="alert-box" style="margin:0;cursor:pointer" onclick="show(5)">
+      <strong>&#128308; PwC — 2 Sev-1s same day Sep 24</strong><br>
+      Both Transaction Management, both Partner Premier, initial owner = Skills Queue. 30 minutes apart. No engineer assigned yet. Sep volume: 7 cases from near-zero.
+    </div>
+    <div class="warn-box" style="margin:0;cursor:pointer" onclick="show(4)">
+      <strong>&#9888; Deloitte — 2 SIs approved Sep 24–25</strong><br>
+      W-24286890 (Consulting, Sep 24) + W-24301325 (Global, Sep 25). Both Acknowledged in GUS. Engineering formally accepted both defects same week.
+    </div>
+  </div>
+
+  <!-- Row 3: Volume trend + theme tiles side by side -->
+  <div style="display:grid;grid-template-columns:360px 1fr;gap:16px;margin-bottom:16px">
+    <div class="card" style="margin:0">
+      <h2>Monthly Inflow</h2>
+      <div class="chart-wrap" style="height:180px"><canvas id="overviewMom"></canvas></div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text2)">
+        Apr peak 128 &rarr; Jul dip 88 &rarr; Sep on pace for 130+<br>
+        <span style="color:var(--red)">&#9650;</span> Summer &rsquo;26 release: Billing Batch Scheduler failures spike (4 accounts independently named it)
+      </div>
+    </div>
+    <div class="card" style="margin:0">
+      <h2>Top Problem Areas <span style="font-size:10px;font-weight:400;color:var(--text2)">(from case subjects — not engineer tags)</span></h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div style="background:#ffd7d5;border-radius:6px;padding:10px 12px;cursor:pointer" onclick="show(7)">
+          <div style="font-size:20px;font-weight:700;color:var(--red)">105</div>
+          <div style="font-size:11px;font-weight:600;margin-top:2px">Invoice Generation Failures</div>
+          <div style="font-size:10px;color:var(--text2);margin-top:3px">Not generating · batch errors · quota failures</div>
+        </div>
+        <div style="background:#fff3cd;border-radius:6px;padding:10px 12px;cursor:pointer" onclick="show(7)">
+          <div style="font-size:20px;font-weight:700;color:var(--yellow)">67</div>
+          <div style="font-size:11px;font-weight:600;margin-top:2px">Tax Calculation Wrong</div>
+          <div style="font-size:10px;color:var(--text2);margin-top:3px">EMEA/locale concentrated · Avalara + OOTB</div>
+        </div>
+        <div style="background:#fff3cd;border-radius:6px;padding:10px 12px;cursor:pointer" onclick="show(7)">
+          <div style="font-size:20px;font-weight:700;color:var(--yellow)">62</div>
+          <div style="font-size:11px;font-weight:600;margin-top:2px">Payment Processing</div>
+          <div style="font-size:10px;color:var(--text2);margin-top:3px">Gateway setup · batch stuck · Dunning</div>
+        </div>
+        <div style="background:#fff3cd;border-radius:6px;padding:10px 12px;cursor:pointer" onclick="show(7)">
+          <div style="font-size:20px;font-weight:700;color:var(--yellow)">57</div>
+          <div style="font-size:11px;font-weight:600;margin-top:2px">Billing Batch Scheduler</div>
+          <div style="font-size:10px;color:var(--text2);margin-top:3px">Stuck · silent fail · Summer &rsquo;26 regression</div>
+        </div>
+        <div style="background:#fff3cd;border-radius:6px;padding:10px 12px;cursor:pointer" onclick="show(7)">
+          <div style="font-size:20px;font-weight:700;color:var(--yellow)">57</div>
+          <div style="font-size:11px;font-weight:600;margin-top:2px">Billing Schedule Not Created</div>
+          <div style="font-size:10px;color:var(--text2);margin-top:3px">On order activation · renewal · API failures</div>
+        </div>
+        <div style="background:#f6f8fa;border-radius:6px;padding:10px 12px;cursor:pointer" onclick="show(7)">
+          <div style="font-size:20px;font-weight:700;color:var(--text2)">38</div>
+          <div style="font-size:11px;font-weight:600;margin-top:2px">Usage Billing Failures</div>
+          <div style="font-size:10px;color:var(--text2);margin-top:3px">Summaries not created · tier calc wrong</div>
+        </div>
+        <div style="background:#f6f8fa;border-radius:6px;padding:10px 12px;cursor:pointer" onclick="show(7)">
+          <div style="font-size:20px;font-weight:700;color:var(--text2)">35</div>
+          <div style="font-size:11px;font-weight:600;margin-top:2px">Renewal / Cancel / Amend</div>
+          <div style="font-size:10px;color:var(--text2);margin-top:3px">Evergreen rebilling · cancel not stopping</div>
+        </div>
+        <div style="background:#f6f8fa;border-radius:6px;padding:10px 12px;cursor:pointer" onclick="show(7)">
+          <div style="font-size:20px;font-weight:700;color:var(--text2)">35</div>
+          <div style="font-size:11px;font-weight:600;margin-top:2px">Credit Memo Failures</div>
+          <div style="font-size:10px;color:var(--text2);margin-top:3px">Create · apply · void · error status</div>
+        </div>
+        <div style="background:#f6f8fa;border-radius:6px;padding:10px 12px;cursor:pointer" onclick="show(7)">
+          <div style="font-size:20px;font-weight:700;color:var(--text2)">21</div>
+          <div style="font-size:11px;font-weight:600;margin-top:2px">Transaction Journal / GL</div>
+          <div style="font-size:10px;color:var(--text2);margin-top:3px">TJs not created · deadlock · stuck Pending</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 4: Bug registry snapshot + account heat -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+    <div class="card" style="margin:0">
+      <h2>Bug &amp; Investigation Snapshot <span style="font-size:10px;font-weight:400;color:var(--text2)">(102 W-numbers)</span></h2>
+      <table>
+        <thead><tr><th>Category</th><th>Count</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr style="background:#ffd7d5"><td><strong>Bugs — New (unfixed)</strong></td><td><span style="color:var(--red);font-weight:700">6</span></td><td>Confirmed defects, no patch shipped</td></tr>
+          <tr><td>Bugs — Fixed / Closed</td><td>30</td><td>Patch shipped — verify cases resolved</td></tr>
+          <tr><td>Bugs — Won't Fix / Duplicate / Not a Bug</td><td>4</td><td>Engineering closed without fix</td></tr>
+          <tr style="background:#ffd7d5"><td><strong>Investigations → New Bug Logged</strong></td><td><span style="color:var(--red);font-weight:700">18</span></td><td>Confirmed defect, linked bug to track</td></tr>
+          <tr style="background:#fff8c5"><td><strong>Investigations → Feature Request</strong></td><td>8</td><td>Customers filing cases for missing capability</td></tr>
+          <tr style="background:#fff8c5"><td><strong>Investigations → No Fix WAD</strong></td><td>8</td><td>By-design behavior generating repeat cases</td></tr>
+          <tr><td>Investigations → Resolved w/o code</td><td>8</td><td>Config/doc fix — knowledge article candidate</td></tr>
+          <tr><td>Investigations → Internal tools only</td><td>4</td><td>Customer can't self-serve — platform gap</td></tr>
+          <tr style="background:#ddf4ff"><td><strong>Active / Acknowledged (SI)</strong></td><td><span style="color:var(--accent);font-weight:700">2</span></td><td>W-24286890 · W-24301325 (both Deloitte)</td></tr>
+          <tr><td>User Stories</td><td>16</td><td>Engineering work items linked to cases</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card" style="margin:0">
+      <h2>Account Heat Map <span style="font-size:10px;font-weight:400;color:var(--text2)">(top 12 by risk signal)</span></h2>
+      <table>
+        <thead><tr><th>Account</th><th>Cases</th><th>Open S1</th><th>Aged</th><th>GUS</th><th>Signal</th></tr></thead>
+        <tbody>
+          <tr style="background:#ffd7d5"><td><strong>ECi</strong></td><td>35</td><td><span style="color:var(--red);font-weight:700">2</span></td><td>2</td><td>&#10003;</td><td><span class="badge s1">CRITICAL</span></td></tr>
+          <tr style="background:#ffd7d5"><td><strong>PwC</strong> <span style="font-size:9px;color:var(--purple)">[P]</span></td><td>16</td><td><span style="color:var(--red);font-weight:700">2</span></td><td>1</td><td>&mdash;</td><td><span class="badge s1">CRITICAL</span></td></tr>
+          <tr style="background:#ffd7d5"><td><strong>Bluvium Inc</strong> <span style="font-size:9px;color:var(--purple)">[P]</span></td><td>32</td><td><span style="color:var(--red);font-weight:700">1</span></td><td>2</td><td>&mdash;</td><td><span class="badge s1">ACTIVE S1</span></td></tr>
+          <tr style="background:#fff8c5"><td><strong>AI inside Inc.</strong></td><td>20</td><td>0</td><td><span style="color:var(--red);font-weight:700">10</span></td><td>&#10003;</td><td><span class="badge s2">AGED</span></td></tr>
+          <tr style="background:#fff8c5"><td><strong>Veeam Software</strong></td><td>6</td><td>0</td><td>1</td><td>&#10003;</td><td><span class="badge s2">38d OPEN</span></td></tr>
+          <tr style="background:#fff8c5"><td><strong>Deloitte (×2)</strong></td><td>4</td><td>0</td><td>0</td><td>&#10003;</td><td><span class="badge s2">2 ACTIVE SI</span></td></tr>
+          <tr style="background:#fff8c5"><td><strong>WebPT.com</strong></td><td>16</td><td>0</td><td>1</td><td>&#10003;</td><td><span class="badge s2">&#9650; SEP SURGE</span></td></tr>
+          <tr style="background:#fff8c5"><td><strong>BC-data</strong></td><td>13</td><td>0</td><td>0</td><td>&#10003;</td><td><span class="badge s2">&#9650; SEP SURGE</span></td></tr>
+          <tr><td><strong>SHIFTLOGIC</strong> <span style="font-size:9px;color:var(--purple)">[P]</span></td><td>15</td><td>1*</td><td>0</td><td>&#10003;</td><td><span class="badge s3">PERSISTENT</span></td></tr>
+          <tr><td><strong>JTL-Software</strong></td><td>13</td><td>0</td><td>0</td><td>&#10003;</td><td><span class="badge s3">RESURGING</span></td></tr>
+          <tr><td><strong>S&amp;P</strong></td><td>34</td><td>0</td><td>5</td><td>&#10003;</td><td><span class="badge s4">STABLE</span></td></tr>
+          <tr><td><strong>Qualifacts</strong></td><td>11</td><td>0</td><td>0</td><td>&#10003;</td><td><span class="badge s4">WATCH</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:6px;font-size:10px;color:var(--text2)">* SHIFTLOGIC S1 at Solution Provided status &nbsp;|&nbsp; [P] = Partner Premier</div>
+    </div>
+  </div>
+
+  <!-- Row 4b: Unique accounts + new account velocity -->
+  <div class="card" style="margin-bottom:16px">
+    <h2>Unique Accounts &amp; New Account Velocity</h2>
+    <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-bottom:12px">
+      <div style="text-align:center;background:var(--bg2);border-radius:6px;padding:8px 4px">
+        <div style="font-size:16px;font-weight:700;color:var(--accent)">52</div>
+        <div style="font-size:10px;color:var(--text2)">Feb<br><span style="color:var(--green)">52 new</span></div>
+      </div>
+      <div style="text-align:center;background:var(--bg2);border-radius:6px;padding:8px 4px">
+        <div style="font-size:16px;font-weight:700;color:var(--accent)">67</div>
+        <div style="font-size:10px;color:var(--text2)">Mar<br><span style="color:var(--green)">45 new</span></div>
+      </div>
+      <div style="text-align:center;background:var(--bg2);border-radius:6px;padding:8px 4px">
+        <div style="font-size:16px;font-weight:700;color:var(--accent)">65</div>
+        <div style="font-size:10px;color:var(--text2)">Apr<br><span style="color:var(--green)">31 new</span></div>
+      </div>
+      <div style="text-align:center;background:var(--bg2);border-radius:6px;padding:8px 4px">
+        <div style="font-size:16px;font-weight:700;color:var(--accent)">59</div>
+        <div style="font-size:10px;color:var(--text2)">May<br><span style="color:var(--yellow)">19 new</span></div>
+      </div>
+      <div style="text-align:center;background:var(--bg2);border-radius:6px;padding:8px 4px">
+        <div style="font-size:16px;font-weight:700;color:var(--accent)">71</div>
+        <div style="font-size:10px;color:var(--text2)">Jun<br><span style="color:var(--yellow)">28 new</span></div>
+      </div>
+      <div style="text-align:center;background:var(--bg2);border-radius:6px;padding:8px 4px">
+        <div style="font-size:16px;font-weight:700;color:var(--accent)">48</div>
+        <div style="font-size:10px;color:var(--text2)">Jul<br><span style="color:var(--text2)">16 new</span></div>
+      </div>
+      <div style="text-align:center;background:var(--bg2);border-radius:6px;padding:8px 4px">
+        <div style="font-size:16px;font-weight:700;color:var(--accent)">52</div>
+        <div style="font-size:10px;color:var(--text2)">Aug<br><span style="color:var(--text2)">18 new</span></div>
+      </div>
+      <div style="text-align:center;background:#ddf4ff;border-radius:6px;padding:8px 4px;border:1px solid #54aeff">
+        <div style="font-size:16px;font-weight:700;color:var(--accent)">58</div>
+        <div style="font-size:10px;color:var(--text2)">Sep*<br><span style="color:var(--accent);font-weight:600">21 new</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:12px">
+      <div>
+        <strong style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.4px">Key signals</strong>
+        <ul style="margin-top:6px;padding-left:16px;line-height:1.9">
+          <li><strong>230 unique accounts</strong> across full Feb–Sep period</li>
+          <li>Feb–Mar: massive onboarding wave — <strong>97 new accounts</strong> in 2 months (many Partner-led implementations)</li>
+          <li>New account rate stabilised May–Aug at 16–28/month — steady adoption</li>
+          <li><strong>Sep at 21 new accounts</strong> (partial month) — pace is back up, new accounts include Caterpillar-Olympian, iCIMS, Kaseya US LLC, NEXTDC, Apcoa Parking</li>
+          <li>Jun unique accounts peak (71) driven by partner accounts hitting feature limits mid-implementation</li>
+          <li>Most new Sep accounts: Standard / Premier tier — not Partner-led</li>
+        </ul>
+      </div>
+      <div>
+        <strong style="font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.4px">Notable new Sep accounts</strong>
+        <table style="margin-top:6px">
+          <thead><tr><th>Account</th><th>Plan</th><th>Signal</th></tr></thead>
+          <tbody>
+            <tr><td>Caterpillar - Olympian</td><td>Signature Success</td><td>2 open cases immediately</td></tr>
+            <tr><td>Kaseya US, LLC</td><td>Signature Success</td><td>Red Account, open S4</td></tr>
+            <tr><td>Apcoa Parking</td><td>Standard</td><td>Batch payment DML exception</td></tr>
+            <tr><td>iCIMS, Inc.</td><td>Signature Success</td><td>Aug entrant, 1 case</td></tr>
+            <tr><td>NEXTDC Limited</td><td>Premier+</td><td>1 case, monitoring</td></tr>
+            <tr><td>ABC Home &amp; Commercial</td><td>Premier</td><td>Red Account, open S3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 5: Key structural signals -->
+  <div class="card" style="margin:0">
+    <h2>What the data shows — structural signals</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:12px;line-height:1.7">
+      <div>
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:.4px">Volume</div>
+        &bull; 886 cases · avg 110/mo · never dipped below 88<br>
+        &bull; Jul dip (88) recovered fully — not structural<br>
+        &bull; Sep partial (104) on pace to exceed Apr peak (128)<br>
+        &bull; 57% of case subjects describe functional failures, not how-to questions — RCAT "User Education" tag does not reflect the subject text
+      </div>
+      <div>
+        <div style="font-weight:700;color:var(--red);margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:.4px">Defects</div>
+        &bull; 10.2% GUS link rate is a floor — most failures closed without filing GUS<br>
+        &bull; Bluvium: 15 Sev-1s, zero GUS filed — anomalous<br>
+        &bull; 8 WAD investigations generating repeat cases (same design decision, different customers)<br>
+        &bull; 8 Feature Request investigations — customers filing support tickets for missing features<br>
+        &bull; Summer &rsquo;26 Billing Batch Scheduler regression: 4 independent accounts named it
+      </div>
+      <div>
+        <div style="font-weight:700;color:var(--yellow);margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:.4px">Patterns</div>
+        &bull; Billing Batch Scheduler: #1 named technical object (57 cases, 34 explicit mentions)<br>
+        &bull; Tax failures EMEA/locale-concentrated — not a global issue<br>
+        &bull; Evergreen billing after cancellation: 17 cases, customers being charged post-cancel<br>
+        &bull; Winter &rsquo;27 signals appearing in Sep data (2 cases — Catch-Up Bill Run, custom field issue)<br>
+        &bull; <span style="color:var(--red)">Escalated field = FALSE on all 886 cases</span> — field is unused
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TAB 1: TOP 25 ACCOUNTS -->
 <div class="section active" id="s0">
   <div class="insight-box"><strong>PM Insight:</strong> 25 accounts drove 455 of 886 cases (51%). ECi leads with 35 total and 21 Sev-1s &mdash; 2 still open as of Sep 25. PwC opened 2 simultaneous Sev-1s on Sep 24 (Transaction Management). Bluvium Inc has 15 Sev-1 cases (all but 1 closed), active Sev-1 open Sep 23. Qualifacts and SHIFTLOGIC both Red-flagged accounts with high Sev-1 concentration.</div>
   <div class="card">
@@ -191,7 +426,7 @@
   </div>
 </div>
 
-<!-- TAB 1: MONTH OVER MONTH -->
+<!-- TAB 2: MONTH OVER MONTH -->
 <div class="section" id="s1">
   <div class="insight-box"><strong>PM Insight:</strong> Total inflow peaked in Apr (128 cases) and normalized to ~104/mo. Sep (partial, through Sep 24) already at 104 &mdash; on pace for 130+ if trend continues. <strong>Direct customer accelerators:</strong> ECi (0 Feb &rarr; 10 Aug, still active), WebPT (0&ndash;1/mo until Jul, 7 in Sep), BC-data (0&ndash;1/mo until Aug, 6 in Sep). <strong>Partner accounts</strong> (Cloudity, Thunder, Bluvium, PwC, Aleysian, SHIFTLOGIC, DynaCap) are grouped at the bottom — their volume reflects implementation-phase activity. Kaseya (Signature) resolved cleanly after onboarding peak Feb–Mar.</div>
   <div class="card">
@@ -236,12 +471,29 @@
     <div style="margin-top:8px;font-size:11px;color:var(--text2)">* Sep = partial through Sep 24, 2026</div>
   </div>
   <div class="card">
-    <h2>Trend Lines &mdash; Selected Accounts</h2>
+    <h2>Trend Lines &mdash; Selected Accounts <span style="font-size:10px;font-weight:400;color:var(--purple)">Direct customers only — partners excluded</span></h2>
     <div class="chart-wrap" style="height:320px"><canvas id="momTopAccounts"></canvas></div>
+  </div>
+  <div class="card">
+    <h2>New Accounts Per Month <span style="font-size:10px;font-weight:400;color:var(--text2)">230 unique accounts total · first-time filers only</span></h2>
+    <table>
+      <thead><tr><th>Month</th><th>Cases</th><th>Unique Accts Active</th><th>New (first time)</th><th>Notable new accounts</th></tr></thead>
+      <tbody>
+        <tr style="background:#dafbe1"><td><strong>Feb 2026</strong></td><td>103</td><td>52</td><td><strong style="color:var(--green)">52</strong></td><td>S&amp;P, Kaseya, Capital One, Cloudity, Bluvium, PwC, SHIFTLOGIC, JTL, Conceal, Infor, Arthur Gallagher + 41 more</td></tr>
+        <tr style="background:#dafbe1"><td><strong>Mar 2026</strong></td><td>123</td><td>67</td><td><strong style="color:var(--green)">45</strong></td><td>ECi, Thunder, Aleysian, Digicert, Veeam, William Reed, BC-data, Bluebeam already in Feb — plus Haier, Equinix, CDK Global, Nextiva, Nissan</td></tr>
+        <tr><td><strong>Apr 2026</strong></td><td>128</td><td>65</td><td>31</td><td>AI inside Inc., Deloitte Consulting, Fisher &amp; Paykel, Qualifacts joined later (May), WebPT joined May — CNC Software, Global Blue, Intermax, Avalara</td></tr>
+        <tr><td><strong>May 2026</strong></td><td>113</td><td>59</td><td>19</td><td>Qualifacts (8 Sev-1s entered here), WebPT.com, Beta Analytic, Cash App, Telenet Group</td></tr>
+        <tr><td><strong>Jun 2026</strong></td><td>121</td><td>71</td><td>28</td><td>Sunbelt Rentals, ADT LLC, Leica Geosystems, ZF Friedrichshafen, WithSecure, Lisinski Law Firm, Wapice Oy — peak unique account month</td></tr>
+        <tr><td><strong>Jul 2026</strong></td><td>88</td><td>48</td><td>16</td><td>Syngenta, Milestone Systems, Common Application, Guidewire, Norweld Australia — lowest new account month</td></tr>
+        <tr><td><strong>Aug 2026</strong></td><td>106</td><td>52</td><td>18</td><td>S&amp;P Global Inc (separate from SFIN), iCIMS, HMH Education, Streets Heaver, Truckstop.com, Stack Intelligence</td></tr>
+        <tr style="background:#ddf4ff"><td><strong>Sep 2026*</strong></td><td>104</td><td>58</td><td><strong style="color:var(--accent)">21</strong></td><td>Caterpillar-Olympian, Kaseya US LLC (Red), Apcoa Parking, ABC Home (Red), NEXTDC, Definitive Healthcare, Veyor Digital (264 picklist)</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:8px;font-size:11px;color:var(--text2)">* Sep partial through Sep 24. Note: same company may appear under different org names (e.g. Kaseya - New Org vs Kaseya US, LLC; S&amp;P FINANCIAL SERVICES vs S&amp;P Global Inc).</div>
   </div>
 </div>
 
-<!-- TAB 2: BUG REGISTRY -->
+<!-- TAB 3: BUG REGISTRY -->
 <div class="section" id="s2">
   <div class="insight-box"><strong>PM Insight:</strong> 90 cases (10.2%) have GUS or Bug# links &mdash; covering 35 unique accounts and 80+ distinct W-numbers. Three W-numbers affect multiple customers: <strong>W-24088655</strong> (3 cases, 2 Sev-1s &mdash; 264 state/country picklist regression, ERR-33509 filed), <strong>W-24061982</strong> (3 cases, same root cause), <strong>W-23554160</strong> (2 cases &mdash; ECi go-live blocker, no ETA from engineering). 9 GUS-linked cases remain open.</div>
   <div class="stat-row">
@@ -371,7 +623,7 @@
   </div>
 </div>
 
-<!-- TAB 3: AGED & SWARM CASES -->
+<!-- TAB 4: AGED & SWARM CASES -->
 <div class="section" id="s3">
   <div class="insight-box"><strong>PM Insight:</strong> 91 cases aged &gt;20 days (10.3%). AI inside Inc. leads with 10 aged cases &mdash; oldest open is 474067997 at 74 days (Solution Provided, not yet closed). 9 cases still open with age &gt;20 days. Primary root cause: User Education (43 cases) and blank/unknown (30) &mdash; cases sit open waiting for customers to acknowledge answers. Product Bug accounts for only 5 of the 91 aged cases.</div>
   <div class="stat-row">
@@ -467,7 +719,7 @@
   </div>
 </div>
 
-<!-- TAB 4: OPEN CASES -->
+<!-- TAB 5: OPEN CASES -->
 <div class="section" id="s4">
   <div class="insight-box"><strong>PM Insight:</strong> 39 open cases as of Sep 24, 2026 (4.4% open rate). Active Sev-1s: ECi &times;2, PwC &times;2, Bluvium Inc &times;1, SHIFTLOGIC &times;1 (Solution Provided). ECi and PwC each have 2 simultaneous open Sev-1s. 12 cases have linked GUS investigations. Owner Divyanshu Tiwari holds two Sev-1s simultaneously (ECi 474663345 + Bluvium 474654995) &mdash; potential capacity risk.</div>
   <div class="stat-row">
@@ -527,7 +779,7 @@
   </div>
 </div>
 
-<!-- TAB 5: ISSUE CATEGORIZATION -->
+<!-- TAB 6: ISSUE CATEGORIZATION -->
 <div class="section" id="s5">
   <div class="insight-box"><strong>PM Insight:</strong> 57% of cases are &ldquo;Documentation or User Knowledge Issue&rdquo; &mdash; RCB&rsquo;s #1 support driver is customers not knowing how to use the product. Only 10% (85 cases) are confirmed product bugs. Invoicing-Billing Setup is the dominant feature area (371 cases, 42%). Tax cases (74) are consistently complex &mdash; Avalara adapter and OOTB tax calculation issues span EMEA, APAC, and JP customers. The 31% blank Case Cause field suggests RCAT/case-close discipline needs improvement.</div>
   <div class="grid2">
@@ -602,7 +854,7 @@
   </div>
 </div>
 
-<!-- TAB 6: VOC & ESCALATIONS -->
+<!-- TAB 7: VOC & ESCALATIONS -->
 <div class="section" id="s6">
   <div class="insight-box"><strong>PM Insight:</strong> The Escalated field is set to FALSE on all 886 cases &mdash; it is not being used. The real escalation signal is the Open Red Account flag (74 cases across 20 accounts) and dedicated Slack swarm channels. Key recurring VOC themes: billing batch reliability, invoice generation failures, billing schedule generation, tax calculation (especially EMEA/APAC locales), and the Payment field visibility gap (W-23554160).</div>
   <div class="warn-box"><strong>Data quality note:</strong> Escalated = 0 across all 886 cases. Red Account flag (74 cases) and swarm channel creation are the de-facto escalation signals. PM team should work with support leadership to ensure the Escalated field is set when a swarm channel opens &mdash; the field is currently meaningless as a data point.</div>
@@ -653,7 +905,7 @@
   </div>
 </div>
 
-<!-- TAB 7: SA ENGAGEMENT -->
+<!-- TAB 8: SA ENGAGEMENT -->
 <div class="section" id="s7">
   <div class="insight-box"><strong>PM Insight:</strong> Accounts needing most urgent SA attention: ECi (2 open Sev-1s, go-live risk), PwC (2 brand-new Sev-1s, no engineer engagement yet), Bluvium (open Sev-1, same owner as ECi). Secondary: AI inside Inc. (two 40-74d aged open cases to close), Veeam (38d open, high AOV), Deloitte x2 (both SIs just submitted). Sep accelerators (WebPT, BC-data, CNC Software) need proactive monitoring before they escalate.</div>
   <div class="card">
@@ -700,7 +952,7 @@
   </div>
 </div>
 
-<!-- TAB 8: ACCOUNT DEEP DIVES -->
+<!-- TAB 9: ACCOUNT DEEP DIVES -->
 <div class="section" id="s8">
   <div class="card">
     <h2>ECi &mdash; 35 cases, 21 Sev-1s, 2 open Sev-1s (highest priority)</h2>
@@ -747,7 +999,7 @@
   </div>
 </div>
 
-<!-- TAB 9: APPENDIX -->
+<!-- TAB 10: APPENDIX -->
 <div class="section" id="s9">
   <div class="card">
     <h2>Data Sources &amp; Methodology</h2>
@@ -804,6 +1056,15 @@ new Chart(document.getElementById('sevChart'), {
     datasets: [{ data: [129,384,177,196], backgroundColor: ['#cf222e','#d4a72c','#1a7f37','#8250df'], borderWidth: 2 }]
   },
   options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } } }
+});
+
+new Chart(document.getElementById('overviewMom'), {
+  type: 'bar',
+  data: {
+    labels: ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'],
+    datasets: [{ label: 'Cases', data: [103,123,128,113,121,88,106,104], backgroundColor: ['#0969da','#0969da','#cf222e','#0969da','#0969da','#1a7f37','#0969da','#d4a72c'], borderRadius: 3 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { font: { size: 10 } } }, x: { ticks: { font: { size: 10 } } } } }
 });
 
 new Chart(document.getElementById('momOverall'), {
