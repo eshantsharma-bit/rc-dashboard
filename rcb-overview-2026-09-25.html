@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCB Overview — Sep 25, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --sf-blue:    #0176D3;
+    --sf-dark:    #032D60;
+    --sf-mid:     #014486;
+    --sf-light:   #D8EDFF;
+    --sf-lighter: #EEF4FF;
+    --sf-border:  #B0D0F0;
+    --white:      #FFFFFF;
+    --bg:         #F3F6FB;
+    --text:       #032D60;
+    --text2:      #444F61;
+    --green:      #2E844A;
+    --green-bg:   #D4EDDA;
+    --red:        #BA0517;
+    --red-bg:     #FFE0E0;
+    --yellow:     #7A5C00;
+    --yellow-bg:  #FFF3CD;
+    --orange:     #A24B00;
+    --purple:     #5C3DC3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Salesforce Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; }
+
+  /* ── Header ── */
+  .page-header {
+    background: linear-gradient(135deg, var(--sf-dark) 0%, var(--sf-mid) 60%, var(--sf-blue) 100%);
+    color: var(--white); padding: 24px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,.18);
+  }
+  .page-header h1 { font-size: 22px; font-weight: 700; letter-spacing: -.3px; }
+  .page-header .sub { font-size: 12px; opacity: .8; margin-top: 4px; }
+  .cta-btn {
+    background: var(--white); color: var(--sf-blue); font-weight: 700;
+    padding: 10px 22px; border-radius: 4px; text-decoration: none; font-size: 13px;
+    border: none; cursor: pointer; white-space: nowrap;
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    transition: box-shadow .15s;
+  }
+  .cta-btn:hover { box-shadow: 0 3px 10px rgba(0,0,0,.22); }
+
+  /* ── Layout ── */
+  .page { max-width: 1320px; margin: 0 auto; padding: 24px 28px; }
+  .section-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .6px; color: var(--sf-blue); margin: 0 0 10px;
+    border-left: 3px solid var(--sf-blue); padding-left: 8px;
+  }
+  .mb16 { margin-bottom: 16px; }
+  .mb24 { margin-bottom: 24px; }
+
+  /* ── KPI tiles ── */
+  .kpi-row { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; }
+  .kpi {
+    background: var(--white); border: 1px solid var(--sf-border);
+    border-radius: 6px; padding: 14px 12px; text-align: center;
+    box-shadow: 0 1px 3px rgba(1,116,211,.07);
+  }
+  .kpi .val { font-size: 28px; font-weight: 800; line-height: 1; color: var(--sf-dark); }
+  .kpi .val.red   { color: var(--red); }
+  .kpi .val.blue  { color: var(--sf-blue); }
+  .kpi .val.yel   { color: var(--yellow); }
+  .kpi .val.grn   { color: var(--green); }
+  .kpi .lbl { font-size: 10px; color: var(--text2); margin-top: 5px; line-height: 1.4; }
+
+  /* ── Alert strip ── */
+  .alert-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .alert-card {
+    border-radius: 6px; padding: 14px 16px; font-size: 12px; line-height: 1.6;
+    border-left: 4px solid; position: relative;
+  }
+  .alert-card.critical { background: var(--red-bg);    border-color: var(--red);   }
+  .alert-card.warn     { background: var(--yellow-bg); border-color: #C99300;      }
+  .alert-card .alert-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .dot.red { background: var(--red); }
+  .dot.yel { background: #C99300; }
+  .view-link { font-size: 10px; color: var(--sf-blue); text-decoration: none; font-weight: 600; }
+  .view-link:hover { text-decoration: underline; }
+
+  /* ── Main 2-col grid ── */
+  .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 16px; align-items: start; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--white); border: 1px solid var(--sf-border);
+    border-radius: 6px; padding: 16px;
+    box-shadow: 0 1px 3px rgba(1,116,211,.06);
+  }
+  .card h2 { font-size: 13px; font-weight: 700; color: var(--sf-dark); margin-bottom: 12px; }
+  .chart-wrap { position: relative; height: 210px; }
+
+  /* ── Theme tiles ── */
+  .theme-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .theme-tile { border-radius: 5px; padding: 10px 11px; }
+  .theme-tile .t-num { font-size: 22px; font-weight: 800; line-height: 1; }
+  .theme-tile .t-name { font-size: 11px; font-weight: 600; margin-top: 3px; line-height: 1.3; }
+  .theme-tile .t-sub { font-size: 10px; margin-top: 3px; opacity: .75; line-height: 1.3; }
+  .tier-red    { background: #FFE8E8; } .tier-red .t-num    { color: var(--red);    }
+  .tier-yellow { background: var(--yellow-bg); } .tier-yellow .t-num { color: var(--yellow); }
+  .tier-blue   { background: var(--sf-lighter); } .tier-blue .t-num   { color: var(--sf-blue); }
+  .tier-gray   { background: #F0F4F8; } .tier-gray .t-num   { color: var(--text2);  }
+
+  /* ── Bug / Account tables ── */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: var(--sf-lighter); text-align: left; padding: 7px 10px;
+       font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: .4px;
+       color: var(--sf-dark); border-bottom: 2px solid var(--sf-border); }
+  td { padding: 6px 10px; border-bottom: 1px solid #E8F0FA; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--sf-lighter); }
+  .badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+  .badge.crit { background: var(--red-bg);    color: var(--red);    }
+  .badge.warn { background: var(--yellow-bg); color: var(--yellow); }
+  .badge.watch{ background: var(--sf-lighter);color: var(--sf-blue);}
+  .badge.stable{ background: var(--green-bg); color: var(--green);  }
+
+  /* ── Bottom grid ── */
+  .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* ── New acct tiles ── */
+  .acct-row { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; margin-bottom: 10px; }
+  .acct-tile { text-align: center; background: var(--sf-lighter); border-radius: 5px; padding: 8px 4px; }
+  .acct-tile .a-num { font-size: 16px; font-weight: 800; color: var(--sf-dark); }
+  .acct-tile .a-mo  { font-size: 10px; color: var(--text2); }
+  .acct-tile .a-new { font-size: 10px; font-weight: 600; }
+  .acct-tile.active { background: var(--sf-light); border: 1px solid var(--sf-blue); }
+
+  /* ── Structural signals ── */
+  .signals { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; font-size: 12px; line-height: 1.75; }
+  .sig-head { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
+  .sig-vol  .sig-head { color: var(--sf-blue); }
+  .sig-def  .sig-head { color: var(--red);     }
+  .sig-pat  .sig-head { color: var(--yellow);  }
+
+  /* ── Footer ── */
+  .page-footer {
+    background: var(--sf-dark); color: rgba(255,255,255,.7);
+    font-size: 11px; padding: 14px 32px; text-align: center; margin-top: 32px;
+  }
+  .page-footer a { color: rgba(255,255,255,.9); }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="page-header">
+  <div>
+    <h1>Revenue Cloud Billing — Issue Overview</h1>
+    <div class="sub">886 cases &nbsp;·&nbsp; Feb 1 – Sep 24, 2026 &nbsp;·&nbsp; Product: Revenue Cloud (Core)-Billing &amp; Invoicing &nbsp;·&nbsp; Source: OrgCS export</div>
+  </div>
+  <a href="rcb-issue-report-2026-09-25.html" class="cta-btn">&#128203; Open Full Report &rarr;</a>
+</div>
+
+<div class="page">
+
+  <!-- ── KPI strip ── -->
+  <div class="section-title mb16">Key Numbers</div>
+  <div class="kpi-row mb24">
+    <div class="kpi"><div class="val blue">886</div><div class="lbl">Total Cases<br>Feb–Sep 24</div></div>
+    <div class="kpi"><div class="val blue">110</div><div class="lbl">Avg Cases<br>per Month</div></div>
+    <div class="kpi"><div class="val red">129</div><div class="lbl">Sev-1 Cases<br>(14.6%)</div></div>
+    <div class="kpi"><div class="val red">6</div><div class="lbl">Open Sev-1s<br>Right Now</div></div>
+    <div class="kpi"><div class="val yel">39</div><div class="lbl">Total Open<br>Cases</div></div>
+    <div class="kpi"><div class="val yel">91</div><div class="lbl">Cases Aged<br>&gt;20 Days</div></div>
+    <div class="kpi"><div class="val">230</div><div class="lbl">Unique<br>Accounts</div></div>
+    <div class="kpi"><div class="val">102</div><div class="lbl">GUS W-numbers<br>(37 bugs)</div></div>
+  </div>
+
+  <!-- ── Alert strip ── -->
+  <div class="section-title mb16">Active Alerts</div>
+  <div class="alert-strip mb24">
+    <div class="alert-card critical">
+      <div class="alert-title"><span class="dot red"></span>ECi — 2 Open Sev-1s</div>
+      W-23554160 go-live blocker: perf tests failed Sep 23, no ETA. Case 474663345 opened Sep 24 — unassigned. 35 total cases, 21 Sev-1s: highest in dataset.
+      <br><a href="rcb-issue-report-2026-09-25.html" class="view-link">&#8599; View in full report</a>
+    </div>
+    <div class="alert-card critical">
+      <div class="alert-title"><span class="dot red"></span>PwC — 2 Sev-1s Sep 24</div>
+      Both Transaction Management, both Partner Premier, 30 min apart. No engineer assigned. Sep volume: 7 cases from near-zero baseline.
+      <br><a href="rcb-issue-report-2026-09-25.html" class="view-link">&#8599; View in full report</a>
+    </div>
+    <div class="alert-card warn">
+      <div class="alert-title"><span class="dot yel"></span>Deloitte — 2 SI Bugs Acknowledged</div>
+      W-24286890 (Consulting, Sep 24) + W-24301325 (Global, Sep 25). Engineering formally acknowledged both defects in the same week.
+      <br><a href="rcb-issue-report-2026-09-25.html" class="view-link">&#8599; View in full report</a>
+    </div>
+  </div>
+
+  <!-- ── Main grid: chart + themes ── -->
+  <div class="section-title mb16">Volume &amp; Top Problem Areas</div>
+  <div class="main-grid mb24">
+    <div class="card" style="margin:0">
+      <h2>Monthly Inflow</h2>
+      <div class="chart-wrap"><canvas id="momChart"></canvas></div>
+      <div style="margin-top:10px;font-size:11px;color:var(--text2);line-height:1.6">
+        Apr peak 128 &rarr; Jul dip 88 &rarr; Sep partial on pace for 130+<br>
+        <span style="color:var(--red);font-weight:600">&#9650;</span> Summer &rsquo;26 release: Billing Batch Scheduler regression — 4 independent accounts named it in subject text
+      </div>
+    </div>
+    <div class="card" style="margin:0">
+      <h2>Top Problem Areas <span style="font-size:10px;font-weight:400;color:var(--text2)">(bottom-up from case subjects — not engineer tags)</span></h2>
+      <div class="theme-grid">
+        <div class="theme-tile tier-red">
+          <div class="t-num">105</div>
+          <div class="t-name">Invoice Generation Failures</div>
+          <div class="t-sub">Not generating · batch errors · quota failures</div>
+        </div>
+        <div class="theme-tile tier-yellow">
+          <div class="t-num">67</div>
+          <div class="t-name">Tax Calculation Wrong</div>
+          <div class="t-sub">EMEA/locale · Avalara + OOTB</div>
+        </div>
+        <div class="theme-tile tier-yellow">
+          <div class="t-num">62</div>
+          <div class="t-name">Payment Processing</div>
+          <div class="t-sub">Gateway setup · batch stuck · Dunning</div>
+        </div>
+        <div class="theme-tile tier-yellow">
+          <div class="t-num">57</div>
+          <div class="t-name">Billing Batch Scheduler</div>
+          <div class="t-sub">Stuck · silent fail · Summer &rsquo;26 regression</div>
+        </div>
+        <div class="theme-tile tier-yellow">
+          <div class="t-num">57</div>
+          <div class="t-name">Billing Schedule Not Created</div>
+          <div class="t-sub">On order activation · renewal · API</div>
+        </div>
+        <div class="theme-tile tier-gray">
+          <div class="t-num">38</div>
+          <div class="t-name">Usage Billing Failures</div>
+          <div class="t-sub">Summaries not created · tier calc wrong</div>
+        </div>
+        <div class="theme-tile tier-gray">
+          <div class="t-num">35</div>
+          <div class="t-name">Renewal / Cancel / Amend</div>
+          <div class="t-sub">Evergreen rebilling · cancel not stopping</div>
+        </div>
+        <div class="theme-tile tier-gray">
+          <div class="t-num">35</div>
+          <div class="t-name">Credit Memo Failures</div>
+          <div class="t-sub">Create · apply · void · error status</div>
+        </div>
+        <div class="theme-tile tier-blue">
+          <div class="t-num">21</div>
+          <div class="t-name">Transaction Journal / GL</div>
+          <div class="t-sub">TJs not created · deadlock · stuck Pending</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Bottom: Account heat + Bug snapshot ── -->
+  <div class="section-title mb16">Account &amp; Defect Health</div>
+  <div class="bottom-grid mb24">
+    <div class="card" style="margin:0">
+      <h2>Account Heat Map <span style="font-size:10px;font-weight:400;color:var(--text2)">(top 12 by risk signal)</span></h2>
+      <table>
+        <thead>
+          <tr><th>Account</th><th>Cases</th><th>Open S1</th><th>Aged</th><th>GUS</th><th>Signal</th></tr>
+        </thead>
+        <tbody>
+          <tr style="background:#FFF0F0"><td><strong>ECi</strong></td><td>35</td><td style="color:var(--red);font-weight:700">2</td><td>2</td><td>&#10003;</td><td><span class="badge crit">CRITICAL</span></td></tr>
+          <tr style="background:#FFF0F0"><td><strong>PwC</strong> <span style="font-size:9px;color:var(--purple)">[P]</span></td><td>16</td><td style="color:var(--red);font-weight:700">2</td><td>1</td><td>—</td><td><span class="badge crit">CRITICAL</span></td></tr>
+          <tr style="background:#FFF0F0"><td><strong>Bluvium Inc</strong> <span style="font-size:9px;color:var(--purple)">[P]</span></td><td>32</td><td style="color:var(--red);font-weight:700">1</td><td>2</td><td>—</td><td><span class="badge crit">ACTIVE S1</span></td></tr>
+          <tr style="background:#FFFBEA"><td><strong>AI inside Inc.</strong></td><td>20</td><td>0</td><td style="color:var(--red);font-weight:700">10</td><td>&#10003;</td><td><span class="badge warn">AGED</span></td></tr>
+          <tr style="background:#FFFBEA"><td><strong>Veeam Software</strong></td><td>6</td><td>0</td><td>1</td><td>&#10003;</td><td><span class="badge warn">38d OPEN</span></td></tr>
+          <tr style="background:#FFFBEA"><td><strong>Deloitte (×2)</strong></td><td>4</td><td>0</td><td>0</td><td>&#10003;</td><td><span class="badge warn">2 ACTIVE SI</span></td></tr>
+          <tr style="background:#FFFBEA"><td><strong>WebPT.com</strong></td><td>16</td><td>0</td><td>1</td><td>&#10003;</td><td><span class="badge warn">&#9650; SEP SURGE</span></td></tr>
+          <tr style="background:#FFFBEA"><td><strong>BC-data</strong></td><td>13</td><td>0</td><td>0</td><td>&#10003;</td><td><span class="badge warn">&#9650; SEP SURGE</span></td></tr>
+          <tr><td><strong>SHIFTLOGIC</strong> <span style="font-size:9px;color:var(--purple)">[P]</span></td><td>15</td><td>1*</td><td>0</td><td>&#10003;</td><td><span class="badge watch">PERSISTENT</span></td></tr>
+          <tr><td><strong>JTL-Software</strong></td><td>13</td><td>0</td><td>0</td><td>&#10003;</td><td><span class="badge watch">RESURGING</span></td></tr>
+          <tr><td><strong>S&amp;P</strong></td><td>34</td><td>0</td><td>5</td><td>&#10003;</td><td><span class="badge stable">STABLE</span></td></tr>
+          <tr><td><strong>Qualifacts</strong></td><td>11</td><td>0</td><td>0</td><td>&#10003;</td><td><span class="badge watch">WATCH</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:6px;font-size:10px;color:var(--text2)">* SHIFTLOGIC S1 at Solution Provided &nbsp;|&nbsp; [P] = Partner Premier</div>
+    </div>
+    <div class="card" style="margin:0">
+      <h2>Bug &amp; Investigation Snapshot <span style="font-size:10px;font-weight:400;color:var(--text2)">(102 W-numbers)</span></h2>
+      <table>
+        <thead><tr><th>Category</th><th>Count</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr style="background:#FFF0F0"><td><strong>Bugs — New (unfixed)</strong></td><td style="color:var(--red);font-weight:700">6</td><td>Confirmed defects, no patch shipped</td></tr>
+          <tr><td>Bugs — Fixed / Closed</td><td>30</td><td>Patch shipped — verify cases resolved</td></tr>
+          <tr><td>Bugs — Won't Fix / Dup / NAB</td><td>4</td><td>Engineering closed without fix</td></tr>
+          <tr style="background:#FFF0F0"><td><strong>Investigations → New Bug</strong></td><td style="color:var(--red);font-weight:700">18</td><td>Confirmed defect, bug filed to track</td></tr>
+          <tr style="background:#FFFBEA"><td><strong>Investigations → Feature Request</strong></td><td>8</td><td>Customers filing support for missing capability</td></tr>
+          <tr style="background:#FFFBEA"><td><strong>Investigations → WAD No Fix</strong></td><td>8</td><td>By-design behavior generating repeat cases</td></tr>
+          <tr><td>Investigations → Resolved w/o code</td><td>8</td><td>Config/doc fix — KA candidate</td></tr>
+          <tr><td>Investigations → Internal tools only</td><td>4</td><td>Customer can't self-serve — platform gap</td></tr>
+          <tr style="background:var(--sf-lighter)"><td><strong>Active SI (Acknowledged)</strong></td><td style="color:var(--sf-blue);font-weight:700">2</td><td>W-24286890 · W-24301325 (both Deloitte)</td></tr>
+          <tr><td>User Stories</td><td>16</td><td>Engineering work items linked to cases</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;background:var(--sf-lighter);border-radius:4px;padding:9px 12px;font-size:11px;color:var(--text2);line-height:1.6">
+        <strong style="color:var(--sf-dark)">Note:</strong> 10.2% GUS link rate is a floor — most failures closed without filing a W-number. 26 of 46 investigations resolved without a bug = enablement/docs/roadmap opportunities.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── New account velocity ── -->
+  <div class="section-title mb16">New Account Velocity</div>
+  <div class="card mb24">
+    <h2 style="margin-bottom:14px">Unique Accounts per Month &amp; First-Time Filers <span style="font-size:10px;font-weight:400;color:var(--text2)">230 total unique accounts Feb–Sep</span></h2>
+    <div class="acct-row">
+      <div class="acct-tile">
+        <div class="a-num">52</div>
+        <div class="a-mo">Feb</div>
+        <div class="a-new" style="color:var(--green)">52 new</div>
+      </div>
+      <div class="acct-tile">
+        <div class="a-num">67</div>
+        <div class="a-mo">Mar</div>
+        <div class="a-new" style="color:var(--green)">45 new</div>
+      </div>
+      <div class="acct-tile">
+        <div class="a-num">65</div>
+        <div class="a-mo">Apr</div>
+        <div class="a-new" style="color:var(--green)">31 new</div>
+      </div>
+      <div class="acct-tile">
+        <div class="a-num">59</div>
+        <div class="a-mo">May</div>
+        <div class="a-new" style="color:var(--yellow)">19 new</div>
+      </div>
+      <div class="acct-tile">
+        <div class="a-num">71</div>
+        <div class="a-mo">Jun</div>
+        <div class="a-new" style="color:var(--yellow)">28 new</div>
+      </div>
+      <div class="acct-tile">
+        <div class="a-num">48</div>
+        <div class="a-mo">Jul</div>
+        <div class="a-new" style="color:var(--text2)">16 new</div>
+      </div>
+      <div class="acct-tile">
+        <div class="a-num">52</div>
+        <div class="a-mo">Aug</div>
+        <div class="a-new" style="color:var(--text2)">18 new</div>
+      </div>
+      <div class="acct-tile active">
+        <div class="a-num">58</div>
+        <div class="a-mo">Sep*</div>
+        <div class="a-new" style="color:var(--sf-blue)">21 new</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:12px">
+      <div>
+        <ul style="padding-left:16px;line-height:1.9;color:var(--text2)">
+          <li><strong style="color:var(--text)">Feb–Mar onboarding wave:</strong> 97 new accounts in 2 months — many partner-led implementations</li>
+          <li><strong style="color:var(--text)">Rate stabilised May–Aug</strong> at 16–28/month — steady adoption</li>
+          <li><strong style="color:var(--text)">Sep pace rebounding</strong> (21 new, partial month) — includes Caterpillar-Olympian, iCIMS, Kaseya US LLC, NEXTDC</li>
+          <li><strong style="color:var(--text)">Jun unique-account peak (71)</strong> driven by partner accounts hitting feature limits mid-implementation</li>
+        </ul>
+      </div>
+      <div>
+        <table>
+          <thead><tr><th>Notable New Sep Accounts</th><th>Plan</th><th>Signal</th></tr></thead>
+          <tbody>
+            <tr><td>Caterpillar - Olympian</td><td>Signature Success</td><td>2 open cases immediately</td></tr>
+            <tr><td>Kaseya US, LLC</td><td>Signature Success</td><td>Red Account, open S4</td></tr>
+            <tr><td>Apcoa Parking</td><td>Standard</td><td>Batch payment DML exception</td></tr>
+            <tr><td>iCIMS, Inc.</td><td>Signature Success</td><td>1 case, monitoring</td></tr>
+            <tr><td>NEXTDC Limited</td><td>Premier+</td><td>1 case, monitoring</td></tr>
+            <tr><td>ABC Home &amp; Commercial</td><td>Premier</td><td>Red Account, open S3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Structural signals ── -->
+  <div class="section-title mb16">What the Data Shows</div>
+  <div class="card mb24">
+    <div class="signals">
+      <div class="sig-vol">
+        <div class="sig-head">Volume</div>
+        &bull; 886 cases · avg 110/mo · never dipped below 88<br>
+        &bull; Jul dip (88) recovered fully — not structural<br>
+        &bull; Sep partial (104) on pace to exceed Apr peak (128)<br>
+        &bull; 57% of case subjects describe <strong>functional failures</strong>, not how-to questions — RCAT "User Education" tag does not reflect subject text
+      </div>
+      <div class="sig-def">
+        <div class="sig-head">Defects</div>
+        &bull; 10.2% GUS link rate is a floor — most failures closed without filing<br>
+        &bull; Bluvium: 15 Sev-1s, zero GUS filed — anomalous<br>
+        &bull; 8 WAD investigations generating repeat cases across different customers<br>
+        &bull; 8 Feature Requests filed as support tickets — product gap signals<br>
+        &bull; Summer &rsquo;26 Billing Batch Scheduler regression: 4 independent accounts
+      </div>
+      <div class="sig-pat">
+        <div class="sig-head">Patterns</div>
+        &bull; Billing Batch Scheduler: #1 named technical object (57 cases)<br>
+        &bull; Tax failures EMEA/locale-concentrated — not a global issue<br>
+        &bull; Evergreen billing after cancellation: 17 cases — customers charged post-cancel<br>
+        &bull; Winter &rsquo;27 signals appearing in Sep data (Catch-Up Bill Run, custom field issue)<br>
+        &bull; <span style="color:var(--red)">Escalated field = FALSE on all 886 cases</span> — field is structurally unused
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CTA ── -->
+  <div style="text-align:center;padding:8px 0 4px">
+    <a href="rcb-issue-report-2026-09-25.html" class="cta-btn" style="font-size:14px;padding:13px 36px;background:var(--sf-blue);color:var(--white)">
+      &#128203; Open Full 11-Tab Report &rarr;
+    </a>
+    <div style="font-size:11px;color:var(--text2);margin-top:10px">Includes: Top 25 Accounts · Month-over-Month · Bug Registry · Aged Cases · Open Cases · Account Deep Dives</div>
+  </div>
+
+</div>
+
+<!-- ── Footer ── -->
+<div class="page-footer">
+  Revenue Cloud Billing — Issue Overview &nbsp;·&nbsp; Sep 25, 2026 &nbsp;·&nbsp; 886 cases from OrgCS export &nbsp;·&nbsp; All data sourced from CSV — no estimates or fabricated values
+</div>
+
+<script>
+new Chart(document.getElementById('momChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'],
+    datasets: [{
+      label: 'Cases',
+      data: [103, 123, 128, 113, 121, 88, 106, 104],
+      backgroundColor: [
+        '#0176D3','#0176D3','#BA0517','#0176D3',
+        '#0176D3','#2E844A','#0176D3','#7A5C00'
+      ],
+      borderRadius: 4,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => ' ' + ctx.parsed.y + ' cases'
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: { font: { size: 11 }, color: '#444F61' },
+        grid: { color: '#E8F0FA' }
+      },
+      x: {
+        ticks: { font: { size: 11 }, color: '#444F61' },
+        grid: { display: false }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
