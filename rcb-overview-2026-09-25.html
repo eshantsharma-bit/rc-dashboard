@@ -425,18 +425,25 @@
 
 <script>
 new Chart(document.getElementById('momChart'), {
-  type: 'bar',
+  type: 'line',
   data: {
     labels: ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'],
     datasets: [{
-      label: 'Cases',
+      label: 'Total Cases',
       data: [103, 123, 128, 113, 121, 88, 106, 104],
-      backgroundColor: [
+      borderColor: '#0176D3',
+      backgroundColor: 'rgba(1,118,211,0.10)',
+      borderWidth: 2.5,
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      pointBackgroundColor: [
         '#0176D3','#0176D3','#BA0517','#0176D3',
         '#0176D3','#2E844A','#0176D3','#7A5C00'
       ],
-      borderRadius: 4,
-      borderSkipped: false
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      tension: 0.35,
+      fill: true
     }]
   },
   options: {
@@ -452,13 +459,14 @@ new Chart(document.getElementById('momChart'), {
     },
     scales: {
       y: {
-        beginAtZero: true,
+        beginAtZero: false,
+        min: 70,
         ticks: { font: { size: 11 }, color: '#444F61' },
         grid: { color: '#E8F0FA' }
       },
       x: {
         ticks: { font: { size: 11 }, color: '#444F61' },
-        grid: { display: false }
+        grid: { color: '#E8F0FA' }
       }
     }
   }
