@@ -232,79 +232,27 @@
 
   </div>
 
-  <!-- ══ Inflow trend + Theme tiles ══ -->
-  <div class="section-title mb20">Monthly Inflow &amp; Top Problem Areas</div>
-  <div class="grid-inflow mb28">
-    <div class="card" style="margin:0">
-      <h2>Monthly Case Inflow &amp; Bug Discovery</h2>
-      <div style="display:flex;gap:16px;margin-bottom:8px;font-size:11px;align-items:center">
-        <span><span style="display:inline-block;width:20px;height:3px;background:#0176D3;border-radius:2px;vertical-align:middle;margin-right:4px"></span>Cases (left)</span>
-        <span><span style="display:inline-block;width:20px;height:3px;background:#BA0517;border-radius:2px;vertical-align:middle;margin-right:4px;border-top:2px dashed #BA0517;background:none"></span>New bugs surfaced (right)</span>
-      </div>
-      <div class="chart-wrap" style="height:230px"><canvas id="inflowChart"></canvas></div>
-      <div style="margin-top:10px;font-size:11px;color:var(--text2);line-height:1.7">
-        Apr peak (128) &rarr; Jul dip (88) &rarr; Aug bug spike (10 new) &rarr; Sep partial on pace for 130+<br>
-        <span style="color:var(--red);font-weight:600">&#9650;</span>
-        Summer &rsquo;26 release introduced a <strong style="color:var(--red)">Billing Batch Scheduler regression</strong> — 4 independent accounts named it in subject text within the same window
-      </div>
+  <!-- ══ Inflow trend ══ -->
+  <div class="section-title mb20">Monthly Inflow</div>
+  <div class="card mb28">
+    <h2>Monthly Case Inflow &amp; Bug Discovery</h2>
+    <div style="display:flex;gap:16px;margin-bottom:8px;font-size:11px;align-items:center">
+      <span><span style="display:inline-block;width:20px;height:3px;background:#0176D3;border-radius:2px;vertical-align:middle;margin-right:4px"></span>Cases (left)</span>
+      <span><span style="display:inline-block;width:20px;height:3px;background:#BA0517;border-radius:2px;vertical-align:middle;margin-right:4px;border-top:2px dashed #BA0517;background:none"></span>New bugs surfaced (right)</span>
     </div>
-    <div class="card" style="margin:0">
-      <h2>Top Problem Areas <span style="font-size:10px;font-weight:400;color:var(--text2)">classified bottom-up from case subject text</span></h2>
-      <div class="theme-grid">
-        <div class="t-tile t-red">
-          <div class="num">105</div>
-          <div class="name">Invoice Generation Failures</div>
-          <div class="sub">Unclear errors · stuck intermediate state · support escalates to Eng every time</div>
-        </div>
-        <div class="t-tile t-yel">
-          <div class="num">67</div>
-          <div class="name">Tax Calculation Wrong</div>
-          <div class="sub">25 EMEA cases · OOTB engine (8) · VAT/locale (7) · 17 APAC/AMER</div>
-        </div>
-        <div class="t-tile t-yel">
-          <div class="num">62</div>
-          <div class="name">Payment Processing</div>
-          <div class="sub">Gateway setup · batch stuck · Dunning</div>
-        </div>
-        <div class="t-tile t-yel">
-          <div class="num">57</div>
-          <div class="name">Billing Batch Scheduler</div>
-          <div class="sub">Stuck · silent fail · Summer '26 regression</div>
-        </div>
-        <div class="t-tile t-yel">
-          <div class="num">57</div>
-          <div class="name">Billing Schedule Not Created</div>
-          <div class="sub">On order activation · renewal · API</div>
-        </div>
-        <div class="t-tile t-gray">
-          <div class="num">38</div>
-          <div class="name">Usage Billing Failures</div>
-          <div class="sub">Summaries not created · tier calc wrong</div>
-        </div>
-        <div class="t-tile t-gray">
-          <div class="num">35</div>
-          <div class="name">Renewal / Cancel / Amend</div>
-          <div class="sub">Evergreen rebilling · cancel not stopping</div>
-        </div>
-        <div class="t-tile t-gray">
-          <div class="num">35</div>
-          <div class="name">Credit Memo Failures</div>
-          <div class="sub">Create · apply · void · error status</div>
-        </div>
-        <div class="t-tile t-blue">
-          <div class="num">21</div>
-          <div class="name">Transaction Journal / GL</div>
-          <div class="sub">TJs not created · deadlock · stuck Pending</div>
-        </div>
-      </div>
+    <div class="chart-wrap" style="height:260px"><canvas id="inflowChart"></canvas></div>
+    <div style="margin-top:10px;font-size:11px;color:var(--text2);line-height:1.7">
+      Apr peak (128) &rarr; Jul dip (88) &rarr; Aug bug spike (10 new) &rarr; Sep partial on pace for 130+<br>
+      <span style="color:var(--red);font-weight:600">&#9650;</span>
+      Summer &rsquo;26 release introduced a <strong style="color:var(--red)">Billing Batch Scheduler regression</strong> — 4 independent accounts named it in subject text within the same window
     </div>
   </div>
 
-  <!-- ══ Invoice + Tax deep insights ══ -->
-  <div class="grid2 mb28">
+  <!-- ══ Invoice deep insight ══ -->
+  <div class="mb28">
 
     <!-- Invoice insight -->
-    <div class="card" style="margin:0;border-left:4px solid var(--red)">
+    <div class="card" style="border-left:4px solid var(--red)">
       <h2 style="color:var(--red)">&#9888; Invoice Generation — Two Systemic Gaps (105 cases)</h2>
 
       <div style="margin-bottom:14px">
@@ -322,57 +270,6 @@
         <div style="margin-top:10px;background:#FFF0F0;border-radius:5px;padding:9px 12px;font-size:11px;color:var(--red);line-height:1.7">
           <strong>Product signal:</strong> This is a tooling + documentation gap, not a one-off bug. Actionable error messages reduce escalation volume and enable customer self-service — customers can act on a clear message without opening a case. Recovery documentation breaks the engineering dependency — support resolves stuck invoices without an engineering assist every time. Both are high-leverage, low-code investments.
         </div>
-      </div>
-    </div>
-
-    <!-- EMEA Tax insight + case list -->
-    <div class="card" style="margin:0;border-left:4px solid #C99300">
-      <h2 style="color:var(--yellow)">&#127757; Tax Failures — EMEA Concentration (25 of 67 cases)</h2>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
-        <div style="background:#FFF5D6;border-radius:5px;padding:8px 10px;text-align:center">
-          <div style="font-size:18px;font-weight:800;color:var(--yellow)">8</div>
-          <div style="font-size:10px;color:var(--text2);margin-top:2px">Standard / OOTB<br>Tax Engine config</div>
-        </div>
-        <div style="background:#FFF5D6;border-radius:5px;padding:8px 10px;text-align:center">
-          <div style="font-size:18px;font-weight:800;color:var(--yellow)">7</div>
-          <div style="font-size:10px;color:var(--text2);margin-top:2px">VAT / local tax<br>not applying</div>
-        </div>
-        <div style="background:#FFF5D6;border-radius:5px;padding:8px 10px;text-align:center">
-          <div style="font-size:18px;font-weight:800;color:var(--yellow)">4</div>
-          <div style="font-size:10px;color:var(--text2);margin-top:2px">Tax calculation<br>wrong on invoice</div>
-        </div>
-      </div>
-
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text2);margin-bottom:6px">Case List — EMEA Tax</div>
-      <div style="max-height:310px;overflow-y:auto;border:1px solid var(--sf-border);border-radius:5px">
-        <table style="font-size:11px">
-          <thead><tr><th>Case #</th><th>Account</th><th>Opened</th><th>Sev</th><th>Status</th><th>Subject (truncated)</th></tr></thead>
-          <tbody>
-            <tr><td>472918539</td><td>William Reed</td><td>3 Mar</td><td>S2</td><td>Closed</td><td>Tax calculation failures in Revenue Cloud Billing</td></tr>
-            <tr><td>472980195</td><td>Cloudity</td><td>11 Mar</td><td>S2</td><td>Closed</td><td>Tax not calculated for local customers (follow-up) · W-21544701</td></tr>
-            <tr><td>473295363</td><td>Bluvium Inc</td><td>21 Apr</td><td>S2</td><td>Closed</td><td>Estimate Taxes button not calculating after enabling Estimated Tax</td></tr>
-            <tr><td>473296330</td><td>Cloudity</td><td>21 Apr</td><td>S2</td><td>Closed</td><td>VAT 19% not set for local customers in production</td></tr>
-            <tr><td>473459108</td><td>SIAE (Italy)</td><td>13 May</td><td>S2</td><td>Closed</td><td>Salesforce Revenue Cloud TaxAdapter limitations</td></tr>
-            <tr><td>473500593</td><td>Reditus</td><td>19 May</td><td>S2</td><td>Closed</td><td>Revenue Cloud — Tax Issue</td></tr>
-            <tr><td>473511536</td><td>S&amp;P</td><td>20 May</td><td>S2</td><td>Closed</td><td>Tax treatment null on debit memo line, posting blocked</td></tr>
-            <tr><td>473718438</td><td>Qrious Tech</td><td>9 Jun</td><td>S4</td><td>Closed</td><td>Standard Tax Calculation Not Applying</td></tr>
-            <tr><td>473840276</td><td>DynaCap</td><td>16 Jun</td><td>S3</td><td>Closed</td><td>Revenue Cloud Standard Tax Engine fails</td></tr>
-            <tr><td>473855799</td><td>Intellicloud</td><td>17 Jun</td><td>S2</td><td>Closed</td><td>Standard Tax Engine causing Revenue Transaction Error Logs</td></tr>
-            <tr><td>473878593</td><td>ZF Friedrichshafen</td><td>18 Jun</td><td>S4</td><td>Closed</td><td>Invoice generation and missing taxes</td></tr>
-            <tr><td>473881352</td><td>SIAE (Italy)</td><td>18 Jun</td><td>S3</td><td>Closed</td><td>Updating Line Item Fields via External Callout within TaxAdapter · W-23159940</td></tr>
-            <tr><td>473891695</td><td>ZF Friedrichshafen</td><td>19 Jun</td><td>S4</td><td>Closed</td><td>Create Tax Engine Provider — guidance request</td></tr>
-            <tr><td>474071355</td><td>Norweld AU</td><td>13 Jul</td><td>S2</td><td>Closed</td><td>Tax Treatment populates on Invoice Line but no tax calculated</td></tr>
-            <tr><td>474122920</td><td>ZF Friedrichshafen</td><td>20 Jul</td><td>S4</td><td>Closed</td><td>Tax calculation issue on invoice</td></tr>
-            <tr><td>474223645</td><td>BioLogic SAS</td><td>31 Jul</td><td>S2</td><td>Closed</td><td>Revenue Cloud estimated taxes failing on quotes</td></tr>
-            <tr><td>474545218</td><td>William Reed</td><td>7 Sep</td><td>S2</td><td style="color:var(--yellow);font-weight:700">Sol Provided</td><td>Discrepancy between Order Total Tax and Order Product Total Tax</td></tr>
-            <tr><td>474546523</td><td>William Reed</td><td>7 Sep</td><td>S2</td><td>Closed</td><td>Tax Calculation Errors Blocking Order Creation &amp; Activation</td></tr>
-            <tr><td>474561028</td><td>ZF Friedrichshafen</td><td>9 Sep</td><td>S4</td><td>Closed</td><td>TaxCalculationFailed and missing Tax Effective Date error</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div style="margin-top:8px;font-size:10px;color:var(--text2);line-height:1.6">
-        ZF Friedrichshafen: 4 EMEA tax cases (S4 — guidance pattern, not critical). William Reed: 3 cases, 1 still open. SIAE Italy: 2 TaxAdapter cases — platform extension limits. Standard Tax Engine the most common failure point (8 cases) — config guidance gap.
       </div>
     </div>
 
