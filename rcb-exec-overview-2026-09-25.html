@@ -447,6 +447,51 @@
     </div>
   </div>
 
+  <!-- ══ RCB vs RCA volume share ══ -->
+  <div class="section-title mb20">RCB vs RCA — Monthly Volume Share Within Revenue Cloud (Core)</div>
+  <div class="card mb28">
+    <h2>RCB Share of All Revenue Cloud (Core) Volume</h2>
+    <p style="font-size:12px;color:var(--text2);margin:0 0 14px">
+      RCB = <em>Revenue Cloud (Core)-Billing &amp; Invoicing</em> only &nbsp;·&nbsp;
+      RCA = all other <em>Revenue Cloud (Core)-*</em> topics &nbsp;·&nbsp;
+      Denominator = total RC (Core) cases per month (OrgCS, all tiers)
+    </p>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px">
+      <div style="background:var(--sf-lighter);border-radius:8px;padding:10px 16px;min-width:120px">
+        <div style="font-size:11px;color:var(--text2)">Avg RCB share</div>
+        <div style="font-size:22px;font-weight:700;color:var(--sf-blue)">6.9%</div>
+        <div style="font-size:11px;color:var(--text2)">Feb–Sep 2026</div>
+      </div>
+      <div style="background:var(--sf-lighter);border-radius:8px;padding:10px 16px;min-width:120px">
+        <div style="font-size:11px;color:var(--text2)">Peak share</div>
+        <div style="font-size:22px;font-weight:700;color:var(--sf-blue)">7.7%</div>
+        <div style="font-size:11px;color:var(--text2)">Apr &amp; May</div>
+      </div>
+      <div style="background:#FFF7F0;border-radius:8px;padding:10px 16px;min-width:120px">
+        <div style="font-size:11px;color:var(--text2)">Trough</div>
+        <div style="font-size:22px;font-weight:700;color:#D47900">5.6%</div>
+        <div style="font-size:11px;color:var(--text2)">Jul (post-go-live dip)</div>
+      </div>
+    </div>
+    <div class="chart-wrap" style="height:200px"><canvas id="shareChart"></canvas></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+      <div style="flex:1;min-width:240px;background:var(--sf-lighter);border-radius:8px;padding:12px 14px">
+        <div style="font-weight:600;font-size:12px;margin-bottom:4px">RCB is a small but stable slice</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.5">
+          Billing &amp; Invoicing accounts for <strong>6–8%</strong> of all RC (Core) volume every month.
+          Despite 886 RCB cases Feb–Sep, the product generates roughly 1 in 14 RC (Core) tickets — consistent, not expanding.
+        </div>
+      </div>
+      <div style="flex:1;min-width:240px;background:#FFF0F0;border-radius:8px;padding:12px 14px;border-left:3px solid var(--red)">
+        <div style="font-weight:600;font-size:12px;margin-bottom:4px">Jul dip reflects go-live completions, not product improvement</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.5">
+          Jul dropped to 5.6% as Kaseya and Capital One completed go-lives and stopped filing.
+          RCB bounced back to 6.9–7.1% in Aug–Sep as WebPT and ECi ramped — structural volume is unchanged.
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ Top 10 account trend lines ══ -->
   <div class="section-title mb20">Top 10 Accounts — Monthly Volume Trend</div>
   <div class="card mb28">
@@ -584,6 +629,56 @@
 </div>
 
 <script>
+// ── RCB vs RCA volume share ──
+(function(){
+  const months = ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'];
+  // RCB% = RCB cases / total RC(Core) cases per month (OrgCS all-tier, CSV as RCB truth)
+  const rcbPct = [6.1, 6.8, 7.7, 7.7, 7.1, 5.6, 6.9, 7.1];
+  const rcaPct = rcbPct.map(v => +(100 - v).toFixed(1));
+  new Chart(document.getElementById('shareChart'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: 'RCA %',
+          data: rcaPct,
+          borderColor: '#0176D3', backgroundColor: 'rgba(1,118,211,0.06)',
+          borderWidth: 2, fill: true, tension: 0.35, pointRadius: 5,
+          yAxisID: 'y'
+        },
+        {
+          label: 'RCB %',
+          data: rcbPct,
+          borderColor: '#BA0517', backgroundColor: 'rgba(186,5,23,0.07)',
+          borderWidth: 2, fill: true, tension: 0.35, pointRadius: 5,
+          yAxisID: 'y'
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}%`
+          }
+        }
+      },
+      scales: {
+        y: {
+          stacked: false,
+          min: 0, max: 100,
+          ticks: { callback: v => v + '%', font: { size: 11 } },
+          grid: { color: '#eee' }
+        },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+})();
+
 // ── Inflow trend + Bug discovery overlay ──
 new Chart(document.getElementById('inflowChart'), {
   type: 'line',
