@@ -236,10 +236,14 @@
   <div class="section-title mb20">Monthly Inflow &amp; Top Problem Areas</div>
   <div class="grid-inflow mb28">
     <div class="card" style="margin:0">
-      <h2>Monthly Case Inflow</h2>
+      <h2>Monthly Case Inflow &amp; Bug Discovery</h2>
+      <div style="display:flex;gap:16px;margin-bottom:8px;font-size:11px;align-items:center">
+        <span><span style="display:inline-block;width:20px;height:3px;background:#0176D3;border-radius:2px;vertical-align:middle;margin-right:4px"></span>Cases (left)</span>
+        <span><span style="display:inline-block;width:20px;height:3px;background:#BA0517;border-radius:2px;vertical-align:middle;margin-right:4px;border-top:2px dashed #BA0517;background:none"></span>New bugs surfaced (right)</span>
+      </div>
       <div class="chart-wrap" style="height:230px"><canvas id="inflowChart"></canvas></div>
       <div style="margin-top:10px;font-size:11px;color:var(--text2);line-height:1.7">
-        Apr peak (128) &rarr; Jul dip (88) &rarr; Sep partial on pace for 130+<br>
+        Apr peak (128) &rarr; Jul dip (88) &rarr; Aug bug spike (10 new) &rarr; Sep partial on pace for 130+<br>
         <span style="color:var(--red);font-weight:600">&#9650;</span>
         Summer &rsquo;26 release introduced a <strong style="color:var(--red)">Billing Batch Scheduler regression</strong> — 4 independent accounts named it in subject text within the same window
       </div>
@@ -627,34 +631,71 @@
 </div>
 
 <script>
-// ── Inflow trend line ──
+// ── Inflow trend + Bug discovery overlay ──
 new Chart(document.getElementById('inflowChart'), {
   type: 'line',
   data: {
     labels: ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'],
-    datasets: [{
-      label: 'Cases',
-      data: [103, 123, 128, 113, 121, 88, 106, 104],
-      borderColor: '#0176D3',
-      backgroundColor: 'rgba(1,118,211,0.10)',
-      borderWidth: 2.5,
-      pointRadius: 6,
-      pointHoverRadius: 8,
-      pointBackgroundColor: ['#0176D3','#0176D3','#BA0517','#0176D3','#0176D3','#2E844A','#0176D3','#7A5C00'],
-      pointBorderColor: '#fff',
-      pointBorderWidth: 2,
-      tension: 0.35,
-      fill: true
-    }]
+    datasets: [
+      {
+        label: 'Cases',
+        data: [103, 123, 128, 113, 121, 88, 106, 104],
+        borderColor: '#0176D3',
+        backgroundColor: 'rgba(1,118,211,0.08)',
+        borderWidth: 2.5,
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointBackgroundColor: ['#0176D3','#0176D3','#BA0517','#0176D3','#0176D3','#2E844A','#0176D3','#7A5C00'],
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        tension: 0.35,
+        fill: true,
+        yAxisID: 'y'
+      },
+      {
+        label: 'New Bugs Surfaced',
+        data: [2, 8, 5, 9, 8, 3, 10, 6],
+        borderColor: '#BA0517',
+        backgroundColor: 'rgba(186,5,23,0.0)',
+        borderWidth: 2,
+        borderDash: [5, 3],
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        pointBackgroundColor: '#BA0517',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        tension: 0.3,
+        fill: false,
+        yAxisID: 'y2'
+      }
+    ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
-      tooltip: { callbacks: { label: ctx => ' ' + ctx.parsed.y + ' cases' } }
+      tooltip: {
+        callbacks: {
+          label: ctx => ctx.datasetIndex === 0
+            ? ' ' + ctx.parsed.y + ' cases'
+            : ' ' + ctx.parsed.y + ' new bugs'
+        }
+      }
     },
     scales: {
-      y: { beginAtZero: false, min: 70, ticks: { font: { size: 11 }, color: '#444F61' }, grid: { color: '#E8F0FA' } },
+      y: {
+        beginAtZero: false, min: 70,
+        ticks: { font: { size: 11 }, color: '#444F61' },
+        grid: { color: '#E8F0FA' },
+        title: { display: true, text: 'Cases', font: { size: 10 }, color: '#444F61' }
+      },
+      y2: {
+        position: 'right',
+        beginAtZero: true, min: 0, max: 14,
+        ticks: { font: { size: 11 }, color: '#BA0517', stepSize: 2 },
+        grid: { drawOnChartArea: false },
+        title: { display: true, text: 'New Bugs', font: { size: 10 }, color: '#BA0517' }
+      },
       x: { ticks: { font: { size: 11 }, color: '#444F61' }, grid: { color: '#E8F0FA' } }
     }
   }
