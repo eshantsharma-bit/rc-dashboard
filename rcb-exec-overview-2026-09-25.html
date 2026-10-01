@@ -550,6 +550,62 @@
     </div>
   </div>
 
+  <!-- ══ Top 10 account trend lines ══ -->
+  <div class="section-title mb20">Top 10 Accounts — Monthly Volume Trend</div>
+  <div class="card mb28">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:12px">
+      <div>
+        <h2 style="margin:0 0 4px 0">Case Volume by Account — Feb to Sep 2026</h2>
+        <div style="font-size:11px;color:var(--text2)">Direct customers only · partners excluded · ranked by total cases Feb–Sep</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:10px">
+        <span style="background:#FFF0F0;padding:2px 8px;border-radius:8px;color:var(--red);font-weight:600">ECi surge Aug</span>
+        <span style="background:#FFF8E1;padding:2px 8px;border-radius:8px;color:#7A5C00;font-weight:600">Kaseya faded Jul</span>
+        <span style="background:#EAF9EE;padding:2px 8px;border-radius:8px;color:var(--green);font-weight:600">WebPT new ramp</span>
+      </div>
+    </div>
+    <div class="chart-wrap" style="height:320px"><canvas id="acctTrendChart"></canvas></div>
+    <!-- Volume driver annotations -->
+    <div style="margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+      <div style="background:#FFF5F5;border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:9px 11px">
+        <div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">ECi — Aug spike (10 cases)</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6">
+          Aug dominated by <strong>invoice stuck/void failures</strong> (5 cases) and <strong>payment processing breakdowns</strong> (4 Sev-1: cross-currency allocation, PSI failures, conditional read-only field gap, payment retry rules not firing on CollectionPlan). Highest single-account single-month volume in the dataset.
+        </div>
+      </div>
+      <div style="background:#FFFBEA;border-left:3px solid var(--yellow);border-radius:0 6px 6px 0;padding:9px 11px">
+        <div style="font-size:10px;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Kaseya — Feb–Mar burst, silent Jul–Sep</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6">
+          Heavy early-period volume (Feb: Billing Batch Scheduler bugs, saved payment method limits; Mar: credit memo PDF, refund object triggers, API state validation). Zero cases Jul–Sep suggests go-live completed and active issues resolved — not disengagement.
+        </div>
+      </div>
+      <div style="background:#EAF9EE;border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:9px 11px">
+        <div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">WebPT — late ramp Aug–Sep (12 cases)</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6">
+          Zero activity Feb–Apr, then accelerating from Aug. Sep subjects: <strong>dunning process</strong> (3 cases), payment batch lock timeouts, SavedPaymentMethodId API gap, invoice void cascade. Pattern consistent with a new billing implementation entering production in late Q2.
+        </div>
+      </div>
+      <div style="background:#F0F4FF;border-left:3px solid #5C3DC3;border-radius:0 6px 6px 0;padding:9px 11px">
+        <div style="font-size:10px;font-weight:700;color:#5C3DC3;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Capital One — Apr spike (8 cases)</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6">
+          Apr concentrated on <strong>Legal Entity Accounting Period failures</strong> (3 cases: DPE job not triggering, GL summaries not populating) + Billing Batch Scheduler error (Sev-1) + invoice tax discrepancy. Consistent with a Q2 accounting close surfacing GL integration gaps.
+        </div>
+      </div>
+      <div style="background:#F5F0FF;border-left:3px solid #8B5CF6;border-radius:0 6px 6px 0;padding:9px 11px">
+        <div style="font-size:10px;font-weight:700;color:#8B5CF6;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">S&amp;P — Feb burst, steady decline</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6">
+          Feb driven by <strong>credit memo creation failures</strong> (3 cases: standalone, draft invoice, cross-account/currency), invoice stuck in posting, and payment allocation issues. Volume declines steadily through Sep — issues were resolved without recurrence.
+        </div>
+      </div>
+      <div style="background:#F0FBF5;border-left:3px solid #2E844A;border-radius:0 6px 6px 0;padding:9px 11px">
+        <div style="font-size:10px;font-weight:700;color:#2E844A;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Arthur Gallagher — Aug spike (5 cases)</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6">
+          Two Sev-1s in Aug: <strong>go-live blocker</strong> (LegalEntityAccountingPeriod tombstone + closed period overlap, Peru) + CurrencyIsoCode page layout gap. Alongside 3 lower-severity billing/invoice UI issues. Classic pre-go-live crunch pattern.
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ Top 20 accounts ══ -->
   <div class="section-title mb20">Top 20 Accounts by Volume</div>
   <div class="card mb28">
@@ -853,6 +909,111 @@ new Chart(document.getElementById('acctChart'), {
       y: { beginAtZero: true, max: 90, ticks: { font:{size:11}, color:'#444F61', stepSize:15 }, grid:{color:'#E8F0FA'},
            title:{display:true,text:'Accounts',font:{size:10},color:'#444F61'} },
       x: { ticks: { font:{size:11}, color:'#444F61' }, grid:{display:false} }
+    }
+  }
+});
+
+// ── Top 10 account trend lines ──
+new Chart(document.getElementById('acctTrendChart'), {
+  type: 'line',
+  data: {
+    labels: ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'],
+    datasets: [
+      {
+        label: 'ECi',
+        data: [0,1,5,3,6,6,10,4],
+        borderColor: '#BA0517', backgroundColor: 'rgba(186,5,23,0)',
+        borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 6,
+        pointBackgroundColor: '#BA0517', tension: 0.35
+      },
+      {
+        label: 'S&P',
+        data: [7,3,5,4,4,5,4,2],
+        borderColor: '#0176D3', backgroundColor: 'rgba(1,118,211,0)',
+        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
+        pointBackgroundColor: '#0176D3', tension: 0.35
+      },
+      {
+        label: 'Kaseya',
+        data: [6,8,4,5,5,0,0,0],
+        borderColor: '#7A5C00', backgroundColor: 'rgba(122,92,0,0)',
+        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
+        pointBackgroundColor: '#7A5C00', tension: 0.35
+      },
+      {
+        label: 'Capital One',
+        data: [2,6,8,3,1,1,1,0],
+        borderColor: '#5C3DC3', backgroundColor: 'rgba(92,61,195,0)',
+        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
+        pointBackgroundColor: '#5C3DC3', tension: 0.35
+      },
+      {
+        label: 'Bluebeam',
+        data: [4,3,4,4,2,0,2,1],
+        borderColor: '#2E844A', backgroundColor: 'rgba(46,132,74,0)',
+        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
+        pointBackgroundColor: '#2E844A', tension: 0.35
+      },
+      {
+        label: 'AI inside',
+        data: [0,0,4,3,6,3,1,3],
+        borderColor: '#D47900', backgroundColor: 'rgba(212,121,0,0)',
+        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
+        pointBackgroundColor: '#D47900', tension: 0.35
+      },
+      {
+        label: 'WebPT',
+        data: [0,0,0,1,0,3,5,7],
+        borderColor: '#06A59A', backgroundColor: 'rgba(6,165,154,0)',
+        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
+        pointBackgroundColor: '#06A59A', tension: 0.35
+      },
+      {
+        label: 'Infor',
+        data: [2,3,1,3,3,1,0,2],
+        borderColor: '#9B9B9B', backgroundColor: 'rgba(155,155,155,0)',
+        borderWidth: 1.5, borderDash: [4,3], pointRadius: 3, pointHoverRadius: 5,
+        pointBackgroundColor: '#9B9B9B', tension: 0.35
+      },
+      {
+        label: 'Arthur Gallagher',
+        data: [1,3,1,1,1,0,5,1],
+        borderColor: '#014486', backgroundColor: 'rgba(1,68,134,0)',
+        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
+        pointBackgroundColor: '#014486', tension: 0.35
+      },
+      {
+        label: 'JTL',
+        data: [2,3,0,1,0,0,3,4],
+        borderColor: '#8B5CF6', backgroundColor: 'rgba(139,92,246,0)',
+        borderWidth: 1.5, borderDash: [4,3], pointRadius: 3, pointHoverRadius: 5,
+        pointBackgroundColor: '#8B5CF6', tension: 0.35
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: { boxWidth: 12, font: { size: 11 }, padding: 14, color: '#444F61' }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' cases'
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true, max: 12,
+        ticks: { font: { size: 11 }, color: '#444F61', stepSize: 2 },
+        grid: { color: '#E8F0FA' },
+        title: { display: true, text: 'Cases / month', font: { size: 10 }, color: '#444F61' }
+      },
+      x: { ticks: { font: { size: 11 }, color: '#444F61' }, grid: { color: '#E8F0FA' } }
     }
   }
 });
