@@ -473,7 +473,16 @@
         <div style="font-size:11px;color:var(--text2)">Jul (post-go-live dip)</div>
       </div>
     </div>
-    <div class="chart-wrap" style="height:200px"><canvas id="shareChart"></canvas></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px">RCB % share — zoomed 4–10%</div>
+        <div class="chart-wrap" style="height:180px"><canvas id="shareChart"></canvas></div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px">RCB absolute volume (cases)</div>
+        <div class="chart-wrap" style="height:180px"><canvas id="shareVolChart"></canvas></div>
+      </div>
+    </div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
       <div style="flex:1;min-width:240px;background:var(--sf-lighter);border-radius:8px;padding:12px 14px">
         <div style="font-weight:600;font-size:12px;margin-bottom:4px">RCB is a small but stable slice</div>
@@ -506,7 +515,18 @@
         <span style="background:#EAF9EE;padding:2px 8px;border-radius:8px;color:var(--green);font-weight:600">WebPT new ramp</span>
       </div>
     </div>
-    <div class="chart-wrap" style="height:320px"><canvas id="acctTrendChart"></canvas></div>
+    <div id="acctHeatmap" style="overflow-x:auto;margin-top:4px"></div>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:10px;flex-wrap:wrap">
+      <div style="font-size:10px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.3px">Intensity:</div>
+      <div style="display:flex;gap:6px;align-items:center;font-size:10px;color:var(--text2)">
+        <span style="display:inline-block;width:22px;height:14px;background:#f0f2f5;border:1px solid #dde;border-radius:3px"></span>0
+        <span style="display:inline-block;width:22px;height:14px;background:#d4eaf9;border-radius:3px"></span>1–2
+        <span style="display:inline-block;width:22px;height:14px;background:#7bbde3;border-radius:3px"></span>3–4
+        <span style="display:inline-block;width:22px;height:14px;background:#0176D3;border-radius:3px"></span>5–6
+        <span style="display:inline-block;width:22px;height:14px;background:#014486;border-radius:3px"></span>7–9
+        <span style="display:inline-block;width:22px;height:14px;background:#BA0517;border-radius:3px"></span>10+
+      </div>
+    </div>
     <!-- Volume driver annotations -->
     <div style="margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
       <div style="background:#FFF5F5;border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:9px 11px">
@@ -632,45 +652,71 @@
 // ── RCB vs RCA volume share ──
 (function(){
   const months = ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'];
-  // RCB% = RCB cases / total RC(Core) cases per month (OrgCS all-tier, CSV as RCB truth)
   const rcbPct = [6.1, 6.8, 7.7, 7.7, 7.1, 5.6, 6.9, 7.1];
-  const rcaPct = rcbPct.map(v => +(100 - v).toFixed(1));
+  const rcbVol  = [103, 123, 128, 113, 121,  88, 106, 104];
+  const avgLine = rcbPct.map(() => 6.9);
+
+  // Left panel — % share, y-axis zoomed 4–10 so variation is visible
   new Chart(document.getElementById('shareChart'), {
     type: 'line',
     data: {
       labels: months,
       datasets: [
         {
-          label: 'RCA %',
-          data: rcaPct,
-          borderColor: '#0176D3', backgroundColor: 'rgba(1,118,211,0.06)',
-          borderWidth: 2, fill: true, tension: 0.35, pointRadius: 5,
-          yAxisID: 'y'
-        },
-        {
           label: 'RCB %',
           data: rcbPct,
-          borderColor: '#BA0517', backgroundColor: 'rgba(186,5,23,0.07)',
-          borderWidth: 2, fill: true, tension: 0.35, pointRadius: 5,
-          yAxisID: 'y'
+          borderColor: '#BA0517', backgroundColor: 'rgba(186,5,23,0.09)',
+          borderWidth: 2.5, fill: true, tension: 0.35,
+          pointRadius: 5, pointBackgroundColor: '#BA0517'
+        },
+        {
+          label: 'Avg 6.9%',
+          data: avgLine,
+          borderColor: '#888', borderDash: [5,4],
+          borderWidth: 1.5, pointRadius: 0, fill: false
         }
       ]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } },
-        tooltip: {
-          callbacks: {
-            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}%`
-          }
-        }
+        legend: { position: 'top', labels: { boxWidth: 11, font: { size: 10 } } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}%` } }
       },
       scales: {
         y: {
-          stacked: false,
-          min: 0, max: 100,
-          ticks: { callback: v => v + '%', font: { size: 11 } },
+          min: 4, max: 10,
+          ticks: { callback: v => v + '%', font: { size: 11 }, stepSize: 1 },
+          grid: { color: '#eee' }
+        },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+
+  // Right panel — absolute volume bars
+  new Chart(document.getElementById('shareVolChart'), {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'RCB cases',
+        data: rcbVol,
+        backgroundColor: rcbVol.map(v => v === Math.max(...rcbVol) ? 'rgba(186,5,23,0.75)' : v === Math.min(...rcbVol) ? 'rgba(212,121,0,0.65)' : 'rgba(1,118,211,0.45)'),
+        borderColor:      rcbVol.map(v => v === Math.max(...rcbVol) ? '#BA0517' : v === Math.min(...rcbVol) ? '#D47900' : '#0176D3'),
+        borderWidth: 1.5, borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y} cases` } }
+      },
+      scales: {
+        y: {
+          min: 70, max: 140,
+          ticks: { font: { size: 11 }, stepSize: 14 },
           grid: { color: '#eee' }
         },
         x: { ticks: { font: { size: 11 } }, grid: { display: false } }
@@ -905,110 +951,65 @@ new Chart(document.getElementById('acctChart'), {
   }
 });
 
-// ── Top 10 account trend lines ──
-new Chart(document.getElementById('acctTrendChart'), {
-  type: 'line',
-  data: {
-    labels: ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'],
-    datasets: [
-      {
-        label: 'ECi',
-        data: [0,1,5,3,6,6,10,4],
-        borderColor: '#BA0517', backgroundColor: 'rgba(186,5,23,0)',
-        borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 6,
-        pointBackgroundColor: '#BA0517', tension: 0.35
-      },
-      {
-        label: 'S&P',
-        data: [7,3,5,4,4,5,4,2],
-        borderColor: '#0176D3', backgroundColor: 'rgba(1,118,211,0)',
-        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
-        pointBackgroundColor: '#0176D3', tension: 0.35
-      },
-      {
-        label: 'Kaseya',
-        data: [6,8,4,5,5,0,0,0],
-        borderColor: '#7A5C00', backgroundColor: 'rgba(122,92,0,0)',
-        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
-        pointBackgroundColor: '#7A5C00', tension: 0.35
-      },
-      {
-        label: 'Capital One',
-        data: [2,6,8,3,1,1,1,0],
-        borderColor: '#5C3DC3', backgroundColor: 'rgba(92,61,195,0)',
-        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
-        pointBackgroundColor: '#5C3DC3', tension: 0.35
-      },
-      {
-        label: 'Bluebeam',
-        data: [4,3,4,4,2,0,2,1],
-        borderColor: '#2E844A', backgroundColor: 'rgba(46,132,74,0)',
-        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
-        pointBackgroundColor: '#2E844A', tension: 0.35
-      },
-      {
-        label: 'AI inside',
-        data: [0,0,4,3,6,3,1,3],
-        borderColor: '#D47900', backgroundColor: 'rgba(212,121,0,0)',
-        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
-        pointBackgroundColor: '#D47900', tension: 0.35
-      },
-      {
-        label: 'WebPT',
-        data: [0,0,0,1,0,3,5,7],
-        borderColor: '#06A59A', backgroundColor: 'rgba(6,165,154,0)',
-        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
-        pointBackgroundColor: '#06A59A', tension: 0.35
-      },
-      {
-        label: 'Infor',
-        data: [2,3,1,3,3,1,0,2],
-        borderColor: '#9B9B9B', backgroundColor: 'rgba(155,155,155,0)',
-        borderWidth: 1.5, borderDash: [4,3], pointRadius: 3, pointHoverRadius: 5,
-        pointBackgroundColor: '#9B9B9B', tension: 0.35
-      },
-      {
-        label: 'Arthur Gallagher',
-        data: [1,3,1,1,1,0,5,1],
-        borderColor: '#014486', backgroundColor: 'rgba(1,68,134,0)',
-        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
-        pointBackgroundColor: '#014486', tension: 0.35
-      },
-      {
-        label: 'JTL',
-        data: [2,3,0,1,0,0,3,4],
-        borderColor: '#8B5CF6', backgroundColor: 'rgba(139,92,246,0)',
-        borderWidth: 1.5, borderDash: [4,3], pointRadius: 3, pointHoverRadius: 5,
-        pointBackgroundColor: '#8B5CF6', tension: 0.35
-      }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'bottom',
-        labels: { boxWidth: 12, font: { size: 11 }, padding: 14, color: '#444F61' }
-      },
-      tooltip: {
-        callbacks: {
-          label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' cases'
-        }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true, max: 12,
-        ticks: { font: { size: 11 }, color: '#444F61', stepSize: 2 },
-        grid: { color: '#E8F0FA' },
-        title: { display: true, text: 'Cases / month', font: { size: 10 }, color: '#444F61' }
-      },
-      x: { ticks: { font: { size: 11 }, color: '#444F61' }, grid: { color: '#E8F0FA' } }
-    }
+// ── Account heatmap ──
+(function(){
+  const months = ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'];
+  const accounts = [
+    { name:'ECi',              total:35, flag:'🔴', data:[0,1,5,3,6,6,10,4] },
+    { name:'S&P Global',       total:34, flag:'',   data:[7,3,5,4,4,5,4,2]  },
+    { name:'Kaseya',           total:28, flag:'✅',  data:[6,8,4,5,5,0,0,0]  },
+    { name:'Capital One',      total:22, flag:'✅',  data:[2,6,8,3,1,1,1,0]  },
+    { name:'Bluebeam',         total:20, flag:'',   data:[4,3,4,4,2,0,2,1]  },
+    { name:'AI inside',        total:20, flag:'',   data:[0,0,4,3,6,3,1,3]  },
+    { name:'WebPT',            total:16, flag:'📈', data:[0,0,0,1,0,3,5,7]  },
+    { name:'Infor',            total:15, flag:'',   data:[2,3,1,3,3,1,0,2]  },
+    { name:'Arthur Gallagher', total:13, flag:'',   data:[1,3,1,1,1,0,5,1]  },
+    { name:'JTL-Software',     total:13, flag:'',   data:[2,3,0,1,0,0,3,4]  }
+  ];
+
+  function cellColor(v) {
+    if (v === 0)  return { bg:'#f0f2f5', fg:'#bbb' };
+    if (v <= 2)   return { bg:'#d4eaf9', fg:'#0176D3' };
+    if (v <= 4)   return { bg:'#7bbde3', fg:'#fff' };
+    if (v <= 6)   return { bg:'#0176D3', fg:'#fff' };
+    if (v <= 9)   return { bg:'#014486', fg:'#fff' };
+    return              { bg:'#BA0517', fg:'#fff' };
   }
-});
+
+  const COL_W = 54, ROW_H = 34, LABEL_W = 148, TOTAL_W = 42;
+  const gridW = LABEL_W + COL_W * months.length + TOTAL_W + 2;
+  const gridH = ROW_H * (accounts.length + 1) + 4;
+
+  let html = `<div style="font-family:var(--font,sans-serif);font-size:11px;width:${gridW}px">`;
+
+  // Header row
+  html += `<div style="display:flex;align-items:center;height:${ROW_H - 4}px;margin-bottom:2px">`;
+  html += `<div style="width:${LABEL_W}px;font-weight:600;color:var(--text2);padding-left:4px">Account</div>`;
+  months.forEach(m => {
+    html += `<div style="width:${COL_W}px;text-align:center;font-weight:600;color:var(--text2)">${m}</div>`;
+  });
+  html += `<div style="width:${TOTAL_W}px;text-align:center;font-weight:600;color:var(--text2)">Total</div>`;
+  html += `</div>`;
+
+  // Data rows
+  accounts.forEach((acct, i) => {
+    const rowBg = i % 2 === 0 ? '#fafbfc' : '#fff';
+    html += `<div style="display:flex;align-items:center;height:${ROW_H}px;background:${rowBg};border-radius:4px;margin-bottom:2px">`;
+    html += `<div style="width:${LABEL_W}px;padding-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:${acct.total >= 28 ? '600' : '400'}">${acct.flag ? acct.flag + ' ' : ''}${acct.name}</div>`;
+    acct.data.forEach(v => {
+      const c = cellColor(v);
+      const label = v === 0 ? '·' : v;
+      html += `<div style="width:${COL_W}px;text-align:center">`;
+      html += `<div style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:26px;background:${c.bg};color:${c.fg};border-radius:5px;font-weight:600;font-size:12px">${label}</div>`;
+      html += `</div>`;
+    });
+    html += `<div style="width:${TOTAL_W}px;text-align:center;font-weight:700;color:#444F61">${acct.total}</div>`;
+    html += `</div>`;
+  });
+
+  html += `</div>`;
+  document.getElementById('acctHeatmap').innerHTML = html;
+})();
 </script>
 </body>
 </html>
