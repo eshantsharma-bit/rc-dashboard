@@ -81,7 +81,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 8px;bo
     <span class="badge badge-yellow">⚠ Jun Peak: 1,533 · Sep recovering: 1,410</span>
     <span class="badge badge-purple">RCA 61%→72% in 4 months</span>
     <span class="badge badge-green">SLO 0.00% Aug–Sep ✅</span>
-    <span class="badge badge-blue">APAC aged rate 33.7% 🔴</span>
     <span class="badge badge-yellow">CSAT Sep 4.71 — 5 low-score responses</span>
   </div>
 </div>
@@ -125,24 +124,24 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 8px;bo
 <div class="section-title">💡 Key Insights — Jun–Sep 2026</div>
 <div class="grid-3" style="margin-bottom:14px">
   <div class="insight-card red">
-    <h4>📈 Inflow: Release-Driven Surges on a Rising Baseline</h4>
-    <p>Both Jun (1,533) and Sep (1,410) were elevated by release cycle activity — higher post-release case volume is a recurring pattern as customers upgrade and hit new issues. Jul–Aug moderated as the release stabilised. Stripping release and outage effects, the <strong>underlying RCA adoption curve is consistently rising</strong> — the team should treat 1,400+ per month as the new normal, not a spike. <strong>Oct is on course to match or exceed Jun levels</strong>, making capacity planning a now conversation.</p>
+    <h4>📈 Inflow: Rising Baseline</h4>
+    <p>Jun (1,533) and Sep (1,410) elevated by release cycles + outage. Jul–Aug normalised. <strong>1,400+/mo is the new baseline</strong> — not a spike. Plan capacity accordingly.</p>
   </div>
   <div class="insight-card purple">
-    <h4>🗂 RCA Acceleration is the Structural Shift</h4>
-    <p>RCA grew from <strong>61% → 72% share</strong> in 4 months — and +56% in absolute volume. Legacy CPQ is flat to declining (end-of-life trajectory). <strong>India carries the highest RCA concentration (77%)</strong> — India engineers are at or near RCA saturation while CPQ capacity sits unused. Allocation review needed for Oct planning.</p>
+    <h4>🗂 RCA Growing Fast</h4>
+    <p>RCA share <strong>61% → 72%</strong> in 4 months, +56% absolute volume. Legacy CPQ flat/declining. India at highest RCA load (77%) — CPQ→RCA reallocation needed.</p>
   </div>
   <div class="insight-card green">
-    <h4>✅ Quality: SLO + Reopen Improving</h4>
-    <p>Zero SLO misses in Aug and Sep — strongest consecutive run in the window. Reopen Rate trending from 7.0% → 6.0% (−1pp in 4 months). TTR improved in Aug (4.8d best in window) and held in Sep (5.2d). <strong>Operational quality is healthy despite volume pressure</strong> — the team absorbed the Sep surge without a quality regression.</p>
+    <h4>✅ Quality Holding Strong</h4>
+    <p>SLO 0.00% two consecutive months. Reopen Rate 7.0% → 6.0%. TTR: best month Aug (4.8d). Quality held despite Sep volume surge.</p>
   </div>
   <div class="insight-card orange">
-    <h4>🐛 Bug Rate Spike Needs Watching</h4>
-    <p>Bug Rate surged from 3.5% (Aug) to <strong>8.2% (Sep)</strong> — the largest single-month jump in the window. Investigation Rate also rising (4.2% → 8.8%), indicating engineering engagement is up. Both signals are consistent with <strong>R264 GA defect discovery</strong> as customer adoption of 264 widens. Expect further elevation in Oct as 264 GA penetration grows.</p>
+    <h4>🐛 Bug Rate Up — R264 Defects</h4>
+    <p>Bug Rate 3.5% → <strong>8.2%</strong> in Sep. Investigation Rate also up (6.8% → 8.8%). Consistent with R264 GA adoption widening. Expect continued elevation in Oct.</p>
   </div>
   <div class="insight-card yellow">
-    <h4>⭐ CSAT: Holding Above Target — 5 Low Surveys to Watch</h4>
-    <p>Sep CSAT 4.71 remains <strong>above target and well above industry benchmarks</strong> — the team has held a strong score across all 4 months (4.71–4.84). The modest Sep softening is expected given the elevated S1 volume; outage-driven cases tend to suppress scores even when cases are well handled. 5 low-score responses this month (vs 1–2 prior months) warrant a brief review — William Reed (RCA) and Just Energy (Billing) account for 3 of 5. No systemic quality signal; isolated responses in a high-pressure month.</p>
+    <h4>⭐ CSAT Above Target</h4>
+    <p>Sep CSAT 4.71 — <strong>above target</strong>, consistent across 4 months (4.71–4.84). 5 low-score surveys this month (vs 1–2 prior). Isolated; no systemic signal.</p>
   </div>
 </div>
 
@@ -249,56 +248,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 8px;bo
     <h3>📈 Absolute Volume by GEO — Monthly</h3>
     <div class="chart-wrap tall"><canvas id="cGeoAbs"></canvas></div>
     <div class="insight purple" style="margin-top:8px">All three regions saw absolute volume growth Jun→Sep. EMEA: 574→840 (+46%). India: 308→446 (+45%). APAC: 118→156 (+32%). The Jun dip in EMEA/India corresponds to the overall volume pattern — Jun was the peak, Aug the trough, Sep recovery.</div>
-  </div>
-</div>
-
-<!-- APAC VIEW -->
-<div class="section-title">🌏 APAC Deep Dive</div>
-<div class="grid-3">
-  <div class="card blue-border">
-    <h3>📊 APAC Monthly Inflow</h3>
-    <div class="chart-wrap"><canvas id="cApacInflow"></canvas></div>
-    <table style="margin-top:8px">
-      <thead><tr><th>Month</th><th class="num">Total</th><th class="num">S1</th><th class="num">RCA%</th><th class="num">CPQ%</th></tr></thead>
-      <tbody>
-        <tr><td>Jun 2026</td><td class="num">118</td><td class="num">12</td><td class="num">54%</td><td class="num">34%</td></tr>
-        <tr><td>Jul 2026</td><td class="num">154</td><td class="num">10</td><td class="num">58%</td><td class="num">36%</td></tr>
-        <tr><td>Aug 2026</td><td class="num">132</td><td class="num">9</td><td class="num">65%</td><td class="num">31%</td></tr>
-        <tr class="hl"><td><strong>Sep 2026</strong></td><td class="num"><strong>156</strong></td><td class="num"><strong>11</strong></td><td class="num"><strong>62%</strong></td><td class="num"><strong>30%</strong></td></tr>
-      </tbody>
-    </table>
-    <div class="insight blue">APAC volume +32% Jun→Sep (118→156). RCA adoption rising fast: 54%→65% (dipped to 62% Sep). APAC has the highest Legacy CPQ share of all regions (30%) — consistent with APAC telco/utilities customer base.</div>
-  </div>
-  <div class="card red-border">
-    <h3>⚠ APAC Backlog — Structural Issue</h3>
-    <div style="margin-top:4px">
-      <div class="insight red" style="margin-top:0">APAC aged rate 33.7% (Sep 22 snapshot) — structurally elevated well above EMEA (20.7%) and India (18.9%). All 3 APAC managers are above 24% aged rate.</div>
-      <table style="margin-top:10px">
-        <thead><tr><th>Manager</th><th class="num">BL</th><th class="num">Aged</th><th class="num">Aged%</th><th>Signal</th></tr></thead>
-        <tbody>
-          <tr style="background:#ffebe9"><td>Rafik Shaikh</td><td class="num">63</td><td class="num">28</td><td class="num" style="color:var(--red)"><strong>44.4%</strong></td><td><span class="pill pill-red">🔴 Critical</span></td></tr>
-          <tr style="background:#fff8c5"><td>Mahima Prathaban</td><td class="num">58</td><td class="num">19</td><td class="num" style="color:var(--orange)"><strong>32.8%</strong></td><td><span class="pill pill-yellow">🟡 High</span></td></tr>
-          <tr style="background:#fff8c5"><td>Brahmarouthu Swetha</td><td class="num">66</td><td class="num">16</td><td class="num" style="color:var(--orange)"><strong>24.2%</strong></td><td><span class="pill pill-yellow">🟡 High</span></td></tr>
-        </tbody>
-      </table>
-      <div class="insight red" style="margin-top:8px">Rafik: 44.4% aged rate (+6.5pp MoM). 22 of 28 aged cases are No-Path or Swarm-no-GUS. Top Red Account risks: Health Administration Corporation (S2, 27d, Red 🔴) + Beiersdorf (2×S2, 27d, Red 🔴). HKT appears in both Rafik's and Mahima's aged queues — cross-manager account review required.</div>
-    </div>
-  </div>
-  <div class="card">
-    <h3>🔴 APAC Aged — Top No-Path Cases</h3>
-    <table>
-      <thead><tr><th>Case</th><th>Account</th><th class="num">Age</th><th>Sev</th><th>Status</th></tr></thead>
-      <tbody>
-        <tr style="background:#ffebe9"><td style="color:var(--accent)">474032278</td><td>Xignux SA de CV</td><td class="num" style="color:var(--red)">76d</td><td><span class="pill pill-yellow">S4</span></td><td>Swarm/No GUS 👻</td></tr>
-        <tr style="background:#ffebe9"><td style="color:var(--accent)">474212285</td><td>Gestore GSE SpA</td><td class="num" style="color:var(--red)">54d</td><td><span class="pill pill-yellow">S3</span></td><td>Swarm/No GUS 👻</td></tr>
-        <tr style="background:#ffebe9"><td style="color:var(--accent)">474278335</td><td>DXC Technology</td><td class="num" style="color:var(--red)">46d</td><td><span class="pill pill-red">S2</span></td><td>Swarm/No GUS 👻</td></tr>
-        <tr><td style="color:var(--accent)">474377301</td><td>HKT Limited</td><td class="num" style="color:var(--orange)">39d</td><td><span class="pill pill-yellow">S3</span></td><td>No Path</td></tr>
-        <tr><td style="color:var(--accent)">474459615</td><td>Health Admin Corp 🔴</td><td class="num" style="color:var(--orange)">27d</td><td><span class="pill pill-red">S2</span></td><td>Swarm/No GUS 👻</td></tr>
-        <tr><td style="color:var(--accent)">474461420</td><td>Beiersdorf GmbH 🔴</td><td class="num" style="color:var(--orange)">27d</td><td><span class="pill pill-red">S2</span></td><td>Swarm/No GUS 👻</td></tr>
-        <tr><td style="color:var(--accent)">474543707</td><td>MYOB Australia</td><td class="num">28d</td><td><span class="pill pill-red">S2</span></td><td>No Path (Swetha)</td></tr>
-      </tbody>
-    </table>
-    <div class="insight red" style="margin-top:8px">🔴 Health Admin Corp + Beiersdorf = two Red Account S2s at 27d with no GUS — flag to SL immediately. Xignux (76d) and Gestore (54d) are ghost swarms — swarm stale, no formal path. DXC (46d S2) is highest SLO exposure in APAC queue.</div>
   </div>
 </div>
 
@@ -624,12 +573,6 @@ def('cPtAbs',{type:'bar',data:{labels:MONTHS,datasets:[
   {label:'Billing',data:[31,30,36,42],backgroundColor:'rgba(163,113,247,.7)',stack:'p'}
 ]},options:stackOpts(0,1700)});
 
-// APAC inflow
-def('cApacInflow',{type:'bar',data:{labels:MONTHS,datasets:[{
-  data:[118,154,132,156],
-  backgroundColor:['rgba(31,111,235,.5)','rgba(31,111,235,.5)','rgba(31,111,235,.5)','rgba(31,111,235,.8)'],
-  borderRadius:4
-}]},options:baseOpts(80,185,dlBar)});
 
 // Bug + Inv trend
 def('cBugTrend',{type:'line',data:{labels:MONTHS,datasets:[
