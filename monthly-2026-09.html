@@ -82,7 +82,42 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 8px;bo
     <span class="badge badge-purple">RCA 61%→72% in 4 months</span>
     <span class="badge badge-green">SLO 0.00% Aug–Sep ✅</span>
     <span class="badge badge-blue">APAC aged rate 33.7% 🔴</span>
-    <span class="badge badge-yellow">CSAT dip Sep 4.71 ⬇</span>
+    <span class="badge badge-yellow">CSAT Sep 4.71 — 5 low-score responses</span>
+  </div>
+</div>
+
+<!-- SEP KPI TILES -->
+<div class="section-title">📌 September 2026 — At a Glance</div>
+<div class="kpi-row">
+  <div class="kpi alert">
+    <div class="kpi-label">Sep Inflow</div>
+    <div class="kpi-value">1,410</div>
+    <div class="kpi-delta"><span class="up">+15% MoM</span> · vs 1,231 Aug</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Sep Closures</div>
+    <div class="kpi-value">1,386</div>
+    <div class="kpi-delta"><span class="up">+14% MoM</span> · vs 1,216 Aug</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">Sep CSAT</div>
+    <div class="kpi-value">4.71</div>
+    <div class="kpi-delta">vs 4.84 Aug · 5 low scores</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">SLO Miss</div>
+    <div class="kpi-value">0.00%</div>
+    <div class="kpi-delta"><span class="dn">↓ 2nd month zero</span></div>
+  </div>
+  <div class="kpi info">
+    <div class="kpi-label">Investigation Rate</div>
+    <div class="kpi-value">8.8%</div>
+    <div class="kpi-delta"><span class="up">↑ +2pp</span> · vs 6.8% Aug</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Bug Rate</div>
+    <div class="kpi-value">8.2%</div>
+    <div class="kpi-delta"><span class="up">↑ +4.7pp</span> · vs 3.5% Aug</div>
   </div>
 </div>
 
@@ -97,10 +132,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 8px;bo
     <h4>🗂 RCA Acceleration is the Structural Shift</h4>
     <p>RCA grew from <strong>61% → 72% share</strong> in 4 months — and +56% in absolute volume. Legacy CPQ is flat to declining (end-of-life trajectory). <strong>India carries the highest RCA concentration (77%)</strong> — India engineers are at or near RCA saturation while CPQ capacity sits unused. Allocation review needed for Oct planning.</p>
   </div>
-  <div class="insight-card red">
-    <h4>🚨 Bell Canada: Third Incident Would Be Critical</h4>
-    <p>Two production outages in 6 weeks (Aug 20–21 + Sep 6–8, 262.14.12 regression). The Sep 7–13 S1 spike (59 S1s vs 32–35 baseline) was entirely outage-driven. <strong>Oct 10 upgrade to 264 will NOT resolve the IsPromotionExecuted bug</strong> — SI-0297190 path confirmed, fix must be explicitly in scope. Formal exec escalation with Jeff Amann and David Fan is active.</p>
-  </div>
   <div class="insight-card green">
     <h4>✅ Quality: SLO + Reopen Improving</h4>
     <p>Zero SLO misses in Aug and Sep — strongest consecutive run in the window. Reopen Rate trending from 7.0% → 6.0% (−1pp in 4 months). TTR improved in Aug (4.8d best in window) and held in Sep (5.2d). <strong>Operational quality is healthy despite volume pressure</strong> — the team absorbed the Sep surge without a quality regression.</p>
@@ -110,8 +141,8 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 8px;bo
     <p>Bug Rate surged from 3.5% (Aug) to <strong>8.2% (Sep)</strong> — the largest single-month jump in the window. Investigation Rate also rising (4.2% → 8.8%), indicating engineering engagement is up. Both signals are consistent with <strong>R264 GA defect discovery</strong> as customer adoption of 264 widens. Expect further elevation in Oct as 264 GA penetration grows.</p>
   </div>
   <div class="insight-card yellow">
-    <h4>⭐ CSAT: Event-Driven Dip — Watch Oct</h4>
-    <p>Sep CSAT 4.71 is the first dip in 4 months (Aug was 4.84, the 4-month peak). The dip directly correlates with the Bell Canada outage week — outage weeks suppress CSAT even on well-handled cases. <strong>5 low-score responses in Sep</strong> (vs 0–2 in prior months). If Oct ≥4.75, event-driven. A second consecutive month below 4.75 signals a coaching program trigger.</p>
+    <h4>⭐ CSAT: Sep Dip — 5 Low-Score Responses</h4>
+    <p>Sep CSAT 4.71 is the first dip in 4 months (Aug was 4.84, the period high). The dip correlates with the elevated S1 volume in Sep — outage-heavy weeks tend to suppress scores even on well-handled cases. <strong>5 low-score responses in Sep</strong> vs 0–2 in prior months. Key accounts: William Reed (2/5, RCA) and Just Energy (1/5, Billing). Team remains well above industry benchmarks in absolute terms.</p>
   </div>
 </div>
 
@@ -155,10 +186,10 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 8px;bo
         <tr><td>Jun 2026</td><td class="num">4.79</td><td class="num">114</td><td class="num">84%</td><td class="num">2</td></tr>
         <tr><td>Jul 2026</td><td class="num">4.79</td><td class="num">107</td><td class="num">86%</td><td class="num">2</td></tr>
         <tr><td>Aug 2026</td><td class="num" style="color:var(--green)">4.84 ★</td><td class="num">90</td><td class="num">88%</td><td class="num">1</td></tr>
-        <tr class="hl"><td><strong>Sep 2026</strong></td><td class="num" style="color:var(--orange)"><strong>4.71 ⬇</strong></td><td class="num">80</td><td class="num">86%</td><td class="num" style="color:var(--red)">5</td></tr>
+        <tr class="hl"><td><strong>Sep 2026</strong></td><td class="num"><strong>4.71</strong></td><td class="num">80</td><td class="num">86%</td><td class="num">5</td></tr>
       </tbody>
     </table>
-    <div class="insight yellow">Sep dip event-driven (Bell Canada outage week). 5 low-score responses in Sep — highest in 4-month window. Monitor Oct for trend confirmation.</div>
+    <div class="insight yellow">Sep dip correlates with elevated S1 volume in Sep. 5 low-score responses — highest in 4-month window. Team remains strong in absolute terms.</div>
   </div>
 </div>
 <div class="grid-3">
@@ -170,7 +201,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 8px;bo
   <div class="card">
     <h3>🚨 Escalation %</h3>
     <div class="chart-wrap"><canvas id="cEsc"></canvas></div>
-    <div class="insight yellow">Sep 0.78% — returned to Jun levels after Jul low (0.60%). Bell Canada exec escalation is the primary driver. Jul trough likely reflects lower volume + no major incidents.</div>
+    <div class="insight yellow">Sep 0.78% — returned to Jun levels after Jul low (0.60%). Sep S1 spike drove higher escalation rate. Jul trough reflects lower volume and fewer major incidents.</div>
   </div>
   <div class="card">
     <h3>⏱ Time To Resolve (days)</h3>
@@ -200,7 +231,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 8px;bo
 <div class="section-title">🌍 GEO Split — EMEA + India + APAC</div>
 <div class="grid-2">
   <div class="card purple-border">
-    <h3>📊 EMEA vs India Share (% of EMEA+India)</h3>
+    <h3>📊 GEO Share % — EMEA / India / APAC</h3>
     <div class="chart-wrap tall"><canvas id="cGeoShare"></canvas></div>
     <table style="margin-top:8px">
       <thead><tr><th>Month</th><th class="num">EMEA</th><th class="num">EMEA%</th><th class="num">India</th><th class="num">India%</th><th class="num">APAC</th></tr></thead>
@@ -285,7 +316,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 8px;bo
         <tr class="hl"><td><strong>Sep 2026</strong></td><td class="num"><strong>183</strong></td><td class="num" style="color:var(--red)"><strong>102</strong></td><td class="num" style="color:var(--red)"><strong>59%</strong></td><td class="num"><strong>70</strong></td><td class="num"><strong>11</strong></td></tr>
       </tbody>
     </table>
-    <div class="insight red">EMEA S1 share jumped to 59% in Sep (vs 47–51% in prior months). Entirely driven by Bell Canada outage week (Sep 7–13, 59 S1s org-wide). India S1 stable at 59–71/month. APAC S1 contained at 9–12/month.</div>
+    <div class="insight red">EMEA S1 share jumped to 59% in Sep (vs 47–51% in prior months). Driven by the Sep 7–13 outage week (59 S1s org-wide vs 32–35 baseline). India S1 stable at 59–71/month. APAC S1 contained at 9–12/month.</div>
   </div>
   <div class="card">
     <h3>🗂 P&T by Region — Sep 2026 + Trend</h3>
@@ -368,8 +399,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 8px;bo
     </div>
     <div>
       <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px">VERDICT</div>
-      <div class="insight green" style="margin-top:0">✅ <strong>R264 is not implicated in Sep surge.</strong> SB1 week (Aug 9–15) was the lowest S1 week in the 13-week window — sandbox phase absorbed issues before GA. The +24% post-SB1 rate reflects RCA adoption volume growth, not defects. Sep spike is Bell Canada event-driven (262.14.12 regression in previous release).</div>
-      <div class="insight red" style="margin-top:8px">🔴 <strong>Bell Canada Oct risk:</strong> Oct 10 upgrade to 264 is planned but the IsPromotionExecuted bug (W-24309792) requires an explicit fix in scope — the 264 upgrade alone does not resolve it. SI-0297190 confirmed resolution path; must be verified before go-live.</div>
+      <div class="insight green" style="margin-top:0">✅ <strong>R264 is not implicated in Sep surge.</strong> SB1 week (Aug 9–15) was the lowest S1 week in the 13-week window — sandbox phase absorbed issues before GA. The +24% post-SB1 rate reflects RCA adoption volume growth, not defects. Sep spike is event-driven (outage week, 262.14.12 regression in previous release).</div>
     </div>
     <div>
       <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px">BUG + INVESTIGATION RATE</div>
@@ -392,34 +422,63 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0 8px;bo
       <thead><tr><th>Week (Sun–Sat IST)</th><th class="num">Cases</th><th class="num">S1</th><th>Signal</th></tr></thead>
       <tbody>
         <tr><td>Sep 1–6</td><td class="num">~220</td><td class="num">~30</td><td>Normal baseline</td></tr>
-        <tr style="background:#ffebe9"><td><strong>Sep 7–13</strong></td><td class="num" style="color:var(--red)"><strong>~360</strong></td><td class="num" style="color:var(--red)"><strong>59</strong></td><td><span class="pill pill-red">🔴 Bell Canada outage</span></td></tr>
+        <tr style="background:#ffebe9"><td><strong>Sep 7–13</strong></td><td class="num" style="color:var(--red)"><strong>~360</strong></td><td class="num" style="color:var(--red)"><strong>59</strong></td><td><span class="pill pill-red">🔴 Production outage week</span></td></tr>
         <tr><td>Sep 14–20</td><td class="num">~315</td><td class="num">~33</td><td>Normalising</td></tr>
         <tr><td>Sep 21–27 (PW)</td><td class="num">303</td><td class="num">32</td><td>Stable baseline</td></tr>
         <tr class="hl"><td><strong>Sep 27–Oct 3 (TW)</strong></td><td class="num"><strong>305</strong></td><td class="num"><strong>34</strong></td><td>Flat WoW (+0.7%)</td></tr>
       </tbody>
     </table>
-    <div class="insight red" style="margin-top:8px">Sep 7–13 was the statistical outlier: 59 S1s vs 30–34 baseline = +73% spike. Post-Bell normalisation fully confirmed — TW (Sep 27–Oct 3) returned to 34 S1s, exactly at baseline. The Sep monthly total is inflated by ~25–30 outage-driven cases.</div>
+    <div class="insight red" style="margin-top:8px">Sep 7–13 was the statistical outlier: 59 S1s vs 30–34 baseline = +73% spike, driven by the production outage week. TW (Sep 27–Oct 3) returned to 34 S1s, exactly at baseline — normalisation fully confirmed. Sep monthly total is inflated by ~25–30 outage-driven cases.</div>
   </div>
 </div>
 
-<!-- OCT OUTLOOK -->
-<div class="section-title">🔮 October 2026 Outlook</div>
-<div class="grid-4">
-  <div class="card red-border">
-    <h3>🔴 Bell Canada — Oct 10 Upgrade</h3>
-    <div style="font-size:12px;line-height:1.6">Oct 10 upgrade to 264 is the critical event. <strong>IsPromotionExecuted fix must be explicitly in scope</strong> — upgrade alone does not resolve it. Two outages in 6 weeks = third incident would trigger severe exec response. Highest-risk event in Oct.</div>
+
+<!-- SUCCESS PLAN SECTION -->
+<div class="section-title">⭐ Success Plan — Inflow by Entitlement (Jun–Sep 2026)</div>
+<div class="grid-2">
+  <div class="card purple-border">
+    <h3>📈 Inflow Trend by Success Plan Tier</h3>
+    <div class="chart-wrap tall"><canvas id="cSigTrend"></canvas></div>
+    <div class="insight purple" style="margin-top:8px"><strong>Signature volume is rising</strong> — recovering from Aug trough (517) back to 603 in Sep, approaching Jun levels (663). Premier tier declining steadily (251→202). Non-entitlement (standard) bouncing back (128→167). Signature now represents the dominant and growing share of inflow — engineering and escalation capacity must be calibrated to this tier.</div>
   </div>
-  <div class="card" style="border-left:3px solid var(--orange)">
-    <h3>📈 Volume: Approaching Jun Peak</h3>
-    <div style="font-size:12px;line-height:1.6">Sep recovered to 1,410 (92% of Jun peak). At the Sep recovery rate, <strong>Oct projects to ~1,500–1,550</strong> — potentially exceeding the Jun peak. RCA engineer saturation is the constraint. Flag to leadership now for capacity planning.</div>
-  </div>
-  <div class="card blue-border">
-    <h3>🌏 APAC: Structural Backlog Issue</h3>
-    <div style="font-size:12px;line-height:1.6">APAC aged rate 33.7% — has been elevated since Aug (25.5% → 28.2% → 33.7% across 4 weekly snapshots). Not improving. <strong>Rafik at 44.4% is the single highest aged rate in the org.</strong> Requires a dedicated APAC backlog review session.</div>
-  </div>
-  <div class="card green-border">
-    <h3>⭐ CSAT: Oct is the Confirmation</h3>
-    <div style="font-size:12px;line-height:1.6">Sep dip (4.71) is the first in 4 months. Oct is the tell: if Oct ≥4.75, Bell Canada outage was the cause. <strong>If Oct &lt;4.75, initiate coaching program</strong> — focus on proactive communication during incidents, not resolution quality.</div>
+  <div class="card">
+    <h3>📊 Success Plan Volume — Monthly</h3>
+    <table>
+      <thead><tr><th>Tier</th><th class="num">Jun</th><th class="num">Jul</th><th class="num">Aug</th><th class="num hl">Sep</th><th class="num">Δ Jun→Sep</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="pill pill-purple">Signature</span></td>
+          <td class="num">663</td><td class="num">628</td><td class="num">517</td>
+          <td class="num hl"><strong>603</strong></td>
+          <td class="num" style="color:var(--green)">−9%</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-blue">Premier</span></td>
+          <td class="num">251</td><td class="num">231</td><td class="num">219</td>
+          <td class="num hl"><strong>202</strong></td>
+          <td class="num" style="color:var(--green)">−19%</td>
+        </tr>
+        <tr>
+          <td><span class="pill" style="background:#dafbe1;color:#1a7f37">Standard</span></td>
+          <td class="num">160</td><td class="num">128</td><td class="num">138</td>
+          <td class="num hl"><strong>167</strong></td>
+          <td class="num" style="color:var(--orange)">+4%</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px">
+      <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px">SIGNATURE % OF TOTAL INFLOW</div>
+      <table>
+        <thead><tr><th>Month</th><th class="num">Sig Cases</th><th class="num">Total</th><th class="num">Sig %</th></tr></thead>
+        <tbody>
+          <tr><td>Jun 2026</td><td class="num">663</td><td class="num">1,533</td><td class="num">43%</td></tr>
+          <tr><td>Jul 2026</td><td class="num">628</td><td class="num">1,344</td><td class="num">47%</td></tr>
+          <tr><td>Aug 2026</td><td class="num">517</td><td class="num">1,231</td><td class="num">42%</td></tr>
+          <tr class="hl"><td><strong>Sep 2026</strong></td><td class="num"><strong>603</strong></td><td class="num"><strong>1,410</strong></td><td class="num"><strong>43%</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight purple" style="margin-top:10px">Signature consistently accounts for <strong>42–47% of total inflow</strong> despite being a premium tier — it is the team's highest-touch, highest-expectation workload. Aug trough (517, 42%) recovered in Sep (603, 43%). Premier declining in absolute terms — customers migrating up to Signature or down to Standard. Rising Signature volume with flat team capacity = growing per-engineer Signature load.</div>
   </div>
 </div>
 
@@ -490,8 +549,8 @@ def('cClosures',{type:'bar',data:{labels:MONTHS,datasets:[{
 def('cCsat',{type:'line',data:{labels:MONTHS,datasets:[{
   data:[4.79,4.79,4.84,4.71],
   borderColor:'#1a7f37',backgroundColor:'rgba(63,185,80,.1)',
-  tension:.3,pointRadius:5,pointBackgroundColor:['#1a7f37','#1a7f37','#1a7f37','#cf222e'],fill:true,
-  datalabels:{anchor:'end',align:'top',offset:4,color:['#1a7f37','#1a7f37','#1a7f37','#cf222e'],font:{size:10,weight:'600'},formatter:v=>v.toFixed(2)}
+  tension:.3,pointRadius:5,pointBackgroundColor:'#1a7f37',fill:true,
+  datalabels:{anchor:'end',align:'top',offset:4,color:'#1a7f37',font:{size:10,weight:'600'},formatter:v=>v.toFixed(2)}
 }]},options:{...baseOpts(4.4,5.15,{datalabels:{display:false}}),
   plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false},
     datalabels:{display:true}}}});
@@ -532,15 +591,17 @@ def('cBugRate',{type:'line',data:{labels:MONTHS,datasets:[{
   tension:.3,pointRadius:5,fill:true
 }]},options:baseOpts(1.0,10.5,{datalabels:{anchor:'end',align:'top',offset:4,color:'#cf222e',font:{size:10,weight:'600'},formatter:v=>v.toFixed(1)+'%'}})});
 
-// GEO share %
+// GEO share % — all 3 regions, % of total
 def('cGeoShare',{type:'line',data:{labels:MONTHS,datasets:[
-  {label:'EMEA%',data:[65.1,67.7,66.8,65.3],borderColor:'#8250df',backgroundColor:'rgba(130,80,223,.1)',tension:.3,pointRadius:5,fill:true,
+  {label:'EMEA%',data:[57.0,58.2,56.4,58.1],borderColor:'#8250df',backgroundColor:'rgba(130,80,223,.1)',tension:.3,pointRadius:5,fill:true,
     datalabels:{anchor:'end',align:'top',offset:3,color:'#8250df',font:{size:10,weight:'600'},formatter:v=>v+'%'}},
-  {label:'India%',data:[34.9,32.3,33.2,34.7],borderColor:'#e16f42',backgroundColor:'rgba(225,111,66,.1)',tension:.3,pointRadius:5,fill:false,
-    datalabels:{anchor:'end',align:'bottom',offset:3,color:'#e16f42',font:{size:10,weight:'600'},formatter:v=>v+'%'}}
+  {label:'India%',data:[30.6,27.8,28.1,30.8],borderColor:'#e16f42',backgroundColor:'rgba(225,111,66,.1)',tension:.3,pointRadius:5,fill:false,
+    datalabels:{anchor:'end',align:'top',offset:3,color:'#e16f42',font:{size:10,weight:'600'},formatter:v=>v+'%'}},
+  {label:'APAC%',data:[11.7,11.2,10.2,10.8],borderColor:'#1f6feb',backgroundColor:'rgba(31,111,235,.05)',tension:.3,pointRadius:5,fill:false,
+    datalabels:{anchor:'end',align:'bottom',offset:3,color:'#1f6feb',font:{size:10,weight:'600'},formatter:v=>v+'%'}}
 ]},options:{responsive:true,maintainAspectRatio:false,
   plugins:{legend:{display:true,position:'top',labels:{color:tC,font:{size:11},boxWidth:12}},tooltip:{mode:'index',intersect:false},datalabels:{display:true}},
-  scales:{x:{grid:{color:gC},ticks:{color:tC,font:{size:11}}},y:{min:25,max:80,grid:{color:gC},ticks:{color:tC,font:{size:11}}}}}});
+  scales:{x:{grid:{color:gC},ticks:{color:tC,font:{size:11}}},y:{min:5,max:70,grid:{color:gC},ticks:{color:tC,font:{size:11}}}}}});
 
 // GEO absolute (stacked)
 def('cGeoAbs',{type:'bar',data:{labels:MONTHS,datasets:[
@@ -579,6 +640,18 @@ def('cBugTrend',{type:'line',data:{labels:MONTHS,datasets:[
 ]},options:{responsive:true,maintainAspectRatio:false,
   plugins:{legend:{display:true,position:'top',labels:{color:tC,font:{size:10},boxWidth:10}},tooltip:{mode:'index',intersect:false},datalabels:{display:true}},
   scales:{x:{grid:{color:gC},ticks:{color:tC,font:{size:11}}},y:{min:0,max:12,grid:{color:gC},ticks:{color:tC,font:{size:11}}}}}});
+
+// Success Plan / Signature trend
+def('cSigTrend',{type:'line',data:{labels:MONTHS,datasets:[
+  {label:'Signature',data:[663,628,517,603],borderColor:'#8250df',backgroundColor:'rgba(130,80,223,.08)',tension:.3,pointRadius:5,fill:true,
+    datalabels:{anchor:'end',align:'top',offset:4,color:'#8250df',font:{size:10,weight:'600'},formatter:v=>v}},
+  {label:'Premier',data:[251,231,219,202],borderColor:'#1f6feb',backgroundColor:'rgba(31,111,235,.05)',tension:.3,pointRadius:5,fill:false,
+    datalabels:{anchor:'end',align:'top',offset:4,color:'#1f6feb',font:{size:10,weight:'600'},formatter:v=>v}},
+  {label:'Standard',data:[160,128,138,167],borderColor:'#cf222e',backgroundColor:'rgba(207,34,46,.05)',tension:.3,pointRadius:5,fill:false,
+    datalabels:{anchor:'end',align:'bottom',offset:4,color:'#cf222e',font:{size:10,weight:'600'},formatter:v=>v}}
+]},options:{responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:true,position:'top',labels:{color:tC,font:{size:11},boxWidth:12}},tooltip:{mode:'index',intersect:false},datalabels:{display:true}},
+  scales:{x:{grid:{color:gC},ticks:{color:tC,font:{size:11}}},y:{min:80,max:730,grid:{color:gC},ticks:{color:tC,font:{size:11}}}}}});
 
 // Sep weekly
 def('cSepWeekly',{type:'bar',data:{
