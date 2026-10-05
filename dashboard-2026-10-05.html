@@ -171,6 +171,130 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; f
     </div>
   </div>
 
+  <!-- ===== KEY STORY CALLOUTS ===== -->
+  <div class="section-title">📢 Key Stories</div>
+  <div class="grid-3" style="margin-bottom:16px">
+
+    <div class="card red-border">
+      <h3>🚀 Story 1 — Release Spike: W1 Primary Driver</h3>
+      <div style="font-size:36px;font-weight:700;color:#cf222e;margin:6px 0 2px">+36%</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">W1 daily rate vs Aug baseline · 264/Winter '27 SB1 released Aug 29 IST</div>
+      <table class="data-table">
+        <tr><th>Week (IST)</th><th class="num">Daily Rate</th><th class="num">vs Aug avg</th><th class="num">S1</th></tr>
+        <tr style="background:#fff0ee"><td><b>W1 🚀 Aug30–Sep5</b></td><td class="num"><b>163/d</b></td><td class="delta-up"><b>+36%</b></td><td class="num"><b>124</b></td></tr>
+        <tr><td>W2 Sep6–12</td><td class="num">138/d</td><td class="delta-up">+15%</td><td class="num">101</td></tr>
+        <tr><td>W3 Sep13–19</td><td class="num">125/d</td><td class="delta-up">+5%</td><td class="num">78</td></tr>
+        <tr style="background:#fffbe6"><td><b>W4 ⚠ Sep20–26</b></td><td class="num">127/d</td><td class="delta-up">+6%</td><td class="num"><b>88 ↑</b></td></tr>
+        <tr><td>W5 Sep27–30 (4d)</td><td class="num">134/d</td><td class="delta-up">+12%</td><td class="num">47</td></tr>
+      </table>
+      <div class="insight red">W1 generated <b>67% more S1 than Aug weekly avg</b>. Decay was rapid (W1→W3) but stalled — <b>W4 S1 rebounded 78→88</b> as workarounds failed for secondary issues. W5 daily rate (134/d) still +12% above Aug baseline. <b>October opens elevated.</b></div>
+    </div>
+
+    <div class="card purple-border">
+      <h3>📈 Story 2 — Sig Success ↑ Every Month · Standard ↓ Steady Decline</h3>
+      <div style="display:flex;gap:16px;align-items:flex-end;margin:6px 0 2px">
+        <div><div style="font-size:36px;font-weight:700;color:#8250df">+29.2%</div><div style="font-size:10px;color:var(--muted)">Sig Success Jun→Sep</div></div>
+        <div><div style="font-size:36px;font-weight:700;color:#656d76">−11.1%</div><div style="font-size:10px;color:var(--muted)">Standard Jun→Sep</div></div>
+      </div>
+      <div class="chart-wrap" style="height:130px"><canvas id="c-story-tier"></canvas></div>
+      <div class="insight purple"><b>Sig Success up every single month</b>: 1,187 → 1,245 → 1,301 → 1,534. Sep share 36.6% vs Jun 28.5% (<b>+8.1pp structural shift</b>). <b>Standard steady decline</b>: 700 → 684 → 642 → 622 — customers upgrading tiers or self-serving. SB1 release disproportionately hit enterprise accounts — Sig Success +17.9% MoM vs total +13.1%. <b>Coverage ratio review warranted.</b></div>
+    </div>
+
+    <div class="card warn-border">
+      <h3>🐛 Story 3 — Bug-Linked: Industries Dominant · OmniStudio W1 Spike</h3>
+      <div style="font-size:36px;font-weight:700;color:#9a6700;margin:6px 0 2px">72.2%</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px">of Sep bug-linked cases are Industries (367 of 508)</div>
+      <div class="chart-wrap" style="height:130px"><canvas id="c-story-bug"></canvas></div>
+      <div class="insight yellow"><b>Life Sciences: 25% bug rate</b> (152/607) — highest of any product. <b>OmniStudio: 42 of 52 bug-linked cases (81%) landed in W1 release week</b> — direct fingerprint of ERR-33432 / OmniScript Sev1 outage. RCA: 138 bug-linked (13.5% rate). Legacy Revenue essentially clean (3 cases, 0.8%).</div>
+    </div>
+
+  </div>
+
+  <!-- ===== OUTAGE INTELLIGENCE ===== -->
+  <div class="card red-border" style="margin-bottom:16px">
+    <h3>⚡ Outage &amp; Known Issue Intelligence — Sep 2026 · Slack + GUS Signals</h3>
+    <table class="data-table">
+      <tr><th>Date</th><th>Product</th><th>Type</th><th>Summary</th><th>GUS / ERR</th><th>Customers</th><th>Status</th></tr>
+      <tr>
+        <td style="white-space:nowrap"><b>Sep 3–5</b></td>
+        <td><span class="pill pill-purple">OmniScript / FlexCards</span></td>
+        <td><span class="pill pill-red">Sev1 Outage</span></td>
+        <td>Hard-down across Industries sandboxes. Unintended LWS code shipped via ERR-33432 — no gate toggle to disable. Fix-forward 262.14.11. KPMG Chrome revenue booking cascaded as secondary incident.</td>
+        <td>W-24032962 · ERR-33432 · ERR-33507</td>
+        <td>Industries sandboxes broadly + KPMG (cascade)</td>
+        <td><span class="pill pill-yellow">Partial</span></td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap">Sep 4–5</td>
+        <td><span class="pill pill-blue">Core / Agentic</span></td>
+        <td><span class="pill pill-red">Login Outage</span></td>
+        <td>Non-admin logins broken on Org62 (USA1000) post-264 R0. New Agentic tag poisoned shared cache during rolling upgrade. No workaround. Fixed ERR 264.4.3.</td>
+        <td>PRB-0031975 · ERR 264.4.3</td>
+        <td>Org62 internal (USA1000)</td>
+        <td><span class="pill pill-green">Resolved</span></td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap">Sep 5</td>
+        <td><span class="pill pill-purple">OmniStudio OS</span></td>
+        <td><span class="pill pill-orange">R0 Upgrade Fail</span></td>
+        <td>OmniStudio was only named failure in Industries 264 R0 push (FSC/HC/LS all clean). Active failure work item created. R1 also produced OS failure WI.</td>
+        <td>W-24107131 (R0) · W-24396652 (R1)</td>
+        <td>Industries R0/R1 OS fleet</td>
+        <td><span class="pill pill-yellow">Active WI</span></td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap">Sep 10</td>
+        <td><span class="pill pill-blue">Product Configurator</span></td>
+        <td><span class="pill pill-yellow">Known Issue</span></td>
+        <td>"Error while loading" when combined modified standard PS names &gt;255 chars. 5 customers landed on R0 without fix: Glean, BestPass, Secure Data Tech, Corporate Visions, Zelis. Workaround available; fix in R1.</td>
+        <td>W-24031439 · KI published</td>
+        <td>5 named R0 customers</td>
+        <td><span class="pill pill-green">WA avail.</span></td>
+      </tr>
+      <tr style="background:#fff8f0">
+        <td style="white-space:nowrap"><b>Sep 17–18</b></td>
+        <td><span class="pill pill-blue">Context Service / NGP</span></td>
+        <td><span class="pill pill-orange">264 Regression</span></td>
+        <td><b>PostNL</b>: Context Decisions deactivated on first post-264 deploy — called a "show-stopper". <b>Trane Technologies</b>: ContextBuilderException on Initiate Renewal. Root cause: "View Developer Name" permission stopped being provisioned in 264 packaging (PCM/NGP/Context stack).</td>
+        <td>W-23328346 · PCM packaging gap</td>
+        <td>PostNL (474572316), Trane Tech (474591637)</td>
+        <td><span class="pill pill-yellow">WA: add perm</span></td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap">Sep 21</td>
+        <td><span class="pill pill-purple">OmniStudio CME</span></td>
+        <td><span class="pill pill-orange">Fix Upmerge?</span></td>
+        <td>W-24032962 fix scheduled for 262.e — upmerge to 264 unconfirmed as of Sep 21. CME ESM team reproduced same <code>salesforceUtils.handleData is not a function</code> on Vlocity CME 264.30. Sentara Health Sev1 linked (#sev1-474525906). Redirected to Lightning Locker team.</td>
+        <td>W-24032962 · W-24085578</td>
+        <td>Sentara Health (Sev1), Vlocity CME fleet</td>
+        <td><span class="pill pill-red">Unresolved</span></td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap">Sep 24</td>
+        <td><span class="pill pill-green">Life Sciences</span></td>
+        <td><span class="pill pill-orange">264 Regression</span></td>
+        <td>Managed Event "Add Participant" fails on desktop only (works iPad). Confirmed 262→264 regression. Reproduced on Pfizer bizdemo2 (DEU56, build 264). Cross-platform inconsistency rules out FLS/perms — desktop-only fetch defect. Routed to LSC engineering.</td>
+        <td>No WI filed (Sep 24)</td>
+        <td>Pfizer (bizdemo2)</td>
+        <td><span class="pill pill-red">Investigating</span></td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap">Sep 28</td>
+        <td><span class="pill pill-purple">OmniStudio</span></td>
+        <td><span class="pill pill-yellow">Package Gap</span></td>
+        <td>OmniStudio managed package stuck on 264.4 despite Core pod on 264.5.2. Core and OS managed-package upgrades are <b>decoupled</b> — separate push required. Customers cannot auto-pick up 264.5 fixes (W-24124271: Application Detail refresh regression).</td>
+        <td>W-24124271</td>
+        <td>UNLV (474613982) — prod cutover Oct 2 at risk</td>
+        <td><span class="pill pill-yellow">Escalated</span></td>
+      </tr>
+    </table>
+    <div class="insight red" style="margin-top:10px">
+      <b>Pattern:</b> OmniStudio issues span the full month — ERR-33432 outage (W1) → R0 upgrade failure (W1) → fix upmerge unconfirmed (W3) → managed-package version decoupling (W4). OmniStudio is the single most impacted product in Sep. &nbsp;|&nbsp;
+      <b>IR tagging low:</b> As of Aug 31 only <b>5 cases had IR="264 RC Upgrade"</b> in OrgCS — significant under-reporting. True release-driven volume higher than 508 captured. &nbsp;|&nbsp;
+      <b>Source:</b> #rev-cloud-264-sb1-upgrade · #industries-rm · #support-omnistudio-collaboration · #omnistudio · #release-scenario-ingestion
+    </div>
+  </div>
+
   <!-- Row 1: Monthly Inflow Trend + Severity Trend -->
   <div class="grid-2">
     <div class="card">
@@ -736,6 +860,52 @@ function lineChart(canvasId, labels, datasets) {
     }
   });
 }
+
+// ===== STORY CALLOUT CHARTS =====
+// Story 2 — Tier trend mini line
+(function(){
+  const ctx = document.getElementById('c-story-tier');
+  if (!ctx) return;
+  new Chart(ctx.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: MONTHS,
+      datasets: [
+        { label: 'Sig Success', data: [1187,1245,1301,1534], borderColor:'#8250df', backgroundColor:'rgba(130,80,223,0.08)', fill:true, tension:0.3, borderWidth:2.5, pointRadius:4 },
+        { label: 'Standard',    data: [700,684,642,622],     borderColor:'#656d76', backgroundColor:'rgba(101,109,118,0.05)', fill:true, tension:0.3, borderWidth:2, pointRadius:4, borderDash:[4,3] }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, padding:8 } } },
+      scales:{ x:{ grid:{color:gridColor}, ticks:{color:tickColor} }, y:{ grid:{color:gridColor}, ticks:{color:tickColor} } }
+    }
+  });
+})();
+
+// Story 3 — Bug-linked by product bar
+(function(){
+  const ctx = document.getElementById('c-story-bug');
+  if (!ctx) return;
+  new Chart(ctx.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ['Life Sciences','OmniStudio','Other Ind.','RCA','Industry CPQ','Legacy Rev.'],
+      datasets: [{
+        label: 'Bug-Linked Cases (Sep)',
+        data: [152, 52, 163, 138, 0, 3],
+        backgroundColor: ['rgba(225,111,66,0.8)','rgba(130,80,223,0.8)','rgba(88,166,255,0.65)','rgba(9,105,218,0.75)','rgba(26,127,55,0.65)','rgba(208,215,222,0.8)'],
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:false } },
+      scales:{ x:{ grid:{color:gridColor}, ticks:{color:tickColor} }, y:{ grid:{color:'transparent'}, ticks:{color:tickColor} } }
+    }
+  });
+})();
 
 // ===== OVERALL CHARTS =====
 barLine('c-overall-inflow', MONTHS,
