@@ -4,6 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Aged Backlog Trend · Oct 5, 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
 :root{--bg:#f6f8fa;--surface:#ffffff;--border:#d0d7de;--text:#1f2328;--muted:#656d76;
 --accent:#0969da;--green:#1a7f37;--red:#cf222e;--yellow:#9a6700;--orange:#bc4c00;
@@ -88,19 +89,18 @@ tr:last-child td{border-bottom:none;}
   </div>
 </div>
 
-<div class="chart-grid">
-  <div class="card section">
-    <h2>Aged % Trend — by Region (last 6 posts)</h2>
-    <div class="chart-wrap">
-      <canvas id="chartAgedPct"></canvas>
-    </div>
-    <p class="note">APAC added Aug 28. Oct 5 BL dropped (1,038→975) reflecting case closures.</p>
+<div class="card section" style="margin-bottom:20px;">
+  <h2>Aged % Trend — by Region (last 5 posts)</h2>
+  <div class="chart-wrap" style="height:360px;">
+    <canvas id="chartAgedPct"></canvas>
   </div>
-  <div class="card section">
-    <h2>Non-SP Backlog &amp; Aged Count (last 6 posts)</h2>
-    <div class="chart-wrap">
-      <canvas id="chartBLAged"></canvas>
-    </div>
+  <p class="note" style="margin-top:8px;">APAC added Aug 28. Oct 5 BL dropped (1,038→975) reflecting case closures. Numbers shown at each data point.</p>
+</div>
+
+<div class="card section" style="margin-bottom:20px;">
+  <h2>Non-SP Backlog &amp; Aged Count (last 5 posts)</h2>
+  <div class="chart-wrap" style="height:260px;">
+    <canvas id="chartBLAged"></canvas>
   </div>
 </div>
 
@@ -184,23 +184,75 @@ const APAC_PCT = [25.5, 28.2, 33.0, 33.7, 33.3];
 const BL_DATA  = [971, 1000, 1095, 1038, 975];
 const AGED_DATA= [197, 191, 224, 231, 231];
 
+Chart.register(ChartDataLabels);
+
 new Chart(document.getElementById('chartAgedPct'), {
   type: 'line',
   data: {
     labels: WEEKS6,
     datasets: [
-      {label:'Org %', data:ORG_PCT, borderColor:'#1f2328', backgroundColor:'transparent', borderWidth:2.5, pointRadius:4, tension:0.3},
-      {label:'EMEA %', data:EMEA_PCT, borderColor:'#8250df', backgroundColor:'transparent', borderWidth:2, pointRadius:4, tension:0.3},
-      {label:'IST %', data:IST_PCT, borderColor:'#e16f42', backgroundColor:'transparent', borderWidth:2, pointRadius:4, tension:0.3},
-      {label:'APAC %', data:APAC_PCT, borderColor:'#0969da', backgroundColor:'transparent', borderWidth:2, pointRadius:4, tension:0.3, borderDash:[4,3]},
+      {
+        label:'Org %', data:ORG_PCT,
+        borderColor:'#1f2328', backgroundColor:'rgba(31,35,40,0.08)',
+        borderWidth:4, pointRadius:7, pointHoverRadius:9,
+        tension:0.3, fill:true, order:1,
+        datalabels:{
+          align:'top', anchor:'end', offset:6,
+          color:'#1f2328',
+          font:{size:13, weight:'700'},
+          formatter:v=>v+'%'
+        }
+      },
+      {
+        label:'EMEA %', data:EMEA_PCT,
+        borderColor:'#8250df', backgroundColor:'transparent',
+        borderWidth:2.5, pointRadius:5, tension:0.3,
+        datalabels:{
+          align:'bottom', anchor:'start', offset:4,
+          color:'#8250df',
+          font:{size:11, weight:'600'},
+          formatter:v=>v+'%'
+        }
+      },
+      {
+        label:'IST %', data:IST_PCT,
+        borderColor:'#e16f42', backgroundColor:'transparent',
+        borderWidth:2.5, pointRadius:5, tension:0.3,
+        datalabels:{
+          align:'top', anchor:'end', offset:4,
+          color:'#e16f42',
+          font:{size:11, weight:'600'},
+          formatter:v=>v+'%'
+        }
+      },
+      {
+        label:'APAC %', data:APAC_PCT,
+        borderColor:'#0969da', backgroundColor:'transparent',
+        borderWidth:2.5, pointRadius:5, tension:0.3, borderDash:[4,3],
+        datalabels:{
+          align:'right', anchor:'end', offset:8,
+          color:'#0969da',
+          font:{size:11, weight:'600'},
+          formatter:v=>v+'%'
+        }
+      },
     ]
   },
   options:{
     responsive:true, maintainAspectRatio:false,
-    plugins:{legend:{position:'bottom', labels:{font:{size:11}, boxWidth:14}}},
+    layout:{padding:{top:20, right:50, bottom:10, left:10}},
+    plugins:{
+      legend:{position:'bottom', labels:{font:{size:12}, boxWidth:16, padding:16}},
+      datalabels:{display:true}
+    },
     scales:{
-      x:{grid:{color:'#f0f0f0'}, ticks:{font:{size:11}}},
-      y:{min:10, max:42, grid:{color:'#f0f0f0'}, ticks:{font:{size:11}, callback:v=>v+'%'}}
+      x:{grid:{color:'#f0f0f0'}, ticks:{font:{size:13}, color:'#1f2328'}},
+      y:{
+        min:10, max:42,
+        grid:{color:'#ebebeb'},
+        ticks:{font:{size:12}, color:'#656d76', callback:v=>v+'%'},
+        title:{display:true, text:'Aged %', font:{size:12}, color:'#656d76'}
+      }
     }
   }
 });
