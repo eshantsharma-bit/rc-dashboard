@@ -30,10 +30,8 @@ h2{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;le
 .kpi-val{font-size:22px;font-weight:700;line-height:1.1;}
 .kpi-sub{font-size:11px;color:var(--muted);margin-top:3px;}
 .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
-.chart-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px;}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
-.chart-wrap{position:relative;height:220px;}
-.chart-wrap-tall{position:relative;height:260px;}
+.chart-wrap{position:relative;height:240px;}
 table{width:100%;border-collapse:collapse;font-size:12px;}
 th{text-align:left;padding:6px 10px;background:#f6f8fa;border-bottom:2px solid var(--border);font-weight:600;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
 td{padding:6px 10px;border-bottom:1px solid var(--border);}
@@ -53,243 +51,178 @@ tr:last-child td{border-bottom:none;}
     <h1>Aged Backlog Trend — EMEA + India + APAC</h1>
     <div class="meta">All Products · Industry &amp; Revenue Cloud · Non-SP Backlog | Aged &gt;15d · Oct 5, 2026</div>
     <div class="badges" style="margin-top:8px;">
-      <span class="badge badge-red">Org 23.7% ↑</span>
-      <span class="badge badge-purple">EMEA 22.2%</span>
-      <span class="badge badge-orange">IST 21.0%</span>
-      <span class="badge badge-red">APAC 33.3% 🆕</span>
+      <span class="badge badge-red">Org 23.7% ↑ +1.4pp vs Sep 22</span>
+      <span class="badge badge-purple">EMEA 22.2% ↑ +1.5pp</span>
+      <span class="badge badge-orange">IST 21.0% ↑ +2.1pp</span>
+      <span class="badge badge-red">APAC 33.3% ↓ -0.4pp</span>
       <span class="badge badge-blue">BL 975 | Aged 231</span>
     </div>
   </div>
 </div>
 
-<!-- KPI row -->
 <div class="kpi-row">
-  <div class="kpi alert">
+  <div class="kpi warn">
     <div class="kpi-label">Org Aged %</div>
     <div class="kpi-val">23.7%</div>
-    <div class="kpi-sub">↑ +5.0pp vs Aug 19</div>
+    <div class="kpi-sub">↑ +1.4pp vs Sep 22</div>
   </div>
   <div class="kpi warn">
     <div class="kpi-label">EMEA Aged %</div>
     <div class="kpi-val">22.2%</div>
-    <div class="kpi-sub">↑ +0.7pp vs Aug 19</div>
+    <div class="kpi-sub">↑ +1.5pp vs Sep 22</div>
   </div>
   <div class="kpi warn">
     <div class="kpi-label">IST Aged %</div>
     <div class="kpi-val">21.0%</div>
-    <div class="kpi-sub">↑ +4.7pp vs Aug 19</div>
+    <div class="kpi-sub">↑ +2.1pp vs Sep 22</div>
   </div>
   <div class="kpi alert">
-    <div class="kpi-label">APAC Aged % 🆕</div>
+    <div class="kpi-label">APAC Aged %</div>
     <div class="kpi-val">33.3%</div>
-    <div class="kpi-sub">First week in scope</div>
+    <div class="kpi-sub">↓ -0.4pp vs Sep 22</div>
   </div>
-  <div class="kpi">
+  <div class="kpi alert">
     <div class="kpi-label">No Path Cases</div>
     <div class="kpi-val">104</div>
     <div class="kpi-sub">45% of 231 aged</div>
   </div>
 </div>
 
-<!-- Trend Charts -->
 <div class="chart-grid">
-
   <div class="card section">
-    <h2>Aged % Trend — by Region</h2>
+    <h2>Aged % Trend — by Region (last 6 posts)</h2>
     <div class="chart-wrap">
       <canvas id="chartAgedPct"></canvas>
     </div>
-    <p class="note">APAC added Oct 5. Prior weeks EMEA+IST only.</p>
+    <p class="note">APAC added Aug 28. Oct 5 BL dropped (1,038→975) reflecting case closures.</p>
   </div>
-
   <div class="card section">
-    <h2>Non-SP Backlog &amp; Aged Count</h2>
+    <h2>Non-SP Backlog &amp; Aged Count (last 6 posts)</h2>
     <div class="chart-wrap">
       <canvas id="chartBLAged"></canvas>
     </div>
   </div>
-
 </div>
 
-<!-- Trend Table -->
 <div class="card section">
   <h2>Full Trend Table — Non-SP BL | Aged &gt;15d</h2>
   <table>
     <thead>
       <tr>
-        <th>Date</th>
-        <th>Non-SP BL</th>
-        <th>Aged</th>
-        <th>Org %</th>
-        <th>EMEA %</th>
-        <th>IST %</th>
-        <th>APAC %</th>
-        <th>WoW Aged</th>
+        <th>Date</th><th>Non-SP BL</th><th>Aged</th><th>Org %</th><th>EMEA %</th><th>IST %</th><th>APAC %</th><th>WoW Aged</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Jul 24</td>
-        <td>887</td>
-        <td>205</td>
-        <td>23.1%</td>
-        <td>22.1%</td>
-        <td>23.9%</td>
-        <td>—</td>
-        <td class="flat">—</td>
-      </tr>
-      <tr>
-        <td>Jul 30</td>
-        <td>837</td>
-        <td>190</td>
-        <td>22.7%</td>
-        <td>24.8%</td>
-        <td>21.7%</td>
-        <td>—</td>
-        <td class="down">↓ −15</td>
-      </tr>
-      <tr>
-        <td>Aug 13</td>
-        <td>781</td>
-        <td>161</td>
-        <td>20.6%</td>
-        <td>25.5%</td>
-        <td>16.1%</td>
-        <td>—</td>
-        <td class="down">↓ −29</td>
-      </tr>
-      <tr>
-        <td>Aug 19</td>
-        <td>798</td>
-        <td>149</td>
-        <td>18.7%</td>
-        <td>21.5%</td>
-        <td>16.3%</td>
-        <td>—</td>
-        <td class="down">↓ −12</td>
-      </tr>
+      <tr><td>Aug 28</td><td>971</td><td>197</td><td>20.3%</td><td>18.2%</td><td>19.7%</td><td>25.5%</td><td class="flat">—</td></tr>
+      <tr><td>Sep 2</td><td>1,000</td><td>191</td><td>19.1%</td><td>16.3%</td><td>17.0%</td><td>28.2%</td><td class="down">↓ −6</td></tr>
+      <tr><td>Sep 14</td><td>1,095</td><td>224</td><td>20.5%</td><td>17.6%</td><td>17.6%</td><td>33.0%</td><td class="up">↑ +33</td></tr>
+      <tr><td>Sep 22</td><td>1,038</td><td>231</td><td>22.3%</td><td>20.7%</td><td>18.9%</td><td>33.7%</td><td class="up">↑ +7</td></tr>
       <tr class="this-week">
-        <td><strong>Oct 5 ← this week</strong></td>
-        <td><strong>975</strong></td>
-        <td><strong>231</strong></td>
-        <td><strong>23.7%</strong></td>
-        <td><strong>22.2%</strong></td>
-        <td><strong>21.0%</strong></td>
-        <td><strong>33.3% 🆕</strong></td>
-        <td class="up">↑ +82 (APAC +58 new)</td>
+        <td><strong>Oct 5 ← this week</strong></td><td><strong>975</strong></td><td><strong>231</strong></td>
+        <td><strong>23.7%</strong></td><td><strong>22.2%</strong></td><td><strong>21.0%</strong></td><td><strong>33.3%</strong></td>
+        <td class="flat">→ 0 (BL −63, % ↑ denominator drop)</td>
       </tr>
     </tbody>
   </table>
-  <p class="note">7-week gap between Aug 19 and Oct 5. APAC (174 BL, 58 aged) added to scope this week. EMEA+IST comparable BL: 801, Aged: 173 (21.6% vs 18.7% Aug 19, +2.9pp).</p>
+  <p class="note">Aged count flat WoW (231→231) but org% rose +1.4pp as BL dropped 63 cases. IST rose +2.1pp — Manu (+4.4pp) and Naren (+2.2pp) driving. Rafik biggest improver (−10.5pp). Apurva (+10.0pp) is top EMEA mover.</p>
 </div>
 
-<!-- Manager table -->
 <div class="chart-grid">
   <div class="card section">
-    <h2>Manager View — EMEA &amp; India</h2>
+    <h2>Manager View — EMEA &amp; India (vs Sep 22)</h2>
     <table>
-      <thead>
-        <tr><th>Manager</th><th>BL</th><th>Aged</th><th>Aged %</th><th>Signal</th></tr>
-      </thead>
+      <thead><tr><th>Manager</th><th>BL</th><th>Aged</th><th>Aged %</th><th>WoW</th><th>Signal</th></tr></thead>
       <tbody>
-        <tr><td>Darshan Jahagirdar</td><td>126</td><td>34</td><td class="up">27.0%</td><td>🔴</td></tr>
-        <tr><td>Apurva Ajit</td><td>79</td><td>22</td><td class="up">27.8%</td><td>🔴</td></tr>
-        <tr><td>Seamus Redmond</td><td>48</td><td>11</td><td class="up">22.9%</td><td>🔴</td></tr>
-        <tr><td>Sridhar Dwadasi</td><td>116</td><td>20</td><td>17.2%</td><td>▸</td></tr>
-        <tr><td>Eshant Sharma</td><td>46</td><td>5</td><td class="down">10.9%</td><td>✅</td></tr>
-        <tr><td>Saheb Virdi</td><td>0</td><td>0</td><td class="down">0%</td><td>✅</td></tr>
-        <tr style="border-top:2px solid var(--border)"><td>Naren Rajendran</td><td>114</td><td>26</td><td class="up">22.8%</td><td>🔴</td></tr>
-        <tr><td>Bhagat M</td><td>164</td><td>33</td><td>20.1%</td><td>▸</td></tr>
-        <tr><td>Manu Ramamurthy</td><td>108</td><td>22</td><td>20.4%</td><td>▸</td></tr>
+        <tr><td>Apurva Ajit</td><td>79</td><td>22</td><td class="up">27.8%</td><td class="up">+10.0pp</td><td>🔴</td></tr>
+        <tr><td>Darshan Jahagirdar</td><td>126</td><td>34</td><td class="up">27.0%</td><td class="up">+6.1pp</td><td>🔴</td></tr>
+        <tr><td>Seamus Redmond</td><td>48</td><td>11</td><td class="up">22.9%</td><td class="down">−2.8pp</td><td>🔴</td></tr>
+        <tr><td>Naren Rajendran</td><td>114</td><td>26</td><td class="up">22.8%</td><td class="up">+2.2pp</td><td>🔴</td></tr>
+        <tr><td>Manu Ramamurthy</td><td>108</td><td>22</td><td>20.4%</td><td class="up">+4.4pp</td><td>▸</td></tr>
+        <tr><td>Bhagat M</td><td>164</td><td>33</td><td>20.1%</td><td class="flat">−0.4pp</td><td>▸</td></tr>
+        <tr><td>Sridhar Dwadasi</td><td>116</td><td>20</td><td class="down">17.2%</td><td class="down">−7.3pp</td><td>✅</td></tr>
+        <tr><td>Eshant Sharma</td><td>46</td><td>5</td><td class="down">10.9%</td><td class="up">+3.9pp</td><td>✅</td></tr>
+        <tr><td>Saheb Virdi</td><td>0</td><td>0</td><td class="down">0%</td><td class="flat">—</td><td>✅</td></tr>
       </tbody>
     </table>
   </div>
   <div class="card section">
-    <h2>Manager View — APAC (first week)</h2>
+    <h2>Manager View — APAC (vs Sep 22)</h2>
     <table>
-      <thead>
-        <tr><th>Manager</th><th>BL</th><th>Aged</th><th>Aged %</th><th>Signal</th></tr>
-      </thead>
+      <thead><tr><th>Manager</th><th>BL</th><th>Aged</th><th>Aged %</th><th>WoW</th><th>Signal</th></tr></thead>
       <tbody>
-        <tr><td>Mahima Prathaban</td><td>59</td><td>21</td><td class="up">35.6%</td><td>🔴</td></tr>
-        <tr><td>Rafik Shaikh</td><td>56</td><td>19</td><td class="up">33.9%</td><td>🔴</td></tr>
-        <tr><td>Swetha B</td><td>59</td><td>18</td><td class="up">30.5%</td><td>🔴</td></tr>
+        <tr><td>Mahima Prathaban</td><td>59</td><td>21</td><td class="up">35.6%</td><td class="up">+2.8pp</td><td>🔴</td></tr>
+        <tr><td>Swetha B</td><td>59</td><td>18</td><td class="up">30.5%</td><td class="up">+6.3pp</td><td>🔴</td></tr>
+        <tr><td>Rafik Shaikh</td><td>56</td><td>19</td><td class="up">33.9%</td><td class="down">−10.5pp ✅</td><td>🔴</td></tr>
       </tbody>
     </table>
-    <p class="note">All 3 APAC managers above 30% aged — first week in scope.</p>
+    <p class="note">Rafik biggest improver in org (44.4%→33.9%). All 3 APAC still above 30%.</p>
   </div>
 </div>
 
-<!-- P&T top 7 -->
 <div class="card section">
-  <h2>P&amp;T View — Top 7 by Aged Count (Oct 5)</h2>
+  <h2>P&amp;T View — Top 7 by Aged Count (Oct 5 vs Sep 22)</h2>
   <table>
-    <thead>
-      <tr><th>P&amp;T</th><th>Non-SP BL</th><th>Aged</th><th>Aged %</th><th>vs Aug 19</th></tr>
-    </thead>
+    <thead><tr><th>P&amp;T</th><th>Non-SP BL</th><th>Aged</th><th>Aged %</th><th>vs Sep 22</th></tr></thead>
     <tbody>
-      <tr><td>Industry-Life Sciences</td><td>206</td><td>45</td><td class="up">21.8%</td><td class="up">↑ +6.4pp (was 15.4%)</td></tr>
-      <tr><td>Industry-CPQ / Order Mgmt / DC</td><td>118</td><td>35</td><td class="up">29.7%</td><td class="up">↑ +6.3pp (was 23.4%; BL 94→118)</td></tr>
-      <tr><td>Industry-Retail &amp; Consumer Goods</td><td>83</td><td>26</td><td class="down">31.3%</td><td class="down">↓ −7.1pp (was 38.4%)</td></tr>
-      <tr><td>Industry-Omnistudio</td><td>99</td><td>24</td><td class="up">24.2%</td><td class="up">↑ +7.5pp (was 16.7%; BL 60→99)</td></tr>
-      <tr><td>Rev Cloud (Core)-Transaction Mgmt</td><td>40</td><td>9</td><td>22.5%</td><td class="flat">→ (no prior data)</td></tr>
-      <tr><td>Revenue-Salesforce CPQ</td><td>48</td><td>9</td><td>18.8%</td><td class="flat">→ (no prior data)</td></tr>
-      <tr><td>Rev Cloud (Core)-Price Management</td><td>31</td><td>9</td><td class="up">29.0%</td><td class="flat">→ (no prior data)</td></tr>
+      <tr><td>Industry-Life Sciences</td><td>206</td><td>45</td><td class="up">21.8%</td><td class="up">↑ +8.2pp (was 13.6%)</td></tr>
+      <tr><td>Industry-CPQ / Order Mgmt / DC</td><td>118</td><td>35</td><td class="up">29.7%</td><td class="up">↑ +6.0pp (was 23.7%)</td></tr>
+      <tr><td>Industry-Retail &amp; Consumer Goods</td><td>83</td><td>26</td><td class="down">31.3%</td><td class="down">↓ −13.6pp (was 44.9%; BL 69→83)</td></tr>
+      <tr><td>Industry-Omnistudio</td><td>99</td><td>24</td><td class="down">24.2%</td><td class="down">↓ −5.3pp (was 29.5%)</td></tr>
+      <tr><td>Rev Cloud (Core)-Transaction Mgmt</td><td>40</td><td>9</td><td>22.5%</td><td class="flat">→ new in top 7</td></tr>
+      <tr><td>Revenue-Salesforce CPQ</td><td>48</td><td>9</td><td>18.8%</td><td class="flat">→ new in top 7</td></tr>
+      <tr><td>Rev Cloud (Core)-Price Management</td><td>31</td><td>9</td><td class="up">29.0%</td><td class="up">↑ +0.8pp (was 28.2%; BL 39→31 — volume drop inflates %)</td></tr>
     </tbody>
   </table>
 </div>
 
 <script>
-const WEEKS = ['Jul 24','Jul 30','Aug 13','Aug 19','Oct 5'];
-const ORG_PCT   = [23.1, 22.7, 20.6, 18.7, 23.7];
-const EMEA_PCT  = [22.1, 24.8, 25.5, 21.5, 22.2];
-const IST_PCT   = [23.9, 21.7, 16.1, 16.3, 21.0];
-const APAC_PCT  = [null, null, null, null, 33.3];
-const BL_DATA   = [887, 837, 781, 798, 975];
-const AGED_DATA = [205, 190, 161, 149, 231];
+const WEEKS6 = ['Aug 28','Sep 2','Sep 14','Sep 22','Oct 5'];
+const ORG_PCT  = [20.3, 19.1, 20.5, 22.3, 23.7];
+const EMEA_PCT = [18.2, 16.3, 17.6, 20.7, 22.2];
+const IST_PCT  = [19.7, 17.0, 17.6, 18.9, 21.0];
+const APAC_PCT = [25.5, 28.2, 33.0, 33.7, 33.3];
+const BL_DATA  = [971, 1000, 1095, 1038, 975];
+const AGED_DATA= [197, 191, 224, 231, 231];
 
-// Chart 1 — Aged % by region
 new Chart(document.getElementById('chartAgedPct'), {
   type: 'line',
   data: {
-    labels: WEEKS,
+    labels: WEEKS6,
     datasets: [
-      { label: 'Org %', data: ORG_PCT, borderColor: '#1f2328', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 4, tension: 0.3 },
-      { label: 'EMEA %', data: EMEA_PCT, borderColor: '#8250df', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 4, tension: 0.3 },
-      { label: 'IST %', data: IST_PCT, borderColor: '#e16f42', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 4, tension: 0.3 },
-      { label: 'APAC %', data: APAC_PCT, borderColor: '#0969da', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 4, tension: 0.3, borderDash: [4,3], spanGaps: false },
+      {label:'Org %', data:ORG_PCT, borderColor:'#1f2328', backgroundColor:'transparent', borderWidth:2.5, pointRadius:4, tension:0.3},
+      {label:'EMEA %', data:EMEA_PCT, borderColor:'#8250df', backgroundColor:'transparent', borderWidth:2, pointRadius:4, tension:0.3},
+      {label:'IST %', data:IST_PCT, borderColor:'#e16f42', backgroundColor:'transparent', borderWidth:2, pointRadius:4, tension:0.3},
+      {label:'APAC %', data:APAC_PCT, borderColor:'#0969da', backgroundColor:'transparent', borderWidth:2, pointRadius:4, tension:0.3, borderDash:[4,3]},
     ]
   },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 14 } } },
-    scales: {
-      x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 } } },
-      y: { min: 10, max: 40, grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 }, callback: v => v+'%' } }
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom', labels:{font:{size:11}, boxWidth:14}}},
+    scales:{
+      x:{grid:{color:'#f0f0f0'}, ticks:{font:{size:11}}},
+      y:{min:10, max:42, grid:{color:'#f0f0f0'}, ticks:{font:{size:11}, callback:v=>v+'%'}}
     }
   }
 });
 
-// Chart 2 — BL and Aged count
 new Chart(document.getElementById('chartBLAged'), {
-  type: 'bar',
-  data: {
-    labels: WEEKS,
-    datasets: [
-      { label: 'Non-SP BL', data: BL_DATA, backgroundColor: '#d0d7de', yAxisID: 'y' },
-      { label: 'Aged >15d', data: AGED_DATA, backgroundColor: '#cf222e', yAxisID: 'y' },
+  type:'bar',
+  data:{
+    labels:WEEKS6,
+    datasets:[
+      {label:'Non-SP BL', data:BL_DATA, backgroundColor:'#d0d7de', yAxisID:'y'},
+      {label:'Aged >15d', data:AGED_DATA, backgroundColor:'#cf222e', yAxisID:'y'},
     ]
   },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 14 } } },
-    scales: {
-      x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 } } },
-      y: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 } } }
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom', labels:{font:{size:11}, boxWidth:14}}},
+    scales:{
+      x:{grid:{color:'#f0f0f0'}, ticks:{font:{size:11}}},
+      y:{grid:{color:'#f0f0f0'}, ticks:{font:{size:11}}}
     }
   }
 });
 </script>
-
 </body>
 </html>
