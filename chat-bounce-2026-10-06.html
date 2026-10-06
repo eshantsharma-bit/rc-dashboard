@@ -469,6 +469,86 @@ footer { margin-top: 20px; text-align: center; font-size: 11px; color: var(--mut
   </table>
 </div>
 
+<!-- LUNCH SCHEDULE ADHERENCE -->
+<div class="card" style="border-color:#f5d845;margin-bottom:12px;">
+  <div class="card-title">🍽️ Lunch Schedule Adherence — Last Week</div>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">
+    Scheduled slots: Anish 12:30–13:10 · Vipasa 13:10–13:50 · Bhavya 13:50–14:30 · Kushagr 14:30–15:10 (all IST)
+  </div>
+  <table class="data-table">
+    <thead>
+      <tr><th>Engineer</th><th>Scheduled</th><th>Mon 9/28</th><th>Tue 9/29</th><th>Wed 9/30</th><th>Thu 10/1</th><th>Fri 10/2</th><th>Verdict</th></tr>
+    </thead>
+    <tbody>
+      <!-- Anish -->
+      <tr>
+        <td><strong>Anish Sahay</strong></td>
+        <td style="white-space:nowrap;color:var(--muted)">12:30–13:10</td>
+        <td><span class="pill pill-red">No lunch logged</span></td>
+        <td><span class="pill pill-red">No lunch logged</span></td>
+        <td><span class="pill pill-red">No lunch logged</span></td>
+        <td><span class="pill pill-red">20:50–21:38 IST</span></td>
+        <td><span class="pill pill-yellow">12:32–13:15 (+5m late)</span></td>
+        <td><span class="pill pill-red">❌ Non-adherent</span></td>
+      </tr>
+      <!-- Vipasa -->
+      <tr>
+        <td><strong>Vipasa Basnett</strong></td>
+        <td style="white-space:nowrap;color:var(--muted)">13:10–13:50</td>
+        <td><span class="pill pill-green">13:14–13:49 ✅</span></td>
+        <td><span class="pill pill-yellow">13:12–13:54 (+4m)</span></td>
+        <td><span class="pill pill-yellow">13:10–14:00 (+10m)</span></td>
+        <td><span class="pill pill-yellow">13:19–14:04 (+9m late, +14m over)</span></td>
+        <td><span class="pill pill-grey">Absent</span></td>
+        <td><span class="pill pill-yellow">⚠️ Mostly adherent (minor overruns)</span></td>
+      </tr>
+      <!-- Bhavya -->
+      <tr>
+        <td><strong>Bhavya Edarapalli</strong></td>
+        <td style="white-space:nowrap;color:var(--muted)">13:50–14:30</td>
+        <td><span class="pill pill-grey">Absent</span></td>
+        <td><span class="pill pill-red">No lunch logged</span></td>
+        <td><span class="pill pill-red">No lunch logged</span></td>
+        <td><span class="pill pill-red">No lunch logged</span></td>
+        <td><span class="pill pill-grey">Absent</span></td>
+        <td><span class="pill pill-red">❌ No lunch status on any active day</span></td>
+      </tr>
+      <!-- Kushagr -->
+      <tr>
+        <td><strong>Kushagr Jaiswal</strong></td>
+        <td style="white-space:nowrap;color:var(--muted)">14:30–15:10</td>
+        <td><span class="pill pill-red">14:18 start (12m early)</span></td>
+        <td><span class="pill pill-green">14:32–15:03 ✅</span></td>
+        <td><span class="pill pill-red">14:22 start (8m early)</span></td>
+        <td><span class="pill pill-yellow">14:28 start (2m early)</span></td>
+        <td><span class="pill pill-red">13:01–13:36 (1h 29m early!)</span></td>
+        <td><span class="pill pill-red">❌ Consistently early — spills into 2PM window</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;">
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;">KEY FINDINGS</div>
+      <div class="insight red" style="margin-bottom:6px;">
+        <strong>Anish</strong> — No Lunch status logged Mon/Tue/Wed. Thu lunch was at 20:50 IST (evening, not midday). Only Fri was near-schedule. Likely taking breaks without switching status.
+      </div>
+      <div class="insight red" style="margin-bottom:6px;">
+        <strong>Bhavya</strong> — Zero Lunch status records on any of the 3 active days (Tue/Wed/Thu). Entire 13:50–14:30 slot shows Screen Sharing or Available. Break not being logged, OR skipping lunch.
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;">&nbsp;</div>
+      <div class="insight red" style="margin-bottom:6px;">
+        <strong>Kushagr</strong> — Starting lunch 8–12 min early Mon/Wed causes lunch to spill into the 14:00–15:00 chat window every day. Fri lunch was 1h 29m before scheduled slot. This directly explains the 14–15 IST coverage gap.
+      </div>
+      <div class="insight yellow">
+        <strong>Vipasa</strong> — Best adherent. Minor overruns (4–14 min) on Tue–Thu, likely wrapping customer calls. No impact on 14:00 window since her slot ends at 13:50.
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ACTION ITEMS -->
 <div class="card" style="border-color:#ffcecb;margin-bottom:12px;">
   <div class="card-title">Actions Required</div>
