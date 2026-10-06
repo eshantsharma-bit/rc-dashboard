@@ -175,6 +175,23 @@ tr:last-child td{border-bottom:none;}
   </table>
 </div>
 
+<div class="card section" style="border-left:4px solid #0969da;">
+  <h2>APAC — P&amp;T Breakdown (Oct 5) · All 3 managers above 30% aged</h2>
+  <p class="note" style="margin-bottom:10px;">APAC has been above 30% for 3 consecutive weeks. Breakdown by product shows where aged cases are concentrated within the region.</p>
+  <table>
+    <thead><tr><th>P&amp;T</th><th>APAC BL</th><th>APAC Aged</th><th>Aged %</th><th>vs Sep 22</th><th>Manager(s)</th></tr></thead>
+    <tbody>
+      <tr><td>Industry-Life Sciences</td><td>42</td><td>16</td><td class="up" style="font-weight:700;">38.1%</td><td class="up">↑ +9.5pp</td><td>Mahima, Swetha B</td></tr>
+      <tr><td>Industry-Omnistudio</td><td>31</td><td>11</td><td class="up">35.5%</td><td class="up">↑ +4.2pp</td><td>Rafik, Swetha B</td></tr>
+      <tr><td>Industry-CPQ / Order Mgmt / DC</td><td>27</td><td>9</td><td class="up">33.3%</td><td class="up">↑ +5.1pp</td><td>Rafik, Mahima</td></tr>
+      <tr><td>Industry-Retail &amp; Consumer Goods</td><td>22</td><td>8</td><td class="up">36.4%</td><td class="flat">→ flat</td><td>Swetha B, Rafik</td></tr>
+      <tr><td>Rev Cloud (Core)-Transaction Mgmt</td><td>18</td><td>6</td><td>33.3%</td><td class="flat">→ new in view</td><td>Mahima</td></tr>
+      <tr><td>Industry-Financial Services</td><td>14</td><td>4</td><td class="down">28.6%</td><td class="down">↓ −3.1pp</td><td>Rafik</td></tr>
+    </tbody>
+  </table>
+  <p class="note" style="margin-top:8px;">Life Sciences (38.1%) + Retail (36.4%) are the hottest APAC topics. All 3 managers share exposure across multiple P&Ts — this is a capacity issue, not a single-product issue.</p>
+</div>
+
 <script>
 const WEEKS6 = ['Aug 28','Sep 2','Sep 14','Sep 22','Oct 5'];
 const ORG_PCT  = [20.3, 19.1, 20.5, 22.3, 23.7];
@@ -186,6 +203,24 @@ const AGED_DATA= [197, 191, 224, 231, 231];
 
 Chart.register(ChartDataLabels);
 
+// Per-point label position lookup — avoids overlaps between series with close values.
+// Each entry: [align, anchor, offsetPx]
+// EMEA and IST are close to Org at later weeks → push them to opposite sides.
+const ORG_POS   = [['top','end',8],['top','end',8],['top','end',8],['top','end',8],['top','end',8]];
+const EMEA_POS  = [['bottom','start',6],['bottom','start',6],['bottom','start',6],['bottom','start',6],['left','center',8]];
+const IST_POS   = [['right','end',8],['bottom','start',6],['right','end',6],['right','end',6],['bottom','start',6]];
+const APAC_POS  = [['right','end',8],['right','end',8],['right','end',8],['right','end',8],['right','end',8]];
+
+function perPointDL(posArr, color, size, weight){
+  return {
+    color, font:{size, weight},
+    formatter: v => v+'%',
+    align: ctx => posArr[ctx.dataIndex][0],
+    anchor: ctx => posArr[ctx.dataIndex][1],
+    offset: ctx => posArr[ctx.dataIndex][2],
+  };
+}
+
 new Chart(document.getElementById('chartAgedPct'), {
   type: 'line',
   data: {
@@ -196,51 +231,31 @@ new Chart(document.getElementById('chartAgedPct'), {
         borderColor:'#1f2328', backgroundColor:'rgba(31,35,40,0.08)',
         borderWidth:4, pointRadius:7, pointHoverRadius:9,
         tension:0.3, fill:true, order:1,
-        datalabels:{
-          align:'top', anchor:'end', offset:6,
-          color:'#1f2328',
-          font:{size:13, weight:'700'},
-          formatter:v=>v+'%'
-        }
+        datalabels: perPointDL(ORG_POS,'#1f2328',13,'700')
       },
       {
         label:'EMEA %', data:EMEA_PCT,
         borderColor:'#8250df', backgroundColor:'transparent',
         borderWidth:2.5, pointRadius:5, tension:0.3,
-        datalabels:{
-          align:'bottom', anchor:'start', offset:4,
-          color:'#8250df',
-          font:{size:11, weight:'600'},
-          formatter:v=>v+'%'
-        }
+        datalabels: perPointDL(EMEA_POS,'#8250df',11,'600')
       },
       {
         label:'IST %', data:IST_PCT,
         borderColor:'#e16f42', backgroundColor:'transparent',
         borderWidth:2.5, pointRadius:5, tension:0.3,
-        datalabels:{
-          align:'top', anchor:'end', offset:4,
-          color:'#e16f42',
-          font:{size:11, weight:'600'},
-          formatter:v=>v+'%'
-        }
+        datalabels: perPointDL(IST_POS,'#e16f42',11,'600')
       },
       {
         label:'APAC %', data:APAC_PCT,
         borderColor:'#0969da', backgroundColor:'transparent',
         borderWidth:2.5, pointRadius:5, tension:0.3, borderDash:[4,3],
-        datalabels:{
-          align:'right', anchor:'end', offset:8,
-          color:'#0969da',
-          font:{size:11, weight:'600'},
-          formatter:v=>v+'%'
-        }
+        datalabels: perPointDL(APAC_POS,'#0969da',11,'600')
       },
     ]
   },
   options:{
     responsive:true, maintainAspectRatio:false,
-    layout:{padding:{top:20, right:50, bottom:10, left:10}},
+    layout:{padding:{top:24, right:64, bottom:10, left:16}},
     plugins:{
       legend:{position:'bottom', labels:{font:{size:12}, boxWidth:16, padding:16}},
       datalabels:{display:true}
@@ -262,16 +277,25 @@ new Chart(document.getElementById('chartBLAged'), {
   data:{
     labels:WEEKS6,
     datasets:[
-      {label:'Non-SP BL', data:BL_DATA, backgroundColor:'#d0d7de', yAxisID:'y'},
-      {label:'Aged >15d', data:AGED_DATA, backgroundColor:'#cf222e', yAxisID:'y'},
+      {label:'Non-SP BL', data:BL_DATA, backgroundColor:'#e8ecf0', borderColor:'#c8d1da', borderWidth:1, yAxisID:'y'},
+      {label:'Aged >15d', data:AGED_DATA, backgroundColor:'rgba(255,163,140,0.85)', borderColor:'#e16f42', borderWidth:1.5, yAxisID:'y'},
     ]
   },
   options:{
     responsive:true, maintainAspectRatio:false,
-    plugins:{legend:{position:'bottom', labels:{font:{size:11}, boxWidth:14}}},
+    plugins:{
+      legend:{position:'bottom', labels:{font:{size:12}, boxWidth:16, padding:16}},
+      datalabels:{
+        display:true,
+        color: ctx => ctx.datasetIndex===1 ? '#bc4c00' : '#656d76',
+        font: ctx => ({size:11, weight: ctx.datasetIndex===1 ? '700' : '400'}),
+        anchor:'end', align:'top', offset:2,
+        formatter: v => v
+      }
+    },
     scales:{
-      x:{grid:{color:'#f0f0f0'}, ticks:{font:{size:11}}},
-      y:{grid:{color:'#f0f0f0'}, ticks:{font:{size:11}}}
+      x:{grid:{color:'#f0f0f0'}, ticks:{font:{size:12}}},
+      y:{grid:{color:'#ebebeb'}, ticks:{font:{size:11}}, min:0, max:1300}
     }
   }
 });
