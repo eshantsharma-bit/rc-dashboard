@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RC Chat Bounce Report · Sep 28 – Oct 2, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root {
+  --bg: #f6f8fa; --surface: #ffffff; --border: #d0d7de;
+  --text: #1f2328; --muted: #656d76; --accent: #0969da;
+  --green: #1a7f37; --red: #cf222e; --yellow: #9a6700; --orange: #bc4c00;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; background: var(--bg); color: var(--text); padding: 20px; }
+
+.header { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+.header h1 { font-size: 17px; font-weight: 700; }
+.header .meta { color: var(--muted); font-size: 12px; margin-top: 3px; }
+
+.badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+.badge-red { background: #ffebe9; color: var(--red); border: 1px solid #ffcecb; }
+.badge-yellow { background: #fff8c5; color: var(--yellow); border: 1px solid #f5d845; }
+.badge-green { background: #dafbe1; color: var(--green); border: 1px solid #aceebb; }
+.badge-blue { background: #ddf4ff; color: var(--accent); border: 1px solid #80ccff; }
+
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.kpi.alert { border-color: #ffcecb; background: #ffebe9; }
+.kpi.warn { border-color: #f5d845; background: #fff8c5; }
+.kpi.good { border-color: #aceebb; background: #dafbe1; }
+.kpi-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
+.kpi-value { font-size: 26px; font-weight: 700; line-height: 1.2; margin-top: 4px; }
+.kpi-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.card-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table th { background: var(--bg); color: var(--muted); font-weight: 600; text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: .3px; }
+.data-table td { padding: 7px 10px; border-bottom: 1px solid #eaeef2; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--bg); }
+
+.pill { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 12px; }
+.pill-red { background: #ffebe9; color: var(--red); }
+.pill-yellow { background: #fff8c5; color: var(--yellow); }
+.pill-green { background: #dafbe1; color: var(--green); }
+.pill-blue { background: #ddf4ff; color: var(--accent); }
+.pill-grey { background: #f6f8fa; color: var(--muted); border: 1px solid var(--border); }
+
+.insight { border-left: 3px solid; padding: 10px 12px; border-radius: 0 6px 6px 0; margin-bottom: 8px; font-size: 12px; line-height: 1.5; }
+.insight.red { border-color: var(--red); background: #ffebe9; }
+.insight.yellow { border-color: var(--yellow); background: #fff8c5; }
+.insight.green { border-color: var(--green); background: #dafbe1; }
+.insight.blue { border-color: var(--accent); background: #ddf4ff; }
+
+.section-divider { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin: 16px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+
+/* Heatmap */
+.heatmap-wrap { overflow-x: auto; }
+.heatmap { width: 100%; border-collapse: collapse; font-size: 11px; }
+.heatmap th { background: var(--bg); color: var(--muted); font-weight: 600; padding: 5px 8px; border: 1px solid var(--border); text-align: center; font-size: 10px; white-space: nowrap; }
+.heatmap th.eng-col { text-align: left; min-width: 150px; }
+.heatmap td { padding: 5px 8px; border: 1px solid var(--border); text-align: center; font-size: 10px; white-space: nowrap; }
+.heatmap td.eng-name { text-align: left; font-weight: 600; background: var(--bg); }
+.hm-ok { background: #dafbe1; color: #1a7f37; }
+.hm-partial { background: #fff8c5; color: #9a6700; }
+.hm-bad { background: #ffebe9; color: #cf222e; }
+.hm-case { background: #fff1e5; color: #bc4c00; }
+.hm-nodata { background: #f6f8fa; color: #656d76; }
+.hm-day-header { background: #f6f8fa; font-weight: 700; text-align: center; font-size: 11px; }
+
+.day-section { margin-bottom: 4px; border-bottom: 2px solid var(--border); }
+.day-label { font-size: 10px; font-weight: 700; color: var(--muted); background: var(--bg); padding: 4px 8px; border: 1px solid var(--border); }
+
+footer { margin-top: 20px; text-align: center; font-size: 11px; color: var(--muted); padding-top: 12px; border-top: 1px solid var(--border); }
+
+.chart-wrap { position: relative; height: 200px; }
+.chart-wrap-sm { position: relative; height: 160px; }
+
+.primary-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; color: var(--accent); }
+.secondary-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; color: var(--muted); }
+
+.bounced-id { font-family: monospace; font-size: 11px; color: var(--accent); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>💬 RC Chat Bounce Report · Sep 28 – Oct 2, 2026</h1>
+    <div class="meta">Week of Sep 28–Oct 2 · 2:00–6:00 PM IST window · Source: UserServicePresence · OrgCS</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span class="badge badge-red">🚨 7 chats bounced</span>
+    <span class="badge badge-yellow">⚠️ 4 engineers on wrong status</span>
+    <span class="badge badge-green">✅ Anish + Vipasa most reliable</span>
+  </div>
+</div>
+
+<!-- KPI ROW -->
+<div class="kpi-row">
+  <div class="kpi alert">
+    <div class="kpi-label">Bounced Chats</div>
+    <div class="kpi-value" style="color:var(--red)">7</div>
+    <div class="kpi-sub">All from RC primary queue</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Wrong Status (Mon–Thu)</div>
+    <div class="kpi-value" style="color:var(--yellow)">4</div>
+    <div class="kpi-sub">Santhosh · Shrutika · Shubham · Sohag</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Zero ✅ Days (Shubham)</div>
+    <div class="kpi-value" style="color:var(--orange)">5/5</div>
+    <div class="kpi-sub">Never chat-routable all week</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">Best Coverage Day</div>
+    <div class="kpi-value" style="color:var(--green)">Tue</div>
+    <div class="kpi-sub">4 primaries ✅ in 15–18 IST slots</div>
+  </div>
+</div>
+
+<!-- BOUNCED CHAT IDS + COVERAGE CHART -->
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">Bounced Messaging IDs — Last Week</div>
+    <table class="data-table">
+      <thead><tr><th>Messaging ID</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><span class="bounced-id">MS-07191973</span></td><td><span class="pill pill-red">Bounced</span></td></tr>
+        <tr><td><span class="bounced-id">MS-07171151</span></td><td><span class="pill pill-red">Bounced</span></td></tr>
+        <tr><td><span class="bounced-id">MS-07191105</span></td><td><span class="pill pill-red">Bounced</span></td></tr>
+        <tr><td><span class="bounced-id">MS-07126101</span></td><td><span class="pill pill-red">Bounced</span></td></tr>
+        <tr><td><span class="bounced-id">MS-07170038</span></td><td><span class="pill pill-red">Bounced</span></td></tr>
+        <tr><td><span class="bounced-id">MS-07170598</span></td><td><span class="pill pill-red">Bounced</span></td></tr>
+        <tr><td><span class="bounced-id">MS-07169788</span></td><td><span class="pill pill-red">Bounced</span></td></tr>
+      </tbody>
+    </table>
+    <div class="insight red" style="margin-top:12px;">Chats bounced when no engineer held <strong>Available - Messaging & Voice</strong> or <strong>Available - Chat</strong> status. All 4 secondary engineers were on <strong>Available - Case</strong> the entire week — not chat-routable.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✅ Available Engineer Count by Slot (Primary)</div>
+    <div class="chart-wrap">
+      <canvas id="coverageChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ROOT CAUSE BREAKDOWN -->
+<div class="card" style="margin-bottom:12px;">
+  <div class="card-title">Root Cause Breakdown</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+    <div class="insight red" style="margin-bottom:0;">
+      <strong>Wrong Status (Avail-Case)</strong><br>
+      Santhosh · Shrutika · Shubham · Sohag on <em>Available - Case</em> all week Mon–Thu. Chat queue cannot route to this status.
+    </div>
+    <div class="insight yellow" style="margin-bottom:0;">
+      <strong>Lunch Inside Window</strong><br>
+      Kushagr takes 30–49 min lunch daily at 14:18–15:08 IST. Santhosh also takes lunch mid-window every day.
+    </div>
+    <div class="insight yellow" style="margin-bottom:0;">
+      <strong>Screen Sharing Gaps</strong><br>
+      All engineers have Screen Sharing interruptions. Sohag: 122m Mon, 137m Wed. Shrutika: 81m Mon. Shubham: 56m Wed.
+    </div>
+    <div class="insight blue" style="margin-bottom:0;">
+      <strong>Missing Engineers</strong><br>
+      Bhavya absent Mon &amp; Fri. Vipasa absent Fri. Shrutika absent Tue. Friday drops to only 2 primary engineers.
+    </div>
+  </div>
+</div>
+
+<!-- HOURLY HEATMAP — PRIMARY -->
+<div class="card" style="margin-bottom:12px;">
+  <div class="card-title">Hourly Presence Heatmap — PRIMARY Engineers (2–6 PM IST)</div>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">
+    <span style="background:#dafbe1;color:#1a7f37;padding:2px 7px;border-radius:3px;margin-right:6px;">✅ Available</span>
+    <span style="background:#fff8c5;color:#9a6700;padding:2px 7px;border-radius:3px;margin-right:6px;">⚠️ Partial (Screen Sharing interruption)</span>
+    <span style="background:#fff1e5;color:#bc4c00;padding:2px 7px;border-radius:3px;margin-right:6px;">🔶 Wrong Status (Avail-Case)</span>
+    <span style="background:#ffebe9;color:#cf222e;padding:2px 7px;border-radius:3px;margin-right:6px;">❌ Unavailable</span>
+    <span style="background:#f6f8fa;color:#656d76;padding:2px 7px;border-radius:3px;">— No Data</span>
+  </div>
+  <div class="heatmap-wrap">
+    <table class="heatmap">
+      <thead>
+        <tr>
+          <th class="eng-col">Engineer</th>
+          <th colspan="4" class="hm-day-header">Mon 9/28</th>
+          <th colspan="4" class="hm-day-header">Tue 9/29</th>
+          <th colspan="4" class="hm-day-header">Wed 9/30</th>
+          <th colspan="4" class="hm-day-header">Thu 10/1</th>
+          <th colspan="4" class="hm-day-header">Fri 10/2</th>
+        </tr>
+        <tr>
+          <th class="eng-col">Role</th>
+          <th>14–15</th><th>15–16</th><th>16–17</th><th>17–18</th>
+          <th>14–15</th><th>15–16</th><th>16–17</th><th>17–18</th>
+          <th>14–15</th><th>15–16</th><th>16–17</th><th>17–18</th>
+          <th>14–15</th><th>15–16</th><th>16–17</th><th>17–18</th>
+          <th>14–15</th><th>15–16</th><th>16–17</th><th>17–18</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Anish -->
+        <tr>
+          <td class="eng-name">Anish Sahay <span class="primary-tag">PRIMARY</span></td>
+          <!-- Mon -->
+          <td class="hm-partial">⚠️ Screen 10m</td><td class="hm-ok">✅</td><td class="hm-partial">⚠️ Screen 7m</td><td class="hm-partial">⚠️ Screen 17m</td>
+          <!-- Tue -->
+          <td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-partial">⚠️ Screen 41m</td><td class="hm-partial">⚠️ Screen 5m</td>
+          <!-- Wed -->
+          <td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-partial">⚠️ Screen 22m</td><td class="hm-partial">⚠️ Screen 36m</td>
+          <!-- Thu -->
+          <td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-partial">⚠️ Screen 26m</td>
+          <!-- Fri -->
+          <td class="hm-partial">⚠️ Screen 5m</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td>
+        </tr>
+        <!-- Kushagr -->
+        <tr>
+          <td class="eng-name">Kushagr Jaiswal <span class="primary-tag">PRIMARY</span></td>
+          <!-- Mon -->
+          <td class="hm-partial">⚠️ Lunch 41m</td><td class="hm-partial">⚠️ Lunch 8m</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td>
+          <!-- Tue -->
+          <td class="hm-partial">⚠️ Lunch 27m</td><td class="hm-partial">⚠️ Lunch+Screen</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td>
+          <!-- Wed -->
+          <td class="hm-partial">⚠️ Screen+Lunch</td><td class="hm-partial">⚠️ Lunch 8m</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td>
+          <!-- Thu -->
+          <td class="hm-partial">⚠️ Screen+Lunch</td><td class="hm-partial">⚠️ Lunch 6m</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td>
+          <!-- Fri -->
+          <td class="hm-partial">⚠️ Screen 9m</td><td class="hm-partial">⚠️ Screen 9m</td><td class="hm-ok">✅</td><td class="hm-partial">⚠️ Screen 25m</td>
+        </tr>
+        <!-- Vipasa -->
+        <tr>
+          <td class="eng-name">Vipasa Basnett <span class="primary-tag">PRIMARY</span></td>
+          <!-- Mon -->
+          <td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-partial">⚠️ Screen 1m</td>
+          <!-- Tue -->
+          <td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td>
+          <!-- Wed -->
+          <td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-partial">⚠️ Screen 44m</td>
+          <!-- Thu -->
+          <td class="hm-partial">⚠️ Lunch 4m</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-partial">⚠️ Screen 11m</td>
+          <!-- Fri -->
+          <td class="hm-nodata">—</td><td class="hm-nodata">—</td><td class="hm-nodata">—</td><td class="hm-nodata">—</td>
+        </tr>
+        <!-- Bhavya -->
+        <tr>
+          <td class="eng-name">Bhavya Edarapalli <span class="primary-tag">PRIMARY</span></td>
+          <!-- Mon -->
+          <td class="hm-nodata">—</td><td class="hm-nodata">—</td><td class="hm-nodata">—</td><td class="hm-nodata">—</td>
+          <!-- Tue -->
+          <td class="hm-partial">⚠️ Screen 19m</td><td class="hm-partial">⚠️ Screen 14m</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td>
+          <!-- Wed -->
+          <td class="hm-partial">⚠️ Screen 39m</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td>
+          <!-- Thu -->
+          <td class="hm-partial">⚠️ Screen 20m</td><td class="hm-partial">⚠️ Screen 5m</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td>
+          <!-- Fri -->
+          <td class="hm-nodata">—</td><td class="hm-nodata">—</td><td class="hm-nodata">—</td><td class="hm-nodata">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- HOURLY HEATMAP — SECONDARY -->
+<div class="card" style="margin-bottom:12px;">
+  <div class="card-title">Hourly Presence Heatmap — SECONDARY Engineers (2–6 PM IST)</div>
+  <div class="insight red" style="margin-bottom:10px;">All 4 secondary engineers were on <strong>Available - Case</strong> (⚠️ not chat-routable) for nearly the entire week Mon–Thu. This is the primary driver of chat bounces.</div>
+  <div class="heatmap-wrap">
+    <table class="heatmap">
+      <thead>
+        <tr>
+          <th class="eng-col">Engineer</th>
+          <th colspan="4" class="hm-day-header">Mon 9/28</th>
+          <th colspan="4" class="hm-day-header">Tue 9/29</th>
+          <th colspan="4" class="hm-day-header">Wed 9/30</th>
+          <th colspan="4" class="hm-day-header">Thu 10/1</th>
+          <th colspan="4" class="hm-day-header">Fri 10/2</th>
+        </tr>
+        <tr>
+          <th class="eng-col">Role</th>
+          <th>14–15</th><th>15–16</th><th>16–17</th><th>17–18</th>
+          <th>14–15</th><th>15–16</th><th>16–17</th><th>17–18</th>
+          <th>14–15</th><th>15–16</th><th>16–17</th><th>17–18</th>
+          <th>14–15</th><th>15–16</th><th>16–17</th><th>17–18</th>
+          <th>14–15</th><th>15–16</th><th>16–17</th><th>17–18</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Santhosh -->
+        <tr>
+          <td class="eng-name">Santhosh Kathi <span class="secondary-tag">SECONDARY</span></td>
+          <!-- Mon -->
+          <td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td>
+          <!-- Tue -->
+          <td class="hm-bad">❌ Lunch 27m</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td>
+          <!-- Wed -->
+          <td class="hm-bad">❌ Lunch 27m</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td>
+          <!-- Thu -->
+          <td class="hm-case">🔶 Case+Lunch</td><td class="hm-case">🔶 Case+Screen</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td>
+          <!-- Fri -->
+          <td class="hm-case">🔶 Case+Screen</td><td class="hm-case">🔶 Case+Screen</td><td class="hm-bad">❌ Screen 57m</td><td class="hm-case">🔶 Case</td>
+        </tr>
+        <!-- Shrutika -->
+        <tr>
+          <td class="eng-name">Shrutika Shamarthi <span class="secondary-tag">SECONDARY</span></td>
+          <!-- Mon -->
+          <td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case+Screen</td><td class="hm-bad">❌ Screen 52m</td><td class="hm-case">🔶 Case</td>
+          <!-- Tue -->
+          <td class="hm-nodata">—</td><td class="hm-nodata">—</td><td class="hm-nodata">—</td><td class="hm-nodata">—</td>
+          <!-- Wed -->
+          <td class="hm-bad">❌ Lunch 37m</td><td class="hm-case">🔶 Case→✅</td><td class="hm-partial">⚠️ Mixed</td><td class="hm-case">🔶 Case+Screen</td>
+          <!-- Thu -->
+          <td class="hm-bad">❌ Screen+Lunch</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td>
+          <!-- Fri -->
+          <td class="hm-case">🔶 Case+Screen</td><td class="hm-case">🔶 Case+Screen</td><td class="hm-case">🔶 Case+Screen</td><td class="hm-case">🔶 Case</td>
+        </tr>
+        <!-- Shubham -->
+        <tr>
+          <td class="eng-name">Shubham Buradkar <span class="secondary-tag">SECONDARY</span></td>
+          <!-- Mon -->
+          <td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case+Screen</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td>
+          <!-- Tue -->
+          <td class="hm-case">🔶 Case+Screen</td><td class="hm-case">🔶 Case+Screen</td><td class="hm-case">🔶 Case+Break</td><td class="hm-case">🔶 Case</td>
+          <!-- Wed -->
+          <td class="hm-bad">❌ Screen 56m</td><td class="hm-bad">❌ Break+Screen</td><td class="hm-case">🔶 Case+Break</td><td class="hm-case">🔶 Screen+Case</td>
+          <!-- Thu -->
+          <td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case+Break</td><td class="hm-case">🔶 Case+Break</td>
+          <!-- Fri -->
+          <td class="hm-case">🔶 Case+Screen</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td>
+        </tr>
+        <!-- Sohag -->
+        <tr>
+          <td class="eng-name">Sohag Das <span class="secondary-tag">SECONDARY</span></td>
+          <!-- Mon -->
+          <td class="hm-case">🔶 Screen+Case</td><td class="hm-case">🔶 Case+Screen</td><td class="hm-bad">❌ Screen 60m</td><td class="hm-case">🔶 Screen+Case</td>
+          <!-- Tue -->
+          <td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td>
+          <!-- Wed -->
+          <td class="hm-case">🔶 Case+Screen</td><td class="hm-bad">❌ Screen 60m</td><td class="hm-bad">❌ Screen 55m</td><td class="hm-bad">❌ Screen 28m</td>
+          <!-- Thu -->
+          <td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td><td class="hm-case">🔶 Case</td>
+          <!-- Fri -->
+          <td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td><td class="hm-ok">✅</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- COVERAGE + OFFLINE GAPS -->
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">Overall Coverage Summary</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Slot (IST)</th><th>Mon 9/28</th><th>Tue 9/29</th><th>Wed 9/30</th><th>Thu 10/1</th><th>Fri 10/2</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>14–15</strong></td>
+          <td>2P / 0S</td>
+          <td><strong style="color:var(--green)">4P / 0S</strong></td>
+          <td>2P / 0S</td>
+          <td>3P / 0S</td>
+          <td><span class="pill pill-yellow">2P / 1S</span></td>
+        </tr>
+        <tr>
+          <td><strong>15–16</strong></td>
+          <td>3P / 0S</td>
+          <td><strong style="color:var(--green)">4P / 0S</strong></td>
+          <td>4P / 1S</td>
+          <td><strong style="color:var(--green)">4P / 0S</strong></td>
+          <td><span class="pill pill-yellow">2P / 1S</span></td>
+        </tr>
+        <tr>
+          <td><strong>16–17</strong></td>
+          <td>3P / 0S</td>
+          <td>3P / 0S</td>
+          <td><strong style="color:var(--green)">4P / 0S</strong></td>
+          <td><strong style="color:var(--green)">4P / 0S</strong></td>
+          <td><span class="pill pill-yellow">2P / 1S</span></td>
+        </tr>
+        <tr>
+          <td><strong>17–18</strong></td>
+          <td>3P / 0S</td>
+          <td><strong style="color:var(--green)">4P / 0S</strong></td>
+          <td>2P / 0S</td>
+          <td><strong style="color:var(--green)">4P / 0S</strong></td>
+          <td><span class="pill pill-yellow">2P / 1S</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="font-size:11px;color:var(--muted);margin-top:8px;">P = Primary ✅ · S = Secondary ✅ · Secondary = 0 Mon–Thu (all on Avail-Case)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Unplanned Offline Gaps During Window</div>
+    <table class="data-table">
+      <thead><tr><th>Engineer</th><th>Day</th><th>Gap (IST)</th><th>Duration</th></tr></thead>
+      <tbody>
+        <tr><td>Sohag Das</td><td>Wed 9/30</td><td>16:55–17:31</td><td><span class="pill pill-red">36 min</span></td></tr>
+        <tr><td>Santhosh Kathi</td><td>Wed 9/30</td><td>17:25–17:56</td><td><span class="pill pill-red">31 min</span></td></tr>
+        <tr><td>Shubham Buradkar</td><td>Tue 9/29</td><td>~17:13–17:26</td><td><span class="pill pill-yellow">13 min</span></td></tr>
+        <tr><td>Santhosh Kathi</td><td>Tue 9/29</td><td>~16:56–17:04</td><td><span class="pill pill-yellow">7 min</span></td></tr>
+        <tr><td>Shubham Buradkar</td><td>Mon 9/28</td><td>~16:38–16:41</td><td><span class="pill pill-grey">2 min</span></td></tr>
+      </tbody>
+    </table>
+    <div class="insight yellow" style="margin-top:10px;">Offline gaps are unexpected drops — not a scheduled break or status change. Sohag (36m) and Santhosh (31m) on Wed likely contributed directly to that day's bounce risk.</div>
+  </div>
+</div>
+
+<!-- ENGINEER SUMMARY TABLE -->
+<div class="card" style="margin-bottom:12px;">
+  <div class="card-title">Engineer Week Summary</div>
+  <table class="data-table">
+    <thead>
+      <tr><th>Engineer</th><th>Group</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Primary Issue</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Anish Sahay</strong></td><td><span class="primary-tag">PRIMARY</span></td>
+        <td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-yellow">PARTIAL</span></td>
+        <td>Screen Sharing (5–58m/day)</td>
+      </tr>
+      <tr>
+        <td><strong>Kushagr Jaiswal</strong></td><td><span class="primary-tag">PRIMARY</span></td>
+        <td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-yellow">PARTIAL</span></td>
+        <td>Lunch inside window daily (14:18–15:08 IST)</td>
+      </tr>
+      <tr>
+        <td><strong>Vipasa Basnett</strong></td><td><span class="primary-tag">PRIMARY</span></td>
+        <td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-green">YES ✅</span></td><td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-grey">No Data</span></td>
+        <td>Absent Fri · Screen Sharing Wed 17–18 (44m)</td>
+      </tr>
+      <tr>
+        <td><strong>Bhavya Edarapalli</strong></td><td><span class="primary-tag">PRIMARY</span></td>
+        <td><span class="pill pill-grey">No Data</span></td><td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-grey">No Data</span></td>
+        <td>Absent Mon &amp; Fri · Screen Sharing at login</td>
+      </tr>
+      <tr style="background:#fff8c5;">
+        <td><strong>Santhosh Kathi</strong></td><td><span class="secondary-tag">SECONDARY</span></td>
+        <td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-yellow">PARTIAL</span></td>
+        <td>Avail-Case all week · Lunch mid-window · 31m offline Wed</td>
+      </tr>
+      <tr style="background:#fff8c5;">
+        <td><strong>Shrutika Shamarthi</strong></td><td><span class="secondary-tag">SECONDARY</span></td>
+        <td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-grey">No Data</span></td><td><span class="pill pill-yellow">PARTIAL</span></td><td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-red">NO 🔶</span></td>
+        <td>Absent Tue · Avail-Case most days · Screen Sharing 52m Mon</td>
+      </tr>
+      <tr style="background:#ffebe9;">
+        <td><strong>Shubham Buradkar</strong></td><td><span class="secondary-tag">SECONDARY</span></td>
+        <td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-red">NO 🔶</span></td>
+        <td><strong>Zero ✅ days all week</strong> · Avail-Case every day</td>
+      </tr>
+      <tr style="background:#fff8c5;">
+        <td><strong>Sohag Das</strong></td><td><span class="secondary-tag">SECONDARY</span></td>
+        <td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-red">NO 🔶</span></td><td><span class="pill pill-green">YES ✅</span></td>
+        <td>Avail-Case Mon–Thu · Screen Sharing 122m Mon, 137m Wed · 36m offline Wed</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ACTION ITEMS -->
+<div class="card" style="border-color:#ffcecb;margin-bottom:12px;">
+  <div class="card-title">Actions Required</div>
+  <table class="data-table">
+    <thead><tr><th>#</th><th>Action</th><th>Who</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Switch from <strong>Available - Case</strong> to <strong>Available - Messaging & Voice</strong> during 2–6 PM IST on chat days</td>
+        <td>Santhosh · Shrutika · Shubham · Sohag</td>
+        <td><span class="pill pill-red">Immediate</span></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Move lunch break before 2 PM IST — currently 14:18–15:08 slot every day</td>
+        <td>Kushagr (+ Santhosh)</td>
+        <td><span class="pill pill-red">Immediate</span></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Confirm leave/WFH plan for Mon &amp; Fri — no presence data both days; primary coverage drops to 2 engineers on Fridays</td>
+        <td>Bhavya · Vipasa</td>
+        <td><span class="pill pill-yellow">This week</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Review Wed offline gaps — Sohag 36m + Santhosh 31m unplanned drops during window</td>
+        <td>Sohag · Santhosh</td>
+        <td><span class="pill pill-yellow">This week</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Screen Sharing during customer calls is expected, but durations >45m block the slot — consider completing calls before window or flagging to TL</td>
+        <td>All engineers</td>
+        <td><span class="pill pill-blue">Watch</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>RC Chat Bounce Report · Sep 28–Oct 2, 2026 · Source: OrgCS UserServicePresence · 2:00–6:00 PM IST window · Generated Oct 6, 2026</footer>
+
+<script>
+Chart.register(ChartDataLabels);
+
+// Coverage bar chart
+const ctx = document.getElementById('coverageChart').getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Mon 9/28', 'Tue 9/29', 'Wed 9/30', 'Thu 10/1', 'Fri 10/2'],
+    datasets: [
+      {
+        label: '14–15 IST',
+        data: [2, 4, 2, 3, 2],
+        backgroundColor: 'rgba(88,166,255,0.8)',
+        borderRadius: 3,
+      },
+      {
+        label: '15–16 IST',
+        data: [3, 4, 4, 4, 2],
+        backgroundColor: 'rgba(63,185,80,0.8)',
+        borderRadius: 3,
+      },
+      {
+        label: '16–17 IST',
+        data: [3, 3, 4, 4, 2],
+        backgroundColor: 'rgba(163,113,247,0.8)',
+        borderRadius: 3,
+      },
+      {
+        label: '17–18 IST',
+        data: [3, 4, 2, 4, 2],
+        backgroundColor: 'rgba(240,136,62,0.8)',
+        borderRadius: 3,
+      },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10, padding: 8 } },
+      datalabels: { color: '#fff', font: { size: 9, weight: 'bold' }, formatter: v => v > 0 ? v : '' }
+    },
+    scales: {
+      x: { ticks: { color: '#656d76', font: { size: 10 } }, grid: { color: '#d0d7de' } },
+      y: { min: 0, max: 5, ticks: { color: '#656d76', font: { size: 10 }, stepSize: 1 }, grid: { color: '#d0d7de' }, title: { display: true, text: '# Engineers ✅', color: '#656d76', font: { size: 10 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
