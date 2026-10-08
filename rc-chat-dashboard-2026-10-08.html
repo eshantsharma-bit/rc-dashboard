@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RC EMEA Chat Dashboard · Feb–Sep 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root {
+  --bg: #f6f8fa; --surface: #ffffff; --border: #d0d7de;
+  --text: #1f2328; --muted: #656d76; --accent: #0969da;
+  --green: #1a7f37; --red: #cf222e; --yellow: #9a6700; --orange: #bc4c00;
+  --cpq: #0969da; --rca: #8250df; --other: #57606a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+       background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
+.page { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+/* Header */
+.header { background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+          padding: 16px 20px; margin-bottom: 16px; display: flex; align-items: flex-start; justify-content: space-between; }
+.header h1 { font-size: 18px; font-weight: 700; }
+.header .meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.badges { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.badge-red    { background: #ffebe9; color: var(--red); border: 1px solid #ffcecb; }
+.badge-green  { background: #dafbe1; color: var(--green); border: 1px solid #aceebb; }
+.badge-blue   { background: #ddf4ff; color: var(--accent); border: 1px solid #80ccff; }
+.badge-purple { background: #fbefff; color: var(--rca); border: 1px solid #d8b4fe; }
+.badge-yellow { background: #fff8c5; color: var(--yellow); border: 1px solid #f5d845; }
+
+/* KPI row — mirrors screenshot layout */
+.metric-rows { display: flex; flex-direction: column; gap: 0; background: var(--surface);
+               border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+.metric-row { display: grid; grid-template-columns: 220px 1fr 280px; align-items: center;
+              border-bottom: 1px solid var(--bg); padding: 14px 20px; gap: 20px; }
+.metric-row:last-child { border-bottom: none; }
+.metric-row:hover { background: #f6f8fa; }
+.metric-name { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.metric-val { font-size: 28px; font-weight: 700; color: var(--accent); line-height: 1.1; }
+.metric-val.good { color: var(--green); }
+.metric-val.warn { color: var(--yellow); }
+.metric-val.neutral { color: var(--text); }
+.metric-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.metric-sub strong { color: var(--accent); }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #4caf50; margin-left: 6px; vertical-align: middle; }
+.chart-mini { height: 72px; }
+
+/* Cards / grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.card h2 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.card .sub { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+.chart-wrap { height: 220px; position: relative; }
+.chart-wrap-sm { height: 180px; position: relative; }
+
+/* Insight panels */
+.insight { border-left: 3px solid; border-radius: 6px; padding: 10px 14px; font-size: 12px; line-height: 1.6; }
+.insight-red    { background: #ffebe9; border-color: var(--red); color: #6b1720; }
+.insight-green  { background: #dafbe1; border-color: var(--green); color: #1a4d28; }
+.insight-blue   { background: #ddf4ff; border-color: var(--accent); color: #0a3b68; }
+.insight-purple { background: #fbefff; border-color: var(--rca); color: #4a1472; }
+.insight-yellow { background: #fff8c5; border-color: var(--yellow); color: #5c4000; }
+
+/* Data table */
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { background: #f6f8fa; padding: 7px 10px; font-weight: 600; text-align: left;
+     border-bottom: 2px solid var(--border); color: var(--muted); font-size: 11px; text-transform: uppercase; }
+td { padding: 7px 10px; border-bottom: 1px solid #eaeef2; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #f6f8fa; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.pill { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+.pill-cpq    { background: #ddf4ff; color: var(--cpq); }
+.pill-rca    { background: #fbefff; color: var(--rca); }
+.pill-other  { background: #f6f8fa; color: var(--muted); }
+.pct-bar { height: 6px; border-radius: 3px; display: inline-block; vertical-align: middle; }
+.up   { color: var(--red); }
+.down { color: var(--green); }
+
+footer { font-size: 11px; color: var(--muted); text-align: center; padding: 16px;
+         border-top: 1px solid var(--border); margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>Revenue Cloud · EMEA Chat Dashboard</h1>
+    <div class="meta">Feb–Sep 2026 · 8 months · 1,822 chats · Source: Chat CSV export · Generated 2026-10-08</div>
+  </div>
+  <div class="badges">
+    <span class="badge badge-red">AHT ↑ 20% (35→42 min)</span>
+    <span class="badge badge-purple">RCA growing: 19% → 49%</span>
+    <span class="badge badge-green">Resolution 85.4% stable</span>
+    <span class="badge badge-blue">CSAT 4.73 · n=131</span>
+  </div>
+</div>
+
+<!-- METRIC ROWS — mirrors the screenshot exactly -->
+<div class="metric-rows">
+
+  <div class="metric-row">
+    <div class="metric-name">Chat Inflow</div>
+    <div>
+      <div class="metric-val">1,822</div>
+      <div class="metric-sub">Across 8 months · <strong>228</strong> avg/month</div>
+    </div>
+    <canvas id="mChart0" class="chart-mini"></canvas>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric-name">Chat Closures</div>
+    <div>
+      <div class="metric-val">1,821</div>
+      <div class="metric-sub"><strong>99.9%</strong> of chats were closed (Ended status)</div>
+    </div>
+    <canvas id="mChart1" class="chart-mini"></canvas>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric-name">Missed Chat</div>
+    <div>
+      <div class="metric-val neutral">0 <span class="dot"></span></div>
+      <div class="metric-sub">Missed Chat% — <strong>0.0%</strong></div>
+    </div>
+    <canvas id="mChart2" class="chart-mini"></canvas>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric-name">Chat Resolution %</div>
+    <div>
+      <div class="metric-val good">85.35% <span class="dot"></span></div>
+      <div class="metric-sub">1,555 resolved · 267 not resolved</div>
+    </div>
+    <canvas id="mChart3" class="chart-mini"></canvas>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric-name">Chat CSAT</div>
+    <div>
+      <div class="metric-val good">4.73 <span class="dot"></span></div>
+      <div class="metric-sub">Survey Count — <strong>131</strong></div>
+    </div>
+    <canvas id="mChart4" class="chart-mini"></canvas>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric-name">Chat Duration</div>
+    <div>
+      <div class="metric-val neutral">39 <span style="font-size:16px;font-weight:400;color:var(--muted);">mins</span></div>
+      <div class="metric-sub">P90 = 67 min · P95 = 84 min · trending up</div>
+    </div>
+    <canvas id="mChart5" class="chart-mini"></canvas>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric-name">Avg Wait Time</div>
+    <div>
+      <div class="metric-val neutral">19.04 <span style="font-size:16px;font-weight:400;color:var(--muted);">sec</span></div>
+      <div class="metric-sub">Median: <strong>8</strong> secs · 90th Pct: <strong>68</strong> secs</div>
+    </div>
+    <canvas id="mChart6" class="chart-mini"></canvas>
+  </div>
+
+</div>
+
+<!-- PRODUCT SPLIT SECTION -->
+<div class="grid-2">
+  <div class="card">
+    <h2>CPQ vs RCA — Monthly Volume Trend</h2>
+    <div class="sub">CPQ = Revenue-* package · RCA = Revenue Cloud (Core)-*</div>
+    <div class="chart-wrap"><canvas id="chartProduct"></canvas></div>
+  </div>
+  <div class="card">
+    <h2>CPQ vs RCA — % Share Shift</h2>
+    <div class="sub">RCA share growing fast — from 19% in Feb to 49% in Sep</div>
+    <div class="chart-wrap"><canvas id="chartProductPct"></canvas></div>
+  </div>
+</div>
+
+<!-- PRODUCT INSIGHT -->
+<div class="grid-3" style="margin-bottom:16px;">
+  <div class="insight insight-blue">
+    <strong>CPQ (Legacy)</strong><br>
+    Started at 131 chats/month (Feb), dropped to 77 (Sep) — a <strong>41% decline</strong>. Customers migrating away from CPQ package to Revenue Cloud Core.
+  </div>
+  <div class="insight insight-purple">
+    <strong>RCA (Revenue Cloud Core)</strong><br>
+    Grew from 44 (Feb) to 126 (Sep) — a <strong>+186% increase</strong>. Now nearly matching CPQ volume. Share rose from 19% → 49%.
+  </div>
+  <div class="insight insight-yellow">
+    <strong>Why this matters for staffing</strong><br>
+    RCA chats are newer, more complex, and likely drive the rising AHT (35→42 min). Engineers need RCA expertise — not just CPQ knowledge.
+  </div>
+</div>
+
+<!-- RCA PRODUCT SUB-TOPICS -->
+<div class="card" style="margin-bottom:16px;">
+  <h2>RCA Sub-Topic Breakdown (all time · 587 chats)</h2>
+  <div class="sub">Revenue Cloud (Core) product areas — what engineers spend most time on</div>
+  <table>
+    <thead><tr><th>Product Area</th><th class="num">Chats</th><th class="num">Share</th><th>Volume bar</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="pill pill-rca">Product Configurator</span></td>
+        <td class="num">386</td><td class="num">65.8%</td>
+        <td><div class="pct-bar" style="width:130px;background:#8250df;opacity:.7;"></div></td>
+        <td style="color:var(--muted);">Biggest driver — pricing/catalog setup issues</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-rca">Price Management</span></td>
+        <td class="num">79</td><td class="num">13.5%</td>
+        <td><div class="pct-bar" style="width:42px;background:#8250df;opacity:.5;"></div></td>
+        <td style="color:var(--muted);">Pricing rules, price books</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-rca">Transaction Management</span></td>
+        <td class="num">65</td><td class="num">11.1%</td>
+        <td><div class="pct-bar" style="width:35px;background:#8250df;opacity:.4;"></div></td>
+        <td style="color:var(--muted);">Order lifecycle, amendments</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-rca">Billing &amp; Invoicing</span></td>
+        <td class="num">19</td><td class="num">3.2%</td>
+        <td><div class="pct-bar" style="width:13px;background:#8250df;opacity:.3;"></div></td>
+        <td style="color:var(--muted);">Invoice generation, billing cycles</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-rca">Developer Support (P2O)</span></td>
+        <td class="num">19</td><td class="num">3.2%</td>
+        <td><div class="pct-bar" style="width:13px;background:#8250df;opacity:.3;"></div></td>
+        <td style="color:var(--muted);">API/code-level product-to-order issues</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-rca">Contract Lifecycle Mgmt</span></td>
+        <td class="num">9</td><td class="num">1.5%</td>
+        <td><div class="pct-bar" style="width:7px;background:#8250df;opacity:.3;"></div></td>
+        <td style="color:var(--muted);">Contract amendments &amp; renewals</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-rca">Other RCA</span></td>
+        <td class="num">10</td><td class="num">1.7%</td>
+        <td><div class="pct-bar" style="width:7px;background:#8250df;opacity:.2;"></div></td>
+        <td style="color:var(--muted);">Advanced Approvals, PCM, Usage &amp; Ratings</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CPQ SUB-TOPICS -->
+<div class="card" style="margin-bottom:16px;">
+  <h2>CPQ Sub-Topic Breakdown (all time · 827 chats)</h2>
+  <div class="sub">Revenue-* (CPQ package) product areas</div>
+  <table>
+    <thead><tr><th>Product Area</th><th class="num">Chats</th><th class="num">Share</th><th>Volume bar</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="pill pill-cpq">Salesforce CPQ</span></td>
+        <td class="num">669</td><td class="num">80.9%</td>
+        <td><div class="pct-bar" style="width:130px;background:#0969da;opacity:.7;"></div></td>
+        <td style="color:var(--muted);">Core CPQ product — quoting, rules, bundles</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-cpq">CPQ Developer Support</span></td>
+        <td class="num">62</td><td class="num">7.5%</td>
+        <td><div class="pct-bar" style="width:40px;background:#0969da;opacity:.5;"></div></td>
+        <td style="color:var(--muted);">Code/API extensions to CPQ</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-cpq">Document Generation</span></td>
+        <td class="num">55</td><td class="num">6.7%</td>
+        <td><div class="pct-bar" style="width:36px;background:#0969da;opacity:.4;"></div></td>
+        <td style="color:var(--muted);">Quote/proposal template issues</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-cpq">Salesforce Billing</span></td>
+        <td class="num">41</td><td class="num">5.0%</td>
+        <td><div class="pct-bar" style="width:27px;background:#0969da;opacity:.3;"></div></td>
+        <td style="color:var(--muted);">Billing addon for CPQ</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- AHT + WAIT + RESOLUTION -->
+<div class="grid-3">
+  <div class="card">
+    <h2>Chat Duration (AHT) Trend</h2>
+    <div class="sub">Avg minutes per chat · rising every month</div>
+    <div class="chart-wrap-sm"><canvas id="chartDur"></canvas></div>
+  </div>
+  <div class="card">
+    <h2>Chat Resolution %</h2>
+    <div class="sub">% of chats marked Resolved · target ≥85%</div>
+    <div class="chart-wrap-sm"><canvas id="chartRes"></canvas></div>
+  </div>
+  <div class="card">
+    <h2>Avg Wait Time (sec)</h2>
+    <div class="sub">Customer wait before engineer response · improving</div>
+    <div class="chart-wrap-sm"><canvas id="chartWait"></canvas></div>
+  </div>
+</div>
+
+<!-- CSAT -->
+<div class="grid-2">
+  <div class="card">
+    <h2>Chat CSAT Trend</h2>
+    <div class="sub">Average CSAT score per month (max 5.0) · survey count in brackets</div>
+    <div class="chart-wrap"><canvas id="chartCsat"></canvas></div>
+  </div>
+  <div class="card">
+    <h2>Monthly Snapshot Table</h2>
+    <div class="sub">All key metrics in one view</div>
+    <table>
+      <thead><tr><th>Month</th><th class="num">Volume</th><th class="num">CPQ</th><th class="num">RCA</th><th class="num">Avg AHT</th><th class="num">Res%</th><th class="num">CSAT</th></tr></thead>
+      <tbody>
+        <tr><td>Feb</td><td class="num">229</td><td class="num"><span class="pill pill-cpq">131</span></td><td class="num"><span class="pill pill-rca">44</span></td><td class="num">35.1m</td><td class="num">78.2%</td><td class="num">5.00</td></tr>
+        <tr><td>Mar</td><td class="num">181</td><td class="num"><span class="pill pill-cpq">90</span></td><td class="num"><span class="pill pill-rca">51</span></td><td class="num">37.8m</td><td class="num">85.6%</td><td class="num">4.18</td></tr>
+        <tr><td>Apr</td><td class="num">199</td><td class="num"><span class="pill pill-cpq">100</span></td><td class="num"><span class="pill pill-rca">53</span></td><td class="num">39.4m</td><td class="num">85.4%</td><td class="num">4.50</td></tr>
+        <tr><td>May</td><td class="num">189</td><td class="num"><span class="pill pill-cpq">82</span></td><td class="num"><span class="pill pill-rca">52</span></td><td class="num">40.3m</td><td class="num">86.2%</td><td class="num">4.80</td></tr>
+        <tr><td>Jun</td><td class="num">252</td><td class="num"><span class="pill pill-cpq">129</span></td><td class="num"><span class="pill pill-rca">71</span></td><td class="num">37.6m</td><td class="num">84.9%</td><td class="num">4.94</td></tr>
+        <tr><td>Jul</td><td class="num">268</td><td class="num"><span class="pill pill-cpq">125</span></td><td class="num"><span class="pill pill-rca">84</span></td><td class="num">38.6m</td><td class="num">86.9%</td><td class="num">4.95</td></tr>
+        <tr style="background:#fbefff;"><td>Aug</td><td class="num">248</td><td class="num"><span class="pill pill-cpq">93</span></td><td class="num"><span class="pill pill-rca">106</span></td><td class="num">39.1m</td><td class="num">90.7%</td><td class="num">4.58</td></tr>
+        <tr style="background:#fbefff;"><td><strong>Sep</strong></td><td class="num"><strong>256</strong></td><td class="num"><span class="pill pill-cpq">77</span></td><td class="num"><span class="pill pill-rca">126</span></td><td class="num up">42.2m</td><td class="num">84.4%</td><td class="num">4.60</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;" class="insight insight-purple">
+      <strong>Aug–Sep: RCA overtook CPQ</strong> in monthly volume for the first time. 106 vs 93 in Aug, 126 vs 77 in Sep.
+    </div>
+  </div>
+</div>
+
+<!-- KEY SIGNALS -->
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
+  <div class="insight insight-red">
+    <strong>AHT +20%</strong><br>35.1 → 42.2 min over 8 months. Biggest single driver of future staffing risk.
+  </div>
+  <div class="insight insight-purple">
+    <strong>RCA surge +186%</strong><br>44 → 126/month. Engineers need deep RCA expertise urgently.
+  </div>
+  <div class="insight insight-green">
+    <strong>Resolution 85%+</strong><br>Stable across all months. Quality not degrading despite volume growth.
+  </div>
+  <div class="insight insight-blue">
+    <strong>Wait time improving</strong><br>31 sec avg in Feb → 16 sec in Sep. Team responding faster despite higher load.
+  </div>
+</div>
+
+<footer>Revenue Cloud EMEA Chat Dashboard · 1,822 chats · Feb–Sep 2026 · Generated 2026-10-08</footer>
+</div>
+
+<script>
+Chart.register(ChartDataLabels);
+
+const labels = ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep'];
+const inf  = [229,181,199,189,252,268,248,256];
+const cls  = [228,181,199,189,252,268,248,256];
+const cpq  = [131,90,100,82,129,125,93,77];
+const rca  = [44,51,53,52,71,84,106,126];
+const oth  = [54,40,46,55,52,59,49,53];
+const dur  = [35.1,37.8,39.4,40.3,37.6,38.6,39.1,42.2];
+const wt   = [31.93,17.28,18.25,17.94,23.88,16.24,11.24,15.97];
+const res  = [78.2,85.6,85.4,86.2,84.9,86.9,90.7,84.4];
+const csat = [5.0,4.18,4.5,4.80,4.94,4.95,4.58,4.60];
+
+const gridColor = '#d0d7de';
+const tickColor = '#656d76';
+const baseOpts = (min, max, step) => ({
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { display: false }, datalabels: { display: false } },
+  scales: {
+    x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 10 } } },
+    y: { min, max, grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } } }
+  }
+});
+
+// Mini sparkline charts (no axes, no labels)
+function sparkline(id, data, color) {
+  const min = Math.min(...data) * 0.9;
+  const max = Math.max(...data) * 1.05;
+  new Chart(document.getElementById(id), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        borderColor: color, borderWidth: 1.5, pointRadius: 2,
+        pointBackgroundColor: color, fill: false, tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, datalabels: { display: false }, tooltip: { enabled: false } },
+      scales: {
+        x: { display: false },
+        y: { display: false, min, max }
+      },
+      animation: false
+    }
+  });
+}
+
+sparkline('mChart0', inf,  '#0969da');
+sparkline('mChart1', cls,  '#0969da');
+sparkline('mChart2', [0,0,0,0,0,0,0,0], '#57606a');
+sparkline('mChart3', res,  '#1a7f37');
+sparkline('mChart4', csat, '#1a7f37');
+sparkline('mChart5', dur,  '#bc4c00');
+sparkline('mChart6', wt,   '#0969da');
+
+// Product stacked bar
+new Chart(document.getElementById('chartProduct'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [
+      { label: 'CPQ', data: cpq, backgroundColor: 'rgba(9,105,218,.75)', stack: 'p', borderRadius: 0 },
+      { label: 'RCA', data: rca, backgroundColor: 'rgba(130,80,223,.75)', stack: 'p', borderRadius: 0 },
+      { label: 'Other', data: oth, backgroundColor: 'rgba(87,96,106,.3)', stack: 'p', borderRadius: 2 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 }, padding: 12 } },
+      datalabels: {
+        display: (ctx) => ctx.datasetIndex === 1,
+        formatter: (v, ctx) => {
+          const rcaV = rca[ctx.dataIndex];
+          const cpqV = cpq[ctx.dataIndex];
+          return rcaV > cpqV ? '↑RCA' : '';
+        },
+        anchor: 'end', align: 'top', color: '#8250df', font: { size: 9, weight: '700' }
+      }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { color: tickColor } },
+      y: { stacked: true, max: 290, grid: { color: gridColor }, ticks: { color: tickColor } }
+    }
+  }
+});
+
+// Product % share area chart
+const cpqPct = inf.map((v,i) => +(cpq[i]/v*100).toFixed(1));
+const rcaPct = inf.map((v,i) => +(rca[i]/v*100).toFixed(1));
+new Chart(document.getElementById('chartProductPct'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [
+      {
+        label: 'CPQ %', data: cpqPct,
+        borderColor: '#0969da', backgroundColor: 'rgba(9,105,218,.08)',
+        pointRadius: 4, tension: 0.3, fill: false, borderWidth: 2
+      },
+      {
+        label: 'RCA %', data: rcaPct,
+        borderColor: '#8250df', backgroundColor: 'rgba(130,80,223,.08)',
+        pointRadius: 4, tension: 0.3, fill: false, borderWidth: 2
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11 }, padding: 12 } },
+      datalabels: {
+        formatter: (v) => v + '%',
+        anchor: 'end', align: 'top',
+        color: (ctx) => ctx.datasetIndex === 0 ? '#0969da' : '#8250df',
+        font: { size: 10, weight: '600' },
+        display: (ctx) => ctx.dataIndex === 0 || ctx.dataIndex === 7
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor } },
+      y: { min: 0, max: 70, grid: { color: gridColor }, ticks: { color: tickColor, callback: v => v + '%' } }
+    }
+  }
+});
+
+// AHT
+new Chart(document.getElementById('chartDur'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      data: dur, borderColor: '#bc4c00', backgroundColor: 'rgba(188,76,0,.08)',
+      pointRadius: 4, tension: 0.3, fill: true, borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      datalabels: {
+        formatter: v => v.toFixed(1), anchor: 'end', align: 'top',
+        color: '#bc4c00', font: { size: 9, weight: '600' },
+        display: (ctx) => ctx.dataIndex === 0 || ctx.dataIndex === 7
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 10 } } },
+      y: { min: 30, max: 48, grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 }, callback: v => v + 'm' } }
+    }
+  }
+});
+
+// Resolution
+new Chart(document.getElementById('chartRes'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [{
+      data: res,
+      backgroundColor: res.map(v => v >= 85 ? 'rgba(26,127,55,.7)' : 'rgba(207,34,46,.7)'),
+      borderRadius: 3
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      datalabels: {
+        formatter: v => v.toFixed(1) + '%', anchor: 'end', align: 'top',
+        color: '#1f2328', font: { size: 9, weight: '600' },
+        display: (ctx) => ctx.dataIndex === 0 || ctx.dataIndex === 7
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 10 } } },
+      y: { min: 70, max: 100, grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 }, callback: v => v + '%' } }
+    }
+  }
+});
+
+// Wait time
+new Chart(document.getElementById('chartWait'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      data: wt, borderColor: '#0969da', backgroundColor: 'rgba(9,105,218,.07)',
+      pointRadius: 4, tension: 0.3, fill: true, borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      datalabels: {
+        formatter: v => v.toFixed(0) + 's', anchor: 'end', align: 'top',
+        color: '#0969da', font: { size: 9, weight: '600' },
+        display: (ctx) => ctx.dataIndex === 0 || ctx.dataIndex === 7
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 10 } } },
+      y: { min: 0, max: 40, grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 }, callback: v => v + 's' } }
+    }
+  }
+});
+
+// CSAT
+new Chart(document.getElementById('chartCsat'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      data: csat, borderColor: '#1a7f37', backgroundColor: 'rgba(26,127,55,.08)',
+      pointRadius: 5, tension: 0.3, fill: true, borderWidth: 2,
+      pointBackgroundColor: '#1a7f37'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      datalabels: {
+        formatter: v => v.toFixed(2), anchor: 'end', align: 'top',
+        color: '#1a7f37', font: { size: 10, weight: '700' }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor } },
+      y: { min: 3.8, max: 5.2, grid: { color: gridColor }, ticks: { color: tickColor } }
+    }
+  }
+});
+</script>
+</body>
+</html>
