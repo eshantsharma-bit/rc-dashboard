@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RC WBR · Oct 4–10 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root{
+  --bg:#f6f8fa;--surface:#ffffff;--border:#d0d7de;
+  --text:#1f2328;--muted:#656d76;--accent:#0969da;
+  --green:#1a7f37;--red:#cf222e;--yellow:#9a6700;--orange:#bc4c00;
+  --emea:#8250df;--india:#e16f42;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;background:var(--bg);color:var(--text);padding:16px}
+.header{display:flex;justify-content:space-between;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:12px}
+.header h1{font-size:18px;font-weight:700;margin-bottom:4px}
+.header .meta{color:var(--muted);font-size:12px}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-left:6px}
+.badge-red{background:#ffebe9;color:var(--red);border:1px solid #ffcecb}
+.badge-purple{background:#fbefff;color:var(--emea);border:1px solid #d8b4fe}
+.badge-green{background:#dafbe1;color:var(--green);border:1px solid #aceebb}
+.badge-orange{background:#fff1e5;color:var(--orange);border:1px solid #ffc896}
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:12px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.kpi.alert{background:#ffebe9;border-color:#ffcecb}
+.kpi.warn{background:#fff8c5;border-color:#f5d845}
+.kpi.good{background:#dafbe1;border-color:#aceebb}
+.kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.kpi-value{font-size:26px;font-weight:700;line-height:1}
+.kpi-delta{font-size:11px;margin-top:3px;color:var(--muted)}
+.kpi-delta .up{color:var(--red)}
+.kpi-delta .dn{color:var(--green)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.card.red-border{border-color:#ffcecb}
+.card.orange-border{border-color:#ffc896}
+.card.yellow-border{border-color:#f5d845}
+.card h3{font-size:13px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.insight{border-left:3px solid;padding:8px 10px;border-radius:4px;margin-bottom:6px;font-size:12px;line-height:1.5}
+.insight.red{border-color:var(--red);background:#ffebe9}
+.insight.green{border-color:var(--green);background:#dafbe1}
+.insight.yellow{border-color:var(--yellow);background:#fff8c5}
+.insight.blue{border-color:var(--accent);background:#ddf4ff}
+.insight.purple{border-color:var(--emea);background:#fbefff}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#f6f8fa;border-bottom:1px solid var(--border);padding:6px 8px;text-align:left;font-weight:600;color:var(--muted);white-space:nowrap}
+td{padding:5px 8px;border-bottom:1px solid #eaeef2}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f6f8fa}
+.tw-col{background:rgba(9,105,218,.07);font-weight:600}
+.pill{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600;white-space:nowrap}
+.pill-red{background:#ffebe9;color:var(--red)}
+.pill-green{background:#dafbe1;color:var(--green)}
+.pill-yellow{background:#fff8c5;color:var(--yellow)}
+.pill-blue{background:#ddf4ff;color:var(--accent)}
+.pill-purple{background:#fbefff;color:var(--emea)}
+.pill-orange{background:#fff1e5;color:var(--orange)}
+.chart-wrap{position:relative;height:200px}
+.section-mb{margin-bottom:12px}
+.good-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.good-cell{background:#dafbe1;border:1px solid #aceebb;border-radius:6px;padding:8px 10px;font-size:11px;color:var(--green);font-weight:600}
+.pct-bar-wrap{height:12px;border-radius:6px;overflow:hidden;background:#d0d7de;margin:4px 0}
+.pct-emea{height:100%;background:var(--emea);display:inline-block}
+.pct-india{height:100%;background:var(--india);display:inline-block}
+.highlight-row td{background:#ddf4ff!important;font-weight:700}
+.story-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:8px}
+.story-panel{border-radius:6px;padding:10px 12px;font-size:12px;line-height:1.5}
+.story-panel.red{background:#ffebe9;border:1px solid #ffcecb}
+.story-panel.green{background:#dafbe1;border:1px solid #aceebb}
+.story-panel.purple{background:#fbefff;border:1px solid #d8b4fe}
+.story-panel.yellow{background:#fff8c5;border:1px solid #f5d845}
+.story-big{font-size:28px;font-weight:700;display:block;margin:2px 0}
+footer{text-align:center;color:var(--muted);font-size:11px;margin-top:16px;padding:10px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>⚡ Revenue Cloud &amp; Industries · Weekly Executive Dashboard</h1>
+    <div class="meta">Week of Oct 4–10, 2026 (IST) · EMEA + India + APAC · Source: OrgCS Live Query</div>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+    <span class="badge badge-red">🚨 Sev1 +44% WoW (79→114)</span>
+    <span class="badge badge-red">🔴 Red Accounts +57% (103→162)</span>
+    <span class="badge badge-orange">🔸 Omnistudio S1 ×2.25 (8→18)</span>
+    <span class="badge badge-purple">📌 India inflow surge +28%</span>
+  </div>
+</div>
+
+<!-- KPI ROW -->
+<div class="kpi-row">
+  <div class="kpi alert">
+    <div class="kpi-label">Total Inflow</div>
+    <div class="kpi-value">947</div>
+    <div class="kpi-delta"><span class="up">↑ +92 WoW</span> (855 PW)</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">Sev1 (Critical)</div>
+    <div class="kpi-value">114</div>
+    <div class="kpi-delta"><span class="up">↑ +35 WoW</span> · 48% open</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Sev2 (Urgent)</div>
+    <div class="kpi-value">381</div>
+    <div class="kpi-delta"><span class="up">↑ +32 WoW</span> (349 PW)</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">Red Account Cases</div>
+    <div class="kpi-value">162</div>
+    <div class="kpi-delta"><span class="up">↑ +59 WoW</span> · 17% of total</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Open Rate (TW)</div>
+    <div class="kpi-value">54%</div>
+    <div class="kpi-delta">New cases · PW was 26%</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">Sev1 Avg Age (Open)</div>
+    <div class="kpi-value">4.2d</div>
+    <div class="kpi-delta"><span class="dn">↓ Fresh vs PW 11.3d</span></div>
+  </div>
+</div>
+
+<!-- EXECUTIVE STORY -->
+<div class="card section-mb">
+  <h3>📋 Executive Story</h3>
+  <div class="story-grid">
+    <div class="story-panel red">
+      <strong>🚨 Sev1 Surge</strong>
+      <span class="story-big">+44%</span>
+      114 S1s TW vs 79 PW. Omnistudio (+10), CPQ/OMS (+6), RC Configurator (+6), Billing (+5) — all rising simultaneously. 4 products with ≥+4 Sev1 WoW signals a broad-base impact, likely Winter'27 deployment wave.
+    </div>
+    <div class="story-panel red">
+      <strong>🏭 Top Risk Accounts</strong>
+      <span class="story-big">Bluvium · Orange BE</span>
+      Bluvium: 6 S1s (Omnistudio/RCA mix, India). Deloitte: 4 S1s (India). Orange Belgium: 3 S1s (CPQ/OMS, EMEA, new entrant). Bharti Airtel: 3 S1s, Red account, production blocked.
+    </div>
+    <div class="story-panel green">
+      <strong>✅ S1 Age Healthy</strong>
+      <span class="story-big">4.2d avg</span>
+      Open S1s are fresh (4.2d avg vs 11.3d PW) — no backlog accumulation. 59 S1s closed TW vs 55 open. Resolution velocity holding despite volume spike.
+    </div>
+    <div class="story-panel purple">
+      <strong>📈 India Inflow Spike</strong>
+      <span class="story-big">+28%</span>
+      India surged 272→349 (+77 cases) with S1s up 33→55. Life Sciences (+36 cases) and Omnistudio (+9 S1s) are primary drivers. EMEA steady growth (+22). APAC flat/slight decline.
+    </div>
+  </div>
+  <div class="good-strip">
+    <div class="good-cell">✅ CPQ Legacy flat (+0 S1 WoW)</div>
+    <div class="good-cell">✅ Mandatory Sec Controls ↓ (4→1 S1)</div>
+    <div class="good-cell">✅ APAC S1 stable 11→11→11</div>
+    <div class="good-cell">✅ S1 avg age 4.2d — no stale backlog</div>
+  </div>
+</div>
+
+<!-- CHARTS ROW -->
+<div class="grid-3">
+  <div class="card">
+    <h3>📈 3-Week Inflow Trend</h3>
+    <div class="chart-wrap"><canvas id="inflowChart"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>🚨 Sev1 Trend by Region</h3>
+    <div class="chart-wrap"><canvas id="sev1Chart"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>📦 Industries vs Revenue Split (TW)</h3>
+    <div class="chart-wrap"><canvas id="cloudChart"></canvas></div>
+  </div>
+</div>
+
+<!-- REGIONAL DEEP DIVE -->
+<div class="grid-3">
+  <!-- EMEA -->
+  <div class="card">
+    <h3 style="color:var(--emea)">🌍 EMEA</h3>
+    <table>
+      <tr><th>Metric</th><th>PPW</th><th>PW</th><th class="tw-col">TW</th><th>Dir</th></tr>
+      <tr><td>Total</td><td>422</td><td>439</td><td class="tw-col">461</td><td>↑</td></tr>
+      <tr><td>Sev1</td><td>41</td><td>35</td><td class="tw-col">48</td><td>↑</td></tr>
+      <tr><td>Open%</td><td>9%</td><td>23%</td><td class="tw-col">46%</td><td>↑</td></tr>
+      <tr><td>Red Accts</td><td>43</td><td>48</td><td class="tw-col">72</td><td>↑</td></tr>
+    </table>
+    <div style="margin-top:8px">
+      <div style="font-size:11px;font-weight:600;margin-bottom:4px;color:var(--muted)">Top Products TW</div>
+      <table>
+        <tr><th>Product</th><th>Cases</th><th>S1</th></tr>
+        <tr><td>Omnistudio</td><td>55</td><td><span class="pill pill-red">6</span></td></tr>
+        <tr><td>CPQ/OMS/DC</td><td>47</td><td><span class="pill pill-red">8</span></td></tr>
+        <tr><td>Life Sciences</td><td>43</td><td><span class="pill pill-yellow">1</span></td></tr>
+        <tr><td>Legacy CPQ</td><td>33</td><td><span class="pill pill-yellow">1</span></td></tr>
+        <tr><td>RC Configurator</td><td>31</td><td><span class="pill pill-red">3</span></td></tr>
+      </table>
+    </div>
+    <div class="insight red" style="margin-top:8px">Red accounts jumped 43→72 (+29). Orange Belgium new S1 entrant with 3 open S1s (CPQ/OMS). BT PLC carrying 10 cases / 0 S1 but high S2 pressure.</div>
+  </div>
+
+  <!-- India -->
+  <div class="card">
+    <h3 style="color:var(--india)">🇮🇳 India</h3>
+    <table>
+      <tr><th>Metric</th><th>PPW</th><th>PW</th><th class="tw-col">TW</th><th>Dir</th></tr>
+      <tr><td>Total</td><td>335</td><td>272</td><td class="tw-col">349</td><td>↑</td></tr>
+      <tr><td>Sev1</td><td>37</td><td>33</td><td class="tw-col">55</td><td>↑</td></tr>
+      <tr><td>Open%</td><td>15%</td><td>29%</td><td class="tw-col">67%</td><td>↑</td></tr>
+      <tr><td>Red Accts</td><td>80</td><td>39</td><td class="tw-col">74</td><td>↑</td></tr>
+    </table>
+    <div style="margin-top:8px">
+      <div style="font-size:11px;font-weight:600;margin-bottom:4px;color:var(--muted)">Top Products TW</div>
+      <table>
+        <tr><th>Product</th><th>Cases</th><th>S1</th></tr>
+        <tr><td>Life Sciences</td><td>105</td><td><span class="pill pill-yellow">6</span></td></tr>
+        <tr><td>CPQ/OMS/DC</td><td>48</td><td><span class="pill pill-red">5</span></td></tr>
+        <tr><td>Omnistudio</td><td>32</td><td><span class="pill pill-red">9</span></td></tr>
+        <tr><td>RC Configurator</td><td>22</td><td><span class="pill pill-red">6</span></td></tr>
+        <tr><td>Retail &amp; CG</td><td>21</td><td><span class="pill pill-yellow">2</span></td></tr>
+      </table>
+    </div>
+    <div class="insight red" style="margin-top:8px">India S1 spike 33→55 (+67%). Bluvium 6×S1, Deloitte 4×S1, Bharti Airtel 3×S1 (Red, production blocked). 67% open rate — new-case surge, not backlog.</div>
+  </div>
+
+  <!-- APAC -->
+  <div class="card">
+    <h3>🌏 APAC</h3>
+    <table>
+      <tr><th>Metric</th><th>PPW</th><th>PW</th><th class="tw-col">TW</th><th>Dir</th></tr>
+      <tr><td>Total</td><td>141</td><td>144</td><td class="tw-col">137</td><td>↓</td></tr>
+      <tr><td>Sev1</td><td>11</td><td>11</td><td class="tw-col">11</td><td>→</td></tr>
+      <tr><td>Open%</td><td>11%</td><td>27%</td><td class="tw-col">50%</td><td>↑</td></tr>
+      <tr><td>Red Accts</td><td>13</td><td>16</td><td class="tw-col">16</td><td>→</td></tr>
+    </table>
+    <div style="margin-top:8px">
+      <div style="font-size:11px;font-weight:600;margin-bottom:4px;color:var(--muted)">Top Products TW</div>
+      <table>
+        <tr><th>Product</th><th>Cases</th><th>S1</th></tr>
+        <tr><td>Omnistudio</td><td>31</td><td><span class="pill pill-yellow">3</span></td></tr>
+        <tr><td>Life Sciences</td><td>12</td><td><span class="pill pill-green">0</span></td></tr>
+        <tr><td>CPQ/OMS/DC</td><td>12</td><td><span class="pill pill-yellow">1</span></td></tr>
+        <tr><td>Loyalty Mgmt</td><td>7</td><td><span class="pill pill-yellow">1</span></td></tr>
+        <tr><td>RC Configurator</td><td>5</td><td><span class="pill pill-yellow">1</span></td></tr>
+      </table>
+    </div>
+    <div class="insight blue" style="margin-top:8px">APAC volume flat/slightly declining. S1 stable at 11 for 3 weeks. Omnistudio highest volume (31 cases, 3 S1). Overall resilient but open rate rising.</div>
+  </div>
+</div>
+
+<!-- PRODUCT TREND TABLE -->
+<div class="grid-2">
+  <div class="card">
+    <h3>📊 Industry Products — S1 Trend (PPW→PW→TW)</h3>
+    <table>
+      <tr><th>Product</th><th>PPW Vol</th><th>PW Vol</th><th class="tw-col">TW Vol</th><th>PPW S1</th><th>PW S1</th><th class="tw-col">TW S1</th><th>Flag</th></tr>
+      <tr><td>Omnistudio</td><td>94</td><td>93</td><td class="tw-col">118</td><td>10</td><td>8</td><td class="tw-col"><strong>18</strong></td><td><span class="pill pill-red">🔴 Rising</span></td></tr>
+      <tr><td>CPQ/OMS/DC</td><td>101</td><td>80</td><td class="tw-col">107</td><td>10</td><td>8</td><td class="tw-col"><strong>14</strong></td><td><span class="pill pill-red">🔴 Rising</span></td></tr>
+      <tr><td>Life Sciences</td><td>142</td><td>112</td><td class="tw-col">160</td><td>13</td><td>5</td><td class="tw-col">7</td><td></td></tr>
+      <tr><td>Retail &amp; CG</td><td>44</td><td>52</td><td class="tw-col">47</td><td>5</td><td>3</td><td class="tw-col">5</td><td></td></tr>
+      <tr><td>Loyalty Mgmt</td><td>21</td><td>18</td><td class="tw-col">23</td><td>3</td><td>4</td><td class="tw-col">5</td><td></td></tr>
+      <tr><td>Comm Cloud</td><td>—</td><td>10</td><td class="tw-col">10</td><td>—</td><td>0</td><td class="tw-col"><strong>3</strong></td><td><span class="pill pill-red">🔴 New</span></td></tr>
+      <tr><td>Financial Svcs</td><td>—</td><td>17</td><td class="tw-col">32</td><td>—</td><td>0</td><td class="tw-col">2</td><td><span class="pill pill-orange">↑ Vol</span></td></tr>
+      <tr><td>Mandatory Sec</td><td>—</td><td>26</td><td class="tw-col">13</td><td>—</td><td>4</td><td class="tw-col">1</td><td><span class="pill pill-green">🟢 Better</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>📊 Revenue Products — S1 Trend (PPW→PW→TW)</h3>
+    <table>
+      <tr><th>Product</th><th>PPW Vol</th><th>PW Vol</th><th class="tw-col">TW Vol</th><th>PPW S1</th><th>PW S1</th><th class="tw-col">TW S1</th><th>Flag</th></tr>
+      <tr><td>RC Configurator</td><td>58</td><td>57</td><td class="tw-col">58</td><td>6</td><td>4</td><td class="tw-col"><strong>10</strong></td><td><span class="pill pill-red">🔴 Rising</span></td></tr>
+      <tr><td>RC Txn Mgmt</td><td>42</td><td>56</td><td class="tw-col">48</td><td>1</td><td>5</td><td class="tw-col"><strong>9</strong></td><td><span class="pill pill-red">🔴 Rising</span></td></tr>
+      <tr><td>RC Billing</td><td>21</td><td>10</td><td class="tw-col">23</td><td>8</td><td>2</td><td class="tw-col"><strong>7</strong></td><td><span class="pill pill-red">🔴 Rising</span></td></tr>
+      <tr><td>RC Price Mgmt</td><td>28</td><td>38</td><td class="tw-col">23</td><td>1</td><td>5</td><td class="tw-col">5</td><td></td></tr>
+      <tr><td>Legacy CPQ</td><td>57</td><td>55</td><td class="tw-col">50</td><td>8</td><td>4</td><td class="tw-col">3</td><td><span class="pill pill-green">🟢 Better</span></td></tr>
+      <tr><td>RC Usage &amp; Ratings</td><td>—</td><td>5</td><td class="tw-col">3</td><td>—</td><td>3</td><td class="tw-col">3</td><td></td></tr>
+      <tr><td>CPQ Dev Support</td><td>—</td><td>12</td><td class="tw-col">17</td><td>—</td><td>3</td><td class="tw-col">0</td><td><span class="pill pill-green">🟢 Better</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- INDUSTRIES vs REVENUE SHARE -->
+<div class="card section-mb">
+  <h3>🏷️ Industries vs Revenue Cloud Share (3-Week Trend)</h3>
+  <div class="grid-2" style="margin-bottom:0">
+    <div>
+      <div class="chart-wrap" style="height:160px"><canvas id="shareChart"></canvas></div>
+    </div>
+    <div>
+      <table>
+        <tr><th>Category</th><th>PPW</th><th>PW</th><th class="tw-col">TW</th><th class="tw-col">TW%</th></tr>
+        <tr><td><strong>Industries</strong></td><td>603</td><td>559</td><td class="tw-col"><strong>673</strong></td><td class="tw-col">71.1%</td></tr>
+        <tr><td style="padding-left:16px;color:var(--muted)">↳ Life Sciences</td><td>142</td><td>112</td><td class="tw-col">160</td><td class="tw-col">16.9%</td></tr>
+        <tr><td><strong>Revenue</strong></td><td>295</td><td>296</td><td class="tw-col"><strong>274</strong></td><td class="tw-col">28.9%</td></tr>
+        <tr><td style="padding-left:16px;color:var(--muted)">↳ RCA</td><td>202</td><td>209</td><td class="tw-col">188</td><td class="tw-col">19.9%</td></tr>
+        <tr><td style="padding-left:16px;color:var(--muted)">↳ Legacy Revenue</td><td>93</td><td>87</td><td class="tw-col">86</td><td class="tw-col">9.1%</td></tr>
+      </table>
+      <div class="insight yellow" style="margin-top:8px">Industries share rose to 71% (from 65% PW), driven by Life Sciences (+43) and Omnistudio (+25) surge. Revenue Cloud share dropped 34%→29% despite Configurator/Billing S1 spikes. Revenue volume flat but S1 intensity high.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SEV1 DEEP DIVE + ACCOUNTS -->
+<div class="grid-2">
+  <div class="card red-border">
+    <h3>🚨 Sev1 Deep Dive</h3>
+    <div style="display:flex;gap:12px;margin-bottom:10px">
+      <div class="insight red" style="flex:1">TW: <strong>114 S1s</strong> · Open=55 (48%) · Closed=59 · Avg age open: <strong>4.2d</strong> ↓ (was 11.3d PW)</div>
+    </div>
+    <table>
+      <tr><th>Product</th><th>PW S1</th><th class="tw-col">TW S1</th><th>Δ</th></tr>
+      <tr><td>Omnistudio</td><td>8</td><td class="tw-col"><strong>18</strong></td><td><span class="pill pill-red">+10 🔴</span></td></tr>
+      <tr><td>CPQ/OMS/DC</td><td>8</td><td class="tw-col"><strong>14</strong></td><td><span class="pill pill-red">+6 🔴</span></td></tr>
+      <tr><td>RC Configurator</td><td>4</td><td class="tw-col"><strong>10</strong></td><td><span class="pill pill-red">+6 🔴</span></td></tr>
+      <tr><td>RC Txn Mgmt</td><td>5</td><td class="tw-col"><strong>9</strong></td><td><span class="pill pill-red">+4 🔴</span></td></tr>
+      <tr><td>RC Billing</td><td>2</td><td class="tw-col"><strong>7</strong></td><td><span class="pill pill-red">+5 🔴</span></td></tr>
+      <tr><td>Life Sciences</td><td>5</td><td class="tw-col">7</td><td><span class="pill pill-orange">+2</span></td></tr>
+      <tr><td>Loyalty Mgmt</td><td>4</td><td class="tw-col">5</td><td><span class="pill pill-orange">+1</span></td></tr>
+      <tr><td>Retail &amp; CG</td><td>3</td><td class="tw-col">5</td><td><span class="pill pill-orange">+2</span></td></tr>
+      <tr><td>RC Price Mgmt</td><td>5</td><td class="tw-col">5</td><td>0</td></tr>
+      <tr><td>Legacy CPQ</td><td>4</td><td class="tw-col">3</td><td><span class="pill pill-green">−1 🟢</span></td></tr>
+      <tr><td>Mandatory Sec</td><td>4</td><td class="tw-col">1</td><td><span class="pill pill-green">−3 🟢</span></td></tr>
+    </table>
+    <div style="margin-top:10px">
+      <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px">Owner Load — Open S1 (3+ cases)</div>
+      <table>
+        <tr><th>Owner</th><th>Geo</th><th>Open S1</th><th>Accounts</th></tr>
+        <tr><td>Srividya Vedula</td><td>India</td><td><span class="pill pill-red">3</span></td><td>Deloitte, Takeda, DPS</td></tr>
+        <tr><td>Charan Sai Gottipati</td><td>EMEA</td><td><span class="pill pill-red">3</span></td><td>Mercedes, Paladini, PT Erafone</td></tr>
+        <tr><td>Sricharan Vangala</td><td>India</td><td><span class="pill pill-red">3</span></td><td>Infor, Eastman Kodak, IDS</td></tr>
+        <tr><td>Roshini Rayana</td><td>India</td><td><span class="pill pill-red">3</span></td><td>Bluvium, WebPT, MYOB</td></tr>
+        <tr><td>Srihari Kantimahanthi</td><td>EMEA</td><td><span class="pill pill-red">3</span></td><td>Orange BE, Centrica, BT PLC</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏆 Top 10 Account Deep Dive (TW)</h3>
+    <table>
+      <tr><th>Account</th><th>Tot</th><th>Open</th><th>S1</th><th>S2</th><th>Red</th><th>Region</th></tr>
+      <tr style="background:#ffebe9"><td><strong>Bluvium Inc</strong></td><td>7</td><td>1</td><td><strong>6</strong></td><td>0</td><td></td><td>India</td></tr>
+      <tr style="background:#ffebe9"><td><strong>Deloitte Global</strong></td><td>7</td><td>5</td><td><strong>4</strong></td><td>2</td><td></td><td>India</td></tr>
+      <tr style="background:#ffebe9"><td><strong>ORANGE BELGIUM</strong></td><td>8</td><td>5</td><td><strong>3</strong></td><td>4</td><td></td><td>EMEA</td></tr>
+      <tr style="background:#ffebe9"><td><strong>Bharti Airtel</strong> (W)</td><td>6</td><td>3</td><td><strong>3</strong></td><td>1</td><td>🔴</td><td>India</td></tr>
+      <tr><td>Accenture LLP</td><td>13</td><td>7</td><td>2</td><td>7</td><td></td><td>EMEA</td></tr>
+      <tr><td>CrowdStrike (W)</td><td>6</td><td>2</td><td>2</td><td>4</td><td>🔴</td><td>EMEA</td></tr>
+      <tr><td>BT PLC Consumer</td><td>5</td><td>5</td><td>2</td><td>2</td><td></td><td>EMEA</td></tr>
+      <tr><td>SHIFTLOGIC.IO</td><td>4</td><td>1</td><td>2</td><td>2</td><td></td><td>EMEA</td></tr>
+      <tr><td>Benifex Sweden</td><td>4</td><td>2</td><td>2</td><td>0</td><td></td><td>EMEA</td></tr>
+      <tr><td>Pfizer (LSC EMEA)</td><td>25</td><td>20</td><td>0</td><td>6</td><td></td><td>EMEA</td></tr>
+    </table>
+    <div class="insight red" style="margin-top:8px"><strong>Bluvium</strong> 6×S1 (Omnistudio + RCA mix) — 2nd+ consecutive high-S1 week, India. Needs swarm check.<br><strong>Bharti Airtel</strong> Red account, production deployment blocked (CPQ/OMS). 3 open S1s.</div>
+    <div class="insight yellow" style="margin-top:6px"><strong>Pfizer EMEA</strong> top by volume (25 cases) — no S1 but 6×S2. Life Sciences iPad/mobile pattern across multiple cases. <strong>Accenture</strong> 13 cases / 2 S1 worth tracking.</div>
+  </div>
+</div>
+
+<!-- BUG & GUS INSIGHTS -->
+<div class="card orange-border section-mb">
+  <h3>🐛 Bug &amp; GUS Linked Cases — Key Signals (TW)</h3>
+  <div class="grid-2" style="margin-bottom:0">
+    <div>
+      <div class="insight blue" style="margin-bottom:8px">72 cases linked to Bug/GUS (7.6% of TW inflow). 23 of 114 S1s have a Bug or GUS reference — shows active engineering escalation on 20% of critical cases.</div>
+      <table>
+        <tr><th>Category</th><th>Count</th></tr>
+        <tr><td>Bug only</td><td>25</td></tr>
+        <tr><td>GUS only</td><td>33</td></tr>
+        <tr><td>Bug + GUS</td><td>14</td></tr>
+        <tr><td><strong>Total linked</strong></td><td><strong>72</strong></td></tr>
+        <tr><td>S1s with link</td><td>23 / 114</td></tr>
+      </table>
+    </div>
+    <div>
+      <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px">Key Bug/GUS Clusters (S1)</div>
+      <table>
+        <tr><th>Bug/GUS</th><th>Product</th><th>Accounts</th><th>S1</th></tr>
+        <tr><td><span class="pill pill-red">W-24479577</span></td><td>RC Configurator</td><td>Infoblox, PwC ME, TrailHead</td><td>3</td></tr>
+        <tr><td><span class="pill pill-red">W-24031441</span></td><td>RC Configurator</td><td>MetaCompliance (×2), Infoblox</td><td>3</td></tr>
+        <tr><td><span class="pill pill-orange">W-24477818</span></td><td>Comm Cloud</td><td>Liberty Iberoamerica, OB NV/SA</td><td>2</td></tr>
+        <tr><td><span class="pill pill-orange">W-24477285</span></td><td>Comm Cloud</td><td>BT PLC (Winter'27 upgrade)</td><td>1</td></tr>
+        <tr><td><span class="pill pill-orange">W-24447259</span></td><td>Omnistudio</td><td>CrowdStrike (TinyMCE)</td><td>1</td></tr>
+        <tr><td><span class="pill pill-orange">W-24429985</span></td><td>RC Approvals</td><td>Org62 (latency)</td><td>1</td></tr>
+      </table>
+      <div class="insight red" style="margin-top:8px">
+        <strong>Winter'27 / CME 264 upgrade wave:</strong> Multiple S1s across Comm Cloud (BT PLC, Liberty Iberoamerica), CPQ/OMS (Orange Belgium, M1), RC Configurator tied to same post-upgrade failures. GUS W-24477818, W-24477285, W-24455584 likely same root cause — escalate to P&amp;T for co-clustering.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OMNISTUDIO DEEP DIVE -->
+<div class="card red-border section-mb">
+  <h3>🔴 Deep Dive — Industry-Omnistudio (Top S1 Product: 18 S1s TW)</h3>
+  <div class="grid-2" style="margin-bottom:0">
+    <div>
+      <table>
+        <tr><th>Account</th><th>Tot</th><th>S1</th><th>S2</th><th>Red</th><th>Open</th></tr>
+        <tr><td><strong>ReDEFY</strong></td><td>2</td><td><strong>2</strong></td><td>0</td><td></td><td>2</td></tr>
+        <tr><td>Accenture LLP</td><td>2</td><td>1</td><td>1</td><td></td><td>1</td></tr>
+        <tr><td>One NZ Group (W)</td><td>2</td><td>1</td><td>1</td><td>🔴</td><td>1</td></tr>
+        <tr><td>Johnson &amp; Johnson</td><td>1</td><td>1</td><td>0</td><td></td><td>1</td></tr>
+        <tr><td>CrowdStrike (W)</td><td>1</td><td>1</td><td>0</td><td>🔴</td><td>1</td></tr>
+        <tr><td>EmblemHealth (W)</td><td>1</td><td>1</td><td>0</td><td>🔴</td><td>1</td></tr>
+        <tr><td>Infocomm IMDA (SG)</td><td>1</td><td>1</td><td>0</td><td></td><td>1</td></tr>
+        <tr><td>Bluvium Inc</td><td>1</td><td>1</td><td>0</td><td></td><td>0</td></tr>
+        <tr><td>WorkSafe Victoria (W)</td><td>3</td><td>0</td><td>2</td><td>🔴</td><td>2</td></tr>
+        <tr><td>Prodapt North America</td><td>2</td><td>1</td><td>0</td><td></td><td>0</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="insight red">18 S1s spread across 17 accounts — no single dominant account. Wide scatter suggests product-level platform issue rather than account-specific misconfigurations.</div>
+      <div class="insight yellow" style="margin-top:6px">
+        <strong>Key S1 subjects:</strong><br>
+        • OmniStudio Doc Gen failures (Merck, BUG W-20646732)<br>
+        • Integration Procedures latency (J&amp;J, GUS W-24478591)<br>
+        • TinyMCE outdated libs (CrowdStrike, BUG W-23232762+W-24468142)<br>
+        • Date format DD/MM/YYYY broken (One NZ, BUG W-24454345)<br>
+        • OmniScript runtime not populating predefined nodes (EmblemHealth)<br>
+        • Assessment Q responses not stored (ReDEFY, ×2 accounts)
+      </div>
+      <div class="insight blue" style="margin-top:6px">CrowdStrike flagged <strong>outdated TinyMCE libraries</strong> (security concern) — active Bug W-23232762 + W-24468142, GUS W-24447259. Needs security team awareness.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CPQ/OMS DEEP DIVE -->
+<div class="card red-border section-mb">
+  <h3>🔴 Deep Dive — Industry-CPQ/OMS/Digital Commerce (14 S1s TW)</h3>
+  <div class="grid-2" style="margin-bottom:0">
+    <div>
+      <table>
+        <tr><th>Account</th><th>Tot</th><th>S1</th><th>S2</th><th>Red</th><th>Open</th></tr>
+        <tr><td><strong>ORANGE BELGIUM</strong></td><td>7</td><td><strong>3</strong></td><td>3</td><td></td><td>5</td></tr>
+        <tr><td><strong>Bharti Airtel</strong> (W)</td><td>6</td><td><strong>3</strong></td><td>1</td><td>🔴</td><td>3</td></tr>
+        <tr><td>M1 Limited (W)</td><td>2</td><td><strong>2</strong></td><td>0</td><td>🔴</td><td>1</td></tr>
+        <tr><td>Optus Systems</td><td>6</td><td>1</td><td>3</td><td></td><td>5</td></tr>
+        <tr><td>Centrica Plc (W)</td><td>1</td><td>1</td><td>0</td><td>🔴</td><td>1</td></tr>
+        <tr><td>BT PLC (Digico) (W)</td><td>10</td><td>0</td><td>6</td><td>🔴</td><td>8</td></tr>
+        <tr><td>Claro América (W)</td><td>5</td><td>0</td><td>5</td><td>🔴</td><td>3</td></tr>
+        <tr><td>Sky Deutschland (W)</td><td>4</td><td>0</td><td>4</td><td>🔴</td><td>2</td></tr>
+        <tr><td>Telia Sweden</td><td>4</td><td>0</td><td>1</td><td></td><td>2</td></tr>
+        <tr><td>AT&amp;T Business (W)</td><td>3</td><td>0</td><td>3</td><td>🔴</td><td>2</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="insight red"><strong>Bharti Airtel</strong> production blocked — deployment error in Orchestration Item Definition + Invalid decimal error (2 open S1s). Red account, needs escalation check.</div>
+      <div class="insight red" style="margin-top:6px"><strong>Orange Belgium</strong> new S1 entrant — 3 S1s, GUS W-24455584 (Bulk Order Creation failure). Product "Hey Internet" erroring. Likely post-deployment issue.</div>
+      <div class="insight yellow" style="margin-top:6px"><strong>M1 Limited</strong> (APAC): Winter'27 + CME upgrade tracking (474984624 open + 474985399 closed). Multi-case upgrade tracking pattern.</div>
+      <div class="insight blue" style="margin-top:6px"><strong>Centrica Plc</strong> long-running GUS W-24228659 (optimized cache failures post-migration to Standalone) — open S1 since before TW. No resolution yet.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S1 CASES WITH BUG/GUS — top signals -->
+<div class="card yellow-border section-mb">
+  <h3>🔎 Cases to Watch — S1 with Bug/GUS or Long-Running Issues</h3>
+  <table>
+    <tr><th>Case</th><th>Account</th><th>Product</th><th>Status</th><th>Bug/GUS</th><th>Subject</th></tr>
+    <tr><td>475110996</td><td>Bharti Airtel</td><td>CPQ/OMS/DC</td><td><span class="pill pill-red">OPEN</span></td><td>—</td><td>Production blocked — deployment error Orchestration</td></tr>
+    <tr><td>474930037</td><td>CrowdStrike</td><td>Omnistudio</td><td><span class="pill pill-red">OPEN</span></td><td>W-23232762, W-24468142</td><td>Outdated TinyMCE libraries — security risk</td></tr>
+    <tr><td>474885559</td><td>Centrica Plc</td><td>CPQ/OMS/DC</td><td><span class="pill pill-red">OPEN</span></td><td>GUS W-24228659</td><td>Optimized cache failures post-migration (long-running)</td></tr>
+    <tr><td>475059131</td><td>BT PLC Consumer</td><td>Comm Cloud</td><td><span class="pill pill-red">OPEN</span></td><td>W-24477466, GUS W-24477285</td><td>Winter'27 / Vlocity CMT 264 upgrade blocked</td></tr>
+    <tr><td>475087403</td><td>Infoblox (Vista)</td><td>RC Configurator</td><td><span class="pill pill-green">CLOSED</span></td><td>W-24137697, W-24479708, W-24031441</td><td>ConstraintsSolverException 404 after Winter'27</td></tr>
+    <tr><td>475005580</td><td>Johnson &amp; Johnson</td><td>Omnistudio</td><td><span class="pill pill-red">OPEN</span></td><td>GUS W-24478591</td><td>Integration Procedures latency when called via API</td></tr>
+    <tr><td>474960856</td><td>Org62 (Salesforce)</td><td>RC Approvals</td><td><span class="pill pill-red">OPEN</span></td><td>GUS W-24429985</td><td>Approvals latency — internal org signal</td></tr>
+    <tr><td>475055762</td><td>Genmab US - SAP</td><td>Life Sciences</td><td><span class="pill pill-red">OPEN</span></td><td>GUS W-24476094</td><td>LSC Mobile — Object Territory Association failure</td></tr>
+    <tr><td>474873843</td><td>PT Erafone Dotcom</td><td>Loyalty Mgmt</td><td><span class="pill pill-green">CLOSED</span></td><td>W-23810843</td><td>Points expired twice after Cancel &amp; Re-Order</td></tr>
+  </table>
+</div>
+
+<!-- KEY OBSERVATIONS -->
+<div class="card section-mb">
+  <h3>🔑 Key Observations for WBR</h3>
+  <ol style="padding-left:18px;line-height:1.9;font-size:12px">
+    <li><strong>Sev1 +44% WoW (79→114)</strong> — broadest simultaneous spike across Omnistudio (+10), CPQ/OMS (+6), RC Configurator (+6), RC Billing (+5), RC Txn Mgmt (+4). Pattern consistent with Winter'27 / CME 264 post-deployment stress across multiple products.</li>
+    <li><strong>Winter'27 upgrade wave</strong> — BT PLC, Liberty Iberoamerica, M1, Orange Belgium all have S1s tied to "Winter'27" or "CME 264" in subject lines. GUS W-24477818, W-24477285, W-24455584 cluster around upgrade failures. P&amp;T co-clustering recommended.</li>
+    <li><strong>India surge 272→349 (+28%)</strong> with S1s 33→55 (+67%). Life Sciences alone +36 cases. India now carries 48% of total S1s despite 37% of volume share — disproportionate S1 load.</li>
+    <li><strong>Red accounts +57% (103→162)</strong> — Bharti Airtel production blocked, CrowdStrike TinyMCE security BUG open, Axis Bank S1 open. 7 of top 10 accounts in CPQ/OMS deep dive are Red accounts.</li>
+    <li><strong>Bluvium Inc</strong> — 6 S1s TW (Omnistudio + RCA mix, India). Persistent high-S1 account. Swarm status should be verified — no GUS filed on any of the 6 cases.</li>
+    <li><strong>RC Configurator BUG cluster</strong> — W-24137697, W-24031441, W-24479708 referenced across 5+ cases (Infoblox, MetaCompliance ×2, PwC ME, Workday). ConstraintsSolverException / internal server errors post-Winter'27. Engineering escalation active (W-24479577).</li>
+    <li><strong>GUS filing rate low</strong> — only 72 of 947 TW cases (7.6%) have Bug or GUS. 91 of 114 S1s have no GUS link. Given 114 S1s, this represents a significant under-escalation risk.</li>
+    <li><strong>Owner concentration</strong> — 5 engineers each carrying 3+ open S1s across multiple accounts (Srividya, Charan, Sricharan, Roshini, Srihari). Manager check-in recommended for bandwidth.</li>
+  </ol>
+  <div class="insight yellow" style="margin-top:10px"><strong>AMER Benchmark note:</strong> AMER inflow not in scope for this report. Leadership to cross-reference with AMER WBR. The multi-product S1 spike and Winter'27 pattern should be validated globally — if AMER shows similar product clusters, this is a platform-wide release issue.</div>
+</div>
+
+<footer>Revenue Cloud &amp; Industries WBR Dashboard · Oct 4–10, 2026 · Data: OrgCS Live Query (Oct 12, 2026) · EMEA + India + APAC</footer>
+
+<script>
+Chart.register(ChartDataLabels);
+const def = (id, cfg) => new Chart(document.getElementById(id).getContext('2d'), cfg);
+
+// Inflow trend
+def('inflowChart', {
+  type:'bar',
+  data:{
+    labels:['PPW (Sep 20-26)','PW (Sep 27-Oct 3)','TW (Oct 4-10)'],
+    datasets:[{
+      label:'Inflow',
+      data:[898,855,947],
+      backgroundColor:['rgba(88,166,255,.6)','rgba(88,166,255,.6)','rgba(248,81,73,.75)'],
+      borderRadius:4
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},datalabels:{anchor:'end',align:'end',color:'#1f2328',font:{weight:'bold',size:11}}},
+    scales:{y:{beginAtZero:false,min:800,ticks:{color:'#656d76'},grid:{color:'rgba(208,215,222,.5)'}},x:{ticks:{color:'#656d76'},grid:{display:false}}}
+  }
+});
+
+// Sev1 by region
+def('sev1Chart', {
+  type:'bar',
+  data:{
+    labels:['PPW','PW','TW'],
+    datasets:[
+      {label:'EMEA',data:[41,35,48],backgroundColor:'rgba(130,80,223,.7)',borderRadius:3},
+      {label:'India',data:[37,33,55],backgroundColor:'rgba(225,111,66,.7)',borderRadius:3},
+      {label:'APAC',data:[11,11,11],backgroundColor:'rgba(88,166,255,.6)',borderRadius:3}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},color:'#656d76'}},datalabels:{anchor:'end',align:'end',color:'#1f2328',font:{size:10}}},
+    scales:{x:{stacked:false,ticks:{color:'#656d76'},grid:{display:false}},y:{beginAtZero:true,ticks:{color:'#656d76'},grid:{color:'rgba(208,215,222,.5)'}}}
+  }
+});
+
+// Cloud split doughnut
+def('cloudChart', {
+  type:'doughnut',
+  data:{
+    labels:['Industries (non-LSC)','Life Sciences','RCA','Legacy Revenue'],
+    datasets:[{
+      data:[513,160,188,86],
+      backgroundColor:['rgba(26,127,55,.7)','rgba(88,166,255,.7)','rgba(248,81,73,.65)','rgba(240,136,62,.65)'],
+      borderWidth:1,borderColor:'#fff'
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},color:'#656d76'}},datalabels:{formatter:(v,c)=>v>30?v:'',color:'#fff',font:{weight:'bold',size:11}}}
+  }
+});
+
+// Share trend
+def('shareChart', {
+  type:'bar',
+  data:{
+    labels:['PPW','PW','TW'],
+    datasets:[
+      {label:'Industries',data:[603,559,673],backgroundColor:'rgba(26,127,55,.65)',borderRadius:3},
+      {label:'Revenue',data:[295,296,274],backgroundColor:'rgba(248,81,73,.55)',borderRadius:3}
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},color:'#656d76'}},datalabels:{anchor:'end',align:'end',color:'#1f2328',font:{size:10}}},
+    scales:{x:{ticks:{color:'#656d76'},grid:{display:false}},y:{beginAtZero:false,min:200,ticks:{color:'#656d76'},grid:{color:'rgba(208,215,222,.5)'}}}
+  }
+});
+</script>
+</body>
+</html>
