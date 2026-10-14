@@ -1,1036 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RC & Industry — Monthly Inflow Analysis | Jun–Sep 2026</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Revenue Cloud · Weekly Dashboard · Oct 5–11, 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
-:root {
-  --bg: #f6f8fa; --surface: #ffffff; --border: #d0d7de;
-  --text: #1f2328; --muted: #656d76; --accent: #0969da;
-  --green: #1a7f37; --red: #cf222e; --yellow: #9a6700; --orange: #bc4c00;
-  --emea: #8250df; --india: #e16f42; --apac: #0969da;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; background: var(--bg); color: var(--text); }
-.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
-.header h1 { font-size: 18px; font-weight: 600; }
-.header .meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-.badge-red { background: #ffebe9; color: #cf222e; border: 1px solid #ffcecb; }
-.badge-green { background: #dafbe1; color: #1a7f37; border: 1px solid #aceebb; }
-.badge-purple { background: #fbefff; color: #8250df; border: 1px solid #d8b4fe; }
-.badge-orange { background: #fff1e5; color: #bc4c00; border: 1px solid #ffc896; }
-.badge-blue { background: #ddf4ff; color: #0969da; border: 1px solid #80ccff; }
-
-/* Tabs */
-.tabs { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 0; }
-.tab-btn { padding: 10px 20px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; background: none; color: var(--muted); border-bottom: 2px solid transparent; transition: all .15s; }
-.tab-btn:hover { color: var(--text); }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
-.tab-pane { display: none; }
-.tab-pane.active { display: block; }
-
-.container { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
-
-/* KPI row */
-.kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 20px; }
-.kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
-.kpi.alert { border-color: #ffcecb; background: #ffebe9; }
-.kpi.warn { border-color: #f5d845; background: #fff8c5; }
-.kpi.good { border-color: #aceebb; background: #dafbe1; }
-.kpi.info { border-color: #80ccff; background: #ddf4ff; }
-.kpi .label { font-size: 11px; color: var(--muted); font-weight: 500; margin-bottom: 4px; }
-.kpi .value { font-size: 22px; font-weight: 700; }
-.kpi .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.kpi .delta { font-size: 11px; font-weight: 600; }
-.delta-up { color: var(--red); }
-.delta-dn { color: var(--green); }
-
-/* Cards */
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-.grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
-.card.warn-border { border-color: #f5d845; border-width: 2px; }
-.card.red-border { border-color: #ffcecb; border-width: 2px; }
-.card.purple-border { border-color: #d8b4fe; border-width: 2px; }
-.card h3 { font-size: 13px; font-weight: 600; margin-bottom: 12px; color: var(--text); }
-.card-label { font-size: 11px; color: var(--muted); font-weight: 500; margin-bottom: 8px; }
-
-/* Tables */
-.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.data-table th { text-align: left; padding: 6px 8px; font-size: 11px; font-weight: 600; color: var(--muted); background: #f6f8fa; border-bottom: 1px solid var(--border); }
-.data-table td { padding: 6px 8px; border-bottom: 1px solid #eaeef2; }
-.data-table tr:last-child td { border-bottom: none; }
-.data-table tr:hover td { background: #f6f8fa; }
-.data-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
-.data-table td.delta-up { color: var(--red); font-weight: 600; text-align: right; }
-.data-table td.delta-dn { color: var(--green); font-weight: 600; text-align: right; }
-.hl-row { background: rgba(9,105,218,.04) !important; }
-.sep-row td { font-weight: 600; }
-
-/* Pills */
-.pill { display: inline-block; padding: 1px 6px; border-radius: 10px; font-size: 10px; font-weight: 600; border: 1px solid; }
-.pill-red { background: #ffebe9; color: #cf222e; border-color: #ffcecb; }
-.pill-green { background: #dafbe1; color: #1a7f37; border-color: #aceebb; }
-.pill-blue { background: #ddf4ff; color: #0969da; border-color: #80ccff; }
-.pill-purple { background: #fbefff; color: #8250df; border-color: #d8b4fe; }
-.pill-orange { background: #fff1e5; color: #bc4c00; border-color: #ffc896; }
-.pill-yellow { background: #fff8c5; color: #9a6700; border-color: #f5d845; }
-
-/* Insight panels */
-.insight { padding: 10px 12px; border-radius: 6px; border-left: 3px solid; margin-top: 10px; font-size: 12px; line-height: 1.5; }
-.insight.red { background: #ffebe9; border-color: #cf222e; }
-.insight.green { background: #dafbe1; border-color: #1a7f37; }
-.insight.yellow { background: #fff8c5; border-color: #9a6700; }
-.insight.blue { background: #ddf4ff; border-color: #0969da; }
-.insight.purple { background: #fbefff; border-color: #8250df; }
-.insight b { font-weight: 600; }
-
-/* Section spacing */
-.section-title { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin: 20px 0 10px; }
-
-/* Chart container */
-.chart-wrap { position: relative; }
-
-/* Release annotation */
-.release-tag { font-size: 10px; color: #cf222e; font-weight: 600; }
-
-/* New/Repeat badge */
-.new-tag { display: inline-block; padding: 1px 5px; background: #fff8c5; color: #9a6700; border: 1px solid #f5d845; border-radius: 8px; font-size: 10px; font-weight: 600; }
-.repeat-tag { display: inline-block; padding: 1px 5px; background: #f6f8fa; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; font-size: 10px; }
-
-/* Regional indicator dots */
-.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-.dot-emea { background: #8250df; }
-.dot-india { background: #e16f42; }
-.dot-apac { background: #0969da; }
-
-/* Responsive fallback */
-@media (max-width: 900px) { .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; } .kpi-row { grid-template-columns: repeat(3,1fr); } }
+:root{--bg:#f6f8fa;--surface:#ffffff;--border:#d0d7de;--text:#24292f;--muted:#57606a;--accent:#0969da;--green:#1a7f37;--red:#cf222e;--amber:#9a6700;--green-bg:#dafbe1;--red-bg:#ffebe9;--amber-bg:#fff8c5;--blue-bg:#ddf4ff;--purple:#8250df}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:20px;font-weight:600}.header .meta{color:var(--muted);font-size:13px}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:12px;font-weight:500}
+.badge-green{background:var(--green-bg);color:var(--green)}.badge-red{background:var(--red-bg);color:var(--red)}.badge-amber{background:var(--amber-bg);color:var(--amber)}
+.container{max-width:1280px;margin:0 auto;padding:24px 32px}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px}
+.kpi.green{border-left:4px solid var(--green)}.kpi.red{border-left:4px solid var(--red)}.kpi.amber{border-left:4px solid var(--amber)}.kpi.blue{border-left:4px solid var(--accent)}
+.kpi-label{font-size:12px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.kpi-value{font-size:28px;font-weight:700;line-height:1}.kpi-sub{font-size:12px;color:var(--muted);margin-top:4px}.kpi-delta{font-size:12px;font-weight:600;margin-top:2px}
+.delta-up{color:var(--red)}.delta-down{color:var(--green)}.delta-flat{color:var(--muted)}
+.section{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:20px}
+.section-title{font-size:15px;font-weight:600;margin-bottom:16px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#f6f8fa;font-weight:600;text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+td{padding:7px 10px;border-bottom:1px solid var(--border)}tr:last-child td{border-bottom:none}tr:hover td{background:#f6f8fa}
+.tw-row td{font-weight:700;background:#f0f6ff}
+.s1{color:var(--red);font-weight:600}.s2{color:var(--amber);font-weight:500}
+.no-gus{color:var(--red);font-size:11px;font-weight:600}.gus-ok{color:var(--green);font-size:11px}
+.chart-wrap{position:relative;height:220px}
+.insight-strip{background:var(--blue-bg);border:1px solid #b6e3ff;border-radius:6px;padding:12px 16px;font-size:13px;margin-top:12px}
+.insight-strip strong{color:var(--accent)}
+.alert-box{background:var(--red-bg);border:1px solid #ffcecb;border-radius:6px;padding:12px 16px;font-size:13px;margin-bottom:10px}
+.alert-box strong{color:var(--red)}
+.positive-box{background:var(--green-bg);border:1px solid #aceebb;border-radius:6px;padding:12px 16px;font-size:13px;margin-bottom:10px}
+.positive-box strong{color:var(--green)}
+.exec-panels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.exec-panel{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px}
+.exec-panel h3{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+.exec-panel .big{font-size:32px;font-weight:700;line-height:1;margin-bottom:4px}
+.exec-panel p{font-size:12px;color:var(--muted);line-height:1.6}
+.footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}
+@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}.exec-panels{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
 <div class="header">
   <div>
-    <h1>⚡ Revenue Cloud &amp; Industry — Monthly Inflow Analysis</h1>
-    <div class="meta">Jun–Sep 2026 · EMEA + India (IST) + APAC · 264/Winter '27 SB1 released Aug 29 IST · Source: OrgCS Live Query · Run: Oct 5, 2026</div>
+    <h1>Revenue Cloud · Weekly Dashboard</h1>
+    <div class="meta">Oct 5–11, 2026 &nbsp;·&nbsp; EMEA + India + APAC &nbsp;·&nbsp; OrgCS live data · Generated Oct 14, 2026</div>
   </div>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
-    <span class="badge badge-red">🚨 Sep +13.1% MoM — SB1 Release Spike</span>
-    <span class="badge badge-purple">Sig Success 36.6% — structural ↑</span>
-    <span class="badge badge-orange">Bluvium 69% S1 rate — escalate</span>
-    <span class="badge badge-green">Legacy Rev ↓ — RCA migration on track</span>
+  <div style="display:flex;gap:8px;align-items:center">
+    <span class="badge badge-green">CSAT 4.6 ⭐</span>
+    <span class="badge badge-red">S1 ↑↑ +12</span>
+    <span class="badge badge-amber">Backlog 344</span>
   </div>
 </div>
-
-<div class="tabs">
-  <button class="tab-btn active" onclick="showTab('overall',this)">🌐 Overall</button>
-  <button class="tab-btn" onclick="showTab('emea',this)">🟣 EMEA</button>
-  <button class="tab-btn" onclick="showTab('india',this)">🟠 India (IST)</button>
-  <button class="tab-btn" onclick="showTab('apac',this)">🔵 APAC</button>
-</div>
-
-<!-- =================== OVERALL =================== -->
-<div id="tab-overall" class="tab-pane active">
 <div class="container">
 
-  <div class="kpi-row">
-    <div class="kpi alert">
-      <div class="label">Sep Inflow</div>
-      <div class="value">4,195</div>
-      <div class="sub"><span class="delta delta-up">▲ +486 (+13.1%)</span> vs Aug</div>
-    </div>
-    <div class="kpi alert">
-      <div class="label">Sep S1 Critical</div>
-      <div class="value">410</div>
-      <div class="sub"><span class="delta delta-up">▲ +88 (+27.3%)</span> vs Aug 322</div>
-    </div>
-    <div class="kpi warn">
-      <div class="label">Sep S2 Urgent</div>
-      <div class="value">1,829</div>
-      <div class="sub"><span class="delta delta-up">▲ +74 (+4.2%)</span> vs Aug</div>
-    </div>
-    <div class="kpi good">
-      <div class="label">Sig Success Cases</div>
-      <div class="value">1,534</div>
-      <div class="sub"><span class="delta delta-up">▲ +233 (+17.9%)</span> — 36.6% share</div>
-    </div>
-    <div class="kpi alert">
-      <div class="label">Red Account Cases</div>
-      <div class="value">549</div>
-      <div class="sub"><span class="delta delta-up">▲ +100 (+22.2%)</span> vs Aug 449</div>
-    </div>
-    <div class="kpi warn">
-      <div class="label">Bug-Linked Cases</div>
-      <div class="value">508</div>
-      <div class="sub"><span class="delta delta-up">▲ +83 (+19.5%)</span> — 12.1% of Sep</div>
-    </div>
+<!-- KPIs -->
+<div class="kpi-grid">
+  <div class="kpi amber"><div class="kpi-label">Total Inflow</div><div class="kpi-value">288</div><div class="kpi-sub">vs 304 PW</div><div class="kpi-delta delta-down">↓ −16 (−5.3%)</div></div>
+  <div class="kpi red"><div class="kpi-label">Sev1 Critical</div><div class="kpi-value">45</div><div class="kpi-sub">vs 33 PW</div><div class="kpi-delta delta-up">↑↑ +12 (+36%)</div></div>
+  <div class="kpi amber"><div class="kpi-label">Open Backlog</div><div class="kpi-value">344</div><div class="kpi-sub">live snapshot</div><div class="kpi-delta delta-up">↑ vs 246 anchor</div></div>
+  <div class="kpi amber"><div class="kpi-label">Aged &gt;15d</div><div class="kpi-value">47</div><div class="kpi-sub">of 344 open</div><div class="kpi-delta delta-up">↑ vs 38 anchor</div></div>
+  <div class="kpi green"><div class="kpi-label">CSAT Score</div><div class="kpi-value">4.6</div><div class="kpi-sub">31 responses TW</div><div class="kpi-delta delta-down">0 low scores ✓</div></div>
+</div>
+
+<!-- Exec Panels -->
+<div class="exec-panels">
+  <div class="exec-panel">
+    <h3>📊 Inflow Signal</h3>
+    <div class="big" style="color:var(--amber)">288 ↓</div>
+    <p>Total inflow down 5.3% WoW (304→288) and 4.3% below the Jul 19–25 anchor (301). Volume is stabilising. RCA dominates at 69% (199 cases); CPQ accelerated to 29% (+5pp WoW, 52→83). India S1s surged 79% WoW (14→25) while EMEA S1s held flat. Bug filings doubled (8→20) — likely CME 264/Winter '27 post-release defect cluster.</p>
   </div>
-
-  <!-- ===== KEY STORY CALLOUTS ===== -->
-  <div class="section-title">📢 Key Stories</div>
-  <div class="grid-3" style="margin-bottom:16px">
-
-    <div class="card red-border">
-      <h3>🚀 Story 1 — Release Spike: W1 Primary Driver</h3>
-      <div style="font-size:36px;font-weight:700;color:#cf222e;margin:6px 0 2px">+36%</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">W1 daily rate vs Aug baseline · 264/Winter '27 SB1 released Aug 29 IST</div>
-      <table class="data-table">
-        <tr><th>Week (IST)</th><th class="num">Daily Rate</th><th class="num">vs Aug avg</th><th class="num">S1</th></tr>
-        <tr style="background:#fff0ee"><td><b>W1 🚀 Aug30–Sep5</b></td><td class="num"><b>163/d</b></td><td class="delta-up"><b>+36%</b></td><td class="num"><b>124</b></td></tr>
-        <tr><td>W2 Sep6–12</td><td class="num">138/d</td><td class="delta-up">+15%</td><td class="num">101</td></tr>
-        <tr><td>W3 Sep13–19</td><td class="num">125/d</td><td class="delta-up">+5%</td><td class="num">78</td></tr>
-        <tr style="background:#fffbe6"><td><b>W4 ⚠ Sep20–26</b></td><td class="num">127/d</td><td class="delta-up">+6%</td><td class="num"><b>88 ↑</b></td></tr>
-        <tr><td>W5 Sep27–30 (4d)</td><td class="num">134/d</td><td class="delta-up">+12%</td><td class="num">47</td></tr>
-      </table>
-      <div class="insight red">W1 generated <b>67% more S1 than Aug weekly avg</b>. Decay was rapid (W1→W3) but stalled — <b>W4 S1 rebounded 78→88</b> as workarounds failed for secondary issues. W5 daily rate (134/d) still +12% above Aug baseline. <b>October opens elevated.</b></div>
-    </div>
-
-    <div class="card purple-border">
-      <h3>📈 Story 2 — Sig Success ↑ Every Month · Standard ↓ Steady Decline</h3>
-      <div style="display:flex;gap:16px;align-items:flex-end;margin:6px 0 2px">
-        <div><div style="font-size:36px;font-weight:700;color:#8250df">+29.2%</div><div style="font-size:10px;color:var(--muted)">Sig Success Jun→Sep</div></div>
-        <div><div style="font-size:36px;font-weight:700;color:#656d76">−11.1%</div><div style="font-size:10px;color:var(--muted)">Standard Jun→Sep</div></div>
-      </div>
-      <div class="chart-wrap" style="height:130px"><canvas id="c-story-tier"></canvas></div>
-      <div class="insight purple"><b>Sig Success up every single month</b>: 1,187 → 1,245 → 1,301 → 1,534. Sep share 36.6% vs Jun 28.5% (<b>+8.1pp structural shift</b>). <b>Standard steady decline</b>: 700 → 684 → 642 → 622 — customers upgrading tiers or self-serving. SB1 release disproportionately hit enterprise accounts — Sig Success +17.9% MoM vs total +13.1%. <b>Coverage ratio review warranted.</b></div>
-    </div>
-
-    <div class="card warn-border">
-      <h3>🐛 Story 3 — Bug-Linked: Industries Dominant · OmniStudio W1 Spike</h3>
-      <div style="font-size:36px;font-weight:700;color:#9a6700;margin:6px 0 2px">72.2%</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:6px">of Sep bug-linked cases are Industries (367 of 508)</div>
-      <div class="chart-wrap" style="height:130px"><canvas id="c-story-bug"></canvas></div>
-      <div class="insight yellow"><b>Life Sciences: 25% bug rate</b> (152/607) — highest of any product. <b>OmniStudio: 42 of 52 bug-linked cases (81%) landed in W1 release week</b> — direct fingerprint of ERR-33432 / OmniScript Sev1 outage. RCA: 138 bug-linked (13.5% rate). Legacy Revenue essentially clean (3 cases, 0.8%).</div>
-    </div>
-
+  <div class="exec-panel">
+    <h3>🚨 Top Account: Bluvium Inc</h3>
+    <div class="big" style="color:var(--red)">6×S1</div>
+    <p>Bluvium Inc generated 6 S1s TW with 3 active swarm channels. Pattern consistent with CME 264 post-deployment stress. CrowdStrike (5 cases) has active engineering loop-in on quote-clone 500 error in UAT sandbox as of Oct 14. Benifex Sweden AB hit 4× consumption surge — potential go-live/heavy UAT week.</p>
   </div>
+  <div class="exec-panel">
+    <h3>📈 India S1 Ascending</h3>
+    <div class="big" style="color:var(--red)">25 India S1</div>
+    <p>India S1 inflow: 16 → 14 → 14 → 25. EMEA S1 stable: 17 → 17 → 14 → 15. India now accounts for 56% of all S1 inflow, up from 37% at the Jul anchor. This composition inversion — Bluvium (5×S1), PwC (2×S1) driving India — warrants review at next leadership sync.</p>
+  </div>
+  <div class="exec-panel">
+    <h3>⭐ CSAT — Clean Week</h3>
+    <div class="big" style="color:var(--green)">4.6</div>
+    <p>31 responses TW, avg 4.6. 28/31 scored Very Satisfied (90%). Zero low-CSAT responses (&lt;3). Customers named: Vani (CloudOdyssey), Sohag (BC-data), Roshini (OSF Global), Santhosh (Tricentis + Palo Alto). Strong team performance worth sharing at next all-hands.</p>
+  </div>
+</div>
 
-  <!-- ===== OUTAGE INTELLIGENCE ===== -->
-  <div class="card red-border" style="margin-bottom:16px">
-    <h3>⚡ Outage &amp; Known Issue Intelligence — Sep 2026 · Slack + GUS Signals</h3>
-    <table class="data-table">
-      <tr><th>Date</th><th>Product</th><th>Type</th><th>Summary</th><th>GUS / ERR</th><th>Customers</th><th>Status</th></tr>
-      <tr>
-        <td style="white-space:nowrap"><b>Sep 3–5</b></td>
-        <td><span class="pill pill-purple">OmniScript / FlexCards</span></td>
-        <td><span class="pill pill-red">Sev1 Outage</span></td>
-        <td>Hard-down across Industries sandboxes. Unintended LWS code shipped via ERR-33432 — no gate toggle to disable. Fix-forward 262.14.11. KPMG Chrome revenue booking cascaded as secondary incident.</td>
-        <td>W-24032962 · ERR-33432 · ERR-33507</td>
-        <td>Industries sandboxes broadly + KPMG (cascade)</td>
-        <td><span class="pill pill-yellow">Partial</span></td>
-      </tr>
-      <tr>
-        <td style="white-space:nowrap">Sep 4–5</td>
-        <td><span class="pill pill-blue">Core / Agentic</span></td>
-        <td><span class="pill pill-red">Login Outage</span></td>
-        <td>Non-admin logins broken on Org62 (USA1000) post-264 R0. New Agentic tag poisoned shared cache during rolling upgrade. No workaround. Fixed ERR 264.4.3.</td>
-        <td>PRB-0031975 · ERR 264.4.3</td>
-        <td>Org62 internal (USA1000)</td>
-        <td><span class="pill pill-green">Resolved</span></td>
-      </tr>
-      <tr>
-        <td style="white-space:nowrap">Sep 5</td>
-        <td><span class="pill pill-purple">OmniStudio OS</span></td>
-        <td><span class="pill pill-orange">R0 Upgrade Fail</span></td>
-        <td>OmniStudio was only named failure in Industries 264 R0 push (FSC/HC/LS all clean). Active failure work item created. R1 also produced OS failure WI.</td>
-        <td>W-24107131 (R0) · W-24396652 (R1)</td>
-        <td>Industries R0/R1 OS fleet</td>
-        <td><span class="pill pill-yellow">Active WI</span></td>
-      </tr>
-      <tr>
-        <td style="white-space:nowrap">Sep 10</td>
-        <td><span class="pill pill-blue">Product Configurator</span></td>
-        <td><span class="pill pill-yellow">Known Issue</span></td>
-        <td>"Error while loading" when combined modified standard PS names &gt;255 chars. 5 customers landed on R0 without fix: Glean, BestPass, Secure Data Tech, Corporate Visions, Zelis. Workaround available; fix in R1.</td>
-        <td>W-24031439 · KI published</td>
-        <td>5 named R0 customers</td>
-        <td><span class="pill pill-green">WA avail.</span></td>
-      </tr>
-      <tr style="background:#fff8f0">
-        <td style="white-space:nowrap"><b>Sep 17–18</b></td>
-        <td><span class="pill pill-blue">Context Service / NGP</span></td>
-        <td><span class="pill pill-orange">264 Regression</span></td>
-        <td><b>PostNL</b>: Context Decisions deactivated on first post-264 deploy — called a "show-stopper". <b>Trane Technologies</b>: ContextBuilderException on Initiate Renewal. Root cause: "View Developer Name" permission stopped being provisioned in 264 packaging (PCM/NGP/Context stack).</td>
-        <td>W-23328346 · PCM packaging gap</td>
-        <td>PostNL (474572316), Trane Tech (474591637)</td>
-        <td><span class="pill pill-yellow">WA: add perm</span></td>
-      </tr>
-      <tr>
-        <td style="white-space:nowrap">Sep 21</td>
-        <td><span class="pill pill-purple">OmniStudio CME</span></td>
-        <td><span class="pill pill-orange">Fix Upmerge?</span></td>
-        <td>W-24032962 fix scheduled for 262.e — upmerge to 264 unconfirmed as of Sep 21. CME ESM team reproduced same <code>salesforceUtils.handleData is not a function</code> on Vlocity CME 264.30. Sentara Health Sev1 linked (#sev1-474525906). Redirected to Lightning Locker team.</td>
-        <td>W-24032962 · W-24085578</td>
-        <td>Sentara Health (Sev1), Vlocity CME fleet</td>
-        <td><span class="pill pill-red">Unresolved</span></td>
-      </tr>
-      <tr>
-        <td style="white-space:nowrap">Sep 24</td>
-        <td><span class="pill pill-green">Life Sciences</span></td>
-        <td><span class="pill pill-orange">264 Regression</span></td>
-        <td>Managed Event "Add Participant" fails on desktop only (works iPad). Confirmed 262→264 regression. Reproduced on Pfizer bizdemo2 (DEU56, build 264). Cross-platform inconsistency rules out FLS/perms — desktop-only fetch defect. Routed to LSC engineering.</td>
-        <td>No WI filed (Sep 24)</td>
-        <td>Pfizer (bizdemo2)</td>
-        <td><span class="pill pill-red">Investigating</span></td>
-      </tr>
-      <tr>
-        <td style="white-space:nowrap">Sep 28</td>
-        <td><span class="pill pill-purple">OmniStudio</span></td>
-        <td><span class="pill pill-yellow">Package Gap</span></td>
-        <td>OmniStudio managed package stuck on 264.4 despite Core pod on 264.5.2. Core and OS managed-package upgrades are <b>decoupled</b> — separate push required. Customers cannot auto-pick up 264.5 fixes (W-24124271: Application Detail refresh regression).</td>
-        <td>W-24124271</td>
-        <td>UNLV (474613982) — prod cutover Oct 2 at risk</td>
-        <td><span class="pill pill-yellow">Escalated</span></td>
-      </tr>
+<!-- Inflow + P&T -->
+<div class="grid-2">
+  <div class="section">
+    <div class="section-title">📥 Inflow Snapshot — TW vs PW</div>
+    <table>
+      <thead><tr><th>Metric</th><th>TW Oct 5–11</th><th>PW Sep 28–Oct 4</th><th>Δ</th></tr></thead>
+      <tbody>
+        <tr><td>Total Inflow</td><td><strong>288</strong></td><td>304</td><td class="delta-down">−16</td></tr>
+        <tr><td>Sev1 Critical</td><td><strong class="s1">45</strong></td><td class="s1">33</td><td class="delta-up">+12 ↑↑</td></tr>
+        <tr><td>Sev2 Urgent</td><td><strong>114</strong></td><td>71</td><td class="delta-up">+43 ↑↑</td></tr>
+        <tr><td>Sev3 High</td><td>44</td><td>39</td><td class="delta-up">+5</td></tr>
+        <tr><td>Sev4 Medium</td><td>85</td><td>72</td><td class="delta-up">+13</td></tr>
+        <tr><td>EMEA Cases</td><td>173</td><td>139</td><td class="delta-up">+34</td></tr>
+        <tr><td>India Cases</td><td>86</td><td>49</td><td class="delta-up">+37 ↑↑</td></tr>
+        <tr><td>APAC Cases</td><td>24</td><td>17</td><td class="delta-up">+7</td></tr>
+        <tr><td>EMEA % (E+I)</td><td>66.8%</td><td>73.9%</td><td class="delta-down">−7.1pp</td></tr>
+        <tr><td>India % (E+I)</td><td>33.2%</td><td>26.1%</td><td class="delta-up">+7.1pp ↑↑</td></tr>
+        <tr><td>GUS Filed</td><td>11</td><td>15</td><td class="delta-down">−4</td></tr>
+        <tr><td>Bug Filed</td><td>20</td><td>10</td><td class="delta-up">+10 ↑↑</td></tr>
+      </tbody>
     </table>
-    <div class="insight red" style="margin-top:10px">
-      <b>Pattern:</b> OmniStudio issues span the full month — ERR-33432 outage (W1) → R0 upgrade failure (W1) → fix upmerge unconfirmed (W3) → managed-package version decoupling (W4). OmniStudio is the single most impacted product in Sep. &nbsp;|&nbsp;
-      <b>IR tagging low:</b> As of Aug 31 only <b>5 cases had IR="264 RC Upgrade"</b> in OrgCS — significant under-reporting. True release-driven volume higher than 508 captured. &nbsp;|&nbsp;
-      <b>Source:</b> #rev-cloud-264-sb1-upgrade · #industries-rm · #support-omnistudio-collaboration · #omnistudio · #release-scenario-ingestion
-    </div>
   </div>
-
-  <!-- Row 1: Monthly Inflow Trend + Severity Trend -->
-  <div class="grid-2">
-    <div class="card">
-      <h3>📈 Monthly Inflow Trend (Jun–Sep) with Trendline</h3>
-      <div class="release-tag">▼ SB1 Released Aug 29 IST</div>
-      <div class="chart-wrap" style="height:240px"><canvas id="c-overall-inflow"></canvas></div>
-      <div class="insight blue" style="margin-top:8px"><b>+13.1% MoM Aug→Sep</b> — driven by 264/Winter '27 SB1 release. Daily rate 139.8/day in Sep vs 119.6/day in Aug. Volume not fully normalized (W5 still +12% above Aug baseline).</div>
-    </div>
-    <div class="card">
-      <h3>🔺 Monthly Severity Breakdown</h3>
-      <div class="chart-wrap" style="height:240px"><canvas id="c-overall-sev"></canvas></div>
-      <div class="insight red" style="margin-top:8px"><b>S1 +27.3% MoM</b> (322→410) — sharpest severity jump in 4-month window. S3+S4 both >19% — release tail pattern across all bands.</div>
-    </div>
-  </div>
-
-  <!-- Row 2: Product Mix + Sep Weekly Decay -->
-  <div class="grid-2">
-    <div class="card">
-      <h3>📦 Product Family Mix (Jun–Sep)</h3>
-      <div class="chart-wrap" style="height:240px"><canvas id="c-overall-product"></canvas></div>
-      <table class="data-table" style="margin-top:10px">
-        <tr><th>Family</th><th class="num">Jun</th><th class="num">Jul</th><th class="num">Aug</th><th class="num">Sep</th><th class="num">Aug→Sep</th></tr>
-        <tr><td><span class="dot dot-apac" style="background:#2ea043"></span> Industries</td><td class="num">2,630</td><td class="num">2,756</td><td class="num">2,476</td><td class="num"><b>2,785</b></td><td class="delta-up">+12.5%</td></tr>
-        <tr><td>&nbsp;&nbsp;↳ OmniStudio</td><td class="num">468</td><td class="num">441</td><td class="num">465</td><td class="num"><b>584</b></td><td class="delta-up">+25.6%</td></tr>
-        <tr><td>&nbsp;&nbsp;↳ Life Sciences</td><td class="num">466</td><td class="num">652</td><td class="num">618</td><td class="num"><b>607</b></td><td class="delta-dn">−1.8%</td></tr>
-        <tr><td>&nbsp;&nbsp;↳ Industry CPQ</td><td class="num">455</td><td class="num">386</td><td class="num">353</td><td class="num"><b>451</b></td><td class="delta-up">+27.8%</td></tr>
-        <tr><td>&nbsp;&nbsp;↳ Other Ind.</td><td class="num">1,241</td><td class="num">1,277</td><td class="num">1,040</td><td class="num"><b>1,143</b></td><td class="delta-up">+9.9%</td></tr>
-        <tr><td><span class="dot" style="background:#0969da"></span> RCA</td><td class="num">977</td><td class="num">877</td><td class="num">858</td><td class="num"><b>1,019</b></td><td class="delta-up">+18.8%</td></tr>
-        <tr><td><span class="dot" style="background:#f78166"></span> Legacy Revenue</td><td class="num">563</td><td class="num">477</td><td class="num">375</td><td class="num"><b>391</b></td><td class="delta-up">+4.3%</td></tr>
-      </table>
-    </div>
-    <div class="card red-border">
-      <h3>📅 Sep Weekly Decay Post-SB1 (All Regions)</h3>
-      <div class="chart-wrap" style="height:240px"><canvas id="c-sep-weekly"></canvas></div>
-      <table class="data-table" style="margin-top:10px">
-        <tr><th>Week</th><th>Dates (IST)</th><th class="num">Total</th><th class="num">Daily</th><th class="num">vs Aug</th><th class="num">S1</th></tr>
-        <tr class="sep-row"><td><span class="pill pill-red">W1 🚀</span></td><td>Aug 30–Sep 5</td><td class="num">1,143</td><td class="num">163/d</td><td class="delta-up">+36%</td><td class="num">124</td></tr>
-        <tr><td>W2</td><td>Sep 6–12</td><td class="num">968</td><td class="num">138/d</td><td class="delta-up">+15%</td><td class="num">101</td></tr>
-        <tr><td>W3</td><td>Sep 13–19</td><td class="num">873</td><td class="num">125/d</td><td class="delta-up">+5%</td><td class="num">78</td></tr>
-        <tr><td><span class="pill pill-yellow">W4 ⚠</span></td><td>Sep 20–26</td><td class="num">889</td><td class="num">127/d</td><td class="delta-up">+6%</td><td class="num"><b>88 ↑</b></td></tr>
-        <tr><td>W5</td><td>Sep 27–30 (4d)</td><td class="num">537</td><td class="num">134/d</td><td class="delta-up">+12%</td><td class="num">47</td></tr>
-      </table>
-      <div class="insight yellow" style="margin-top:8px"><b>W4 S1 rebound</b> (78→88, +13%) after 3 weeks of decay — secondary escalations likely. <b>W5 still +12% above Aug</b> — October opens elevated.</div>
-    </div>
-  </div>
-
-  <!-- Row 3: Support Tier + Regional Split -->
-  <div class="grid-2">
-    <div class="card">
-      <h3>🏅 Support Tier Trend (Jun–Sep)</h3>
-      <div class="chart-wrap" style="height:240px"><canvas id="c-overall-tier"></canvas></div>
-      <table class="data-table" style="margin-top:10px">
-        <tr><th>Tier</th><th class="num">Jun</th><th class="num">Jul</th><th class="num">Aug</th><th class="num">Sep</th><th class="num">Jun→Sep Δ</th></tr>
-        <tr><td><span class="pill pill-purple">Sig Success</span></td><td class="num">1,187</td><td class="num">1,245</td><td class="num">1,301</td><td class="num"><b>1,534</b></td><td class="delta-up">+29.2%</td></tr>
-        <tr><td><span class="pill pill-blue">Premier+</span></td><td class="num">1,551</td><td class="num">1,550</td><td class="num">1,235</td><td class="num"><b>1,501</b></td><td class="delta-dn">−3.2%</td></tr>
-        <tr><td><span class="pill pill-orange">Partner Prem</span></td><td class="num">729</td><td class="num">625</td><td class="num">525</td><td class="num"><b>533</b></td><td class="delta-dn">−26.9%</td></tr>
-        <tr><td><span class="pill">Standard</span></td><td class="num">700</td><td class="num">684</td><td class="num">642</td><td class="num"><b>622</b></td><td class="delta-dn">−11.1%</td></tr>
-      </table>
-      <div class="insight purple" style="margin-top:8px"><b>Sig Success every month ↑</b>: 1,187 → 1,534 (+29.2% in 4 months) while total is flat. Share: 28.5% → 36.6%. Enterprise accounts driving disproportionate SB1 escalations.</div>
-    </div>
-    <div class="card">
-      <h3>🌍 Regional Split Trend (Jun–Sep)</h3>
-      <div class="chart-wrap" style="height:240px"><canvas id="c-overall-region"></canvas></div>
-      <table class="data-table" style="margin-top:10px">
-        <tr><th>Region</th><th class="num">Jun</th><th class="num">Jul</th><th class="num">Aug</th><th class="num">Sep</th><th class="num">Aug→Sep</th></tr>
-        <tr><td><span class="dot dot-emea"></span> EMEA</td><td class="num">2,072</td><td class="num">1,961</td><td class="num">1,766</td><td class="num"><b>2,028</b></td><td class="delta-up">+14.8%</td></tr>
-        <tr><td><span class="dot dot-india"></span> India (IST)</td><td class="num">1,474</td><td class="num">1,508</td><td class="num">1,325</td><td class="num"><b>1,491</b></td><td class="delta-up">+12.5%</td></tr>
-        <tr><td><span class="dot dot-apac"></span> APAC</td><td class="num">624</td><td class="num">641</td><td class="num">618</td><td class="num"><b>676</b></td><td class="delta-up">+9.4%</td></tr>
-      </table>
-      <div class="insight blue" style="margin-top:8px">All 3 regions moved in same direction Sep — confirming <b>global release pattern</b>. EMEA drove largest absolute recovery (+262). APAC most stable across 4 months (range: 618–676).</div>
-    </div>
-  </div>
-
-  <!-- Top 10 Accounts -->
-  <div class="card" style="margin-bottom:16px">
-    <h3>🏢 Top 10 Accounts — Sep 2026 (New vs Repeat)</h3>
-    <table class="data-table">
-      <tr>
-        <th>#</th><th>Account</th><th>Status</th>
-        <th class="num">Sep</th><th class="num">Aug</th><th class="num">Jul</th>
-        <th class="num">MoM Δ</th><th>Signal</th>
-      </tr>
-      <tr class="hl-row">
-        <td>1</td><td><b>AstraZeneca</b></td><td><span class="repeat-tag">Repeat</span></td>
-        <td class="num">71</td><td class="num">67</td><td class="num">20</td>
-        <td class="num" style="color:#0969da">+4</td>
-        <td>Structural high-volume, steady state</td>
-      </tr>
-      <tr>
-        <td>2</td><td><b>Takeda Pharmaceuticals</b></td><td><span class="repeat-tag">Repeat</span></td>
-        <td class="num">65</td><td class="num">105</td><td class="num">126</td>
-        <td class="delta-dn">−40</td>
-        <td><span class="pill pill-green">Improving ↓</span> — 3-month decline</td>
-      </tr>
-      <tr>
-        <td>3</td><td><b>Deloitte Global Services</b></td><td><span class="repeat-tag">Repeat</span></td>
-        <td class="num">64</td><td class="num">32</td><td class="num">87</td>
-        <td class="delta-up">+32</td>
-        <td><span class="pill pill-red">Watch 🔴</span> — #2 S1 account (11 S1)</td>
-      </tr>
-      <tr>
-        <td>4</td><td><b>Mylan Inc.</b></td><td><span class="repeat-tag">Repeat</span></td>
-        <td class="num">63</td><td class="num">58</td><td class="num">54</td>
-        <td class="num" style="color:#0969da">+5</td>
-        <td>Steady ramp — 3-month growth</td>
-      </tr>
-      <tr>
-        <td>5</td><td><b>Pfizer EMEA</b></td><td><span class="repeat-tag">Repeat</span></td>
-        <td class="num">59</td><td class="num">66</td><td class="num">79</td>
-        <td class="delta-dn">−7</td>
-        <td>Gradually resolving</td>
-      </tr>
-      <tr class="hl-row">
-        <td>6</td><td><b>Novartis Pharma AG</b></td><td><span class="new-tag">New ↑↑</span></td>
-        <td class="num">52</td><td class="num">18</td><td class="num">—</td>
-        <td class="delta-up">+34</td>
-        <td><span class="pill pill-red">SB1 spike 🔴</span> — +189% MoM, proactive outreach needed</td>
-      </tr>
-      <tr>
-        <td>7</td><td><b>Accenture LLP</b></td><td><span class="repeat-tag">Repeat</span></td>
-        <td class="num">49</td><td class="num">36</td><td class="num">53</td>
-        <td class="delta-up">+13</td>
-        <td>Partner activity — upgrade cycles</td>
-      </tr>
-      <tr class="hl-row">
-        <td>8</td><td><b>TDC Net A/S</b></td><td><span class="new-tag">New</span></td>
-        <td class="num">38</td><td class="num">—</td><td class="num">—</td>
-        <td class="delta-up">new</td>
-        <td>Telco — first time in top 10</td>
-      </tr>
-      <tr>
-        <td>9</td><td><b>SHIFTLOGIC.IO</b></td><td><span class="repeat-tag">Repeat</span></td>
-        <td class="num">35</td><td class="num">43</td><td class="num">42</td>
-        <td class="delta-dn">−8</td>
-        <td>7 S1 — still high S1 rate</td>
-      </tr>
-      <tr class="hl-row">
-        <td>10</td><td><b>Alfasigma Global CRM</b></td><td><span class="new-tag">New</span></td>
-        <td class="num">34</td><td class="num">—</td><td class="num">—</td>
-        <td class="delta-up">new</td>
-        <td>Pharma/LS — new entrant</td>
-      </tr>
+  <div class="section">
+    <div class="section-title">🏷 P&amp;T Breakdown</div>
+    <table>
+      <thead><tr><th>Group</th><th>TW</th><th>TW%</th><th>PW</th><th>PW%</th><th>Δ</th></tr></thead>
+      <tbody>
+        <tr><td><strong>RCA</strong> <span style="color:var(--muted);font-size:11px">Revenue Cloud Core</span></td><td><strong>199</strong></td><td>69.1%</td><td>147</td><td>68.4%</td><td>+52</td></tr>
+        <tr><td><strong>CPQ</strong> <span style="color:var(--muted);font-size:11px">incl. DocGen</span></td><td><strong>83</strong></td><td>28.8%</td><td>52</td><td>24.2%</td><td class="delta-up">+31 ↑↑</td></tr>
+        <tr><td><strong>Billing</strong></td><td>6</td><td>2.1%</td><td>11</td><td>5.1%</td><td class="delta-down">−5</td></tr>
+        <tr><td><strong>Other</strong></td><td>0</td><td>0%</td><td>2</td><td>0.9%</td><td>−2</td></tr>
+      </tbody>
     </table>
-    <div class="insight red" style="margin-top:10px"><b>Bluvium Inc</b> not in top-10 by volume (23 total) but <b>#1 S1 account (16 S1, 69.6% S1 rate)</b> — sustained 3-month crisis pattern requiring escalation track. <b>3 new entrants</b> (Novartis, TDC Net, Alfasigma) all SB1-related.</div>
+    <div class="chart-wrap" style="margin-top:16px;height:180px"><canvas id="ptChart"></canvas></div>
   </div>
+</div>
 
-  <!-- Bug-Linked & Red Account Trend -->
+<!-- 4-Week Trend -->
+<div class="section">
+  <div class="section-title">📈 4-Week Inflow Trend</div>
   <div class="grid-2" style="margin-bottom:16px">
-    <div class="card">
-      <h3>🐛 Bug-Linked Cases (Jun–Sep)</h3>
-      <div class="chart-wrap" style="height:200px"><canvas id="c-overall-bug"></canvas></div>
-    </div>
-    <div class="card red-border">
-      <h3>🔴 Red Account Cases (Jun–Sep)</h3>
-      <div class="chart-wrap" style="height:200px"><canvas id="c-overall-red"></canvas></div>
-    </div>
+    <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+    <div class="chart-wrap"><canvas id="s1Chart"></canvas></div>
   </div>
-
+  <table>
+    <thead><tr><th>Week</th><th>Total</th><th>S1</th><th>S2</th><th>RCA</th><th>RCA%</th><th>CPQ</th><th>CPQ%</th><th>Billing</th><th>EMEA%</th><th>India%</th></tr></thead>
+    <tbody>
+      <tr><td>Sep 14–20 (W−3)</td><td>304</td><td>35</td><td>113</td><td>213</td><td>70%</td><td>79</td><td>26%</td><td>10</td><td>66.5%</td><td>33.5%</td></tr>
+      <tr><td>Sep 21–27 (W−2)</td><td>304</td><td>32</td><td>125</td><td>214</td><td>70%</td><td>79</td><td>26%</td><td>11</td><td>64.3%</td><td>35.7%</td></tr>
+      <tr><td>Sep 28–Oct 4 (PW)</td><td>304</td><td>33</td><td>71</td><td>215</td><td>71%</td><td>52</td><td>17%</td><td>15</td><td>73.9%</td><td>26.1%</td></tr>
+      <tr class="tw-row"><td><strong>Oct 5–11 (TW) ★</strong></td><td><strong>288</strong></td><td><strong class="s1">45 ↑↑</strong></td><td><strong>114 ↑↑</strong></td><td><strong>199</strong></td><td><strong>69%</strong></td><td><strong>83 ↑↑</strong></td><td><strong>29%</strong></td><td><strong>6</strong></td><td><strong>66.8%</strong></td><td><strong>33.2% ↑↑</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="insight-strip">
+    <strong>Key signal:</strong> India S1 reached 25 TW (56% of all S1) vs 14 PW — a 79% WoW spike. EMEA S1 flat at 15. CPQ share hit 29% (+5pp WoW). Bug filings doubled (10→20) suggesting active CME 264/Winter '27 post-release defect cluster.
+  </div>
 </div>
+
+<!-- S1 Trend -->
+<div class="section">
+  <div class="section-title">🔴 Sev1 by Region — 4-Week Trend</div>
+  <table>
+    <thead><tr><th>Week</th><th>S1 Total</th><th>EMEA S1</th><th>India S1</th><th>APAC S1</th><th>India %</th></tr></thead>
+    <tbody>
+      <tr><td>Sep 14–20 (W−3)</td><td>35</td><td>17</td><td>16</td><td>2</td><td>46%</td></tr>
+      <tr><td>Sep 21–27 (W−2)</td><td>32</td><td>17</td><td>14</td><td>1</td><td>44%</td></tr>
+      <tr><td>Sep 28–Oct 4 (PW)</td><td>33</td><td>14</td><td>14</td><td>5</td><td>42%</td></tr>
+      <tr class="tw-row"><td><strong>Oct 5–11 (TW) ★</strong></td><td><strong class="s1">45</strong></td><td><strong>15</strong></td><td><strong class="s1">25 ↑↑</strong></td><td><strong>5</strong></td><td><strong class="s1">56% ↑↑</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="insight-strip">
+    <strong>India S1 ascending:</strong> India S1 went 16→14→14→25. EMEA S1 stable 17→17→14→15. India is now 56% of all S1 inflow (was 37% at Jul anchor). Primary drivers: Bluvium Inc (5×S1), PwC (2×S1). Review recommended at next leadership sync.
+  </div>
 </div>
 
-<!-- =================== EMEA =================== -->
-<div id="tab-emea" class="tab-pane">
-<div class="container">
+<!-- Top Accounts -->
+<div class="section">
+  <div class="section-title">🏢 Top TW Inflow Accounts</div>
+  <table>
+    <thead><tr><th>Rank</th><th>Account</th><th>TW Cases</th><th>S1</th><th>P&amp;T</th><th>Signal</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>Bluvium Inc</strong></td><td>6</td><td><span class="s1">5</span></td><td>RCA</td><td>3 active S1 swarm channels · CME 264 post-deploy stress wave</td></tr>
+      <tr><td>2</td><td><strong>Benifex Sweden AB</strong></td><td>5</td><td><span class="s1">2</span></td><td>RCA</td><td>Consumption 4× surge (4.8→20.0) · likely go-live or heavy UAT</td></tr>
+      <tr><td>3</td><td><strong>CrowdStrike, Inc.</strong></td><td>5</td><td><span class="s1">1</span></td><td>RCA</td><td>Quote-clone 500 error · QOC engineering loop-in Oct 14</td></tr>
+      <tr><td>4</td><td>Telenet Group</td><td>4</td><td>0</td><td>RCA</td><td>S2 aged 34d open (GUS linked)</td></tr>
+      <tr><td>5</td><td>Vp PLC</td><td>4</td><td><span class="s1">2</span></td><td>RCA</td><td>Active implementation phase</td></tr>
+      <tr><td>6</td><td>SHIFTLOGIC.IO LIMITED</td><td>4</td><td><span class="s1">2</span></td><td>RCA/Billing</td><td>—</td></tr>
+      <tr><td>7</td><td>Dayforce US, Inc.</td><td>4</td><td>0</td><td>RCA</td><td>—</td></tr>
+      <tr><td>8</td><td>RevCycle Limited</td><td>4</td><td>0</td><td>RCA</td><td>—</td></tr>
+    </tbody>
+  </table>
+</div>
 
-  <div class="kpi-row">
-    <div class="kpi alert">
-      <div class="label">Sep EMEA Inflow</div>
-      <div class="value">2,028</div>
-      <div class="sub"><span class="delta delta-up">▲ +262 (+14.8%)</span> vs Aug</div>
-    </div>
-    <div class="kpi alert">
-      <div class="label">S1 Critical</div>
-      <div class="value">201</div>
-      <div class="sub"><span class="delta delta-up">▲ +73 (+57%)!</span> vs Aug 128</div>
-    </div>
-    <div class="kpi warn">
-      <div class="label">S2 Urgent</div>
-      <div class="value">782</div>
-      <div class="sub"><span class="delta delta-up">▲ +52</span> vs Aug 730</div>
-    </div>
-    <div class="kpi good">
-      <div class="label">Sig Success</div>
-      <div class="value">580</div>
-      <div class="sub">28.6% of EMEA Sep</div>
-    </div>
-    <div class="kpi info">
-      <div class="label">RCA Cases Sep</div>
-      <div class="value">580</div>
-      <div class="sub">28.6% of EMEA volume</div>
-    </div>
-    <div class="kpi good">
-      <div class="label">Industries Sep</div>
-      <div class="value">1,228</div>
-      <div class="sub">60.6% of EMEA Sep</div>
-    </div>
-  </div>
-
-  <div class="grid-2">
-    <div class="card">
-      <h3>📈 EMEA Monthly Inflow Trend</h3>
-      <div class="chart-wrap" style="height:240px"><canvas id="c-emea-inflow"></canvas></div>
-      <div class="insight purple" style="margin-top:8px"><b>EMEA largest absolute MoM recovery</b>: +262 cases (+14.8%). Drove 53.9% of total Sep increase. Release-week regional split: EMEA=559 cases (W1) vs Aug weekly avg ~401 = +39%.</div>
-    </div>
-    <div class="card">
-      <h3>🔺 EMEA Severity Breakdown</h3>
-      <div class="chart-wrap" style="height:240px"><canvas id="c-emea-sev"></canvas></div>
-      <div class="insight red" style="margin-top:8px"><b>EMEA S1 jumped +57%</b> Aug→Sep (128→201) — the largest regional S1 surge. EMEA accounts (Bluvium, Deloitte, SHIFTLOGIC) driving outsized S1 concentration.</div>
-    </div>
-  </div>
-
-  <div class="grid-2">
-    <div class="card">
-      <h3>📦 EMEA Product Mix — Sep 2026</h3>
-      <div class="chart-wrap" style="height:220px"><canvas id="c-emea-product"></canvas></div>
-      <table class="data-table" style="margin-top:10px">
-        <tr><th>Family</th><th class="num">Sep Cases</th><th class="num">Share</th></tr>
-        <tr><td>Industries (total)</td><td class="num"><b>1,228</b></td><td class="num">60.6%</td></tr>
-        <tr><td>RCA</td><td class="num"><b>580</b></td><td class="num">28.6%</td></tr>
-        <tr><td>Legacy Revenue</td><td class="num"><b>220</b></td><td class="num">10.8%</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <h3>🏅 EMEA Support Tier — Sep 2026</h3>
-      <div class="chart-wrap" style="height:220px"><canvas id="c-emea-tier"></canvas></div>
-      <table class="data-table" style="margin-top:10px">
-        <tr><th>Tier</th><th class="num">Cases</th><th class="num">%</th></tr>
-        <tr><td><span class="pill pill-blue">Premier+</span></td><td class="num">835</td><td class="num">41.2%</td></tr>
-        <tr><td><span class="pill pill-purple">Sig Success</span></td><td class="num">580</td><td class="num">28.6%</td></tr>
-        <tr><td><span class="pill">Standard</span></td><td class="num">392</td><td class="num">19.3%</td></tr>
-        <tr><td><span class="pill pill-orange">Partner Prem</span></td><td class="num">225</td><td class="num">11.1%</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom:16px">
-    <h3>🏢 Top 10 EMEA Accounts — Sep 2026</h3>
-    <table class="data-table">
-      <tr><th>#</th><th>Account</th><th class="num">Sep</th><th class="num">Aug</th><th class="num">MoM Δ</th><th>Note</th></tr>
-      <tr><td>1</td><td>TDC Net A/S</td><td class="num">30</td><td class="num">—</td><td class="delta-up">new</td><td><span class="new-tag">New</span> Telco</td></tr>
-      <tr><td>2</td><td>AstraZeneca</td><td class="num">28</td><td class="num">~25</td><td class="num">+3</td><td><span class="repeat-tag">Repeat</span> Steady</td></tr>
-      <tr><td>3</td><td>SHIFTLOGIC.IO</td><td class="num">25</td><td class="num">~32</td><td class="delta-dn">−7</td><td><span class="pill pill-red">7 S1</span> Red acct</td></tr>
-      <tr><td>4</td><td>Accenture LLP</td><td class="num">24</td><td class="num">~22</td><td class="num">+2</td><td><span class="repeat-tag">Repeat</span> Partner</td></tr>
-      <tr><td>5</td><td>Cloudity</td><td class="num">22</td><td class="num">~18</td><td class="num">+4</td><td><span class="pill pill-red">5 S1</span></td></tr>
-      <tr><td>6</td><td>Mylan Inc.</td><td class="num">18</td><td class="num">~16</td><td class="num">+2</td><td><span class="repeat-tag">Repeat</span></td></tr>
-      <tr><td>7</td><td>Metlen Energy &amp; Metals</td><td class="num">18</td><td class="num">29</td><td class="delta-dn">−11</td><td>Improving</td></tr>
-      <tr><td>8</td><td>Quentic GmbH</td><td class="num">18</td><td class="num">—</td><td class="delta-up">new</td><td><span class="new-tag">New</span></td></tr>
-      <tr><td>9</td><td>PostNL Holding BV</td><td class="num">16</td><td class="num">—</td><td class="delta-up">new</td><td><span class="new-tag">New</span> Telco/logistics</td></tr>
-      <tr><td>10</td><td>Vp PLC</td><td class="num">15</td><td class="num">—</td><td class="delta-up">new</td><td><span class="pill pill-red">4 S1</span></td></tr>
-    </table>
-    <div class="insight red" style="margin-top:10px"><b>Bluvium Inc (not shown — 23 total, 16 S1)</b>: Owner EMEA, 69.6% S1 rate — #1 risk account across all regions. Requires immediate escalation track beyond normal case management.</div>
-  </div>
-
-  <!-- EMEA Sep Weekly -->
-  <div class="card" style="margin-bottom:16px">
-    <h3>📅 EMEA Sep Weekly Decay Post-SB1</h3>
-    <div class="chart-wrap" style="height:200px"><canvas id="c-emea-weekly"></canvas></div>
-    <table class="data-table" style="margin-top:10px">
-      <tr><th>Week</th><th class="num">EMEA</th><th class="num">India</th><th class="num">APAC</th><th class="num">Total</th></tr>
-      <tr><td><span class="pill pill-red">W1 Release</span></td><td class="num">559</td><td class="num">408</td><td class="num">176</td><td class="num">1,143</td></tr>
-      <tr><td>W2</td><td class="num">449</td><td class="num">357</td><td class="num">162</td><td class="num">968</td></tr>
-      <tr><td>W3</td><td class="num">456</td><td class="num">281</td><td class="num">136</td><td class="num">873</td></tr>
-      <tr><td>W4</td><td class="num">419</td><td class="num">334</td><td class="num">139</td><td class="num">892</td></tr>
-      <tr><td>W5 (4d)</td><td class="num">267</td><td class="num">177</td><td class="num">92</td><td class="num">536</td></tr>
+<!-- Backlog -->
+<div class="grid-2">
+  <div class="section">
+    <div class="section-title">📂 Open Backlog (live snapshot)</div>
+    <table>
+      <thead><tr><th>Metric</th><th>Count</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Total Open (non-SP)</td><td><strong>344</strong></td><td>+98 vs anchor (246)</td></tr>
+        <tr><td><strong>Aged &gt;15d ★</strong></td><td><strong>47</strong></td><td>+9 vs anchor (38)</td></tr>
+        <tr><td>S1 Open</td><td><strong class="s1">11</strong></td><td>any age</td></tr>
+        <tr><td>EMEA Open</td><td>175</td><td></td></tr>
+        <tr><td>India Open</td><td>87</td><td></td></tr>
+        <tr><td>APAC Open</td><td>79</td><td></td></tr>
+        <tr><td>EMEA Aged &gt;15d</td><td>18</td><td>10.3% of EMEA open</td></tr>
+        <tr><td><strong>India Aged &gt;15d</strong></td><td><strong class="s1">21</strong></td><td>24.1% of India open ⚠</td></tr>
+        <tr><td>No GUS+Bug (aged &gt;15d)</td><td><strong class="s1">40</strong></td><td>needs engineering engagement</td></tr>
+      </tbody>
     </table>
   </div>
-
+  <div class="section">
+    <div class="section-title">🏷 Backlog by P&amp;T</div>
+    <table>
+      <thead><tr><th>Group</th><th>Open</th><th>Aged &gt;15d</th><th>Aged %</th></tr></thead>
+      <tbody>
+        <tr><td>RCA</td><td>268</td><td>32</td><td>11.9%</td></tr>
+        <tr><td>CPQ</td><td>69</td><td>12</td><td>17.4%</td></tr>
+        <tr><td>Billing</td><td>3</td><td>2</td><td>66.7%</td></tr>
+        <tr><td>Other</td><td>4</td><td>1</td><td>25%</td></tr>
+      </tbody>
+    </table>
+    <div class="insight-strip" style="margin-top:12px">
+      <strong>India aged concentration:</strong> 21 aged cases = 24.1% of India open vs EMEA 10.3%. CPQ aged rate (17.4%) higher than RCA (11.9%) — concentrated in InsightSoftware (43d), YOTTA (41d), Cleanaway (43d), Proofpoint (33d).
+    </div>
+  </div>
 </div>
+
+<!-- CPQ Aged No-GUS by Region -->
+<div class="section">
+  <div class="section-title">⚠ CPQ Aged Cases — No Engineering Engagement (by Region)</div>
+  <table>
+    <thead><tr><th>Region</th><th>Cases</th><th>Top Accounts (by Age)</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>India</strong></td><td>7</td><td>InsightSoftware (43d), YOTTA (41d), Proofpoint (33d), Toast (21d), Palo Alto (16d)</td><td>InsightSoftware at 43d NMI — longest no-path CPQ case</td></tr>
+      <tr><td><strong>APAC</strong></td><td>3</td><td>Cleanaway (43d), Ground Labs (26d), Ansarada (23d)</td><td>Cleanaway oldest no-path across all CPQ</td></tr>
+      <tr><td><strong>EMEA</strong></td><td>2</td><td>Stepstone (21d), Flexera (16d)</td><td>Lower concentration relative to volume</td></tr>
+    </tbody>
+  </table>
 </div>
 
-<!-- =================== INDIA =================== -->
-<div id="tab-india" class="tab-pane">
-<div class="container">
+<!-- Top 10 Oldest -->
+<div class="section">
+  <div class="section-title">⏱ Top 10 Oldest Open Cases</div>
+  <table>
+    <thead><tr><th>Case #</th><th>Account</th><th>Sev</th><th>Age (d)</th><th>Status</th><th>P&amp;T</th><th>GUS</th><th>Bug</th></tr></thead>
+    <tbody>
+      <tr><td>474409560</td><td>Trimble Illuminate</td><td class="s2">S2</td><td>56.1</td><td>Working</td><td>Billing</td><td class="gus-ok">✓</td><td class="gus-ok">✓</td></tr>
+      <tr><td>474499112</td><td>InsightSoftware</td><td class="s2">S2</td><td>43.2</td><td>NMI</td><td>CPQ</td><td class="no-gus">—</td><td class="no-gus">—</td></tr>
+      <tr><td>474499855</td><td>Cleanaway Ops</td><td class="s2">S2</td><td>43.1</td><td>Working</td><td>CPQ</td><td class="no-gus">—</td><td class="no-gus">—</td></tr>
+      <tr><td>474513550</td><td>Sinch US Greenfield</td><td class="s2">S2</td><td>42.0</td><td>NMI</td><td>RCA</td><td class="gus-ok">✓</td><td class="no-gus">—</td></tr>
+      <tr><td>474523314</td><td>YOTTA Data Services</td><td class="s2">S2</td><td>41.1</td><td>NMI</td><td>CPQ</td><td class="no-gus">—</td><td class="no-gus">—</td></tr>
+      <tr><td>474551981</td><td>Metro Fibernet</td><td>S3</td><td>36.0</td><td>NMI</td><td>RCA</td><td class="gus-ok">✓</td><td class="no-gus">—</td></tr>
+      <tr><td>474559266</td><td>Trane Technologies</td><td class="s2">S2</td><td>35.2</td><td>Working</td><td>RCA</td><td class="no-gus">—</td><td class="no-gus">—</td></tr>
+      <tr><td>474569447</td><td>Telenet Group</td><td class="s2">S2</td><td>34.1</td><td>Working</td><td>RCA</td><td class="gus-ok">✓</td><td class="no-gus">—</td></tr>
+      <tr><td>474580078</td><td>Infor (US) LLC</td><td class="s1">S1</td><td>32.9</td><td>Working</td><td>RCA</td><td class="no-gus">—</td><td class="no-gus">—</td></tr>
+      <tr><td>474580884</td><td>Proofpoint</td><td class="s2">S2</td><td>32.8</td><td>Working</td><td>CPQ</td><td class="no-gus">—</td><td class="no-gus">—</td></tr>
+    </tbody>
+  </table>
+</div>
 
-  <div class="kpi-row">
-    <div class="kpi alert">
-      <div class="label">Sep India Inflow</div>
-      <div class="value">1,491</div>
-      <div class="sub"><span class="delta delta-up">▲ +166 (+12.5%)</span> vs Aug</div>
-    </div>
-    <div class="kpi alert">
-      <div class="label">S1 Critical</div>
-      <div class="value">163</div>
-      <div class="sub"><span class="delta delta-up">▲ +14 (+9.4%)</span> vs Aug 149</div>
-    </div>
-    <div class="kpi warn">
-      <div class="label">S2 Urgent</div>
-      <div class="value">815</div>
-      <div class="sub"><span class="delta delta-up">▲ +22</span> vs Aug 793</div>
-    </div>
-    <div class="kpi good">
-      <div class="label">Sig Success</div>
-      <div class="value">737</div>
-      <div class="sub"><b>49.4%</b> of India Sep — dominant tier</div>
-    </div>
-    <div class="kpi info">
-      <div class="label">RCA Cases Sep</div>
-      <div class="value">342</div>
-      <div class="sub">22.9% of India Sep</div>
-    </div>
-    <div class="kpi good">
-      <div class="label">Industries Sep</div>
-      <div class="value">1,046</td>
-      <div class="sub">70.2% of India Sep</div>
+<!-- Cases to Watch -->
+<div class="section">
+  <div class="section-title">🔴 Cases to Watch — Open S1 Aged &gt;14d</div>
+  <div class="alert-box"><strong>8 open S1 cases aged &gt;14d — all have no GUS and no Bug filed.</strong> Inflow S1 TW: 45 (EMEA ~15, India ~25). Open S1 total: 11.</div>
+  <table>
+    <thead><tr><th>Case #</th><th>Account</th><th>Age (d)</th><th>P&amp;T</th><th>GUS</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>474580078</td><td><strong>Infor (US) LLC</strong></td><td>32.9</td><td>RCA – Transaction Mgmt</td><td class="no-gus">⚠ None</td><td>Working</td></tr>
+      <tr><td>474616604</td><td>TechMatrix Pte Ltd</td><td>27.1</td><td>RCA – Price Management</td><td class="no-gus">⚠ None</td><td>Working</td></tr>
+      <tr><td>474663345</td><td>ECi</td><td>20.1</td><td>RCA – Billing &amp; Invoicing</td><td class="no-gus">⚠ None</td><td>NMI</td></tr>
+      <tr><td>474665797</td><td>Tecan Trading AG</td><td>19.9</td><td>RCA – Product Configurator</td><td class="no-gus">⚠ None</td><td>NMI</td></tr>
+      <tr><td>474666900</td><td>PwC</td><td>19.8</td><td>RCA – Billing &amp; Invoicing</td><td class="no-gus">⚠ None</td><td>Working</td></tr>
+      <tr><td>474667205</td><td>PwC</td><td>19.8</td><td>RCA – Billing &amp; Invoicing</td><td class="no-gus">⚠ None</td><td>Working</td></tr>
+      <tr><td>474678527</td><td>Iren Mercato</td><td>18.5</td><td>CPQ</td><td class="no-gus">⚠ None</td><td>Working</td></tr>
+      <tr><td>474719765</td><td>Phillips 66 (Enterprise)</td><td>14.3</td><td>CPQ Dev Support</td><td class="no-gus">⚠ None</td><td>NMI</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CSAT -->
+<div class="grid-2">
+  <div class="section">
+    <div class="section-title">⭐ CSAT — 4-Week Trend</div>
+    <table>
+      <thead><tr><th>Week</th><th>Responses</th><th>Avg</th><th>Score=5</th><th>Score&lt;3</th><th>%&lt;3</th></tr></thead>
+      <tbody>
+        <tr><td>Sep 14–20 (W−3)</td><td>6</td><td>4.5</td><td>5</td><td>0</td><td>0%</td></tr>
+        <tr><td>Sep 21–27 (W−2)</td><td>18</td><td>4.8</td><td>17</td><td>1</td><td>5.6%</td></tr>
+        <tr><td>Sep 28–Oct 4 (PW)</td><td>23</td><td>4.7</td><td>22</td><td>0</td><td>0%</td></tr>
+        <tr class="tw-row"><td><strong>Oct 5–11 (TW) ★</strong></td><td><strong>31</strong></td><td><strong>4.6</strong></td><td><strong>28</strong></td><td><strong>0</strong></td><td><strong>0%</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="positive-box" style="margin-top:12px">
+      <strong>Zero low-CSAT responses TW.</strong> 28/31 scored Very Satisfied. Named TSEs: Vani (CloudOdyssey) · Sohag (BC-data) · Roshini (OSF Global) · Santhosh (Tricentis, Palo Alto).
     </div>
   </div>
-
-  <div class="grid-2">
-    <div class="card">
-      <h3>📈 India Monthly Inflow Trend</h3>
-      <div class="chart-wrap" style="height:240px"><canvas id="c-india-inflow"></canvas></div>
-      <div class="insight" style="background:#fff1e5;border-left:3px solid #bc4c00;margin-top:8px;padding:10px 12px;border-radius:6px;font-size:12px"><b>India steady volume leader</b>: Peak was Jul (1,508), Aug dipped (1,325), Sep recovered (1,491). India drives 35.5% of all Sep cases. Sig Success at 49.4% — highest tier concentration of any region.</div>
-    </div>
-    <div class="card">
-      <h3>🔺 India Severity Breakdown</h3>
-      <div class="chart-wrap" style="height:240px"><canvas id="c-india-sev"></canvas></div>
-      <div class="insight red" style="margin-top:8px">India S1 peak was Jun (218 — likely end-of-H1 surge), dropped to 149 Aug, rebounded 163 Sep. <b>S3 jumped significantly</b> (293→358, +22%) — post-upgrade exploration cases from India-managed accounts.</div>
-    </div>
-  </div>
-
-  <div class="grid-2">
-    <div class="card">
-      <h3>📦 India Product Mix — Sep 2026</h3>
-      <div class="chart-wrap" style="height:220px"><canvas id="c-india-product"></canvas></div>
-      <table class="data-table" style="margin-top:10px">
-        <tr><th>Family</th><th class="num">Sep Cases</th><th class="num">Share</th></tr>
-        <tr><td>Industries (total)</td><td class="num"><b>1,046</b></td><td class="num">70.2%</td></tr>
-        <tr><td>RCA</td><td class="num"><b>342</b></td><td class="num">22.9%</td></tr>
-        <tr><td>Legacy Revenue</td><td class="num"><b>103</b></td><td class="num">6.9%</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <h3>🏅 India Support Tier — Sep 2026</h3>
-      <div class="chart-wrap" style="height:220px"><canvas id="c-india-tier"></canvas></div>
-      <table class="data-table" style="margin-top:10px">
-        <tr><th>Tier</th><th class="num">Cases</th><th class="num">%</th></tr>
-        <tr><td><span class="pill pill-purple">Sig Success</span></td><td class="num">737</td><td class="num">49.4%</td></tr>
-        <tr><td><span class="pill pill-blue">Premier+</span></td><td class="num">380</td><td class="num">25.5%</td></tr>
-        <tr><td><span class="pill pill-orange">Partner Prem</span></td><td class="num">256</td><td class="num">17.2%</td></tr>
-        <tr><td><span class="pill">Standard</span></td><td class="num">116</td><td class="num">7.8%</td></tr>
-      </table>
-      <div class="insight purple" style="margin-top:8px">India's <b>Sig Success at 49.4%</b> vs global 36.6% — India manages the highest-value customer segment globally. Every other case is Sig Success.</div>
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom:16px">
-    <h3>🏢 Top 10 India (IST) Accounts — Sep 2026</h3>
-    <table class="data-table">
-      <tr><th>#</th><th>Account</th><th class="num">Sep</th><th class="num">Aug</th><th class="num">MoM Δ</th><th>Note</th></tr>
-      <tr><td>1</td><td>Deloitte Global Services</td><td class="num">51</td><td class="num">—</td><td class="delta-up">↑↑</td><td><span class="pill pill-red">11 S1 🔴</span> — upgrade wave</td></tr>
-      <tr><td>2</td><td>Takeda Pharmaceuticals</td><td class="num">50</td><td class="num">~80</td><td class="delta-dn">−30</td><td><span class="repeat-tag">Repeat</span> Improving</td></tr>
-      <tr><td>3</td><td>Pfizer EMEA</td><td class="num">41</td><td class="num">~40</td><td class="num">+1</td><td><span class="repeat-tag">Repeat</span> Stable</td></tr>
-      <tr><td>4</td><td>AstraZeneca</td><td class="num">40</td><td class="num">~35</td><td class="num">+5</td><td><span class="repeat-tag">Repeat</span></td></tr>
-      <tr><td>5</td><td>Mylan Inc.</td><td class="num">39</td><td class="num">~30</td><td class="num">+9</td><td><span class="repeat-tag">Repeat</span></td></tr>
-      <tr><td>6</td><td>Claro América Latina</td><td class="num">33</td><td class="num">~12</td><td class="delta-up">+21</td><td><span class="new-tag">Spike</span> Telco</td></tr>
-      <tr><td>7</td><td>Novartis Pharma AG</td><td class="num">33</td><td class="num">—</td><td class="delta-up">new</td><td><span class="new-tag">New ↑↑</span> SB1 spike</td></tr>
-      <tr><td>8</td><td>British Telecom (Digico)</td><td class="num">28</td><td class="num">~22</td><td class="num">+6</td><td><span class="repeat-tag">Repeat</span></td></tr>
-      <tr><td>9</td><td>Accenture LLP</td><td class="num">24</td><td class="num">~14</td><td class="num">+10</td><td><span class="repeat-tag">Repeat</span></td></tr>
-      <tr><td>10</td><td>Alfasigma Global CRM</td><td class="num">18</td><td class="num">—</td><td class="delta-up">new</td><td><span class="new-tag">New</span> Pharma/LS</td></tr>
+  <div class="section">
+    <div class="section-title">⭐ CSAT TW Distribution</div>
+    <div class="chart-wrap"><canvas id="csatChart"></canvas></div>
+    <table style="margin-top:12px">
+      <thead><tr><th>Score</th><th>Label</th><th>Count</th><th>%</th></tr></thead>
+      <tbody>
+        <tr><td>5</td><td>Very Satisfied</td><td>28</td><td>90.3%</td></tr>
+        <tr><td>4</td><td>Satisfied</td><td>3</td><td>9.7%</td></tr>
+        <tr><td>3–1</td><td>Below expectations</td><td>0</td><td>0%</td></tr>
+      </tbody>
     </table>
   </div>
-
-</div>
 </div>
 
-<!-- =================== APAC =================== -->
-<div id="tab-apac" class="tab-pane">
-<div class="container">
-
-  <div class="kpi-row">
-    <div class="kpi alert">
-      <div class="label">Sep APAC Inflow</div>
-      <div class="value">676</div>
-      <div class="sub"><span class="delta delta-up">▲ +58 (+9.4%)</span> vs Aug 618</div>
-    </div>
-    <div class="kpi warn">
-      <div class="label">S1 Critical</div>
-      <div class="value">46</div>
-      <div class="sub">Flat — Aug=45, Jul=41</div>
-    </div>
-    <div class="kpi warn">
-      <div class="label">S2 Urgent</div>
-      <div class="value">232</div>
-      <div class="sub">Flat — Aug=232</div>
-    </div>
-    <div class="kpi good">
-      <div class="label">Sig Success</div>
-      <div class="value">217</div>
-      <div class="sub">32.1% of APAC Sep</div>
-    </div>
-    <div class="kpi info">
-      <div class="label">RCA Cases Sep</div>
-      <div class="value">97</div>
-      <div class="sub">14.4% of APAC Sep</div>
-    </div>
-    <div class="kpi good">
-      <div class="label">Industries Sep</div>
-      <div class="value">514</div>
-      <div class="sub">76.0% of APAC Sep</div>
-    </div>
-  </div>
-
-  <div class="grid-2">
-    <div class="card">
-      <h3>📈 APAC Monthly Inflow Trend</h3>
-      <div class="chart-wrap" style="height:240px"><canvas id="c-apac-inflow"></canvas></div>
-      <div class="insight blue" style="margin-top:8px"><b>APAC most stable region</b>: range 618–676 across 4 months. Sep +9.4% MoM — smallest regional jump, suggesting APAC accounts had less SB1 exposure or faster resolution. S1 flat (45→46) confirms lower release severity impact.</div>
-    </div>
-    <div class="card">
-      <h3>🔺 APAC Severity Breakdown</h3>
-      <div class="chart-wrap" style="height:240px"><canvas id="c-apac-sev"></canvas></div>
-      <div class="insight blue" style="margin-top:8px">APAC S1 remarkably stable: Jun=46, Jul=41, Aug=45, Sep=46. <b>S3 rising</b> (140→165, +18%) post-SB1 — customers filing how-to / configuration cases post-upgrade. Lower Sev means lower escalation risk vs EMEA/India.</div>
-    </div>
-  </div>
-
-  <div class="grid-2">
-    <div class="card">
-      <h3>📦 APAC Product Mix — Sep 2026</h3>
-      <div class="chart-wrap" style="height:220px"><canvas id="c-apac-product"></canvas></div>
-      <table class="data-table" style="margin-top:10px">
-        <tr><th>Family</th><th class="num">Sep Cases</th><th class="num">Share</th></tr>
-        <tr><td>Industries (total)</td><td class="num"><b>514</b></td><td class="num">76.0%</td></tr>
-        <tr><td>RCA</td><td class="num"><b>97</b></td><td class="num">14.4%</td></tr>
-        <tr><td>Legacy Revenue</td><td class="num"><b>65</b></td><td class="num">9.6%</td></tr>
-      </table>
-      <div class="insight blue" style="margin-top:8px">APAC has highest Industries share (76%) of any region. RCA at just 14.4% vs EMEA 28.6% — APAC accounts less heavily deployed on Revenue Cloud Core.</div>
-    </div>
-    <div class="card">
-      <h3>🏅 APAC Support Tier — Sep 2026</h3>
-      <div class="chart-wrap" style="height:220px"><canvas id="c-apac-tier"></canvas></div>
-      <table class="data-table" style="margin-top:10px">
-        <tr><th>Tier</th><th class="num">Cases</th><th class="num">%</th></tr>
-        <tr><td><span class="pill pill-purple">Sig Success</span></td><td class="num">217</td><td class="num">32.1%</td></tr>
-        <tr><td><span class="pill pill-blue">Premier+</span></td><td class="num">287</td><td class="num">42.5%</td></tr>
-        <tr><td><span class="pill">Standard</span></td><td class="num">115</td><td class="num">17.0%</td></tr>
-        <tr><td><span class="pill pill-orange">Partner Prem</span></td><td class="num">52</td><td class="num">7.7%</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom:16px">
-    <h3>🏢 Top 10 APAC Accounts — Sep 2026</h3>
-    <table class="data-table">
-      <tr><th>#</th><th>Account</th><th class="num">Sep</th><th class="num">Aug</th><th class="num">MoM Δ</th><th>Note</th></tr>
-      <tr><td>1</td><td>AGL Energy Limited</td><td class="num">15</td><td class="num">—</td><td class="delta-up">new</td><td><span class="new-tag">New</span> Energy/Utilities</td></tr>
-      <tr><td>2</td><td>Alfasigma Global CRM</td><td class="num">12</td><td class="num">—</td><td class="delta-up">new</td><td><span class="new-tag">New</span> Pharma</td></tr>
-      <tr><td>3</td><td>RevCycle Limited</td><td class="num">12</td><td class="num">—</td><td class="delta-up">new</td><td><span class="new-tag">New</span> RCA-focused</td></tr>
-      <tr><td>4</td><td>Nine Entertainment</td><td class="num">11</td><td class="num">—</td><td class="delta-up">new</td><td>Media</td></tr>
-      <tr><td>5</td><td>Advanced Info Services (AIS)</td><td class="num">11</td><td class="num">—</td><td class="delta-up">new</td><td>Telco Thailand</td></tr>
-      <tr><td>6</td><td>Novartis Pharma AG</td><td class="num">8</td><td class="num">—</td><td class="delta-up">new</td><td><span class="new-tag">New</span> SB1 spike</td></tr>
-      <tr><td>7</td><td>Ministry of Education</td><td class="num">8</td><td class="num">—</td><td class="delta-up">new</td><td>Public Sector</td></tr>
-      <tr><td>8</td><td>Healthcare Australia Pty Ltd</td><td class="num">7</td><td class="num">—</td><td class="delta-up">new</td><td>Health</td></tr>
-      <tr><td>9</td><td>Deloitte Global Services</td><td class="num">7</td><td class="num">7</td><td class="num">0</td><td><span class="repeat-tag">Repeat</span></td></tr>
-      <tr><td>10</td><td>Min. of Social &amp; Family Dev. SG</td><td class="num">7</td><td class="num">—</td><td class="delta-up">new</td><td>Public Sector SG</td></tr>
-    </table>
-    <div class="insight blue" style="margin-top:10px">APAC top 10 is <b>heavily refreshed in Sep</b> — majority are new entrants suggesting the SB1 release brought new accounts into support for the first time. Deloitte is the only repeat. Sector diversity: Telco, Energy, Pharma, Public Sector, Media.</div>
-  </div>
+<!-- Anchor -->
+<div class="section">
+  <div class="section-title">📌 vs Jul 19–25 Anchor</div>
+  <table>
+    <thead><tr><th>Metric</th><th>Anchor (Jul 19–25)</th><th>TW (Oct 5–11)</th><th>Δ</th></tr></thead>
+    <tbody>
+      <tr><td>Total Inflow</td><td>301</td><td>288</td><td class="delta-down">−13 (−4.3%)</td></tr>
+      <tr><td>Sev1 (EMEA / India)</td><td>41 (26 / 15)</td><td>45 (15 / 25)</td><td class="delta-up">+4 · composition inverted</td></tr>
+      <tr><td>Total Open Backlog</td><td>246</td><td>344</td><td class="delta-up">+98 (+40%)</td></tr>
+      <tr><td>Aged &gt;15d</td><td>38</td><td>47</td><td class="delta-up">+9 (+24%)</td></tr>
+      <tr><td>CSAT</td><td>4.73</td><td>4.6</td><td class="delta-flat">→ Stable</td></tr>
+      <tr><td>EMEA % (E+I)</td><td>73%</td><td>66.8%</td><td class="delta-down">−6.2pp (India share growing)</td></tr>
+    </tbody>
+  </table>
+</div>
 
 </div>
-</div>
+<div class="footer">Revenue Cloud Weekly Dashboard · Oct 5–11, 2026 · EMEA + India + APAC · <a href="https://eshantsharma-bit.github.io/rc-dashboard/" style="color:var(--accent)">All Dashboards</a></div>
 
 <script>
-// ===== TAB SWITCHING =====
-function showTab(id, btn) {
-  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
-  btn.classList.add('active');
-}
-
-// ===== CHART DEFAULTS =====
-Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
-Chart.defaults.font.size = 11;
-Chart.defaults.color = '#656d76';
-
-const MONTHS = ['Jun 26', 'Jul 26', 'Aug 26', 'Sep 26'];
-const gridColor = 'rgba(208,215,222,0.6)';
-const tickColor = '#656d76';
-
-function barLine(canvasId, labels, bars, trendData, barColor, label, yLabel) {
-  const ctx = document.getElementById(canvasId);
-  if (!ctx) return;
-  new Chart(ctx.getContext('2d'), {
-    data: {
-      labels,
-      datasets: [
-        {
-          type: 'bar',
-          label,
-          data: bars,
-          backgroundColor: bars.map((_, i) => i === bars.length - 1 ? 'rgba(207,34,46,0.75)' : barColor),
-          borderRadius: 4,
-          order: 2
-        },
-        {
-          type: 'line',
-          label: 'Trend',
-          data: trendData,
-          borderColor: '#0969da',
-          borderWidth: 2,
-          pointRadius: 4,
-          pointBackgroundColor: '#0969da',
-          fill: false,
-          tension: 0.3,
-          order: 1
-        }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { mode: 'index' } },
-      scales: {
-        x: { grid: { color: gridColor }, ticks: { color: tickColor } },
-        y: { grid: { color: gridColor }, ticks: { color: tickColor }, title: { display: !!yLabel, text: yLabel, color: tickColor } }
-      }
-    }
-  });
-}
-
-function stackedBar(canvasId, labels, datasets) {
-  const ctx = document.getElementById(canvasId);
-  if (!ctx) return;
-  new Chart(ctx.getContext('2d'), {
-    type: 'bar',
-    data: { labels, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 8 } } },
-      scales: {
-        x: { stacked: true, grid: { color: gridColor }, ticks: { color: tickColor } },
-        y: { stacked: true, grid: { color: gridColor }, ticks: { color: tickColor } }
-      }
-    }
-  });
-}
-
-function doughnut(canvasId, labels, data, colors) {
-  const ctx = document.getElementById(canvasId);
-  if (!ctx) return;
-  new Chart(ctx.getContext('2d'), {
-    type: 'doughnut',
-    data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 1, borderColor: '#fff' }] },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 8 } } }
-    }
-  });
-}
-
-function lineChart(canvasId, labels, datasets) {
-  const ctx = document.getElementById(canvasId);
-  if (!ctx) return;
-  new Chart(ctx.getContext('2d'), {
-    type: 'line',
-    data: { labels, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { grid: { color: gridColor }, ticks: { color: tickColor } },
-        y: { grid: { color: gridColor }, ticks: { color: tickColor } }
-      }
-    }
-  });
-}
-
-// ===== STORY CALLOUT CHARTS =====
-// Story 2 — Tier trend mini line
-(function(){
-  const ctx = document.getElementById('c-story-tier');
-  if (!ctx) return;
-  new Chart(ctx.getContext('2d'), {
-    type: 'line',
-    data: {
-      labels: MONTHS,
-      datasets: [
-        { label: 'Sig Success', data: [1187,1245,1301,1534], borderColor:'#8250df', backgroundColor:'rgba(130,80,223,0.08)', fill:true, tension:0.3, borderWidth:2.5, pointRadius:4 },
-        { label: 'Standard',    data: [700,684,642,622],     borderColor:'#656d76', backgroundColor:'rgba(101,109,118,0.05)', fill:true, tension:0.3, borderWidth:2, pointRadius:4, borderDash:[4,3] }
-      ]
-    },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, padding:8 } } },
-      scales:{ x:{ grid:{color:gridColor}, ticks:{color:tickColor} }, y:{ grid:{color:gridColor}, ticks:{color:tickColor} } }
-    }
-  });
-})();
-
-// Story 3 — Bug-linked by product bar
-(function(){
-  const ctx = document.getElementById('c-story-bug');
-  if (!ctx) return;
-  new Chart(ctx.getContext('2d'), {
-    type: 'bar',
-    data: {
-      labels: ['Life Sciences','OmniStudio','Other Ind.','RCA','Industry CPQ','Legacy Rev.'],
-      datasets: [{
-        label: 'Bug-Linked Cases (Sep)',
-        data: [152, 52, 163, 138, 0, 3],
-        backgroundColor: ['rgba(225,111,66,0.8)','rgba(130,80,223,0.8)','rgba(88,166,255,0.65)','rgba(9,105,218,0.75)','rgba(26,127,55,0.65)','rgba(208,215,222,0.8)'],
-        borderRadius: 4
-      }]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ display:false } },
-      scales:{ x:{ grid:{color:gridColor}, ticks:{color:tickColor} }, y:{ grid:{color:'transparent'}, ticks:{color:tickColor} } }
-    }
-  });
-})();
-
-// ===== OVERALL CHARTS =====
-barLine('c-overall-inflow', MONTHS,
-  [4170, 4110, 3709, 4195],
-  [4170, 4110, 3709, 4195],
-  'rgba(88,166,255,0.65)', 'Inflow');
-
-stackedBar('c-overall-sev', MONTHS, [
-  { label: 'S1 Critical', data: [418,382,322,410], backgroundColor: 'rgba(207,34,46,0.85)', borderRadius: 2 },
-  { label: 'S2 Urgent',   data: [1917,1895,1755,1829], backgroundColor: 'rgba(247,129,102,0.75)', borderRadius: 2 },
-  { label: 'S3 High',     data: [893,872,776,926], backgroundColor: 'rgba(255,200,80,0.75)', borderRadius: 2 },
-  { label: 'S4 Medium',   data: [942,961,856,1030], backgroundColor: 'rgba(88,166,255,0.55)', borderRadius: 2 }
-]);
-
-stackedBar('c-overall-product', MONTHS, [
-  { label: 'OmniStudio',    data: [468,441,465,584], backgroundColor: 'rgba(130,80,223,0.8)', borderRadius: 2 },
-  { label: 'Life Sciences', data: [466,652,618,607], backgroundColor: 'rgba(225,111,66,0.8)', borderRadius: 2 },
-  { label: 'Industry CPQ',  data: [455,386,353,451], backgroundColor: 'rgba(26,127,55,0.7)', borderRadius: 2 },
-  { label: 'Other Ind.',    data: [1241,1277,1040,1143], backgroundColor: 'rgba(88,166,255,0.45)', borderRadius: 2 },
-  { label: 'RCA',           data: [977,877,858,1019], backgroundColor: 'rgba(9,105,218,0.75)', borderRadius: 2 },
-  { label: 'Legacy Rev.',   data: [563,477,375,391], backgroundColor: 'rgba(240,136,62,0.65)', borderRadius: 2 }
-]);
-
-const SEP_WEEKS = ['W1 Aug30-Sep5', 'W2 Sep6-12', 'W3 Sep13-19', 'W4 Sep20-26', 'W5 Sep27-30'];
-const ctx_sw = document.getElementById('c-sep-weekly');
-new Chart(ctx_sw.getContext('2d'), {
-  data: {
-    labels: SEP_WEEKS,
-    datasets: [
-      { type: 'bar', label: 'Total', data: [1143,968,873,889,537],
-        backgroundColor: ['rgba(207,34,46,0.8)','rgba(88,166,255,0.65)','rgba(88,166,255,0.65)','rgba(247,129,102,0.75)','rgba(88,166,255,0.65)'],
-        borderRadius: 4, order: 2 },
-      { type: 'line', label: 'Trend', data: [1143,968,873,889,537],
-        borderColor: '#0969da', borderWidth: 2, pointRadius: 4, fill: false, tension: 0.2, order: 1 },
-      { type: 'line', label: 'Aug baseline (119.6/d × 7)', data: [837,837,837,837,479],
-        borderColor: '#9a6700', borderWidth: 1.5, borderDash: [5,3], pointRadius: 0, fill: false, tension: 0, order: 0 }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10 } } },
-    scales: { x: { grid: { color: gridColor }, ticks: { color: tickColor } }, y: { grid: { color: gridColor }, ticks: { color: tickColor } } }
-  }
-});
-
-stackedBar('c-overall-tier', MONTHS, [
-  { label: 'Sig Success', data: [1187,1245,1301,1534], backgroundColor: 'rgba(130,80,223,0.8)', borderRadius: 2 },
-  { label: 'Premier+',    data: [1551,1550,1235,1501], backgroundColor: 'rgba(9,105,218,0.7)', borderRadius: 2 },
-  { label: 'Partner Prem',data: [729,625,525,533], backgroundColor: 'rgba(247,129,102,0.7)', borderRadius: 2 },
-  { label: 'Standard',    data: [700,684,642,622], backgroundColor: 'rgba(208,215,222,0.8)', borderRadius: 2 }
-]);
-
-const ctx_region = document.getElementById('c-overall-region');
-new Chart(ctx_region.getContext('2d'), {
-  type: 'line',
-  data: {
-    labels: MONTHS,
-    datasets: [
-      { label: 'EMEA',  data: [2072,1961,1766,2028], borderColor: '#8250df', backgroundColor: 'rgba(130,80,223,0.1)', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 5 },
-      { label: 'India', data: [1474,1508,1325,1491], borderColor: '#e16f42', backgroundColor: 'rgba(225,111,66,0.1)', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 5 },
-      { label: 'APAC',  data: [624,641,618,676], borderColor: '#0969da', backgroundColor: 'rgba(9,105,218,0.1)', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 5 }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10 } } },
-    scales: { x: { grid: { color: gridColor }, ticks: { color: tickColor } }, y: { grid: { color: gridColor }, ticks: { color: tickColor } } }
-  }
-});
-
-// Bug + Red
-barLine('c-overall-bug', MONTHS, [362,410,425,508], [362,410,425,508], 'rgba(247,129,102,0.65)', 'Bug-Linked');
-barLine('c-overall-red', MONTHS, [470,458,449,549], [470,458,449,549], 'rgba(207,34,46,0.65)', 'Red Accts');
-
-// ===== EMEA CHARTS =====
-barLine('c-emea-inflow', MONTHS, [2072,1961,1766,2028], [2072,1961,1766,2028], 'rgba(130,80,223,0.65)', 'EMEA Inflow');
-stackedBar('c-emea-sev', MONTHS, [
-  { label: 'S1', data:[154,150,128,201], backgroundColor:'rgba(207,34,46,0.85)', borderRadius:2 },
-  { label: 'S2', data:[873,835,730,782], backgroundColor:'rgba(247,129,102,0.75)', borderRadius:2 },
-  { label: 'S3', data:[454,367,343,405], backgroundColor:'rgba(255,200,80,0.75)', borderRadius:2 },
-  { label: 'S4', data:[591,609,565,647], backgroundColor:'rgba(130,80,223,0.35)', borderRadius:2 }
-]);
-doughnut('c-emea-product', ['Industries','RCA','Legacy Rev.'], [1228,580,220], ['rgba(26,127,55,0.8)','rgba(9,105,218,0.8)','rgba(240,136,62,0.8)']);
-doughnut('c-emea-tier', ['Premier+','Sig Success','Standard','Partner Prem'], [835,580,392,225], ['rgba(9,105,218,0.8)','rgba(130,80,223,0.8)','rgba(208,215,222,0.9)','rgba(247,129,102,0.8)']);
-
-// EMEA weekly stacked
-const ctx_ew = document.getElementById('c-emea-weekly');
-new Chart(ctx_ew.getContext('2d'), {
-  type: 'bar',
-  data: {
-    labels: SEP_WEEKS,
-    datasets: [
-      { label: 'EMEA',  data:[559,449,456,419,267], backgroundColor:'rgba(130,80,223,0.75)', borderRadius:3 },
-      { label: 'India', data:[408,357,281,334,177], backgroundColor:'rgba(225,111,66,0.75)', borderRadius:3 },
-      { label: 'APAC',  data:[176,162,136,139,92],  backgroundColor:'rgba(9,105,218,0.75)',  borderRadius:3 }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { position: 'bottom', labels:{ boxWidth:10 } } },
-    scales: { x: { stacked:true, grid:{color:gridColor}, ticks:{color:tickColor} }, y: { stacked:true, grid:{color:gridColor}, ticks:{color:tickColor} } }
-  }
-});
-
-// ===== INDIA CHARTS =====
-barLine('c-india-inflow', MONTHS, [1474,1508,1325,1491], [1474,1508,1325,1491], 'rgba(225,111,66,0.65)', 'India Inflow');
-stackedBar('c-india-sev', MONTHS, [
-  { label: 'S1', data:[218,191,149,163], backgroundColor:'rgba(207,34,46,0.85)', borderRadius:2 },
-  { label: 'S2', data:[800,817,793,815], backgroundColor:'rgba(247,129,102,0.75)', borderRadius:2 },
-  { label: 'S3', data:[322,376,293,358], backgroundColor:'rgba(255,200,80,0.75)', borderRadius:2 },
-  { label: 'S4', data:[134,124,90,155], backgroundColor:'rgba(225,111,66,0.35)', borderRadius:2 }
-]);
-doughnut('c-india-product', ['Industries','RCA','Legacy Rev.'], [1046,342,103], ['rgba(26,127,55,0.8)','rgba(9,105,218,0.8)','rgba(240,136,62,0.8)']);
-doughnut('c-india-tier', ['Sig Success','Premier+','Partner Prem','Standard'], [737,380,256,116], ['rgba(130,80,223,0.8)','rgba(9,105,218,0.8)','rgba(247,129,102,0.8)','rgba(208,215,222,0.9)']);
-
-// ===== APAC CHARTS =====
-barLine('c-apac-inflow', MONTHS, [624,641,618,676], [624,641,618,676], 'rgba(9,105,218,0.65)', 'APAC Inflow');
-stackedBar('c-apac-sev', MONTHS, [
-  { label: 'S1', data:[46,41,45,46], backgroundColor:'rgba(207,34,46,0.85)', borderRadius:2 },
-  { label: 'S2', data:[244,243,232,232], backgroundColor:'rgba(247,129,102,0.75)', borderRadius:2 },
-  { label: 'S3', data:[117,129,140,165], backgroundColor:'rgba(255,200,80,0.75)', borderRadius:2 },
-  { label: 'S4', data:[217,228,201,228], backgroundColor:'rgba(9,105,218,0.35)', borderRadius:2 }
-]);
-doughnut('c-apac-product', ['Industries','RCA','Legacy Rev.'], [514,97,65], ['rgba(26,127,55,0.8)','rgba(9,105,218,0.8)','rgba(240,136,62,0.8)']);
-doughnut('c-apac-tier', ['Premier+','Sig Success','Standard','Partner Prem'], [287,217,115,52], ['rgba(9,105,218,0.8)','rgba(130,80,223,0.8)','rgba(208,215,222,0.9)','rgba(247,129,102,0.8)']);
+Chart.register(ChartDataLabels);
+new Chart(document.getElementById('ptChart'),{type:'doughnut',data:{labels:['RCA 69%','CPQ 29%','Billing 2%'],datasets:[{data:[199,83,6],backgroundColor:['#0969da','#1a7f37','#9a6700'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:11}}},datalabels:{color:'#fff',font:{weight:'bold',size:12},formatter:v=>v}}}});
+new Chart(document.getElementById('trendChart'),{type:'bar',data:{labels:['Sep 14–20','Sep 21–27','Sep 28–Oct 4','Oct 5–11 ★'],datasets:[{label:'RCA',data:[213,214,215,199],backgroundColor:'#0969da'},{label:'CPQ',data:[79,79,52,83],backgroundColor:'#1a7f37'},{label:'Billing',data:[10,11,15,6],backgroundColor:'#9a6700'}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}},plugins:{title:{display:true,text:'Inflow by P&T (4-week)',font:{size:12}},datalabels:{color:'#fff',font:{weight:'bold',size:10},formatter:v=>v>0?v:''}}}});
+new Chart(document.getElementById('s1Chart'),{type:'bar',data:{labels:['Sep 14–20','Sep 21–27','Sep 28–Oct 4','Oct 5–11 ★'],datasets:[{label:'EMEA S1',data:[17,17,14,15],backgroundColor:'#0969da'},{label:'India S1',data:[16,14,14,25],backgroundColor:'#cf222e'},{label:'APAC S1',data:[2,1,5,5],backgroundColor:'#9a6700'}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}},plugins:{title:{display:true,text:'S1 by Region (4-week)',font:{size:12}},datalabels:{color:'#fff',font:{weight:'bold',size:10},formatter:v=>v>0?v:''}}}});
+new Chart(document.getElementById('csatChart'),{type:'doughnut',data:{labels:['Score 5 (90%)','Score 4 (10%)'],datasets:[{data:[28,3],backgroundColor:['#1a7f37','#0969da'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:11}}},datalabels:{color:'#fff',font:{weight:'bold',size:13},formatter:v=>v}}}});
 </script>
 </body>
 </html>
