@@ -218,15 +218,17 @@
     <div class="card" style="margin:0;padding:16px 18px">
       <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:8px">Bug &amp; GUS Signals</div>
       <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
-        <div><div style="font-size:36px;font-weight:800;line-height:1;color:var(--sf-dark)">37</div><div style="font-size:10px;color:var(--text2);margin-top:3px">Confirmed bugs (W-numbers)</div></div>
+        <div><div style="font-size:36px;font-weight:800;line-height:1;color:var(--sf-dark)">37</div><div style="font-size:10px;color:var(--text2);margin-top:3px">Bugs filed</div></div>
         <div style="border-left:1px solid var(--sf-border);padding-left:10px">
-          <div style="font-size:20px;font-weight:800;color:var(--yellow)">4.2%</div><div style="font-size:10px;color:var(--text2)">GUS bug rate</div>
+          <div style="font-size:20px;font-weight:800;color:var(--yellow)">4.2%</div><div style="font-size:10px;color:var(--text2)">Bug rate (37/886)</div>
+        </div>
+        <div style="border-left:1px solid var(--sf-border);padding-left:10px">
+          <div style="font-size:20px;font-weight:800;color:var(--sf-blue)">55</div><div style="font-size:10px;color:var(--text2)">GUS investigations</div>
         </div>
       </div>
       <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
-        <div style="background:#FFF0F0;border-radius:4px;padding:4px 8px;font-size:10px;text-align:center"><span style="font-weight:700;color:var(--red)">4 bugs</span><br><span style="color:var(--text2)">multi-account</span></div>
+        <div style="background:var(--sf-lighter);border-radius:4px;padding:4px 8px;font-size:10px;text-align:center"><span style="font-weight:700;color:var(--sf-blue)">16</span><br><span style="color:var(--text2)">user stories</span></div>
         <div style="background:var(--sf-lighter);border-radius:4px;padding:4px 8px;font-size:10px;text-align:center"><span style="font-weight:700;color:var(--sf-blue)">28 accounts</span><br><span style="color:var(--text2)">with bug link</span></div>
-        <div style="background:var(--sf-lighter);border-radius:4px;padding:4px 8px;font-size:10px;text-align:center"><span style="font-weight:700;color:var(--sf-blue)">102</span><br><span style="color:var(--text2)">total W-nums</span></div>
       </div>
     </div>
 
@@ -275,112 +277,41 @@
 
   </div>
 
-  <!-- ══ Bug snapshot + Multi-customer bugs ══ -->
+  <!-- ══ Bug snapshot ══ -->
   <div class="section-title mb20">Defect Signals</div>
-  <div class="grid2 mb28">
+  <div class="mb28">
     <div class="card" style="margin:0">
-      <h2>Bug &amp; Investigation Summary <span style="font-size:10px;font-weight:400;color:var(--text2)">102 W-numbers total</span></h2>
+      <h2>Bug &amp; GUS Signal Summary</h2>
       <table>
-        <thead><tr><th>Category</th><th style="text-align:right">Count</th><th>Product Signal</th></tr></thead>
+        <thead><tr><th>Category</th><th style="text-align:right">Count</th><th style="text-align:right">% of Inflow</th><th>Signal</th></tr></thead>
         <tbody>
-          <tr style="background:#FFF0F0"><td><strong>Bugs (confirmed defects)</strong></td><td style="text-align:right;font-weight:700">37</td><td>37 bugs filed against 886 cases (4.2% GUS bug rate)</td></tr>
-          <tr><td style="padding-left:20px">&#8627; Fixed / Closed</td><td style="text-align:right">30</td><td>Patches shipped — verify customer cases resolved</td></tr>
-          <tr style="background:#FFF5D6"><td style="padding-left:20px">&#8627; Won't Fix / Dup / NAB</td><td style="text-align:right">4</td><td>Engineering closed without fix — customers re-filing</td></tr>
-          <tr><td><strong>Investigations</strong></td><td style="text-align:right;font-weight:700">46</td><td>46 investigations linked across 886 cases</td></tr>
-          <tr><td style="padding-left:20px">&#8627; Confirmed → New Bug filed</td><td style="text-align:right">18</td><td>Confirmed defects routed through investigation first</td></tr>
-          <tr style="background:#FFF5D6"><td style="padding-left:20px">&#8627; Feature Request</td><td style="text-align:right">8</td><td>Customers filing support tickets for missing capability</td></tr>
-          <tr style="background:#FFF5D6"><td style="padding-left:20px">&#8627; By-Design, No Fix (WAD)</td><td style="text-align:right">8</td><td>Same design decision generating repeat cases across customers</td></tr>
-          <tr><td style="padding-left:20px">&#8627; Resolved w/o code change</td><td style="text-align:right">8</td><td>Config / doc fix — Knowledge Article opportunity</td></tr>
-          <tr style="background:var(--sf-lighter)"><td><strong>Active SI (Acknowledged)</strong></td><td style="text-align:right;font-weight:700;color:var(--sf-blue)">2</td><td>W-24286890 (Deloitte Consulting) &amp; W-24301325 (Deloitte Global) — both Sep 24–25</td></tr>
-          <tr><td>User Stories</td><td style="text-align:right">16</td><td>Engineering work items linked to customer cases</td></tr>
+          <tr style="background:#FFF0F0"><td><strong>Bugs (confirmed defects)</strong></td><td style="text-align:right;font-weight:700">37</td><td style="text-align:right;font-weight:700;color:var(--red)">4.2%</td><td>Confirmed platform defects filed against 886 cases</td></tr>
+          <tr><td style="padding-left:20px">&#8627; Fixed / Closed</td><td style="text-align:right">30</td><td style="text-align:right;color:var(--text2)">3.4%</td><td>Patches shipped</td></tr>
+          <tr style="background:#FFF5D6"><td style="padding-left:20px">&#8627; Won't Fix / Dup / NAB</td><td style="text-align:right">4</td><td style="text-align:right;color:var(--text2)">0.5%</td><td>Closed without fix — customers re-filing</td></tr>
+          <tr><td><strong>GUS Investigations</strong></td><td style="text-align:right;font-weight:700">55</td><td style="text-align:right;font-weight:700;color:var(--sf-blue)">6.2%</td><td>Investigations linked across 886 cases</td></tr>
+          <tr style="background:var(--sf-lighter)"><td><strong>User Stories</strong></td><td style="text-align:right;font-weight:700">16</td><td style="text-align:right;color:var(--text2)">1.8%</td><td>Engineering work items linked to customer cases</td></tr>
         </tbody>
       </table>
-    </div>
-    <div class="card" style="margin:0">
-      <h2>Bugs Affecting Multiple Customers</h2>
-      <div style="background:#FFF0F0;border-radius:6px;padding:11px 13px;margin-bottom:12px;font-size:12px;line-height:1.7">
-        <strong style="color:var(--red)">4 bugs confirmed across 2–3 independent accounts</strong> — these are platform-level defects, not isolated customer config issues.
-        A further <strong>4 investigations</strong> span multiple accounts, including the ECi go-live blocker (W-23554160) also reported by Thunder Consulting.
-      </div>
-      <table>
-        <thead><tr><th>W-Number</th><th>Accounts Affected</th><th>Accounts</th></tr></thead>
-        <tbody>
-          <tr style="background:#FFF0F0">
-            <td><strong>W-24088655</strong></td>
-            <td style="font-weight:700;color:var(--red)">3 accounts</td>
-            <td>S&amp;P · Cloudity · Veyor Digital</td>
-          </tr>
-          <tr>
-            <td>W-22357449</td>
-            <td>2 accounts</td>
-            <td>ECi · Capital One</td>
-          </tr>
-          <tr>
-            <td>W-22809459</td>
-            <td>2 accounts</td>
-            <td>Kaseya · S&amp;P</td>
-          </tr>
-          <tr>
-            <td>W-21963276</td>
-            <td>2 accounts</td>
-            <td>Kaseya · Digicert</td>
-          </tr>
-        </tbody>
-      </table>
-      <div style="margin-top:14px">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:6px">Multi-Account Investigations</div>
-        <table>
-          <thead><tr><th>W-Number</th><th>Accounts</th><th>Note</th></tr></thead>
-          <tbody>
-            <tr style="background:#FFF0F0">
-              <td><strong>W-23554160</strong></td>
-              <td>ECi · Thunder</td>
-              <td>Go-live blocker, perf tests failing, no ETA</td>
-            </tr>
-            <tr>
-              <td>W-24061982</td>
-              <td>Cloudity · InformaOne · RevCycle</td>
-              <td>3 accounts</td>
-            </tr>
-            <tr>
-              <td>W-22308635</td>
-              <td>ECi · Capital One</td>
-              <td>—</td>
-            </tr>
-            <tr>
-              <td>W-21544701</td>
-              <td>Cloudity · William Reed</td>
-              <td>—</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
   </div>
 
   <!-- ══ Support Tier split ══ -->
   <div class="section-title mb20">Case Volume by Support Tier</div>
-  <div class="grid2 mb28">
-    <div class="card" style="margin:0">
-      <h2>Tier Split <span style="font-size:10px;font-weight:400;color:var(--text2)">886 cases · Premier = Premier + Premier+ combined</span></h2>
-      <div style="display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:center">
-        <div class="chart-wrap" style="height:200px"><canvas id="tierDonut"></canvas></div>
-        <div class="tier-legend">
-          <div class="tier-row"><div class="tier-dot" style="background:#0176D3"></div><div class="tier-name">Partner Premier</div><div class="tier-val">276</div><div class="tier-pct">31.2%</div></div>
-          <div class="tier-row"><div class="tier-dot" style="background:#5C3DC3"></div><div class="tier-name">Premier / Premier+</div><div class="tier-val">281</div><div class="tier-pct">31.7%</div></div>
-          <div class="tier-row"><div class="tier-dot" style="background:#032D60"></div><div class="tier-name">Signature</div><div class="tier-val">197</div><div class="tier-pct">22.2%</div></div>
-          <div class="tier-row"><div class="tier-dot" style="background:#9BB7D4"></div><div class="tier-name">Standard</div><div class="tier-val">132</div><div class="tier-pct">14.9%</div></div>
-        </div>
-      </div>
-      <div style="margin-top:12px;background:var(--sf-lighter);border-radius:5px;padding:9px 12px;font-size:11px;color:var(--text2);line-height:1.7">
-        <strong style="color:var(--sf-dark)">Partner Premier (31.2%)</strong> — Bluvium, Thunder, Cloudity, Aleysian, PwC, DynaCap filing on behalf of multiple end-customer orgs.
-        <strong style="color:var(--sf-dark)">Premier / Premier+ (31.7%)</strong> is the largest direct-customer tier.
-        <strong style="color:var(--sf-dark)">Signature (22.2%)</strong> drives the highest Sev-1 concentration — ECi, S&amp;P, Capital One, Kaseya, Bluebeam.
+  <div class="card mb28">
+    <h2>Tier Split <span style="font-size:10px;font-weight:400;color:var(--text2)">886 cases · Premier = Premier + Premier+ combined</span></h2>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:center">
+      <div class="chart-wrap" style="height:200px"><canvas id="tierDonut"></canvas></div>
+      <div class="tier-legend">
+        <div class="tier-row"><div class="tier-dot" style="background:#0176D3"></div><div class="tier-name">Partner Premier</div><div class="tier-val">276</div><div class="tier-pct">31.2%</div></div>
+        <div class="tier-row"><div class="tier-dot" style="background:#5C3DC3"></div><div class="tier-name">Premier / Premier+</div><div class="tier-val">281</div><div class="tier-pct">31.7%</div></div>
+        <div class="tier-row"><div class="tier-dot" style="background:#032D60"></div><div class="tier-name">Signature</div><div class="tier-val">197</div><div class="tier-pct">22.2%</div></div>
+        <div class="tier-row"><div class="tier-dot" style="background:#9BB7D4"></div><div class="tier-name">Standard</div><div class="tier-val">132</div><div class="tier-pct">14.9%</div></div>
       </div>
     </div>
-    <div class="card" style="margin:0">
-      <h2>Monthly Volume by Tier <span style="font-size:10px;font-weight:400;color:var(--text2)">trend lines · Premier = Premier + Premier+ combined</span></h2>
-      <div class="chart-wrap" style="height:260px"><canvas id="tierTrend"></canvas></div>
+    <div style="margin-top:12px;background:var(--sf-lighter);border-radius:5px;padding:9px 12px;font-size:11px;color:var(--text2);line-height:1.7">
+      <strong style="color:var(--sf-dark)">Partner Premier (31.2%)</strong> — Bluvium, Thunder, Cloudity, Aleysian, PwC, DynaCap filing on behalf of multiple end-customer orgs.
+      <strong style="color:var(--sf-dark)">Premier / Premier+ (31.7%)</strong> is the largest direct-customer tier.
+      <strong style="color:var(--sf-dark)">Signature (22.2%)</strong> drives the highest Sev-1 concentration — ECi, S&amp;P, Capital One, Kaseya, Bluebeam.
     </div>
   </div>
 
@@ -405,8 +336,8 @@
         <div class="v-lbl">Total unique accounts<br>Feb–Sep 2026</div>
       </div>
       <div class="vel-stat" style="background:#EAF9EE;border-left:3px solid var(--green)">
-        <div class="v-num" style="color:var(--green)">97</div>
-        <div class="v-lbl">New accounts in Feb–Mar alone — onboarding wave, partner-led</div>
+        <div class="v-num" style="color:var(--green)">21</div>
+        <div class="v-lbl">New accounts Sep — new production go-lives emerging</div>
       </div>
       <div class="vel-stat" style="background:#FFF5D6;border-left:3px solid #C99300">
         <div class="v-num" style="color:var(--yellow)">71</div>
@@ -418,18 +349,8 @@
       </div>
     </div>
 
-    <!-- explanation below chart -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:4px;font-size:12px">
-      <div>
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--sf-blue);margin-bottom:8px">Reading the chart</div>
-        <ul style="padding-left:16px;line-height:2;color:var(--text2)">
-          <li><strong style="color:var(--text)">Blue bars</strong> = total unique accounts that filed at least one case that month (includes repeat filers)</li>
-          <li><strong style="color:var(--text)">Green line</strong> = first-time filers only — accounts that had never previously appeared in this dataset</li>
-          <li>Feb = 52 active, all 52 new (100%) because the period starts here; new-account rate then normalises</li>
-          <li>Jun unique-account peak (71) reflects partner implementation surge — Cloudity, Bluvium, Thunder all active simultaneously</li>
-          <li>Jul–Aug new-account rate drops (16–18) then Sep rebounds — aligns with post-summer go-live activity</li>
-        </ul>
-      </div>
+    <!-- new accounts table -->
+    <div style="margin-top:16px;font-size:12px">
       <div>
         <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--sf-blue);margin-bottom:8px">Notable New Sep Accounts</div>
         <table>
@@ -507,7 +428,7 @@
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:12px">
       <div>
         <h2 style="margin:0 0 4px 0">Case Volume by Account — Feb to Sep 2026</h2>
-        <div style="font-size:11px;color:var(--text2)">Direct customers only · partners excluded · ranked by total cases Feb–Sep</div>
+        <div style="font-size:11px;color:var(--text2)">Direct customers only · partners excluded · ranked by total cases · Feb–Sep 2026 data window</div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:10px">
         <span style="background:#FFF0F0;padding:2px 8px;border-radius:8px;color:var(--red);font-weight:600">ECi surge Aug</span>
@@ -525,45 +446,6 @@
         <span style="display:inline-block;width:22px;height:14px;background:#0176D3;border-radius:3px"></span>5–6
         <span style="display:inline-block;width:22px;height:14px;background:#014486;border-radius:3px"></span>7–9
         <span style="display:inline-block;width:22px;height:14px;background:#BA0517;border-radius:3px"></span>10+
-      </div>
-    </div>
-    <!-- Volume driver annotations -->
-    <div style="margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-      <div style="background:#FFF5F5;border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:9px 11px">
-        <div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">ECi — Aug spike (10 cases)</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6">
-          Aug dominated by <strong>invoice stuck/void failures</strong> (5 cases) and <strong>payment processing breakdowns</strong> (4 Sev-1: cross-currency allocation, PSI failures, conditional read-only field gap, payment retry rules not firing on CollectionPlan). Highest single-account single-month volume in the dataset.
-        </div>
-      </div>
-      <div style="background:#FFFBEA;border-left:3px solid var(--yellow);border-radius:0 6px 6px 0;padding:9px 11px">
-        <div style="font-size:10px;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Kaseya — Feb–Mar burst, silent Jul–Sep</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6">
-          Heavy early-period volume (Feb: Billing Batch Scheduler bugs, saved payment method limits; Mar: credit memo PDF, refund object triggers, API state validation). Zero cases Jul–Sep suggests go-live completed and active issues resolved — not disengagement.
-        </div>
-      </div>
-      <div style="background:#EAF9EE;border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:9px 11px">
-        <div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">WebPT — late ramp Aug–Sep (12 cases)</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6">
-          Zero activity Feb–Apr, then accelerating from Aug. Sep subjects: <strong>dunning process</strong> (3 cases), payment batch lock timeouts, SavedPaymentMethodId API gap, invoice void cascade. Pattern consistent with a new billing implementation entering production in late Q2.
-        </div>
-      </div>
-      <div style="background:#F0F4FF;border-left:3px solid #5C3DC3;border-radius:0 6px 6px 0;padding:9px 11px">
-        <div style="font-size:10px;font-weight:700;color:#5C3DC3;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Capital One — Apr spike (8 cases)</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6">
-          Apr concentrated on <strong>Legal Entity Accounting Period failures</strong> (3 cases: DPE job not triggering, GL summaries not populating) + Billing Batch Scheduler error (Sev-1) + invoice tax discrepancy. Consistent with a Q2 accounting close surfacing GL integration gaps.
-        </div>
-      </div>
-      <div style="background:#F5F0FF;border-left:3px solid #8B5CF6;border-radius:0 6px 6px 0;padding:9px 11px">
-        <div style="font-size:10px;font-weight:700;color:#8B5CF6;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">S&amp;P — Feb burst, steady decline</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6">
-          Feb driven by <strong>credit memo creation failures</strong> (3 cases: standalone, draft invoice, cross-account/currency), invoice stuck in posting, and payment allocation issues. Volume declines steadily through Sep — issues were resolved without recurrence.
-        </div>
-      </div>
-      <div style="background:#F0FBF5;border-left:3px solid #2E844A;border-radius:0 6px 6px 0;padding:9px 11px">
-        <div style="font-size:10px;font-weight:700;color:#2E844A;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">Arthur Gallagher — Aug spike (5 cases)</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.6">
-          Two Sev-1s in Aug: <strong>go-live blocker</strong> (LegalEntityAccountingPeriod tombstone + closed period overlap, Peru) + CurrencyIsoCode page layout gap. Alongside 3 lower-severity billing/invoice UI issues. Classic pre-go-live crunch pattern.
-        </div>
       </div>
     </div>
   </div>
@@ -820,58 +702,6 @@ new Chart(document.getElementById('tierDonut'), {
 });
 
 // ── Tier trend — line chart (Premier combined) ──
-new Chart(document.getElementById('tierTrend'), {
-  type: 'line',
-  data: {
-    labels: ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'],
-    datasets: [
-      {
-        label: 'Partner Premier',
-        data: [42,39,41,28,41,20,30,35],
-        borderColor: '#0176D3', backgroundColor: 'rgba(1,118,211,0.07)',
-        borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 6,
-        pointBackgroundColor: '#0176D3', tension: 0.35, fill: false
-      },
-      {
-        label: 'Premier / Premier+',
-        data: [31,39,36,47,35,31,33,29],
-        borderColor: '#5C3DC3', backgroundColor: 'rgba(92,61,195,0.07)',
-        borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 6,
-        pointBackgroundColor: '#5C3DC3', tension: 0.35, fill: false
-      },
-      {
-        label: 'Signature',
-        data: [19,31,32,24,28,18,24,21],
-        borderColor: '#032D60', backgroundColor: 'rgba(3,45,96,0.07)',
-        borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 6,
-        pointBackgroundColor: '#032D60', tension: 0.35, fill: false
-      },
-      {
-        label: 'Standard',
-        data: [11,14,19,14,17,19,19,19],
-        borderColor: '#9BB7D4', backgroundColor: 'rgba(155,183,212,0.07)',
-        borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
-        pointBackgroundColor: '#9BB7D4', tension: 0.35, fill: false,
-        borderDash: [4,3]
-      }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: {
-        position: 'bottom',
-        labels: { font: { size: 10 }, boxWidth: 10, padding: 10, usePointStyle: true }
-      },
-      tooltip: { mode: 'index' }
-    },
-    scales: {
-      y: { beginAtZero: true, ticks: { font:{size:11}, color:'#444F61' }, grid: { color:'#E8F0FA' } },
-      x: { ticks: { font:{size:11}, color:'#444F61' }, grid: { color:'#E8F0FA' } }
-    }
-  }
-});
 
 // ── Custom inline data-label plugin (scoped — does NOT affect other charts) ──
 const valueLabelsPlugin = {
@@ -900,31 +730,33 @@ const valueLabelsPlugin = {
   }
 };
 
-// ── Account velocity ──
+// ── Account velocity (12-month view Oct 2025 – Sep 2026) ──
 new Chart(document.getElementById('acctChart'), {
   type: 'bar',
   plugins: [valueLabelsPlugin],
   data: {
-    labels: ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'],
+    labels: ['Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'],
     datasets: [
       {
         type: 'bar',
         label: 'Unique accounts active',
-        data: [52, 67, 65, 59, 71, 48, 52, 58],
-        backgroundColor: 'rgba(1,118,211,0.18)',
-        borderColor: '#0176D3', borderWidth: 1.5, borderRadius: 4,
+        data: [0, 0, 0, 0, 52, 67, 65, 59, 71, 48, 52, 58],
+        backgroundColor: data => data.dataIndex < 4 ? 'rgba(200,200,200,0.15)' : 'rgba(1,118,211,0.18)',
+        borderColor: data => data.dataIndex < 4 ? '#ccc' : '#0176D3',
+        borderWidth: 1.5, borderRadius: 4,
         order: 2, yAxisID: 'y'
       },
       {
         type: 'line',
-        label: 'First-time filers',
-        data: [52, 45, 31, 19, 28, 16, 18, 21],
+        label: 'New accounts (first-time filers)',
+        data: [null, null, null, null, 52, 45, 31, 19, 28, 16, 18, 21],
         borderColor: '#2E844A', backgroundColor: 'rgba(46,132,74,0.07)',
         borderWidth: 2.5,
         pointRadius: 6, pointHoverRadius: 8,
         pointBackgroundColor: '#2E844A', pointBorderColor: '#fff', pointBorderWidth: 2,
         tension: 0.35, fill: true,
-        order: 1, yAxisID: 'y'
+        order: 1, yAxisID: 'y',
+        spanGaps: false
       }
     ]
   },
@@ -933,12 +765,13 @@ new Chart(document.getElementById('acctChart'), {
     interaction: { mode: 'index', intersect: false },
     layout: { padding: { top: 24 } },
     plugins: {
-      legend: { display: false },
+      legend: { display: true, position: 'top', labels: { boxWidth: 12, font: { size: 11 }, color: '#444F61' } },
       tooltip: {
         callbacks: {
           afterBody: items => {
-            const pcts = [100,67,48,32,39,33,35,36];
-            return ['New as % of active: ' + pcts[items[0].dataIndex] + '%'];
+            const pcts = [null,null,null,null,100,67,48,32,39,33,35,36];
+            const p = pcts[items[0].dataIndex];
+            return p ? ['New as % of active: ' + p + '%'] : [];
           }
         }
       }
@@ -946,7 +779,12 @@ new Chart(document.getElementById('acctChart'), {
     scales: {
       y: { beginAtZero: true, max: 90, ticks: { font:{size:11}, color:'#444F61', stepSize:15 }, grid:{color:'#E8F0FA'},
            title:{display:true,text:'Accounts',font:{size:10},color:'#444F61'} },
-      x: { ticks: { font:{size:11}, color:'#444F61' }, grid:{display:false} }
+      x: {
+        ticks: {
+          font: { size: 11 }, color: ctx => ctx.index < 4 ? '#bbb' : '#444F61'
+        },
+        grid: { display: false }
+      }
     }
   }
 });
