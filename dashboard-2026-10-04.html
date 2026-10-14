@@ -8,28 +8,29 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
 :root {
-  --bg:#f6f8fa;--surface:#ffffff;--border:#d0d7de;
-  --text:#1f2328;--muted:#656d76;--accent:#0969da;
+  --bg:#eef2f7;--surface:#ffffff;--border:#c5d3e8;
+  --text:#1a2744;--muted:#5a6e8c;--accent:#1b4fa8;
   --green:#1a7f37;--red:#cf222e;--yellow:#9a6700;--orange:#bc4c00;
-  --emea:#8250df;--india:#e16f42;
+  --emea:#1b4fa8;--india:#e16f42;
+  --navy:#1a2744;--navy-light:#eef2f7;--navy-mid:#c5d3e8;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;background:var(--bg);color:var(--text);padding:16px}
 h1{font-size:18px;font-weight:700}
 h2{font-size:14px;font-weight:600;margin-bottom:10px}
 h3{font-size:13px;font-weight:600;margin-bottom:8px}
-.header{display:flex;justify-content:space-between;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:12px}
-.meta{color:var(--muted);font-size:12px;margin-top:3px}
+.header{display:flex;justify-content:space-between;align-items:flex-start;background:var(--navy);color:#fff;border:1px solid var(--navy);border-radius:8px;padding:14px 16px;margin-bottom:12px}
+.meta{color:#a8bcd4;font-size:12px;margin-top:3px}
 .badge{display:inline-block;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:600;margin-left:4px}
 .badge-red{background:#ffebe9;color:#cf222e;border:1px solid #ffcecb}
-.badge-purple{background:#fbefff;color:#8250df;border:1px solid #d8b4fe}
+.badge-purple{background:#dce6f5;color:#1b4fa8;border:1px solid #a8bcd4}
 .badge-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb}
 .badge-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845}
 .kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:12px}
-.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
-.kpi.alert{background:#ffebe9;border-color:#ffcecb}
-.kpi.warn{background:#fff8c5;border-color:#f5d845}
-.kpi.good{background:#dafbe1;border-color:#aceebb}
+.kpi{background:var(--surface);border:1px solid var(--navy-mid);border-radius:8px;padding:12px;text-align:center;border-top:3px solid var(--accent)}
+.kpi.alert{background:#fff5f5;border-color:#ffcecb;border-top-color:var(--red)}
+.kpi.warn{background:#fffbf0;border-color:#f5d845;border-top-color:var(--yellow)}
+.kpi.good{background:#f0f9f4;border-color:#aceebb;border-top-color:var(--green)}
 .kpi-val{font-size:26px;font-weight:700;line-height:1.1}
 .kpi-label{font-size:11px;color:var(--muted);margin-top:2px}
 .kpi-delta{font-size:11px;margin-top:3px;font-weight:600}
@@ -37,24 +38,24 @@ h3{font-size:13px;font-weight:600;margin-bottom:8px}
 .delta-dn{color:var(--green)}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.card{background:var(--surface);border:1px solid var(--navy-mid);border-radius:8px;padding:14px}
 .card.red-border{border-color:#ffcecb;border-left:3px solid var(--red)}
 .card.orange-border{border-color:#ffc896;border-left:3px solid var(--orange)}
 .card.yellow-border{border-color:#f5d845;border-left:3px solid var(--yellow)}
 .card.purple-border{border-color:#d8b4fe;border-left:3px solid var(--emea)}
 .data-table{width:100%;border-collapse:collapse}
-.data-table th{background:var(--bg);color:var(--muted);font-size:11px;font-weight:600;padding:6px 8px;text-align:left;border-bottom:1px solid var(--border)}
+.data-table th{background:#dce6f5;color:var(--navy);font-size:11px;font-weight:600;padding:6px 8px;text-align:left;border-bottom:1px solid var(--navy-mid)}
 .data-table td{padding:6px 8px;border-bottom:1px solid #eaeef2;font-size:12px}
 .data-table tr:last-child td{border-bottom:none}
 .data-table tr:hover td{background:#f6f8fa}
-.tw-col{background:rgba(88,166,255,.07)}
-.highlight-row td{background:rgba(88,166,255,.1);font-weight:600}
+.tw-col{background:rgba(27,79,168,.06)}
+.highlight-row td{background:rgba(27,79,168,.1);font-weight:600}
 .pill{display:inline-block;padding:1px 6px;border-radius:10px;font-size:11px;font-weight:600}
 .pill-red{background:#ffebe9;color:#cf222e}
 .pill-orange{background:#fff1e5;color:#bc4c00}
 .pill-blue{background:#ddf4ff;color:#0969da}
 .pill-green{background:#dafbe1;color:#1a7f37}
-.pill-purple{background:#fbefff;color:#8250df}
+.pill-purple{background:#dce6f5;color:#1b4fa8}
 .pill-yellow{background:#fff8c5;color:#9a6700}
 .insight{padding:8px 10px;border-radius:6px;margin-bottom:6px;border-left:3px solid}
 .insight.red{background:#ffebe9;border-color:var(--red)}
@@ -66,7 +67,7 @@ h3{font-size:13px;font-weight:600;margin-bottom:8px}
 .story-panel{padding:12px;border-radius:8px;border:1px solid var(--border)}
 .story-panel.red{background:#ffebe9;border-color:#ffcecb}
 .story-panel.green{background:#dafbe1;border-color:#aceebb}
-.story-panel.purple{background:#fbefff;border-color:#d8b4fe}
+.story-panel.purple{background:#dce6f5;border-color:#a8bcd4}
 .story-panel.yellow{background:#fff8c5;border-color:#f5d845}
 .story-panel .big-num{font-size:28px;font-weight:700;line-height:1}
 .story-panel .label{font-size:11px;color:var(--muted);margin-top:4px}
@@ -85,7 +86,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:16px;paddi
 <!-- HEADER -->
 <div class="header">
   <div>
-    <h1>&#x26A1; Revenue Cloud &middot; Weekly Executive Dashboard</h1>
+    <h1 style="color:#fff">&#x26A1; Revenue Cloud &middot; Weekly Executive Dashboard</h1>
     <div class="meta">Week of Oct 4&ndash;10 2026 &middot; EMEA + India &middot; Source: OrgCS Live Query</div>
   </div>
   <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
@@ -211,12 +212,44 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:16px;paddi
         <td style="color:var(--india)">16</td>
       </tr>
       <tr>
+        <td style="padding-left:20px;color:#2d8a4e">&nbsp;&nbsp;&#x2937; APAC S1</td>
+        <td class="muted">&mdash;</td>
+        <td class="tw-col" style="color:#2d8a4e"><strong>3</strong></td>
+        <td style="color:#2d8a4e">5</td>
+        <td style="color:#2d8a4e">2</td>
+        <td style="color:#2d8a4e">1</td>
+      </tr>
+      <tr>
         <td>Sev2 Urgent</td>
         <td class="muted">&mdash;</td>
         <td class="tw-col"><strong>114</strong></td>
         <td>108</td>
         <td>122</td>
         <td>114</td>
+      </tr>
+      <tr>
+        <td>EMEA Cases</td>
+        <td class="muted">&mdash;</td>
+        <td class="tw-col" style="color:var(--emea)"><strong>175</strong></td>
+        <td style="color:var(--emea)">197</td>
+        <td style="color:var(--emea)">176</td>
+        <td style="color:var(--emea)">180</td>
+      </tr>
+      <tr>
+        <td>India Cases</td>
+        <td class="muted">&mdash;</td>
+        <td class="tw-col" style="color:var(--india)"><strong>81</strong></td>
+        <td style="color:var(--india)">74</td>
+        <td style="color:var(--india)">100</td>
+        <td style="color:var(--india)">88</td>
+      </tr>
+      <tr>
+        <td>APAC Cases</td>
+        <td class="muted">&mdash;</td>
+        <td class="tw-col" style="color:#2d8a4e"><strong>30</strong></td>
+        <td style="color:#2d8a4e">36</td>
+        <td style="color:#2d8a4e">31</td>
+        <td style="color:#2d8a4e">30</td>
       </tr>
       <tr>
         <td>RCA Inflow (% share)</td>
@@ -312,15 +345,15 @@ footer{text-align:center;color:var(--muted);font-size:11px;margin-top:16px;paddi
     </table>
   </div>
   <div class="card">
-    <h2>Region Split &mdash; EMEA vs India</h2>
+    <h2>Region Split &mdash; EMEA / India / APAC</h2>
     <canvas id="regionChart" height="160"></canvas>
     <table class="data-table" style="margin-top:8px">
-      <thead><tr><th>Week</th><th>EMEA</th><th>India</th><th>EMEA%</th><th>India%</th></tr></thead>
+      <thead><tr><th>Week</th><th style="color:var(--emea)">EMEA</th><th style="color:var(--india)">India</th><th style="color:#2d8a4e">APAC</th><th>EMEA%</th><th>India%</th><th>APAC%</th></tr></thead>
       <tbody>
-        <tr><td>W-3</td><td>180</td><td>88</td><td>67%</td><td>33%</td></tr>
-        <tr><td>W-2</td><td>176</td><td>100</td><td>64%</td><td>36%</td></tr>
-        <tr><td>PW</td><td>197</td><td>74</td><td>73%</td><td>27%</td></tr>
-        <tr class="highlight-row"><td>&#x2605; TW</td><td>175</td><td>81</td><td>68%</td><td>32%</td></tr>
+        <tr><td>W-3</td><td>180</td><td>88</td><td>30</td><td>60%</td><td>30%</td><td>10%</td></tr>
+        <tr><td>W-2</td><td>176</td><td>100</td><td>31</td><td>57%</td><td>33%</td><td>10%</td></tr>
+        <tr><td>PW</td><td>197</td><td>74</td><td>36</td><td>64%</td><td>24%</td><td>12%</td></tr>
+        <tr class="highlight-row"><td>&#x2605; TW</td><td>175</td><td>81</td><td>30</td><td>61%</td><td>28%</td><td>10%</td></tr>
       </tbody>
     </table>
   </div>
@@ -473,8 +506,8 @@ new Chart(document.getElementById('inflowChart').getContext('2d'), {
       datalabels: {anchor:'end',align:'top',color:'#1f2328',font:{size:11,weight:'600'}}
     },
     scales: {
-      y: {beginAtZero:false,min:250,max:340,grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#656d76',font:{size:11}}},
-      x: {grid:{display:false},ticks:{color:'#656d76',font:{size:11}}}
+      y: {beginAtZero:false,min:250,max:340,grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#5a6e8c',font:{size:11}}},
+      x: {grid:{display:false},ticks:{color:'#5a6e8c',font:{size:11}}}
     }
   }
 });
@@ -496,7 +529,7 @@ new Chart(document.getElementById('csatChart').getContext('2d'), {
       datalabels: {anchor:'end',align:'right',color:'#1f2328',font:{size:11,weight:'600'},formatter:v=>v>0?v:''}
     },
     scales: {
-      x: {beginAtZero:true,max:25,grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#656d76',font:{size:11}}},
+      x: {beginAtZero:true,max:25,grid:{color:'rgba(197,211,232,.5)'},ticks:{color:'#5a6e8c',font:{size:11}}},
       y: {grid:{display:false},ticks:{color:'#656d76',font:{size:11}}}
     }
   }
@@ -537,7 +570,7 @@ new Chart(document.getElementById('ptTrendChart').getContext('2d'), {
       datalabels: {display:false}
     },
     scales: {
-      y: {stacked:true,grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#656d76',font:{size:11}}},
+      y: {stacked:true,grid:{color:'rgba(197,211,232,.5)'},ticks:{color:'#5a6e8c',font:{size:11}}},
       x: {stacked:true,grid:{display:false},ticks:{color:'#656d76',font:{size:11}}}
     }
   }
@@ -548,8 +581,9 @@ new Chart(document.getElementById('regionChart').getContext('2d'), {
   data: {
     labels: wks,
     datasets: [
-      {label:'EMEA',data:[180,176,197,175],borderColor:'#8250df',backgroundColor:'rgba(130,80,223,.1)',tension:.3,fill:true,pointRadius:4},
-      {label:'India',data:[88,100,74,81],borderColor:'#e16f42',backgroundColor:'rgba(225,111,66,.1)',tension:.3,fill:true,pointRadius:4}
+      {label:'EMEA',data:[180,176,197,175],borderColor:'#1b4fa8',backgroundColor:'rgba(27,79,168,.08)',tension:.3,fill:true,pointRadius:4},
+      {label:'India',data:[88,100,74,81],borderColor:'#e16f42',backgroundColor:'rgba(225,111,66,.08)',tension:.3,fill:true,pointRadius:4},
+      {label:'APAC',data:[30,31,36,30],borderColor:'#2d8a4e',backgroundColor:'rgba(45,138,78,.08)',tension:.3,fill:true,pointRadius:4}
     ]
   },
   options: {
@@ -558,8 +592,8 @@ new Chart(document.getElementById('regionChart').getContext('2d'), {
       datalabels: {anchor:'top',align:'top',color:ctx=>ctx.dataset.borderColor,font:{size:10,weight:'600'}}
     },
     scales: {
-      y: {beginAtZero:false,min:50,max:230,grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#656d76',font:{size:11}}},
-      x: {grid:{display:false},ticks:{color:'#656d76',font:{size:11}}}
+      y: {beginAtZero:false,min:20,max:230,grid:{color:'rgba(197,211,232,.5)'},ticks:{color:'#5a6e8c',font:{size:11}}},
+      x: {grid:{display:false},ticks:{color:'#5a6e8c',font:{size:11}}}
     }
   }
 });
@@ -569,7 +603,7 @@ new Chart(document.getElementById('s1Chart').getContext('2d'), {
   data: {
     labels: wks,
     datasets: [
-      {label:'EMEA S1',data:[16,18,13,17],backgroundColor:'rgba(130,80,223,.65)',stack:'s'},
+      {label:'EMEA S1',data:[16,18,13,17],backgroundColor:'rgba(27,79,168,.70)',stack:'s'},
       {label:'India S1',data:[16,14,14,24],backgroundColor:'rgba(225,111,66,.65)',stack:'s'}
     ]
   },
@@ -579,7 +613,7 @@ new Chart(document.getElementById('s1Chart').getContext('2d'), {
       datalabels: {color:'#fff',font:{size:10,weight:'700'},formatter:v=>v>0?v:''}
     },
     scales: {
-      y: {stacked:true,beginAtZero:true,grid:{color:'rgba(208,215,222,.5)'},ticks:{color:'#656d76',font:{size:11}}},
+      y: {stacked:true,beginAtZero:true,grid:{color:'rgba(197,211,232,.5)'},ticks:{color:'#5a6e8c',font:{size:11}}},
       x: {stacked:true,grid:{display:false},ticks:{color:'#656d76',font:{size:11}}}
     }
   }
