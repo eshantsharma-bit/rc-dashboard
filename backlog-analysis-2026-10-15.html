@@ -153,8 +153,8 @@ body { background: var(--bg); color: var(--text); }
     <span class="badge badge-blue">1,182 total BL</span>
     <span class="badge badge-red">37 high-load</span>
     <span class="badge badge-green">74 low-load</span>
-    <span class="badge badge-amber">8 PTO shrinkage</span>
-    <span class="badge badge-grey">11 chat excluded</span>
+    <span class="badge badge-amber">7 PTO shrinkage</span>
+    <span class="badge badge-grey">12 chat excluded</span>
   </div>
 </div>
 
@@ -169,12 +169,12 @@ body { background: var(--bg); color: var(--text); }
   </div>
   <div class="kpi grey">
     <div class="kpi-label">Chat (Excluded)</div>
-    <div class="kpi-value" id="kpi-chat">11</div>
+    <div class="kpi-value" id="kpi-chat">12</div>
     <div class="kpi-sub">Chat-only · not in BL counts</div>
   </div>
   <div class="kpi amber">
     <div class="kpi-label">PTO Shrinkage</div>
-    <div class="kpi-value" id="kpi-pto">8</div>
+    <div class="kpi-value" id="kpi-pto">7</div>
     <div class="kpi-sub" id="kpi-pto-sub">—% capacity loss</div>
   </div>
   <div class="kpi red">
@@ -414,34 +414,64 @@ body { background: var(--bg); color: var(--text); }
 
   <!-- LOW LOAD TABS -->
   <div class="card">
-    <div class="card-header">🟢 Low-Load — 78 engineers ≤12 cases
-      <span style="font-size:11px;font-weight:400;color:var(--muted)">Primary = skill with most cases · use to identify absorption capacity by product</span>
+    <div class="card-header">🟢 Low-Load — 74 engineers ≤12 cases
+      <span style="font-size:11px;font-weight:400;color:var(--muted)">Productivity = Jul–Sep closure % · ⚠️ = below 90% · 🔒 = bench risk · New Hires tab = no historical data</span>
     </div>
     <div class="card-body" style="padding-bottom:0;">
       <div id="lowSkillSummary" style="padding:10px 16px 0; display:flex; gap:8px; flex-wrap:wrap;"></div>
       <div class="tabs" style="margin-top:10px;">
-        <div class="tab active" onclick="showTab('emea')">EMEA (29)</div>
-        <div class="tab" onclick="showTab('india')">India (31)</div>
-        <div class="tab" onclick="showTab('apac')">APAC (18)</div>
+        <div class="tab active" onclick="showTab('emea')">EMEA</div>
+        <div class="tab" onclick="showTab('india')">India</div>
+        <div class="tab" onclick="showTab('apac')">APAC</div>
+        <div class="tab" onclick="showTab('newhires')" style="color:#8250df;font-weight:700;">🌱 New Hires</div>
       </div>
+
       <div id="pane-emea" class="tab-pane active" style="overflow-x:auto;">
         <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>Total</th><th>Primary Skill</th>
+          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="lowEmeaBody"></tbody></table>
       </div>
+
       <div id="pane-india" class="tab-pane" style="overflow-x:auto;">
         <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>Total</th><th>Primary Skill</th>
+          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="lowIndiaBody"></tbody></table>
       </div>
+
       <div id="pane-apac" class="tab-pane" style="overflow-x:auto;">
         <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>Total</th><th>Primary Skill</th>
+          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="lowApacBody"></tbody></table>
       </div>
+
+      <div id="pane-newhires" class="tab-pane" style="overflow-x:auto;">
+        <div style="padding:8px 16px;font-size:12px;color:var(--muted);background:#f6f8fa;border-bottom:1px solid #d0d7de;">
+          New hires — no Jul–Sep productivity data. Shown separately to avoid skewing analysis.
+        </div>
+        <div style="padding:8px 16px 4px;font-size:12px;font-weight:600;color:#8250df;">EMEA</div>
+        <table class="eng-table"><thead><tr>
+          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
+          <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
+        </tr></thead><tbody id="nhEmeaBody"></tbody></table>
+        <div style="padding:8px 16px 4px;font-size:12px;font-weight:600;color:#8250df;">India</div>
+        <table class="eng-table"><thead><tr>
+          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
+          <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
+        </tr></thead><tbody id="nhIndiaBody"></tbody></table>
+        <div style="padding:8px 16px 4px;font-size:12px;font-weight:600;color:#8250df;">APAC</div>
+        <table class="eng-table"><thead><tr>
+          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
+          <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
+        </tr></thead><tbody id="nhApacBody"></tbody></table>
+        <div style="padding:8px 16px 4px;font-size:12px;font-weight:600;color:#8250df;">No open cases (onboarding)</div>
+        <table class="eng-table"><thead><tr>
+          <th>Engineer</th><th>Manager</th><th>Region</th><th>Status</th>
+        </tr></thead><tbody id="nhZeroBody"></tbody></table>
+      </div>
+
     </div>
   </div>
 
@@ -938,7 +968,7 @@ const lowEmea = [
   {name:'Analu Cavasola Maiolli',manager:'Seth Kane',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':2}},
   {name:'Ravindra Halli',manager:'Darshan Jahagirdar',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':2}},
   {name:'Santoshi Bogaraju',manager:'Apurva Ajit',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':2,'Industry Omni':0,'Industry Core':0}},
-  // Shrutika Shamarthi — excluded (PTO/shrinkage)
+  // Shrutika Shamarthi — excluded (chat engineer, 1 Jul–15 Sep)
   // Vipasa Basnett — excluded (chat engineer)
   // Bhavya Sathvika Edarapalli — excluded (chat engineer)
   {name:'Conall OMalley',manager:'Ryan Penrod',total:1,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
@@ -988,14 +1018,13 @@ const lowIndia = [
 
 // PTO engineers: 7 total. 4 had active cases (commented out above); 3 have no active cases.
 const ptoEngineers = [
-  {name:'Sohag Das',       manager:'Eshant Sharma',  region:'EMEA', total:7},
-  {name:'Shrutika Shamarthi',manager:'Eshant Sharma',region:'EMEA', total:2},
-  {name:'Nishit Mahato',   manager:'Manu Ramamurthy',region:'India',total:8},
-  {name:'Vivek Vairagade', manager:'Bhagat M',       region:'India',total:8},
-  {name:'Edula Poojitha Reddy',manager:'Naren Rajendran',region:'India',total:0},
-  {name:'Pavithra',        manager:'—',              region:'India',total:0},
-  {name:'Neha Adam',       manager:'—',              region:'India',total:0},
-  {name:'Emmanuel Keka',   manager:'Seamus Redmond', region:'EMEA', total:0}
+  {name:'Sohag Das',           manager:'Eshant Sharma',     region:'EMEA', total:7},
+  {name:'Nishit Mahato',       manager:'Manu Ramamurthy',   region:'India',total:8},
+  {name:'Vivek Vairagade',     manager:'Bhagat M',          region:'India',total:8},
+  {name:'Edula Poojitha Reddy',manager:'Naren Rajendran',   region:'India',total:0},
+  {name:'Pavithra',            manager:'—',                  region:'India',total:0},
+  {name:'Neha Adam',           manager:'—',                  region:'India',total:0},
+  {name:'Emmanuel Keka',       manager:'Seamus Redmond',    region:'EMEA', total:0}
 ];
 
 // Chat engineers: 11 total (8 EMEA, 3 APAC). Excluded from high/low load analysis.
@@ -1010,7 +1039,8 @@ const chatEngineers = [
   {name:'Swathi S',                     region:'EMEA', manager:'Sridhar Dwadasi'},
   {name:'Udayasri Shivakoti',           region:'APAC', manager:'Rafik Shaikh'},
   {name:'H V A Prasad Chatradi',        region:'APAC', manager:'Rafik Shaikh'},
-  {name:'Sai Varun Siddamsetty',        region:'APAC', manager:'Brahmarouthu Swetha'}
+  {name:'Sai Varun Siddamsetty',        region:'APAC', manager:'Brahmarouthu Swetha'},
+  {name:'Shrutika Shamarthi',           region:'EMEA', manager:'Eshant Sharma', note:'Chat 1 Jul–15 Sep'}
 ];
 
 const lowApac = [
@@ -1203,10 +1233,146 @@ const APPROVED_MANAGERS = new Set([
   });
 })();
 
+// Productivity data — Jul–Sep combined (% closure productivity)
+const dpData = {
+  'G K Naveen':208,'Subhodip Choudhury':185,'Dashrath Singh Kaviya':168,'Roshini Rayana':165,
+  'Srividya Vedula':159,'Shrinath Lanjudkar':156,'Divya Sri Tumma':146,'Anish Sahay':145,
+  'Vani Madhavi Latha Pentapalli':143,'Satya Ghettem':142,'Sravani Gajula':142,'Nishit Mahato':133,
+  'Pradeepa P':132,'Harsh Thakkar':131,'Varun Reddy A':127,'Visweswara Rao Gedala':123,
+  'Sahithi Reddy Merugu':122,'Abhishek Anand':122,'Arunkumar Vankadhara':120,'Jithin Venigalla':118,
+  'Suravi Tarafdar':117,'Aradya Mittapelly':117,'Rajath Nagaraj':116,'Anusha Rani Aketi':116,
+  'Himali Fadia':115,'Charan Sai Gottipati':114,'Neeti Shyam':113,'Sai Uma Maheswari Kamatham':112,
+  'Srihari Kantimahanthi':111,'Vivek Vairagade':109,'Chaitanya Krishna':109,'Sachin Kulkarni':109,
+  'Gulla Bharath Kumar':108,'Havila Kumar Madhyahnapu':108,'Venus Singh':106,'Sri Purna Shanthi':106,
+  'Gopi Krishna Kulakarni':105,'Govershan Vippala':105,'Akshat Jain':104,'Shubham Buradkar':104,
+  'Sai Nithin Manthena':102,'Sanjoli Agrawal':102,'Nithin Kumar Medam':101,'Sri Harsh Gampa':100,
+  'Ravindra Halli':100,'Sai Shivani Byreddy':99,'Harshita Kagadal':99,'Santoshi Bogaraju':99,
+  'Soumya Chitra Anandas':98,'Sohag Das':98,'Mahesh Jekareddy':97,'Yashpal Sharma':97,
+  'Deepika Nagalakshmi Arjunan':96,'Akansha Vennela':96,'ANUPAMA BINDU PRADEEP':96,'Vivek Reddy':95,
+  'Nagashree Poojari':94,'Kushagr Jaiswal':94,'Shridasingh Parihar':94,
+  'Mohana Sai Vishnu Sriya Chavva':93,'Hemanth Kumar Yadav Kottam':93,'Sarthak Jain':93,
+  'Divyanshu Tiwari':92,'Sai Varun Siddamsetty':92,'Claudio Crocilla':91,'Venkat Krishna Devarla':91,
+  'Spandana Manne':90,'Udayasri Shivakoti':90,'Santhosh Kathi':89,'Nireksha Shetty':89,
+  'Dimple Madhuri Lakshmi Eati':89,'Sethu Sudhaamshu Dhadipelly':88,'Prabhjot Kaur':88,
+  'Beatriz Torres Alatriste':87,'Abhishek Dixit':86,'Sravanthi Velpula':86,'Roshan Vemu':86,
+  'Sanjana Kolu':86,'Aakansha Sharma':85,'Lakshmi Sarayu Chiruvella':84,'Anooja Vuppala':83,
+  'Pranil Kale':83,'Archita Srivastava':82,'Shirisha Kuncharam':81,'Siva Mulukutla':81,
+  'Sricharan Vangala':80,'Mukesh Reddy Penna':77,'Edula Poojitha Reddy':77,'Barkha Patel':76,
+  'Rocco Mosele':73,'Syeda  Sabiha Nasreen':73,'Yash Vardhan Singh':72,'Akshitha Vemula':71,
+  'Prashanth Anugu':71,'Saurabh Srivastava':69,'Harshitha Ponugoti':69,'Yuvashree S':69,
+  'Enoch Samuel Bonthu':68,'Stéphane Verger':67,'Srirama Tejaswi Pandruvada':66,'Emmanuel Keka':65,
+  'Bhavya Sathvika Edarapalli':64,'Vedha Vaidehi':64,'Paola Martin Sanchez':63,'Neha Adam':61,
+  'Jalaj Khandelwal':60,'Sriya Bonda':60,'Shubham Gourh':60,'Shrutika Shamarthi':58,'Aabid Khan':57,
+  'Wiktor Gdowski':55,'Akash Kumbhakar':51,'Swathi S':49,'Harish J':48,'Vipasa Basnett':45
+};
+
+// New hire set — not enough historical data, shown separately
+const NEW_HIRES = new Set([
+  'Netish M B','Shiva Gouda','Kanishka Roy','Dushyant Sharma','Vaishnavi Kolan',
+  'Harshitha Mediboina','Akshay Chorey','Nikhil Singh Chauhan','Sreeja Chinnavaddi',
+  'Govardhan Sai Bandaru','Anusha Boora','Lakshmi Narayana Nizampatnam','Akhil kumar Jinka',
+  'Deepak Sharnagat','Aishwarya Das','Chandini Singarapu','Mohd Shayan','Harish J',
+  'Govershan Vippala','Spandana Manne','H V A Prasad Chatradi'
+]);
+
+// New hires with 0 active cases (not in low-load arrays) — APAC manager from OrgCS
+const newHireZeroCases = [
+  {name:'Anusha Boora',             manager:'Rashi Saraswat', region:'APAC'},
+  {name:'Akhil kumar Jinka',        manager:'Rashi Saraswat', region:'APAC'},
+  {name:'Aishwarya Das',            manager:'Rashi Saraswat', region:'APAC'},
+  {name:'Deepak Sharnagat',         manager:'Rashi Saraswat', region:'APAC'},
+  {name:'Harish J',                 manager:'Brahmarouthu Swetha',region:'APAC'},
+  {name:'Dushyant Sharma',          manager:'—',              region:'—'},
+  {name:'Chandini Singarapu',       manager:'—',              region:'—'},
+  {name:'Mohd Shayan',              manager:'—',              region:'—'}
+];
+
+function dpBadge(name) {
+  var pct = dpData[name];
+  if (pct === undefined) return '<span style="font-size:11px;color:var(--muted)">—</span>';
+  var color = pct >= 100 ? '#1a7f37' : pct >= 90 ? '#e16f24' : '#cf222e';
+  var flag = pct < 90 ? ' ⚠️' : '';
+  return '<span style="font-size:11px;font-weight:700;color:' + color + '">' + pct + '%' + flag + '</span>';
+}
+
+function renderLowLoadFull(data, bodyId) {
+  var body = document.getElementById(bodyId);
+  if (!body) return;
+  var rows = '';
+  data.forEach(function(e) {
+    var ps = primarySkill(e.mix, e.total);
+    var mb = mixBar(e.mix);
+    var pct = dpData[e.name];
+    var rowStyle = (pct !== undefined && pct < 90) ? ' style="background:#fff8f0"' : '';
+    rows += '<tr' + rowStyle + '><td><div class="eng-name">' + e.name + '</div></td>' +
+      '<td><div class="eng-manager">' + e.manager + '</div></td>' +
+      '<td><span class="total-badge total-lo">' + e.total + '</span></td>' +
+      '<td>' + dpBadge(e.name) + '</td>' +
+      '<td>' + ps + '</td>' +
+      '<td>' + pillFor('RCA',e.mix.RCA) + '</td>' +
+      '<td>' + pillFor('Rev CPQ',e.mix['Rev CPQ']) + '</td>' +
+      '<td>' + pillFor('Industry CPQ',e.mix['Industry CPQ']) + '</td>' +
+      '<td>' + pillFor('Industry Omni',e.mix['Industry Omni']) + '</td>' +
+      '<td>' + pillFor('Industry Core',e.mix['Industry Core']) + '</td>' +
+      '<td style="min-width:80px;">' + mb + '</td></tr>';
+  });
+  body.innerHTML = rows;
+}
+
+function renderNewHireTable(data, bodyId) {
+  var body = document.getElementById(bodyId);
+  if (!body) return;
+  var rows = '';
+  data.forEach(function(e) {
+    rows += '<tr><td><div class="eng-name">' + e.name + '</div></td>' +
+      '<td><div class="eng-manager">' + e.manager + '</div></td>' +
+      '<td><span class="total-badge total-lo">' + e.total + '</span></td>' +
+      '<td><span style="font-size:11px;color:var(--muted)">New hire</span></td>' +
+      '<td>' + primarySkill(e.mix, e.total) + '</td>' +
+      '<td>' + pillFor('RCA',e.mix.RCA) + '</td>' +
+      '<td>' + pillFor('Rev CPQ',e.mix['Rev CPQ']) + '</td>' +
+      '<td>' + pillFor('Industry CPQ',e.mix['Industry CPQ']) + '</td>' +
+      '<td>' + pillFor('Industry Omni',e.mix['Industry Omni']) + '</td>' +
+      '<td>' + pillFor('Industry Core',e.mix['Industry Core']) + '</td>' +
+      '<td style="min-width:80px;">' + mixBar(e.mix) + '</td></tr>';
+  });
+  body.innerHTML = rows;
+}
+
 renderHighLoad();
-renderLowLoad(lowEmea.filter(e => APPROVED_MANAGERS.has(e.manager)), 'lowEmeaBody');
-renderLowLoad(lowIndia.filter(e => APPROVED_MANAGERS.has(e.manager)), 'lowIndiaBody');
-renderLowLoad(lowApac.filter(e => APPROVED_MANAGERS.has(e.manager)), 'lowApacBody');
+
+// Split low-load by new hire vs established for each region
+function splitNewHire(arr) {
+  var established = [], newh = [];
+  arr.forEach(function(e) { NEW_HIRES.has(e.name) ? newh.push(e) : established.push(e); });
+  return {established: established, newh: newh};
+}
+
+var emeaSplit  = splitNewHire(lowEmea.filter(function(e){return APPROVED_MANAGERS.has(e.manager);}));
+var indiaSplit = splitNewHire(lowIndia.filter(function(e){return APPROVED_MANAGERS.has(e.manager);}));
+var apacSplit  = splitNewHire(lowApac.filter(function(e){return APPROVED_MANAGERS.has(e.manager);}));
+
+renderLowLoadFull(emeaSplit.established,  'lowEmeaBody');
+renderLowLoadFull(indiaSplit.established, 'lowIndiaBody');
+renderLowLoadFull(apacSplit.established,  'lowApacBody');
+renderNewHireTable(emeaSplit.newh,  'nhEmeaBody');
+renderNewHireTable(indiaSplit.newh, 'nhIndiaBody');
+renderNewHireTable(apacSplit.newh,  'nhApacBody');
+
+// New hires with 0 open cases
+(function(){
+  var body = document.getElementById('nhZeroBody');
+  if (!body) return;
+  var rows = '';
+  newHireZeroCases.forEach(function(e){
+    rows += '<tr><td><div class="eng-name">' + e.name + '</div></td>' +
+      '<td><div class="eng-manager">' + e.manager + '</div></td>' +
+      '<td><span class="badge badge-grey">' + e.region + '</span></td>' +
+      '<td><span style="font-size:11px;color:var(--muted)">0 open cases</span></td></tr>';
+  });
+  body.innerHTML = rows;
+})();
+
 renderLowSkillSummary();
 
 // Heat: High-load backlog by manager stacked chart (total BL per manager, sorted by high-load BL desc)
