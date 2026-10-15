@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RC & Industry — Backlog + Inflow Analysis | Oct 15, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root {
+  --bg: #f6f8fa;
+  --surface: #ffffff;
+  --border: #d0d7de;
+  --text: #1f2328;
+  --muted: #656d76;
+  --accent: #0969da;
+  --green: #1a7f37;
+  --red: #cf222e;
+  --orange: #d1242f;
+  --amber: #9a6700;
+  --purple: #8250df;
+  --c-rca: #0969da;
+  --c-rcpq: #e16f24;
+  --c-icpq: #1a7f37;
+  --c-iomni: #8250df;
+  --c-icore: #656d76;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); }
+
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 16px; }
+.header-title { font-size: 16px; font-weight: 700; }
+.header-sub { color: var(--muted); font-size: 13px; }
+.header-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 20px; border: 1px solid; }
+.badge-blue  { background: #ddf4ff; color: #0969da; border-color: #54aeff66; }
+.badge-green { background: #dafbe1; color: #1a7f37; border-color: #4ac26b66; }
+.badge-amber { background: #fff8c5; color: #9a6700; border-color: #d4a72c66; }
+.badge-red   { background: #ffebe9; color: #cf222e; border-color: #ff818266; }
+.badge-purple{ background: #fbefff; color: #8250df; border-color: #d2a8ff66; }
+.badge-grey  { background: #f6f8fa; color: #656d76; border-color: #d0d7de; }
+
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.section-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.mb20 { margin-bottom: 20px; }
+.mb24 { margin-bottom: 24px; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.card-header { padding: 12px 16px; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.card-body { padding: 16px; }
+
+.kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; }
+.kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin-bottom: 6px; }
+.kpi-value { font-size: 32px; font-weight: 700; line-height: 1; }
+.kpi-sub { font-size: 12px; color: var(--muted); margin-top: 5px; }
+.kpi.blue .kpi-value  { color: var(--accent); }
+.kpi.green .kpi-value { color: var(--green); }
+.kpi.amber .kpi-value { color: var(--amber); }
+.kpi.red .kpi-value   { color: var(--red); }
+.kpi.purple .kpi-value{ color: var(--purple); }
+.kpi.grey .kpi-value  { color: var(--muted); }
+
+/* Group colour pills */
+.pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+.pill-rca   { background: #ddf4ff; color: #0969da; }
+.pill-rcpq  { background: #fff1e5; color: #bc4c00; }
+.pill-icpq  { background: #dafbe1; color: #1a7f37; }
+.pill-iomni { background: #fbefff; color: #8250df; }
+.pill-icore { background: #f6f8fa; color: #656d76; border: 1px solid #d0d7de; }
+
+/* Group bar (mini) */
+.mix-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; gap: 1px; }
+.mix-seg { height: 100%; }
+.seg-rca   { background: #0969da; }
+.seg-rcpq  { background: #e16f24; }
+.seg-icpq  { background: #1a7f37; }
+.seg-iomni { background: #8250df; }
+.seg-icore { background: #adb5bd; }
+
+/* Engineer table */
+.eng-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.eng-table th { background: var(--bg); padding: 7px 10px; text-align: left; font-weight: 600; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.eng-table td { padding: 7px 10px; border-bottom: 1px solid #f0f3f6; vertical-align: middle; }
+.eng-table tr:last-child td { border-bottom: none; }
+.eng-table tr:hover td { background: #f6f8fa; }
+.eng-name { font-weight: 500; color: var(--text); }
+.eng-manager { font-size: 11px; color: var(--muted); }
+.total-badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 12px; min-width: 32px; text-align: center; }
+.total-hi { background: #ffebe9; color: #cf222e; }
+.total-lo { background: #dafbe1; color: #1a7f37; }
+.region-tag { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px; }
+.rtag-emea  { background: #ddf4ff; color: #0969da; }
+.rtag-india { background: #fff8c5; color: #9a6700; }
+.rtag-apac  { background: #fbefff; color: #8250df; }
+
+/* Inflow table */
+.inflow-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.inflow-table th { background: var(--bg); padding: 7px 10px; text-align: right; font-weight: 600; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; border-bottom: 1px solid var(--border); }
+.inflow-table th:first-child { text-align: left; }
+.inflow-table td { padding: 7px 10px; border-bottom: 1px solid #f0f3f6; text-align: right; }
+.inflow-table td:first-child { text-align: left; font-weight: 600; }
+.inflow-table tr.highlight td { background: #f6f8fa; }
+.inflow-table tr:hover td { background: #f0f3f6; }
+.trend-up   { color: var(--red);   font-weight: 700; }
+.trend-down { color: var(--green); font-weight: 700; }
+.trend-flat { color: var(--muted); }
+.inflow-latest { font-weight: 700; }
+.heat-hi  { background: #ffebe9 !important; }
+.heat-med { background: #fff8c5 !important; }
+
+/* Signal cards */
+.signal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.signal-title { font-weight: 600; font-size: 13px; }
+.signal-body { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.signal-card.red    { border-left: 4px solid var(--red); }
+.signal-card.amber  { border-left: 4px solid #d4a72c; }
+.signal-card.green  { border-left: 4px solid var(--green); }
+.signal-card.blue   { border-left: 4px solid var(--accent); }
+
+/* Tabs */
+.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.tab { padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; color: var(--muted); transition: all .15s; }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* Tooltip legend */
+.legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+.chart-wrap { position: relative; }
+
+@media (max-width: 900px) {
+  .grid-2, .grid-3, .grid-4, .grid-5 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-title">RC & Industry — Backlog + Inflow Analysis</div>
+    <div class="header-sub">EMEA · India · APAC &nbsp;|&nbsp; All open cases · Oct 15, 2026</div>
+  </div>
+  <div class="header-right">
+    <span class="badge badge-blue">1,182 total BL</span>
+    <span class="badge badge-red">40 high-load</span>
+    <span class="badge badge-green">86 low-load</span>
+    <span class="badge badge-grey">⚠️ Inflow capped at 2,000/month</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- KPI ROW -->
+<div class="grid-5 mb24">
+  <div class="kpi blue">
+    <div class="kpi-label">Total Backlog</div>
+    <div class="kpi-value">1,182</div>
+    <div class="kpi-sub">EMEA 491 · India 459 · APAC 232</div>
+  </div>
+  <div class="kpi red">
+    <div class="kpi-label">High-Load Engineers</div>
+    <div class="kpi-value">40</div>
+    <div class="kpi-sub">&gt;12 cases per engineer</div>
+  </div>
+  <div class="kpi green">
+    <div class="kpi-label">Low-Load Engineers</div>
+    <div class="kpi-value">86</div>
+    <div class="kpi-sub">≤12 cases per engineer</div>
+  </div>
+  <div class="kpi amber">
+    <div class="kpi-label">Largest Group</div>
+    <div class="kpi-value">529</div>
+    <div class="kpi-sub">Industry Core (44.8%)</div>
+  </div>
+  <div class="kpi purple">
+    <div class="kpi-label">RCA Backlog</div>
+    <div class="kpi-value">294</div>
+    <div class="kpi-sub">24.9% of total · rising inflow</div>
+  </div>
+</div>
+
+<!-- BACKLOG GROUP SUMMARY + CHART -->
+<div class="section-title mb24" style="margin-bottom:0">Section 1 — Current Backlog by Product Group</div>
+<div class="grid-2 mb24" style="margin-top:12px;">
+
+  <div class="card">
+    <div class="card-header">Backlog by Product Group
+      <div class="legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#0969da"></span>RCA</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#e16f24"></span>Rev CPQ</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#1a7f37"></span>Ind CPQ</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#8250df"></span>Ind Omni</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#adb5bd"></span>Ind Core</span>
+      </div>
+    </div>
+    <div class="card-body chart-wrap" style="height:280px;">
+      <canvas id="blGroupChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Region Split by Group</div>
+    <div class="card-body chart-wrap" style="height:280px;">
+      <canvas id="blRegionChart"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- GROUP DETAIL TABLE -->
+<div class="card mb24">
+  <div class="card-header">Product Group Detail — Backlog</div>
+  <div class="card-body" style="padding:0;">
+    <table class="eng-table">
+      <thead>
+        <tr>
+          <th>Product Group</th>
+          <th>Total</th>
+          <th>% Share</th>
+          <th>EMEA</th>
+          <th>India</th>
+          <th>APAC</th>
+          <th>EMEA%</th>
+          <th>India%</th>
+          <th>APAC%</th>
+          <th>Inflow Trend (Jul→Aug→Sep)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="pill pill-rca">RCA</span></td>
+          <td><strong>294</strong></td><td>24.9%</td>
+          <td>155</td><td>70</td><td>69</td>
+          <td>53%</td><td>24%</td><td>23%</td>
+          <td><span class="trend-up">↑</span> 300→324→324</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-rcpq">Rev CPQ</span></td>
+          <td><strong>82</strong></td><td>6.9%</td>
+          <td>42</td><td>29</td><td>11</td>
+          <td>51%</td><td>35%</td><td>13%</td>
+          <td><span class="trend-down">↓↓</span> 222→206→168</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-icpq">Industry CPQ</span></td>
+          <td><strong>159</strong></td><td>13.5%</td>
+          <td>80</td><td>56</td><td>23</td>
+          <td>50%</td><td>35%</td><td>14%</td>
+          <td><span class="trend-flat">→</span> 229→282→265</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-iomni">Industry Omni</span></td>
+          <td><strong>118</strong></td><td>10.0%</td>
+          <td>37</td><td>42</td><td>39</td>
+          <td>31%</td><td>36%</td><td>33%</td>
+          <td><span class="trend-up">↑</span> 346→340→378</td>
+        </tr>
+        <tr>
+          <td><span class="pill pill-icore">Industry Core</span></td>
+          <td><strong>529</strong></td><td>44.8%</td>
+          <td>177</td><td>262</td><td>90</td>
+          <td>33%</td><td>50%</td><td>17%</td>
+          <td><span class="trend-up">↑</span> 903→848→865</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- INFLOW SECTION -->
+<div class="section-title mb24" style="margin-bottom:0">Section 2 — 12-Month Inflow Trend (Oct-25 → Sep-26)</div>
+<div style="margin-top:12px;" class="mb24">
+
+  <div class="card mb20">
+    <div class="card-header">Monthly Inflow by Product Group
+      <span class="badge badge-grey" style="font-size:11px;">⚠️ Each month capped at 2,000 records — relative trends valid</span>
+    </div>
+    <div class="card-body chart-wrap" style="height:320px;">
+      <canvas id="inflowLineChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card mb20">
+    <div class="card-header">12-Month Inflow Table</div>
+    <div class="card-body" style="padding:0; overflow-x:auto;">
+      <table class="inflow-table">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Oct-25</td><td>357</td><td>293</td><td>357</td><td>326</td><td>667</td><td>2,000</td></tr>
+          <tr><td>Nov-25</td><td>451</td><td>346</td><td>317</td><td>292</td><td>594</td><td>2,000</td></tr>
+          <tr><td>Dec-25</td><td>535</td><td>325</td><td>270</td><td>289</td><td>581</td><td>2,000</td></tr>
+          <tr><td>Jan-26</td><td>313</td><td>262</td><td>308</td><td>457</td><td>660</td><td>2,000</td></tr>
+          <tr><td>Feb-26</td><td>256</td><td>184</td><td>320</td><td>590</td><td>650</td><td>2,000</td></tr>
+          <tr><td>Mar-26</td><td>269</td><td>181</td><td>322</td><td>551</td><td>677</td><td>2,000</td></tr>
+          <tr><td>Apr-26</td><td>313</td><td>269</td><td>290</td><td>432</td><td>696</td><td>2,000</td></tr>
+          <tr><td>May-26</td><td>377</td><td>292</td><td>302</td><td>348</td><td>681</td><td>2,000</td></tr>
+          <tr><td>Jun-26</td><td>270</td><td>243</td><td>301</td><td>331</td><td class="heat-hi">855</td><td>2,000</td></tr>
+          <tr><td>Jul-26</td><td>300</td><td>222</td><td>229</td><td>346</td><td class="heat-hi">903</td><td>2,000</td></tr>
+          <tr><td>Aug-26</td><td>324</td><td>206</td><td>282</td><td>340</td><td class="heat-hi">848</td><td>2,000</td></tr>
+          <tr class="highlight"><td class="inflow-latest">Sep-26 ←</td><td class="inflow-latest">324</td><td class="inflow-latest trend-down">168</td><td class="inflow-latest">265</td><td class="inflow-latest trend-up">378</td><td class="inflow-latest heat-hi">865</td><td class="inflow-latest">2,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MoM Signal Cards -->
+  <div class="grid-5">
+    <div class="signal-card amber">
+      <div class="signal-title">RCA <span class="badge badge-amber" style="font-size:11px;">→ Flat</span></div>
+      <div class="signal-body">Jul 300 → Aug 324 (+24) → Sep 324 (±0). Inflow stabilised after Aug spike. BL at 294 (24.9%) — EMEA-heavy (53%).</div>
+    </div>
+    <div class="signal-card green">
+      <div class="signal-title">Rev CPQ <span class="badge badge-green" style="font-size:11px;">↓↓ Falling</span></div>
+      <div class="signal-body">Jul 222 → Aug 206 (-16) → Sep 168 (-38). Consistent decline over 2 months. BL only 82 cases — low and dropping.</div>
+    </div>
+    <div class="signal-card blue">
+      <div class="signal-title">Industry CPQ <span class="badge badge-blue" style="font-size:11px;">→ Mixed</span></div>
+      <div class="signal-body">Jul 229 → Aug 282 (+53) → Sep 265 (-17). Aug spike partially corrected. BL 159 — moderate. Watch Aug pattern.</div>
+    </div>
+    <div class="signal-card red">
+      <div class="signal-title">Industry Omni <span class="badge badge-red" style="font-size:11px;">↑ Rising</span></div>
+      <div class="signal-body">Jul 346 → Aug 340 (-6) → Sep 378 (+38). Sep surge after brief dip. BL 118 — India+APAC balanced. Rising inflow pressure.</div>
+    </div>
+    <div class="signal-card red">
+      <div class="signal-title">Industry Core <span class="badge badge-red" style="font-size:11px;">↑ Dominant</span></div>
+      <div class="signal-body">Jul 903 → Aug 848 (-55) → Sep 865 (+17). Highest inflow of all groups by far. BL 529 (45%) — India carries 50% of this.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ENGINEER LOAD SECTION -->
+<div class="section-title mb24" style="margin-bottom:0">Section 3 — Engineer Load Analysis</div>
+<div style="margin-top:12px;" class="mb24">
+
+  <div class="card mb20">
+    <div class="card-header">Load Distribution by Region
+      <div class="legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#cf222e"></span>High (&gt;12)</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#1a7f37"></span>Low (≤12)</span>
+      </div>
+    </div>
+    <div class="card-body chart-wrap" style="height:240px;">
+      <canvas id="loadChart"></canvas>
+    </div>
+  </div>
+
+  <!-- HIGH LOAD TABLE -->
+  <div class="card mb20">
+    <div class="card-header">🔴 High-Load Engineers — 40 engineers &gt;12 cases
+      <span class="badge badge-red">Sorted by case count ↓</span>
+    </div>
+    <div class="card-body" style="padding:0; overflow-x:auto;">
+      <table class="eng-table">
+        <thead>
+          <tr>
+            <th>Engineer</th>
+            <th>Region</th>
+            <th>Manager</th>
+            <th>Total</th>
+            <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th>
+            <th>Mix</th>
+          </tr>
+        </thead>
+        <tbody id="highLoadBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- LOW LOAD TABS -->
+  <div class="card">
+    <div class="card-header">🟢 Low-Load Engineers — 86 engineers ≤12 cases</div>
+    <div class="card-body" style="padding-bottom:0;">
+      <div class="tabs">
+        <div class="tab active" onclick="showTab('emea')">EMEA (34)</div>
+        <div class="tab" onclick="showTab('india')">India (31)</div>
+        <div class="tab" onclick="showTab('apac')">APAC (21)</div>
+      </div>
+      <div id="pane-emea" class="tab-pane active" style="overflow-x:auto;">
+        <table class="eng-table"><thead><tr>
+          <th>Engineer</th><th>Manager</th><th>Total</th>
+          <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
+        </tr></thead><tbody id="lowEmeaBody"></tbody></table>
+      </div>
+      <div id="pane-india" class="tab-pane" style="overflow-x:auto;">
+        <table class="eng-table"><thead><tr>
+          <th>Engineer</th><th>Manager</th><th>Total</th>
+          <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
+        </tr></thead><tbody id="lowIndiaBody"></tbody></table>
+      </div>
+      <div id="pane-apac" class="tab-pane" style="overflow-x:auto;">
+        <table class="eng-table"><thead><tr>
+          <th>Engineer</th><th>Manager</th><th>Total</th>
+          <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
+        </tr></thead><tbody id="lowApacBody"></tbody></table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- RESOURCE BALANCE SIGNAL -->
+<div class="section-title mb24" style="margin-bottom:0">Section 4 — Resource Balance Signal</div>
+<div style="margin-top:12px;" class="mb24">
+  <div class="grid-2 mb20">
+    <div class="signal-card red">
+      <div class="signal-title">⚠️ India Industry Core — Concentration Risk</div>
+      <div class="signal-body">
+        India carries <strong>262 of 529</strong> Industry Core cases (50%). Multiple engineers at 100% Industry Core: Srividya Vedula (22), Sai Uma Maheswari (18), Varun Reddy (18), Abhishek Dixit (17), Soumya Chitra (17).<br><br>
+        Low-load India Industry Core available: Harsh Thakkar (11), Nikhil Chauhan (11), Satya Ghettem (11). Capacity exists but already near 12-case threshold.
+      </div>
+    </div>
+    <div class="signal-card red">
+      <div class="signal-title">⚠️ EMEA RCA — High concentration, rising inflow</div>
+      <div class="signal-body">
+        EMEA holds 155 of 294 RCA cases (53%). 8 EMEA engineers are high-load with 70–100% RCA: Anish Sahay (16, 94% RCA), Gulla Bharath (16, 94%), Havila Kumar (16, 100%), Claudio Crocilla (14, 100%), Stéphane Verger (14, 93%), Nagashree Poojari (13, 100%).<br><br>
+        Low-load EMEA RCA available: Suravi Tarafdar (10, 100% RCA), Sohag Das (7, 100%), Kanishka Roy (4, 100%).
+      </div>
+    </div>
+    <div class="signal-card amber">
+      <div class="signal-title">↑ Industry Omni — APAC pressure building</div>
+      <div class="signal-body">
+        Inflow rising (Sep +38 MoM). APAC Omni engineers near capacity: Prashanth Anugu (13 cases, 62% Omni), Lakshmi Sarayu (11, 55% Omni), Archita Srivastava (10, 70% Omni), Udayasri Shivakoti (10, 40% Omni).<br><br>
+        Low-load with Omni skill — APAC: Akhil kumar Jinka (4, 75% Omni), Lakshmi Narayana (2, 100% Omni). Limited capacity to absorb rising inflow.
+      </div>
+    </div>
+    <div class="signal-card green">
+      <div class="signal-title">✓ Rev CPQ — Falling inflow, well-staffed</div>
+      <div class="signal-body">
+        Inflow falling 2 consecutive months (Jul 222 → Aug 206 → Sep 168, -24% MoM). BL only 82 cases. Rev CPQ skill present in both high-load and low-load engineers across all regions.<br><br>
+        Candidates to shift workload away from Rev CPQ: Akshat Jain (13, 77% Rev CPQ), Sethu Sudhaamshu (14, 86% Rev CPQ). Could be rebalanced towards RCA or Industry Omni.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Cross-Skill Gap Summary</div>
+    <div class="card-body" style="padding:0; overflow-x:auto;">
+      <table class="inflow-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">Product Group</th>
+            <th>BL</th>
+            <th>High-Load Engineers</th>
+            <th>Low-Load (avail.)</th>
+            <th>Inflow Trend</th>
+            <th>Risk</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="pill pill-rca">RCA</span></td>
+            <td>294</td><td>12 engineers</td><td>EMEA: 3 · India: 4 · APAC: 2</td>
+            <td>→ Flat</td>
+            <td><span class="badge badge-amber">Medium</span></td>
+          </tr>
+          <tr>
+            <td><span class="pill pill-rcpq">Rev CPQ</span></td>
+            <td>82</td><td>4 engineers</td><td>EMEA: 3 · India: 3 · APAC: 2</td>
+            <td class="trend-down">↓↓ Falling</td>
+            <td><span class="badge badge-green">Low</span></td>
+          </tr>
+          <tr>
+            <td><span class="pill pill-icpq">Industry CPQ</span></td>
+            <td>159</td><td>4 engineers</td><td>EMEA: 5 · India: 5 · APAC: 2</td>
+            <td>→ Mixed</td>
+            <td><span class="badge badge-blue">Watch</span></td>
+          </tr>
+          <tr>
+            <td><span class="pill pill-iomni">Industry Omni</span></td>
+            <td>118</td><td>2 engineers</td><td>EMEA: 4 · India: 3 · APAC: 2</td>
+            <td class="trend-up">↑ Rising</td>
+            <td><span class="badge badge-amber">Medium</span></td>
+          </tr>
+          <tr>
+            <td><span class="pill pill-icore">Industry Core</span></td>
+            <td>529</td><td>18 engineers</td><td>EMEA: 10 · India: 8 · APAC: 7</td>
+            <td class="trend-up">↑ Dominant</td>
+            <td><span class="badge badge-red">High</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center; padding:20px 0 8px; color:var(--muted); font-size:12px; border-top:1px solid var(--border);">
+  RC & Industry Backlog + Inflow Analysis · Oct 15, 2026 · OrgCS live data · EMEA + India + APAC
+</div>
+
+</div><!-- /container -->
+
+<script>
+Chart.register(ChartDataLabels);
+
+const COLORS = {
+  RCA: '#0969da', 'Rev CPQ': '#e16f24',
+  'Industry CPQ': '#1a7f37', 'Industry Omni': '#8250df', 'Industry Core': '#adb5bd'
+};
+const GROUPS = ['RCA', 'Rev CPQ', 'Industry CPQ', 'Industry Omni', 'Industry Core'];
+const GROUP_CLASS = { 'RCA':'rca','Rev CPQ':'rcpq','Industry CPQ':'icpq','Industry Omni':'iomni','Industry Core':'icore' };
+
+// ---- CHARTS ----
+
+// Backlog group bar
+new Chart(document.getElementById('blGroupChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Industry Core','RCA','Industry CPQ','Industry Omni','Rev CPQ'],
+    datasets: [{
+      data: [529, 294, 159, 118, 82],
+      backgroundColor: ['#adb5bd','#0969da','#1a7f37','#8250df','#e16f24'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      datalabels: { anchor:'end', align:'end', font:{weight:'bold', size:12}, color:'#1f2328',
+        formatter: v => v }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color:'#f0f3f6' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Region stacked bar
+new Chart(document.getElementById('blRegionChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Industry Core','RCA','Industry CPQ','Industry Omni','Rev CPQ'],
+    datasets: [
+      { label:'EMEA',  data:[177,155,80,37,42],  backgroundColor:'#0969da', borderRadius:0 },
+      { label:'India', data:[262,70,56,42,29],   backgroundColor:'#1a7f37', borderRadius:0 },
+      { label:'APAC',  data:[90,69,23,39,11],    backgroundColor:'#8250df', borderRadius:0 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position:'top', labels:{boxWidth:12, font:{size:11}} },
+      datalabels: {
+        display: ctx => ctx.dataset.data[ctx.dataIndex] > 15,
+        anchor:'center', align:'center', font:{size:10, weight:'bold'},
+        color:'#fff',
+        formatter: v => v
+      }
+    },
+    scales: {
+      y: { stacked:true, beginAtZero:true, grid:{color:'#f0f3f6'} },
+      x: { stacked:true, grid:{display:false} }
+    }
+  }
+});
+
+// Inflow line chart
+const months = ['Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26','May-26','Jun-26','Jul-26','Aug-26','Sep-26'];
+const inflowData = {
+  RCA:           [357,451,535,313,256,269,313,377,270,300,324,324],
+  'Rev CPQ':     [293,346,325,262,184,181,269,292,243,222,206,168],
+  'Industry CPQ':[357,317,270,308,320,322,290,302,301,229,282,265],
+  'Industry Omni':[326,292,289,457,590,551,432,348,331,346,340,378],
+  'Industry Core':[667,594,581,660,650,677,696,681,855,903,848,865]
+};
+
+new Chart(document.getElementById('inflowLineChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: GROUPS.map(g => ({
+      label: g,
+      data: inflowData[g],
+      borderColor: COLORS[g],
+      backgroundColor: COLORS[g] + '18',
+      fill: false,
+      tension: 0.3,
+      pointRadius: 3,
+      pointHoverRadius: 5,
+      borderWidth: 2
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position:'top', labels:{boxWidth:12, font:{size:11}} },
+      datalabels: {
+        display: ctx => ctx.dataIndex === months.length - 1,
+        anchor:'end', align:'right', font:{size:10, weight:'bold'},
+        color: ctx => COLORS[ctx.dataset.label],
+        formatter: v => v
+      }
+    },
+    scales: {
+      y: { beginAtZero:false, grid:{color:'#f0f3f6'} },
+      x: { grid:{color:'#f0f3f6'} }
+    }
+  }
+});
+
+// Load distribution chart
+new Chart(document.getElementById('loadChart'), {
+  type: 'bar',
+  data: {
+    labels: ['EMEA High','EMEA Low','India High','India Low','APAC High','APAC Low'],
+    datasets: [{
+      label:'Engineers',
+      data: [18, 34, 14, 31, 8, 21],
+      backgroundColor: ['#cf222e','#1a7f37','#cf222e','#1a7f37','#cf222e','#1a7f37'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend:{display:false},
+      datalabels: { anchor:'end', align:'end', font:{weight:'bold', size:12}, color:'#1f2328', formatter:v=>v }
+    },
+    scales: {
+      y: { beginAtZero:true, grid:{color:'#f0f3f6'} },
+      x: { grid:{display:false} }
+    }
+  }
+});
+
+// ---- ENGINEER TABLE DATA ----
+const highEngineers = [
+  {name:'Sarthak Jain',region:'EMEA',manager:'Apurva Ajit',total:23,mix:{RCA:17,'Rev CPQ':6,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Srividya Vedula',region:'India',manager:'Bhagat M',total:22,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':22}},
+  {name:'Shubham Buradkar',region:'EMEA',manager:'Eshant Sharma',total:20,mix:{RCA:14,'Rev CPQ':6,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Harshita Kagadal',region:'EMEA',manager:'Sridhar Dwadasi',total:18,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':18}},
+  {name:'Sai Uma Maheswari Kamatham',region:'India',manager:'Bhagat M',total:18,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':18}},
+  {name:'Varun Reddy A',region:'India',manager:'Manu Ramamurthy',total:18,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':18}},
+  {name:'Abhishek Dixit',region:'India',manager:'Bhagat M',total:17,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':17}},
+  {name:'Hemanth Kumar Yadav Kottam',region:'India',manager:'Bhagat M',total:17,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':10,'Industry Core':7}},
+  {name:'Santhosh Kathi',region:'EMEA',manager:'Eshant Sharma',total:17,mix:{RCA:9,'Rev CPQ':8,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Soumya Chitra Anandas',region:'India',manager:'Bhagat M',total:17,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':17}},
+  {name:'Visweswara Rao Gedala',region:'EMEA',manager:'Sridhar Dwadasi',total:17,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':17}},
+  {name:'Aakansha Sharma',region:'EMEA',manager:'Darshan Jahagirdar',total:16,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':16}},
+  {name:'Anish Sahay',region:'EMEA',manager:'Eshant Sharma',total:16,mix:{RCA:15,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Gulla Bharath Kumar',region:'EMEA',manager:'Eshant Sharma',total:16,mix:{RCA:15,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Havila Kumar Madhyahnapu',region:'EMEA',manager:'Eshant Sharma',total:16,mix:{RCA:16,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Neeti Shyam',region:'India',manager:'Naren Rajendran',total:16,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':16}},
+  {name:'Spandana Manne',region:'APAC',manager:'Swetha B',total:16,mix:{RCA:5,'Rev CPQ':2,'Industry CPQ':9,'Industry Omni':0,'Industry Core':0}},
+  {name:'Yuvashree S',region:'APAC',manager:'Swetha B',total:16,mix:{RCA:13,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}},
+  {name:'Dimple Madhuri Lakshmi Eati',region:'APAC',manager:'Swetha B',total:15,mix:{RCA:0,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':3,'Industry Core':10}},
+  {name:'Nithin Kumar Medam',region:'EMEA',manager:'Apurva Ajit',total:15,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':15,'Industry Omni':0,'Industry Core':0}},
+  {name:'Pranil Kale',region:'APAC',manager:'Mahima Prathaban',total:15,mix:{RCA:2,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':4,'Industry Core':8}},
+  {name:'Sravani Gajula',region:'India',manager:'Naren Rajendran',total:15,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':15}},
+  {name:'Syeda Sabiha Nasreen',region:'APAC',manager:'Swetha B',total:15,mix:{RCA:10,'Rev CPQ':2,'Industry CPQ':0,'Industry Omni':0,'Industry Core':3}},
+  {name:'Anusha Rani Aketi',region:'EMEA',manager:'Sridhar Dwadasi',total:14,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':1,'Industry Omni':0,'Industry Core':13}},
+  {name:'Claudio Crocilla',region:'EMEA',manager:'Seamus Redmond',total:14,mix:{RCA:14,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Deepika Nagalakshmi Arjunan',region:'India',manager:'Naren Rajendran',total:14,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':14}},
+  {name:'Sai Shivani Byreddy',region:'India',manager:'Bhagat M',total:14,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':5,'Industry Core':9}},
+  {name:'Sethu Sudhaamshu Dhadipelly',region:'India',manager:'Manu Ramamurthy',total:14,mix:{RCA:2,'Rev CPQ':12,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Srihari Kantimahanthi',region:'EMEA',manager:'Darshan Jahagirdar',total:14,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':14,'Industry Omni':0,'Industry Core':0}},
+  {name:'Stéphane Verger',region:'EMEA',manager:'Seamus Redmond',total:14,mix:{RCA:13,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Abhishek Anand',region:'EMEA',manager:'Apurva Ajit',total:13,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':13}},
+  {name:'Akshat Jain',region:'EMEA',manager:'Apurva Ajit',total:13,mix:{RCA:1,'Rev CPQ':10,'Industry CPQ':0,'Industry Omni':0,'Industry Core':2}},
+  {name:'Akshay Chorey',region:'India',manager:'Bhagat M',total:13,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':13}},
+  {name:'Charan Sai Gottipati',region:'EMEA',manager:'Sridhar Dwadasi',total:13,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':13}},
+  {name:'Dashrath Singh Kaviya',region:'India',manager:'Naren Rajendran',total:13,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':13}},
+  {name:'Nagashree Poojari',region:'EMEA',manager:'Apurva Ajit',total:13,mix:{RCA:13,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Prashanth Anugu',region:'APAC',manager:'Rafik Shaikh',total:13,mix:{RCA:5,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':8,'Industry Core':0}},
+  {name:'Sreeja Chinnavaddi',region:'India',manager:'Bhagat M',total:13,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':13}},
+  {name:'Sriya Bonda',region:'EMEA',manager:'Apurva Ajit',total:13,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':13,'Industry Omni':0,'Industry Core':0}},
+  {name:'Tejaswi Peddireddy',region:'EMEA',manager:'Sridhar Dwadasi',total:13,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':13}}
+];
+
+const lowEmea = [
+  {name:'Himali Fadia',manager:'Apurva Ajit',total:12,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':12}},
+  {name:'Sachin Kulkarni',manager:'Darshan Jahagirdar',total:12,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':12}},
+  {name:'Sahithi Reddy Merugu',manager:'Sridhar Dwadasi',total:12,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':12}},
+  {name:'Sai Nithin Manthena',manager:'Sridhar Dwadasi',total:12,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':10,'Industry Core':2}},
+  {name:'Shridasingh Parihar',manager:'Darshan Jahagirdar',total:12,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':12,'Industry Omni':0,'Industry Core':0}},
+  {name:'Suravi Tarafdar',manager:'Darshan Jahagirdar',total:10,mix:{RCA:10,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Venkat Krishna Devarla',manager:'Sridhar Dwadasi',total:10,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':10}},
+  {name:'Anooja Vuppala',manager:'Sridhar Dwadasi',total:9,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':7,'Industry Core':2}},
+  {name:'Barkha Patel',manager:'Darshan Jahagirdar',total:9,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':1,'Industry Omni':8,'Industry Core':0}},
+  {name:'Beatriz Torres Alatriste',manager:'Seamus Redmond',total:9,mix:{RCA:3,'Rev CPQ':6,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Sravanthi Velpula',manager:'Darshan Jahagirdar',total:9,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':9,'Industry Omni':0,'Industry Core':0}},
+  {name:'Akshitha Vemula',manager:'Sridhar Dwadasi',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':6,'Industry Core':1}},
+  {name:'G K Naveen',manager:'Darshan Jahagirdar',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':7}},
+  {name:'Shrinath Lanjudkar',manager:'Darshan Jahagirdar',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':7,'Industry Omni':0,'Industry Core':0}},
+  {name:'Sohag Das',manager:'Eshant Sharma',total:7,mix:{RCA:7,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Saurabh Srivastava',manager:'Apurva Ajit',total:6,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':5,'Industry Omni':0,'Industry Core':1}},
+  {name:'Chaitanya Krishna',manager:'Darshan Jahagirdar',total:5,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':3,'Industry Core':2}},
+  {name:'Kanishka Roy',manager:'Eshant Sharma',total:4,mix:{RCA:4,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Yashpal Sharma',manager:'Darshan Jahagirdar',total:4,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':3,'Industry Core':1}},
+  {name:'Analu Cavasola Maiolli',manager:'Seth Kane',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':2}},
+  {name:'Ravindra Halli',manager:'Darshan Jahagirdar',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':2}},
+  {name:'Santoshi Bogaraju',manager:'Apurva Ajit',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':2,'Industry Omni':0,'Industry Core':0}},
+  {name:'Shrutika Shamarthi',manager:'Eshant Sharma',total:2,mix:{RCA:1,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Vipasa Basnett',manager:'Eshant Sharma',total:2,mix:{RCA:1,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Bhavya Sathvika Edarapalli',manager:'Apurva Ajit',total:1,mix:{RCA:0,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Conall OMalley',manager:'Ryan Penrod',total:1,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Harshitha Ponugoti',manager:'Sridhar Dwadasi',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':1,'Industry Omni':0,'Industry Core':0}},
+  {name:'Kushagr Jaiswal',manager:'Eshant Sharma',total:1,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Manas Bharadwaj',manager:'Rohit Kala',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}},
+  {name:'Sneha Gupta',manager:'Ankur Mishra',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}},
+  {name:'Sunil Dalawai',manager:'Poornima Gopala Krishna',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}},
+  {name:'Swathi S',manager:'Sridhar Dwadasi',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}},
+  {name:'Vedha Vaidehi',manager:'Sridhar Dwadasi',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}},
+  {name:'Ravi Kiran H S',manager:'Seth Kane',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}}
+];
+
+const lowIndia = [
+  {name:'Harsh Thakkar',manager:'Bhagat M',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':11}},
+  {name:'Mahesh Jekareddy',manager:'Naren Rajendran',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':11,'Industry Omni':0,'Industry Core':0}},
+  {name:'Nikhil Singh Chauhan',manager:'Bhagat M',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':11}},
+  {name:'Pradeepa P',manager:'Manu Ramamurthy',total:11,mix:{RCA:11,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Satya Ghettem',manager:'Bhagat M',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':11}},
+  {name:'Gopi Krishna Kulakarni',manager:'Bhagat M',total:10,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':4,'Industry Core':6}},
+  {name:'Mukesh Reddy Penna',manager:'Manu Ramamurthy',total:10,mix:{RCA:3,'Rev CPQ':7,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Sanjoli Agrawal',manager:'Naren Rajendran',total:10,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':10,'Industry Omni':0,'Industry Core':0}},
+  {name:'Akhil Koosi',manager:'Manu Ramamurthy',total:9,mix:{RCA:5,'Rev CPQ':4,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Divyanshu Tiwari',manager:'Manu Ramamurthy',total:9,mix:{RCA:9,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Nireksha Shetty',manager:'Naren Rajendran',total:9,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':1,'Industry Omni':8,'Industry Core':0}},
+  {name:'Sri Harsh Gampa',manager:'Manu Ramamurthy',total:9,mix:{RCA:9,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Sricharan Vangala',manager:'Manu Ramamurthy',total:9,mix:{RCA:3,'Rev CPQ':6,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Nishit Mahato',manager:'Manu Ramamurthy',total:8,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':7}},
+  {name:'Rajath Nagaraj',manager:'Naren Rajendran',total:8,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':8,'Industry Omni':0,'Industry Core':0}},
+  {name:'Sri Purna Shanthi',manager:'Bhagat M',total:8,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':2,'Industry Omni':5,'Industry Core':1}},
+  {name:'Vani Madhavi Latha Pentapalli',manager:'Manu Ramamurthy',total:8,mix:{RCA:8,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Vivek Vairagade',manager:'Bhagat M',total:8,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':8,'Industry Omni':0,'Industry Core':0}},
+  {name:'Jithin Venigalla',manager:'Bhagat M',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':2,'Industry Core':5}},
+  {name:'Mohana Sai Vishnu Sriya Chavva',manager:'Bhagat M',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':3,'Industry Core':4}},
+  {name:'Roshini Rayana',manager:'Manu Ramamurthy',total:7,mix:{RCA:7,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Shiva Gouda',manager:'Manu Ramamurthy',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':7}},
+  {name:'Vaishnavi Kolan',manager:'Manu Ramamurthy',total:7,mix:{RCA:7,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Ashwini Garwandha',manager:'Angad Rajpal Singh',total:6,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':6}},
+  {name:'Venus Singh',manager:'Naren Rajendran',total:6,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':5,'Industry Omni':0,'Industry Core':0}},
+  {name:'Aradya Mittapelly',manager:'Naren Rajendran',total:5,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':5,'Industry Core':0}},
+  {name:'Jalaj Khandelwal',manager:'Bhagat M',total:5,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':5,'Industry Omni':0,'Industry Core':0}},
+  {name:'Netish M B',manager:'Manu Ramamurthy',total:4,mix:{RCA:4,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Yash Vardhan Singh',manager:'Manu Ramamurthy',total:4,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':4,'Industry Omni':0,'Industry Core':0}},
+  {name:'Govardhan Sai Bandaru',manager:'Manu Ramamurthy',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':2,'Industry Omni':0,'Industry Core':0}},
+  {name:'Akuthota Rasagna',manager:'Harish Alla',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}}
+];
+
+const lowApac = [
+  {name:'Akansha Vennela',manager:'Mahima Prathaban',total:12,mix:{RCA:2,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':10}},
+  {name:'Divya Sri Tumma',manager:'Mahima Prathaban',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':11}},
+  {name:'Harshitha Mediboina',manager:'Sridhar Dwadasi',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':11}},
+  {name:'Lakshmi Sarayu Chiruvella',manager:'Rafik Shaikh',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':6,'Industry Core':5}},
+  {name:'Archita Srivastava',manager:'Mahima Prathaban',total:10,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':7,'Industry Core':2}},
+  {name:'H V A Prasad Chatradi',manager:'Rafik Shaikh',total:10,mix:{RCA:0,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':1,'Industry Core':8}},
+  {name:'Udayasri Shivakoti',manager:'Rafik Shaikh',total:10,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':4,'Industry Core':5}},
+  {name:'Aabid Khan',manager:'Mahima Prathaban',total:9,mix:{RCA:7,'Rev CPQ':0,'Industry CPQ':2,'Industry Omni':0,'Industry Core':0}},
+  {name:'ANUPAMA BINDU PRADEEP',manager:'Mahima Prathaban',total:9,mix:{RCA:4,'Rev CPQ':0,'Industry CPQ':5,'Industry Omni':0,'Industry Core':0}},
+  {name:'Roshan Vemu',manager:'Rafik Shaikh',total:8,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':1,'Industry Core':7}},
+  {name:'Sai Varun Siddamsetty',manager:'Swetha B',total:8,mix:{RCA:6,'Rev CPQ':1,'Industry CPQ':1,'Industry Omni':0,'Industry Core':0}},
+  {name:'Shubham Gourh',manager:'Swetha B',total:8,mix:{RCA:4,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':2}},
+  {name:'Enoch Samuel Bonthu',manager:'Rafik Shaikh',total:7,mix:{RCA:6,'Rev CPQ':0,'Industry CPQ':1,'Industry Omni':0,'Industry Core':0}},
+  {name:'Govershan Vippala',manager:'Swetha B',total:5,mix:{RCA:1,'Rev CPQ':2,'Industry CPQ':2,'Industry Omni':0,'Industry Core':0}},
+  {name:'Akhil kumar Jinka',manager:'Rashi Saraswat',total:4,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':3,'Industry Core':1}},
+  {name:'Lakshmi Narayana Nizampatnam',manager:'Rashi Saraswat',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':2,'Industry Core':0}},
+  {name:'Sumayya Tahseen',manager:'William Tse',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':2}},
+  {name:'Vivek Reddy',manager:'Rafik Shaikh',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':2}},
+  {name:'Abhinav Jamadagni',manager:'Aarthi Krishnaraj',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}},
+  {name:'Swapnil Rawat',manager:'Sowjanya Pingali',total:1,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  {name:'Varun Kumar Yerraguntla',manager:'Mithun Kumar',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}}
+];
+
+function mixBar(mix) {
+  const tot = Object.values(mix).reduce((a,b)=>a+b,0);
+  if(!tot) return '';
+  const segs = [
+    {k:'RCA',cls:'seg-rca'},{k:'Rev CPQ',cls:'seg-rcpq'},
+    {k:'Industry CPQ',cls:'seg-icpq'},{k:'Industry Omni',cls:'seg-iomni'},
+    {k:'Industry Core',cls:'seg-icore'}
+  ];
+  return '<div class="mix-bar">' +
+    segs.map(s => mix[s.k] ? `<div class="mix-seg ${s.cls}" style="width:${mix[s.k]/tot*100}%"></div>` : '').join('') +
+    '</div>';
+}
+
+function regionTag(r) {
+  const cls = r==='EMEA'?'rtag-emea':r==='India'?'rtag-india':'rtag-apac';
+  return `<span class="region-tag ${cls}">${r}</span>`;
+}
+
+function pillFor(g, count) {
+  if(!count) return '<span style="color:#ccc">—</span>';
+  const cls = GROUP_CLASS[g] || 'icore';
+  return `<span class="pill pill-${cls}">${count}</span>`;
+}
+
+function renderHighLoad() {
+  const body = document.getElementById('highLoadBody');
+  body.innerHTML = highEngineers.map(e => `<tr>
+    <td><div class="eng-name">${e.name}</div></td>
+    <td>${regionTag(e.region)}</td>
+    <td><div class="eng-manager">${e.manager}</div></td>
+    <td><span class="total-badge total-hi">${e.total}</span></td>
+    <td>${pillFor('RCA',e.mix.RCA)}</td>
+    <td>${pillFor('Rev CPQ',e.mix['Rev CPQ'])}</td>
+    <td>${pillFor('Industry CPQ',e.mix['Industry CPQ'])}</td>
+    <td>${pillFor('Industry Omni',e.mix['Industry Omni'])}</td>
+    <td>${pillFor('Industry Core',e.mix['Industry Core'])}</td>
+    <td style="min-width:80px;">${mixBar(e.mix)}</td>
+  </tr>`).join('');
+}
+
+function renderLowLoad(data, bodyId) {
+  const body = document.getElementById(bodyId);
+  body.innerHTML = data.map(e => `<tr>
+    <td><div class="eng-name">${e.name}</div></td>
+    <td><div class="eng-manager">${e.manager}</div></td>
+    <td><span class="total-badge total-lo">${e.total}</span></td>
+    <td>${pillFor('RCA',e.mix.RCA)}</td>
+    <td>${pillFor('Rev CPQ',e.mix['Rev CPQ'])}</td>
+    <td>${pillFor('Industry CPQ',e.mix['Industry CPQ'])}</td>
+    <td>${pillFor('Industry Omni',e.mix['Industry Omni'])}</td>
+    <td>${pillFor('Industry Core',e.mix['Industry Core'])}</td>
+    <td style="min-width:80px;">${mixBar(e.mix)}</td>
+  </tr>`).join('');
+}
+
+renderHighLoad();
+renderLowLoad(lowEmea, 'lowEmeaBody');
+renderLowLoad(lowIndia, 'lowIndiaBody');
+renderLowLoad(lowApac, 'lowApacBody');
+
+function showTab(region) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('pane-'+region).classList.add('active');
+}
+</script>
+</body>
+</html>
