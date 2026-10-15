@@ -242,35 +242,35 @@ body { background: var(--bg); color: var(--text); }
           <td><strong>294</strong></td><td>24.9%</td>
           <td>155</td><td>70</td><td>69</td>
           <td>53%</td><td>24%</td><td>23%</td>
-          <td><span class="trend-up">↑</span> 300→324→324</td>
+          <td><span class="trend-up">↑</span> 849→860→969</td>
         </tr>
         <tr>
           <td><span class="pill pill-rcpq">Rev CPQ</span></td>
           <td><strong>82</strong></td><td>6.9%</td>
           <td>42</td><td>29</td><td>11</td>
           <td>51%</td><td>35%</td><td>13%</td>
-          <td><span class="trend-down">↓↓</span> 222→206→168</td>
+          <td><span class="trend-down">↓↓</span> 455→372→354</td>
         </tr>
         <tr>
           <td><span class="pill pill-icpq">Industry CPQ</span></td>
           <td><strong>159</strong></td><td>13.5%</td>
           <td>80</td><td>56</td><td>23</td>
           <td>50%</td><td>35%</td><td>14%</td>
-          <td><span class="trend-flat">→</span> 229→282→265</td>
+          <td><span class="trend-up">↑</span> 430→433→509</td>
         </tr>
         <tr>
           <td><span class="pill pill-iomni">Industry Omni</span></td>
           <td><strong>118</strong></td><td>10.0%</td>
           <td>37</td><td>42</td><td>39</td>
           <td>31%</td><td>36%</td><td>33%</td>
-          <td><span class="trend-up">↑</span> 346→340→378</td>
+          <td><span class="trend-flat">→</span> 543→504→560</td>
         </tr>
         <tr>
           <td><span class="pill pill-icore">Industry Core</span></td>
           <td><strong>529</strong></td><td>44.8%</td>
           <td>177</td><td>262</td><td>90</td>
           <td>33%</td><td>50%</td><td>17%</td>
-          <td><span class="trend-up">↑</span> 903→848→865</td>
+          <td><span class="trend-up">↑</span> 1,723→1,546→1,608</td>
         </tr>
       </tbody>
     </table>
@@ -283,7 +283,7 @@ body { background: var(--bg); color: var(--text); }
 
   <div class="card mb20">
     <div class="card-header">Monthly Inflow by Product Group
-      <span class="badge badge-grey" style="font-size:11px;">⚠️ Each month capped at 2,000 records — relative trends valid</span>
+      <span class="badge badge-amber" style="font-size:11px;">⚠️ Months showing 4,000 may be capped (OrgCS OFFSET limit). Months &lt;4,000 are complete.</span>
     </div>
     <div class="card-body chart-wrap" style="height:320px;">
       <canvas id="inflowLineChart"></canvas>
@@ -291,28 +291,31 @@ body { background: var(--bg); color: var(--text); }
   </div>
 
   <div class="card mb20">
-    <div class="card-header">12-Month Inflow Table</div>
+    <div class="card-header">12-Month Inflow Table — Real counts (paginated)
+      <span style="font-size:11px;font-weight:400;color:var(--muted)">⚠️ = capped at 4,000 (OrgCS OFFSET limit) · others are complete</span>
+    </div>
     <div class="card-body" style="padding:0; overflow-x:auto;">
       <table class="inflow-table">
         <thead>
           <tr>
             <th>Month</th>
-            <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Total</th>
+            <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th>
+            <th>Total</th><th>EMEA</th><th>India</th><th>APAC</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Oct-25</td><td>357</td><td>293</td><td>357</td><td>326</td><td>667</td><td>2,000</td></tr>
-          <tr><td>Nov-25</td><td>451</td><td>346</td><td>317</td><td>292</td><td>594</td><td>2,000</td></tr>
-          <tr><td>Dec-25</td><td>535</td><td>325</td><td>270</td><td>289</td><td>581</td><td>2,000</td></tr>
-          <tr><td>Jan-26</td><td>313</td><td>262</td><td>308</td><td>457</td><td>660</td><td>2,000</td></tr>
-          <tr><td>Feb-26</td><td>256</td><td>184</td><td>320</td><td>590</td><td>650</td><td>2,000</td></tr>
-          <tr><td>Mar-26</td><td>269</td><td>181</td><td>322</td><td>551</td><td>677</td><td>2,000</td></tr>
-          <tr><td>Apr-26</td><td>313</td><td>269</td><td>290</td><td>432</td><td>696</td><td>2,000</td></tr>
-          <tr><td>May-26</td><td>377</td><td>292</td><td>302</td><td>348</td><td>681</td><td>2,000</td></tr>
-          <tr><td>Jun-26</td><td>270</td><td>243</td><td>301</td><td>331</td><td class="heat-hi">855</td><td>2,000</td></tr>
-          <tr><td>Jul-26</td><td>300</td><td>222</td><td>229</td><td>346</td><td class="heat-hi">903</td><td>2,000</td></tr>
-          <tr><td>Aug-26</td><td>324</td><td>206</td><td>282</td><td>340</td><td class="heat-hi">848</td><td>2,000</td></tr>
-          <tr class="highlight"><td class="inflow-latest">Sep-26 ←</td><td class="inflow-latest">324</td><td class="inflow-latest trend-down">168</td><td class="inflow-latest">265</td><td class="inflow-latest trend-up">378</td><td class="inflow-latest heat-hi">865</td><td class="inflow-latest">2,000</td></tr>
+          <tr><td>Oct-25 ⚠️</td><td>905</td><td>669</td><td>592</td><td>616</td><td class="heat-med">1,218</td><td><strong>4,000</strong></td><td>1,997</td><td>1,245</td><td>758</td></tr>
+          <tr><td>Nov-25</td><td>857</td><td>620</td><td>496</td><td>484</td><td>1,006</td><td><strong>3,463</strong></td><td>1,704</td><td>1,185</td><td>574</td></tr>
+          <tr><td>Dec-25</td><td>793</td><td>475</td><td>439</td><td>455</td><td>918</td><td><strong>3,080</strong></td><td>1,449</td><td>1,100</td><td>531</td></tr>
+          <tr><td>Jan-26</td><td>952</td><td>515</td><td>508</td><td>720</td><td>1,095</td><td><strong>3,790</strong></td><td>1,795</td><td>1,318</td><td>677</td></tr>
+          <tr><td>Feb-26</td><td>1,015</td><td>624</td><td>623</td><td class="heat-med">977</td><td>1,295</td><td><strong>4,534</strong></td><td>2,271</td><td>1,503</td><td>760</td></tr>
+          <tr><td>Mar-26 ⚠️</td><td>903</td><td>559</td><td>526</td><td>734</td><td>1,278</td><td><strong>4,000</strong></td><td>1,986</td><td>1,322</td><td>692</td></tr>
+          <tr><td>Apr-26 ⚠️</td><td>975</td><td>545</td><td>471</td><td>699</td><td>1,310</td><td><strong>4,000</strong></td><td>1,866</td><td>1,461</td><td>673</td></tr>
+          <tr><td>May-26</td><td>819</td><td>471</td><td>474</td><td>561</td><td>1,207</td><td><strong>3,532</strong></td><td>1,716</td><td>1,268</td><td>548</td></tr>
+          <tr><td>Jun-26</td><td>980</td><td>559</td><td>526</td><td>557</td><td class="heat-hi">1,552</td><td><strong>4,174</strong></td><td>2,073</td><td>1,478</td><td>623</td></tr>
+          <tr><td>Jul-26 ⚠️</td><td>849</td><td>455</td><td>430</td><td>543</td><td class="heat-hi">1,723</td><td><strong>4,000</strong></td><td>1,899</td><td>1,471</td><td>630</td></tr>
+          <tr><td>Aug-26</td><td>860</td><td>372</td><td>433</td><td>504</td><td class="heat-hi">1,546</td><td><strong>3,715</strong></td><td>1,765</td><td>1,328</td><td>622</td></tr>
+          <tr class="highlight"><td class="inflow-latest">Sep-26 ⚠️ ←</td><td class="inflow-latest">969</td><td class="inflow-latest trend-down">354</td><td class="inflow-latest">509</td><td class="inflow-latest">560</td><td class="inflow-latest heat-hi">1,608</td><td class="inflow-latest"><strong>4,000</strong></td><td class="inflow-latest">1,925</td><td class="inflow-latest">1,429</td><td class="inflow-latest">646</td></tr>
         </tbody>
       </table>
     </div>
@@ -321,24 +324,24 @@ body { background: var(--bg); color: var(--text); }
   <!-- MoM Signal Cards -->
   <div class="grid-5">
     <div class="signal-card amber">
-      <div class="signal-title">RCA <span class="badge badge-amber" style="font-size:11px;">→ Flat</span></div>
-      <div class="signal-body">Jul 300 → Aug 324 (+24) → Sep 324 (±0). Inflow stabilised after Aug spike. BL at 294 (24.9%) — EMEA-heavy (53%).</div>
+      <div class="signal-title">RCA <span class="badge badge-amber" style="font-size:11px;">→ Stable</span></div>
+      <div class="signal-body">Jul 849 → Aug 860 (+11) → Sep 969 (+109). Sep uptick after flat mid-year. Peak was Feb (1,015). BL at 294 — EMEA-heavy (53%).</div>
     </div>
     <div class="signal-card green">
       <div class="signal-title">Rev CPQ <span class="badge badge-green" style="font-size:11px;">↓↓ Falling</span></div>
-      <div class="signal-body">Jul 222 → Aug 206 (-16) → Sep 168 (-38). Consistent decline over 2 months. BL only 82 cases — low and dropping.</div>
+      <div class="signal-body">Jul 455 → Aug 372 (-83) → Sep 354 (-18). Consistent 2-month decline, lowest in 12 months. BL only 82 cases — low and dropping.</div>
     </div>
     <div class="signal-card blue">
-      <div class="signal-title">Industry CPQ <span class="badge badge-blue" style="font-size:11px;">→ Mixed</span></div>
-      <div class="signal-body">Jul 229 → Aug 282 (+53) → Sep 265 (-17). Aug spike partially corrected. BL 159 — moderate. Watch Aug pattern.</div>
+      <div class="signal-title">Industry CPQ <span class="badge badge-blue" style="font-size:11px;">→ Stable</span></div>
+      <div class="signal-body">Jul 430 → Aug 433 (+3) → Sep 509 (+76). Sep jump notable — watch if this continues. BL 159 — moderate pressure.</div>
+    </div>
+    <div class="signal-card amber">
+      <div class="signal-title">Industry Omni <span class="badge badge-amber" style="font-size:11px;">→ Easing</span></div>
+      <div class="signal-body">Peak Feb 977, now Jul 543 → Aug 504 → Sep 560. Still elevated vs Dec-25 (455) but well off peak. BL 118 — India+APAC balanced.</div>
     </div>
     <div class="signal-card red">
-      <div class="signal-title">Industry Omni <span class="badge badge-red" style="font-size:11px;">↑ Rising</span></div>
-      <div class="signal-body">Jul 346 → Aug 340 (-6) → Sep 378 (+38). Sep surge after brief dip. BL 118 — India+APAC balanced. Rising inflow pressure.</div>
-    </div>
-    <div class="signal-card red">
-      <div class="signal-title">Industry Core <span class="badge badge-red" style="font-size:11px;">↑ Dominant</span></div>
-      <div class="signal-body">Jul 903 → Aug 848 (-55) → Sep 865 (+17). Highest inflow of all groups by far. BL 529 (45%) — India carries 50% of this.</div>
+      <div class="signal-title">Industry Core <span class="badge badge-red" style="font-size:11px;">↑ Dominant &amp; Growing</span></div>
+      <div class="signal-body">Jun 1,552 → Jul 1,723 (+171) → Aug 1,546 (-177) → Sep 1,608 (+62). Consistently the largest group — 40%+ of all inflow every month. BL 529 (45%).</div>
     </div>
   </div>
 
@@ -773,11 +776,11 @@ new Chart(document.getElementById('blRegionChart'), {
 // Inflow line chart
 const months = ['Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26','May-26','Jun-26','Jul-26','Aug-26','Sep-26'];
 const inflowData = {
-  RCA:           [357,451,535,313,256,269,313,377,270,300,324,324],
-  'Rev CPQ':     [293,346,325,262,184,181,269,292,243,222,206,168],
-  'Industry CPQ':[357,317,270,308,320,322,290,302,301,229,282,265],
-  'Industry Omni':[326,292,289,457,590,551,432,348,331,346,340,378],
-  'Industry Core':[667,594,581,660,650,677,696,681,855,903,848,865]
+  RCA:            [905, 857, 793, 952,1015, 903, 975, 819, 980, 849, 860, 969],
+  'Rev CPQ':      [669, 620, 475, 515, 624, 559, 545, 471, 559, 455, 372, 354],
+  'Industry CPQ': [592, 496, 439, 508, 623, 526, 471, 474, 526, 430, 433, 509],
+  'Industry Omni':[616, 484, 455, 720, 977, 734, 699, 561, 557, 543, 504, 560],
+  'Industry Core':[1218,1006, 918,1095,1295,1278,1310,1207,1552,1723,1546,1608]
 };
 
 new Chart(document.getElementById('inflowLineChart'), {
