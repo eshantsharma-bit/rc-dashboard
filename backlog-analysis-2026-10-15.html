@@ -151,10 +151,10 @@ body { background: var(--bg); color: var(--text); }
   </div>
   <div class="header-right">
     <span class="badge badge-blue">1,182 total BL</span>
-    <span class="badge badge-red">37 high-load</span>
+    <span class="badge badge-red">38 high-load</span>
     <span class="badge badge-green">74 low-load</span>
     <span class="badge badge-amber">7 PTO shrinkage</span>
-    <span class="badge badge-grey">12 chat excluded</span>
+    <span class="badge badge-grey">11 chat excluded</span>
   </div>
 </div>
 
@@ -169,7 +169,7 @@ body { background: var(--bg); color: var(--text); }
   </div>
   <div class="kpi grey">
     <div class="kpi-label">Chat (Excluded)</div>
-    <div class="kpi-value" id="kpi-chat">12</div>
+    <div class="kpi-value" id="kpi-chat">11</div>
     <div class="kpi-sub">Chat-only · not in BL counts</div>
   </div>
   <div class="kpi amber">
@@ -391,7 +391,7 @@ body { background: var(--bg); color: var(--text); }
 
   <!-- HIGH LOAD TABLE -->
   <div class="card mb20">
-    <div class="card-header">🔴 High-Load — 37 engineers &gt;12 cases
+    <div class="card-header">🔴 High-Load — 38 engineers &gt;12 cases
       <span style="font-size:11px;font-weight:400;color:var(--muted)">Primary = dominant product · 🔒 Bench = ≥70% one product (single-skilled risk)</span>
     </div>
     <div class="card-body" style="padding:0; overflow-x:auto;">
@@ -466,10 +466,6 @@ body { background: var(--bg); color: var(--text); }
           <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="nhApacBody"></tbody></table>
-        <div style="padding:8px 16px 4px;font-size:12px;font-weight:600;color:#8250df;">No open cases (onboarding)</div>
-        <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>Region</th><th>Status</th>
-        </tr></thead><tbody id="nhZeroBody"></tbody></table>
       </div>
 
     </div>
@@ -689,7 +685,7 @@ body { background: var(--bg); color: var(--text); }
     <div class="signal-card red">
       <div class="signal-title">⚠️ EMEA RCA — High concentration, rising inflow</div>
       <div class="signal-body">
-        EMEA holds 155 of 294 RCA cases (53%). 8 EMEA engineers are high-load with 70–100% RCA: Anish Sahay (16, 94% RCA), Gulla Bharath (16, 94%), Havila Kumar (16, 100%), Claudio Crocilla (14, 100%), Stéphane Verger (14, 93%), Nagashree Poojari (13, 100%).<br><br>
+        EMEA holds 155 of 294 RCA cases (53%). 8 EMEA engineers are high-load with 70–100% RCA: Anish Sahay (15, 100% RCA), Gulla Bharath (16, 94%), Havila Kumar (16, 100%), Claudio Crocilla (14, 100%), Stéphane Verger (14, 93%), Nagashree Poojari (13, 100%).<br><br>
         Low-load EMEA RCA available: Suravi Tarafdar (10, 100% RCA), Sohag Das (7, 100%), Kanishka Roy (4, 100%).
       </div>
     </div>
@@ -915,7 +911,7 @@ const highEngineers = [
   {name:'Soumya Chitra Anandas',region:'India',manager:'Bhagat M',total:17,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':17}},
   {name:'Visweswara Rao Gedala',region:'EMEA',manager:'Sridhar Dwadasi',total:17,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':17}},
   {name:'Aakansha Sharma',region:'EMEA',manager:'Darshan Jahagirdar',total:16,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':16}},
-  // Anish Sahay — excluded (chat engineer)
+  {name:'Anish Sahay',region:'EMEA',manager:'Eshant Sharma',total:15,mix:{RCA:15,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
   {name:'Gulla Bharath Kumar',region:'EMEA',manager:'Eshant Sharma',total:16,mix:{RCA:15,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
   {name:'Havila Kumar Madhyahnapu',region:'EMEA',manager:'Eshant Sharma',total:16,mix:{RCA:16,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
   {name:'Neeti Shyam',region:'India',manager:'Naren Rajendran',total:16,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':16}},
@@ -948,6 +944,7 @@ const highEngineers = [
 const lowEmea = [
   {name:'Himali Fadia',manager:'Apurva Ajit',total:12,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':12}},
   {name:'Sachin Kulkarni',manager:'Darshan Jahagirdar',total:12,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':12}},
+  {name:'Harshitha Mediboina',manager:'Sridhar Dwadasi',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':11}},
   {name:'Sahithi Reddy Merugu',manager:'Sridhar Dwadasi',total:12,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':12}},
   {name:'Sai Nithin Manthena',manager:'Sridhar Dwadasi',total:12,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':10,'Industry Core':2}},
   {name:'Shridasingh Parihar',manager:'Darshan Jahagirdar',total:12,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':12,'Industry Omni':0,'Industry Core':0}},
@@ -1029,7 +1026,6 @@ const ptoEngineers = [
 
 // Chat engineers: 11 total (8 EMEA, 3 APAC). Excluded from high/low load analysis.
 const chatEngineers = [
-  {name:'Anish Sahay',                  region:'EMEA', manager:'Eshant Sharma'},
   {name:'Kushagr Jaiswal',              region:'EMEA', manager:'Eshant Sharma'},
   {name:'Vipasa Basnett',               region:'EMEA', manager:'Eshant Sharma'},
   {name:'Sriya Bonda',                  region:'EMEA', manager:'Apurva Ajit'},
@@ -1046,7 +1042,6 @@ const chatEngineers = [
 const lowApac = [
   {name:'Akansha Vennela',manager:'Mahima Prathaban',total:12,mix:{RCA:2,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':10}},
   {name:'Divya Sri Tumma',manager:'Mahima Prathaban',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':11}},
-  {name:'Harshitha Mediboina',manager:'Sridhar Dwadasi',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':11}},
   {name:'Lakshmi Sarayu Chiruvella',manager:'Rafik Shaikh',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':6,'Industry Core':5}},
   {name:'Archita Srivastava',manager:'Mahima Prathaban',total:10,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':7,'Industry Core':2}},
   // H V A Prasad Chatradi — excluded (chat engineer)
@@ -1275,17 +1270,6 @@ const NEW_HIRES = new Set([
   'Govershan Vippala','Spandana Manne','H V A Prasad Chatradi'
 ]);
 
-// New hires with 0 active cases (not in low-load arrays) — APAC manager from OrgCS
-const newHireZeroCases = [
-  {name:'Anusha Boora',             manager:'Rashi Saraswat', region:'APAC'},
-  {name:'Akhil kumar Jinka',        manager:'Rashi Saraswat', region:'APAC'},
-  {name:'Aishwarya Das',            manager:'Rashi Saraswat', region:'APAC'},
-  {name:'Deepak Sharnagat',         manager:'Rashi Saraswat', region:'APAC'},
-  {name:'Harish J',                 manager:'Brahmarouthu Swetha',region:'APAC'},
-  {name:'Dushyant Sharma',          manager:'—',              region:'—'},
-  {name:'Chandini Singarapu',       manager:'—',              region:'—'},
-  {name:'Mohd Shayan',              manager:'—',              region:'—'}
-];
 
 function dpBadge(name) {
   var pct = dpData[name];
@@ -1359,19 +1343,6 @@ renderNewHireTable(emeaSplit.newh,  'nhEmeaBody');
 renderNewHireTable(indiaSplit.newh, 'nhIndiaBody');
 renderNewHireTable(apacSplit.newh,  'nhApacBody');
 
-// New hires with 0 open cases
-(function(){
-  var body = document.getElementById('nhZeroBody');
-  if (!body) return;
-  var rows = '';
-  newHireZeroCases.forEach(function(e){
-    rows += '<tr><td><div class="eng-name">' + e.name + '</div></td>' +
-      '<td><div class="eng-manager">' + e.manager + '</div></td>' +
-      '<td><span class="badge badge-grey">' + e.region + '</span></td>' +
-      '<td><span style="font-size:11px;color:var(--muted)">0 open cases</span></td></tr>';
-  });
-  body.innerHTML = rows;
-})();
 
 renderLowSkillSummary();
 
