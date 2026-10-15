@@ -152,41 +152,66 @@ body { background: var(--bg); color: var(--text); }
   <div class="header-right">
     <span class="badge badge-blue">1,182 total BL</span>
     <span class="badge badge-red">37 high-load</span>
-    <span class="badge badge-green">78 low-load</span>
-    <span class="badge badge-amber">11 chat engineers excluded</span>
-    <span class="badge badge-grey">⚠️ Inflow capped at 2,000/month</span>
+    <span class="badge badge-green">74 low-load</span>
+    <span class="badge badge-amber">7 PTO shrinkage</span>
+    <span class="badge badge-grey">11 chat excluded</span>
   </div>
 </div>
 
 <div class="container">
 
-<!-- KPI ROW -->
-<div class="grid-5 mb24">
+<!-- KPI ROW — WORKFORCE SNAPSHOT -->
+<div class="grid-5 mb16">
   <div class="kpi blue">
-    <div class="kpi-label">Total Backlog</div>
-    <div class="kpi-value">1,182</div>
-    <div class="kpi-sub">EMEA 491 · India 459 · APAC 232</div>
+    <div class="kpi-label">Engineers with Cases</div>
+    <div class="kpi-value" id="kpi-total-eng">—</div>
+    <div class="kpi-sub">Active case-carrying engineers</div>
   </div>
-  <div class="kpi red">
-    <div class="kpi-label">High-Load Engineers</div>
-    <div class="kpi-value">37</div>
-    <div class="kpi-sub">&gt;12 cases · excl. 3 chat</div>
-  </div>
-  <div class="kpi green">
-    <div class="kpi-label">Low-Load Engineers</div>
-    <div class="kpi-value">78</div>
-    <div class="kpi-sub">≤12 cases · excl. 8 chat</div>
+  <div class="kpi grey">
+    <div class="kpi-label">Chat (Excluded)</div>
+    <div class="kpi-value" id="kpi-chat">11</div>
+    <div class="kpi-sub">Chat-only · not in BL counts</div>
   </div>
   <div class="kpi amber">
-    <div class="kpi-label">Largest Group</div>
-    <div class="kpi-value">529</div>
-    <div class="kpi-sub">Industry Core (44.8%)</div>
+    <div class="kpi-label">PTO Shrinkage</div>
+    <div class="kpi-value" id="kpi-pto">7</div>
+    <div class="kpi-sub" id="kpi-pto-sub">—% capacity loss</div>
   </div>
-  <div class="kpi purple">
-    <div class="kpi-label">RCA Backlog</div>
-    <div class="kpi-value">294</div>
-    <div class="kpi-sub">24.9% of total · rising inflow</div>
+  <div class="kpi red">
+    <div class="kpi-label">High-Load</div>
+    <div class="kpi-value" id="kpi-high">—</div>
+    <div class="kpi-sub">&gt;12 cases per engineer</div>
   </div>
+  <div class="kpi green">
+    <div class="kpi-label">Low-Load</div>
+    <div class="kpi-value" id="kpi-low">—</div>
+    <div class="kpi-sub">≤12 cases per engineer</div>
+  </div>
+</div>
+
+<!-- WORKFORCE SHRINKAGE SECTION -->
+<div class="section-title mb8">Workforce Snapshot — Chat &amp; PTO Exclusions</div>
+<div class="grid-2 mb24" style="margin-top:8px;">
+
+  <div class="card">
+    <div class="card-header">Chat Engineers (11) — Excluded from Load Analysis</div>
+    <table>
+      <thead><tr><th>Engineer</th><th>Region</th><th>Manager</th></tr></thead>
+      <tbody id="chat-tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-header">PTO / Shrinkage (7) — Cases Orphaned During Absence</div>
+    <table>
+      <thead><tr><th>Engineer</th><th>Region</th><th>Manager</th><th>Cases</th></tr></thead>
+      <tbody id="pto-tbody"></tbody>
+    </table>
+    <div style="margin-top:8px;font-size:12px;color:#57606a;">
+      Engineers on PTO are excluded from high/low load tables. Cases they hold remain in the backlog total.
+    </div>
+  </div>
+
 </div>
 
 <!-- BACKLOG GROUP SUMMARY + CHART -->
@@ -614,7 +639,7 @@ body { background: var(--bg); color: var(--text); }
       <div class="signal-title">✓ Seamus Redmond — 2 high-load, RCA only</div>
       <div class="signal-body">
         Claudio (14) and Stéphane (14) — both 93–100% RCA. <strong>27 of 28 cases are RCA.</strong><br><br>
-        Low-load EMEA RCA available: Suravi Tarafdar (10), Sohag Das (7), Kanishka Roy (4) — capacity exists to rebalance 4–6 cases from each.
+        Low-load EMEA RCA available: Suravi Tarafdar (10), Kanishka Roy (4) — capacity exists to rebalance 4–6 cases each. Sohag Das (7 cases, 100% RCA) is on PTO.
       </div>
     </div>
   </div>
@@ -905,7 +930,7 @@ const lowEmea = [
   // Akshitha Vemula — excluded (chat engineer)
   {name:'G K Naveen',manager:'Darshan Jahagirdar',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':7}},
   {name:'Shrinath Lanjudkar',manager:'Darshan Jahagirdar',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':7,'Industry Omni':0,'Industry Core':0}},
-  {name:'Sohag Das',manager:'Eshant Sharma',total:7,mix:{RCA:7,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  // Sohag Das — excluded (PTO/shrinkage)
   {name:'Saurabh Srivastava',manager:'Apurva Ajit',total:6,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':5,'Industry Omni':0,'Industry Core':1}},
   {name:'Chaitanya Krishna',manager:'Darshan Jahagirdar',total:5,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':3,'Industry Core':2}},
   {name:'Kanishka Roy',manager:'Eshant Sharma',total:4,mix:{RCA:4,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
@@ -913,7 +938,7 @@ const lowEmea = [
   {name:'Analu Cavasola Maiolli',manager:'Seth Kane',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':2}},
   {name:'Ravindra Halli',manager:'Darshan Jahagirdar',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':2}},
   {name:'Santoshi Bogaraju',manager:'Apurva Ajit',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':2,'Industry Omni':0,'Industry Core':0}},
-  {name:'Shrutika Shamarthi',manager:'Eshant Sharma',total:2,mix:{RCA:1,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  // Shrutika Shamarthi — excluded (PTO/shrinkage)
   // Vipasa Basnett — excluded (chat engineer)
   // Bhavya Sathvika Edarapalli — excluded (chat engineer)
   {name:'Conall OMalley',manager:'Ryan Penrod',total:1,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
@@ -941,11 +966,11 @@ const lowIndia = [
   {name:'Nireksha Shetty',manager:'Naren Rajendran',total:9,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':1,'Industry Omni':8,'Industry Core':0}},
   {name:'Sri Harsh Gampa',manager:'Manu Ramamurthy',total:9,mix:{RCA:9,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
   {name:'Sricharan Vangala',manager:'Manu Ramamurthy',total:9,mix:{RCA:3,'Rev CPQ':6,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
-  {name:'Nishit Mahato',manager:'Manu Ramamurthy',total:8,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':7}},
+  // Nishit Mahato — excluded (PTO/shrinkage)
   {name:'Rajath Nagaraj',manager:'Naren Rajendran',total:8,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':8,'Industry Omni':0,'Industry Core':0}},
   {name:'Sri Purna Shanthi',manager:'Bhagat M',total:8,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':2,'Industry Omni':5,'Industry Core':1}},
   {name:'Vani Madhavi Latha Pentapalli',manager:'Manu Ramamurthy',total:8,mix:{RCA:8,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
-  {name:'Vivek Vairagade',manager:'Bhagat M',total:8,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':8,'Industry Omni':0,'Industry Core':0}},
+  // Vivek Vairagade — excluded (PTO/shrinkage)
   {name:'Jithin Venigalla',manager:'Bhagat M',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':2,'Industry Core':5}},
   {name:'Mohana Sai Vishnu Sriya Chavva',manager:'Bhagat M',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':3,'Industry Core':4}},
   {name:'Roshini Rayana',manager:'Manu Ramamurthy',total:7,mix:{RCA:7,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
@@ -959,6 +984,32 @@ const lowIndia = [
   {name:'Yash Vardhan Singh',manager:'Manu Ramamurthy',total:4,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':4,'Industry Omni':0,'Industry Core':0}},
   {name:'Govardhan Sai Bandaru',manager:'Manu Ramamurthy',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':2,'Industry Omni':0,'Industry Core':0}},
   {name:'Akuthota Rasagna',manager:'Harish Alla',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}}
+];
+
+// PTO engineers: 7 total. 4 had active cases (commented out above); 3 have no active cases.
+const ptoEngineers = [
+  {name:'Sohag Das',       manager:'Eshant Sharma',  region:'EMEA', total:7},
+  {name:'Shrutika Shamarthi',manager:'Eshant Sharma',region:'EMEA', total:2},
+  {name:'Nishit Mahato',   manager:'Manu Ramamurthy',region:'India',total:8},
+  {name:'Vivek Vairagade', manager:'Bhagat M',       region:'India',total:8},
+  {name:'Edula Poojitha Reddy',manager:'Naren Rajendran',region:'India',total:0},
+  {name:'Pavithra',        manager:'—',              region:'India',total:0},
+  {name:'Neha Adam',       manager:'—',              region:'India',total:0}
+];
+
+// Chat engineers: 11 total (8 EMEA, 3 APAC). Excluded from high/low load analysis.
+const chatEngineers = [
+  {name:'Anish Sahay',              region:'EMEA', manager:'Eshant Sharma'},
+  {name:'Sriya Bonda',              region:'India',manager:'Bhagat M'},
+  {name:'Srirama Tejaswi Peddireddy',region:'India',manager:'Naren Rajendran'},
+  {name:'Akshitha Vemula',          region:'EMEA', manager:'Darshan Jahagirdar'},
+  {name:'Swathi S',                 region:'EMEA', manager:'Darshan Jahagirdar'},
+  {name:'Bhavya Sathvika Edarapalli',region:'EMEA',manager:'Darshan Jahagirdar'},
+  {name:'Kushagr Jaiswal',          region:'EMEA', manager:'Darshan Jahagirdar'},
+  {name:'Vipasa Basnett',           region:'EMEA', manager:'Darshan Jahagirdar'},
+  {name:'Udayasri Shivakoti',       region:'APAC', manager:'Mahima Prathaban'},
+  {name:'Sai Varun Siddamsetty',    region:'APAC', manager:'Rafik Shaikh'},
+  {name:'H V A Prasad Chatradi',    region:'APAC', manager:'Mahima Prathaban'}
 ];
 
 const lowApac = [
@@ -1085,6 +1136,71 @@ const APPROVED_MANAGERS = new Set([
   'Manu Ramamurthy','Manu Ramamurthy Manu Ramamurthy',
   'Seamus Redmond','Sridhar Dwadasi'
 ]);
+
+// Workforce KPI + shrinkage tables
+(function() {
+  function mkBadge(text, cls) {
+    var s = document.createElement('span');
+    s.className = 'badge ' + cls;
+    s.textContent = text;
+    return s;
+  }
+  function mkTd(content) {
+    var td = document.createElement('td');
+    if (typeof content === 'string') td.textContent = content;
+    else td.appendChild(content);
+    return td;
+  }
+
+  var highCount = highEngineers.length;
+  var lowAll = [
+    ...lowEmea.filter(function(e){return APPROVED_MANAGERS.has(e.manager);}),
+    ...lowIndia.filter(function(e){return APPROVED_MANAGERS.has(e.manager);}),
+    ...lowApac.filter(function(e){return APPROVED_MANAGERS.has(e.manager);})
+  ];
+  var lowCount = lowAll.length;
+  var totalEng = highCount + lowCount;
+  var ptoCases = ptoEngineers.reduce(function(s,e){return s+e.total;},0);
+  var totalPool = totalEng + ptoEngineers.length + chatEngineers.length;
+  var ptoShrink = ((ptoEngineers.length / totalPool) * 100).toFixed(1);
+
+  document.getElementById('kpi-total-eng').textContent = totalEng;
+  document.getElementById('kpi-high').textContent = highCount;
+  document.getElementById('kpi-low').textContent = lowCount;
+  document.getElementById('kpi-pto-sub').textContent = ptoShrink + '% capacity loss · ' + ptoCases + ' cases held';
+
+  // Chat table
+  var chatTbody = document.getElementById('chat-tbody');
+  chatEngineers.forEach(function(e) {
+    var regionCls = e.region==='EMEA'?'badge-blue':e.region==='India'?'badge-amber':'badge-green';
+    var tr = document.createElement('tr');
+    tr.appendChild(mkTd(e.name));
+    tr.appendChild(mkTd(mkBadge(e.region, regionCls)));
+    tr.appendChild(mkTd(e.manager));
+    chatTbody.appendChild(tr);
+  });
+
+  // PTO table
+  var ptoBodies = document.getElementById('pto-tbody');
+  ptoEngineers.forEach(function(e) {
+    var regionCls = e.region==='EMEA'?'badge-blue':e.region==='India'?'badge-amber':'badge-green';
+    var tr = document.createElement('tr');
+    var caseTd = document.createElement('td');
+    if (e.total > 0) {
+      caseTd.textContent = e.total;
+      caseTd.style.color = '#cf222e';
+      caseTd.style.fontWeight = '600';
+    } else {
+      caseTd.textContent = '0';
+      caseTd.style.color = '#57606a';
+    }
+    tr.appendChild(mkTd(e.name));
+    tr.appendChild(mkTd(mkBadge(e.region, regionCls)));
+    tr.appendChild(mkTd(e.manager));
+    tr.appendChild(caseTd);
+    ptoBodies.appendChild(tr);
+  });
+})();
 
 renderHighLoad();
 renderLowLoad(lowEmea.filter(e => APPROVED_MANAGERS.has(e.manager)), 'lowEmeaBody');
