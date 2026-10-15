@@ -151,8 +151,9 @@ body { background: var(--bg); color: var(--text); }
   </div>
   <div class="header-right">
     <span class="badge badge-blue">1,182 total BL</span>
-    <span class="badge badge-red">40 high-load</span>
-    <span class="badge badge-green">86 low-load</span>
+    <span class="badge badge-red">37 high-load</span>
+    <span class="badge badge-green">78 low-load</span>
+    <span class="badge badge-amber">11 chat engineers excluded</span>
     <span class="badge badge-grey">⚠️ Inflow capped at 2,000/month</span>
   </div>
 </div>
@@ -168,13 +169,13 @@ body { background: var(--bg); color: var(--text); }
   </div>
   <div class="kpi red">
     <div class="kpi-label">High-Load Engineers</div>
-    <div class="kpi-value">40</div>
-    <div class="kpi-sub">&gt;12 cases per engineer</div>
+    <div class="kpi-value">37</div>
+    <div class="kpi-sub">&gt;12 cases · excl. 3 chat</div>
   </div>
   <div class="kpi green">
     <div class="kpi-label">Low-Load Engineers</div>
-    <div class="kpi-value">86</div>
-    <div class="kpi-sub">≤12 cases per engineer</div>
+    <div class="kpi-value">78</div>
+    <div class="kpi-sub">≤12 cases · excl. 8 chat</div>
   </div>
   <div class="kpi amber">
     <div class="kpi-label">Largest Group</div>
@@ -348,10 +349,11 @@ body { background: var(--bg); color: var(--text); }
 <div style="margin-top:12px;" class="mb24">
 
   <div class="card mb20">
-    <div class="card-header">Load Distribution by Region
+    <div class="card-header">Load Distribution by Region — Chat engineers excluded
       <div class="legend">
         <span class="legend-item"><span class="legend-dot" style="background:#cf222e"></span>High (&gt;12)</span>
         <span class="legend-item"><span class="legend-dot" style="background:#1a7f37"></span>Low (≤12)</span>
+        <span style="font-size:11px;color:var(--muted);font-weight:400;">Excluded: EMEA chat (8) · APAC chat (3)</span>
       </div>
     </div>
     <div class="card-body chart-wrap" style="height:240px;">
@@ -361,7 +363,7 @@ body { background: var(--bg); color: var(--text); }
 
   <!-- HIGH LOAD TABLE -->
   <div class="card mb20">
-    <div class="card-header">🔴 High-Load Engineers — 40 engineers &gt;12 cases
+    <div class="card-header">🔴 High-Load Engineers — 37 engineers &gt;12 cases &nbsp;<span style="font-size:11px;font-weight:400;color:var(--muted)">3 chat engineers removed (Sriya Bonda, Anish Sahay, Srirama Tejaswi)</span>
       <span class="badge badge-red">Sorted by case count ↓</span>
     </div>
     <div class="card-body" style="padding:0; overflow-x:auto;">
@@ -383,12 +385,12 @@ body { background: var(--bg); color: var(--text); }
 
   <!-- LOW LOAD TABS -->
   <div class="card">
-    <div class="card-header">🟢 Low-Load Engineers — 86 engineers ≤12 cases</div>
+    <div class="card-header">🟢 Low-Load Engineers — 78 engineers ≤12 cases &nbsp;<span style="font-size:11px;font-weight:400;color:var(--muted)">8 chat engineers removed</span></div>
     <div class="card-body" style="padding-bottom:0;">
       <div class="tabs">
-        <div class="tab active" onclick="showTab('emea')">EMEA (34)</div>
+        <div class="tab active" onclick="showTab('emea')">EMEA (29)</div>
         <div class="tab" onclick="showTab('india')">India (31)</div>
-        <div class="tab" onclick="showTab('apac')">APAC (21)</div>
+        <div class="tab" onclick="showTab('apac')">APAC (18)</div>
       </div>
       <div id="pane-emea" class="tab-pane active" style="overflow-x:auto;">
         <table class="eng-table"><thead><tr>
@@ -414,7 +416,172 @@ body { background: var(--bg); color: var(--text); }
 </div>
 
 <!-- RESOURCE BALANCE SIGNAL -->
-<div class="section-title mb24" style="margin-bottom:0">Section 4 — Resource Balance Signal</div>
+<div class="section-title mb24" style="margin-bottom:0">Section 4 — High-Load Heat Map (chat engineers excluded)</div>
+<div style="margin-top:12px;" class="mb24">
+
+  <!-- heat matrix -->
+  <div class="card mb20">
+    <div class="card-header">Heat by Manager — High-Load Engineers &gt;12 cases
+      <span style="font-size:11px;font-weight:400;color:var(--muted)">Sorted by total high-load cases ↓ · Shows concentrated risk per manager</span>
+    </div>
+    <div class="card-body" style="padding:0; overflow-x:auto;">
+      <table class="inflow-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">Manager</th>
+            <th style="text-align:left">Region</th>
+            <th>High-Load Engrs</th>
+            <th>Total BL (those engrs)</th>
+            <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th>
+            <th style="text-align:left">Engineers (case count)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Bhagat M</strong></td>
+            <td><span class="region-tag rtag-india">India</span></td>
+            <td class="heat-hi"><strong>7</strong></td>
+            <td class="heat-hi"><strong>115</strong></td>
+            <td>0</td><td>12</td><td>0</td><td>15</td><td class="heat-hi">88</td>
+            <td style="text-align:left; font-size:11px; color:var(--muted)">Srividya(22) Sai Uma(18) Abhishek(17) Soumya(17) Sai Shivani(14) Akshay(13) Sreeja(13)</td>
+          </tr>
+          <tr>
+            <td><strong>Sridhar Dwadasi</strong></td>
+            <td><span class="region-tag rtag-emea">EMEA</span></td>
+            <td class="heat-hi"><strong>5</strong></td>
+            <td class="heat-hi"><strong>75</strong></td>
+            <td>0</td><td>0</td><td>1</td><td>0</td><td class="heat-hi">74</td>
+            <td style="text-align:left; font-size:11px; color:var(--muted)">Harshita(18) Visweswara(17) Aakansha(16) Anusha(14) Charan Sai(13)</td>
+          </tr>
+          <tr>
+            <td><strong>Eshant Sharma</strong></td>
+            <td><span class="region-tag rtag-emea">EMEA</span></td>
+            <td class="heat-med"><strong>2</strong></td>
+            <td class="heat-med"><strong>37</strong></td>
+            <td class="heat-hi">23</td><td>14</td><td>0</td><td>0</td><td>0</td>
+            <td style="text-align:left; font-size:11px; color:var(--muted)">Shubham(20) Santhosh(17)</td>
+          </tr>
+          <tr>
+            <td><strong>Naren Rajendran</strong></td>
+            <td><span class="region-tag rtag-india">India</span></td>
+            <td class="heat-med"><strong>3</strong></td>
+            <td class="heat-med"><strong>43</strong></td>
+            <td>0</td><td>0</td><td>0</td><td>0</td><td class="heat-hi">43</td>
+            <td style="text-align:left; font-size:11px; color:var(--muted)">Neeti(16) Sravani(15) Deepika(14)</td>
+          </tr>
+          <tr>
+            <td><strong>Apurva Ajit</strong></td>
+            <td><span class="region-tag rtag-emea">EMEA</span></td>
+            <td class="heat-med"><strong>4</strong></td>
+            <td class="heat-med"><strong>64</strong></td>
+            <td class="heat-hi">28</td><td>0</td><td class="heat-hi">28</td><td>0</td><td>8</td>
+            <td style="text-align:left; font-size:11px; color:var(--muted)">Sarthak(23) Nithin(15) Nagashree(13) Abhishek A(13)</td>
+          </tr>
+          <tr>
+            <td><strong>Swetha B</strong></td>
+            <td><span class="region-tag rtag-apac">APAC</span></td>
+            <td class="heat-med"><strong>3</strong></td>
+            <td class="heat-med"><strong>47</strong></td>
+            <td class="heat-hi">18</td><td>3</td><td>9</td><td>3</td><td>11</td>
+            <td style="text-align:left; font-size:11px; color:var(--muted)">Spandana(16) Yuvashree(16) Syeda(15)</td>
+          </tr>
+          <tr>
+            <td><strong>Darshan Jahagirdar</strong></td>
+            <td><span class="region-tag rtag-emea">EMEA</span></td>
+            <td><strong>1</strong></td><td><strong>14</strong></td>
+            <td>0</td><td>0</td><td>14</td><td>0</td><td>0</td>
+            <td style="text-align:left; font-size:11px; color:var(--muted)">Srihari(14)</td>
+          </tr>
+          <tr>
+            <td><strong>Seamus Redmond</strong></td>
+            <td><span class="region-tag rtag-emea">EMEA</span></td>
+            <td><strong>2</strong></td><td><strong>28</strong></td>
+            <td class="heat-hi">27</td><td>1</td><td>0</td><td>0</td><td>0</td>
+            <td style="text-align:left; font-size:11px; color:var(--muted)">Claudio(14) Stéphane(14)</td>
+          </tr>
+          <tr>
+            <td><strong>Manu Ramamurthy</strong></td>
+            <td><span class="region-tag rtag-india">India</span></td>
+            <td><strong>2</strong></td><td><strong>32</strong></td>
+            <td>2</td><td class="heat-hi">12</td><td>0</td><td>5</td><td>13</td>
+            <td style="text-align:left; font-size:11px; color:var(--muted)">Varun Reddy(18) Sethu(14)</td>
+          </tr>
+          <tr>
+            <td><strong>Rafik Shaikh</strong></td>
+            <td><span class="region-tag rtag-apac">APAC</span></td>
+            <td><strong>1</strong></td><td><strong>15</strong></td>
+            <td>0</td><td>0</td><td>0</td><td>0</td><td>13</td>
+            <td style="text-align:left; font-size:11px; color:var(--muted)">Pranil(15)</td>
+          </tr>
+          <tr>
+            <td><strong>Mahima Prathaban</strong></td>
+            <td><span class="region-tag rtag-apac">APAC</span></td>
+            <td><strong>1</strong></td><td><strong>15</strong></td>
+            <td>0</td><td>1</td><td>0</td><td>3</td><td>10</td>
+            <td style="text-align:left; font-size:11px; color:var(--muted)">Dimple(15)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- heat map chart: high-load cases by manager -->
+  <div class="card mb20">
+    <div class="card-header">High-Load Backlog Volume by Manager (stacked by product group)</div>
+    <div class="card-body chart-wrap" style="height:320px;">
+      <canvas id="heatManagerChart"></canvas>
+    </div>
+  </div>
+
+  <!-- top heat insights -->
+  <div class="grid-3 mb20">
+    <div class="signal-card red">
+      <div class="signal-title">🔥 Bhagat M — 7 high-load, 115 cases</div>
+      <div class="signal-body">
+        Largest concentration in the org. <strong>88 of 115 Industry Core</strong> — 5 engineers at 100% Core: Srividya (22), Sai Uma (18), Abhishek (17), Soumya (17), Akshay (13). One engineer (Sai Shivani) split Core+Omni. No RCA or CPQ coverage — fully specialised.<br><br>
+        <strong>Risk:</strong> Zero cross-skilling. Any spike in Industry Core inflow lands entirely on this team.
+      </div>
+    </div>
+    <div class="signal-card red">
+      <div class="signal-title">🔥 Sridhar Dwadasi — 5 high-load, 75 cases</div>
+      <div class="signal-body">
+        <strong>74 of 75 Industry Core</strong> — EMEA's biggest Core concentration. Engineers: Harshita (18), Visweswara (17), Aakansha (16), Anusha (14 — 93% Core), Charan Sai (13).<br><br>
+        <strong>Risk:</strong> EMEA Industry Core is thin on low-load absorbers — Sachin (12), Sahithi (12), Venkat (10) are close to threshold. Insufficient buffer for any inflow surge.
+      </div>
+    </div>
+    <div class="signal-card amber">
+      <div class="signal-title">⚠️ Apurva Ajit — 4 high-load, 64 cases</div>
+      <div class="signal-body">
+        Split between <strong>RCA (28) and Industry CPQ (28)</strong>. Sarthak Jain at 23 cases (17 RCA + 6 Rev CPQ) is the single highest-loaded engineer in the org. Nithin (15, 100% Ind CPQ), Nagashree (13, 100% RCA), Abhishek A (13, 100% Core).<br><br>
+        <strong>Mitigation available:</strong> Suravi (10, 100% RCA), Kanishka (4, 100% RCA) can absorb RCA cases.
+      </div>
+    </div>
+    <div class="signal-card amber">
+      <div class="signal-title">⚠️ Naren Rajendran — 3 high-load, 43 cases</div>
+      <div class="signal-body">
+        <strong>43 of 43 Industry Core</strong> — India IST. Neeti (16), Sravani (15), Deepika (14). All three 100% Core.<br><br>
+        <strong>Mitigation:</strong> Mahesh (11, 100% Ind CPQ — different skill), Sanjoli (10, 100% Ind CPQ). No low-load engineers with Industry Core skill near threshold. Harsh (11), Nikhil (11), Satya (11) under Bhagat can take Core cases.
+      </div>
+    </div>
+    <div class="signal-card amber">
+      <div class="signal-title">⚠️ Swetha B APAC — 3 high-load, 47 cases</div>
+      <div class="signal-body">
+        Mixed profile: <strong>RCA-heavy (18)</strong> across Spandana (16, 56% RCA) and Yuvashree (16, 81% RCA). Syeda (15, 67% RCA).<br><br>
+        <strong>Mitigation:</strong> Enoch (7, 86% RCA) and Shubham G (8, 50% RCA) in low-load APAC can absorb. 3 chat engineers removed (Sai Varun, H V A Prasad) — actual APAC case load lower than raw count.
+      </div>
+    </div>
+    <div class="signal-card green">
+      <div class="signal-title">✓ Seamus Redmond — 2 high-load, RCA only</div>
+      <div class="signal-body">
+        Claudio (14) and Stéphane (14) — both 93–100% RCA. <strong>27 of 28 cases are RCA.</strong><br><br>
+        Low-load EMEA RCA available: Suravi Tarafdar (10), Sohag Das (7), Kanishka Roy (4) — capacity exists to rebalance 4–6 cases from each.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section-title mb24" style="margin-bottom:0">Section 5 — Resource Balance Signal</div>
 <div style="margin-top:12px;" class="mb24">
   <div class="grid-2 mb20">
     <div class="signal-card red">
@@ -621,7 +788,7 @@ new Chart(document.getElementById('loadChart'), {
     labels: ['EMEA High','EMEA Low','India High','India Low','APAC High','APAC Low'],
     datasets: [{
       label:'Engineers',
-      data: [18, 34, 14, 31, 8, 21],
+      data: [15, 29, 14, 31, 8, 18],
       backgroundColor: ['#cf222e','#1a7f37','#cf222e','#1a7f37','#cf222e','#1a7f37'],
       borderRadius: 4
     }]
@@ -653,7 +820,7 @@ const highEngineers = [
   {name:'Soumya Chitra Anandas',region:'India',manager:'Bhagat M',total:17,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':17}},
   {name:'Visweswara Rao Gedala',region:'EMEA',manager:'Sridhar Dwadasi',total:17,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':17}},
   {name:'Aakansha Sharma',region:'EMEA',manager:'Darshan Jahagirdar',total:16,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':16}},
-  {name:'Anish Sahay',region:'EMEA',manager:'Eshant Sharma',total:16,mix:{RCA:15,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  // Anish Sahay — excluded (chat engineer)
   {name:'Gulla Bharath Kumar',region:'EMEA',manager:'Eshant Sharma',total:16,mix:{RCA:15,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
   {name:'Havila Kumar Madhyahnapu',region:'EMEA',manager:'Eshant Sharma',total:16,mix:{RCA:16,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
   {name:'Neeti Shyam',region:'India',manager:'Naren Rajendran',total:16,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':16}},
@@ -679,8 +846,8 @@ const highEngineers = [
   {name:'Nagashree Poojari',region:'EMEA',manager:'Apurva Ajit',total:13,mix:{RCA:13,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
   {name:'Prashanth Anugu',region:'APAC',manager:'Rafik Shaikh',total:13,mix:{RCA:5,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':8,'Industry Core':0}},
   {name:'Sreeja Chinnavaddi',region:'India',manager:'Bhagat M',total:13,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':13}},
-  {name:'Sriya Bonda',region:'EMEA',manager:'Apurva Ajit',total:13,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':13,'Industry Omni':0,'Industry Core':0}},
-  {name:'Tejaswi Peddireddy',region:'EMEA',manager:'Sridhar Dwadasi',total:13,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':13}}
+  // Sriya Bonda — excluded (chat engineer)
+  // Srirama Tejaswi Peddireddy — excluded (chat engineer)
 ];
 
 const lowEmea = [
@@ -695,7 +862,7 @@ const lowEmea = [
   {name:'Barkha Patel',manager:'Darshan Jahagirdar',total:9,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':1,'Industry Omni':8,'Industry Core':0}},
   {name:'Beatriz Torres Alatriste',manager:'Seamus Redmond',total:9,mix:{RCA:3,'Rev CPQ':6,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
   {name:'Sravanthi Velpula',manager:'Darshan Jahagirdar',total:9,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':9,'Industry Omni':0,'Industry Core':0}},
-  {name:'Akshitha Vemula',manager:'Sridhar Dwadasi',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':6,'Industry Core':1}},
+  // Akshitha Vemula — excluded (chat engineer)
   {name:'G K Naveen',manager:'Darshan Jahagirdar',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':7}},
   {name:'Shrinath Lanjudkar',manager:'Darshan Jahagirdar',total:7,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':7,'Industry Omni':0,'Industry Core':0}},
   {name:'Sohag Das',manager:'Eshant Sharma',total:7,mix:{RCA:7,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
@@ -707,15 +874,15 @@ const lowEmea = [
   {name:'Ravindra Halli',manager:'Darshan Jahagirdar',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':2}},
   {name:'Santoshi Bogaraju',manager:'Apurva Ajit',total:2,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':2,'Industry Omni':0,'Industry Core':0}},
   {name:'Shrutika Shamarthi',manager:'Eshant Sharma',total:2,mix:{RCA:1,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
-  {name:'Vipasa Basnett',manager:'Eshant Sharma',total:2,mix:{RCA:1,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
-  {name:'Bhavya Sathvika Edarapalli',manager:'Apurva Ajit',total:1,mix:{RCA:0,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  // Vipasa Basnett — excluded (chat engineer)
+  // Bhavya Sathvika Edarapalli — excluded (chat engineer)
   {name:'Conall OMalley',manager:'Ryan Penrod',total:1,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
   {name:'Harshitha Ponugoti',manager:'Sridhar Dwadasi',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':1,'Industry Omni':0,'Industry Core':0}},
-  {name:'Kushagr Jaiswal',manager:'Eshant Sharma',total:1,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':0}},
+  // Kushagr Jaiswal — excluded (chat engineer)
   {name:'Manas Bharadwaj',manager:'Rohit Kala',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}},
   {name:'Sneha Gupta',manager:'Ankur Mishra',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}},
   {name:'Sunil Dalawai',manager:'Poornima Gopala Krishna',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}},
-  {name:'Swathi S',manager:'Sridhar Dwadasi',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}},
+  // Swathi S — excluded (chat engineer)
   {name:'Vedha Vaidehi',manager:'Sridhar Dwadasi',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}},
   {name:'Ravi Kiran H S',manager:'Seth Kane',total:1,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':1}}
 ];
@@ -760,12 +927,12 @@ const lowApac = [
   {name:'Harshitha Mediboina',manager:'Sridhar Dwadasi',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':0,'Industry Core':11}},
   {name:'Lakshmi Sarayu Chiruvella',manager:'Rafik Shaikh',total:11,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':6,'Industry Core':5}},
   {name:'Archita Srivastava',manager:'Mahima Prathaban',total:10,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':7,'Industry Core':2}},
-  {name:'H V A Prasad Chatradi',manager:'Rafik Shaikh',total:10,mix:{RCA:0,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':1,'Industry Core':8}},
-  {name:'Udayasri Shivakoti',manager:'Rafik Shaikh',total:10,mix:{RCA:1,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':4,'Industry Core':5}},
+  // H V A Prasad Chatradi — excluded (chat engineer)
+  // Udayasri Shivakoti — excluded (chat engineer)
   {name:'Aabid Khan',manager:'Mahima Prathaban',total:9,mix:{RCA:7,'Rev CPQ':0,'Industry CPQ':2,'Industry Omni':0,'Industry Core':0}},
   {name:'ANUPAMA BINDU PRADEEP',manager:'Mahima Prathaban',total:9,mix:{RCA:4,'Rev CPQ':0,'Industry CPQ':5,'Industry Omni':0,'Industry Core':0}},
   {name:'Roshan Vemu',manager:'Rafik Shaikh',total:8,mix:{RCA:0,'Rev CPQ':0,'Industry CPQ':0,'Industry Omni':1,'Industry Core':7}},
-  {name:'Sai Varun Siddamsetty',manager:'Swetha B',total:8,mix:{RCA:6,'Rev CPQ':1,'Industry CPQ':1,'Industry Omni':0,'Industry Core':0}},
+  // Sai Varun Siddamsetty — excluded (chat engineer)
   {name:'Shubham Gourh',manager:'Swetha B',total:8,mix:{RCA:4,'Rev CPQ':1,'Industry CPQ':0,'Industry Omni':0,'Industry Core':2}},
   {name:'Enoch Samuel Bonthu',manager:'Rafik Shaikh',total:7,mix:{RCA:6,'Rev CPQ':0,'Industry CPQ':1,'Industry Omni':0,'Industry Core':0}},
   {name:'Govershan Vippala',manager:'Swetha B',total:5,mix:{RCA:1,'Rev CPQ':2,'Industry CPQ':2,'Industry Omni':0,'Industry Core':0}},
@@ -837,6 +1004,36 @@ renderHighLoad();
 renderLowLoad(lowEmea, 'lowEmeaBody');
 renderLowLoad(lowIndia, 'lowIndiaBody');
 renderLowLoad(lowApac, 'lowApacBody');
+
+// Heat: High-load backlog by manager stacked chart
+new Chart(document.getElementById('heatManagerChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Bhagat M\n(India)','Sridhar\n(EMEA)','Naren R\n(India)','Apurva A\n(EMEA)','Swetha B\n(APAC)','Seamus R\n(EMEA)','Manu R\n(India)','Eshant S\n(EMEA)','Darshan\n(EMEA)','Rafik S\n(APAC)','Mahima\n(APAC)'],
+    datasets: [
+      { label:'RCA',          data:[0,0,0,28,18,27,2,23,0,0,0],  backgroundColor:'#0969da', borderRadius:0 },
+      { label:'Rev CPQ',      data:[12,0,0,0,3,1,12,14,0,0,1],   backgroundColor:'#e16f24', borderRadius:0 },
+      { label:'Industry CPQ', data:[0,1,0,28,9,0,0,0,14,0,0],    backgroundColor:'#1a7f37', borderRadius:0 },
+      { label:'Industry Omni',data:[15,0,0,0,3,0,5,0,0,0,3],     backgroundColor:'#8250df', borderRadius:0 },
+      { label:'Industry Core',data:[88,74,43,8,11,0,13,0,0,13,10],backgroundColor:'#adb5bd', borderRadius:0 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position:'top', labels:{boxWidth:12, font:{size:11}} },
+      datalabels: {
+        display: ctx => ctx.dataset.data[ctx.dataIndex] > 8,
+        anchor:'center', align:'center', font:{size:10, weight:'bold'},
+        color:'#fff', formatter: v => v
+      }
+    },
+    scales: {
+      y: { stacked:true, beginAtZero:true, grid:{color:'#f0f3f6'}, title:{display:true,text:'High-load BL cases'} },
+      x: { stacked:true, grid:{display:false} }
+    }
+  }
+});
 
 function showTab(region) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
