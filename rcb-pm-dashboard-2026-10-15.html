@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCB — PM Review · Oct 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:#f6f8fa; --surface:#ffffff; --border:#d0d7de;
+    --text:#1f2328; --text2:#656d76; --sf-blue:#0176D3; --sf-dark:#032D60;
+    --sf-lighter:#EAF4FE; --red:#BA0517; --green:#2E844A; --yellow:#C99300;
+    --purple:#5C3DC3; --teal:#06A59A;
+    --font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:13px;line-height:1.5}
+  .page{max-width:1200px;margin:0 auto;padding:20px 24px}
+
+  /* Header */
+  .hdr{background:var(--sf-dark);color:#fff;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;border-radius:10px 10px 0 0;margin-bottom:0}
+  .hdr h1{font-size:18px;font-weight:700;letter-spacing:-.2px}
+  .hdr .sub{font-size:11px;opacity:.75;margin-top:3px}
+  .hdr .badge-row{display:flex;gap:8px;flex-wrap:wrap}
+  .hdr .b{background:rgba(255,255,255,.15);border-radius:12px;padding:3px 10px;font-size:10px;font-weight:600;white-space:nowrap}
+  .hdr .b.g{background:rgba(46,132,74,.5)}
+  .hdr .b.r{background:rgba(186,5,23,.5)}
+  .hdr .b.y{background:rgba(201,147,0,.45)}
+
+  /* Section */
+  .sec-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text2);margin:24px 0 10px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+
+  /* Cards */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-bottom:16px}
+  .card h2{font-size:13px;font-weight:600;margin-bottom:12px}
+
+  /* KPI row */
+  .kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 14px 12px}
+  .kpi .val{font-size:28px;font-weight:800;line-height:1;color:var(--sf-dark)}
+  .kpi .lbl{font-size:10px;color:var(--text2);margin-top:4px}
+  .kpi .sub{font-size:11px;font-weight:600;margin-top:3px}
+
+  /* Exec summary */
+  .exec-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .exec-panel{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+  .exec-panel h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;color:var(--text2)}
+  .exec-panel ul{padding-left:14px}
+  .exec-panel li{font-size:12px;line-height:1.9;color:var(--text)}
+  .exec-panel li strong{color:var(--sf-dark)}
+
+  /* Signal panels */
+  .signal-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+  .signal{border-radius:8px;padding:12px 14px}
+  .signal .sval{font-size:22px;font-weight:800;line-height:1}
+  .signal .slbl{font-size:11px;font-weight:600;margin-top:3px}
+  .signal .sdesc{font-size:11px;color:var(--text2);margin-top:4px;line-height:1.5}
+
+  /* Grids */
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+  .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+
+  /* Tables */
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{background:var(--bg);text-align:left;padding:7px 10px;font-weight:600;border-bottom:1px solid var(--border);color:var(--text2);font-size:10px;text-transform:uppercase;letter-spacing:.4px}
+  td{padding:6px 10px;border-bottom:1px solid #f0f2f5;vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#f8fafb}
+  .row-red td{background:#FFF0F0}
+  .row-amber td{background:#FFFBEA}
+  .row-green td{background:#EAF9EE}
+
+  /* Badges */
+  .badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600}
+  .b-crit{background:#FFD7D5;color:var(--red)}
+  .b-warn{background:#FFF3CD;color:var(--yellow)}
+  .b-ok{background:#DAFBE1;color:var(--green)}
+  .b-info{background:#DDF4FF;color:var(--sf-blue)}
+
+  /* Alert boxes */
+  .alert{background:#FFF0F0;border-left:4px solid var(--red);border-radius:0 6px 6px 0;padding:11px 14px;margin-bottom:10px;font-size:12px;line-height:1.6}
+  .warn{background:#FFFBEA;border-left:4px solid var(--yellow);border-radius:0 6px 6px 0;padding:11px 14px;margin-bottom:10px;font-size:12px;line-height:1.6}
+  .info{background:#EAF4FE;border-left:4px solid var(--sf-blue);border-radius:0 6px 6px 0;padding:11px 14px;margin-bottom:10px;font-size:12px;line-height:1.6}
+  .ok{background:#EAF9EE;border-left:4px solid var(--green);border-radius:0 6px 6px 0;padding:11px 14px;margin-bottom:10px;font-size:12px;line-height:1.6}
+
+  /* Chart */
+  .chart-wrap{position:relative}
+
+  /* TTR callout */
+  .ttr-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+  .ttr-card{flex:1;min-width:160px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+  .ttr-card .tv{font-size:32px;font-weight:800;line-height:1}
+  .ttr-card .tl{font-size:11px;color:var(--text2);margin-top:4px}
+  .ttr-card .tb{font-size:11px;margin-top:6px}
+
+  /* Problem tiles */
+  .prob-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+  .prob-tile{border-radius:8px;padding:12px 14px}
+  .prob-tile .pv{font-size:24px;font-weight:800;line-height:1}
+  .prob-tile .pl{font-size:11px;font-weight:600;margin-top:4px}
+  .prob-tile .pd{font-size:10px;color:var(--text2);margin-top:3px;line-height:1.4}
+
+  /* Heatmap */
+  .hm-cell{display:inline-flex;align-items:center;justify-content:center;width:38px;height:26px;border-radius:5px;font-weight:700;font-size:12px}
+
+  footer{text-align:center;font-size:10px;color:var(--text2);margin-top:28px;padding-top:12px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <h1>Revenue Cloud Billing — PM Review Dashboard</h1>
+    <div class="sub">886 cases · Feb 1 – Sep 24, 2026 · Source: OrgCS CSV · Built Oct 15, 2026</div>
+  </div>
+  <div class="badge-row">
+    <span class="b g">TTR 8.79d ✓</span>
+    <span class="b g">RCA TTR 7.46d ✓</span>
+    <span class="b">Target: 10d</span>
+    <span class="b r">6 open Sev-1s</span>
+    <span class="b y">2 active SIs</span>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ── KPI Row ── -->
+<div class="sec-title">Key Numbers — Feb to Sep 2026</div>
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="val">886</div>
+    <div class="lbl">Total RCB cases</div>
+    <div class="sub" style="color:var(--text2)">110 avg / month</div>
+  </div>
+  <div class="kpi">
+    <div class="val" style="color:var(--red)">129</div>
+    <div class="lbl">Sev-1 cases</div>
+    <div class="sub" style="color:var(--red)">14.6% of inflow</div>
+  </div>
+  <div class="kpi">
+    <div class="val" style="color:var(--green)">8.79d</div>
+    <div class="lbl">RCB TTR</div>
+    <div class="sub" style="color:var(--green)">Target 10d ✓</div>
+  </div>
+  <div class="kpi">
+    <div class="val" style="color:var(--green)">7.46d</div>
+    <div class="lbl">RCA TTR</div>
+    <div class="sub" style="color:var(--green)">Target 10d ✓</div>
+  </div>
+  <div class="kpi">
+    <div class="val" style="color:var(--sf-blue)">6.9%</div>
+    <div class="lbl">RCB share of RC Core</div>
+    <div class="sub" style="color:var(--text2)">Stable, not growing</div>
+  </div>
+  <div class="kpi">
+    <div class="val">230</div>
+    <div class="lbl">Unique accounts</div>
+    <div class="sub" style="color:var(--text2)">21 new in Sep</div>
+  </div>
+</div>
+
+<!-- ── Executive Summary ── -->
+<div class="sec-title">Executive Summary</div>
+<div class="exec-grid">
+  <div class="exec-panel">
+    <h3>What the data says</h3>
+    <ul>
+      <li><strong>57% of cases are "User Needs Education"</strong> — customers can't find how to do something. This is a documentation and onboarding gap, not a product defect.</li>
+      <li><strong>10% are confirmed product bugs (85 cases)</strong> — but 37 unique bugs filed across 886 cases means many cases share the same underlying defect. Fix 1 bug = deflect 5–10 cases.</li>
+      <li><strong>TTR is healthy</strong> — RCB at 8.79d, RCA at 7.46d, both well within 10d target. Support team is resolving on time.</li>
+      <li><strong>Billing Batch Scheduler</strong> named by 4 independent accounts in Summer '26 — a named regression, not isolated config issues.</li>
+      <li><strong>Invoice generation is the #1 pain point</strong> (105 cases) — non-actionable error messages drive repeated case filing; customers can't self-recover.</li>
+    </ul>
+  </div>
+  <div class="exec-panel">
+    <h3>PM action items from support signal</h3>
+    <ul>
+      <li><strong>Error messages on invoice/billing failures</strong> — field-level, actionable errors would deflect 50+ cases/quarter (currently generic system errors).</li>
+      <li><strong>Stuck invoice recovery runbook</strong> — all stuck invoice cases escalate to engineering; a self-service playbook breaks the dependency.</li>
+      <li><strong>W-23554160 (Payment field visibility)</strong> — ECi go-live blocker, 3 accounts affected, no ETA. Needs priority.</li>
+      <li><strong>W-24088655 (State/Country picklist 264)</strong> — 3 accounts, invoice generation failing. 264 regression.</li>
+      <li><strong>Tax: Avalara adapter + OOTB</strong> — EMEA/APAC/JP concentrated, 74 cases, multi-account cross-region pain.</li>
+      <li><strong>Dunning/CollectionPlan extensibility</strong> — W-23968484 triaged but unscheduled; WebPT ramp shows growing need.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ── TTR ── -->
+<div class="sec-title">Time to Resolution (TTR)</div>
+<div class="ttr-row">
+  <div class="ttr-card">
+    <div class="tv" style="color:var(--green)">8.79d</div>
+    <div class="tl">RCB Average TTR · Feb–Sep 2026</div>
+    <div class="tb" style="color:var(--green)">✓ 12% better than 10d target</div>
+  </div>
+  <div class="ttr-card">
+    <div class="tv" style="color:var(--green)">7.46d</div>
+    <div class="tl">RCA Average TTR · Feb–Sep 2026</div>
+    <div class="tb" style="color:var(--green)">✓ 25% better than 10d target</div>
+  </div>
+  <div class="ttr-card" style="flex:2">
+    <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">Context</div>
+    <div style="font-size:12px;color:var(--text);line-height:1.7">
+      Both RCB and RCA are resolving faster than the 10-day target. RCB's slightly higher TTR (vs RCA) is explained by the Sev-1 concentration — ECi (22 Sev-1s), Bluvium (15), and Bluebeam (5) pull averages up. Sev-1 cases with active GUS investigations take 2–3× longer to close. Cases aged >20 days (91 total) are dominated by accounts waiting on engineering fixes (W-23554160, W-24286890).
+    </div>
+  </div>
+</div>
+
+<!-- ── Volume Trend + Problem Areas ── -->
+<div class="sec-title">Monthly Volume & Top Problem Areas (from case subjects)</div>
+<div class="g2">
+  <div class="card" style="margin:0">
+    <h2>Monthly Case Inflow — Feb to Sep 2026</h2>
+    <div class="chart-wrap" style="height:200px"><canvas id="inflowChart"></canvas></div>
+    <div style="margin-top:10px;font-size:11px;color:var(--text2);line-height:1.6">
+      Apr peak (128) → Jul trough (88, go-live completions) → Sep recovering (104, partial).
+      <span style="color:var(--red)">▲ Billing Batch Scheduler regression</span> named by 4 independent accounts in Summer '26.
+    </div>
+  </div>
+  <div class="card" style="margin:0">
+    <h2>Case Cause Distribution</h2>
+    <div class="chart-wrap" style="height:200px"><canvas id="causeChart"></canvas></div>
+    <div style="margin-top:10px;font-size:11px;color:var(--text2);line-height:1.6">
+      <strong style="color:var(--sf-dark)">57% Documentation/Knowledge</strong> — customers don't know how to use the product, not a product defect.
+      <strong style="color:var(--red)">10% Product Bug</strong> — 85 confirmed bug cases.
+    </div>
+  </div>
+</div>
+
+<!-- ── Problem tiles ── -->
+<div class="prob-grid">
+  <div class="prob-tile" style="background:#FFF0F0">
+    <div class="pv" style="color:var(--red)">105</div>
+    <div class="pl">Invoice Generation Failures</div>
+    <div class="pd">Not generating · batch errors · quota failures · stuck/void</div>
+  </div>
+  <div class="prob-tile" style="background:#FFF7EA">
+    <div class="pv" style="color:var(--yellow)">67</div>
+    <div class="pl">Tax Calculation Wrong</div>
+    <div class="pd">EMEA/JP/APAC concentrated · Avalara + OOTB · multi-country</div>
+  </div>
+  <div class="prob-tile" style="background:#FFF7EA">
+    <div class="pv" style="color:var(--yellow)">62</div>
+    <div class="pl">Payment Processing</div>
+    <div class="pd">Gateway setup · batch stuck · Dunning/CollectionPlan</div>
+  </div>
+  <div class="prob-tile" style="background:#FFF7EA">
+    <div class="pv" style="color:var(--yellow)">57</div>
+    <div class="pl">Billing Batch Scheduler</div>
+    <div class="pd">Stuck · silent fail · <strong>Summer '26 regression (4 accounts)</strong></div>
+  </div>
+  <div class="prob-tile" style="background:#FFF7EA">
+    <div class="pv" style="color:var(--yellow)">57</div>
+    <div class="pl">Billing Schedule Not Created</div>
+    <div class="pd">On order activation · renewal · API failures</div>
+  </div>
+  <div class="prob-tile" style="background:#f6f8fa">
+    <div class="pv" style="color:var(--text2)">38</div>
+    <div class="pl">Usage Billing Failures</div>
+    <div class="pd">Summaries not created · tier calculation wrong</div>
+  </div>
+  <div class="prob-tile" style="background:#f6f8fa">
+    <div class="pv" style="color:var(--text2)">35</div>
+    <div class="pl">Renewal / Cancel / Amend</div>
+    <div class="pd">Evergreen rebilling · cancel not stopping charges</div>
+  </div>
+  <div class="prob-tile" style="background:#f6f8fa">
+    <div class="pv" style="color:var(--text2)">35</div>
+    <div class="pl">Credit Memo Failures</div>
+    <div class="pd">Create · apply · void · error status</div>
+  </div>
+  <div class="prob-tile" style="background:#f6f8fa">
+    <div class="pv" style="color:var(--text2)">21</div>
+    <div class="pl">Transaction Journal / GL</div>
+    <div class="pd">TJs not created · deadlock · stuck Pending</div>
+  </div>
+</div>
+
+<!-- ── Case Cause + Sub Cause + Feature ── -->
+<div class="sec-title">Issue Categorisation (RCAT)</div>
+<div class="g3">
+  <div class="card" style="margin:0">
+    <h2>Case Cause</h2>
+    <table>
+      <thead><tr><th>Cause</th><th style="text-align:right">Cases</th><th style="text-align:right">%</th></tr></thead>
+      <tbody>
+        <tr style="background:#EAF4FE"><td><strong>Documentation / User Knowledge</strong></td><td style="text-align:right;font-weight:700">507</td><td style="text-align:right;font-weight:700;color:var(--sf-blue)">57%</td></tr>
+        <tr style="background:#FFF0F0"><td><strong>Product / Instance / Infra Issue</strong></td><td style="text-align:right;font-weight:700">85</td><td style="text-align:right;font-weight:700;color:var(--red)">10%</td></tr>
+        <tr><td>Out of Scope</td><td style="text-align:right">19</td><td style="text-align:right">2%</td></tr>
+        <tr><td>Duplicate</td><td style="text-align:right">1</td><td style="text-align:right">&lt;1%</td></tr>
+        <tr><td>Proactive Outbound</td><td style="text-align:right">1</td><td style="text-align:right">&lt;1%</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;background:#EAF4FE;border-radius:6px;padding:9px 11px;font-size:11px;line-height:1.6">
+      <strong>Key signal:</strong> 57% is a documentation/onboarding gap. Each % point here = 8–9 cases/quarter preventable with better docs or error messages.
+    </div>
+  </div>
+  <div class="card" style="margin:0">
+    <h2>Sub Cause</h2>
+    <table>
+      <thead><tr><th>Sub Cause</th><th style="text-align:right">Cases</th></tr></thead>
+      <tbody>
+        <tr style="background:#EAF4FE"><td><strong>User Needs Education</strong></td><td style="text-align:right;font-weight:700">453</td></tr>
+        <tr><td>Need Better Documentation</td><td style="text-align:right">40</td></tr>
+        <tr style="background:#FFF0F0"><td><strong>Product Bug</strong></td><td style="text-align:right;font-weight:700;color:var(--red)">34</td></tr>
+        <tr><td>Feature Limit / Activation</td><td style="text-align:right">20</td></tr>
+        <tr><td>New Feature Request</td><td style="text-align:right">17</td></tr>
+        <tr><td>Other Issues</td><td style="text-align:right">11</td></tr>
+        <tr><td>Error Message Issue</td><td style="text-align:right;color:var(--yellow);font-weight:600">10</td></tr>
+        <tr><td>License Issue</td><td style="text-align:right">5</td></tr>
+        <tr><td>Provisioning</td><td style="text-align:right">3</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card" style="margin:0">
+    <h2>Feature Area</h2>
+    <table>
+      <thead><tr><th>Feature</th><th style="text-align:right">Cases</th></tr></thead>
+      <tbody>
+        <tr style="background:#FFF0F0"><td><strong>Invoicing — Billing Setup</strong></td><td style="text-align:right;font-weight:700">371</td></tr>
+        <tr><td>Other</td><td style="text-align:right">194</td></tr>
+        <tr><td>Invoicing — Invoice Settlement</td><td style="text-align:right">114</td></tr>
+        <tr><td>Invoicing — Tax</td><td style="text-align:right;color:var(--yellow);font-weight:600">74</td></tr>
+        <tr><td>Payments — Process Payments</td><td style="text-align:right">47</td></tr>
+        <tr><td>Invoicing — Credits Generation</td><td style="text-align:right">35</td></tr>
+        <tr><td>Payments — Invoice Settlement</td><td style="text-align:right">30</td></tr>
+        <tr><td>Accounting — SubLedger AR</td><td style="text-align:right">6</td></tr>
+        <tr><td>Accounting — Periods & Closure</td><td style="text-align:right">6</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── VOC Themes ── -->
+<div class="sec-title">VOC Themes — PM Product Gaps</div>
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Theme</th>
+        <th style="text-align:right">Cases</th>
+        <th>Key Accounts</th>
+        <th>Product Gap / Recommended Action</th>
+        <th>W-Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-red">
+        <td><strong>Invoice generation failures</strong></td>
+        <td style="text-align:right;font-weight:700;color:var(--red)">105</td>
+        <td>Cloudity, InformaOne, RevCycle, S&P, Haier</td>
+        <td>Non-actionable error messages — customers can't self-recover. Need field-level errors + recovery docs.</td>
+        <td style="font-family:monospace;font-size:10px">W-24088655</td>
+      </tr>
+      <tr class="row-red">
+        <td><strong>Billing Batch Scheduler stuck</strong></td>
+        <td style="text-align:right;font-weight:700;color:var(--red)">57</td>
+        <td>Capital One, ECi, Qualifacts, Conceal, Haier, S&P</td>
+        <td>Summer '26 regression — 4 independent accounts. Retry, error handling, observability improvements needed.</td>
+        <td style="font-family:monospace;font-size:10px">—</td>
+      </tr>
+      <tr class="row-amber">
+        <td><strong>Tax calculation wrong</strong></td>
+        <td style="text-align:right;font-weight:700;color:var(--yellow)">74</td>
+        <td>Cloudity, William Reed, Wapice Oy, Syngenta, Global Blue</td>
+        <td>Avalara adapter + OOTB tax for EMEA/APAC/JP — recurring cross-customer pain, multi-locale gaps.</td>
+        <td style="font-family:monospace;font-size:10px">W-21963276</td>
+      </tr>
+      <tr class="row-amber">
+        <td><strong>Billing Schedule not generating</strong></td>
+        <td style="text-align:right;font-weight:700;color:var(--yellow)">57</td>
+        <td>Veeam, JTL, Cloud Hop Kenya, ECi, RevCycle</td>
+        <td>Renewal and RLM order flows — schedule generation reliability gap.</td>
+        <td style="font-family:monospace;font-size:10px">—</td>
+      </tr>
+      <tr class="row-amber">
+        <td><strong>Payment field visibility</strong></td>
+        <td style="text-align:right;font-weight:700;color:var(--yellow)">3+</td>
+        <td>ECi (go-live blocker), Thunder, ABC Home</td>
+        <td>Balance/Applied/Unapplied not in List View or formula editor — ECi go-live blocked, no ETA.</td>
+        <td style="font-family:monospace;font-size:10px;color:var(--red);font-weight:700">W-23554160</td>
+      </tr>
+      <tr>
+        <td><strong>Credit memo operations</strong></td>
+        <td style="text-align:right">35</td>
+        <td>S&P, Kaseya, Arthur Gallagher, ECi, William Reed</td>
+        <td>Create/void/apply workflows have multiple failure modes — harden error messaging.</td>
+        <td style="font-family:monospace;font-size:10px">—</td>
+      </tr>
+      <tr>
+        <td><strong>Transaction Journal / GL missing</strong></td>
+        <td style="text-align:right">21</td>
+        <td>Capital One, ECi</td>
+        <td>Invoice lines not creating TJ entries — data integrity concern.</td>
+        <td style="font-family:monospace;font-size:10px">W-22357449</td>
+      </tr>
+      <tr>
+        <td><strong>Non-US/CA address handling</strong></td>
+        <td style="text-align:right">8+</td>
+        <td>Wapice Oy, Syngenta, RevCycle/Halter, Cloudity</td>
+        <td>State/Country picklist regression (264) + Ingest API — locale coverage gaps.</td>
+        <td style="font-family:monospace;font-size:10px">W-24088655, W-21963276</td>
+      </tr>
+      <tr>
+        <td><strong>Dunning / CollectionPlan</strong></td>
+        <td style="text-align:right">15+</td>
+        <td>WebPT, ECi, others ramping</td>
+        <td>CollectionPlan Context Definition not extensible — triaged (W-23968484) but unscheduled (10 SP).</td>
+        <td style="font-family:monospace;font-size:10px">W-23968484</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── Bug & GUS Signals ── -->
+<div class="sec-title">Bug & GUS Signal Summary</div>
+<div class="g2">
+  <div class="card" style="margin:0">
+    <table>
+      <thead><tr><th>Category</th><th style="text-align:right">Count</th><th style="text-align:right">% of Inflow</th><th>Signal</th></tr></thead>
+      <tbody>
+        <tr style="background:#FFF0F0"><td><strong>Bugs (confirmed defects)</strong></td><td style="text-align:right;font-weight:700;color:var(--red)">37</td><td style="text-align:right;font-weight:700;color:var(--red)">4.2%</td><td>37 unique bugs across 886 cases</td></tr>
+        <tr style="background:#EAF4FE"><td><strong>GUS Investigations</strong></td><td style="text-align:right;font-weight:700;color:var(--sf-blue)">55</td><td style="text-align:right;font-weight:700;color:var(--sf-blue)">6.2%</td><td>Linked across cases</td></tr>
+        <tr><td>User Stories</td><td style="text-align:right;font-weight:700">16</td><td style="text-align:right">1.8%</td><td>Engineering work items linked to customer cases</td></tr>
+        <tr style="background:#FFF7EA"><td><strong>Active SIs (Acknowledged)</strong></td><td style="text-align:right;font-weight:700;color:var(--yellow)">2</td><td style="text-align:right">—</td><td>W-24286890 · W-24301325 (both Deloitte, Sep 24–25)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card" style="margin:0">
+    <h2>Open Defects Needing PM Attention</h2>
+    <table>
+      <thead><tr><th>W-Number</th><th>Title</th><th>Status</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr class="row-red"><td style="font-family:monospace;font-size:10px;font-weight:700">W-23554160</td><td>Payment field visibility (List View / Formula)</td><td><span class="badge b-crit">Go-live blocker</span></td><td>ECi + Thunder blocked</td></tr>
+        <tr class="row-red"><td style="font-family:monospace;font-size:10px;font-weight:700">W-24088655</td><td>State/Country picklist 264 regression</td><td><span class="badge b-crit">3 accounts</span></td><td>Invoice generation fail</td></tr>
+        <tr class="row-amber"><td style="font-family:monospace;font-size:10px">W-23968484</td><td>Dunning CollectionPlan extensibility</td><td><span class="badge b-warn">Triaged, unscheduled</span></td><td>10 SP, growing demand</td></tr>
+        <tr class="row-amber"><td style="font-family:monospace;font-size:10px">W-24244929</td><td>Missing BillingTerm field 264 → 266</td><td><span class="badge b-warn">266 targeted</span></td><td>RCB orgs in Winter '27</td></tr>
+        <tr><td style="font-family:monospace;font-size:10px">W-18201275</td><td>Order to BS API — batch limit exception</td><td><span class="badge b-info">Backlog (18 mo)</span></td><td>Newsale orders no assets</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── GEO + Account Heatmap ── -->
+<div class="sec-title">GEO Split & Account Heat</div>
+<div class="g2">
+  <div class="card" style="margin:0">
+    <h2>Cases by Support Region</h2>
+    <div class="chart-wrap" style="height:200px"><canvas id="geoChart"></canvas></div>
+    <div style="margin-top:10px;font-size:11px;color:var(--text2);line-height:1.6">
+      EMEA (31%) + India (24%) = <strong>55% of RCB volume</strong> from EMEA+IST combined.
+      Tax issues are heavily EMEA/APAC/JP concentrated — Avalara adapter and multi-locale gaps disproportionately impact non-AMER customers.
+    </div>
+  </div>
+  <div class="card" style="margin:0">
+    <h2>Account Risk Heat</h2>
+    <table>
+      <thead><tr><th>Account</th><th>Cases</th><th>Open S1</th><th>Aged</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr class="row-red"><td><strong>ECi</strong></td><td>35</td><td style="color:var(--red);font-weight:700">2</td><td>2</td><td><span class="badge b-crit">CRITICAL</span></td></tr>
+        <tr class="row-red"><td><strong>PwC</strong> <span style="font-size:9px;color:var(--purple)">[P]</span></td><td>16</td><td style="color:var(--red);font-weight:700">2</td><td>1</td><td><span class="badge b-crit">CRITICAL</span></td></tr>
+        <tr class="row-red"><td><strong>Bluvium Inc</strong> <span style="font-size:9px;color:var(--purple)">[P]</span></td><td>32</td><td style="color:var(--red);font-weight:700">1</td><td>2</td><td><span class="badge b-crit">ACTIVE S1</span></td></tr>
+        <tr class="row-amber"><td><strong>AI inside Inc.</strong></td><td>20</td><td>0</td><td style="color:var(--red);font-weight:700">10</td><td><span class="badge b-warn">AGED</span></td></tr>
+        <tr class="row-amber"><td><strong>Deloitte (×2)</strong></td><td>4</td><td>0</td><td>0</td><td><span class="badge b-warn">2 ACTIVE SI</span></td></tr>
+        <tr class="row-amber"><td><strong>WebPT.com</strong></td><td>16</td><td>0</td><td>1</td><td><span class="badge b-warn">▲ SEP SURGE</span></td></tr>
+        <tr class="row-amber"><td><strong>BC-data</strong></td><td>13</td><td>0</td><td>0</td><td><span class="badge b-warn">▲ SEP SURGE</span></td></tr>
+        <tr><td><strong>S&P Global</strong></td><td>34</td><td>0</td><td>5</td><td><span class="badge b-info">STABLE</span></td></tr>
+        <tr><td><strong>Veeam Software</strong></td><td>6</td><td>0</td><td>1</td><td><span class="badge b-warn">38d open</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── Account Heatmap ── -->
+<div class="sec-title">Top 10 Accounts — Monthly Volume Heatmap (Feb–Sep 2026)</div>
+<div class="card">
+  <div id="acctHeatmap"></div>
+  <div style="display:flex;align-items:center;gap:16px;margin-top:10px;flex-wrap:wrap">
+    <div style="font-size:10px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.3px">Intensity:</div>
+    <div style="display:flex;gap:6px;align-items:center;font-size:10px;color:var(--text2)">
+      <span style="display:inline-block;width:22px;height:14px;background:#f0f2f5;border:1px solid #dde;border-radius:3px"></span>0
+      <span style="display:inline-block;width:22px;height:14px;background:#d4eaf9;border-radius:3px"></span>1–2
+      <span style="display:inline-block;width:22px;height:14px;background:#7bbde3;border-radius:3px"></span>3–4
+      <span style="display:inline-block;width:22px;height:14px;background:#0176D3;border-radius:3px"></span>5–6
+      <span style="display:inline-block;width:22px;height:14px;background:#014486;border-radius:3px"></span>7–9
+      <span style="display:inline-block;width:22px;height:14px;background:#BA0517;border-radius:3px"></span>10+
+    </div>
+  </div>
+</div>
+
+<!-- ── RCB vs RCA Share ── -->
+<div class="sec-title">RCB vs RCA — Monthly Volume Share Within Revenue Cloud (Core)</div>
+<div class="g2">
+  <div class="card" style="margin:0">
+    <h2>RCB % Share — zoomed 4–10%</h2>
+    <div class="chart-wrap" style="height:180px"><canvas id="shareChart"></canvas></div>
+  </div>
+  <div class="card" style="margin:0">
+    <h2>RCB Absolute Volume (cases)</h2>
+    <div class="chart-wrap" style="height:180px"><canvas id="shareVolChart"></canvas></div>
+  </div>
+</div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+  <div style="flex:1;min-width:240px;background:var(--sf-lighter);border-radius:8px;padding:12px 14px">
+    <div style="font-weight:600;font-size:12px;margin-bottom:4px">RCB is a stable 6–8% of RC Core volume</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.5">Despite 886 cases, RCB generates roughly 1 in 14 RC Core tickets every month — consistent, not expanding. Product growth is not translating to disproportionate support load.</div>
+  </div>
+  <div style="flex:1;min-width:240px;background:#FFF0F0;border-radius:8px;padding:12px 14px;border-left:3px solid var(--red)">
+    <div style="font-weight:600;font-size:12px;margin-bottom:4px">Jul dip was go-live completions, not product improvement</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.5">Jul dropped to 5.6% as Kaseya and Capital One completed go-lives. RCB bounced to 6.9–7.1% in Aug–Sep as WebPT and ECi ramped — structural volume unchanged.</div>
+  </div>
+</div>
+
+<footer>
+  Revenue Cloud Billing · PM Review Dashboard · Oct 15, 2026 · Source: OrgCS CSV 886 cases (Feb 1–Sep 24 2026) · TTR: RCB 8.79d · RCA 7.46d · Target 10d
+</footer>
+
+</div><!-- /page -->
+
+<script>
+// ── Inflow chart ──
+new Chart(document.getElementById('inflowChart'), {
+  type:'line',
+  data:{
+    labels:['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'],
+    datasets:[{
+      label:'Cases',
+      data:[103,123,128,113,121,88,106,104],
+      borderColor:'#0176D3', backgroundColor:'rgba(1,118,211,0.08)',
+      borderWidth:2.5, pointRadius:5, fill:true, tension:0.35,
+      pointBackgroundColor:['#0176D3','#0176D3','#BA0517','#0176D3','#0176D3','#2E844A','#0176D3','#C99300']
+    },{
+      label:'New bugs surfaced',
+      data:[2,8,5,9,8,3,10,6],
+      borderColor:'#BA0517', borderDash:[5,3],
+      borderWidth:2, fill:false, tension:0.3, pointRadius:4,
+      pointBackgroundColor:'#BA0517', yAxisID:'y2'
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{boxWidth:11,font:{size:10}}},tooltip:{mode:'index',intersect:false}},
+    scales:{
+      y:{min:70,max:140,ticks:{font:{size:10}},grid:{color:'#eee'}},
+      y2:{position:'right',min:0,max:14,ticks:{color:'#BA0517',font:{size:10}},grid:{drawOnChartArea:false}},
+      x:{ticks:{font:{size:10}},grid:{display:false}}
+    }
+  }
+});
+
+// ── Case Cause donut ──
+new Chart(document.getElementById('causeChart'), {
+  type:'doughnut',
+  data:{
+    labels:['Documentation/Knowledge (57%)','Product Bug (10%)','Out of Scope (2%)','Other (<1%)'],
+    datasets:[{
+      data:[507,85,19,2],
+      backgroundColor:['#0176D3','#BA0517','#C99300','#d0d7de'],
+      borderWidth:2, borderColor:'#fff'
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:10},padding:8}},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.parsed} cases`}}}
+  }
+});
+
+// ── GEO chart ──
+new Chart(document.getElementById('geoChart'), {
+  type:'bar',
+  data:{
+    labels:['AMER','EMEA','India','APAC','JP'],
+    datasets:[{
+      data:[318,278,217,36,28],
+      backgroundColor:['rgba(1,118,211,0.7)','rgba(186,5,23,0.7)','rgba(186,5,23,0.55)','rgba(46,132,74,0.6)','rgba(92,61,195,0.6)'],
+      borderRadius:4
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false, indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.x} cases`}}},
+    scales:{x:{ticks:{font:{size:10}},grid:{color:'#eee'}},y:{ticks:{font:{size:10}},grid:{display:false}}}
+  }
+});
+
+// ── Share line chart (zoomed) ──
+(function(){
+  const months=['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'];
+  const rcbPct=[6.1,6.8,7.7,7.7,7.1,5.6,6.9,7.1];
+  const avg=rcbPct.map(()=>6.9);
+  new Chart(document.getElementById('shareChart'),{
+    type:'line',
+    data:{labels:months,datasets:[
+      {label:'RCB %',data:rcbPct,borderColor:'#BA0517',backgroundColor:'rgba(186,5,23,0.09)',borderWidth:2.5,fill:true,tension:0.35,pointRadius:5,pointBackgroundColor:'#BA0517'},
+      {label:'Avg 6.9%',data:avg,borderColor:'#888',borderDash:[5,4],borderWidth:1.5,pointRadius:0,fill:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:11,font:{size:10}}},tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y}%`}}},
+      scales:{y:{min:4,max:10,ticks:{callback:v=>v+'%',font:{size:10},stepSize:1},grid:{color:'#eee'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}
+  });
+  const rcbVol=[103,123,128,113,121,88,106,104];
+  new Chart(document.getElementById('shareVolChart'),{
+    type:'bar',
+    data:{labels:months,datasets:[{label:'RCB cases',data:rcbVol,
+      backgroundColor:rcbVol.map(v=>v===Math.max(...rcbVol)?'rgba(186,5,23,0.75)':v===Math.min(...rcbVol)?'rgba(201,147,0,0.65)':'rgba(1,118,211,0.45)'),
+      borderColor:rcbVol.map(v=>v===Math.max(...rcbVol)?'#BA0517':v===Math.min(...rcbVol)?'#C99300':'#0176D3'),
+      borderWidth:1.5,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.y} cases`}}},
+      scales:{y:{min:70,max:140,ticks:{font:{size:10},stepSize:14},grid:{color:'#eee'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}
+  });
+})();
+
+// ── Account heatmap ──
+(function(){
+  const months=['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep*'];
+  const accounts=[
+    {name:'ECi',total:35,flag:'🔴',data:[0,1,5,3,6,6,10,4]},
+    {name:'S&P Global',total:34,flag:'',data:[7,3,5,4,4,5,4,2]},
+    {name:'Kaseya',total:28,flag:'✅',data:[6,8,4,5,5,0,0,0]},
+    {name:'Capital One',total:22,flag:'✅',data:[2,6,8,3,1,1,1,0]},
+    {name:'Bluebeam',total:20,flag:'',data:[4,3,4,4,2,0,2,1]},
+    {name:'AI inside',total:20,flag:'',data:[0,0,4,3,6,3,1,3]},
+    {name:'WebPT',total:16,flag:'📈',data:[0,0,0,1,0,3,5,7]},
+    {name:'Infor',total:15,flag:'',data:[2,3,1,3,3,1,0,2]},
+    {name:'Arthur Gallagher',total:13,flag:'',data:[1,3,1,1,1,0,5,1]},
+    {name:'JTL-Software',total:13,flag:'',data:[2,3,0,1,0,0,3,4]}
+  ];
+  function cellColor(v){
+    if(v===0)return{bg:'#f0f2f5',fg:'#bbb'};
+    if(v<=2)return{bg:'#d4eaf9',fg:'#0176D3'};
+    if(v<=4)return{bg:'#7bbde3',fg:'#fff'};
+    if(v<=6)return{bg:'#0176D3',fg:'#fff'};
+    if(v<=9)return{bg:'#014486',fg:'#fff'};
+    return{bg:'#BA0517',fg:'#fff'};
+  }
+  const COL_W=54,ROW_H=34,LABEL_W=150,TOTAL_W=44;
+  let html=`<div style="font-family:var(--font);font-size:11px;width:${LABEL_W+COL_W*months.length+TOTAL_W+2}px">`;
+  html+=`<div style="display:flex;align-items:center;height:${ROW_H-4}px;margin-bottom:2px">`;
+  html+=`<div style="width:${LABEL_W}px;font-weight:600;color:var(--text2);padding-left:4px">Account</div>`;
+  months.forEach(m=>{html+=`<div style="width:${COL_W}px;text-align:center;font-weight:600;color:var(--text2)">${m}</div>`;});
+  html+=`<div style="width:${TOTAL_W}px;text-align:center;font-weight:600;color:var(--text2)">Total</div></div>`;
+  accounts.forEach((a,i)=>{
+    const bg=i%2===0?'#fafbfc':'#fff';
+    html+=`<div style="display:flex;align-items:center;height:${ROW_H}px;background:${bg};border-radius:4px;margin-bottom:2px">`;
+    html+=`<div style="width:${LABEL_W}px;padding-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:${a.total>=28?'600':'400'}">${a.flag?a.flag+' ':''}${a.name}</div>`;
+    a.data.forEach(v=>{const c=cellColor(v);const lbl=v===0?'·':v;html+=`<div style="width:${COL_W}px;text-align:center"><div style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:26px;background:${c.bg};color:${c.fg};border-radius:5px;font-weight:600;font-size:12px">${lbl}</div></div>`;});
+    html+=`<div style="width:${TOTAL_W}px;text-align:center;font-weight:700;color:#444F61">${a.total}</div></div>`;
+  });
+  html+=`</div>`;
+  document.getElementById('acctHeatmap').innerHTML=html;
+})();
+</script>
+</body>
+</html>
