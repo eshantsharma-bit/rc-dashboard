@@ -366,8 +366,8 @@ body { background: var(--bg); color: var(--text); }
 
   <!-- HIGH LOAD TABLE -->
   <div class="card mb20">
-    <div class="card-header">🔴 High-Load Engineers — 37 engineers &gt;12 cases &nbsp;<span style="font-size:11px;font-weight:400;color:var(--muted)">3 chat engineers removed (Sriya Bonda, Anish Sahay, Srirama Tejaswi)</span>
-      <span class="badge badge-red">Sorted by case count ↓</span>
+    <div class="card-header">🔴 High-Load — 37 engineers &gt;12 cases
+      <span style="font-size:11px;font-weight:400;color:var(--muted)">Primary = dominant product · 🔒 Bench = ≥70% one product (single-skilled risk)</span>
     </div>
     <div class="card-body" style="padding:0; overflow-x:auto;">
       <table class="eng-table">
@@ -377,6 +377,7 @@ body { background: var(--bg); color: var(--text); }
             <th>Region</th>
             <th>Manager</th>
             <th>Total</th>
+            <th>Primary Skill</th>
             <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th>
             <th>Mix</th>
           </tr>
@@ -388,28 +389,31 @@ body { background: var(--bg); color: var(--text); }
 
   <!-- LOW LOAD TABS -->
   <div class="card">
-    <div class="card-header">🟢 Low-Load Engineers — 78 engineers ≤12 cases &nbsp;<span style="font-size:11px;font-weight:400;color:var(--muted)">8 chat engineers removed</span></div>
+    <div class="card-header">🟢 Low-Load — 78 engineers ≤12 cases
+      <span style="font-size:11px;font-weight:400;color:var(--muted)">Primary = skill with most cases · use to identify absorption capacity by product</span>
+    </div>
     <div class="card-body" style="padding-bottom:0;">
-      <div class="tabs">
+      <div id="lowSkillSummary" style="padding:10px 16px 0; display:flex; gap:8px; flex-wrap:wrap;"></div>
+      <div class="tabs" style="margin-top:10px;">
         <div class="tab active" onclick="showTab('emea')">EMEA (29)</div>
         <div class="tab" onclick="showTab('india')">India (31)</div>
         <div class="tab" onclick="showTab('apac')">APAC (18)</div>
       </div>
       <div id="pane-emea" class="tab-pane active" style="overflow-x:auto;">
         <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>Total</th>
+          <th>Engineer</th><th>Manager</th><th>Total</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="lowEmeaBody"></tbody></table>
       </div>
       <div id="pane-india" class="tab-pane" style="overflow-x:auto;">
         <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>Total</th>
+          <th>Engineer</th><th>Manager</th><th>Total</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="lowIndiaBody"></tbody></table>
       </div>
       <div id="pane-apac" class="tab-pane" style="overflow-x:auto;">
         <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>Total</th>
+          <th>Engineer</th><th>Manager</th><th>Total</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="lowApacBody"></tbody></table>
       </div>
@@ -1005,6 +1009,17 @@ function pillFor(g, count) {
   return `<span class="pill pill-${cls}">${count}</span>`;
 }
 
+function primarySkill(mix, total) {
+  if (!total) return '<span style="color:#ccc">—</span>';
+  let top = null, topN = 0;
+  for (const g of GROUPS) { if (mix[g] > topN) { topN = mix[g]; top = g; } }
+  if (!top) return '<span style="color:#ccc">—</span>';
+  const pct = Math.round(topN / total * 100);
+  const cls = GROUP_CLASS[top] || 'icore';
+  const bench = pct >= 70 ? ' 🔒' : '';
+  return `<span class="pill pill-${cls}">${top}</span> <span style="font-size:11px;color:var(--muted)">${pct}%${bench}</span>`;
+}
+
 function renderHighLoad() {
   const body = document.getElementById('highLoadBody');
   body.innerHTML = highEngineers.map(e => `<tr>
@@ -1012,6 +1027,7 @@ function renderHighLoad() {
     <td>${regionTag(e.region)}</td>
     <td><div class="eng-manager">${e.manager}</div></td>
     <td><span class="total-badge total-hi">${e.total}</span></td>
+    <td>${primarySkill(e.mix, e.total)}</td>
     <td>${pillFor('RCA',e.mix.RCA)}</td>
     <td>${pillFor('Rev CPQ',e.mix['Rev CPQ'])}</td>
     <td>${pillFor('Industry CPQ',e.mix['Industry CPQ'])}</td>
@@ -1027,6 +1043,7 @@ function renderLowLoad(data, bodyId) {
     <td><div class="eng-name">${e.name}</div></td>
     <td><div class="eng-manager">${e.manager}</div></td>
     <td><span class="total-badge total-lo">${e.total}</span></td>
+    <td>${primarySkill(e.mix, e.total)}</td>
     <td>${pillFor('RCA',e.mix.RCA)}</td>
     <td>${pillFor('Rev CPQ',e.mix['Rev CPQ'])}</td>
     <td>${pillFor('Industry CPQ',e.mix['Industry CPQ'])}</td>
@@ -1034,6 +1051,31 @@ function renderLowLoad(data, bodyId) {
     <td>${pillFor('Industry Core',e.mix['Industry Core'])}</td>
     <td style="min-width:80px;">${mixBar(e.mix)}</td>
   </tr>`).join('');
+}
+
+function renderLowSkillSummary() {
+  const all = [
+    ...lowEmea.filter(e => APPROVED_MANAGERS.has(e.manager)),
+    ...lowIndia.filter(e => APPROVED_MANAGERS.has(e.manager)),
+    ...lowApac.filter(e => APPROVED_MANAGERS.has(e.manager))
+  ];
+  const groupCount = {};
+  const benchCount = {};
+  for (const g of GROUPS) { groupCount[g] = 0; benchCount[g] = 0; }
+  for (const e of all) {
+    let top = null, topN = 0;
+    for (const g of GROUPS) { if (e.mix[g] > topN) { topN = e.mix[g]; top = g; } }
+    if (!top) continue;
+    groupCount[top]++;
+    if (topN / e.total >= 0.70) benchCount[top]++;
+  }
+  const el = document.getElementById('lowSkillSummary');
+  el.innerHTML = '<span style="font-size:11px;font-weight:600;color:var(--muted);margin-right:4px;">Primary skill distribution:</span>' +
+    GROUPS.map(g => {
+      const cls = GROUP_CLASS[g];
+      return `<span class="pill pill-${cls}" style="font-size:11px;">${g} <strong>${groupCount[g]}</strong> engr${groupCount[g]!==1?'s':''}</span>` +
+        (benchCount[g] ? `<span style="font-size:10px;color:var(--muted);margin-left:-4px;margin-right:6px;"> (${benchCount[g]} bench 🔒)</span>` : '');
+    }).join('');
 }
 
 const APPROVED_MANAGERS = new Set([
@@ -1048,6 +1090,7 @@ renderHighLoad();
 renderLowLoad(lowEmea.filter(e => APPROVED_MANAGERS.has(e.manager)), 'lowEmeaBody');
 renderLowLoad(lowIndia.filter(e => APPROVED_MANAGERS.has(e.manager)), 'lowIndiaBody');
 renderLowLoad(lowApac.filter(e => APPROVED_MANAGERS.has(e.manager)), 'lowApacBody');
+renderLowSkillSummary();
 
 // Heat: High-load backlog by manager stacked chart (total BL per manager, sorted by high-load BL desc)
 new Chart(document.getElementById('heatManagerChart'), {
