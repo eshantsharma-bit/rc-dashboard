@@ -421,8 +421,8 @@ body { background: var(--bg); color: var(--text); }
 
   <!-- heat matrix -->
   <div class="card mb20">
-    <div class="card-header">Heat by Manager — High-Load Engineers &gt;12 cases
-      <span style="font-size:11px;font-weight:400;color:var(--muted)">Sorted by total high-load cases ↓ · Shows concentrated risk per manager</span>
+    <div class="card-header">Heat by Manager — Total Engineers + High-Load Breakdown
+      <span style="font-size:11px;font-weight:400;color:var(--muted)">Sorted by high-load BL ↓ · Total = high-load + low-load (chat excluded)</span>
     </div>
     <div class="card-body" style="padding:0; overflow-x:auto;">
       <table class="inflow-table">
@@ -430,95 +430,128 @@ body { background: var(--bg); color: var(--text); }
           <tr>
             <th style="text-align:left">Manager</th>
             <th style="text-align:left">Region</th>
-            <th>High-Load Engrs</th>
-            <th>Total BL (those engrs)</th>
+            <th>Total Engrs</th>
+            <th>High (&gt;12)</th>
+            <th>Low (≤12)</th>
+            <th>Total BL</th>
+            <th>High-Load BL</th>
             <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th>
-            <th style="text-align:left">Engineers (case count)</th>
+            <th style="text-align:left">High-Load Engineers</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Bhagat M</strong></td>
             <td><span class="region-tag rtag-india">India</span></td>
-            <td class="heat-hi"><strong>7</strong></td>
-            <td class="heat-hi"><strong>115</strong></td>
-            <td>0</td><td>12</td><td>0</td><td>15</td><td class="heat-hi">88</td>
-            <td style="text-align:left; font-size:11px; color:var(--muted)">Srividya(22) Sai Uma(18) Abhishek(17) Soumya(17) Sai Shivani(14) Akshay(13) Sreeja(13)</td>
-          </tr>
-          <tr>
-            <td><strong>Sridhar Dwadasi</strong></td>
-            <td><span class="region-tag rtag-emea">EMEA</span></td>
-            <td class="heat-hi"><strong>5</strong></td>
-            <td class="heat-hi"><strong>75</strong></td>
-            <td>0</td><td>0</td><td>1</td><td>0</td><td class="heat-hi">74</td>
-            <td style="text-align:left; font-size:11px; color:var(--muted)">Harshita(18) Visweswara(17) Aakansha(16) Anusha(14) Charan Sai(13)</td>
-          </tr>
-          <tr>
-            <td><strong>Eshant Sharma</strong></td>
-            <td><span class="region-tag rtag-emea">EMEA</span></td>
-            <td class="heat-med"><strong>2</strong></td>
-            <td class="heat-med"><strong>37</strong></td>
-            <td class="heat-hi">23</td><td>14</td><td>0</td><td>0</td><td>0</td>
-            <td style="text-align:left; font-size:11px; color:var(--muted)">Shubham(20) Santhosh(17)</td>
-          </tr>
-          <tr>
-            <td><strong>Naren Rajendran</strong></td>
-            <td><span class="region-tag rtag-india">India</span></td>
-            <td class="heat-med"><strong>3</strong></td>
-            <td class="heat-med"><strong>43</strong></td>
-            <td>0</td><td>0</td><td>0</td><td>0</td><td class="heat-hi">43</td>
-            <td style="text-align:left; font-size:11px; color:var(--muted)">Neeti(16) Sravani(15) Deepika(14)</td>
+            <td><strong>17</strong></td>
+            <td class="heat-hi"><strong>8</strong></td><td>9</td>
+            <td>209</td><td class="heat-hi"><strong>131</strong></td>
+            <td>0</td><td>0</td><td>8</td><td>15</td><td class="heat-hi">108</td>
+            <td style="text-align:left;font-size:11px;color:var(--muted)">Srividya(22) Sai Uma(18) Abhishek D(17) Hemanth(17) Soumya(17) Sai Shivani(14) Akshay(13) Sreeja(13)</td>
           </tr>
           <tr>
             <td><strong>Apurva Ajit</strong></td>
             <td><span class="region-tag rtag-emea">EMEA</span></td>
-            <td class="heat-med"><strong>4</strong></td>
-            <td class="heat-med"><strong>64</strong></td>
-            <td class="heat-hi">28</td><td>0</td><td class="heat-hi">28</td><td>0</td><td>8</td>
-            <td style="text-align:left; font-size:11px; color:var(--muted)">Sarthak(23) Nithin(15) Nagashree(13) Abhishek A(13)</td>
+            <td><strong>8</strong></td>
+            <td class="heat-hi"><strong>5</strong></td><td>3</td>
+            <td>97</td><td class="heat-hi"><strong>77</strong></td>
+            <td>31</td><td>16</td><td class="heat-med">15</td><td>0</td><td>15</td>
+            <td style="text-align:left;font-size:11px;color:var(--muted)">Sarthak(23) Nithin(15) Abhishek A(13) Akshat J(13) Nagashree(13)</td>
+          </tr>
+          <tr>
+            <td><strong>Sridhar Dwadasi</strong></td>
+            <td><span class="region-tag rtag-emea">EMEA</span></td>
+            <td><strong>10</strong></td>
+            <td class="heat-med"><strong>4</strong></td><td>6</td>
+            <td>107</td><td class="heat-med"><strong>62</strong></td>
+            <td>0</td><td>0</td><td>1</td><td>0</td><td class="heat-hi">61</td>
+            <td style="text-align:left;font-size:11px;color:var(--muted)">Harshita(18) Visweswara(17) Anusha(14) Charan Sai(13)</td>
           </tr>
           <tr>
             <td><strong>Swetha B</strong></td>
             <td><span class="region-tag rtag-apac">APAC</span></td>
-            <td class="heat-med"><strong>3</strong></td>
-            <td class="heat-med"><strong>47</strong></td>
-            <td class="heat-hi">18</td><td>3</td><td>9</td><td>3</td><td>11</td>
-            <td style="text-align:left; font-size:11px; color:var(--muted)">Spandana(16) Yuvashree(16) Syeda(15)</td>
+            <td><strong>6</strong></td>
+            <td class="heat-med"><strong>4</strong></td><td>2</td>
+            <td>75</td><td class="heat-med"><strong>62</strong></td>
+            <td>28</td><td>6</td><td>9</td><td>3</td><td>14</td>
+            <td style="text-align:left;font-size:11px;color:var(--muted)">Spandana(16) Yuvashree(16) Dimple(15) Syeda(15)</td>
+          </tr>
+          <tr>
+            <td><strong>Eshant Sharma</strong></td>
+            <td><span class="region-tag rtag-emea">EMEA</span></td>
+            <td><strong>5</strong></td>
+            <td class="heat-med"><strong>2</strong></td><td>3</td>
+            <td>46</td><td class="heat-med"><strong>37</strong></td>
+            <td class="heat-hi">38</td><td>8</td><td>0</td><td>0</td><td>0</td>
+            <td style="text-align:left;font-size:11px;color:var(--muted)">Shubham(20) Santhosh(17)</td>
+          </tr>
+          <tr>
+            <td><strong>Naren Rajendran</strong></td>
+            <td><span class="region-tag rtag-india">India</span></td>
+            <td><strong>10</strong></td>
+            <td class="heat-med"><strong>4</strong></td><td>6</td>
+            <td>107</td><td class="heat-med"><strong>58</strong></td>
+            <td>0</td><td>0</td><td>0</td><td>0</td><td class="heat-hi">58</td>
+            <td style="text-align:left;font-size:11px;color:var(--muted)">Neeti(16) Sravani(15) Deepika(14) Dashrath(13)</td>
           </tr>
           <tr>
             <td><strong>Darshan Jahagirdar</strong></td>
             <td><span class="region-tag rtag-emea">EMEA</span></td>
-            <td><strong>1</strong></td><td><strong>14</strong></td>
-            <td>0</td><td>0</td><td>14</td><td>0</td><td>0</td>
-            <td style="text-align:left; font-size:11px; color:var(--muted)">Srihari(14)</td>
-          </tr>
-          <tr>
-            <td><strong>Seamus Redmond</strong></td>
-            <td><span class="region-tag rtag-emea">EMEA</span></td>
-            <td><strong>2</strong></td><td><strong>28</strong></td>
-            <td class="heat-hi">27</td><td>1</td><td>0</td><td>0</td><td>0</td>
-            <td style="text-align:left; font-size:11px; color:var(--muted)">Claudio(14) Stéphane(14)</td>
+            <td><strong>12</strong></td>
+            <td><strong>2</strong></td><td>10</td>
+            <td>107</td><td><strong>30</strong></td>
+            <td>0</td><td>0</td><td>14</td><td>0</td><td>16</td>
+            <td style="text-align:left;font-size:11px;color:var(--muted)">Aakansha(16) Srihari(14)</td>
           </tr>
           <tr>
             <td><strong>Manu Ramamurthy</strong></td>
             <td><span class="region-tag rtag-india">India</span></td>
-            <td><strong>2</strong></td><td><strong>32</strong></td>
-            <td>2</td><td class="heat-hi">12</td><td>0</td><td>5</td><td>13</td>
-            <td style="text-align:left; font-size:11px; color:var(--muted)">Varun Reddy(18) Sethu(14)</td>
+            <td><strong>16</strong></td>
+            <td><strong>2</strong></td><td>14</td>
+            <td>136</td><td><strong>32</strong></td>
+            <td>2</td><td>12</td><td>0</td><td>0</td><td>18</td>
+            <td style="text-align:left;font-size:11px;color:var(--muted)">Varun Reddy(18) Sethu(14)</td>
           </tr>
           <tr>
-            <td><strong>Rafik Shaikh</strong></td>
-            <td><span class="region-tag rtag-apac">APAC</span></td>
-            <td><strong>1</strong></td><td><strong>15</strong></td>
-            <td>0</td><td>0</td><td>0</td><td>0</td><td>13</td>
-            <td style="text-align:left; font-size:11px; color:var(--muted)">Pranil(15)</td>
+            <td><strong>Seamus Redmond</strong></td>
+            <td><span class="region-tag rtag-emea">EMEA</span></td>
+            <td><strong>3</strong></td>
+            <td><strong>2</strong></td><td>1</td>
+            <td>37</td><td><strong>28</strong></td>
+            <td>27</td><td>1</td><td>0</td><td>0</td><td>0</td>
+            <td style="text-align:left;font-size:11px;color:var(--muted)">Claudio(14) Stéphane(14)</td>
           </tr>
           <tr>
             <td><strong>Mahima Prathaban</strong></td>
             <td><span class="region-tag rtag-apac">APAC</span></td>
-            <td><strong>1</strong></td><td><strong>15</strong></td>
-            <td>0</td><td>1</td><td>0</td><td>3</td><td>10</td>
-            <td style="text-align:left; font-size:11px; color:var(--muted)">Dimple(15)</td>
+            <td><strong>6</strong></td>
+            <td><strong>1</strong></td><td>5</td>
+            <td>66</td><td><strong>15</strong></td>
+            <td>2</td><td>0</td><td>0</td><td>4</td><td>8</td>
+            <td style="text-align:left;font-size:11px;color:var(--muted)">Pranil(15)</td>
+          </tr>
+          <tr>
+            <td><strong>Rafik Shaikh</strong></td>
+            <td><span class="region-tag rtag-apac">APAC</span></td>
+            <td><strong>5</strong></td>
+            <td><strong>1</strong></td><td>4</td>
+            <td>41</td><td><strong>13</strong></td>
+            <td>5</td><td>0</td><td>0</td><td>8</td><td>0</td>
+            <td style="text-align:left;font-size:11px;color:var(--muted)">Prashanth(13)</td>
+          </tr>
+          <tr>
+            <td><strong>Saheb Virdi</strong></td>
+            <td><span class="region-tag rtag-emea">EMEA</span></td>
+            <td>0</td><td>0</td><td>0</td><td>—</td><td>—</td>
+            <td colspan="5" style="color:var(--muted);font-size:11px;text-align:center;">No cases in this dataset</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Mayurika Singh</strong></td>
+            <td><span class="region-tag rtag-india">India</span></td>
+            <td>0</td><td>0</td><td>0</td><td>—</td><td>—</td>
+            <td colspan="5" style="color:var(--muted);font-size:11px;text-align:center;">No cases in this dataset</td>
+            <td></td>
           </tr>
         </tbody>
       </table>
@@ -1000,22 +1033,30 @@ function renderLowLoad(data, bodyId) {
   </tr>`).join('');
 }
 
-renderHighLoad();
-renderLowLoad(lowEmea, 'lowEmeaBody');
-renderLowLoad(lowIndia, 'lowIndiaBody');
-renderLowLoad(lowApac, 'lowApacBody');
+const APPROVED_MANAGERS = new Set([
+  'Mahima Prathaban','Brahmarouthu Swetha','Swetha B','Rafik Shaikh',
+  'Mayurika Singh','Eshant Sharma','Narendranath Rajendran','Naren Rajendran',
+  'Bhagat M','Saheb Virdi','Apurva Ajit','Darshan Jahagirdar',
+  'Manu Ramamurthy','Manu Ramamurthy Manu Ramamurthy',
+  'Seamus Redmond','Sridhar Dwadasi'
+]);
 
-// Heat: High-load backlog by manager stacked chart
+renderHighLoad();
+renderLowLoad(lowEmea.filter(e => APPROVED_MANAGERS.has(e.manager)), 'lowEmeaBody');
+renderLowLoad(lowIndia.filter(e => APPROVED_MANAGERS.has(e.manager)), 'lowIndiaBody');
+renderLowLoad(lowApac.filter(e => APPROVED_MANAGERS.has(e.manager)), 'lowApacBody');
+
+// Heat: High-load backlog by manager stacked chart (total BL per manager, sorted by high-load BL desc)
 new Chart(document.getElementById('heatManagerChart'), {
   type: 'bar',
   data: {
-    labels: ['Bhagat M\n(India)','Sridhar\n(EMEA)','Naren R\n(India)','Apurva A\n(EMEA)','Swetha B\n(APAC)','Seamus R\n(EMEA)','Manu R\n(India)','Eshant S\n(EMEA)','Darshan\n(EMEA)','Rafik S\n(APAC)','Mahima\n(APAC)'],
+    labels: ['Bhagat M','Apurva A','Sridhar','Swetha B','Eshant S','Naren R','Darshan','Manu R','Seamus R','Mahima','Rafik S'],
     datasets: [
-      { label:'RCA',          data:[0,0,0,28,18,27,2,23,0,0,0],  backgroundColor:'#0969da', borderRadius:0 },
-      { label:'Rev CPQ',      data:[12,0,0,0,3,1,12,14,0,0,1],   backgroundColor:'#e16f24', borderRadius:0 },
-      { label:'Industry CPQ', data:[0,1,0,28,9,0,0,0,14,0,0],    backgroundColor:'#1a7f37', borderRadius:0 },
-      { label:'Industry Omni',data:[15,0,0,0,3,0,5,0,0,0,3],     backgroundColor:'#8250df', borderRadius:0 },
-      { label:'Industry Core',data:[88,74,43,8,11,0,13,0,0,13,10],backgroundColor:'#adb5bd', borderRadius:0 }
+      { label:'RCA',          data:[0,31,0,28,38,0,0,2,27,2,5],   backgroundColor:'#0969da', borderRadius:0 },
+      { label:'Rev CPQ',      data:[0,16,0,6,8,0,0,12,1,0,0],     backgroundColor:'#e16f24', borderRadius:0 },
+      { label:'Industry CPQ', data:[8,15,1,9,0,0,14,0,0,0,0],     backgroundColor:'#1a7f37', borderRadius:0 },
+      { label:'Industry Omni',data:[15,0,0,3,0,0,0,0,0,4,8],      backgroundColor:'#8250df', borderRadius:0 },
+      { label:'Industry Core',data:[108,15,61,14,0,58,16,18,0,8,0],backgroundColor:'#adb5bd', borderRadius:0 }
     ]
   },
   options: {
