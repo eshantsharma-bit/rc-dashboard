@@ -322,10 +322,24 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 
 <!-- Combined trend chart row -->
 <!-- TTR full-width -->
-<div class="card" style="margin-bottom:16px">
-  <div class="card-title">TTR (Avg Days to Resolve) — Jun to Sep 2026</div>
-  <div class="chart-wrap" style="height:220px">
-    <canvas id="ttrTrend"></canvas>
+<div class="grid-3" style="margin-bottom:16px">
+  <div class="card border-blue">
+    <div class="card-title" style="color:#1b4fa8">Transaction Mgmt — TTR (days)</div>
+    <div class="chart-wrap" style="height:180px">
+      <canvas id="ttrTM"></canvas>
+    </div>
+  </div>
+  <div class="card border-orange">
+    <div class="card-title" style="color:#bc4c00">Product Configurator — TTR (days)</div>
+    <div class="chart-wrap" style="height:180px">
+      <canvas id="ttrPC"></canvas>
+    </div>
+  </div>
+  <div class="card border-green">
+    <div class="card-title" style="color:#1a7f37">Price Management — TTR (days)</div>
+    <div class="chart-wrap" style="height:180px">
+      <canvas id="ttrPM"></canvas>
+    </div>
   </div>
 </div>
 <!-- GUS% + Bug% side by side -->
@@ -614,7 +628,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 </div>
 
 <!-- ══════════════════════════════════════════════════════════ TOP ACCOUNTS -->
-<div class="section-title">Top Affected Accounts — All 3 Topics</div>
+<div class="section-title">Top Accounts</div>
 <div class="card" style="margin-bottom:20px">
   <table class="data-table">
     <thead>
@@ -1006,36 +1020,31 @@ const lineOpts = (yLabel, suffix) => ({
 });
 
 // TTR — grouped bar (no overlap)
-new Chart(document.getElementById('ttrTrend').getContext('2d'), {
-  type:'bar',
-  data:{
-    labels:MONTHS,
-    datasets:[
-      {label:'Transaction Mgmt', data:[8.0,8.9,7.5,8.0], backgroundColor:'rgba(27,79,168,.75)', borderColor:'#1b4fa8', borderWidth:1},
-      {label:'Product Configurator', data:[8.3,8.3,7.4,8.5], backgroundColor:'rgba(225,111,66,.75)', borderColor:'#e16f42', borderWidth:1},
-      {label:'Price Management', data:[8.8,7.0,7.1,7.7], backgroundColor:'rgba(45,138,78,.75)', borderColor:'#2d8a4e', borderWidth:1}
-    ]
+const ttrLineOpts = (color) => ({
+  responsive:true, maintainAspectRatio:false,
+  plugins:{
+    legend:{display:false},
+    datalabels:{anchor:'end', align:'top', font:{size:11,weight:'bold'}, formatter:v=>v+'d', color}
   },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    plugins:{
-      legend:{position:'bottom', labels:{color:COLORS.muted, font:{size:11}, boxWidth:12}},
-      datalabels:{
-        anchor:'end', align:'top', font:{size:10, weight:'bold'},
-        formatter: v => v+'d',
-        color: ctx => ['#1b4fa8','#e16f42','#2d8a4e'][ctx.datasetIndex]
-      }
-    },
-    scales:{
-      x:{ticks:{color:COLORS.muted, font:{size:10}}, grid:{display:false}},
-      y:{
-        min:5, max:11,
-        ticks:{color:COLORS.muted, font:{size:10}, callback: v => v+'d'},
-        grid:{color:COLORS.grid},
-        title:{display:true, text:'Avg Days', color:COLORS.muted, font:{size:10}}
-      }
-    }
+  scales:{
+    x:{ticks:{color:COLORS.muted,font:{size:11}}, grid:{display:false}},
+    y:{min:5, max:11, ticks:{color:COLORS.muted,font:{size:10},callback:v=>v+'d'}, grid:{color:COLORS.grid}}
   }
+});
+new Chart(document.getElementById('ttrTM').getContext('2d'), {
+  type:'line',
+  data:{labels:MONTHS, datasets:[{data:[8.0,8.9,7.5,8.0], borderColor:'#1b4fa8', backgroundColor:'rgba(27,79,168,.1)', tension:.3, pointRadius:5, pointBackgroundColor:'#1b4fa8', borderWidth:2, fill:true}]},
+  options: ttrLineOpts('#1b4fa8')
+});
+new Chart(document.getElementById('ttrPC').getContext('2d'), {
+  type:'line',
+  data:{labels:MONTHS, datasets:[{data:[8.3,8.3,7.4,8.5], borderColor:'#e16f42', backgroundColor:'rgba(225,111,66,.1)', tension:.3, pointRadius:5, pointBackgroundColor:'#e16f42', borderWidth:2, fill:true}]},
+  options: ttrLineOpts('#e16f42')
+});
+new Chart(document.getElementById('ttrPM').getContext('2d'), {
+  type:'line',
+  data:{labels:MONTHS, datasets:[{data:[8.8,7.0,7.1,7.7], borderColor:'#2d8a4e', backgroundColor:'rgba(45,138,78,.1)', tension:.3, pointRadius:5, pointBackgroundColor:'#2d8a4e', borderWidth:2, fill:true}]},
+  options: ttrLineOpts('#2d8a4e')
 });
 
 // GUS% line
