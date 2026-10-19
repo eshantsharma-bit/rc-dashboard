@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RC Deep-Dive · Transaction Management · Product Configurator · Price Management · Aug–Sep 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root{
+  --bg:#eef2f7;--surface:#ffffff;--border:#c5d3e8;
+  --text:#1a2744;--muted:#5a6e8c;--accent:#1b4fa8;
+  --green:#1a7f37;--red:#cf222e;--yellow:#9a6700;--orange:#bc4c00;
+  --txn:#1b4fa8;--cfg:#e16f42;--prc:#2d8a4e;--other:#8b6abf;
+  --navy:#1a2744;--navy-light:#eef2f7;--navy-mid:#c5d3e8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;line-height:1.5}
+/* ── header ── */
+.header{background:var(--navy);color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.header h1{font-size:18px;font-weight:700;letter-spacing:-.3px}
+.header .meta{font-size:11px;color:#8b99b5;margin-top:3px}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge-red{background:#ffebe9;color:#cf222e;border:1px solid #ffcecb}
+.badge-blue{background:#ddf4ff;color:#0969da;border:1px solid #80ccff}
+.badge-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845}
+.badge-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb}
+.badge-orange{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
+/* ── layout ── */
+.wrap{max-width:1400px;margin:0 auto;padding:20px 20px 40px}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:12px}
+/* ── KPI ── */
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;border-top:3px solid var(--border)}
+.kpi.alert{background:#ffebe9;border-color:#ffcecb;border-top-color:#cf222e}
+.kpi.warn{background:#fff8c5;border-color:#f5d845;border-top-color:#9a6700}
+.kpi.good{background:#dafbe1;border-color:#aceebb;border-top-color:#1a7f37}
+.kpi.blue{background:#ddf4ff;border-color:#80ccff;border-top-color:#0969da}
+.kpi-label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.kpi-val{font-size:26px;font-weight:700;margin:4px 0 2px;line-height:1}
+.kpi-sub{font-size:11px;color:var(--muted)}
+/* ── tables ── */
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{background:#f6f8fa;color:var(--muted);font-weight:600;text-align:left;padding:7px 10px;border-bottom:2px solid #d0d7de;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.data-table td{padding:7px 10px;border-bottom:1px solid #eaeef2}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:#f6f8fa}
+.data-table th.right,.data-table td.right{text-align:right}
+.data-table th.center,.data-table td.center{text-align:center}
+.highlight-row td{background:rgba(88,166,255,.07);font-weight:600}
+/* ── pills ── */
+.pill{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;white-space:nowrap}
+.pill-red{background:#ffebe9;color:#cf222e;border:1px solid #ffcecb}
+.pill-blue{background:#ddf4ff;color:#0969da;border:1px solid #80ccff}
+.pill-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb}
+.pill-orange{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
+.pill-purple{background:#fbefff;color:#8250df;border:1px solid #d8b4fe}
+.pill-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845}
+/* ── insight panels ── */
+.insight{padding:10px 12px;border-radius:6px;margin-bottom:8px;border-left:3px solid}
+.insight.red{background:#ffebe9;border-color:#cf222e}
+.insight.yellow{background:#fff8c5;border-color:#f5d845}
+.insight.green{background:#dafbe1;border-color:#1a7f37}
+.insight.blue{background:#ddf4ff;border-color:#0969da}
+.insight.orange{background:#fff1e5;border-color:#bc4c00}
+.insight.purple{background:#fbefff;border-color:#8250df}
+.insight strong{display:block;font-size:12px;margin-bottom:2px}
+.insight p{font-size:11px;color:var(--muted)}
+/* ── topic split hero ── */
+.topic-hero{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.topic-card{border-radius:8px;padding:16px;text-align:center;border:1px solid}
+.topic-card .pct{font-size:36px;font-weight:800;line-height:1}
+.topic-card .lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.topic-card .cnt{font-size:12px;margin-top:4px}
+.tc-txn{background:#ddf4ff;border-color:#80ccff;color:#0969da}
+.tc-cfg{background:#fff1e5;border-color:#ffc896;color:#bc4c00}
+.tc-prc{background:#dafbe1;border-color:#aceebb;color:#1a7f37}
+.tc-oth{background:#f6f8fa;border-color:#d0d7de;color:#57606a}
+/* ── section card borders ── */
+.card.border-red{border-top:3px solid #cf222e}
+.card.border-orange{border-top:3px solid #bc4c00}
+.card.border-blue{border-top:3px solid #1b4fa8}
+.card.border-green{border-top:3px solid #1a7f37}
+.card.border-purple{border-top:3px solid #8250df}
+/* ── progress bars ── */
+.bar-wrap{height:8px;background:#d0d7de;border-radius:4px;overflow:hidden;margin-top:4px}
+.bar-fill{height:100%;border-radius:4px}
+/* ── aged badge ── */
+.age-red{color:#cf222e;font-weight:700}
+.age-yellow{color:#9a6700;font-weight:700}
+.age-green{color:#1a7f37;font-weight:700}
+/* ── footer ── */
+footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-top:1px solid var(--border);margin-top:20px}
+/* ── section title ── */
+.section-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--navy-mid)}
+/* ── canvas wrapper ── */
+.chart-wrap{position:relative;height:220px}
+.chart-wrap-lg{position:relative;height:280px}
+/* ── account cluster ── */
+.acct-cluster{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.acct-tag{background:#f6f8fa;border:1px solid #d0d7de;border-radius:4px;padding:3px 8px;font-size:11px}
+/* ── rca table region ── */
+.rca-row-txn td:first-child{border-left:3px solid var(--txn)}
+.rca-row-cfg td:first-child{border-left:3px solid var(--cfg)}
+.rca-row-prc td:first-child{border-left:3px solid var(--prc)}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════ HEADER -->
+<div class="header">
+  <div>
+    <h1>Revenue Cloud · Deep-Dive Report</h1>
+    <div class="meta">Transaction Management · Product Configurator · Price Management &nbsp;|&nbsp; Aug–Sep 2026 &nbsp;|&nbsp; EMEA · AMER · India · APAC &nbsp;|&nbsp; Source: OrgCS · 2026-10-19</div>
+  </div>
+  <div class="badges">
+    <span class="badge badge-red">🚨 2,037 cases — 74% of RC inflow</span>
+    <span class="badge badge-yellow">⚠️ 464 unclassified RCAT cases</span>
+    <span class="badge badge-blue">❄️ Winter '27 cluster forming</span>
+    <span class="badge badge-orange">11 aged open cases (&gt;30d)</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ══════════════════════════════════════════════════════════ TOPIC SPLIT HERO -->
+<div class="section-title">RCA P&amp;T — Topic Volume Split</div>
+<div class="topic-hero">
+  <div class="topic-card tc-oth">
+    <div class="pct">33.9%</div>
+    <div class="lbl">RCA Others</div>
+    <div class="cnt">Other RC topics</div>
+  </div>
+  <div class="topic-card tc-txn">
+    <div class="pct">25.4%</div>
+    <div class="lbl">RCA Transaction Mgmt</div>
+    <div class="cnt">789 cases</div>
+  </div>
+  <div class="topic-card tc-cfg">
+    <div class="pct">24.7%</div>
+    <div class="lbl">RCA Configurator</div>
+    <div class="cnt">755 cases</div>
+  </div>
+  <div class="topic-card tc-prc">
+    <div class="pct">16.0%</div>
+    <div class="lbl">RCA Pricing</div>
+    <div class="cnt">493 cases</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ KPI ROW -->
+<div class="kpi-row" style="margin-bottom:20px">
+  <div class="kpi alert">
+    <div class="kpi-label">Total Cases (3 Topics)</div>
+    <div class="kpi-val">2,037</div>
+    <div class="kpi-sub">74% of total RC inflow · Aug–Sep</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Unclassified RCAT</div>
+    <div class="kpi-val">464</div>
+    <div class="kpi-sub">22–25% null rate per topic</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">Aged Open Cases (&gt;30d)</div>
+    <div class="kpi-val">11</div>
+    <div class="kpi-sub">Zero GUS/IR links on any</div>
+  </div>
+  <div class="kpi blue">
+    <div class="kpi-label">GUS Link Coverage</div>
+    <div class="kpi-val">~15%</div>
+    <div class="kpi-sub">TM 9.4% · PC 18.5% · PM &lt;11%</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ CHARTS ROW 1 -->
+<div class="grid-3" style="margin-bottom:20px">
+
+  <!-- Donut: topic split -->
+  <div class="card">
+    <div class="card-title">RCA P&amp;T % Split — Aug+Sep 2026</div>
+    <div class="chart-wrap">
+      <canvas id="donutSplit"></canvas>
+    </div>
+  </div>
+
+  <!-- Bar: monthly comparison -->
+  <div class="card">
+    <div class="card-title">Monthly Volume — Aug vs Sep</div>
+    <div class="chart-wrap">
+      <canvas id="barMonthly"></canvas>
+    </div>
+  </div>
+
+  <!-- Bar: region distribution -->
+  <div class="card">
+    <div class="card-title">Region Distribution (All 3 Topics)</div>
+    <div class="chart-wrap">
+      <canvas id="barRegion"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ RCAT ROOT CAUSE -->
+<div class="section-title">Root Cause Analysis — RCAT Breakdown</div>
+<div class="grid-3" style="margin-bottom:20px">
+
+  <div class="card border-blue">
+    <div class="card-title">Transaction Management — Case Cause</div>
+    <div class="chart-wrap">
+      <canvas id="rcatTxn"></canvas>
+    </div>
+  </div>
+
+  <div class="card border-orange">
+    <div class="card-title">Product Configurator — Case Cause</div>
+    <div class="chart-wrap">
+      <canvas id="rcatCfg"></canvas>
+    </div>
+  </div>
+
+  <div class="card border-green">
+    <div class="card-title">Price Management — Case Cause</div>
+    <div class="chart-wrap">
+      <canvas id="rcatPrc"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ RCAT COMPARISON TABLE -->
+<div class="card" style="margin-bottom:20px">
+  <div class="card-title">RCAT Root Cause Comparison — All 3 Topics</div>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Case Cause</th>
+        <th class="right">Transaction Mgmt</th>
+        <th class="right">Product Configurator</th>
+        <th class="right">Price Management</th>
+        <th class="right">Combined</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Documentation / User Knowledge Issue</td>
+        <td class="right">479 <span style="color:var(--muted)">(60.8%)</span></td>
+        <td class="right">397 <span style="color:var(--muted)">(52.9%)</span></td>
+        <td class="right">316 <span style="color:var(--muted)">(64.1%)</span></td>
+        <td class="right"><strong>1,192 (58.5%)</strong></td>
+      </tr>
+      <tr class="highlight-row">
+        <td>⚠️ Null / Unclassified</td>
+        <td class="right">176 <span style="color:#cf222e">(22.3%)</span></td>
+        <td class="right">172 <span style="color:#cf222e">(22.9%)</span></td>
+        <td class="right">116 <span style="color:#cf222e">(23.5%)</span></td>
+        <td class="right"><strong style="color:#cf222e">464 (22.8%)</strong></td>
+      </tr>
+      <tr>
+        <td>Product / Instance / Infrastructure Issue</td>
+        <td class="right">112 <span style="color:var(--muted)">(14.2%)</span></td>
+        <td class="right">147 <span style="color:var(--muted)">(19.6%)</span></td>
+        <td class="right">42 <span style="color:var(--muted)">(8.5%)</span></td>
+        <td class="right"><strong>301 (14.8%)</strong></td>
+      </tr>
+      <tr>
+        <td>Out of Scope</td>
+        <td class="right">13</td>
+        <td class="right">22</td>
+        <td class="right">12</td>
+        <td class="right">47</td>
+      </tr>
+      <tr>
+        <td>Canceled / Duplicate</td>
+        <td class="right">8</td>
+        <td class="right">10</td>
+        <td class="right">7</td>
+        <td class="right">25</td>
+      </tr>
+      <tr>
+        <td><strong>Total</strong></td>
+        <td class="right"><strong>788</strong></td>
+        <td class="right"><strong>751</strong></td>
+        <td class="right"><strong>493</strong></td>
+        <td class="right"><strong>2,037</strong> (excl. ADR)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ TOPIC DEEP-DIVES -->
+<div class="section-title">Topic Deep-Dives</div>
+<div class="grid-3" style="margin-bottom:20px">
+
+  <!-- TM Summary -->
+  <div class="card border-blue">
+    <div class="card-title" style="color:#1b4fa8">📊 Transaction Management</div>
+    <div style="margin-bottom:12px">
+      <span style="font-size:28px;font-weight:800;color:#1b4fa8">789</span>
+      <span style="font-size:12px;color:var(--muted);margin-left:6px">cases · 38.7% of 3-topic total</span>
+    </div>
+    <table class="data-table">
+      <tr><td>Aug 2026</td><td class="right">345</td></tr>
+      <tr><td>Sep 2026 <span class="pill pill-red">+28% MoM</span></td><td class="right">443</td></tr>
+      <tr><td>EMEA</td><td class="right">324 (41%)</td></tr>
+      <tr><td>AMER</td><td class="right">289 (37%)</td></tr>
+      <tr><td>India</td><td class="right">116 (15%)</td></tr>
+      <tr><td>APAC</td><td class="right">59 (7%)</td></tr>
+      <tr><td>GUS link coverage</td><td class="right"><span class="pill pill-red">9.4%</span></td></tr>
+      <tr><td>Aged open (&gt;30d)</td><td class="right"><span class="pill pill-red">4 cases</span></td></tr>
+    </table>
+    <div class="insight blue" style="margin-top:10px">
+      <strong>Sep +28% surge</strong>
+      <p>Winter '27 sandbox wave driving acceleration. Cases 474652303 (Figma) + 474711128 (Bluvium) confirm.</p>
+    </div>
+  </div>
+
+  <!-- PC Summary -->
+  <div class="card border-orange">
+    <div class="card-title" style="color:#bc4c00">🔧 Product Configurator</div>
+    <div style="margin-bottom:12px">
+      <span style="font-size:28px;font-weight:800;color:#bc4c00">755</span>
+      <span style="font-size:12px;color:var(--muted);margin-left:6px">cases · 37.1% of 3-topic total</span>
+    </div>
+    <table class="data-table">
+      <tr><td>Aug 2026</td><td class="right">361</td></tr>
+      <tr><td>Sep 2026 <span class="pill pill-yellow">+8% MoM</span></td><td class="right">390</td></tr>
+      <tr><td>AMER</td><td class="right">282 (38%)</td></tr>
+      <tr><td>EMEA</td><td class="right">257 (34%)</td></tr>
+      <tr><td>India</td><td class="right">188 (25%)</td></tr>
+      <tr><td>APAC</td><td class="right">24 (3%)</td></tr>
+      <tr><td>GUS link coverage</td><td class="right"><span class="pill pill-yellow">18.5%</span></td></tr>
+      <tr><td>Aged open (&gt;30d)</td><td class="right"><span class="pill pill-red">4 cases</span></td></tr>
+    </table>
+    <div class="insight orange" style="margin-top:10px">
+      <strong>Equinix = 3 of 4 aged opens</strong>
+      <p>Cases 474437632 (58d), 474582405 (38d), 474599561 (34d). No GUS link on any.</p>
+    </div>
+  </div>
+
+  <!-- PM Summary -->
+  <div class="card border-green">
+    <div class="card-title" style="color:#1a7f37">💰 Price Management</div>
+    <div style="margin-bottom:12px">
+      <span style="font-size:28px;font-weight:800;color:#1a7f37">493</span>
+      <span style="font-size:12px;color:var(--muted);margin-left:6px">cases · 24.2% of 3-topic total</span>
+    </div>
+    <table class="data-table">
+      <tr><td>Aug 2026</td><td class="right">245</td></tr>
+      <tr><td>Sep 2026 <span class="pill pill-green">flat +1%</span></td><td class="right">248</td></tr>
+      <tr><td>AMER</td><td class="right">196 (40%)</td></tr>
+      <tr><td>EMEA</td><td class="right">194 (39%)</td></tr>
+      <tr><td>India</td><td class="right">81 (16%)</td></tr>
+      <tr><td>APAC</td><td class="right">22 (5%)</td></tr>
+      <tr><td>GUS link coverage</td><td class="right"><span class="pill pill-red">&lt;11%</span></td></tr>
+      <tr><td>Aged open (&gt;30d)</td><td class="right"><span class="pill pill-red">3 cases</span></td></tr>
+    </table>
+    <div class="insight green" style="margin-top:10px">
+      <strong>Flat inflow — structural, not spike</strong>
+      <p>~245–248/month steady state. NUP=$0 on amendment is likely an untracked product defect across 5+ cases.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ ISSUE SUBCATEGORY STACKED CHART -->
+<div class="grid-2" style="margin-bottom:20px">
+  <div class="card">
+    <div class="card-title">Top Issue Subcategories — Transaction Management</div>
+    <div class="chart-wrap-lg">
+      <canvas id="subTxn"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Top Issue Subcategories — Product Configurator</div>
+    <div class="chart-wrap-lg">
+      <canvas id="subCfg"></canvas>
+    </div>
+  </div>
+</div>
+<div class="grid-2" style="margin-bottom:20px">
+  <div class="card">
+    <div class="card-title">Top Issue Subcategories — Price Management</div>
+    <div class="chart-wrap-lg">
+      <canvas id="subPrc"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Support Tier Distribution — All 3 Topics</div>
+    <div class="chart-wrap-lg">
+      <canvas id="tierBar"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ GUS COVERAGE -->
+<div class="section-title">GUS &amp; IR Investigation Link Coverage</div>
+<div class="grid-3" style="margin-bottom:20px">
+  <div class="card">
+    <div class="card-title">GUS Link Coverage by Topic</div>
+    <div class="chart-wrap">
+      <canvas id="gusBar"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Key GUS Work Items — Transaction Management</div>
+    <table class="data-table" style="font-size:11px">
+      <thead><tr><th>GUS ID</th><th>Account</th><th>Issue</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill pill-blue">W-24423020</span></td><td>PostNL</td><td>Context def broken for bundles</td></tr>
+        <tr><td><span class="pill pill-blue">W-24309792</span></td><td>Bell Canada</td><td>OrderItemAdjustmentLineItem missing</td></tr>
+        <tr><td><span class="pill pill-blue">W-24289347</span></td><td>DE-CIX</td><td>Apex CPU time limit exceeded</td></tr>
+        <tr><td><span class="pill pill-blue">W-24288420</span></td><td>ATOSS</td><td>Save Order disabled in RCA</td></tr>
+        <tr><td><span class="pill pill-blue">W-24277807</span></td><td>Bell Canada</td><td>Custom field mapping assetization</td></tr>
+        <tr><td><span class="pill pill-blue">W-24269961</span></td><td>Neocol</td><td>Ramp segment wrong duration</td></tr>
+        <tr><td><span class="pill pill-blue">W-24262537</span></td><td>Bell Canada</td><td>i18n bug — French Canadian</td></tr>
+        <tr><td><span class="pill pill-blue">W-24139649</span></td><td>Redtag</td><td>initiateRenewal ramp overlap</td></tr>
+        <tr><td><span class="pill pill-blue">W-24080865</span></td><td>Corporate Visions</td><td>264 upgrade order activation error</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Key GUS Work Items — Configurator &amp; Pricing</div>
+    <table class="data-table" style="font-size:11px">
+      <thead><tr><th>GUS ID</th><th>Topic</th><th>Issue</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill pill-orange">W-24492618</span></td><td>PC</td><td>Warning message not clearing (Siemens)</td></tr>
+        <tr><td><span class="pill pill-orange">W-24439966</span></td><td>PC</td><td>Rules not copied to sandbox (Worldline)</td></tr>
+        <tr><td><span class="pill pill-orange">W-24385392</span></td><td>PC</td><td>Solver timeout large domain (Generac)</td></tr>
+        <tr><td><span class="pill pill-orange">W-24360472</span></td><td>PC</td><td>CML deployment failures (Generac)</td></tr>
+        <tr><td><span class="pill pill-green">W-24391759</span></td><td>PM</td><td>SF-USAGE-02012 error (SHIFTLOGIC)</td></tr>
+        <tr><td><span class="pill pill-green">W-24297078</span></td><td>PM</td><td>Anniversary boundary off-by-one (RevCycle)</td></tr>
+        <tr><td><span class="pill pill-green">W-22286514</span></td><td>PM</td><td>Cross-object mapping Quote→Product Discovery</td></tr>
+        <tr class="highlight-row"><td colspan="2"><strong>264 RC Upgrade IR</strong></td><td>44 cases (TM:23 / PC:19 / PM:2)</td></tr>
+        <tr class="highlight-row"><td colspan="2"><strong>ICC-95079032</strong></td><td>34 PC cases (3 format variants)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ TOP ACCOUNTS -->
+<div class="section-title">Top Affected Accounts</div>
+<div class="grid-2" style="margin-bottom:20px">
+
+  <div class="card border-blue">
+    <div class="card-title">Top 15 Accounts — Transaction Management</div>
+    <table class="data-table">
+      <thead><tr><th>#</th><th>Account</th><th class="right">Cases</th><th>Flags</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Cloudity</td><td class="right">17</td><td></td></tr>
+        <tr><td>2</td><td>TOP Informatie Systemen B.V.</td><td class="right">16</td><td></td></tr>
+        <tr><td>3</td><td>SHIFTLOGIC.IO LIMITED</td><td class="right">15</td><td><span class="pill pill-red">Multi-topic</span></td></tr>
+        <tr><td>4</td><td>TDC Net A/S</td><td class="right">15</td><td><span class="pill pill-blue">GUS W-24471821</span></td></tr>
+        <tr><td>5</td><td>Rockwell Automation (Fiix)</td><td class="right">13</td><td></td></tr>
+        <tr><td>6</td><td>Quentic GmbH</td><td class="right">12</td><td><span class="pill pill-blue">GUS linked</span></td></tr>
+        <tr><td>7</td><td>Neocol</td><td class="right">12</td><td><span class="pill pill-blue">GUS linked</span></td></tr>
+        <tr><td>8</td><td>Bluvium Inc</td><td class="right">12</td><td><span class="pill pill-yellow">Winter '27</span></td></tr>
+        <tr><td>9</td><td>RevCycle Limited</td><td class="right">11</td><td><span class="pill pill-red">57d slowest close</span></td></tr>
+        <tr><td>10</td><td>LiveRamp, Inc</td><td class="right">10</td><td></td></tr>
+        <tr><td>11</td><td>Schneider Electric</td><td class="right">10</td><td></td></tr>
+        <tr><td>12</td><td>Optimizely North America</td><td class="right">10</td><td></td></tr>
+        <tr><td>13</td><td>Equinix, Inc.</td><td class="right">9</td><td></td></tr>
+        <tr><td>14</td><td>Forward Networks</td><td class="right">9</td><td></td></tr>
+        <tr><td>15</td><td>Acxiom LLC</td><td class="right">9</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card border-orange">
+    <div class="card-title">Top 15 Accounts — Product Configurator</div>
+    <table class="data-table">
+      <thead><tr><th>#</th><th>Account</th><th class="right">Cases</th><th>Flags</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>SHIFTLOGIC.IO LIMITED</td><td class="right">18</td><td><span class="pill pill-red">Multi-topic</span></td></tr>
+        <tr><td>2</td><td>Equinix, Inc.</td><td class="right">18</td><td><span class="pill pill-red">3 aged opens</span></td></tr>
+        <tr><td>3</td><td>Telenet Group</td><td class="right">16</td><td></td></tr>
+        <tr><td>4</td><td>O'Neil Digital Solutions (Org 2)</td><td class="right">12</td><td></td></tr>
+        <tr><td>5</td><td>Bell Canada</td><td class="right">12</td><td></td></tr>
+        <tr><td>6</td><td>TDC Net A/S</td><td class="right">11</td><td></td></tr>
+        <tr><td>7</td><td>LiveRamp, Inc.</td><td class="right">11</td><td></td></tr>
+        <tr><td>8</td><td>CrowdStrike, Inc.</td><td class="right">10</td><td><span class="pill pill-orange">Bundle defect no GUS</span></td></tr>
+        <tr><td>9</td><td>Siemens Corporation</td><td class="right">9</td><td><span class="pill pill-blue">GUS W-24492618</span></td></tr>
+        <tr><td>10</td><td>Lion Group, Inc.</td><td class="right">9</td><td></td></tr>
+        <tr><td>11</td><td>Cloudity</td><td class="right">9</td><td></td></tr>
+        <tr><td>12</td><td>PostNL Holding BV</td><td class="right">8</td><td><span class="pill pill-yellow">Winter '27</span></td></tr>
+        <tr><td>13</td><td>Bluvium Inc.</td><td class="right">8</td><td></td></tr>
+        <tr><td>14</td><td>Prelude Systems, Inc.</td><td class="right">8</td><td></td></tr>
+        <tr><td>15</td><td>Vp PLC</td><td class="right">7</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="grid-2" style="margin-bottom:20px">
+  <div class="card border-green">
+    <div class="card-title">Top 15 Accounts — Price Management</div>
+    <table class="data-table">
+      <thead><tr><th>#</th><th>Account</th><th class="right">Cases</th><th>Flags</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>SHIFTLOGIC.IO LIMITED</td><td class="right">14</td><td><span class="pill pill-red">GUS W-24391759</span></td></tr>
+        <tr><td>2</td><td>Cloudity</td><td class="right">9</td><td></td></tr>
+        <tr><td>3</td><td>Intrado Life &amp; Safety, Inc</td><td class="right">8</td><td></td></tr>
+        <tr><td>4</td><td>Cummins SFA</td><td class="right">8</td><td></td></tr>
+        <tr><td>5</td><td>STARS</td><td class="right">8</td><td></td></tr>
+        <tr><td>6</td><td>nexspace data centers</td><td class="right">8</td><td></td></tr>
+        <tr><td>7</td><td>Prelude Systems, Inc.</td><td class="right">8</td><td><span class="pill pill-orange">LWR gap case</span></td></tr>
+        <tr><td>8</td><td>RIEDEL Communications GmbH</td><td class="right">7</td><td></td></tr>
+        <tr><td>9</td><td>Bluebeam Inc 3rd Org</td><td class="right">6</td><td></td></tr>
+        <tr><td>10</td><td>LiveRamp, Inc</td><td class="right">6</td><td></td></tr>
+        <tr><td>11</td><td>CloudMasonry</td><td class="right">6</td><td></td></tr>
+        <tr><td>12</td><td>EUROIMMUN</td><td class="right">5</td><td></td></tr>
+        <tr><td>13</td><td>Forward Networks</td><td class="right">5</td><td></td></tr>
+        <tr><td>14</td><td>Cloudy Code Pty Ltd</td><td class="right">5</td><td><span class="pill pill-red">NUP=$0 Working ISV</span></td></tr>
+        <tr><td>15</td><td>YASH Technologies</td><td class="right">5</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card border-red">
+    <div class="card-title">🔴 Cross-Topic Account Hotspots</div>
+    <table class="data-table">
+      <thead><tr><th>Account</th><th class="center">TM</th><th class="center">PC</th><th class="center">PM</th><th class="right">Total</th><th>Risk</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row">
+          <td><strong>SHIFTLOGIC.IO LIMITED</strong></td>
+          <td class="center">15</td><td class="center">18</td><td class="center">14</td>
+          <td class="right"><strong>47</strong></td>
+          <td><span class="pill pill-red">All 3 topics</span></td>
+        </tr>
+        <tr>
+          <td>Cloudity</td>
+          <td class="center">17</td><td class="center">9</td><td class="center">9</td>
+          <td class="right"><strong>35</strong></td>
+          <td><span class="pill pill-orange">All 3 topics</span></td>
+        </tr>
+        <tr>
+          <td>LiveRamp, Inc.</td>
+          <td class="center">10</td><td class="center">11</td><td class="center">6</td>
+          <td class="right"><strong>27</strong></td>
+          <td><span class="pill pill-yellow">All 3 topics</span></td>
+        </tr>
+        <tr>
+          <td>Forward Networks</td>
+          <td class="center">9</td><td class="center">—</td><td class="center">5</td>
+          <td class="right"><strong>14</strong></td>
+          <td><span class="pill pill-yellow">2 topics</span></td>
+        </tr>
+        <tr>
+          <td>Bell Canada</td>
+          <td class="center">8</td><td class="center">12</td><td class="center">—</td>
+          <td class="right"><strong>20</strong></td>
+          <td><span class="pill pill-red">3 GUS bugs TM</span></td>
+        </tr>
+        <tr>
+          <td>PostNL Holding BV</td>
+          <td class="center">High</td><td class="center">8</td><td class="center">—</td>
+          <td class="right"><strong>~16+</strong></td>
+          <td><span class="pill pill-yellow">Winter '27 TM+PC</span></td>
+        </tr>
+        <tr>
+          <td>Bluvium Inc</td>
+          <td class="center">12</td><td class="center">8</td><td class="center">—</td>
+          <td class="right"><strong>20</strong></td>
+          <td><span class="pill pill-yellow">Winter '27</span></td>
+        </tr>
+        <tr>
+          <td>Prelude Systems, Inc.</td>
+          <td class="center">—</td><td class="center">8</td><td class="center">8</td>
+          <td class="right"><strong>16</strong></td>
+          <td><span class="pill pill-yellow">2 topics</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ AGED OPEN CASES -->
+<div class="section-title">Aged Open Cases (&gt;30 Days) — All 3 Topics</div>
+<div class="card border-red" style="margin-bottom:20px">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Case #</th>
+        <th>Subject</th>
+        <th>Account</th>
+        <th>Topic</th>
+        <th>Region</th>
+        <th>Created</th>
+        <th class="right">Days Open</th>
+        <th>Status</th>
+        <th>GUS Link</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="pill pill-blue">474437632</span></td>
+        <td>Quote Line Item View Performance Issue</td>
+        <td>Equinix, Inc.</td>
+        <td><span class="pill pill-orange">PC</span></td>
+        <td>AMER</td>
+        <td>Aug 22</td>
+        <td class="right"><span class="age-red">58d</span></td>
+        <td>Solution Provided</td>
+        <td><span class="pill pill-red">None</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">474513550</span></td>
+        <td>Apex post hook stops populating QLI attributes</td>
+        <td>Sinch US Greenfield</td>
+        <td><span class="pill pill-green">PM</span></td>
+        <td>EMEA</td>
+        <td>Sep 2</td>
+        <td class="right"><span class="age-red">47d</span></td>
+        <td>Need More Info</td>
+        <td><span class="pill pill-red">None</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">474508037</span></td>
+        <td>OrderItemDetail records not generated for price-only amendments</td>
+        <td>Procare Solutions</td>
+        <td><span class="pill pill-blue">TM</span></td>
+        <td>AMER</td>
+        <td>Sep 1</td>
+        <td class="right"><span class="age-red">48d</span></td>
+        <td>Working</td>
+        <td><span class="pill pill-red">None</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">474551981</span></td>
+        <td>Follow up case 474467139</td>
+        <td>Metro Fibernet, LLC</td>
+        <td><span class="pill pill-blue">TM</span></td>
+        <td>EMEA</td>
+        <td>Sep 8</td>
+        <td class="right"><span class="age-red">41d</span></td>
+        <td>Call Scheduled</td>
+        <td><span class="pill pill-red">None</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">474572311</span></td>
+        <td>Procedure Failing to Evaluate Disqualification &amp; Qualification Records</td>
+        <td>Arthur J. Gallagher &amp; Co.</td>
+        <td><span class="pill pill-orange">PC</span></td>
+        <td>AMER</td>
+        <td>Sep 10</td>
+        <td class="right"><span class="age-red">39d</span></td>
+        <td>Need More Info</td>
+        <td><span class="pill pill-red">None</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">474580078</span></td>
+        <td>Inconsistent Total Price on ramped Renewal Order</td>
+        <td>Infor (US) LLC</td>
+        <td><span class="pill pill-blue">TM</span></td>
+        <td>EMEA</td>
+        <td>Sep 11</td>
+        <td class="right"><span class="age-red">38d</span></td>
+        <td>Need More Info</td>
+        <td><span class="pill pill-red">None</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">474582405</span></td>
+        <td>Custom Pre-Validation on OOB Product Configurator Save &amp; Exit Button</td>
+        <td>Equinix, Inc.</td>
+        <td><span class="pill pill-orange">PC</span></td>
+        <td>AMER</td>
+        <td>Sep 11</td>
+        <td class="right"><span class="age-red">38d</span></td>
+        <td>Working</td>
+        <td><span class="pill pill-red">None</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">474588451</span></td>
+        <td>Quote line item list price increases with repeated update price clicks</td>
+        <td>SD Worx People Solutions</td>
+        <td><span class="pill pill-green">PM</span></td>
+        <td>India</td>
+        <td>Sep 14</td>
+        <td class="right"><span class="age-yellow">35d</span></td>
+        <td>Working</td>
+        <td><span class="pill pill-red">None</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">474599561</span></td>
+        <td>Quote Line Item Attribute Values are Vanished</td>
+        <td>Equinix, Inc.</td>
+        <td><span class="pill pill-orange">PC</span></td>
+        <td>AMER</td>
+        <td>Sep 15</td>
+        <td class="right"><span class="age-yellow">34d</span></td>
+        <td>Working</td>
+        <td><span class="pill pill-red">None</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">474602769</span></td>
+        <td>Billing schedule group does not update with new legal entity</td>
+        <td>Altitude Venture Holdings</td>
+        <td><span class="pill pill-blue">TM</span></td>
+        <td>AMER</td>
+        <td>Sep 15</td>
+        <td class="right"><span class="age-yellow">34d</span></td>
+        <td>Need More Info</td>
+        <td><span class="pill pill-red">None</span></td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-blue">474616604</span></td>
+        <td>Quote totals double-count child lines after bundle rollup</td>
+        <td>TechMatrix Pte Ltd</td>
+        <td><span class="pill pill-green">PM</span></td>
+        <td>India</td>
+        <td>Sep 17</td>
+        <td class="right"><span class="age-yellow">32d</span></td>
+        <td>Working</td>
+        <td><span class="pill pill-red">None</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="insight red" style="margin-top:12px">
+    <strong>Every aged open case has zero GUS/IR linkage</strong>
+    <p>11 cases · 32–58 days open · No engineering investigation tracked on any. Three topics, two regions (AMER + India). Common profile: Working or Need More Info status with no escalation path.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ KEY FINDINGS -->
+<div class="section-title">Key Findings &amp; Cross-Topic Patterns</div>
+<div class="grid-2" style="margin-bottom:20px">
+
+  <div>
+    <div class="insight red">
+      <strong>Finding 1 — RCAT understates product defects 2–3×</strong>
+      <p>RCAT confirms ~5–7% Product Bug rate. Subject analysis + GUS links suggest real defect rate is 11–15% per topic. 464 cases have null classification — one in four cases contributes zero signal.</p>
+    </div>
+    <div class="insight yellow">
+      <strong>Finding 2 — Winter '27 cluster is forming</strong>
+      <p>TM Sep inflow +28% vs Aug. Cases 474652303 (Figma), 474711128 (Bluvium), 474711281 (PostNL) cite Winter '27 explicitly. 264 RC Upgrade produced 44 clustered cases — same pattern repeating.</p>
+    </div>
+    <div class="insight red">
+      <strong>Finding 3 — SHIFTLOGIC.IO = 47 combined cases across all 3 topics</strong>
+      <p>15 (TM) + 18 (PC) + 14 (PM). Confirmed GUS defect in PM (W-24391759). Not being managed as a known-defect account despite highest combined RC load of any single account.</p>
+    </div>
+    <div class="insight orange">
+      <strong>Finding 4 — Equinix: 3 open PC cases, oldest 58 days</strong>
+      <p>474437632 "Solution Provided" for 58 days — not closed or confirmed. Cases 474582405 + 474599561 also open with no GUS. No engineering investigation linked to any of the three.</p>
+    </div>
+    <div class="insight blue">
+      <strong>Finding 5 — Bell Canada: 3 distinct GUS-linked bugs in one 2-month window</strong>
+      <p>W-24277807 (assetization field mapping) + W-24309792 (promotions adjustment records) + W-24262537 (French Canadian i18n). Needs coordinated product/engineering review — not case-by-case.</p>
+    </div>
+    <div class="insight purple">
+      <strong>Finding 6 — IR__c free-text fragmentation silently undercounts incidents</strong>
+      <p>ICC-95079032 appears across 3 format variants = 34 PC cases. IRC-94329705 = 34 more. Every SOQL-based IR aggregate report underreports. No validation rule prevents this.</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">Resolution Time — Slowest Cases</div>
+      <table class="data-table">
+        <thead><tr><th>Case</th><th>Account</th><th>Topic</th><th class="right">Days</th></tr></thead>
+        <tbody>
+          <tr><td>474437632</td><td>Equinix</td><td><span class="pill pill-orange">PC</span></td><td class="right"><span class="age-red">58d (open)</span></td></tr>
+          <tr><td>474297698</td><td>RevCycle Limited</td><td><span class="pill pill-blue">TM</span></td><td class="right"><span class="age-red">57d (closed)</span></td></tr>
+          <tr><td>474513550</td><td>Sinch US Greenfield</td><td><span class="pill pill-green">PM</span></td><td class="right"><span class="age-red">47d (open)</span></td></tr>
+          <tr><td>474508037</td><td>Procare Solutions</td><td><span class="pill pill-blue">TM</span></td><td class="right"><span class="age-red">48d (open)</span></td></tr>
+          <tr><td>474464398</td><td>O'Neil Digital Solutions</td><td><span class="pill pill-blue">TM</span></td><td class="right"><span class="age-yellow">47d (closed)</span></td></tr>
+          <tr><td>474527837</td><td>Parker Hannifin</td><td><span class="pill pill-green">PM</span></td><td class="right"><span class="age-yellow">41d (closed)</span></td></tr>
+          <tr><td>474551981</td><td>Metro Fibernet</td><td><span class="pill pill-blue">TM</span></td><td class="right"><span class="age-yellow">41d (open)</span></td></tr>
+          <tr><td>474510135</td><td>RevCycle Limited</td><td><span class="pill pill-blue">TM</span></td><td class="right"><span class="age-yellow">39d (closed)</span></td></tr>
+          <tr><td>474572311</td><td>Arthur J. Gallagher</td><td><span class="pill pill-orange">PC</span></td><td class="right"><span class="age-yellow">39d (open)</span></td></tr>
+          <tr><td>474569447</td><td>Telenet Group</td><td><span class="pill pill-green">PM</span></td><td class="right"><span class="age-yellow">39d (closed)</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:11px;color:var(--muted)">
+        Avg resolution: TM ~35d · PC ~21d · PM ~24d (sample estimates)
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Systemic Issues — Shared Across Topics</div>
+      <table class="data-table">
+        <thead><tr><th>Pattern</th><th class="center">TM</th><th class="center">PC</th><th class="center">PM</th></tr></thead>
+        <tbody>
+          <tr><td>Amendment / renewal pricing failures</td><td class="center">✓</td><td class="center">—</td><td class="center">✓</td></tr>
+          <tr><td>Config deployment (sandbox→prod) failures</td><td class="center">✓</td><td class="center">✓</td><td class="center">✓</td></tr>
+          <tr><td>264 RC Upgrade IR cluster</td><td class="center">23</td><td class="center">19</td><td class="center">2</td></tr>
+          <tr><td>Winter '27 regression</td><td class="center">✓</td><td class="center">✓</td><td class="center">—</td></tr>
+          <tr><td>Null RCAT (% unclassified)</td><td class="center">22.3%</td><td class="center">22.9%</td><td class="center">23.5%</td></tr>
+          <tr><td>GUS link coverage</td><td class="center">9.4%</td><td class="center">18.5%</td><td class="center">&lt;11%</td></tr>
+          <tr><td>How-to / training gap (RCAT)</td><td class="center">59%</td><td class="center">53%</td><td class="center">64%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ PRIORITY RECS -->
+<div class="section-title">Priority Recommendations</div>
+<div class="grid-2" style="margin-bottom:20px">
+  <div>
+    <div class="insight red">
+      <strong>[P1] Open GUS items for all 11 aged open cases — this week</strong>
+      <p>Zero engineering visibility on 11 cases open 32–58 days. Assign a DRI to each, create GUS investigations before end of week.</p>
+    </div>
+    <div class="insight yellow">
+      <strong>[P2] Establish Winter '27 RC upgrade IR watch immediately</strong>
+      <p>Pre-open an IR, tag incoming cases, designate a release-oncall engineer. 264 RC Upgrade produced 44 cases before an IR was linked — don't repeat.</p>
+    </div>
+    <div class="insight red">
+      <strong>[P3] SHIFTLOGIC.IO multi-topic account review (47 cases)</strong>
+      <p>Highest combined RC load of any account. Confirmed GUS defect in PM. Needs CSM + engineering coordination across TM, PC, and PM simultaneously.</p>
+    </div>
+    <div class="insight orange">
+      <strong>[P4] Fix IR__c data quality — standardize format, bulk-normalize 87+ cases</strong>
+      <p>ICC-95079032 (34 cases) and IRC-94329705 (34 cases) both fragmented across 3 format variants. Add validation rule to prevent recurrence.</p>
+    </div>
+  </div>
+  <div>
+    <div class="insight blue">
+      <strong>[P5] Launch how-to content packs — top 5 patterns per topic</strong>
+      <p>1,192 cases (58.5%) are documentation/training-driven. Target: amendment order behavior, ramp renewal pricing, Pricing Procedure deployment, CML authoring, expression set deployment. Est. 300–400 case deflection per 2-month period.</p>
+    </div>
+    <div class="insight blue">
+      <strong>[P6] Investigate NUP=$0 on Amendment as a systemic defect</strong>
+      <p>5+ PM cases + TM amendment subcategory (~150 cases) share the same failure. Aggregate cases, open a single GUS item, notify all affected accounts if confirmed product defect.</p>
+    </div>
+    <div class="insight yellow">
+      <strong>[P7] Enforce RCAT + GUS escalation process through tooling</strong>
+      <p>464 null-RCAT cases (22–25% per topic) and &lt;19% GUS coverage means decisions are made on incomplete data. Implement a validation rule or weekly audit before next analysis cycle.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>Revenue Cloud Deep-Dive Report · Transaction Management · Product Configurator · Price Management · Aug–Sep 2026 · Source: OrgCS live query (2026-10-19) · EMEA + AMER + India + APAC · Excl. Accelerator Delivery Request</footer>
+
+<!-- ══════════════════════════════════════════════════════════ CHARTS JS -->
+<script>
+Chart.register(ChartDataLabels);
+
+const COLORS = {
+  txn: '#1b4fa8', cfg: '#e16f42', prc: '#2d8a4e', other: '#8b6abf',
+  blue: 'rgba(27,79,168,.75)', orange: 'rgba(225,111,66,.75)', green: 'rgba(45,138,78,.75)',
+  muted: '#8b949e', grid: 'rgba(200,210,220,.5)'
+};
+
+const dlOpts = (color='#fff', anchor='center', align='center', size=11) => ({
+  color, anchor, align, font:{weight:'bold',size},
+  formatter: v => v > 0 ? v : ''
+});
+
+const dlPct = (color='#fff') => ({
+  color, anchor:'center', align:'center', font:{weight:'bold',size:11},
+  formatter: v => v > 0 ? v+'%' : ''
+});
+
+// Donut — topic split
+new Chart(document.getElementById('donutSplit').getContext('2d'), {
+  type: 'doughnut',
+  data: {
+    labels: ['RCA Others', 'RCA Trans Mgmt', 'RCA Configurator', 'RCA Pricing'],
+    datasets: [{
+      data: [33.9, 25.4, 24.7, 16.0],
+      backgroundColor: [COLORS.other, COLORS.txn, COLORS.cfg, COLORS.prc],
+      borderWidth: 2, borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false, cutout:'55%',
+    plugins: {
+      legend:{position:'bottom', labels:{font:{size:11}, padding:8}},
+      datalabels:{color:'#fff', font:{weight:'bold',size:12}, formatter: v => v+'%'}
+    }
+  }
+});
+
+// Bar — monthly volume
+new Chart(document.getElementById('barMonthly').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['Transaction Mgmt', 'Product Configurator', 'Price Management'],
+    datasets: [
+      { label: 'August', data: [345, 361, 245], backgroundColor: 'rgba(27,79,168,.65)', borderRadius:4 },
+      { label: 'September', data: [443, 390, 248], backgroundColor: 'rgba(248,81,73,.65)', borderRadius:4 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins: {
+      legend:{position:'bottom', labels:{font:{size:11}}},
+      datalabels: dlOpts('#fff','center','center',10)
+    },
+    scales: {
+      x:{ticks:{color:COLORS.muted,font:{size:10}}, grid:{color:COLORS.grid}},
+      y:{ticks:{color:COLORS.muted,font:{size:10}}, grid:{color:COLORS.grid}, beginAtZero:true}
+    }
+  }
+});
+
+// Bar — region
+new Chart(document.getElementById('barRegion').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['Transaction Mgmt', 'Product Configurator', 'Price Management'],
+    datasets: [
+      { label: 'EMEA', data: [324, 257, 194], backgroundColor: 'rgba(27,79,168,.75)', borderRadius:3 },
+      { label: 'AMER', data: [289, 282, 196], backgroundColor: 'rgba(45,138,78,.75)', borderRadius:3 },
+      { label: 'India', data: [116, 188, 81], backgroundColor: 'rgba(225,111,66,.75)', borderRadius:3 },
+      { label: 'APAC', data: [59, 24, 22], backgroundColor: 'rgba(139,106,191,.75)', borderRadius:3 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins: {
+      legend:{position:'bottom', labels:{font:{size:11}}},
+      datalabels: dlOpts('#fff','center','center',10)
+    },
+    scales: {
+      x:{ticks:{color:COLORS.muted,font:{size:10}}, grid:{color:COLORS.grid}, stacked:true},
+      y:{ticks:{color:COLORS.muted,font:{size:10}}, grid:{color:COLORS.grid}, stacked:true, beginAtZero:true}
+    }
+  }
+});
+
+// RCAT donuts
+const rcatDef = (id, data, labels, colors) => new Chart(document.getElementById(id).getContext('2d'), {
+  type: 'doughnut',
+  data: { labels, datasets:[{ data, backgroundColor:colors, borderWidth:2, borderColor:'#fff' }] },
+  options: {
+    responsive:true, maintainAspectRatio:false, cutout:'52%',
+    plugins: {
+      legend:{position:'bottom', labels:{font:{size:10}, padding:6}},
+      datalabels:{color:'#fff', font:{weight:'bold',size:10}, formatter: v => v>20 ? v : ''}
+    }
+  }
+});
+
+rcatDef('rcatTxn',
+  [479, 176, 112, 21],
+  ['Docs/Training (60.8%)', 'Null (22.3%)', 'Product Issue (14.2%)', 'Other'],
+  ['#1b4fa8','#cf222e','#bc4c00','#8b6abf']
+);
+rcatDef('rcatCfg',
+  [397, 172, 147, 35],
+  ['Docs/Training (52.9%)', 'Null (22.9%)', 'Product Issue (19.6%)', 'Other'],
+  ['#e16f42','#cf222e','#9a6700','#8b6abf']
+);
+rcatDef('rcatPrc',
+  [316, 116, 42, 19],
+  ['Docs/Training (64.1%)', 'Null (23.5%)', 'Product Issue (8.5%)', 'Other'],
+  ['#2d8a4e','#cf222e','#bc4c00','#8b6abf']
+);
+
+// Subcategory bars
+const subBar = (id, labels, data, color) => new Chart(document.getElementById(id).getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [{ data, backgroundColor: color, borderRadius:4 }]
+  },
+  options: {
+    indexAxis: 'y', responsive:true, maintainAspectRatio:false,
+    plugins: {
+      legend:{display:false},
+      datalabels: { color:'#fff', anchor:'end', align:'left', font:{weight:'bold',size:11}, formatter:v=>v }
+    },
+    scales: {
+      x:{ticks:{color:COLORS.muted,font:{size:10}}, grid:{color:COLORS.grid}, beginAtZero:true},
+      y:{ticks:{color:COLORS.muted,font:{size:10}}, grid:{display:false}}
+    }
+  }
+});
+
+subBar('subTxn',
+  ['Order/Amendment Failures','Renewal Pricing Defects','Asset & Assetization','Context Def & RCA Config','Ramp & Schedule Errors','QLE & UI Defects','Billing/Legal Entity','Apex/Governor Limits','Promotions Records','Winter\'27 Regression'],
+  [150, 120, 100, 90, 70, 67, 47, 37, 27, 32],
+  'rgba(27,79,168,.75)'
+);
+
+subBar('subCfg',
+  ['Constraint & Rule Failures','Configurator UI Errors','QLA & Attribute Mgmt','Bundle Config Issues','CML Deployment','Sandbox/Prod Migration','Performance & Timeout','Winter\'27 Regression'],
+  [165, 159, 110, 69, 63, 45, 25, 19],
+  'rgba(225,111,66,.75)'
+);
+
+subBar('subPrc',
+  ['Pricing Procedure Config','NUP/Amendment Failures','Attribute-Based Pricing','Expression Set/Dec Table','Discount & Promotions','Bundle Rollup Calc','Amendment/Proration','Feature Limits','LWR/Experience Cloud','Usage-Based Pricing'],
+  [95, 70, 55, 45, 40, 35, 35, 30, 20, 15],
+  'rgba(45,138,78,.75)'
+);
+
+// Tier bar
+new Chart(document.getElementById('tierBar').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['Transaction Mgmt', 'Product Configurator', 'Price Management'],
+    datasets: [
+      { label: 'Signature Success', data: [133, 185, 106], backgroundColor:'rgba(139,106,191,.8)', borderRadius:3 },
+      { label: 'Premier+', data: [276, 180, 116], backgroundColor:'rgba(27,79,168,.8)', borderRadius:3 },
+      { label: 'Partner Premier', data: [164, 140, 104], backgroundColor:'rgba(225,111,66,.8)', borderRadius:3 },
+      { label: 'Standard', data: [139, 170, 117], backgroundColor:'rgba(45,138,78,.8)', borderRadius:3 },
+      { label: 'Premier', data: [76, 72, 50], backgroundColor:'rgba(200,200,200,.8)', borderRadius:3 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'bottom', labels:{font:{size:10}}},
+      datalabels: dlOpts('#fff','center','center',9)
+    },
+    scales:{
+      x:{stacked:true, ticks:{color:COLORS.muted,font:{size:10}}, grid:{color:COLORS.grid}},
+      y:{stacked:true, ticks:{color:COLORS.muted,font:{size:10}}, grid:{color:COLORS.grid}, beginAtZero:true}
+    }
+  }
+});
+
+// GUS coverage bar
+new Chart(document.getElementById('gusBar').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['Transaction Mgmt', 'Product Configurator', 'Price Management'],
+    datasets: [
+      { label: 'GUS Linked', data: [9.4, 18.5, 8], backgroundColor:'rgba(27,79,168,.75)', borderRadius:4 },
+      { label: 'No GUS Link', data: [90.6, 81.5, 92], backgroundColor:'rgba(220,50,50,.25)', borderRadius:4 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'bottom', labels:{font:{size:11}}},
+      datalabels:{
+        color:ctx => ctx.datasetIndex===0 ? '#fff' : '#cf222e',
+        anchor:'center', align:'center', font:{weight:'bold',size:11},
+        formatter: v => v+'%'
+      }
+    },
+    scales:{
+      x:{stacked:true, ticks:{color:COLORS.muted,font:{size:10}}, grid:{color:COLORS.grid}},
+      y:{stacked:true, max:100, ticks:{color:COLORS.muted,font:{size:10},callback:v=>v+'%'}, grid:{color:COLORS.grid}, beginAtZero:true}
+    }
+  }
+});
+</script>
+</body>
+</html>
