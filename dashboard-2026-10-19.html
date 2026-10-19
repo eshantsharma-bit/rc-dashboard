@@ -469,13 +469,6 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td class="right">316 <span style="color:var(--muted)">(64.1%)</span></td>
         <td class="right"><strong>1,192 (58.5%)</strong></td>
       </tr>
-      <tr class="highlight-row">
-        <td>⚠️ Null / Unclassified</td>
-        <td class="right">176 <span style="color:#cf222e">(22.3%)</span></td>
-        <td class="right">172 <span style="color:#cf222e">(22.9%)</span></td>
-        <td class="right">116 <span style="color:#cf222e">(23.5%)</span></td>
-        <td class="right"><strong style="color:#cf222e">464 (22.8%)</strong></td>
-      </tr>
       <tr>
         <td>Product / Instance / Infrastructure Issue</td>
         <td class="right">112 <span style="color:var(--muted)">(14.2%)</span></td>
@@ -859,19 +852,19 @@ const rcatDef = (id, data, labels, colors) => new Chart(document.getElementById(
 });
 
 rcatDef('rcatTxn',
-  [479, 176, 112, 21],
-  ['Docs/Training (60.8%)', 'Null (22.3%)', 'Product Issue (14.2%)', 'Other'],
-  ['#1b4fa8','#cf222e','#bc4c00','#8b6abf']
+  [479, 112, 21],
+  ['Docs/Training (60.8%)', 'Product Issue (14.2%)', 'Other'],
+  ['#1b4fa8','#bc4c00','#8b6abf']
 );
 rcatDef('rcatCfg',
-  [397, 172, 147, 35],
-  ['Docs/Training (52.9%)', 'Null (22.9%)', 'Product Issue (19.6%)', 'Other'],
-  ['#e16f42','#cf222e','#9a6700','#8b6abf']
+  [397, 147, 35],
+  ['Docs/Training (52.9%)', 'Product Issue (19.6%)', 'Other'],
+  ['#e16f42','#9a6700','#8b6abf']
 );
 rcatDef('rcatPrc',
-  [316, 116, 42, 19],
-  ['Docs/Training (64.1%)', 'Null (23.5%)', 'Product Issue (8.5%)', 'Other'],
-  ['#2d8a4e','#cf222e','#bc4c00','#8b6abf']
+  [316, 42, 19],
+  ['Docs/Training (64.1%)', 'Product Issue (8.5%)', 'Other'],
+  ['#2d8a4e','#bc4c00','#8b6abf']
 );
 
 // Subcategory bars
