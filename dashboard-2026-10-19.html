@@ -127,6 +127,100 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 
 <div class="wrap">
 
+<!-- ══════════════════════════════════════════════════════════ VOLUME SHARE -->
+<div style="font-size:18px;font-weight:800;color:var(--navy);margin-bottom:16px;padding-bottom:10px;border-bottom:3px solid var(--accent);letter-spacing:-.3px">TM · PC · PM — Volume Share of RC Core <span style="color:var(--muted);font-weight:500;font-size:14px">Feb–Sep 2026</span></div>
+<div class="grid-2" style="margin-bottom:20px">
+  <div class="card">
+    <div class="card-title">Monthly % Share of RC Core Inflow</div>
+    <div class="chart-wrap-lg">
+      <canvas id="volShareTrend"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">RC Core Monthly Inflow — TM · PC · PM Contribution</div>
+    <table class="data-table" style="font-size:11px">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th class="center">RC Core</th>
+          <th class="center">TM</th>
+          <th class="center">PC</th>
+          <th class="center">PM</th>
+          <th class="center">Combined</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><strong>Feb'26</strong></td>
+        <td class="center">1,683</td>
+        <td class="center" style="color:#1b4fa8">286 (17.0%)</td>
+        <td class="center" style="color:#bc4c00">662 (39.3%)</td>
+        <td class="center" style="color:#1a7f37">220 (13.1%)</td>
+        <td class="center"><strong>1,168 (69.4%)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Mar'26</strong></td>
+        <td class="center">1,801</td>
+        <td class="center" style="color:#1b4fa8">413 (22.9%)</td>
+        <td class="center" style="color:#bc4c00">471 (26.2%)</td>
+        <td class="center" style="color:#1a7f37">288 (16.0%)</td>
+        <td class="center"><strong>1,172 (65.1%)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Apr'26</strong></td>
+        <td class="center">1,661</td>
+        <td class="center" style="color:#1b4fa8">357 (21.5%)</td>
+        <td class="center" style="color:#bc4c00">526 (31.7%)</td>
+        <td class="center" style="color:#1a7f37">264 (15.9%)</td>
+        <td class="center"><strong>1,147 (69.1%)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>May'26</strong></td>
+        <td class="center">1,470</td>
+        <td class="center" style="color:#1b4fa8">292 (19.9%)</td>
+        <td class="center" style="color:#bc4c00">484 (32.9%)</td>
+        <td class="center" style="color:#1a7f37">200 (13.6%)</td>
+        <td class="center"><strong>976 (66.4%)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Jun'26</strong></td>
+        <td class="center">1,715</td>
+        <td class="center" style="color:#1b4fa8">341 (19.9%)</td>
+        <td class="center" style="color:#bc4c00">618 (36.0%)</td>
+        <td class="center" style="color:#1a7f37">228 (13.3%)</td>
+        <td class="center"><strong>1,187 (69.2%)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Jul'26</strong></td>
+        <td class="center">1,564</td>
+        <td class="center" style="color:#1b4fa8">310 (19.8%)</td>
+        <td class="center" style="color:#bc4c00">611 (39.1%)</td>
+        <td class="center" style="color:#1a7f37">236 (15.1%)</td>
+        <td class="center"><strong>1,157 (74.0%)</strong></td>
+      </tr>
+      <tr style="background:rgba(88,166,255,.07)">
+        <td><strong>Aug'26</strong></td>
+        <td class="center">1,541</td>
+        <td class="center" style="color:#1b4fa8">345 (22.4%)</td>
+        <td class="center" style="color:#bc4c00">385 (25.0%)</td>
+        <td class="center" style="color:#1a7f37">245 (15.9%)</td>
+        <td class="center"><strong>975 (63.3%)</strong></td>
+      </tr>
+      <tr style="background:rgba(88,166,255,.07)">
+        <td><strong>Sep'26</strong></td>
+        <td class="center">1,786</td>
+        <td class="center" style="color:#1b4fa8">443 (24.8%)</td>
+        <td class="center" style="color:#bc4c00">384 (21.5%)</td>
+        <td class="center" style="color:#1a7f37">248 (13.9%)</td>
+        <td class="center"><strong>1,075 (60.2%)</strong></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
 <!-- ══════════════════════════════════════════════════════════ KEY METRICS TABLE -->
 <div class="section-title">Key Metrics &amp; Trends — Jun–Sep 2026</div>
 
@@ -518,98 +612,6 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
       <span class="pill pill-green">Bug%: 2.0% (Sep)</span>
     </div>
     <div style="font-size:10px;color:var(--muted);margin-top:4px">Only 3 IR-linked cases · stable</div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════════ VOLUME SHARE -->
-<div class="section-title">TM · PC · PM — Volume Share of RC Core (Feb–Sep 2026)</div>
-<div class="grid-2" style="margin-bottom:20px">
-  <div class="card">
-    <div class="card-title">Monthly % Share of RC Core Inflow</div>
-    <div class="chart-wrap-lg">
-      <canvas id="volShareTrend"></canvas>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">RC Core Monthly Inflow — TM · PC · PM Contribution</div>
-    <table class="data-table" style="font-size:11px">
-      <thead>
-        <tr>
-          <th>Month</th>
-          <th class="center">RC Core</th>
-          <th class="center">TM</th>
-          <th class="center">PC</th>
-          <th class="center">PM</th>
-          <th class="center">Combined</th>
-        </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td><strong>Feb'26</strong></td>
-        <td class="center">1,683</td>
-        <td class="center" style="color:#1b4fa8">286 (17.0%)</td>
-        <td class="center" style="color:#bc4c00">662 (39.3%)</td>
-        <td class="center" style="color:#1a7f37">220 (13.1%)</td>
-        <td class="center"><strong>1,168 (69.4%)</strong></td>
-      </tr>
-      <tr>
-        <td><strong>Mar'26</strong></td>
-        <td class="center">1,801</td>
-        <td class="center" style="color:#1b4fa8">413 (22.9%)</td>
-        <td class="center" style="color:#bc4c00">471 (26.2%)</td>
-        <td class="center" style="color:#1a7f37">288 (16.0%)</td>
-        <td class="center"><strong>1,172 (65.1%)</strong></td>
-      </tr>
-      <tr>
-        <td><strong>Apr'26</strong></td>
-        <td class="center">1,661</td>
-        <td class="center" style="color:#1b4fa8">357 (21.5%)</td>
-        <td class="center" style="color:#bc4c00">526 (31.7%)</td>
-        <td class="center" style="color:#1a7f37">264 (15.9%)</td>
-        <td class="center"><strong>1,147 (69.1%)</strong></td>
-      </tr>
-      <tr>
-        <td><strong>May'26</strong></td>
-        <td class="center">1,470</td>
-        <td class="center" style="color:#1b4fa8">292 (19.9%)</td>
-        <td class="center" style="color:#bc4c00">484 (32.9%)</td>
-        <td class="center" style="color:#1a7f37">200 (13.6%)</td>
-        <td class="center"><strong>976 (66.4%)</strong></td>
-      </tr>
-      <tr>
-        <td><strong>Jun'26</strong></td>
-        <td class="center">1,715</td>
-        <td class="center" style="color:#1b4fa8">341 (19.9%)</td>
-        <td class="center" style="color:#bc4c00">618 (36.0%)</td>
-        <td class="center" style="color:#1a7f37">228 (13.3%)</td>
-        <td class="center"><strong>1,187 (69.2%)</strong></td>
-      </tr>
-      <tr>
-        <td><strong>Jul'26</strong></td>
-        <td class="center">1,564</td>
-        <td class="center" style="color:#1b4fa8">310 (19.8%)</td>
-        <td class="center" style="color:#bc4c00">611 (39.1%)</td>
-        <td class="center" style="color:#1a7f37">236 (15.1%)</td>
-        <td class="center"><strong>1,157 (74.0%)</strong></td>
-      </tr>
-      <tr style="background:rgba(88,166,255,.07)">
-        <td><strong>Aug'26</strong></td>
-        <td class="center">1,541</td>
-        <td class="center" style="color:#1b4fa8">345 (22.4%)</td>
-        <td class="center" style="color:#bc4c00">385 (25.0%)</td>
-        <td class="center" style="color:#1a7f37">245 (15.9%)</td>
-        <td class="center"><strong>975 (63.3%)</strong></td>
-      </tr>
-      <tr style="background:rgba(88,166,255,.07)">
-        <td><strong>Sep'26</strong></td>
-        <td class="center">1,786</td>
-        <td class="center" style="color:#1b4fa8">443 (24.8%)</td>
-        <td class="center" style="color:#bc4c00">384 (21.5%)</td>
-        <td class="center" style="color:#1a7f37">248 (13.9%)</td>
-        <td class="center"><strong>1,075 (60.2%)</strong></td>
-      </tr>
-      </tbody>
-    </table>
   </div>
 </div>
 
