@@ -10,7 +10,7 @@
 :root{
   --bg:#eef2f7;--surface:#ffffff;--border:#c5d3e8;
   --text:#1a2744;--muted:#5a6e8c;--accent:#1b4fa8;
-  --green:#1a7f37;--red:#cf222e;--yellow:#9a6700;--orange:#bc4c00;
+  --green:#1a7f37;--yellow:#9a6700;--orange:#bc4c00;
   --txn:#1b4fa8;--cfg:#e16f42;--prc:#2d8a4e;--other:#8b6abf;
   --navy:#1a2744;--navy-light:#eef2f7;--navy-mid:#c5d3e8;
 }
@@ -22,7 +22,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .header .meta{font-size:11px;color:#8b99b5;margin-top:3px}
 .badges{display:flex;gap:8px;flex-wrap:wrap}
 .badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
-.badge-red{background:#ffebe9;color:#cf222e;border:1px solid #ffcecb}
+.badge-red{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
 .badge-blue{background:#ddf4ff;color:#0969da;border:1px solid #80ccff}
 .badge-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845}
 .badge-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb}
@@ -37,7 +37,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:12px}
 /* ── KPI ── */
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;border-top:3px solid var(--border)}
-.kpi.alert{background:#ffebe9;border-color:#ffcecb;border-top-color:#cf222e}
+.kpi.alert{background:#fff1e5;border-color:#ffc896;border-top-color:#bc4c00}
 .kpi.warn{background:#fff8c5;border-color:#f5d845;border-top-color:#9a6700}
 .kpi.good{background:#dafbe1;border-color:#aceebb;border-top-color:#1a7f37}
 .kpi.blue{background:#ddf4ff;border-color:#80ccff;border-top-color:#0969da}
@@ -55,7 +55,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .highlight-row td{background:rgba(88,166,255,.07);font-weight:600}
 /* ── pills ── */
 .pill{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;white-space:nowrap}
-.pill-red{background:#ffebe9;color:#cf222e;border:1px solid #ffcecb}
+.pill-red{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
 .pill-blue{background:#ddf4ff;color:#0969da;border:1px solid #80ccff}
 .pill-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb}
 .pill-orange{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
@@ -63,7 +63,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .pill-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845}
 /* ── insight panels ── */
 .insight{padding:10px 12px;border-radius:6px;margin-bottom:8px;border-left:3px solid}
-.insight.red{background:#ffebe9;border-color:#cf222e}
+.insight.red{background:#fff1e5;border-color:#bc4c00}
 .insight.yellow{background:#fff8c5;border-color:#f5d845}
 .insight.green{background:#dafbe1;border-color:#1a7f37}
 .insight.blue{background:#ddf4ff;border-color:#0969da}
@@ -82,7 +82,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .tc-prc{background:#dafbe1;border-color:#aceebb;color:#1a7f37}
 .tc-oth{background:#f6f8fa;border-color:#d0d7de;color:#57606a}
 /* ── section card borders ── */
-.card.border-red{border-top:3px solid #cf222e}
+.card.border-red{border-top:3px solid #bc4c00}
 .card.border-orange{border-top:3px solid #bc4c00}
 .card.border-blue{border-top:3px solid #1b4fa8}
 .card.border-green{border-top:3px solid #1a7f37}
@@ -91,7 +91,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .bar-wrap{height:8px;background:#d0d7de;border-radius:4px;overflow:hidden;margin-top:4px}
 .bar-fill{height:100%;border-radius:4px}
 /* ── aged badge ── */
-.age-red{color:#cf222e;font-weight:700}
+.age-red{color:#bc4c00;font-weight:700}
 .age-yellow{color:#9a6700;font-weight:700}
 .age-green{color:#1a7f37;font-weight:700}
 /* ── footer ── */
@@ -676,13 +676,13 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <div class="section-title">Top Issue Patterns — Aug+Sep 2026 <span style="font-size:11px;font-weight:400;color:var(--muted)">(Source: Case Subject deep-dive · 264 RC Upgrade from IR__c)</span></div>
 <div class="grid-2" style="margin-bottom:20px">
   <div class="card">
-    <div class="card-title">Top Issue Patterns — Transaction Management <span style="font-size:10px;color:var(--muted)">(356 classified cases)</span></div>
+    <div class="card-title">Top Issue Patterns — Transaction Management <span style="font-size:10px;color:var(--muted)">(% of 825 cases · Aug+Sep)</span></div>
     <div class="chart-wrap-lg">
       <canvas id="subTxn"></canvas>
     </div>
   </div>
   <div class="card">
-    <div class="card-title">Top Issue Patterns — Product Configurator <span style="font-size:10px;color:var(--muted)">(205 classified cases)</span></div>
+    <div class="card-title">Top Issue Patterns — Product Configurator <span style="font-size:10px;color:var(--muted)">(% of 769 cases · Aug+Sep)</span></div>
     <div class="chart-wrap-lg">
       <canvas id="subCfg"></canvas>
     </div>
@@ -690,7 +690,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 </div>
 <div class="grid-2" style="margin-bottom:20px">
   <div class="card">
-    <div class="card-title">Top Issue Patterns — Price Management <span style="font-size:10px;color:var(--muted)">(273 classified cases)</span></div>
+    <div class="card-title">Top Issue Patterns — Price Management <span style="font-size:10px;color:var(--muted)">(% of 530 cases · Aug+Sep)</span></div>
     <div class="chart-wrap-lg">
       <canvas id="subPrc"></canvas>
     </div>
@@ -897,7 +897,7 @@ new Chart(document.getElementById('barMonthly').getContext('2d'), {
     labels: ['Transaction Mgmt', 'Product Configurator', 'Price Management'],
     datasets: [
       { label: 'August', data: [345, 328, 247], backgroundColor: 'rgba(27,79,168,.65)', borderRadius:4 },
-      { label: 'September', data: [456, 322, 242], backgroundColor: 'rgba(248,81,73,.65)', borderRadius:4 }
+      { label: 'September', data: [456, 322, 242], backgroundColor: 'rgba(188,76,0,.65)', borderRadius:4 }
     ]
   },
   options: {
@@ -950,10 +950,10 @@ const subBar = (id, labels, data, color) => new Chart(document.getElementById(id
     indexAxis: 'y', responsive:true, maintainAspectRatio:false,
     plugins: {
       legend:{display:false},
-      datalabels: { color:'#fff', anchor:'end', align:'left', font:{weight:'bold',size:11}, formatter:v=>v }
+      datalabels: { color:'#fff', anchor:'end', align:'left', font:{weight:'bold',size:11}, formatter:v=>v+'%' }
     },
     scales: {
-      x:{ticks:{color:COLORS.muted,font:{size:10}}, grid:{color:COLORS.grid}, beginAtZero:true},
+      x:{ticks:{color:COLORS.muted,font:{size:10},callback:v=>v+'%'}, grid:{color:COLORS.grid}, beginAtZero:true},
       y:{ticks:{color:COLORS.muted,font:{size:10}}, grid:{display:false}}
     }
   }
@@ -961,19 +961,19 @@ const subBar = (id, labels, data, color) => new Chart(document.getElementById(id
 
 subBar('subTxn',
   ['Amendment & Renewal Failures','Asset Creation & State Mgmt','Context Definitions / Field Mapping','Order Creation & Activation','Ramp Schedule & Compound Uplift','264 RC Upgrade (IR__c)'],
-  [96, 72, 68, 52, 42, 26],
+  [11.6, 8.7, 8.2, 6.3, 5.1, 3.2],
   'rgba(27,79,168,.75)'
 );
 
 subBar('subCfg',
   ['CML & Constraint Rule Failures','Configurator UI & Flow Errors','Attribute Mgmt & Defaults','Deployment, Migration & Sandbox','264 RC Upgrade (IR__c)'],
-  [103, 58, 27, 27, 17],
+  [13.4, 7.5, 3.5, 3.5, 2.2],
   'rgba(225,111,66,.75)'
 );
 
 subBar('subPrc',
   ['Pricing Procedure Config & Errors','NUP / Price Calculation Wrong','Discounts, Promotions & Adjustments','Attribute-Based Pricing','Amendment & Renewal Pricing','264 RC Upgrade (IR__c)'],
-  [81, 72, 45, 37, 36, 26],
+  [15.3, 13.6, 8.5, 7.0, 6.8, 4.9],
   'rgba(45,138,78,.75)'
 );
 
@@ -1018,7 +1018,7 @@ new Chart(document.getElementById('gusBar').getContext('2d'), {
     plugins:{
       legend:{position:'bottom', labels:{font:{size:11}}},
       datalabels:{
-        color:ctx => ctx.datasetIndex===0 ? '#fff' : '#cf222e',
+        color:ctx => ctx.datasetIndex===0 ? '#fff' : '#bc4c00',
         anchor:'center', align:'center', font:{weight:'bold',size:11},
         formatter: v => v+'%'
       }
