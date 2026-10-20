@@ -597,85 +597,6 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 
 </div>
 
-<!-- ══════════════════════════════════════════════════════════ RCAT ROOT CAUSE -->
-<div class="section-title">Root Cause Analysis — RCAT Breakdown</div>
-<div class="grid-3" style="margin-bottom:20px">
-
-  <div class="card border-blue">
-    <div class="card-title">Transaction Management — Case Cause</div>
-    <div class="chart-wrap">
-      <canvas id="rcatTxn"></canvas>
-    </div>
-  </div>
-
-  <div class="card border-orange">
-    <div class="card-title">Product Configurator — Case Cause</div>
-    <div class="chart-wrap">
-      <canvas id="rcatCfg"></canvas>
-    </div>
-  </div>
-
-  <div class="card border-green">
-    <div class="card-title">Price Management — Case Cause</div>
-    <div class="chart-wrap">
-      <canvas id="rcatPrc"></canvas>
-    </div>
-  </div>
-
-</div>
-
-<!-- ══════════════════════════════════════════════════════════ RCAT COMPARISON TABLE -->
-<div class="card" style="margin-bottom:20px">
-  <div class="card-title">RCAT Root Cause Comparison — All 3 Topics</div>
-  <table class="data-table">
-    <thead>
-      <tr>
-        <th>Case Cause</th>
-        <th class="right">Transaction Mgmt</th>
-        <th class="right">Product Configurator</th>
-        <th class="right">Price Management</th>
-        <th class="right">Combined</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Documentation / User Knowledge Issue</td>
-        <td class="right">479 <span style="color:var(--muted)">(60.8%)</span></td>
-        <td class="right">397 <span style="color:var(--muted)">(52.9%)</span></td>
-        <td class="right">316 <span style="color:var(--muted)">(64.1%)</span></td>
-        <td class="right"><strong>1,192 (58.5%)</strong></td>
-      </tr>
-      <tr>
-        <td>Product / Instance / Infrastructure Issue</td>
-        <td class="right">112 <span style="color:var(--muted)">(14.2%)</span></td>
-        <td class="right">147 <span style="color:var(--muted)">(19.6%)</span></td>
-        <td class="right">42 <span style="color:var(--muted)">(8.5%)</span></td>
-        <td class="right"><strong>301 (14.8%)</strong></td>
-      </tr>
-      <tr>
-        <td>Out of Scope</td>
-        <td class="right">13</td>
-        <td class="right">22</td>
-        <td class="right">12</td>
-        <td class="right">47</td>
-      </tr>
-      <tr>
-        <td>Canceled / Duplicate</td>
-        <td class="right">8</td>
-        <td class="right">10</td>
-        <td class="right">7</td>
-        <td class="right">25</td>
-      </tr>
-      <tr>
-        <td><strong>Total</strong></td>
-        <td class="right"><strong>801</strong></td>
-        <td class="right"><strong>650</strong></td>
-        <td class="right"><strong>489</strong></td>
-        <td class="right"><strong>1,940</strong> (excl. ADR)</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
 
 <!-- ══════════════════════════════════════════════════════════ TOPIC DEEP-DIVES -->
 <div class="section-title">Topic Deep-Dives</div>
@@ -1014,34 +935,6 @@ new Chart(document.getElementById('barRegion').getContext('2d'), {
   }
 });
 
-// RCAT donuts
-const rcatDef = (id, data, labels, colors) => new Chart(document.getElementById(id).getContext('2d'), {
-  type: 'doughnut',
-  data: { labels, datasets:[{ data, backgroundColor:colors, borderWidth:2, borderColor:'#fff' }] },
-  options: {
-    responsive:true, maintainAspectRatio:false, cutout:'52%',
-    plugins: {
-      legend:{position:'bottom', labels:{font:{size:10}, padding:6}},
-      datalabels:{color:'#fff', font:{weight:'bold',size:10}, formatter: v => v>20 ? v : ''}
-    }
-  }
-});
-
-rcatDef('rcatTxn',
-  [479, 112, 21],
-  ['Docs/Training (60.8%)', 'Product Issue (14.2%)', 'Other'],
-  ['#1b4fa8','#bc4c00','#8b6abf']
-);
-rcatDef('rcatCfg',
-  [397, 147, 35],
-  ['Docs/Training (52.9%)', 'Product Issue (19.6%)', 'Other'],
-  ['#e16f42','#9a6700','#8b6abf']
-);
-rcatDef('rcatPrc',
-  [316, 42, 19],
-  ['Docs/Training (64.1%)', 'Product Issue (8.5%)', 'Other'],
-  ['#2d8a4e','#bc4c00','#8b6abf']
-);
 
 // Subcategory bars
 const subBar = (id, labels, data, color) => new Chart(document.getElementById(id).getContext('2d'), {
