@@ -763,21 +763,7 @@ body { background: var(--bg); color: var(--text); }
 <!-- SECTION 6: LOW PRODUCTIVITY FOCUS -->
 <div class="section-title mb24" style="margin-bottom:0;margin-top:32px;">Section 6 — Low Productivity Focus · Low-Load Engineers &lt;90% (Avg Jul–Sep 2026)</div>
 <div style="margin-top:12px;" class="mb24">
-  <div class="card">
-    <div class="card-header">⚠️ Engineers with low-load backlog AND productivity below 90%
-      <span style="font-size:11px;font-weight:400;color:var(--muted)">Only approved-manager scope · New hires excluded · Sorted by productivity ascending</span>
-    </div>
-    <div class="card-body" style="padding:0;overflow-x:auto;">
-      <table class="eng-table">
-        <thead><tr>
-          <th>Engineer</th><th>Region</th><th>Manager</th><th>BL Cases</th>
-          <th>Productivity (Avg Jul–Sep)</th><th>Primary Skill</th>
-          <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
-        </tr></thead>
-        <tbody id="lowProdBody"></tbody>
-      </table>
-    </div>
-  </div>
+  <div id="lowProdGroups"></div>
 </div>
 
 </div><!-- /container -->
@@ -1366,7 +1352,7 @@ renderNewHireTable(apacSplit.newh,  'nhApacBody');
 
 renderLowSkillSummary();
 
-// Section 6 — Low Productivity Focus (<90%, low-load, approved managers, no new hires)
+// Section 6 — Low Productivity Focus: grouped by Primary Skill then Region
 (function() {
   var REGION_FOR = {};
   lowEmea.forEach(function(e){ REGION_FOR[e.name] = 'EMEA'; });
@@ -1382,36 +1368,85 @@ renderLowSkillSummary();
   var lowProd = all.filter(function(e){
     var pct = dpData[e.name];
     return pct !== undefined && pct < 90;
-  }).sort(function(a, b){ return dpData[a.name] - dpData[b.name]; });
+  });
 
-  var body = document.getElementById('lowProdBody');
-  if (!body) return;
-
+  var container = document.getElementById('lowProdGroups');
+  if (!container) return;
   if (lowProd.length === 0) {
-    body.innerHTML = '<tr><td colspan="12" style="text-align:center;color:var(--muted);padding:16px;">No low-load engineers below 90% productivity</td></tr>';
+    container.innerHTML = '<p style="color:var(--muted);padding:16px;">No low-load engineers below 90% productivity.</p>';
     return;
   }
 
-  body.innerHTML = lowProd.map(function(e) {
-    var pct = dpData[e.name];
-    var region = REGION_FOR[e.name] || '—';
-    var rowStyle = pct < 70 ? ' style="background:#fff0f0"' : ' style="background:#fff8f0"';
-    var badge = '<span style="font-size:12px;font-weight:700;color:#cf222e">' + pct + '% ⚠️</span>';
-    return '<tr' + rowStyle + '>' +
-      '<td><div class="eng-name">' + e.name + '</div></td>' +
-      '<td><span class="badge badge-' + (region==='EMEA'?'blue':region==='India'?'amber':'green') + '" style="font-size:10px;">' + region + '</span></td>' +
-      '<td><div class="eng-manager">' + e.manager + '</div></td>' +
-      '<td><span class="total-badge total-lo">' + e.total + '</span></td>' +
-      '<td>' + badge + '</td>' +
-      '<td>' + primarySkill(e.mix, e.total) + '</td>' +
-      '<td>' + pillFor('RCA', e.mix.RCA) + '</td>' +
-      '<td>' + pillFor('Rev CPQ', e.mix['Rev CPQ']) + '</td>' +
-      '<td>' + pillFor('Industry CPQ', e.mix['Industry CPQ']) + '</td>' +
-      '<td>' + pillFor('Industry Omni', e.mix['Industry Omni']) + '</td>' +
-      '<td>' + pillFor('Industry Core', e.mix['Industry Core']) + '</td>' +
-      '<td style="min-width:80px;">' + mixBar(e.mix) + '</td>' +
-      '</tr>';
-  }).join('');
+  // Group by primary skill
+  var bySkill = {};
+  GROUPS.forEach(function(g){ bySkill[g] = []; });
+  lowProd.forEach(function(e) {
+    var top = null, topN = 0;
+    GROUPS.forEach(function(g){ if (e.mix[g] > topN){ topN = e.mix[g]; top = g; } });
+    if (!top) top = 'Industry Core';
+    bySkill[top].push(e);
+  });
+
+  var REGION_ORDER = ['EMEA', 'India', 'APAC'];
+  var REGION_COLOR = { 'EMEA': '#0969da', 'India': '#e16f24', 'APAC': '#1a7f37' };
+
+  var html = '';
+  GROUPS.forEach(function(skill) {
+    var engineers = bySkill[skill];
+    if (engineers.length === 0) return;
+
+    var cls = GROUP_CLASS[skill];
+    var totalBL = engineers.reduce(function(s,e){ return s+e.total; }, 0);
+    var avgProd = Math.round(engineers.reduce(function(s,e){ return s+dpData[e.name]; }, 0) / engineers.length);
+
+    html += '<div class="card mb20">' +
+      '<div class="card-header" style="display:flex;align-items:center;gap:10px;">' +
+        '<span class="pill pill-' + cls + '" style="font-size:13px;padding:4px 10px;">' + skill + '</span>' +
+        '<span style="font-size:12px;color:var(--muted);">' + engineers.length + ' engineer' + (engineers.length>1?'s':'') +
+          ' &nbsp;·&nbsp; Total BL: ' + totalBL + ' &nbsp;·&nbsp; Avg Productivity: <strong style="color:#cf222e">' + avgProd + '%</strong></span>' +
+      '</div>' +
+      '<div class="card-body" style="padding:0;">';
+
+    REGION_ORDER.forEach(function(region) {
+      var group = engineers.filter(function(e){ return REGION_FOR[e.name] === region; });
+      if (group.length === 0) return;
+      group.sort(function(a,b){ return dpData[a.name]-dpData[b.name]; });
+
+      html += '<div style="padding:6px 16px 2px;background:#f6f8fa;border-bottom:1px solid #d0d7de;border-top:1px solid #d0d7de;">' +
+        '<span style="font-size:11px;font-weight:700;color:' + REGION_COLOR[region] + ';">▸ ' + region + '</span>' +
+        '<span style="font-size:11px;color:var(--muted);margin-left:8px;">' + group.length + ' engineer' + (group.length>1?'s':'') + '</span>' +
+      '</div>' +
+      '<table class="eng-table" style="margin-bottom:0;"><thead><tr>' +
+        '<th>Engineer</th><th>Manager</th><th>BL Cases</th>' +
+        '<th>Productivity (Avg Jul–Sep)</th>' +
+        '<th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>' +
+      '</tr></thead><tbody>';
+
+      group.forEach(function(e) {
+        var pct = dpData[e.name];
+        var rowBg = pct < 70 ? '#fff0f0' : '#fff8f0';
+        var prodBadge = '<span style="font-size:12px;font-weight:700;color:#cf222e;">' + pct + '% ⚠️</span>';
+        html += '<tr style="background:' + rowBg + '">' +
+          '<td><div class="eng-name">' + e.name + '</div></td>' +
+          '<td><div class="eng-manager">' + e.manager + '</div></td>' +
+          '<td><span class="total-badge total-lo">' + e.total + '</span></td>' +
+          '<td>' + prodBadge + '</td>' +
+          '<td>' + pillFor('RCA', e.mix.RCA) + '</td>' +
+          '<td>' + pillFor('Rev CPQ', e.mix['Rev CPQ']) + '</td>' +
+          '<td>' + pillFor('Industry CPQ', e.mix['Industry CPQ']) + '</td>' +
+          '<td>' + pillFor('Industry Omni', e.mix['Industry Omni']) + '</td>' +
+          '<td>' + pillFor('Industry Core', e.mix['Industry Core']) + '</td>' +
+          '<td style="min-width:80px;">' + mixBar(e.mix) + '</td>' +
+        '</tr>';
+      });
+
+      html += '</tbody></table>';
+    });
+
+    html += '</div></div>';
+  });
+
+  container.innerHTML = html;
 })();
 
 // Heat: High-load backlog by manager stacked chart (total BL per manager, sorted by high-load BL desc)
