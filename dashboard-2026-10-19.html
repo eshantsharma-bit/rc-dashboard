@@ -417,29 +417,39 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <!-- ══════════════════════════════════════════════════════════ KPI SNAPSHOT TILES -->
 <div class="section-title">Aug &amp; Sep 2026 — KPI Snapshot</div>
 
+<!-- Lead narrative -->
+<div class="insight blue" style="margin-bottom:16px">
+  <strong>2,032 cases across Aug–Sep · Volume accelerating, quality holding</strong>
+  <p>Sep inflow hit 1,081 — up 14% on Aug. TM drove the surge (+98 cases, +28%) while PC and PM held steady. TTR drifted to 8.1d but stayed well within the 10d target. Bug rate plateaued at ~5% — both months fully incident-driven, not a structural quality decline.</p>
+</div>
+
 <!-- Combined row -->
-<div style="background:#f6f8fa;border:1px solid #d0d7de;border-radius:8px;padding:12px 16px;margin-bottom:12px">
-  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px">Combined (TM + PC + PM)</div>
+<div style="background:#f6f8fa;border:1px solid #d0d7de;border-radius:8px;padding:14px 16px;margin-bottom:16px">
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:12px">Combined — TM + PC + PM</div>
   <div class="grid-4" style="margin-bottom:0">
-    <div class="kpi warn">
+    <div class="kpi alert">
       <div class="kpi-label">Inflow</div>
-      <div class="kpi-val">951</div>
-      <div class="kpi-sub">Aug &nbsp;→&nbsp; <strong style="color:#cf222e">1,081</strong> Sep &nbsp;<span class="pill pill-red">+14% ↑</span></div>
+      <div class="kpi-val">951 → 1,081</div>
+      <div class="kpi-sub"><span class="pill pill-red">+14% Aug→Sep</span></div>
+      <div style="font-size:10px;color:var(--muted);margin-top:6px">TM alone added +98. PC &amp; PM flat.</div>
     </div>
     <div class="kpi warn">
       <div class="kpi-label">Avg TTR</div>
-      <div class="kpi-val">7.4d</div>
-      <div class="kpi-sub">Aug &nbsp;→&nbsp; <strong style="color:#9a6700">8.1d</strong> Sep &nbsp;<span class="pill pill-yellow">+0.7d</span></div>
+      <div class="kpi-val">7.4d → 8.1d</div>
+      <div class="kpi-sub"><span class="pill pill-yellow">+0.7d Aug→Sep</span></div>
+      <div style="font-size:10px;color:var(--muted);margin-top:6px">Still 2d under 10d target. PC creep (+1.1d) to watch.</div>
     </div>
     <div class="kpi blue">
       <div class="kpi-label">GUS Rate %</div>
-      <div class="kpi-val">11.1%</div>
-      <div class="kpi-sub">Aug &nbsp;→&nbsp; <strong style="color:#0969da">12.5%</strong> Sep &nbsp;<span class="pill pill-blue">+1.4pp</span></div>
+      <div class="kpi-val">11.1% → 12.5%</div>
+      <div class="kpi-sub"><span class="pill pill-blue">+1.4pp Aug→Sep</span></div>
+      <div style="font-size:10px;color:var(--muted);margin-top:6px">PC at 18%+ leads — PM at 6.9% is the gap to close.</div>
     </div>
-    <div class="kpi alert">
+    <div class="kpi good">
       <div class="kpi-label">Bug Rate %</div>
-      <div class="kpi-val">5.0%</div>
-      <div class="kpi-sub">Aug &nbsp;→&nbsp; <strong style="color:#cf222e">5.1%</strong> Sep &nbsp;<span class="pill pill-yellow">flat</span></div>
+      <div class="kpi-val">5.0% → 5.1%</div>
+      <div class="kpi-sub"><span class="pill pill-green">Flat Aug→Sep</span></div>
+      <div style="font-size:10px;color:var(--muted);margin-top:6px">Both months IR-linked. No new structural bug wave.</div>
     </div>
   </div>
 </div>
@@ -448,7 +458,10 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <div class="grid-3" style="margin-bottom:20px">
   <!-- TM -->
   <div class="card border-blue">
-    <div class="card-title" style="color:#1b4fa8">📊 Transaction Management</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="card-title" style="color:#1b4fa8;margin-bottom:0">📊 Transaction Management</div>
+      <span class="pill pill-red">Watch</span>
+    </div>
     <table class="data-table" style="font-size:12px">
       <thead><tr><th>KPI</th><th class="center">Aug</th><th class="center">Sep</th><th class="center">Δ</th></tr></thead>
       <tbody>
@@ -458,10 +471,14 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <tr><td>Bug%</td><td class="center">4.6%</td><td class="center"><strong>5.4%</strong></td><td class="center"><span class="pill pill-red">+0.8pp</span></td></tr>
       </tbody>
     </table>
+    <div style="font-size:11px;color:var(--muted);margin-top:10px;padding-top:8px;border-top:1px solid #eaeef2">Sep spike (+98 cases) is Winter '27 adoption friction — 72% "needs training", 15+ accounts. GUS coverage rising: engineers are filing. Bug% rise is 264 RC Upgrade IR-linked.</div>
   </div>
   <!-- PC -->
   <div class="card border-orange">
-    <div class="card-title" style="color:#bc4c00">🔧 Product Configurator</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="card-title" style="color:#bc4c00;margin-bottom:0">🔧 Product Configurator</div>
+      <span class="pill pill-green">Recovering</span>
+    </div>
     <table class="data-table" style="font-size:12px">
       <thead><tr><th>KPI</th><th class="center">Aug</th><th class="center">Sep</th><th class="center">Δ</th></tr></thead>
       <tbody>
@@ -471,10 +488,14 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <tr><td>Bug%</td><td class="center">7.8%</td><td class="center"><strong>6.2%</strong></td><td class="center"><span class="pill pill-green">-1.6pp</span></td></tr>
       </tbody>
     </table>
+    <div style="font-size:11px;color:var(--muted);margin-top:10px;padding-top:8px;border-top:1px solid #eaeef2">Aug bug peak (7.8%) fully driven by IRC-94329705. Sep recovering to 6.2% as incidents resolved. GUS% at 18%+ is the highest of 3 topics — good product signal discipline. TTR creep (+1.1d) to monitor.</div>
   </div>
   <!-- PM -->
   <div class="card border-green">
-    <div class="card-title" style="color:#1a7f37">💰 Price Management</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="card-title" style="color:#1a7f37;margin-bottom:0">💰 Price Management</div>
+      <span class="pill pill-green">Stable</span>
+    </div>
     <table class="data-table" style="font-size:12px">
       <thead><tr><th>KPI</th><th class="center">Aug</th><th class="center">Sep</th><th class="center">Δ</th></tr></thead>
       <tbody>
@@ -484,6 +505,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <tr><td>Bug%</td><td class="center">1.2%</td><td class="center"><strong>2.0%</strong></td><td class="center"><span class="pill pill-yellow">+0.8pp</span></td></tr>
       </tbody>
     </table>
+    <div style="font-size:11px;color:var(--muted);margin-top:10px;padding-top:8px;border-top:1px solid #eaeef2">Cleanest performer. Volume flat, TTR best of 3 (7.1–7.7d). GUS% grew +2.4pp — positive momentum but still lowest; opportunity to file more investigations. Bug rate low and no IR link.</div>
   </div>
 </div>
 
