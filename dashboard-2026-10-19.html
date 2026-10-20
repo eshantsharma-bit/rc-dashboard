@@ -671,15 +671,16 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 </div>
 
 <!-- ══════════════════════════════════════════════════════════ ISSUE SUBCATEGORY STACKED CHART -->
+<div class="section-title">Sub-Cause Breakdown — Aug+Sep 2026 <span style="font-size:11px;font-weight:400;color:var(--muted)">(Source: Sub_cause__c · OrgCS live query)</span></div>
 <div class="grid-2" style="margin-bottom:20px">
   <div class="card">
-    <div class="card-title">Top Issue Subcategories — Transaction Management</div>
+    <div class="card-title">Sub-Cause Split — Transaction Management <span style="font-size:10px;color:var(--muted)">(825 cases)</span></div>
     <div class="chart-wrap-lg">
       <canvas id="subTxn"></canvas>
     </div>
   </div>
   <div class="card">
-    <div class="card-title">Top Issue Subcategories — Product Configurator</div>
+    <div class="card-title">Sub-Cause Split — Product Configurator <span style="font-size:10px;color:var(--muted)">(769 cases)</span></div>
     <div class="chart-wrap-lg">
       <canvas id="subCfg"></canvas>
     </div>
@@ -687,7 +688,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 </div>
 <div class="grid-2" style="margin-bottom:20px">
   <div class="card">
-    <div class="card-title">Top Issue Subcategories — Price Management</div>
+    <div class="card-title">Sub-Cause Split — Price Management <span style="font-size:10px;color:var(--muted)">(530 cases)</span></div>
     <div class="chart-wrap-lg">
       <canvas id="subPrc"></canvas>
     </div>
@@ -957,20 +958,20 @@ const subBar = (id, labels, data, color) => new Chart(document.getElementById(id
 });
 
 subBar('subTxn',
-  ['Order/Amendment Failures','Renewal Pricing Defects','Asset & Assetization','Context Def & RCA Config','Ramp & Schedule Errors','QLE & UI Defects','Billing/Legal Entity','Apex/Governor Limits','Promotions Records','Winter\'27 Regression'],
-  [150, 120, 100, 90, 70, 67, 47, 37, 27, 32],
+  ['User Training / Instructions','Unclassified (null)','Product Bug','Need Better Docs','Error Message Issue','Feature Limit / Activation','New Feature Request','Incident / Outage','264 RC Upgrade (IR)','Other'],
+  [454, 208, 40, 30, 26, 17, 16, 13, 26, 10],
   'rgba(27,79,168,.75)'
 );
 
 subBar('subCfg',
-  ['Constraint & Rule Failures','Configurator UI Errors','QLA & Attribute Mgmt','Bundle Config Issues','CML Deployment','Sandbox/Prod Migration','Performance & Timeout','Winter\'27 Regression'],
-  [165, 159, 110, 69, 63, 45, 25, 19],
+  ['User Training / Instructions','Unclassified (null)','Product Bug','Incident / Outage','Need Better Docs','Error Message Issue','Feature Limit / Activation','New Feature Request','264 RC Upgrade (IR)','Other'],
+  [394, 157, 52, 36, 34, 19, 16, 15, 17, 12],
   'rgba(225,111,66,.75)'
 );
 
 subBar('subPrc',
-  ['Pricing Procedure Config','NUP/Amendment Failures','Attribute-Based Pricing','Expression Set/Dec Table','Discount & Promotions','Bundle Rollup Calc','Amendment/Proration','Feature Limits','LWR/Experience Cloud','Usage-Based Pricing'],
-  [95, 70, 55, 45, 40, 35, 35, 30, 20, 15],
+  ['User Training / Instructions','Unclassified (null)','Need Better Docs','Feature Limit / Activation','Error Message Issue','New Feature Request','Request for Implementation','Product Bug','264 RC Upgrade (IR)','Other'],
+  [311, 131, 24, 11, 10, 9, 8, 8, 2, 4],
   'rgba(45,138,78,.75)'
 );
 
