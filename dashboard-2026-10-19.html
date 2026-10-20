@@ -1305,6 +1305,8 @@ new Chart(document.getElementById('bugTrend').getContext('2d'), {
 
 // Volume Share % Trend (Feb-Sep)
 const VOL_MONTHS = ["Feb'26", "Mar'26", "Apr'26", "May'26", "Jun'26", "Jul'26", "Aug'26", "Sep'26"];
+// per-dataset label anchors to avoid overlap: TM=bottom, PC=top, PM=bottom, Combined=top
+const VOL_ALIGNS = ['bottom','top','bottom','top'];
 new Chart(document.getElementById('volShareTrend').getContext('2d'), {
   type:'line',
   data:{
@@ -1316,7 +1318,29 @@ new Chart(document.getElementById('volShareTrend').getContext('2d'), {
       {label:'TM+PC+PM', data:[69.4, 65.1, 69.1, 66.4, 69.2, 74.0, 63.3, 60.2], borderColor:'#8250df', tension:.3, pointRadius:5, pointBackgroundColor:'#8250df', fill:false, borderDash:[5,3]}
     ]
   },
-  options: lineOpts('%','%')
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'bottom', labels:{color:COLORS.muted, font:{size:11}, boxWidth:12}},
+      datalabels:{
+        anchor:'center',
+        align: ctx => VOL_ALIGNS[ctx.datasetIndex],
+        offset: 8,
+        font:{size:10, weight:'bold'},
+        formatter: v => v+'%',
+        color: ctx => ['#1b4fa8','#e16f42','#2d8a4e','#8250df'][ctx.datasetIndex]
+      }
+    },
+    scales:{
+      x:{ticks:{color:COLORS.muted, font:{size:10}}, grid:{color:COLORS.grid}},
+      y:{
+        beginAtZero:true,
+        ticks:{color:COLORS.muted, font:{size:10}, callback: v => v+'%'},
+        grid:{color:COLORS.grid},
+        title:{display:true, text:'%', color:COLORS.muted, font:{size:10}}
+      }
+    }
+  }
 });
 </script>
 </body>
