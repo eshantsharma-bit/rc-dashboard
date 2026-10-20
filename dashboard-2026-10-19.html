@@ -671,16 +671,16 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 </div>
 
 <!-- ══════════════════════════════════════════════════════════ ISSUE SUBCATEGORY STACKED CHART -->
-<div class="section-title">Sub-Cause Breakdown — Aug+Sep 2026 <span style="font-size:11px;font-weight:400;color:var(--muted)">(Source: Sub_cause__c · OrgCS live query)</span></div>
+<div class="section-title">Top Issue Patterns — Aug+Sep 2026 <span style="font-size:11px;font-weight:400;color:var(--muted)">(Source: Case Subject deep-dive · 264 RC Upgrade from IR__c)</span></div>
 <div class="grid-2" style="margin-bottom:20px">
   <div class="card">
-    <div class="card-title">Sub-Cause Split — Transaction Management <span style="font-size:10px;color:var(--muted)">(825 cases)</span></div>
+    <div class="card-title">Top Issue Patterns — Transaction Management <span style="font-size:10px;color:var(--muted)">(356 classified cases)</span></div>
     <div class="chart-wrap-lg">
       <canvas id="subTxn"></canvas>
     </div>
   </div>
   <div class="card">
-    <div class="card-title">Sub-Cause Split — Product Configurator <span style="font-size:10px;color:var(--muted)">(769 cases)</span></div>
+    <div class="card-title">Top Issue Patterns — Product Configurator <span style="font-size:10px;color:var(--muted)">(265 classified cases)</span></div>
     <div class="chart-wrap-lg">
       <canvas id="subCfg"></canvas>
     </div>
@@ -688,7 +688,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 </div>
 <div class="grid-2" style="margin-bottom:20px">
   <div class="card">
-    <div class="card-title">Sub-Cause Split — Price Management <span style="font-size:10px;color:var(--muted)">(530 cases)</span></div>
+    <div class="card-title">Top Issue Patterns — Price Management <span style="font-size:10px;color:var(--muted)">(273 classified cases)</span></div>
     <div class="chart-wrap-lg">
       <canvas id="subPrc"></canvas>
     </div>
@@ -958,20 +958,20 @@ const subBar = (id, labels, data, color) => new Chart(document.getElementById(id
 });
 
 subBar('subTxn',
-  ['User Training / Instructions','Unclassified (null)','Product Bug','Need Better Docs','Error Message Issue','Feature Limit / Activation','New Feature Request','Incident / Outage','264 RC Upgrade (IR)','Other'],
-  [454, 208, 40, 30, 26, 17, 16, 13, 26, 10],
+  ['Amendment & Renewal Failures','Asset Creation & State Mgmt','Context Definitions / Field Mapping','Order Creation & Activation','Ramp Schedule & Compound Uplift','264 RC Upgrade (IR__c)'],
+  [96, 72, 68, 52, 42, 26],
   'rgba(27,79,168,.75)'
 );
 
 subBar('subCfg',
-  ['User Training / Instructions','Unclassified (null)','Product Bug','Incident / Outage','Need Better Docs','Error Message Issue','Feature Limit / Activation','New Feature Request','264 RC Upgrade (IR)','Other'],
-  [394, 157, 52, 36, 34, 19, 16, 15, 17, 12],
+  ['CML & Constraint Rule Failures','Configurator UI & Flow Errors','Browse Catalog & Product Discovery','Quote & Order Errors (non-CML)','Attribute Mgmt & Defaults','264 RC Upgrade (IR__c)'],
+  [103, 58, 26, 35, 27, 17],
   'rgba(225,111,66,.75)'
 );
 
 subBar('subPrc',
-  ['User Training / Instructions','Unclassified (null)','Need Better Docs','Feature Limit / Activation','Error Message Issue','New Feature Request','Request for Implementation','Product Bug','264 RC Upgrade (IR)','Other'],
-  [311, 131, 24, 11, 10, 9, 8, 8, 2, 4],
+  ['Pricing Procedure Config & Errors','NUP / Price Calculation Wrong','Discounts, Promotions & Adjustments','Attribute-Based Pricing','Amendment & Renewal Pricing','264 RC Upgrade (IR__c)'],
+  [81, 72, 45, 37, 36, 26],
   'rgba(45,138,78,.75)'
 );
 
