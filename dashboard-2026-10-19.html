@@ -254,62 +254,8 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   </table>
   <div class="insight orange" style="margin-top:10px">
     <strong>PC Bug Rate peaked in Aug driven by 2 incidents</strong>
-    <p>Product Bug cases rose Jun 14 → Jul 24 → Aug 29 → Sep 26. IRC-94329705 + ICC-95079032 account for the Aug spike. Sep rate improved to 6.7% as incidents resolved — see IR deep-dive below.</p>
+    <p>Product Bug cases rose Jun 14 → Jul 24 → Aug 29 → Sep 26. IRC-94329705 + ICC-95079032 account for the Aug spike. Sep rate improved to 6.2% as incidents resolved — see IR deep-dive below.</p>
   </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════════ IR DEEP DIVE -->
-<div class="section-title">Incident Deep-Dive — IRC-94329705 &amp; ICC-95079032</div>
-<div class="grid-2" style="margin-bottom:20px">
-
-  <div class="card border-orange">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
-      <div>
-        <div style="font-size:15px;font-weight:700;color:#bc4c00">IRC-94329705</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">GUS: W-23936240 · Aug 20, 2026 · ~6 hrs active</div>
-      </div>
-      <span class="pill pill-red">41 cases</span>
-    </div>
-    <div class="insight orange" style="margin-bottom:10px">
-      <strong>CML ConstraintsSolverException — Configurator engine returned HTTP 400, blocking all product additions to quotes globally when CML was active.</strong>
-    </div>
-    <table class="data-table" style="font-size:11px">
-      <thead><tr><th>Dimension</th><th>Detail</th></tr></thead>
-      <tbody>
-        <tr><td>Error</td><td><code>ConstraintsSolverException · status 400 Bad Request</code></td></tr>
-        <tr><td>Trigger</td><td>CML active in org — config rules engine endpoint unavailable</td></tr>
-        <tr><td>Impact</td><td>All quote line item additions / repricing blocked</td></tr>
-        <tr><td>Regions</td><td>EMEA 23 · AMER 18</td></tr>
-        <tr><td>Resolution</td><td>All 41 cases closed within 1–4 days (W-23936240)</td></tr>
-        <tr><td>Key accounts</td><td>Bell Canada · SHIFTLOGIC · PostNL · Cloudity · Schneider Electric · Rogers · Vestas · Accenture</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card border-blue">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
-      <div>
-        <div style="font-size:15px;font-weight:700;color:#1b4fa8">ICC-95079032</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">GUS: W-24112150 · Sep 2–7, 2026</div>
-      </div>
-      <span class="pill pill-orange">5 cases confirmed</span>
-    </div>
-    <div class="insight blue" style="margin-bottom:10px">
-      <strong>CML parse failure — quote saves and product config blocked on CML-active orgs when saving quotes or adding products.</strong>
-    </div>
-    <table class="data-table" style="font-size:11px">
-      <thead><tr><th>Dimension</th><th>Detail</th></tr></thead>
-      <tbody>
-        <tr><td>Error</td><td><code>failed to parse response · configuration rule failed to parse</code></td></tr>
-        <tr><td>Trigger</td><td>CML active — parse failure on quote save / product add (Sep 7 cluster)</td></tr>
-        <tr><td>Impact</td><td>Quote saves blocked; product configuration non-functional</td></tr>
-        <tr><td>Regions</td><td>EMEA 2 · AMER 3</td></tr>
-        <tr><td>Resolution</td><td>Cases closed within 1–9 days (W-24112150)</td></tr>
-        <tr><td>Key accounts</td><td>QM Technologies · New Work SE · Telenet Group · LiveRamp · Qualifacts</td></tr>
-      </tbody>
-    </table>
-  </div>
-
 </div>
 
 <!-- Price Management -->
@@ -428,7 +374,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <tr><td>Inflow</td><td class="center">361</td><td class="center"><strong>390</strong></td><td class="center"><span class="pill pill-yellow">+29 ↑8%</span></td></tr>
         <tr><td>Avg TTR</td><td class="center">7.4d</td><td class="center"><strong>8.5d</strong></td><td class="center"><span class="pill pill-yellow">+1.1d</span></td></tr>
         <tr><td>GUS%</td><td class="center">18.3%</td><td class="center"><strong>18.7%</strong></td><td class="center"><span class="pill pill-blue">+0.4pp</span></td></tr>
-        <tr><td>Bug%</td><td class="center">8.0%</td><td class="center"><strong>6.7%</strong></td><td class="center"><span class="pill pill-green">-1.3pp</span></td></tr>
+        <tr><td>Bug%</td><td class="center">7.8%</td><td class="center"><strong>6.2%</strong></td><td class="center"><span class="pill pill-green">-1.6pp</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -445,6 +391,61 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
       </tbody>
     </table>
   </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════ IR DEEP DIVE -->
+<div class="section-title">Incident Deep-Dive — IRC-94329705 &amp; ICC-95079032</div>
+<div class="grid-2" style="margin-bottom:20px">
+
+  <div class="card border-orange">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+      <div>
+        <div style="font-size:15px;font-weight:700;color:#bc4c00">IRC-94329705</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">GUS: W-23936240 · Aug 20, 2026 · ~6 hrs active</div>
+      </div>
+      <span class="pill pill-red">41 cases</span>
+    </div>
+    <div class="insight orange" style="margin-bottom:10px">
+      <strong>CML ConstraintsSolverException — Configurator engine returned HTTP 400, blocking all product additions to quotes globally when CML was active.</strong>
+    </div>
+    <table class="data-table" style="font-size:11px">
+      <thead><tr><th>Dimension</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr><td>Error</td><td><code>ConstraintsSolverException · status 400 Bad Request</code></td></tr>
+        <tr><td>Trigger</td><td>CML active in org — config rules engine endpoint unavailable</td></tr>
+        <tr><td>Impact</td><td>All quote line item additions / repricing blocked</td></tr>
+        <tr><td>Regions</td><td>EMEA 23 · AMER 18</td></tr>
+        <tr><td>Resolution</td><td>All 41 cases closed within 1–4 days (W-23936240)</td></tr>
+        <tr><td>Key accounts</td><td>Bell Canada · SHIFTLOGIC · PostNL · Cloudity · Schneider Electric · Rogers · Vestas · Accenture</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card border-blue">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+      <div>
+        <div style="font-size:15px;font-weight:700;color:#1b4fa8">ICC-95079032</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">GUS: W-24112150 · Sep 2–7, 2026</div>
+      </div>
+      <span class="pill pill-orange">5 cases confirmed</span>
+    </div>
+    <div class="insight blue" style="margin-bottom:10px">
+      <strong>CML parse failure — quote saves and product config blocked on CML-active orgs when saving quotes or adding products.</strong>
+    </div>
+    <table class="data-table" style="font-size:11px">
+      <thead><tr><th>Dimension</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr><td>Error</td><td><code>failed to parse response · configuration rule failed to parse</code></td></tr>
+        <tr><td>Trigger</td><td>CML active — parse failure on quote save / product add (Sep 7 cluster)</td></tr>
+        <tr><td>Impact</td><td>Quote saves blocked; product configuration non-functional</td></tr>
+        <tr><td>Regions</td><td>EMEA 2 · AMER 3</td></tr>
+        <tr><td>Resolution</td><td>Cases closed within 1–9 days (W-24112150)</td></tr>
+        <tr><td>Key accounts</td><td>QM Technologies · New Work SE · Telenet Group · LiveRamp · Qualifacts</td></tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
 <!-- Combined trend chart row -->
@@ -504,7 +505,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
     <div class="cnt">751 cases (Aug+Sep)</div>
     <div style="margin-top:8px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
       <span class="pill pill-orange">IR linked: 11.7%</span>
-      <span class="pill pill-red">Bug%: 6.7% (Sep)</span>
+      <span class="pill pill-red">Bug%: 6.2% (Sep)</span>
     </div>
     <div style="font-size:10px;color:var(--muted);margin-top:4px">IRC-94329705×34 (Aug) · ICC-95079032×35 (Sep)</div>
   </div>
@@ -517,6 +518,98 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
       <span class="pill pill-green">Bug%: 2.0% (Sep)</span>
     </div>
     <div style="font-size:10px;color:var(--muted);margin-top:4px">Only 3 IR-linked cases · stable</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ VOLUME SHARE -->
+<div class="section-title">TM · PC · PM — Volume Share of RC Core (Feb–Sep 2026)</div>
+<div class="grid-2" style="margin-bottom:20px">
+  <div class="card">
+    <div class="card-title">Monthly % Share of RC Core Inflow</div>
+    <div class="chart-wrap-lg">
+      <canvas id="volShareTrend"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">RC Core Monthly Inflow — TM · PC · PM Contribution</div>
+    <table class="data-table" style="font-size:11px">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th class="center">RC Core</th>
+          <th class="center">TM</th>
+          <th class="center">PC</th>
+          <th class="center">PM</th>
+          <th class="center">Combined</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><strong>Feb'26</strong></td>
+        <td class="center">1,683</td>
+        <td class="center" style="color:#1b4fa8">286 (17.0%)</td>
+        <td class="center" style="color:#bc4c00">662 (39.3%)</td>
+        <td class="center" style="color:#1a7f37">220 (13.1%)</td>
+        <td class="center"><strong>1,168 (69.4%)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Mar'26</strong></td>
+        <td class="center">1,801</td>
+        <td class="center" style="color:#1b4fa8">413 (22.9%)</td>
+        <td class="center" style="color:#bc4c00">471 (26.2%)</td>
+        <td class="center" style="color:#1a7f37">288 (16.0%)</td>
+        <td class="center"><strong>1,172 (65.1%)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Apr'26</strong></td>
+        <td class="center">1,661</td>
+        <td class="center" style="color:#1b4fa8">357 (21.5%)</td>
+        <td class="center" style="color:#bc4c00">526 (31.7%)</td>
+        <td class="center" style="color:#1a7f37">264 (15.9%)</td>
+        <td class="center"><strong>1,147 (69.1%)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>May'26</strong></td>
+        <td class="center">1,470</td>
+        <td class="center" style="color:#1b4fa8">292 (19.9%)</td>
+        <td class="center" style="color:#bc4c00">484 (32.9%)</td>
+        <td class="center" style="color:#1a7f37">200 (13.6%)</td>
+        <td class="center"><strong>976 (66.4%)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Jun'26</strong></td>
+        <td class="center">1,715</td>
+        <td class="center" style="color:#1b4fa8">341 (19.9%)</td>
+        <td class="center" style="color:#bc4c00">618 (36.0%)</td>
+        <td class="center" style="color:#1a7f37">228 (13.3%)</td>
+        <td class="center"><strong>1,187 (69.2%)</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Jul'26</strong></td>
+        <td class="center">1,564</td>
+        <td class="center" style="color:#1b4fa8">310 (19.8%)</td>
+        <td class="center" style="color:#bc4c00">611 (39.1%)</td>
+        <td class="center" style="color:#1a7f37">236 (15.1%)</td>
+        <td class="center"><strong>1,157 (74.0%)</strong></td>
+      </tr>
+      <tr style="background:rgba(88,166,255,.07)">
+        <td><strong>Aug'26</strong></td>
+        <td class="center">1,541</td>
+        <td class="center" style="color:#1b4fa8">345 (22.4%)</td>
+        <td class="center" style="color:#bc4c00">385 (25.0%)</td>
+        <td class="center" style="color:#1a7f37">245 (15.9%)</td>
+        <td class="center"><strong>975 (63.3%)</strong></td>
+      </tr>
+      <tr style="background:rgba(88,166,255,.07)">
+        <td><strong>Sep'26</strong></td>
+        <td class="center">1,786</td>
+        <td class="center" style="color:#1b4fa8">443 (24.8%)</td>
+        <td class="center" style="color:#bc4c00">384 (21.5%)</td>
+        <td class="center" style="color:#1a7f37">248 (13.9%)</td>
+        <td class="center"><strong>1,075 (60.2%)</strong></td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
@@ -1107,7 +1200,7 @@ new Chart(document.getElementById('bugRateBar').getContext('2d'), {
     labels:['Jun\'26','Jul\'26','Aug\'26','Sep\'26'],
     datasets:[
       {label:'Transaction Mgmt', data:[3.3,1.6,4.6,5.4], backgroundColor:'rgba(27,79,168,.75)', borderColor:'#1b4fa8', borderWidth:1},
-      {label:'Product Configurator', data:[2.6,4.6,8.0,6.7], backgroundColor:'rgba(225,111,66,.75)', borderColor:'#e16f42', borderWidth:1},
+      {label:'Product Configurator', data:[2.6,4.6,7.8,6.2], backgroundColor:'rgba(225,111,66,.75)', borderColor:'#e16f42', borderWidth:1},
       {label:'Price Management', data:[1.0,2.8,1.2,2.0], backgroundColor:'rgba(45,138,78,.75)', borderColor:'#2d8a4e', borderWidth:1}
     ]
   },
@@ -1203,8 +1296,24 @@ new Chart(document.getElementById('bugTrend').getContext('2d'), {
     labels:MONTHS,
     datasets:[
       {label:'Transaction Mgmt', data:[3.3,1.6,4.6,5.4], borderColor:'#1b4fa8', backgroundColor:'rgba(27,79,168,.08)', tension:.3, pointRadius:5, pointBackgroundColor:'#1b4fa8', fill:true},
-      {label:'Product Configurator', data:[2.6,4.6,8.0,6.7], borderColor:'#e16f42', backgroundColor:'rgba(225,111,66,.08)', tension:.3, pointRadius:5, pointBackgroundColor:'#e16f42', fill:true},
+      {label:'Product Configurator', data:[2.6,4.6,7.8,6.2], borderColor:'#e16f42', backgroundColor:'rgba(225,111,66,.08)', tension:.3, pointRadius:5, pointBackgroundColor:'#e16f42', fill:true},
       {label:'Price Management', data:[1.0,2.8,1.2,2.0], borderColor:'#2d8a4e', backgroundColor:'rgba(45,138,78,.08)', tension:.3, pointRadius:5, pointBackgroundColor:'#2d8a4e', fill:true}
+    ]
+  },
+  options: lineOpts('%','%')
+});
+
+// Volume Share % Trend (Feb-Sep)
+const VOL_MONTHS = ["Feb'26", "Mar'26", "Apr'26", "May'26", "Jun'26", "Jul'26", "Aug'26", "Sep'26"];
+new Chart(document.getElementById('volShareTrend').getContext('2d'), {
+  type:'line',
+  data:{
+    labels: VOL_MONTHS,
+    datasets:[
+      {label:'TM', data:[17.0, 22.9, 21.5, 19.9, 19.9, 19.8, 22.4, 24.8], borderColor:'#1b4fa8', tension:.3, pointRadius:5, pointBackgroundColor:'#1b4fa8', fill:false},
+      {label:'PC', data:[39.3, 26.2, 31.7, 32.9, 36.0, 39.1, 25.0, 21.5], borderColor:'#e16f42', tension:.3, pointRadius:5, pointBackgroundColor:'#e16f42', fill:false},
+      {label:'PM', data:[13.1, 16.0, 15.9, 13.6, 13.3, 15.1, 15.9, 13.9], borderColor:'#2d8a4e', tension:.3, pointRadius:5, pointBackgroundColor:'#2d8a4e', fill:false},
+      {label:'TM+PC+PM', data:[69.4, 65.1, 69.1, 66.4, 69.2, 74.0, 63.3, 60.2], borderColor:'#8250df', tension:.3, pointRadius:5, pointBackgroundColor:'#8250df', fill:false, borderDash:[5,3]}
     ]
   },
   options: lineOpts('%','%')
