@@ -405,7 +405,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <tr><td>Bug%</td><td class="center">6.7%</td><td class="center"><strong>20.2%</strong></td><td class="center"><span class="pill pill-red">+13.5pp</span></td></tr>
       </tbody>
     </table>
-    <div style="font-size:11px;color:var(--muted);margin-top:10px;padding-top:8px;border-top:1px solid #eaeef2">Sep bug rate exploded to 20.2% — ICC-95079032 (CML parse failure Sep 2–7) is the primary driver. Inflow declining (328→322) is a positive sign but quality alert is active. GUS% leading at 22.7%.</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:10px;padding-top:8px;border-top:1px solid #eaeef2">Sep bug rate hit 20.2% — ICC-95079032 (38 cases across all IR variants, Sep 2–7) is the driver. IRC-94329705 (35 PC cases, Aug) also contributed. Both are CML platform incidents. Inflow declining (328→322) is positive but quality alert active.</div>
   </div>
   <!-- PM -->
   <div class="card border-green">
@@ -448,7 +448,8 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <tr><td>Error</td><td><code>ConstraintsSolverException · status 400 Bad Request</code></td></tr>
         <tr><td>Trigger</td><td>CML active in org — config rules engine endpoint unavailable</td></tr>
         <tr><td>Impact</td><td>All quote line item additions / repricing blocked</td></tr>
-        <tr><td>Regions</td><td>EMEA 23 · AMER 18</td></tr>
+        <tr><td>IR variants</td><td><code>94329705</code> · <code>icc-94329705</code> · <code>IR-94329705</code> — all counted</td></tr>
+        <tr><td>Topic split</td><td>PC 35 · TM 2 · PM 1</td></tr>
         <tr><td>Resolution</td><td>All 41 cases closed within 1–4 days (W-23936240)</td></tr>
         <tr><td>Key accounts</td><td>Bell Canada · SHIFTLOGIC · PostNL · Cloudity · Schneider Electric · Rogers · Vestas · Accenture</td></tr>
       </tbody>
@@ -461,7 +462,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <div style="font-size:15px;font-weight:700;color:#1b4fa8">ICC-95079032</div>
         <div style="font-size:11px;color:var(--muted);margin-top:2px">GUS: W-24112150 · Sep 2–7, 2026</div>
       </div>
-      <span class="pill pill-orange">5 cases confirmed</span>
+      <span class="pill pill-red">38 cases</span>
     </div>
     <div class="insight blue" style="margin-bottom:10px">
       <strong>CML parse failure — quote saves and product config blocked on CML-active orgs when saving quotes or adding products.</strong>
@@ -472,7 +473,8 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <tr><td>Error</td><td><code>failed to parse response · configuration rule failed to parse</code></td></tr>
         <tr><td>Trigger</td><td>CML active — parse failure on quote save / product add (Sep 7 cluster)</td></tr>
         <tr><td>Impact</td><td>Quote saves blocked; product configuration non-functional</td></tr>
-        <tr><td>Regions</td><td>EMEA 2 · AMER 3</td></tr>
+        <tr><td>IR variants</td><td><code>95079032</code> · <code>#icc-95079032</code> · <code>icc-95079032</code> — all counted</td></tr>
+        <tr><td>Topic split</td><td>PC 34 · TM 4 · PM 0</td></tr>
         <tr><td>Resolution</td><td>Cases closed within 1–9 days (W-24112150)</td></tr>
         <tr><td>Key accounts</td><td>QM Technologies · New Work SE · Telenet Group · LiveRamp · Qualifacts</td></tr>
       </tbody>
@@ -530,7 +532,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
       <span class="pill pill-blue">IR linked: 3.5%</span>
       <span class="pill pill-red">Bug%: 10.5% (Sep)</span>
     </div>
-    <div style="font-size:10px;color:var(--muted);margin-top:4px">264 RC Upgrade×24 · icc-95079032×4</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">264 RC Upgrade×26 (IR__c) · ICC-95079032×4 (all variants)</div>
   </div>
   <div class="topic-card tc-cfg">
     <div class="pct">33.5%</div>
@@ -540,7 +542,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
       <span class="pill pill-orange">IR linked: 10.6%</span>
       <span class="pill pill-red">Bug%: 20.2% (Sep)</span>
     </div>
-    <div style="font-size:10px;color:var(--muted);margin-top:4px">IRC-94329705×34 (Aug) · ICC-95079032×35 (Sep)</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">IRC-94329705×35 (all variants, Aug) · ICC-95079032×34 (all variants, Sep)</div>
   </div>
   <div class="topic-card tc-prc">
     <div class="pct">25.2%</div>
