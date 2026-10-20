@@ -415,7 +415,7 @@ body { background: var(--bg); color: var(--text); }
   <!-- LOW LOAD TABS -->
   <div class="card">
     <div class="card-header">🟢 Low-Load — 74 engineers ≤12 cases
-      <span style="font-size:11px;font-weight:400;color:var(--muted)">Productivity = Jul–Sep closure % · ⚠️ = below 90% · 🔒 = bench risk · New Hires tab = no historical data</span>
+      <span style="font-size:11px;font-weight:400;color:var(--muted)">Productivity = avg closure % Jul–Sep 2026 · ⚠️ = below 90% · 🔒 = bench risk · New Hires tab = no historical data</span>
     </div>
     <div class="card-body" style="padding-bottom:0;">
       <div id="lowSkillSummary" style="padding:10px 16px 0; display:flex; gap:8px; flex-wrap:wrap;"></div>
@@ -428,21 +428,21 @@ body { background: var(--bg); color: var(--text); }
 
       <div id="pane-emea" class="tab-pane active" style="overflow-x:auto;">
         <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
+          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity (Avg Jul–Sep)</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="lowEmeaBody"></tbody></table>
       </div>
 
       <div id="pane-india" class="tab-pane" style="overflow-x:auto;">
         <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
+          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity (Avg Jul–Sep)</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="lowIndiaBody"></tbody></table>
       </div>
 
       <div id="pane-apac" class="tab-pane" style="overflow-x:auto;">
         <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
+          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity (Avg Jul–Sep)</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="lowApacBody"></tbody></table>
       </div>
@@ -453,17 +453,17 @@ body { background: var(--bg); color: var(--text); }
         </div>
         <div style="padding:8px 16px 4px;font-size:12px;font-weight:600;color:#8250df;">EMEA</div>
         <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
+          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity (Avg Jul–Sep)</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="nhEmeaBody"></tbody></table>
         <div style="padding:8px 16px 4px;font-size:12px;font-weight:600;color:#8250df;">India</div>
         <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
+          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity (Avg Jul–Sep)</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="nhIndiaBody"></tbody></table>
         <div style="padding:8px 16px 4px;font-size:12px;font-weight:600;color:#8250df;">APAC</div>
         <table class="eng-table"><thead><tr>
-          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Primary Skill</th>
+          <th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity (Avg Jul–Sep)</th><th>Primary Skill</th>
           <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
         </tr></thead><tbody id="nhApacBody"></tbody></table>
       </div>
@@ -758,6 +758,26 @@ body { background: var(--bg); color: var(--text); }
 
 <div style="text-align:center; padding:20px 0 8px; color:var(--muted); font-size:12px; border-top:1px solid var(--border);">
   RC & Industry Backlog + Inflow Analysis · Oct 15, 2026 · OrgCS live data · EMEA + India + APAC
+</div>
+
+<!-- SECTION 6: LOW PRODUCTIVITY FOCUS -->
+<div class="section-title mb24" style="margin-bottom:0;margin-top:32px;">Section 6 — Low Productivity Focus · Low-Load Engineers &lt;90% (Avg Jul–Sep 2026)</div>
+<div style="margin-top:12px;" class="mb24">
+  <div class="card">
+    <div class="card-header">⚠️ Engineers with low-load backlog AND productivity below 90%
+      <span style="font-size:11px;font-weight:400;color:var(--muted)">Only approved-manager scope · New hires excluded · Sorted by productivity ascending</span>
+    </div>
+    <div class="card-body" style="padding:0;overflow-x:auto;">
+      <table class="eng-table">
+        <thead><tr>
+          <th>Engineer</th><th>Region</th><th>Manager</th><th>BL Cases</th>
+          <th>Productivity (Avg Jul–Sep)</th><th>Primary Skill</th>
+          <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
+        </tr></thead>
+        <tbody id="lowProdBody"></tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 </div><!-- /container -->
@@ -1345,6 +1365,54 @@ renderNewHireTable(apacSplit.newh,  'nhApacBody');
 
 
 renderLowSkillSummary();
+
+// Section 6 — Low Productivity Focus (<90%, low-load, approved managers, no new hires)
+(function() {
+  var REGION_FOR = {};
+  lowEmea.forEach(function(e){ REGION_FOR[e.name] = 'EMEA'; });
+  lowIndia.forEach(function(e){ REGION_FOR[e.name] = 'India'; });
+  lowApac.forEach(function(e){ REGION_FOR[e.name] = 'APAC'; });
+
+  var all = [
+    ...lowEmea.filter(function(e){ return APPROVED_MANAGERS.has(e.manager) && !NEW_HIRES.has(e.name); }),
+    ...lowIndia.filter(function(e){ return APPROVED_MANAGERS.has(e.manager) && !NEW_HIRES.has(e.name); }),
+    ...lowApac.filter(function(e){ return APPROVED_MANAGERS.has(e.manager) && !NEW_HIRES.has(e.name); })
+  ];
+
+  var lowProd = all.filter(function(e){
+    var pct = dpData[e.name];
+    return pct !== undefined && pct < 90;
+  }).sort(function(a, b){ return dpData[a.name] - dpData[b.name]; });
+
+  var body = document.getElementById('lowProdBody');
+  if (!body) return;
+
+  if (lowProd.length === 0) {
+    body.innerHTML = '<tr><td colspan="12" style="text-align:center;color:var(--muted);padding:16px;">No low-load engineers below 90% productivity</td></tr>';
+    return;
+  }
+
+  body.innerHTML = lowProd.map(function(e) {
+    var pct = dpData[e.name];
+    var region = REGION_FOR[e.name] || '—';
+    var rowStyle = pct < 70 ? ' style="background:#fff0f0"' : ' style="background:#fff8f0"';
+    var badge = '<span style="font-size:12px;font-weight:700;color:#cf222e">' + pct + '% ⚠️</span>';
+    return '<tr' + rowStyle + '>' +
+      '<td><div class="eng-name">' + e.name + '</div></td>' +
+      '<td><span class="badge badge-' + (region==='EMEA'?'blue':region==='India'?'amber':'green') + '" style="font-size:10px;">' + region + '</span></td>' +
+      '<td><div class="eng-manager">' + e.manager + '</div></td>' +
+      '<td><span class="total-badge total-lo">' + e.total + '</span></td>' +
+      '<td>' + badge + '</td>' +
+      '<td>' + primarySkill(e.mix, e.total) + '</td>' +
+      '<td>' + pillFor('RCA', e.mix.RCA) + '</td>' +
+      '<td>' + pillFor('Rev CPQ', e.mix['Rev CPQ']) + '</td>' +
+      '<td>' + pillFor('Industry CPQ', e.mix['Industry CPQ']) + '</td>' +
+      '<td>' + pillFor('Industry Omni', e.mix['Industry Omni']) + '</td>' +
+      '<td>' + pillFor('Industry Core', e.mix['Industry Core']) + '</td>' +
+      '<td style="min-width:80px;">' + mixBar(e.mix) + '</td>' +
+      '</tr>';
+  }).join('');
+})();
 
 // Heat: High-load backlog by manager stacked chart (total BL per manager, sorted by high-load BL desc)
 new Chart(document.getElementById('heatManagerChart'), {
