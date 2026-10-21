@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RC & Industry Capacity Review — Oct 21 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:13px;background:#f6f8fa;color:#24292f}
+.header{background:#0d1117;color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:18px;font-weight:600}
+.header .sub{font-size:12px;color:#8b949e;margin-top:4px}
+.container{max-width:1400px;margin:0 auto;padding:20px 16px}
+.kpi-row{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.kpi{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:14px 18px;flex:1;min-width:130px}
+.kpi .label{font-size:11px;color:#57606a;text-transform:uppercase;letter-spacing:.5px}
+.kpi .value{font-size:26px;font-weight:700;color:#0969da;margin-top:4px}
+.kpi .value.red{color:#cf222e}
+.kpi .value.green{color:#1a7f37}
+.kpi .value.orange{color:#bc4c00}
+.section{background:#fff;border:1px solid #d0d7de;border-radius:8px;margin-bottom:20px;overflow:hidden}
+.section-header{background:#f6f8fa;border-bottom:1px solid #d0d7de;padding:12px 18px;display:flex;align-items:center;gap:10px}
+.section-header h2{font-size:14px;font-weight:600;color:#24292f}
+.section-body{padding:16px 18px}
+.tabs{display:flex;border-bottom:1px solid #d0d7de;background:#f6f8fa;overflow-x:auto}
+.tab{padding:8px 16px;cursor:pointer;font-size:12px;font-weight:500;color:#57606a;border-bottom:2px solid transparent;white-space:nowrap}
+.tab.active{color:#0969da;border-bottom-color:#0969da;background:#fff}
+.tab-panel{display:none;padding:14px 18px}
+.tab-panel.active{display:block}
+.eng-table,.mini-table{width:100%;border-collapse:collapse;font-size:12px}
+.eng-table th,.mini-table th{background:#f6f8fa;border:1px solid #d0d7de;padding:6px 8px;text-align:left;font-weight:600;white-space:nowrap}
+.eng-table td,.mini-table td{border:1px solid #d0d7de;padding:5px 8px;vertical-align:middle}
+.eng-table tr:hover{background:#f6f8fa}
+.num{text-align:center}
+.badge{display:inline-block;padding:2px 7px;border-radius:12px;font-size:11px;font-weight:600}
+.badge-green{background:#dafbe1;color:#1a7f37}
+.badge-amber{background:#fff8c5;color:#9a6700}
+.badge-red{background:#ffebe9;color:#cf222e}
+.badge-gray{background:#f6f8fa;color:#57606a;border:1px solid #d0d7de}
+.bench-risk{color:#cf222e;font-weight:600;font-size:11px}
+.skill-ok{color:#24292f;font-size:11px}
+.mix-bar{display:flex;height:10px;border-radius:4px;overflow:hidden;min-width:80px}
+.mix-seg{height:100%}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.snapshot-card{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;padding:12px}
+.snapshot-card h3{font-size:12px;font-weight:600;margin-bottom:10px;color:#57606a;text-transform:uppercase;letter-spacing:.5px}
+.pto-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #d0d7de;font-size:12px}
+.pto-row:last-child{border:none}
+.tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600}
+.tag-emea{background:#ddf4ff;color:#0550ae}
+.tag-india{background:#fff8c5;color:#9a6700}
+.tag-apac{background:#dafbe1;color:#1a7f37}
+.chart-wrap{position:relative;height:300px}
+.chart-wrap-lg{position:relative;height:380px}
+.tier-change-box{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.tc-card{background:#f6f8fa;border-radius:6px;padding:10px 14px;border:1px solid #d0d7de}
+.tc-card h4{font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.tc-card h4.red{color:#cf222e} .tc-card h4.green{color:#1a7f37}
+.tc-item{font-size:11px;padding:2px 0;color:#24292f}
+.skill-card{border:1px solid #d0d7de;border-radius:6px;margin-bottom:12px;overflow:hidden}
+.skill-card-header{background:#f6f8fa;padding:8px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #d0d7de}
+.skill-tag{background:#0969da;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.skill-stats{font-size:11px;color:#57606a}
+.region-sub{padding:8px 14px;border-bottom:1px solid #eee}
+.region-sub:last-child{border:none}
+.region-sub strong{font-size:11px;color:#57606a;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.row-red{background:#ffebe9}
+.row-amber{background:#fff8c5}
+.ct-group{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;padding:12px;margin-bottom:12px}
+.ct-group h4{font-size:12px;font-weight:600;margin-bottom:10px;color:#0550ae}
+.signal-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.signal-card{background:#fff;border:1px solid #d0d7de;border-radius:6px;padding:12px}
+.signal-card .s-title{font-size:11px;font-weight:600;color:#57606a;text-transform:uppercase;margin-bottom:6px}
+.signal-card .s-val{font-size:20px;font-weight:700;color:#0969da}
+.signal-card .s-desc{font-size:11px;color:#57606a;margin-top:4px}
+.signal-card.warn .s-val{color:#bc4c00}
+.signal-card.danger .s-val{color:#cf222e}
+.signal-card.good .s-val{color:#1a7f37}
+.inflow-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:12px}
+.inflow-table th,.inflow-table td{border:1px solid #d0d7de;padding:6px 10px;text-align:center}
+.inflow-table th{background:#f6f8fa;font-weight:600}
+.inflow-table tr:hover{background:#f6f8fa}
+.declining{color:#cf222e;font-weight:600}
+.growing{color:#1a7f37;font-weight:600}
+.stable{color:#57606a}
+</style>
+</head>
+<body>
+<div class="header">
+  <div><div class="header-title" style="font-size:18px;font-weight:600">RC &amp; Industry — Capacity Review</div>
+  <div class="sub">Oct 21 2026 · EMEA | India | APAC · Two-run comparison vs Oct 15</div></div>
+  <div style="font-size:11px;color:#8b949e">Chat excluded: 12 engineers · New hires: separate tab</div>
+</div>
+<div class="container">
+
+<!-- KPI ROW -->
+<div class="kpi-row">
+  <div class="kpi"><div class="label">Total Active</div><div class="value">95</div><div style="font-size:11px;color:#57606a">excl chat + PTO</div></div>
+  <div class="kpi"><div class="label">Chat Excluded</div><div class="value orange">12</div></div>
+  <div class="kpi"><div class="label">PTO / Shrinkage</div><div class="value red">7</div><div style="font-size:11px;color:#cf222e">6.9% of team</div></div>
+  <div class="kpi"><div class="label">High-Load (&gt;12)</div><div class="value red">27</div></div>
+  <div class="kpi"><div class="label">Low-Load (≤12)</div><div class="value green">68</div></div>
+  <div class="kpi"><div class="label">Cross-Train Signals</div><div class="value orange">13</div><div style="font-size:11px;color:#57606a">low-load on declining groups</div></div>
+</div>
+
+<!-- WORKFORCE SNAPSHOT -->
+<div class="section">
+<div class="section-header"><h2>Workforce Snapshot</h2></div>
+<div class="section-body">
+<div class="two-col">
+<div class="snapshot-card">
+<h3>PTO / Shrinkage This Week (7 engineers · 6.9%)</h3>
+<div class="pto-row"><span>Vivek Vairagade</span><span><span class="tag tag-india">India</span> &nbsp;Bhagat M</span></div>
+<div class="pto-row"><span>Sohag Das</span><span><span class="tag tag-emea">EMEA</span> &nbsp;Eshant Sharma</span></div>
+<div class="pto-row"><span>Edula Poojitha Reddy</span><span><span class="tag tag-india">India</span> &nbsp;Manu Ramamurthy</span></div>
+<div class="pto-row"><span>Pavithra</span><span><span class="tag tag-india">India</span> &nbsp;Naren Rajendran</span></div>
+<div class="pto-row"><span>Prabhjot Kaur <span style="font-size:10px;color:#cf222e">NEW</span></span><span><span class="tag tag-india">India</span> &nbsp;Naren Rajendran</span></div>
+<div class="pto-row"><span>Neha Adam</span><span><span class="tag tag-apac">APAC</span> &nbsp;Rafik Shaikh</span></div>
+<div class="pto-row"><span>Jaya Naga Durga Harshitha Jaladi <span style="font-size:10px;color:#cf222e">NEW</span></span><span><span class="tag tag-india">India</span> &nbsp;Mahima Prathaban</span></div>
+</div>
+<div class="snapshot-card">
+<h3>Changes vs Oct 15</h3>
+<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:600;color:#1a7f37;margin-bottom:4px">Returned from PTO</div>
+<div style="font-size:11px;color:#24292f">Emmanuel Keka · Nishit Mahato</div></div>
+<div><div style="font-size:11px;font-weight:600;color:#cf222e;margin-bottom:4px">New PTO this week</div>
+<div style="font-size:11px;color:#24292f">Prabhjot Kaur · Jaya Naga Durga Harshitha Jaladi</div></div>
+<div style="margin-top:10px;padding-top:10px;border-top:1px solid #d0d7de">
+<div style="font-size:11px;font-weight:600;color:#24292f;margin-bottom:4px">Net position</div>
+<div style="font-size:11px;color:#57606a">Oct 15: ~38 high / ~55 low (est.) → Oct 21: 27 high / 68 low<br>Significant load shift: 16 dropped to LOW, 8 moved to HIGH</div>
+</div>
+</div>
+</div></div></div>
+
+<!-- SECTION: INFLOW TREND -->
+<div class="section">
+<div class="section-header"><h2>Section 1 — Inflow Trend by Product Group (Apr–Sep 2026)</h2></div>
+<div class="section-body">
+<div class="chart-wrap-lg"><canvas id="inflowChart"></canvas></div>
+<table class="inflow-table" style="margin-top:16px">
+<thead><tr><th>Group</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Q1 Avg</th><th>Q2 Avg</th><th>Δ%</th><th>Trend</th></tr></thead>
+<tbody>
+<tr><td><strong>RCA</strong></td><td>818</td><td>686</td><td>869</td><td>784</td><td>751</td><td>871</td><td>791</td><td>802</td><td class="stable">+1%</td><td class="stable">→ STABLE</td></tr>
+<tr><td><strong>Rev CPQ</strong></td><td>553</td><td>476</td><td>558</td><td>467</td><td>373</td><td>384</td><td>529</td><td>408</td><td class="declining">-23%</td><td class="declining">↓ DECLINING</td></tr>
+<tr><td><strong>Industry CPQ</strong></td><td>475</td><td>473</td><td>526</td><td>439</td><td>432</td><td>523</td><td>491</td><td>465</td><td class="stable">-5%</td><td class="stable">→ STABLE</td></tr>
+<tr><td><strong>Industry Omni</strong></td><td>699</td><td>561</td><td>556</td><td>554</td><td>501</td><td>560</td><td>605</td><td>538</td><td class="declining">-11%</td><td class="declining">↓ DECLINING</td></tr>
+<tr><td><strong>Industry Core</strong></td><td>1128</td><td>956</td><td>1142</td><td>1322</td><td>1207</td><td>1339</td><td>1075</td><td>1289</td><td class="growing">+20%</td><td class="growing">↑ GROWING</td></tr>
+</tbody></table></div></div>
+<div class="section">
+<div class="section-header"><h2>Section 2 — Two-Run Comparison: Load Tier Changes (Oct 15 → Oct 21)</h2></div>
+<div class="section-body">
+<div class="tier-change-box">
+<div class="tc-card"><h4 class="red">↑ Moved to HIGH-LOAD (8 engineers)</h4>
+<div class="tc-item">Harsh Thakkar: 11→17 (+6)</div>
+<div class="tc-item">Himali Fadia: 12→13 (+1)</div>
+<div class="tc-item">Jithin Venigalla: 7→16 (+9)</div>
+<div class="tc-item">Lakshmi Sarayu Chiruvella: 11→23 (+12)</div>
+<div class="tc-item">Mukesh Reddy Penna: 10→14 (+4)</div>
+<div class="tc-item">Nishit Mahato: 0→14 (+14)</div>
+<div class="tc-item">Rajath Nagaraj: 8→15 (+7)</div>
+<div class="tc-item">Sachin Kulkarni: 12→13 (+1)</div>
+</div><div class="tc-card"><h4 class="green">↓ Moved to LOW-LOAD (16 engineers)</h4>
+<div class="tc-item">Aakansha Sharma: 16→3 (-13)</div>
+<div class="tc-item">Claudio Crocilla: 14→8 (-6)</div>
+<div class="tc-item">Dimple Madhuri Lakshmi Eati: 15→9 (-6)</div>
+<div class="tc-item">Gulla Bharath Kumar: 16→9 (-7)</div>
+<div class="tc-item">Havila Kumar Madhyahnapu: 16→7 (-9)</div>
+<div class="tc-item">Hemanth Kumar Yadav Kottam: 17→12 (-5)</div>
+<div class="tc-item">Nithin Kumar Medam: 15→7 (-8)</div>
+<div class="tc-item">Prashanth Anugu: 13→4 (-9)</div>
+<div class="tc-item">Sai Shivani Byreddy: 14→11 (-3)</div>
+<div class="tc-item">Santhosh Kathi: 17→12 (-5)</div>
+<div class="tc-item">Sarthak Jain: 23→7 (-16)</div>
+<div class="tc-item">Sethu Sudhaamshu Dhadipelly: 14→10 (-4)</div>
+<div class="tc-item">Shubham Buradkar: 20→7 (-13)</div>
+<div class="tc-item">Spandana Manne: 16→7 (-9)</div>
+<div class="tc-item">Sravani Gajula: 15→2 (-13)</div>
+<div class="tc-item">Srihari Kantimahanthi: 14→8 (-6)</div>
+</div></div>
+<div style="font-size:11px;color:#57606a;margin-top:6px">Common pattern: Large drops (Sarthak Jain -16, Gulla BK -7, Shubham Buradkar -13) suggest case closures/transfers. Lakshmi Sarayu Chiruvella +12 and Jithin Venigalla +9 are sharp intake spikes to monitor.</div>
+</div></div>
+<div class="section">
+<div class="section-header"><h2>Section 3 — Engineer Load Analysis</h2></div>
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(this,'high-tab')">High-Load (27)</div>
+  <div class="tab" onclick="switchTab(this,'emea-tab')">EMEA Low-Load</div>
+  <div class="tab" onclick="switchTab(this,'india-tab')">India Low-Load</div>
+  <div class="tab" onclick="switchTab(this,'apac-tab')">APAC Low-Load</div>
+  <div class="tab" onclick="switchTab(this,'newhire-tab')">🌱 New Hires</div>
+</div>
+<div id="high-tab" class="tab-panel active">
+<table class="eng-table">
+<thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Prod (Jul–Sep)</th><th>Primary Skill</th>
+  <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th></tr></thead>
+<tbody>
+<tr>
+      <td>Lakshmi Sarayu Chiruvella</td><td>Rafik Shaikh</td>
+      <td class="num">23</td>
+      <td><span class="badge badge-amber">⚠ 84%</span></td>
+      <td><span class="skill-ok">Industry Omni (57%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">13</td><td class="num">10</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:57%;background:#9c27b0" title="Industry Omni: 13"></div><div class="mix-seg" style="width:43%;background:#e53935" title="Industry Core: 10"></div></div></td>
+    </tr><tr>
+      <td>Varun Reddy A</td><td>Manu Ramamurthy</td>
+      <td class="num">20</td>
+      <td><span class="badge badge-green">127%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">20</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 20"></div></div></td>
+    </tr><tr>
+      <td>Abhishek Dixit</td><td>Bhagat M</td>
+      <td class="num">19</td>
+      <td><span class="badge badge-amber">⚠ 86%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">19</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 19"></div></div></td>
+    </tr><tr>
+      <td>Neeti Shyam</td><td>Naren Rajendran</td>
+      <td class="num">18</td>
+      <td><span class="badge badge-green">113%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">18</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 18"></div></div></td>
+    </tr><tr>
+      <td>Soumya Chitra Anandas</td><td>Bhagat M</td>
+      <td class="num">18</td>
+      <td><span class="badge badge-green">98%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (94%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">1</td><td class="num">17</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:6%;background:#9c27b0" title="Industry Omni: 1"></div><div class="mix-seg" style="width:94%;background:#e53935" title="Industry Core: 17"></div></div></td>
+    </tr><tr>
+      <td>Srividya Vedula</td><td>Bhagat M</td>
+      <td class="num">18</td>
+      <td><span class="badge badge-green">159%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">18</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 18"></div></div></td>
+    </tr><tr>
+      <td>Anusha Rani Aketi</td><td>Sridhar Dwadasi</td>
+      <td class="num">17</td>
+      <td><span class="badge badge-green">116%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">17</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 17"></div></div></td>
+    </tr><tr>
+      <td>Deepika Nagalakshmi Arjunan</td><td>Naren Rajendran</td>
+      <td class="num">17</td>
+      <td><span class="badge badge-green">96%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">17</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 17"></div></div></td>
+    </tr><tr>
+      <td>Harsh Thakkar</td><td>Bhagat M</td>
+      <td class="num">17</td>
+      <td><span class="badge badge-green">131%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">17</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 17"></div></div></td>
+    </tr><tr>
+      <td>Dashrath Singh Kaviya</td><td>Naren Rajendran</td>
+      <td class="num">16</td>
+      <td><span class="badge badge-green">168%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">16</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 16"></div></div></td>
+    </tr><tr>
+      <td>Jithin Venigalla</td><td>Bhagat M</td>
+      <td class="num">16</td>
+      <td><span class="badge badge-green">118%</span></td>
+      <td><span class="skill-ok">Industry Core (56%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">7</td><td class="num">9</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:44%;background:#9c27b0" title="Industry Omni: 7"></div><div class="mix-seg" style="width:56%;background:#e53935" title="Industry Core: 9"></div></div></td>
+    </tr><tr>
+      <td>Mahesh Jekareddy .</td><td>Naren Rajendran</td>
+      <td class="num">16</td>
+      <td><span class="badge badge-green">97%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">16</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 16"></div></div></td>
+    </tr><tr>
+      <td>Sai Uma Maheswari Kamatham</td><td>Bhagat M</td>
+      <td class="num">16</td>
+      <td><span class="badge badge-green">112%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">16</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 16"></div></div></td>
+    </tr><tr>
+      <td>Harshita Kagadal</td><td>Sridhar Dwadasi</td>
+      <td class="num">15</td>
+      <td><span class="badge badge-green">99%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">15</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 15"></div></div></td>
+    </tr><tr>
+      <td>Nagashree Poojari</td><td>Apurva Ajit</td>
+      <td class="num">15</td>
+      <td><span class="badge badge-green">94%</span></td>
+      <td><span class="bench-risk">🔒 RCA (100%)</span></td><td class="num">15</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#0070d2" title="RCA: 15"></div></div></td>
+    </tr><tr>
+      <td>Rajath Nagaraj</td><td>Naren Rajendran</td>
+      <td class="num">15</td>
+      <td><span class="badge badge-green">116%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">15</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 15"></div></div></td>
+    </tr><tr>
+      <td>Akshat Jain</td><td>Apurva Ajit</td>
+      <td class="num">14</td>
+      <td><span class="badge badge-green">104%</span></td>
+      <td><span class="bench-risk">🔒 Rev CPQ (71%)</span></td><td class="num">1</td><td class="num">10</td><td class="num"></td><td class="num"></td><td class="num">3</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:7%;background:#0070d2" title="RCA: 1"></div><div class="mix-seg" style="width:71%;background:#f28b00" title="Rev CPQ: 10"></div><div class="mix-seg" style="width:21%;background:#e53935" title="Industry Core: 3"></div></div></td>
+    </tr><tr>
+      <td>Charan Sai Gottipati</td><td>Sridhar Dwadasi</td>
+      <td class="num">14</td>
+      <td><span class="badge badge-green">114%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">14</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 14"></div></div></td>
+    </tr><tr>
+      <td>Mukesh Reddy Penna</td><td>Manu Ramamurthy</td>
+      <td class="num">14</td>
+      <td><span class="badge badge-amber">⚠ 77%</span></td>
+      <td><span class="bench-risk">🔒 Rev CPQ (79%)</span></td><td class="num">3</td><td class="num">11</td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:21%;background:#0070d2" title="RCA: 3"></div><div class="mix-seg" style="width:79%;background:#f28b00" title="Rev CPQ: 11"></div></div></td>
+    </tr><tr>
+      <td>Nishit Mahato</td><td>Manu Ramamurthy</td>
+      <td class="num">14</td>
+      <td><span class="badge badge-green">133%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (86%)</span></td><td class="num">2</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">12</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:14%;background:#0070d2" title="RCA: 2"></div><div class="mix-seg" style="width:86%;background:#e53935" title="Industry Core: 12"></div></div></td>
+    </tr><tr>
+      <td>Pranil Kale</td><td>Mahima Prathaban</td>
+      <td class="num">14</td>
+      <td><span class="badge badge-amber">⚠ 83%</span></td>
+      <td><span class="skill-ok">Industry Omni (50%)</span></td><td class="num"></td><td class="num"></td><td class="num">1</td><td class="num">7</td><td class="num">6</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:7%;background:#4caf50" title="Industry CPQ: 1"></div><div class="mix-seg" style="width:50%;background:#9c27b0" title="Industry Omni: 7"></div><div class="mix-seg" style="width:43%;background:#e53935" title="Industry Core: 6"></div></div></td>
+    </tr><tr>
+      <td>Stéphane Verger</td><td>Seamus Redmond</td>
+      <td class="num">14</td>
+      <td><span class="badge badge-gray">—</span></td>
+      <td><span class="bench-risk">🔒 RCA (93%)</span></td><td class="num">13</td><td class="num">1</td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:93%;background:#0070d2" title="RCA: 13"></div><div class="mix-seg" style="width:7%;background:#f28b00" title="Rev CPQ: 1"></div></div></td>
+    </tr><tr>
+      <td>Abhishek Anand</td><td>Apurva Ajit</td>
+      <td class="num">13</td>
+      <td><span class="badge badge-green">122%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">13</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 13"></div></div></td>
+    </tr><tr>
+      <td>Himali Fadia</td><td>Apurva Ajit</td>
+      <td class="num">13</td>
+      <td><span class="badge badge-green">115%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">13</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 13"></div></div></td>
+    </tr><tr>
+      <td>Sachin Kulkarni</td><td>Darshan Jahagirdar</td>
+      <td class="num">13</td>
+      <td><span class="badge badge-green">109%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">13</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 13"></div></div></td>
+    </tr><tr>
+      <td>Syeda  Sabiha Nasreen</td><td>Swetha B</td>
+      <td class="num">13</td>
+      <td><span class="badge badge-amber">⚠ 73%</span></td>
+      <td><span class="skill-ok">RCA (69%)</span></td><td class="num">9</td><td class="num">3</td><td class="num"></td><td class="num"></td><td class="num">1</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:69%;background:#0070d2" title="RCA: 9"></div><div class="mix-seg" style="width:23%;background:#f28b00" title="Rev CPQ: 3"></div><div class="mix-seg" style="width:8%;background:#e53935" title="Industry Core: 1"></div></div></td>
+    </tr><tr>
+      <td>Tejaswi Peddireddy</td><td>Sridhar Dwadasi</td>
+      <td class="num">13</td>
+      <td><span class="badge badge-green">102%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">13</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 13"></div></div></td>
+    </tr></tbody></table></div>
+<div id="emea-tab" class="tab-panel"><table class="eng-table">
+      <thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Prod (Jul–Sep)</th><th>Primary Skill</th>
+        <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
+      </tr></thead><tbody><tr>
+      <td>Barkha Patel</td><td>Darshan Jahagirdar</td>
+      <td class="num">12</td>
+      <td><span class="badge badge-amber">⚠ 76%</span></td>
+      <td><span class="bench-risk">🔒 Industry Omni (92%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">11</td><td class="num">1</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:92%;background:#9c27b0" title="Industry Omni: 11"></div><div class="mix-seg" style="width:8%;background:#e53935" title="Industry Core: 1"></div></div></td>
+    </tr><tr>
+      <td>Santhosh Kathi</td><td>Eshant Sharma</td>
+      <td class="num">12</td>
+      <td><span class="badge badge-amber">⚠ 89%</span></td>
+      <td><span class="skill-ok">RCA (67%)</span></td><td class="num">8</td><td class="num">4</td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:67%;background:#0070d2" title="RCA: 8"></div><div class="mix-seg" style="width:33%;background:#f28b00" title="Rev CPQ: 4"></div></div></td>
+    </tr><tr>
+      <td>Emmanuel Keka</td><td>Seamus Redmond</td>
+      <td class="num">11</td>
+      <td><span class="badge badge-red">65%</span></td>
+      <td><span class="bench-risk">🔒 RCA (100%)</span></td><td class="num">11</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#0070d2" title="RCA: 11"></div></div></td>
+    </tr><tr>
+      <td>G K Naveen</td><td>Darshan Jahagirdar</td>
+      <td class="num">11</td>
+      <td><span class="badge badge-green">208%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">11</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 11"></div></div></td>
+    </tr><tr>
+      <td>Shridasingh Parihar</td><td>Darshan Jahagirdar</td>
+      <td class="num">11</td>
+      <td><span class="badge badge-green">94%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">11</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 11"></div></div></td>
+    </tr><tr>
+      <td>Sai Nithin Manthena</td><td>Sridhar Dwadasi</td>
+      <td class="num">10</td>
+      <td><span class="badge badge-green">102%</span></td>
+      <td><span class="skill-ok">Industry Omni (60%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">6</td><td class="num">4</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:60%;background:#9c27b0" title="Industry Omni: 6"></div><div class="mix-seg" style="width:40%;background:#e53935" title="Industry Core: 4"></div></div></td>
+    </tr><tr>
+      <td>Venkat Krishna Devarla</td><td>Sridhar Dwadasi</td>
+      <td class="num">10</td>
+      <td><span class="badge badge-green">91%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">10</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 10"></div></div></td>
+    </tr><tr>
+      <td>Gulla Bharath Kumar</td><td>Eshant Sharma</td>
+      <td class="num">9</td>
+      <td><span class="badge badge-green">108%</span></td>
+      <td><span class="bench-risk">🔒 RCA (89%)</span></td><td class="num">8</td><td class="num">1</td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:89%;background:#0070d2" title="RCA: 8"></div><div class="mix-seg" style="width:11%;background:#f28b00" title="Rev CPQ: 1"></div></div></td>
+    </tr><tr>
+      <td>Sahithi Reddy Merugu</td><td>Sridhar Dwadasi</td>
+      <td class="num">9</td>
+      <td><span class="badge badge-green">122%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">9</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 9"></div></div></td>
+    </tr><tr>
+      <td>Saurabh Srivastava</td><td>Apurva Ajit</td>
+      <td class="num">9</td>
+      <td><span class="badge badge-red">69%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (89%)</span></td><td class="num"></td><td class="num"></td><td class="num">8</td><td class="num"></td><td class="num">1</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:89%;background:#4caf50" title="Industry CPQ: 8"></div><div class="mix-seg" style="width:11%;background:#e53935" title="Industry Core: 1"></div></div></td>
+    </tr><tr>
+      <td>Sravanthi Velpula</td><td>Darshan Jahagirdar</td>
+      <td class="num">9</td>
+      <td><span class="badge badge-amber">⚠ 86%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">9</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 9"></div></div></td>
+    </tr><tr>
+      <td>Claudio Crocilla</td><td>Seamus Redmond</td>
+      <td class="num">8</td>
+      <td><span class="badge badge-green">91%</span></td>
+      <td><span class="bench-risk">🔒 RCA (100%)</span></td><td class="num">8</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#0070d2" title="RCA: 8"></div></div></td>
+    </tr><tr>
+      <td>Srihari Kantimahanthi</td><td>Darshan Jahagirdar</td>
+      <td class="num">8</td>
+      <td><span class="badge badge-green">111%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">8</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 8"></div></div></td>
+    </tr><tr>
+      <td>Anooja Vuppala</td><td>Sridhar Dwadasi</td>
+      <td class="num">7</td>
+      <td><span class="badge badge-amber">⚠ 83%</span></td>
+      <td><span class="bench-risk">🔒 Industry Omni (71%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">5</td><td class="num">2</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:71%;background:#9c27b0" title="Industry Omni: 5"></div><div class="mix-seg" style="width:29%;background:#e53935" title="Industry Core: 2"></div></div></td>
+    </tr><tr>
+      <td>Beatriz Torres Alatriste</td><td>Seamus Redmond</td>
+      <td class="num">7</td>
+      <td><span class="badge badge-amber">⚠ 87%</span></td>
+      <td><span class="bench-risk">🔒 RCA (71%)</span></td><td class="num">5</td><td class="num">2</td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:71%;background:#0070d2" title="RCA: 5"></div><div class="mix-seg" style="width:29%;background:#f28b00" title="Rev CPQ: 2"></div></div></td>
+    </tr><tr>
+      <td>Havila Kumar Madhyahnapu</td><td>Eshant Sharma</td>
+      <td class="num">7</td>
+      <td><span class="badge badge-green">108%</span></td>
+      <td><span class="bench-risk">🔒 RCA (100%)</span></td><td class="num">7</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#0070d2" title="RCA: 7"></div></div></td>
+    </tr><tr>
+      <td>Nithin Kumar Medam</td><td>Apurva Ajit</td>
+      <td class="num">7</td>
+      <td><span class="badge badge-green">101%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">7</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 7"></div></div></td>
+    </tr><tr>
+      <td>Sarthak Jain</td><td>Apurva Ajit</td>
+      <td class="num">7</td>
+      <td><span class="badge badge-green">93%</span></td>
+      <td><span class="skill-ok">RCA (57%)</span></td><td class="num">4</td><td class="num">3</td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:57%;background:#0070d2" title="RCA: 4"></div><div class="mix-seg" style="width:43%;background:#f28b00" title="Rev CPQ: 3"></div></div></td>
+    </tr><tr>
+      <td>Sergio Rios Moreno</td><td>Seamus Redmond</td>
+      <td class="num">7</td>
+      <td><span class="badge badge-gray">—</span></td>
+      <td><span class="bench-risk">🔒 RCA (100%)</span></td><td class="num">7</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#0070d2" title="RCA: 7"></div></div></td>
+    </tr><tr>
+      <td>Shubham Buradkar</td><td>Eshant Sharma</td>
+      <td class="num">7</td>
+      <td><span class="badge badge-green">104%</span></td>
+      <td><span class="skill-ok">Rev CPQ (57%)</span></td><td class="num">3</td><td class="num">4</td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:43%;background:#0070d2" title="RCA: 3"></div><div class="mix-seg" style="width:57%;background:#f28b00" title="Rev CPQ: 4"></div></div></td>
+    </tr><tr>
+      <td>Chaitanya Krishna</td><td>Darshan Jahagirdar</td>
+      <td class="num">6</td>
+      <td><span class="badge badge-green">109%</span></td>
+      <td><span class="bench-risk">🔒 Industry Omni (83%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">5</td><td class="num">1</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:83%;background:#9c27b0" title="Industry Omni: 5"></div><div class="mix-seg" style="width:17%;background:#e53935" title="Industry Core: 1"></div></div></td>
+    </tr><tr>
+      <td>Aakansha Sharma</td><td>Darshan Jahagirdar</td>
+      <td class="num">3</td>
+      <td><span class="badge badge-amber">⚠ 85%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">3</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 3"></div></div></td>
+    </tr><tr>
+      <td>Suravi Tarafdar</td><td>Darshan Jahagirdar</td>
+      <td class="num">3</td>
+      <td><span class="badge badge-green">117%</span></td>
+      <td><span class="bench-risk">🔒 RCA (100%)</span></td><td class="num">3</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#0070d2" title="RCA: 3"></div></div></td>
+    </tr><tr>
+      <td>Santoshi Bogaraju</td><td>Apurva Ajit</td>
+      <td class="num">2</td>
+      <td><span class="badge badge-green">99%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">2</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 2"></div></div></td>
+    </tr><tr>
+      <td>Ravindra Halli</td><td>Darshan Jahagirdar</td>
+      <td class="num">1</td>
+      <td><span class="badge badge-green">100%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">1</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 1"></div></div></td>
+    </tr><tr>
+      <td>Shrinath Lanjudkar</td><td>Darshan Jahagirdar</td>
+      <td class="num">1</td>
+      <td><span class="badge badge-green">156%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">1</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 1"></div></div></td>
+    </tr></tbody></table></div>
+<div id="india-tab" class="tab-panel"><table class="eng-table">
+      <thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Prod (Jul–Sep)</th><th>Primary Skill</th>
+        <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
+      </tr></thead><tbody><tr>
+      <td>Hemanth Kumar Yadav Kottam</td><td>Bhagat M</td>
+      <td class="num">12</td>
+      <td><span class="badge badge-green">93%</span></td>
+      <td><span class="skill-ok">Industry Core (58%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">5</td><td class="num">7</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:42%;background:#9c27b0" title="Industry Omni: 5"></div><div class="mix-seg" style="width:58%;background:#e53935" title="Industry Core: 7"></div></div></td>
+    </tr><tr>
+      <td>Mohana Sai Vishnu Sriya Chavva</td><td>Bhagat M</td>
+      <td class="num">12</td>
+      <td><span class="badge badge-green">93%</span></td>
+      <td><span class="skill-ok">Industry Core (58%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">5</td><td class="num">7</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:42%;background:#9c27b0" title="Industry Omni: 5"></div><div class="mix-seg" style="width:58%;background:#e53935" title="Industry Core: 7"></div></div></td>
+    </tr><tr>
+      <td>Satya Ghettem</td><td>Bhagat M</td>
+      <td class="num">12</td>
+      <td><span class="badge badge-green">142%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">12</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 12"></div></div></td>
+    </tr><tr>
+      <td>Divyanshu Tiwari</td><td>Manu Ramamurthy</td>
+      <td class="num">11</td>
+      <td><span class="badge badge-green">92%</span></td>
+      <td><span class="bench-risk">🔒 RCA (100%)</span></td><td class="num">11</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#0070d2" title="RCA: 11"></div></div></td>
+    </tr><tr>
+      <td>Pradeepa P</td><td>Manu Ramamurthy</td>
+      <td class="num">11</td>
+      <td><span class="badge badge-green">132%</span></td>
+      <td><span class="bench-risk">🔒 RCA (91%)</span></td><td class="num">10</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">1</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:91%;background:#0070d2" title="RCA: 10"></div><div class="mix-seg" style="width:9%;background:#e53935" title="Industry Core: 1"></div></div></td>
+    </tr><tr>
+      <td>Sai Shivani Byreddy</td><td>Bhagat M</td>
+      <td class="num">11</td>
+      <td><span class="badge badge-green">99%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (73%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">3</td><td class="num">8</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:27%;background:#9c27b0" title="Industry Omni: 3"></div><div class="mix-seg" style="width:73%;background:#e53935" title="Industry Core: 8"></div></div></td>
+    </tr><tr>
+      <td>Roshini Rayana</td><td>Manu Ramamurthy</td>
+      <td class="num">10</td>
+      <td><span class="badge badge-green">165%</span></td>
+      <td><span class="bench-risk">🔒 RCA (90%)</span></td><td class="num">9</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">1</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:90%;background:#0070d2" title="RCA: 9"></div><div class="mix-seg" style="width:10%;background:#e53935" title="Industry Core: 1"></div></div></td>
+    </tr><tr>
+      <td>Sanjoli Agrawal</td><td>Naren Rajendran</td>
+      <td class="num">10</td>
+      <td><span class="badge badge-green">102%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">10</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 10"></div></div></td>
+    </tr><tr>
+      <td>Sethu Sudhaamshu Dhadipelly</td><td>Manu Ramamurthy</td>
+      <td class="num">10</td>
+      <td><span class="badge badge-amber">⚠ 88%</span></td>
+      <td><span class="bench-risk">🔒 Rev CPQ (80%)</span></td><td class="num">2</td><td class="num">8</td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:20%;background:#0070d2" title="RCA: 2"></div><div class="mix-seg" style="width:80%;background:#f28b00" title="Rev CPQ: 8"></div></div></td>
+    </tr><tr>
+      <td>Sri Harsh Gampa</td><td>Manu Ramamurthy</td>
+      <td class="num">10</td>
+      <td><span class="badge badge-green">100%</span></td>
+      <td><span class="skill-ok">RCA (60%)</span></td><td class="num">6</td><td class="num">4</td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:60%;background:#0070d2" title="RCA: 6"></div><div class="mix-seg" style="width:40%;background:#f28b00" title="Rev CPQ: 4"></div></div></td>
+    </tr><tr>
+      <td>Jalaj Khandelwal</td><td>Bhagat M</td>
+      <td class="num">9</td>
+      <td><span class="badge badge-red">60%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">9</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 9"></div></div></td>
+    </tr><tr>
+      <td>Vani Madhavi Latha Pentapalli</td><td>Manu Ramamurthy</td>
+      <td class="num">8</td>
+      <td><span class="badge badge-green">143%</span></td>
+      <td><span class="bench-risk">🔒 RCA (100%)</span></td><td class="num">8</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#0070d2" title="RCA: 8"></div></div></td>
+    </tr><tr>
+      <td>Sricharan Vangala</td><td>Manu Ramamurthy</td>
+      <td class="num">7</td>
+      <td><span class="badge badge-amber">⚠ 80%</span></td>
+      <td><span class="bench-risk">🔒 Rev CPQ (71%)</span></td><td class="num">2</td><td class="num">5</td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:29%;background:#0070d2" title="RCA: 2"></div><div class="mix-seg" style="width:71%;background:#f28b00" title="Rev CPQ: 5"></div></div></td>
+    </tr><tr>
+      <td>Aradya Mittapelly</td><td>Naren Rajendran</td>
+      <td class="num">6</td>
+      <td><span class="badge badge-green">117%</span></td>
+      <td><span class="bench-risk">🔒 Industry Omni (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">6</td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#9c27b0" title="Industry Omni: 6"></div></div></td>
+    </tr><tr>
+      <td>Gopi Krishna Kulakarni</td><td>Bhagat M</td>
+      <td class="num">6</td>
+      <td><span class="badge badge-green">105%</span></td>
+      <td><span class="skill-ok">Industry Core (50%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">3</td><td class="num">3</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:50%;background:#9c27b0" title="Industry Omni: 3"></div><div class="mix-seg" style="width:50%;background:#e53935" title="Industry Core: 3"></div></div></td>
+    </tr><tr>
+      <td>Sri Purna Shanthi</td><td>Bhagat M</td>
+      <td class="num">6</td>
+      <td><span class="badge badge-green">106%</span></td>
+      <td><span class="skill-ok">Industry Omni (67%)</span></td><td class="num"></td><td class="num"></td><td class="num">2</td><td class="num">4</td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:33%;background:#4caf50" title="Industry CPQ: 2"></div><div class="mix-seg" style="width:67%;background:#9c27b0" title="Industry Omni: 4"></div></div></td>
+    </tr><tr>
+      <td>Nireksha Shetty</td><td>Naren Rajendran</td>
+      <td class="num">5</td>
+      <td><span class="badge badge-amber">⚠ 89%</span></td>
+      <td><span class="bench-risk">🔒 Industry Omni (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">5</td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#9c27b0" title="Industry Omni: 5"></div></div></td>
+    </tr><tr>
+      <td>Akhil Koosi</td><td>Manu Ramamurthy</td>
+      <td class="num">4</td>
+      <td><span class="badge badge-gray">—</span></td>
+      <td><span class="skill-ok">Rev CPQ (50%)</span></td><td class="num">2</td><td class="num">2</td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:50%;background:#0070d2" title="RCA: 2"></div><div class="mix-seg" style="width:50%;background:#f28b00" title="Rev CPQ: 2"></div></div></td>
+    </tr><tr>
+      <td>Sravani Gajula</td><td>Naren Rajendran</td>
+      <td class="num">2</td>
+      <td><span class="badge badge-green">142%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">2</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 2"></div></div></td>
+    </tr><tr>
+      <td>Venus Singh</td><td>Naren Rajendran</td>
+      <td class="num">1</td>
+      <td><span class="badge badge-green">106%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">1</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 1"></div></div></td>
+    </tr></tbody></table></div>
+<div id="apac-tab" class="tab-panel"><table class="eng-table">
+      <thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Prod (Jul–Sep)</th><th>Primary Skill</th>
+        <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
+      </tr></thead><tbody><tr>
+      <td>Divya Sri Tumma</td><td>Mahima Prathaban</td>
+      <td class="num">11</td>
+      <td><span class="badge badge-green">146%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">11</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 11"></div></div></td>
+    </tr><tr>
+      <td>Roshan Vemu</td><td>Rafik Shaikh</td>
+      <td class="num">10</td>
+      <td><span class="badge badge-amber">⚠ 86%</span></td>
+      <td><span class="skill-ok">Industry Core (60%)</span></td><td class="num">1</td><td class="num"></td><td class="num">1</td><td class="num">2</td><td class="num">6</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:10%;background:#0070d2" title="RCA: 1"></div><div class="mix-seg" style="width:10%;background:#4caf50" title="Industry CPQ: 1"></div><div class="mix-seg" style="width:20%;background:#9c27b0" title="Industry Omni: 2"></div><div class="mix-seg" style="width:60%;background:#e53935" title="Industry Core: 6"></div></div></td>
+    </tr><tr>
+      <td>Akansha Vennela</td><td>Mahima Prathaban</td>
+      <td class="num">9</td>
+      <td><span class="badge badge-green">96%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">9</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 9"></div></div></td>
+    </tr><tr>
+      <td>Archita Srivastava</td><td>Mahima Prathaban</td>
+      <td class="num">9</td>
+      <td><span class="badge badge-amber">⚠ 82%</span></td>
+      <td><span class="bench-risk">🔒 Industry Omni (78%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">7</td><td class="num">2</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:78%;background:#9c27b0" title="Industry Omni: 7"></div><div class="mix-seg" style="width:22%;background:#e53935" title="Industry Core: 2"></div></div></td>
+    </tr><tr>
+      <td>Dimple Madhuri Lakshmi Eati</td><td>Swetha B</td>
+      <td class="num">9</td>
+      <td><span class="badge badge-amber">⚠ 89%</span></td>
+      <td><span class="skill-ok">Industry Core (56%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">4</td><td class="num">5</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:44%;background:#9c27b0" title="Industry Omni: 4"></div><div class="mix-seg" style="width:56%;background:#e53935" title="Industry Core: 5"></div></div></td>
+    </tr><tr>
+      <td>Aabid Khan</td><td>Mahima Prathaban</td>
+      <td class="num">7</td>
+      <td><span class="badge badge-red">57%</span></td>
+      <td><span class="skill-ok">Industry CPQ (57%)</span></td><td class="num">3</td><td class="num"></td><td class="num">4</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:43%;background:#0070d2" title="RCA: 3"></div><div class="mix-seg" style="width:57%;background:#4caf50" title="Industry CPQ: 4"></div></div></td>
+    </tr><tr>
+      <td>Enoch Samuel Bonthu</td><td>Rafik Shaikh</td>
+      <td class="num">7</td>
+      <td><span class="badge badge-red">68%</span></td>
+      <td><span class="skill-ok">RCA (57%)</span></td><td class="num">4</td><td class="num"></td><td class="num">3</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:57%;background:#0070d2" title="RCA: 4"></div><div class="mix-seg" style="width:43%;background:#4caf50" title="Industry CPQ: 3"></div></div></td>
+    </tr><tr>
+      <td>ANUPAMA BINDU PRADEEP</td><td>Mahima Prathaban</td>
+      <td class="num">4</td>
+      <td><span class="badge badge-green">96%</span></td>
+      <td><span class="bench-risk">🔒 Industry CPQ (75%)</span></td><td class="num">1</td><td class="num"></td><td class="num">3</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:25%;background:#0070d2" title="RCA: 1"></div><div class="mix-seg" style="width:75%;background:#4caf50" title="Industry CPQ: 3"></div></div></td>
+    </tr><tr>
+      <td>Prashanth Anugu</td><td>Rafik Shaikh</td>
+      <td class="num">4</td>
+      <td><span class="badge badge-amber">⚠ 71%</span></td>
+      <td><span class="bench-risk">🔒 Industry Omni (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">4</td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#9c27b0" title="Industry Omni: 4"></div></div></td>
+    </tr><tr>
+      <td>Shubham Gourh</td><td>Swetha B</td>
+      <td class="num">4</td>
+      <td><span class="badge badge-red">60%</span></td>
+      <td><span class="bench-risk">🔒 Industry Core (75%)</span></td><td class="num"></td><td class="num"></td><td class="num">1</td><td class="num"></td><td class="num">3</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:25%;background:#4caf50" title="Industry CPQ: 1"></div><div class="mix-seg" style="width:75%;background:#e53935" title="Industry Core: 3"></div></div></td>
+    </tr></tbody></table></div>
+<div id="newhire-tab" class="tab-panel"><table class="eng-table">
+      <thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Primary Skill</th>
+        <th>RCA</th><th>Rev CPQ</th><th>Ind CPQ</th><th>Ind Omni</th><th>Ind Core</th><th>Mix</th>
+      </tr></thead><tbody><tr>
+      <td>Akshay Chorey</td><td>Bhagat M</td>
+      <td class="num">10</td>
+      
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">10</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 10"></div></div></td>
+    </tr><tr>
+      <td>Harshitha Mediboina</td><td>Sridhar Dwadasi</td>
+      <td class="num">10</td>
+      
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">10</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 10"></div></div></td>
+    </tr><tr>
+      <td>Shiva Gouda</td><td>Manu Ramamurthy</td>
+      <td class="num">10</td>
+      
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">10</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 10"></div></div></td>
+    </tr><tr>
+      <td>Govershan Vippala</td><td>Swetha B</td>
+      <td class="num">8</td>
+      
+      <td><span class="skill-ok">Industry CPQ (50%)</span></td><td class="num">2</td><td class="num">2</td><td class="num">4</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:25%;background:#0070d2" title="RCA: 2"></div><div class="mix-seg" style="width:25%;background:#f28b00" title="Rev CPQ: 2"></div><div class="mix-seg" style="width:50%;background:#4caf50" title="Industry CPQ: 4"></div></div></td>
+    </tr><tr>
+      <td>Vaishnavi Kolan</td><td>Manu Ramamurthy</td>
+      <td class="num">8</td>
+      
+      <td><span class="bench-risk">🔒 RCA (100%)</span></td><td class="num">8</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#0070d2" title="RCA: 8"></div></div></td>
+    </tr><tr>
+      <td>Nikhil Singh Chauhan</td><td>Bhagat M</td>
+      <td class="num">7</td>
+      
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">7</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 7"></div></div></td>
+    </tr><tr>
+      <td>Spandana Manne</td><td>Swetha B</td>
+      <td class="num">7</td>
+      
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">7</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 7"></div></div></td>
+    </tr><tr>
+      <td>Sreeja Chinnavaddi</td><td>Bhagat M</td>
+      <td class="num">7</td>
+      
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">7</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 7"></div></div></td>
+    </tr><tr>
+      <td>Govardhan Sai Bandaru</td><td>Manu Ramamurthy</td>
+      <td class="num">6</td>
+      
+      <td><span class="bench-risk">🔒 Industry CPQ (100%)</span></td><td class="num"></td><td class="num"></td><td class="num">6</td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#4caf50" title="Industry CPQ: 6"></div></div></td>
+    </tr><tr>
+      <td>Kanishka Roy</td><td>Eshant Sharma</td>
+      <td class="num">5</td>
+      
+      <td><span class="bench-risk">🔒 RCA (100%)</span></td><td class="num">5</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#0070d2" title="RCA: 5"></div></div></td>
+    </tr><tr>
+      <td>Netish M B</td><td>Manu Ramamurthy</td>
+      <td class="num">4</td>
+      
+      <td><span class="bench-risk">🔒 RCA (100%)</span></td><td class="num">4</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#0070d2" title="RCA: 4"></div></div></td>
+    </tr><tr>
+      <td>Dushyant Sharma</td><td>Eshant Sharma</td>
+      <td class="num">1</td>
+      
+      <td><span class="bench-risk">🔒 Industry Core (100%)</span></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">1</td>
+      <td><div class="mix-bar"><div class="mix-seg" style="width:100%;background:#e53935" title="Industry Core: 1"></div></div></td>
+    </tr></tbody></table></div>
+</div>
+<div class="section">
+<div class="section-header"><h2>Section 4 — High-Load Heat Map by Manager</h2></div>
+<div class="section-body"><div class="chart-wrap-lg"><canvas id="heatmapChart"></canvas></div></div>
+</div>
+<div class="section">
+<div class="section-header"><h2>Section 5 — Cross-Training Signal</h2></div>
+<div class="section-body">
+<div class="signal-row">
+  <div class="signal-card danger"><div class="s-title">Declining Groups</div>
+    <div class="s-val">2</div>
+    <div class="s-desc">Rev CPQ · Industry Omni<br>Q1→Q2 avg drop</div></div>
+  <div class="signal-card good"><div class="s-title">Growing Groups</div>
+    <div class="s-val">1</div>
+    <div class="s-desc">Industry Core<br>+20% Q1→Q2</div></div>
+  <div class="signal-card warn"><div class="s-title">Cross-Train Candidates</div>
+    <div class="s-val">13</div>
+    <div class="s-desc">Low-load on declining groups<br>7 also low-productivity</div></div>
+</div>
+<div style="background:#fff8c5;border:1px solid #d4a520;border-radius:6px;padding:12px;margin-bottom:14px;font-size:12px">
+  <strong>🎯 The Opportunity:</strong> <strong>Industry Core is growing (+20%)</strong> — it already has the largest backlog (1,289/mo avg Q2) and is still rising. 
+  <strong>Rev CPQ (-23%) and Industry Omni (-11%)</strong> are declining. Engineers with spare capacity on these topics are cross-train candidates.
+  Upskilling them for Industry Core now will prevent a capacity crunch in Q3.
+</div>
+<div class="ct-group"><h4>Primary: Rev CPQ → train for: Industry Core</h4><table class="mini-table"><thead><tr><th>Engineer</th><th>Region/Manager</th><th>BL</th><th>Productivity</th><th>Signal</th></tr></thead><tbody><tr><td>Sricharan Vangala</td><td>India/Manu Ramamurthy</td><td class="num">7</td><td><span class="badge badge-amber">⚠ 80%</span></td><td>⚠️ LOW-PROD — urgent cross-train candidate</td></tr><tr><td>Sethu Sudhaamshu Dhadipelly</td><td>India/Manu Ramamurthy</td><td class="num">10</td><td><span class="badge badge-amber">⚠ 88%</span></td><td>⚠️ LOW-PROD — urgent cross-train candidate</td></tr><tr><td>Shubham Buradkar</td><td>EMEA/Eshant Sharma</td><td class="num">7</td><td><span class="badge badge-green">104%</span></td><td>✓ Good productivity — cross-train ready</td></tr><tr><td>Akhil Koosi</td><td>India/Manu Ramamurthy</td><td class="num">4</td><td><span class="badge badge-gray">—</span></td><td>✓ Good productivity — cross-train ready</td></tr></tbody></table></div><div class="ct-group"><h4>Primary: Industry Omni → train for: Industry Core</h4><table class="mini-table"><thead><tr><th>Engineer</th><th>Region/Manager</th><th>BL</th><th>Productivity</th><th>Signal</th></tr></thead><tbody><tr><td>Prashanth Anugu</td><td>APAC/Rafik Shaikh</td><td class="num">4</td><td><span class="badge badge-amber">⚠ 71%</span></td><td>⚠️ LOW-PROD — urgent cross-train candidate</td></tr><tr><td>Barkha Patel</td><td>EMEA/Darshan Jahagirdar</td><td class="num">12</td><td><span class="badge badge-amber">⚠ 76%</span></td><td>⚠️ LOW-PROD — urgent cross-train candidate</td></tr><tr><td>Archita Srivastava</td><td>APAC/Mahima Prathaban</td><td class="num">9</td><td><span class="badge badge-amber">⚠ 82%</span></td><td>⚠️ LOW-PROD — urgent cross-train candidate</td></tr><tr><td>Anooja Vuppala</td><td>EMEA/Sridhar Dwadasi</td><td class="num">7</td><td><span class="badge badge-amber">⚠ 83%</span></td><td>⚠️ LOW-PROD — urgent cross-train candidate</td></tr><tr><td>Nireksha Shetty</td><td>India/Naren Rajendran</td><td class="num">5</td><td><span class="badge badge-amber">⚠ 89%</span></td><td>⚠️ LOW-PROD — urgent cross-train candidate</td></tr><tr><td>Sai Nithin Manthena</td><td>EMEA/Sridhar Dwadasi</td><td class="num">10</td><td><span class="badge badge-green">102%</span></td><td>✓ Good productivity — cross-train ready</td></tr><tr><td>Sri Purna Shanthi</td><td>India/Bhagat M</td><td class="num">6</td><td><span class="badge badge-green">106%</span></td><td>✓ Good productivity — cross-train ready</td></tr><tr><td>Chaitanya Krishna</td><td>EMEA/Darshan Jahagirdar</td><td class="num">6</td><td><span class="badge badge-green">109%</span></td><td>✓ Good productivity — cross-train ready</td></tr><tr><td>Aradya Mittapelly</td><td>India/Naren Rajendran</td><td class="num">6</td><td><span class="badge badge-green">117%</span></td><td>✓ Good productivity — cross-train ready</td></tr></tbody></table></div>
+</div></div>
+<div class="section">
+<div class="section-header"><h2>Section 6 — Low Productivity Focus (&lt;90%, Low-Load Only)</h2></div>
+<div class="section-body">
+<div style="font-size:11px;color:#57606a;margin-bottom:12px">Grouped by Primary Skill → Region. Sorted worst productivity first. 
+<span style="background:#ffebe9;padding:2px 6px;border-radius:3px">Red = &lt;70%</span> &nbsp; 
+<span style="background:#fff8c5;padding:2px 6px;border-radius:3px">Amber = 70–89%</span></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag">RCA</span> <span class="skill-stats">4 engineers · 37 BL · avg prod 77%</span></div><div class="region-sub"><strong>EMEA</strong><table class="mini-table"><thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Skill%</th></tr></thead><tbody><tr class="row-red"><td>Emmanuel Keka</td><td>Seamus Redmond</td><td class="num">11</td><td><span class="badge badge-red">65%</span></td><td>100%</td></tr><tr class="row-amber"><td>Beatriz Torres Alatriste</td><td>Seamus Redmond</td><td class="num">7</td><td><span class="badge badge-amber">⚠ 87%</span></td><td>71%</td></tr><tr class="row-amber"><td>Santhosh Kathi</td><td>Eshant Sharma</td><td class="num">12</td><td><span class="badge badge-amber">⚠ 89%</span></td><td>67%</td></tr></tbody></table></div><div class="region-sub"><strong>APAC</strong><table class="mini-table"><thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Skill%</th></tr></thead><tbody><tr class="row-red"><td>Enoch Samuel Bonthu</td><td>Rafik Shaikh</td><td class="num">7</td><td><span class="badge badge-red">68%</span></td><td>57%</td></tr></tbody></table></div></div><div class="skill-card"><div class="skill-card-header"><span class="skill-tag">Rev CPQ</span> <span class="skill-stats">2 engineers · 17 BL · avg prod 84%</span></div><div class="region-sub"><strong>India</strong><table class="mini-table"><thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Skill%</th></tr></thead><tbody><tr class="row-amber"><td>Sricharan Vangala</td><td>Manu Ramamurthy</td><td class="num">7</td><td><span class="badge badge-amber">⚠ 80%</span></td><td>71%</td></tr><tr class="row-amber"><td>Sethu Sudhaamshu Dhadipelly</td><td>Manu Ramamurthy</td><td class="num">10</td><td><span class="badge badge-amber">⚠ 88%</span></td><td>80%</td></tr></tbody></table></div></div><div class="skill-card"><div class="skill-card-header"><span class="skill-tag">Industry CPQ</span> <span class="skill-stats">4 engineers · 34 BL · avg prod 68%</span></div><div class="region-sub"><strong>EMEA</strong><table class="mini-table"><thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Skill%</th></tr></thead><tbody><tr class="row-red"><td>Saurabh Srivastava</td><td>Apurva Ajit</td><td class="num">9</td><td><span class="badge badge-red">69%</span></td><td>89%</td></tr><tr class="row-amber"><td>Sravanthi Velpula</td><td>Darshan Jahagirdar</td><td class="num">9</td><td><span class="badge badge-amber">⚠ 86%</span></td><td>100%</td></tr></tbody></table></div><div class="region-sub"><strong>India</strong><table class="mini-table"><thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Skill%</th></tr></thead><tbody><tr class="row-red"><td>Jalaj Khandelwal</td><td>Bhagat M</td><td class="num">9</td><td><span class="badge badge-red">60%</span></td><td>100%</td></tr></tbody></table></div><div class="region-sub"><strong>APAC</strong><table class="mini-table"><thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Skill%</th></tr></thead><tbody><tr class="row-red"><td>Aabid Khan</td><td>Mahima Prathaban</td><td class="num">7</td><td><span class="badge badge-red">57%</span></td><td>57%</td></tr></tbody></table></div></div><div class="skill-card"><div class="skill-card-header"><span class="skill-tag">Industry Omni</span> <span class="skill-stats">5 engineers · 37 BL · avg prod 80%</span></div><div class="region-sub"><strong>EMEA</strong><table class="mini-table"><thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Skill%</th></tr></thead><tbody><tr class="row-amber"><td>Barkha Patel</td><td>Darshan Jahagirdar</td><td class="num">12</td><td><span class="badge badge-amber">⚠ 76%</span></td><td>92%</td></tr><tr class="row-amber"><td>Anooja Vuppala</td><td>Sridhar Dwadasi</td><td class="num">7</td><td><span class="badge badge-amber">⚠ 83%</span></td><td>71%</td></tr></tbody></table></div><div class="region-sub"><strong>India</strong><table class="mini-table"><thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Skill%</th></tr></thead><tbody><tr class="row-amber"><td>Nireksha Shetty</td><td>Naren Rajendran</td><td class="num">5</td><td><span class="badge badge-amber">⚠ 89%</span></td><td>100%</td></tr></tbody></table></div><div class="region-sub"><strong>APAC</strong><table class="mini-table"><thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Skill%</th></tr></thead><tbody><tr class="row-amber"><td>Prashanth Anugu</td><td>Rafik Shaikh</td><td class="num">4</td><td><span class="badge badge-amber">⚠ 71%</span></td><td>100%</td></tr><tr class="row-amber"><td>Archita Srivastava</td><td>Mahima Prathaban</td><td class="num">9</td><td><span class="badge badge-amber">⚠ 82%</span></td><td>78%</td></tr></tbody></table></div></div><div class="skill-card"><div class="skill-card-header"><span class="skill-tag">Industry Core</span> <span class="skill-stats">4 engineers · 26 BL · avg prod 80%</span></div><div class="region-sub"><strong>EMEA</strong><table class="mini-table"><thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Skill%</th></tr></thead><tbody><tr class="row-amber"><td>Aakansha Sharma</td><td>Darshan Jahagirdar</td><td class="num">3</td><td><span class="badge badge-amber">⚠ 85%</span></td><td>100%</td></tr></tbody></table></div><div class="region-sub"><strong>APAC</strong><table class="mini-table"><thead><tr><th>Engineer</th><th>Manager</th><th>BL</th><th>Productivity</th><th>Skill%</th></tr></thead><tbody><tr class="row-red"><td>Shubham Gourh</td><td>Swetha B</td><td class="num">4</td><td><span class="badge badge-red">60%</span></td><td>75%</td></tr><tr class="row-amber"><td>Roshan Vemu</td><td>Rafik Shaikh</td><td class="num">10</td><td><span class="badge badge-amber">⚠ 86%</span></td><td>60%</td></tr><tr class="row-amber"><td>Dimple Madhuri Lakshmi Eati</td><td>Swetha B</td><td class="num">9</td><td><span class="badge badge-amber">⚠ 89%</span></td><td>56%</td></tr></tbody></table></div></div>
+</div></div>
+
+</div><!-- end container -->
+
+<script>
+Chart.register(ChartDataLabels);
+// Inflow chart
+new Chart(document.getElementById('inflowChart'),{
+  type:'line',
+  data:{labels:["Apr", "May", "Jun", "Jul", "Aug", "Sep"],datasets:[{"label": "RCA", "data": [818, 686, 869, 784, 751, 871], "borderColor": "#0070d2", "backgroundColor": "#0070d233", "fill": false, "tension": 0.3, "pointRadius": 4}, {"label": "Rev CPQ", "data": [553, 476, 558, 467, 373, 384], "borderColor": "#f28b00", "backgroundColor": "#f28b0033", "fill": false, "tension": 0.3, "pointRadius": 4}, {"label": "Industry CPQ", "data": [475, 473, 526, 439, 432, 523], "borderColor": "#4caf50", "backgroundColor": "#4caf5033", "fill": false, "tension": 0.3, "pointRadius": 4}, {"label": "Industry Omni", "data": [699, 561, 556, 554, 501, 560], "borderColor": "#9c27b0", "backgroundColor": "#9c27b033", "fill": false, "tension": 0.3, "pointRadius": 4}, {"label": "Industry Core", "data": [1128, 956, 1142, 1322, 1207, 1339], "borderColor": "#e53935", "backgroundColor": "#e5393533", "fill": false, "tension": 0.3, "pointRadius": 4}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{datalabels:{display:true,align:'top',font:{size:10},formatter:v=>v},legend:{position:'top'}},scales:{y:{beginAtZero:false,grid:{color:'#eee'}}}}
+});
+// Heatmap
+new Chart(document.getElementById('heatmapChart'),{
+  type:'bar',
+  data:{labels:["Rafik Shaikh", "Manu Ramamurthy", "Bhagat M", "Naren Rajendran", "Sridhar Dwadasi", "Apurva Ajit", "Mahima Prathaban", "Seamus Redmond", "Darshan Jahagirdar", "Swetha B"],datasets:[{"label": "RCA", "data": [0, 5, 0, 0, 0, 16, 0, 13, 0, 9], "backgroundColor": "#0070d2"}, {"label": "Rev CPQ", "data": [0, 11, 0, 0, 0, 10, 0, 1, 0, 3], "backgroundColor": "#f28b00"}, {"label": "Industry CPQ", "data": [0, 0, 0, 31, 0, 0, 1, 0, 0, 0], "backgroundColor": "#4caf50"}, {"label": "Industry Omni", "data": [13, 0, 8, 0, 0, 0, 7, 0, 0, 0], "backgroundColor": "#9c27b0"}, {"label": "Industry Core", "data": [10, 32, 96, 51, 59, 29, 6, 0, 13, 1], "backgroundColor": "#e53935"}]},
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{datalabels:{display:true,anchor:'center',align:'center',color:'#fff',font:{size:9,weight:'bold'},formatter:(v)=>v>0?v:''},legend:{position:'top'}},scales:{x:{stacked:true},y:{stacked:true}}}
+});
+
+function switchTab(el,id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>
