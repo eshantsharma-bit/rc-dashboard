@@ -116,7 +116,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <div class="header">
   <div>
     <h1>Revenue Cloud · Deep-Dive Report</h1>
-    <div class="meta">Transaction Management · Product Configurator · Price Management &nbsp;|&nbsp; Aug–Sep 2026 &nbsp;|&nbsp; EMEA · AMER · India · APAC &nbsp;|&nbsp; Source: OrgCS · 2026-10-19</div>
+    <div class="meta" style="font-size:12px;color:#c5d0e0;line-height:1.8">Transaction Management &nbsp;·&nbsp; Product Configurator &nbsp;·&nbsp; Price Management<br>Aug–Sep 2026 &nbsp;|&nbsp; EMEA · AMER · India · APAC &nbsp;|&nbsp; Source: OrgCS · 2026-10-19</div>
   </div>
   <div class="badges">
     <span class="badge badge-red">1,940 Cases — 58% of RC Inflow</span>
@@ -128,10 +128,10 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <div class="wrap">
 
 <!-- ══════════════════════════════════════════════════════════ VOLUME SHARE -->
-<div style="font-size:18px;font-weight:800;color:var(--navy);margin-bottom:16px;padding-bottom:10px;border-bottom:3px solid var(--accent);letter-spacing:-.3px">TM · PC · PM — Volume Share of RC Core <span style="color:var(--muted);font-weight:500;font-size:14px">Feb–Sep 2026</span></div>
+<div style="font-size:18px;font-weight:800;color:var(--navy);margin-bottom:16px;padding-bottom:10px;border-bottom:3px solid var(--accent);letter-spacing:-.3px">TM · PC · PM — Volume Share of RCA Core <span style="color:var(--muted);font-weight:500;font-size:14px">Feb–Sep 2026</span></div>
 <div class="card" style="margin-bottom:20px">
-  <div class="card-title">Monthly % Share of RC Core Inflow</div>
-  <div style="height:280px;position:relative">
+  <div class="card-title">Monthly % Share of RCA Core Inflow</div>
+  <div style="height:340px;position:relative">
     <canvas id="volShareTrend"></canvas>
   </div>
 </div>
@@ -336,7 +336,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 
 <!-- Lead narrative -->
 <div class="insight blue" style="margin-bottom:16px">
-  <strong>1,940 cases across Aug–Sep · TM volume up 32%; PC Bug Rate at 20.2% requires immediate action</strong>
+  <strong>1,940 cases across Aug–Sep · TM volume up 32%; PC Bug Rate at 20.2% — driven by two CML incidents</strong>
   <p>Sep inflow reached 1,020 — +11% vs Aug. TM drove the increase (+111 cases) tied to Winter '27 readiness activity. PC volume stabilised (328→322) but Bug Rate reached 20.2% in Sep — highest across all three topics. PM remained flat with no IR linkage.</p>
 </div>
 
@@ -377,7 +377,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   <div class="card border-blue">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
       <div class="card-title" style="color:#1b4fa8;margin-bottom:0">Transaction Management</div>
-      <span class="pill pill-orange">Watch</span>
+      <span class="pill pill-orange">Growing</span>
     </div>
     <table class="data-table" style="font-size:12px">
       <thead><tr><th>KPI</th><th class="center">Aug</th><th class="center">Sep</th><th class="center">Δ</th></tr></thead>
@@ -394,7 +394,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   <div class="card border-orange">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
       <div class="card-title" style="color:#bc4c00;margin-bottom:0">Product Configurator</div>
-      <span class="pill pill-red">Action Required</span>
+      <span class="pill pill-red">Release / Outage Impact</span>
     </div>
     <table class="data-table" style="font-size:12px">
       <thead><tr><th>KPI</th><th class="center">Aug</th><th class="center">Sep</th><th class="center">Δ</th></tr></thead>
@@ -435,23 +435,19 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
       <div>
         <div style="font-size:15px;font-weight:700;color:#bc4c00">IRC-94329705</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">GUS: W-23936240 · Aug 20, 2026 · ~6 hrs active</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">W-23936240 &nbsp;·&nbsp; Aug 20, 2026 &nbsp;·&nbsp; ~6 hrs</div>
       </div>
       <span class="pill pill-red">41 cases</span>
     </div>
-    <div class="insight orange" style="margin-bottom:10px">
-      <strong>CML ConstraintsSolverException — Configurator engine returned HTTP 400, blocking all product additions to quotes globally when CML was active.</strong>
+    <div class="insight orange" style="margin-bottom:12px">
+      <strong>CML ConstraintsSolverException — all product additions to quotes blocked globally for CML-active orgs</strong>
     </div>
     <table class="data-table" style="font-size:11px">
-      <thead><tr><th>Dimension</th><th>Detail</th></tr></thead>
       <tbody>
-        <tr><td>Error</td><td><code>ConstraintsSolverException · status 400 Bad Request</code></td></tr>
-        <tr><td>Trigger</td><td>CML active in org — config rules engine endpoint unavailable</td></tr>
-        <tr><td>Impact</td><td>All quote line item additions / repricing blocked</td></tr>
-        <tr><td>IR variants</td><td><code>94329705</code> · <code>icc-94329705</code> · <code>IR-94329705</code> — all counted</td></tr>
-        <tr><td>Topic split</td><td>PC 35 · TM 2 · PM 1</td></tr>
-        <tr><td>Resolution</td><td>All 41 cases closed within 1–4 days (W-23936240)</td></tr>
-        <tr><td>Key accounts</td><td>Bell Canada · SHIFTLOGIC · PostNL · Cloudity · Schneider Electric · Rogers · Vestas · Accenture</td></tr>
+        <tr><td style="color:var(--muted);width:90px">Impact</td><td>Quote line additions and repricing blocked globally</td></tr>
+        <tr><td style="color:var(--muted)">Topic split</td><td><strong>PC 35 · TM 2 · PM 1</strong></td></tr>
+        <tr><td style="color:var(--muted)">Resolution</td><td>All 41 cases closed within 1–4 days</td></tr>
+        <tr><td style="color:var(--muted)">Key accounts</td><td>Bell Canada · SHIFTLOGIC · PostNL · Cloudity · Schneider Electric · Rogers · Vestas · Accenture</td></tr>
       </tbody>
     </table>
   </div>
@@ -460,23 +456,19 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
       <div>
         <div style="font-size:15px;font-weight:700;color:#1b4fa8">ICC-95079032</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">GUS: W-24112150 · Sep 2–7, 2026</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">W-24112150 &nbsp;·&nbsp; Sep 2–7, 2026</div>
       </div>
       <span class="pill pill-red">38 cases</span>
     </div>
-    <div class="insight blue" style="margin-bottom:10px">
-      <strong>CML parse failure — quote saves and product config blocked on CML-active orgs when saving quotes or adding products.</strong>
+    <div class="insight blue" style="margin-bottom:12px">
+      <strong>CML parse failure — quote saves and product configuration non-functional on CML-active orgs</strong>
     </div>
     <table class="data-table" style="font-size:11px">
-      <thead><tr><th>Dimension</th><th>Detail</th></tr></thead>
       <tbody>
-        <tr><td>Error</td><td><code>failed to parse response · configuration rule failed to parse</code></td></tr>
-        <tr><td>Trigger</td><td>CML active — parse failure on quote save / product add (Sep 7 cluster)</td></tr>
-        <tr><td>Impact</td><td>Quote saves blocked; product configuration non-functional</td></tr>
-        <tr><td>IR variants</td><td><code>95079032</code> · <code>#icc-95079032</code> · <code>icc-95079032</code> — all counted</td></tr>
-        <tr><td>Topic split</td><td>PC 34 · TM 4 · PM 0</td></tr>
-        <tr><td>Resolution</td><td>Cases closed within 1–9 days (W-24112150)</td></tr>
-        <tr><td>Key accounts</td><td>QM Technologies · New Work SE · Telenet Group · LiveRamp · Qualifacts</td></tr>
+        <tr><td style="color:var(--muted);width:90px">Impact</td><td>Quote saves blocked; product configuration non-functional</td></tr>
+        <tr><td style="color:var(--muted)">Topic split</td><td><strong>PC 34 · TM 4 · PM 0</strong></td></tr>
+        <tr><td style="color:var(--muted)">Resolution</td><td>Cases closed within 1–9 days</td></tr>
+        <tr><td style="color:var(--muted)">Key accounts</td><td>QM Technologies · New Work SE · Telenet Group · LiveRamp · Qualifacts</td></tr>
       </tbody>
     </table>
   </div>
@@ -509,13 +501,13 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <div class="grid-2" style="margin-bottom:20px">
   <div class="card">
     <div class="card-title">GUS Rate % Trend — Jun to Sep</div>
-    <div class="chart-wrap" style="height:200px">
+    <div class="chart-wrap" style="height:260px">
       <canvas id="gusTrend"></canvas>
     </div>
   </div>
   <div class="card">
     <div class="card-title">Bug Rate % Trend — Jun to Sep</div>
-    <div class="chart-wrap" style="height:200px">
+    <div class="chart-wrap" style="height:260px">
       <canvas id="bugTrend"></canvas>
     </div>
   </div>
@@ -529,30 +521,30 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
     <div class="lbl">Transaction Mgmt</div>
     <div class="cnt">801 cases (Aug+Sep)</div>
     <div style="margin-top:8px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-      <span class="pill pill-blue">IR linked: 3.5%</span>
-      <span class="pill pill-red">Bug%: 10.5% (Sep)</span>
+      <span class="pill pill-blue">Bug-linked: 5.0%</span>
+      <span class="pill pill-blue">40 bug cases</span>
     </div>
-    <div style="font-size:10px;color:var(--muted);margin-top:4px">264 RC Upgrade×26 (IR__c) · ICC-95079032×4 (all variants)</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">Aug 16 · Sep 24 &nbsp;|&nbsp; 264 RC Upgrade IR-linked</div>
   </div>
   <div class="topic-card tc-cfg">
     <div class="pct">33.5%</div>
     <div class="lbl">Product Configurator</div>
     <div class="cnt">650 cases (Aug+Sep)</div>
     <div style="margin-top:8px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-      <span class="pill pill-orange">IR linked: 10.6%</span>
-      <span class="pill pill-red">Bug%: 20.2% (Sep)</span>
+      <span class="pill pill-red">Bug-linked: 13.4%</span>
+      <span class="pill pill-red">87 bug cases</span>
     </div>
-    <div style="font-size:10px;color:var(--muted);margin-top:4px">IRC-94329705×35 (all variants, Aug) · ICC-95079032×34 (all variants, Sep)</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">Aug 22 · Sep 65 &nbsp;|&nbsp; IRC-94329705 + ICC-95079032</div>
   </div>
   <div class="topic-card tc-prc">
     <div class="pct">25.2%</div>
     <div class="lbl">Price Management</div>
     <div class="cnt">489 cases (Aug+Sep)</div>
     <div style="margin-top:8px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-      <span class="pill pill-green">IR linked: 0.6%</span>
-      <span class="pill pill-green">Bug%: 4.1% (Sep)</span>
+      <span class="pill pill-green">Bug-linked: 3.1%</span>
+      <span class="pill pill-green">15 bug cases</span>
     </div>
-    <div style="font-size:10px;color:var(--muted);margin-top:4px">Only 3 IR-linked cases · stable</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">Aug 5 · Sep 10 &nbsp;|&nbsp; No IR linkage</div>
   </div>
 </div>
 
@@ -561,7 +553,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   <div class="kpi alert">
     <div class="kpi-label">Total Cases (3 Topics)</div>
     <div class="kpi-val">1,940</div>
-    <div class="kpi-sub">58% of total RC inflow · Aug–Sep</div>
+    <div class="kpi-sub">58% of total RCA inflow · Aug–Sep</div>
   </div>
   <div class="kpi blue">
     <div class="kpi-label">GUS Link Coverage</div>
@@ -703,11 +695,11 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════ GUS COVERAGE -->
-<div class="section-title">GUS &amp; Bug Coverage</div>
+<!-- ══════════════════════════════════════════════════════════ BUG COVERAGE -->
+<div class="section-title">Bug Coverage</div>
 <div class="grid-2" style="margin-bottom:20px">
   <div class="card">
-    <div class="card-title">GUS Link Coverage by Topic</div>
+    <div class="card-title">Bug-Linked Case Coverage by Topic (Aug+Sep)</div>
     <div class="chart-wrap">
       <canvas id="gusBar"></canvas>
     </div>
@@ -900,13 +892,19 @@ new Chart(document.getElementById('barMonthly').getContext('2d'), {
   },
   options: {
     responsive:true, maintainAspectRatio:false,
+    layout:{padding:{top:24}},
     plugins: {
       legend:{position:'bottom', labels:{font:{size:11}}},
-      datalabels: dlOpts('#fff','center','center',10)
+      datalabels:{
+        anchor:'end', align:'top', offset:4,
+        font:{weight:'bold', size:11},
+        color: ctx => ctx.datasetIndex===0 ? '#1b4fa8' : '#bc4c00',
+        formatter: v => v
+      }
     },
     scales: {
       x:{ticks:{color:COLORS.muted,font:{size:10}}, grid:{color:COLORS.grid}},
-      y:{ticks:{color:COLORS.muted,font:{size:10}}, grid:{color:COLORS.grid}, beginAtZero:true}
+      y:{ticks:{color:COLORS.muted,font:{size:10}}, grid:{color:COLORS.grid}, beginAtZero:true, max:520}
     }
   }
 });
@@ -1001,14 +999,14 @@ new Chart(document.getElementById('tierBar').getContext('2d'), {
   }
 });
 
-// GUS coverage bar
+// Bug-linked coverage bar
 new Chart(document.getElementById('gusBar').getContext('2d'), {
   type: 'bar',
   data: {
     labels: ['Transaction Mgmt', 'Product Configurator', 'Price Management'],
     datasets: [
-      { label: 'GUS Linked', data: [9.6, 21.4, 8.4], backgroundColor:'rgba(27,79,168,.75)', borderRadius:4 },
-      { label: 'No GUS Link', data: [90.4, 78.6, 91.6], backgroundColor:'rgba(220,50,50,.25)', borderRadius:4 }
+      { label: 'Bug Cases', data: [5.0, 13.4, 3.1], backgroundColor:'rgba(27,79,168,.75)', borderRadius:4 },
+      { label: 'No Bug Link', data: [95.0, 86.6, 96.9], backgroundColor:'rgba(200,210,220,.4)', borderRadius:4 }
     ]
   },
   options: {
@@ -1016,7 +1014,7 @@ new Chart(document.getElementById('gusBar').getContext('2d'), {
     plugins:{
       legend:{position:'bottom', labels:{font:{size:11}}},
       datalabels:{
-        color:ctx => ctx.datasetIndex===0 ? '#fff' : '#bc4c00',
+        color:ctx => ctx.datasetIndex===0 ? '#fff' : '#8b949e',
         anchor:'center', align:'center', font:{weight:'bold',size:11},
         formatter: v => v+'%'
       }
@@ -1028,23 +1026,24 @@ new Chart(document.getElementById('gusBar').getContext('2d'), {
   }
 });
 
-// Bug Rate % bar (in GUS section)
+// Bug Rate % bar (in Bug section)
 new Chart(document.getElementById('bugRateBar').getContext('2d'), {
   type:'bar',
   data:{
-    labels:['Jun\'26','Jul\'26','Aug\'26','Sep\'26'],
+    labels:["Jun'26","Jul'26","Aug'26","Sep'26"],
     datasets:[
-      {label:'Transaction Mgmt', data:[3.6,1.6,5.2,10.5], backgroundColor:'rgba(27,79,168,.75)', borderColor:'#1b4fa8', borderWidth:1},
-      {label:'Product Configurator', data:[2.6,4.6,6.7,20.2], backgroundColor:'rgba(225,111,66,.75)', borderColor:'#e16f42', borderWidth:1},
-      {label:'Price Management', data:[0.9,2.8,2.0,4.1], backgroundColor:'rgba(45,138,78,.75)', borderColor:'#2d8a4e', borderWidth:1}
+      {label:'Transaction Mgmt', data:[3.6,1.6,5.2,10.5], backgroundColor:'rgba(27,79,168,.75)', borderColor:'#1b4fa8', borderWidth:1, borderRadius:3},
+      {label:'Product Configurator', data:[2.6,4.6,6.7,20.2], backgroundColor:'rgba(225,111,66,.75)', borderColor:'#e16f42', borderWidth:1, borderRadius:3},
+      {label:'Price Management', data:[0.9,2.8,2.0,4.1], backgroundColor:'rgba(45,138,78,.75)', borderColor:'#2d8a4e', borderWidth:1, borderRadius:3}
     ]
   },
   options:{
     responsive:true, maintainAspectRatio:false,
+    layout:{padding:{top:28}},
     plugins:{
       legend:{position:'bottom', labels:{color:COLORS.muted, font:{size:11}, boxWidth:12}},
       datalabels:{
-        anchor:'end', align:'top', font:{size:10, weight:'bold'},
+        anchor:'end', align:'top', offset:4, font:{size:10, weight:'bold'},
         formatter: v => v > 0 ? v+'%' : '',
         color: ctx => ['#1b4fa8','#e16f42','#2d8a4e'][ctx.datasetIndex]
       }
@@ -1052,7 +1051,7 @@ new Chart(document.getElementById('bugRateBar').getContext('2d'), {
     scales:{
       x:{ticks:{color:COLORS.muted, font:{size:10}}, grid:{display:false}},
       y:{
-        beginAtZero:true,
+        beginAtZero:true, max:24,
         ticks:{color:COLORS.muted, font:{size:10}, callback: v => v+'%'},
         grid:{color:COLORS.grid}
       }
@@ -1062,12 +1061,16 @@ new Chart(document.getElementById('bugRateBar').getContext('2d'), {
 
 // ── TTR / GUS% / Bug% Trend charts ──────────────────────────────────────────
 const MONTHS = ['Jun\'26','Jul\'26','Aug\'26','Sep\'26'];
+const LINE_OFFSETS = [6, -18, 6, 6]; // TM up, PC down to avoid overlap, PM up
 const lineOpts = (yLabel, suffix) => ({
   responsive:true, maintainAspectRatio:false,
+  layout:{padding:{top:28}},
   plugins:{
     legend:{position:'bottom', labels:{color:COLORS.muted, font:{size:11}, boxWidth:12}},
     datalabels:{
-      anchor:'end', align:'top', font:{size:10, weight:'bold'},
+      anchor:'end', align:'top',
+      offset: ctx => LINE_OFFSETS[ctx.datasetIndex] || 6,
+      font:{size:10, weight:'bold'},
       formatter: v => v+suffix,
       color: ctx => ctx.dataset.borderColor
     }
@@ -1140,39 +1143,43 @@ new Chart(document.getElementById('bugTrend').getContext('2d'), {
 
 // Volume Share % Trend (Feb-Sep)
 const VOL_MONTHS = ["Feb'26", "Mar'26", "Apr'26", "May'26", "Jun'26", "Jul'26", "Aug'26", "Sep'26"];
-// per-dataset label anchors to avoid overlap: TM=bottom, PC=top, PM=bottom, Combined=top
-const VOL_ALIGNS = ['bottom','top','bottom','top'];
+const VOL_COLORS = ['#1b4fa8','#e16f42','#2d8a4e','#8250df'];
+// TM=below line, PC=above line, PM=below line, Combined=above line — keeps labels from stacking
+const VOL_ANCHORS = ['end','end','end','end'];
+const VOL_ALIGNS  = ['bottom','top','bottom','top'];
+const VOL_OFFSETS = [4, 4, 4, 4];
 new Chart(document.getElementById('volShareTrend').getContext('2d'), {
   type:'line',
   data:{
     labels: VOL_MONTHS,
     datasets:[
-      {label:'TM', data:[16.9, 21.9, 21.4, 19.5, 19.6, 19.6, 22.4, 25.5], borderColor:'#1b4fa8', tension:.3, pointRadius:5, pointBackgroundColor:'#1b4fa8', fill:false},
-      {label:'PC', data:[34.9, 22.4, 27.2, 29.0, 30.8, 33.6, 21.3, 18.0], borderColor:'#e16f42', tension:.3, pointRadius:5, pointBackgroundColor:'#e16f42', fill:false},
-      {label:'PM', data:[12.6, 15.4, 15.5, 12.4, 12.3, 13.9, 16.0, 13.5], borderColor:'#2d8a4e', tension:.3, pointRadius:5, pointBackgroundColor:'#2d8a4e', fill:false},
-      {label:'TM+PC+PM', data:[64.4, 59.7, 64.1, 60.9, 62.7, 67.1, 59.7, 57.0], borderColor:'#8250df', tension:.3, pointRadius:5, pointBackgroundColor:'#8250df', fill:false, borderDash:[5,3]}
+      {label:'Transaction Mgmt', data:[16.9, 21.9, 21.4, 19.5, 19.6, 19.6, 22.4, 25.5], borderColor:'#1b4fa8', tension:.3, pointRadius:5, pointBackgroundColor:'#1b4fa8', borderWidth:2, fill:false},
+      {label:'Product Configurator', data:[34.9, 22.4, 27.2, 29.0, 30.8, 33.6, 21.3, 18.0], borderColor:'#e16f42', tension:.3, pointRadius:5, pointBackgroundColor:'#e16f42', borderWidth:2, fill:false},
+      {label:'Price Management', data:[12.6, 15.4, 15.5, 12.4, 12.3, 13.9, 16.0, 13.5], borderColor:'#2d8a4e', tension:.3, pointRadius:5, pointBackgroundColor:'#2d8a4e', borderWidth:2, fill:false},
+      {label:'Combined (TM+PC+PM)', data:[64.4, 59.7, 64.1, 60.9, 62.7, 67.1, 59.7, 57.0], borderColor:'#8250df', tension:.3, pointRadius:5, pointBackgroundColor:'#8250df', borderWidth:2, fill:false, borderDash:[5,3]}
     ]
   },
   options:{
     responsive:true, maintainAspectRatio:false,
+    layout:{padding:{top:24}},
     plugins:{
-      legend:{position:'bottom', labels:{color:COLORS.muted, font:{size:11}, boxWidth:12}},
+      legend:{position:'bottom', labels:{color:COLORS.muted, font:{size:11}, boxWidth:12, padding:12}},
       datalabels:{
-        anchor:'center',
-        align: ctx => VOL_ALIGNS[ctx.datasetIndex],
-        offset: 8,
+        anchor: ctx => VOL_ANCHORS[ctx.datasetIndex],
+        align:  ctx => VOL_ALIGNS[ctx.datasetIndex],
+        offset: ctx => VOL_OFFSETS[ctx.datasetIndex],
         font:{size:10, weight:'bold'},
         formatter: v => v+'%',
-        color: ctx => ['#1b4fa8','#e16f42','#2d8a4e','#8250df'][ctx.datasetIndex]
+        color: ctx => VOL_COLORS[ctx.datasetIndex]
       }
     },
     scales:{
       x:{ticks:{color:COLORS.muted, font:{size:10}}, grid:{color:COLORS.grid}},
       y:{
-        beginAtZero:true,
+        min:10, max:75,
         ticks:{color:COLORS.muted, font:{size:10}, callback: v => v+'%'},
         grid:{color:COLORS.grid},
-        title:{display:true, text:'%', color:COLORS.muted, font:{size:10}}
+        title:{display:true, text:'% of RCA Core Inflow', color:COLORS.muted, font:{size:10}}
       }
     }
   }
