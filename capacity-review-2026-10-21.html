@@ -252,6 +252,98 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;f
 </div>
 
 </div></div>
+
+<!-- INDUSTRY CORE CAPACITY SECTION -->
+<div class="section">
+<div class="section-header"><h2>Industry Core — Capacity Analysis (2026 YTD Inflow)</h2>
+<span style="font-size:11px;color:#57606a;margin-left:auto">Targets: Signature 1.6 cases/day · Non-Signature 2.1 cases/day · 22 working days/month</span>
+</div>
+<div class="section-body">
+
+<!-- Monthly inflow chart -->
+<div style="font-size:12px;font-weight:600;color:#24292f;margin-bottom:10px">Monthly Inflow by Region — Jan–Sep 2026</div>
+<div style="position:relative;height:300px"><canvas id="indCoreChart"></canvas></div>
+
+<!-- Inflow table -->
+<table class="inflow-table" style="margin-top:16px">
+<thead><tr>
+  <th>Region</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th>
+  <th>H1 Avg</th><th>H2 Avg</th><th>Growth</th>
+</tr></thead>
+<tbody>
+<tr><td><strong>EMEA</strong></td><td>436</td><td>608</td><td>573</td><td>506</td><td>544</td><td>738</td><td>691</td><td>611</td><td>677</td><td>568</td><td>660</td><td class="growing">+16%</td></tr>
+<tr><td><strong>India</strong></td><td>383</td><td>457</td><td>584</td><td>550</td><td>483</td><td>583</td><td>753</td><td>649</td><td>671</td><td>507</td><td>691</td><td class="growing">+36%</td></tr>
+<tr><td><strong>APAC</strong></td><td>276</td><td>230</td><td>283</td><td>265</td><td>180</td><td>231</td><td>320</td><td>286</td><td>335</td><td>244</td><td>314</td><td class="growing">+28%</td></tr>
+<tr style="background:#f6f8fa;font-weight:600"><td><strong>Total</strong></td><td>1095</td><td>1295</td><td>1440</td><td>1321</td><td>1207</td><td>1552</td><td>1764</td><td>1546</td><td>1683</td><td>1318</td><td>1664</td><td class="growing">+26%</td></tr>
+</tbody></table>
+
+<!-- Sig split note -->
+<div style="margin-top:8px;font-size:11px;color:#57606a;padding:6px 10px;background:#f6f8fa;border-radius:4px;border:1px solid #d0d7de">
+  <strong>Sep Signature mix:</strong> EMEA 35% Sig · India 55% Sig · APAC 40% Sig &nbsp;|&nbsp; Org-wide: 44% Sig / 56% Non-Sig
+</div>
+
+<!-- Capacity table -->
+<div style="font-size:12px;font-weight:600;color:#24292f;margin:20px 0 10px">FTE Capacity Required — Sep 2026 Inflow Baseline</div>
+<table class="inflow-table">
+<thead><tr>
+  <th>Region</th>
+  <th>Sep Inflow</th>
+  <th>Sig Cases (35/mo)</th>
+  <th>Non-Sig Cases (46/mo)</th>
+  <th>FTE Needed</th>
+  <th>Current Engineers</th>
+  <th>Gap / Surplus</th>
+  <th>H2 Avg FTE Needed</th>
+</tr></thead>
+<tbody>
+<tr>
+  <td><strong>EMEA</strong></td>
+  <td>677</td>
+  <td>236 → <strong>6.7 FTE</strong></td>
+  <td>441 → <strong>9.5 FTE</strong></td>
+  <td style="font-weight:600;color:#cf222e">16.2</td>
+  <td>~25</td>
+  <td class="growing" style="font-weight:600">+8.8 surplus</td>
+  <td>15.7</td>
+</tr>
+<tr>
+  <td><strong>India</strong></td>
+  <td>671</td>
+  <td>367 → <strong>10.4 FTE</strong></td>
+  <td>304 → <strong>6.6 FTE</strong></td>
+  <td style="font-weight:600;color:#cf222e">17.0</td>
+  <td>~22</td>
+  <td class="growing" style="font-weight:600">+5.0 surplus</td>
+  <td>17.2</td>
+</tr>
+<tr>
+  <td><strong>APAC</strong></td>
+  <td>335</td>
+  <td>134 → <strong>3.8 FTE</strong></td>
+  <td>201 → <strong>4.4 FTE</strong></td>
+  <td style="font-weight:600;color:#cf222e">8.2</td>
+  <td>~15</td>
+  <td class="growing" style="font-weight:600">+6.8 surplus</td>
+  <td>7.6</td>
+</tr>
+<tr style="background:#fff8c5;font-weight:600">
+  <td><strong>Total</strong></td>
+  <td>1,683</td>
+  <td>737 → <strong>20.9 FTE</strong></td>
+  <td>946 → <strong>20.5 FTE</strong></td>
+  <td style="font-weight:600;color:#cf222e">41.4</td>
+  <td>~62</td>
+  <td class="growing" style="font-weight:600">+20.6 surplus</td>
+  <td>40.5</td>
+</tr>
+</tbody></table>
+
+<div style="margin-top:10px;padding:10px 14px;background:#dafbe1;border:1px solid #1a7f37;border-radius:6px;font-size:12px">
+  <strong style="color:#1a7f37">Key read:</strong> Industry Core has sufficient engineers in all 3 regions today — but the +26% H1→H2 growth means this surplus will compress fast. India is tightest: FTE needed (17.0) vs ~22 engineers, but not all 22 are 100% Industry Core-focused. APAC growing fastest (+40% YoY) — recommend prioritising the Omni→Core redirection there first.
+</div>
+
+</div></div>
+
 <div class="section">
 <div class="section-header"><h2>Section 2 — Two-Run Comparison: Load Tier Changes (Oct 15 → Oct 21)</h2></div>
 <div class="section-body">
@@ -922,6 +1014,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;f
 
 <script>
 Chart.register(ChartDataLabels);
+// Industry Core capacity chart
+new Chart(document.getElementById('indCoreChart'),{
+  type:'line',
+  data:{
+    labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep'],
+    datasets:[
+      {label:'EMEA',data:[436,608,573,506,544,738,691,611,677],borderColor:'#0969da',backgroundColor:'#0969da22',fill:false,tension:0.3,pointRadius:4},
+      {label:'India',data:[383,457,584,550,483,583,753,649,671],borderColor:'#f28b00',backgroundColor:'#f28b0022',fill:false,tension:0.3,pointRadius:4},
+      {label:'APAC',data:[276,230,283,265,180,231,320,286,335],borderColor:'#1a7f37',backgroundColor:'#1a7f3722',fill:false,tension:0.3,pointRadius:4}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{
+      datalabels:{display:true,align:'top',font:{size:9},formatter:v=>v},
+      legend:{position:'top'},
+      annotation:{annotations:{
+        h2line:{type:'line',xMin:5.5,xMax:5.5,borderColor:'#cf222e',borderWidth:1,borderDash:[4,4],label:{content:'H2 starts',enabled:true,position:'start',font:{size:9}}}
+      }}
+    },
+    scales:{y:{beginAtZero:false,grid:{color:'#eee'},title:{display:true,text:'Cases / Month',font:{size:10}}}}
+  }
+});
 // Inflow chart
 new Chart(document.getElementById('inflowChart'),{
   type:'line',
