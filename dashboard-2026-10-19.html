@@ -108,6 +108,24 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 .rca-row-txn td:first-child{border-left:3px solid var(--txn)}
 .rca-row-cfg td:first-child{border-left:3px solid var(--cfg)}
 .rca-row-prc td:first-child{border-left:3px solid var(--prc)}
+/* ── tabs ── */
+.tab-nav{background:#fff;border-bottom:2px solid var(--border);display:flex;gap:0;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.tab-btn{padding:12px 20px;font-size:13px;font-weight:600;color:var(--muted);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color .15s,border-color .15s}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-btn.active.tm{color:#1b4fa8;border-bottom-color:#1b4fa8}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+/* ── TM deep-dive specific ── */
+.tm-kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.pattern-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.pattern-bar .bar-label{font-size:12px;color:var(--text);width:220px;flex-shrink:0}
+.pattern-bar .bar-track{flex:1;height:10px;background:#e8edf4;border-radius:5px;overflow:hidden}
+.pattern-bar .bar-fill-tm{height:100%;background:#1b4fa8;border-radius:5px}
+.pattern-bar .bar-count{font-size:11px;font-weight:700;color:#1b4fa8;width:60px;text-align:right}
+.reason-card{background:#f6f8fa;border:1px solid #d0d7de;border-left:3px solid #1b4fa8;border-radius:6px;padding:12px 14px;margin-bottom:8px}
+.reason-card .rc-title{font-size:12px;font-weight:700;color:var(--navy)}
+.reason-card .rc-body{font-size:11px;color:var(--muted);margin-top:3px}
 </style>
 </head>
 <body>
@@ -128,6 +146,14 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   </div>
 </div>
 
+<!-- ══ TAB NAV ══ -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('overview')">Overview — All Topics</button>
+  <button class="tab-btn tm" onclick="switchTab('tm')">Transaction Management Deep-Dive</button>
+</div>
+
+<!-- ══ TAB: OVERVIEW ══ -->
+<div id="tab-overview" class="tab-panel active">
 <div class="wrap">
 
 <!-- ══════════════════════════════════════════════════════════ VOLUME SHARE -->
@@ -842,6 +868,345 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 </div>
 
 <footer>Revenue Cloud Deep-Dive Report · Transaction Management · Product Configurator · Price Management · Aug–Sep 2026 · Source: OrgCS live query (2026-10-19) · EMEA + AMER + India + APAC · Excl. Accelerator Delivery Request</footer>
+</div><!-- /wrap -->
+</div><!-- /tab-overview -->
+
+<!-- ══ TAB: TRANSACTION MANAGEMENT DEEP-DIVE ══ -->
+<div id="tab-tm" class="tab-panel">
+<div class="wrap">
+
+<div style="font-size:18px;font-weight:800;color:#1b4fa8;margin-bottom:16px;padding-bottom:10px;border-bottom:3px solid #1b4fa8;letter-spacing:-.3px">
+  Transaction Management — Deep Dive
+  <span style="font-size:13px;font-weight:500;color:var(--muted)">Jan–Sep 2026 · All Regions</span>
+</div>
+
+<!-- ── KPI tiles ── -->
+<div class="tm-kpi-row" style="margin-bottom:20px">
+  <div class="kpi alert">
+    <div class="kpi-label">Sep Inflow</div>
+    <div class="kpi-val" style="font-size:22px">466</div>
+    <div class="kpi-sub"><span class="pill pill-red">+32% vs Aug</span></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">Highest month YTD</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">YTD Total</div>
+    <div class="kpi-val" style="font-size:22px">2,823</div>
+    <div class="kpi-sub">Jan–Sep 2026</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">Avg 314/month</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">Bug Cases (Aug+Sep)</div>
+    <div class="kpi-val" style="font-size:22px">40</div>
+    <div class="kpi-sub"><span class="pill pill-red">10.5% Bug Rate (Sep)</span></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">16 Aug · 24 Sep</div>
+  </div>
+  <div class="kpi blue">
+    <div class="kpi-label">Training Demand</div>
+    <div class="kpi-val" style="font-size:22px">453</div>
+    <div class="kpi-sub">Aug+Sep "needs training"</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">55% of classified cases</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">Knowledge Articles</div>
+    <div class="kpi-val" style="font-size:22px">199</div>
+    <div class="kpi-sub">Total published</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">45 published this FY</div>
+  </div>
+</div>
+
+<!-- ── Month-over-Month trend ── -->
+<div class="section-title">Month-over-Month Inflow — Jan to Sep 2026</div>
+<div class="grid-2" style="margin-bottom:20px">
+  <div class="card border-blue">
+    <div class="card-title" style="color:#1b4fa8">Monthly Inflow — Transaction Management</div>
+    <div style="height:240px;position:relative"><canvas id="tmMonthlyBar"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">What is Driving Volume?</div>
+    <div class="reason-card">
+      <div class="rc-title">Winter '27 Readiness Activity (+20 cases in Sep)</div>
+      <div class="rc-body">18 Sep + 2 Aug cases mention "winter", "264", or "upgrade". Accounts include Bluvium, PostNL, Quentic, Rockwell Automation. Sandbox testing surfacing gaps before GA.</div>
+    </div>
+    <div class="reason-card">
+      <div class="rc-title">Training & Enablement Demand (453 cases)</div>
+      <div class="rc-body">55% of Aug+Sep cases are classified "User needs instructions or training" — Aug 184, Sep 269. This is the single largest driver. Reflects growing customer adoption without sufficient self-serve answers.</div>
+    </div>
+    <div class="reason-card">
+      <div class="rc-title">Context Definition Adoption (new feature complexity)</div>
+      <div class="rc-body">7 of 40 bug cases involve context definitions / field mapping — a feature that saw increased adoption post-264. Customers are implementing it without clear documentation, creating both bug reports and training cases.</div>
+    </div>
+    <div class="reason-card">
+      <div class="rc-title">264 RC Upgrade Regression (26 IR-linked cases)</div>
+      <div class="rc-body">Field mapping regressions to Asset/ASP after 264 upgrade. GUS W-24001055 covers the primary regression. Cluster peaked in Sep.</div>
+    </div>
+    <div class="reason-card">
+      <div class="rc-title">Account Concentration (top 5 = 78 cases)</div>
+      <div class="rc-body">Cloudity (17), TOP Informatie (16), SHIFTLOGIC (16), TDC Net (15), Rockwell (13) — 17% of Aug+Sep volume from 5 accounts.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Issue Patterns ── -->
+<div class="section-title">Top Issue Patterns — Aug+Sep 2026 <span style="font-size:11px;font-weight:400;color:var(--muted)">(from case Subject analysis · 817 cases)</span></div>
+<div class="grid-2" style="margin-bottom:20px">
+
+  <!-- Pattern bars -->
+  <div class="card border-blue">
+    <div class="card-title" style="color:#1b4fa8">Issue Categories by Volume</div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Amendment &amp; Renewal</div>
+    <div class="pattern-bar"><div class="bar-label">Amendment / Renewal Failures</div><div class="bar-track"><div class="bar-fill-tm" style="width:95%"></div></div><div class="bar-count">96 · 11.6%</div></div>
+    <div class="pattern-bar"><div class="bar-label">Ramp Schedule &amp; Compound Uplift</div><div class="bar-track"><div class="bar-fill-tm" style="width:42%"></div></div><div class="bar-count">42 · 5.1%</div></div>
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 8px">Asset &amp; Order Lifecycle</div>
+    <div class="pattern-bar"><div class="bar-label">Asset Creation &amp; State Mgmt</div><div class="bar-track"><div class="bar-fill-tm" style="width:71%"></div></div><div class="bar-count">72 · 8.7%</div></div>
+    <div class="pattern-bar"><div class="bar-label">Order Creation &amp; Activation</div><div class="bar-track"><div class="bar-fill-tm" style="width:51%"></div></div><div class="bar-count">52 · 6.3%</div></div>
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 8px">Configuration &amp; Setup</div>
+    <div class="pattern-bar"><div class="bar-label">Context Definitions / Field Mapping</div><div class="bar-track"><div class="bar-fill-tm" style="width:67%"></div></div><div class="bar-count">68 · 8.2%</div></div>
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 8px">Release Impact</div>
+    <div class="pattern-bar"><div class="bar-label">264 RC Upgrade (IR__c exact)</div><div class="bar-track"><div class="bar-fill-tm" style="width:27%"></div></div><div class="bar-count">26 · 3.2%</div></div>
+  </div>
+
+  <!-- Issue detail cards -->
+  <div class="card">
+    <div class="card-title">Pattern Detail — Common Errors &amp; Root Causes</div>
+    <table class="data-table" style="font-size:11px">
+      <thead><tr><th>Pattern</th><th>Common Error / Symptom</th><th class="center">Cases</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Amendment failures</strong></td><td>PST transaction failed · initiateCancellation error · Renewal Oppty not generated · wrong net total</td><td class="center">96</td></tr>
+        <tr><td><strong>Asset creation / ASP</strong></td><td>Fields not mapping from Order Item → ASP after assetization · ASP missing after activation · custom field not propagating</td><td class="center">72</td></tr>
+        <tr><td><strong>Context definitions</strong></td><td>Cross-context mapping not working · field not copying to renewal lines · context node limit not resetting</td><td class="center">68</td></tr>
+        <tr><td><strong>Order creation</strong></td><td>Order activation not creating Assets · INVALID_API_INPUT · validation error on Closed/Won stage · Order stuck in processing</td><td class="center">52</td></tr>
+        <tr><td><strong>Ramp schedule</strong></td><td>Edit Ramp Schedule button disabled on amendment · cloned segment attributes change · start/end dates not editable</td><td class="center">42</td></tr>
+        <tr><td><strong>264 Upgrade (IR)</strong></td><td>Context mapping → ASP broken post-264 · Boolean field mapping regression · GUS W-24001055</td><td class="center">26</td></tr>
+        <tr><td><strong>Transaction Line Editor</strong></td><td>TLE not auto-refreshing after product add · drag-drop issue · picklist changes not saving · spinner stuck</td><td class="center">~22</td></tr>
+        <tr><td><strong>How-to / Training</strong></td><td>How to lock TLE at quote stage · how to set child quantity · best practice for CSV import · clone limitations</td><td class="center">453</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── RCAT breakdown ── -->
+<div class="section-title">RCAT Sub-Cause Breakdown — Aug+Sep 2026</div>
+<div class="grid-2" style="margin-bottom:20px">
+  <div class="card border-blue">
+    <div class="card-title" style="color:#1b4fa8">Sub-Cause Distribution</div>
+    <div style="height:260px;position:relative"><canvas id="tmRcatBar"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Signal Summary</div>
+    <div class="insight blue">
+      <strong>55% Training-driven — adoption is outpacing enablement</strong>
+      <p>453 of 817 classified cases are "User needs instructions or training". Sep alone: 269 training cases vs 184 in Aug. This is the primary volume driver, not product degradation.</p>
+    </div>
+    <div class="insight orange">
+      <strong>5% Bug Rate — 264 upgrade regression is the key cluster</strong>
+      <p>40 product bug cases. 6 are 264 RC Upgrade IR-linked (GUS W-24001055). Context definition field mapping to ASP is the dominant bug pattern.</p>
+    </div>
+    <div class="insight yellow">
+      <strong>4% Documentation gap (32 cases)</strong>
+      <p>Customers explicitly asking for better documentation on amendments, ramp deals, and context definitions. 45 new articles published this FY — continued investment needed.</p>
+    </div>
+    <div class="insight green">
+      <strong>3% Error message quality (26 cases)</strong>
+      <p>26 cases where the error message itself was insufficient or misleading. Opportunity to improve error strings in TLE, assetization, and order activation flows.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Bug & IR deep dive ── -->
+<div class="section-title">Bug-Linked Cases &amp; Incident Impact — Aug+Sep 2026</div>
+<div class="grid-2" style="margin-bottom:20px">
+
+  <div class="card border-blue">
+    <div class="card-title" style="color:#1b4fa8">Bug Cases by Pattern (40 total)</div>
+    <div style="height:240px;position:relative"><canvas id="tmBugBar"></canvas></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Active GUS Investigations — TM Aug+Sep</div>
+    <table class="data-table" style="font-size:11px">
+      <thead><tr><th>GUS Work</th><th>Subject / Pattern</th><th class="center">Cases</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><strong>W-24001055</strong></td><td>264 Upgrade: Context mapping → ASP regression</td><td class="center">6</td><td><span class="pill pill-green">Closed</span></td></tr>
+        <tr><td><strong>W-24103464</strong></td><td>Context node limit not resetting on renewal (Neocol)</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
+        <tr><td><strong>W-24309792</strong></td><td>OrderItemAdjustmentLineItem not created for promotions</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
+        <tr><td><strong>W-24262537</strong></td><td>Asset related list actions broken in French (CA)</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
+        <tr><td><strong>W-24193919</strong></td><td>Logitech — ongoing field propagation issue</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
+        <tr><td><strong>W-24277178</strong></td><td>STLE text overflow inconsistency</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
+        <tr><td><strong>W-24247843</strong></td><td>STLE picklist filter not working</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
+        <tr><td><strong>W-24423020</strong></td><td>Context def access from Product Classification (PostNL)</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
+        <tr><td><strong>W-23931132</strong></td><td>Cancelling child products in bundle on renewal (JFrog)</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
+        <tr><td><strong>W-23902414</strong></td><td>Quote lines get different start dates (RevCycle)</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
+        <tr><td>No GUS filed</td><td>29 bug cases have no GUS investigation linked</td><td class="center">29</td><td><span class="pill pill-red">Gap</span></td></tr>
+      </tbody>
+    </table>
+    <div class="insight orange" style="margin-top:10px">
+      <strong>29 of 40 bug cases (72%) have no GUS link — action needed</strong>
+      <p>Engineers are not consistently filing or linking GUS investigations to bug cases. Pattern focus: context definition mapping, STLE behaviour, asset lifecycle.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── IR / Outage impact ── -->
+<div class="section-title">Outage &amp; Incident Impact on TM</div>
+<div class="grid-3" style="margin-bottom:20px">
+  <div class="card border-orange">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#bc4c00">264 RC Upgrade</div>
+        <div style="font-size:11px;color:var(--muted)">IR__c = '264 RC Upgrade' · Sep peak</div>
+      </div>
+      <span class="pill pill-red">26 cases</span>
+    </div>
+    <div class="insight orange"><strong>Context mapping to ASP broken post-264</strong></div>
+    <table class="data-table" style="font-size:11px;margin-top:8px">
+      <tbody>
+        <tr><td style="color:var(--muted)">GUS</td><td>W-24001055 (primary regression)</td></tr>
+        <tr><td style="color:var(--muted)">Pattern</td><td>Custom field not propagating Order → ASP after upgrade</td></tr>
+        <tr><td style="color:var(--muted)">Accounts</td><td>Trane Technologies · WebPT · Keka · Rystad · Acxiom · Dutchie</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card border-blue">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#1b4fa8">ICC-95079032</div>
+        <div style="font-size:11px;color:var(--muted)">Sep 2–7, 2026 · CML parse failure</div>
+      </div>
+      <span class="pill pill-blue">4 TM cases</span>
+    </div>
+    <div class="insight blue"><strong>CML parse failure — minor TM exposure (34 of 38 cases were PC)</strong></div>
+    <table class="data-table" style="font-size:11px;margin-top:8px">
+      <tbody>
+        <tr><td style="color:var(--muted)">GUS</td><td>W-24112150</td></tr>
+        <tr><td style="color:var(--muted)">Impact</td><td>Quote saves / product config blocked on CML-active orgs</td></tr>
+        <tr><td style="color:var(--muted)">Resolution</td><td>Closed within 1–9 days</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card border-blue">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#1b4fa8">IRC-94329705</div>
+        <div style="font-size:11px;color:var(--muted)">Aug 20, 2026 · ConstraintsSolverException</div>
+      </div>
+      <span class="pill pill-blue">2 TM cases</span>
+    </div>
+    <div class="insight blue"><strong>CML ConstraintsSolverException — TM had minimal exposure (35 of 41 cases were PC)</strong></div>
+    <table class="data-table" style="font-size:11px;margin-top:8px">
+      <tbody>
+        <tr><td style="color:var(--muted)">GUS</td><td>W-23936240</td></tr>
+        <tr><td style="color:var(--muted)">Impact</td><td>Quote line additions blocked for CML-active orgs</td></tr>
+        <tr><td style="color:var(--muted)">Resolution</td><td>All cases closed within 1–4 days</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── Agentforce ── -->
+<div class="section-title">Agentforce Revenue Management — Case Signal</div>
+<div class="grid-2" style="margin-bottom:20px">
+  <div class="card border-blue">
+    <div class="card-title" style="color:#1b4fa8">Agentforce TM Cases — Aug+Sep 2026</div>
+    <table class="data-table" style="font-size:11px">
+      <thead><tr><th>Subject</th><th>Category</th></tr></thead>
+      <tbody>
+        <tr><td>Field value not carried to renewal/amendment from ASP</td><td><span class="pill pill-red">Bug</span></td></tr>
+        <tr><td>Field mapping issue (setup error)</td><td><span class="pill pill-red">Bug</span></td></tr>
+        <tr><td>Setup error — Agentforce Revenue Management</td><td><span class="pill pill-orange">Config</span></td></tr>
+        <tr><td>Renewal Opportunity creation failure (GetRenewableAssetsSummary)</td><td><span class="pill pill-red">Bug</span></td></tr>
+        <tr><td>Place Sales Transaction fails — INVALID_API_INPUT for new QLIs</td><td><span class="pill pill-red">Bug</span></td></tr>
+        <tr><td>Separate renewal oppty created after amendment order activation</td><td><span class="pill pill-orange">Config</span></td></tr>
+        <tr><td>How to re-trigger Renewal Opportunity after failure</td><td><span class="pill pill-blue">How-to</span></td></tr>
+        <tr><td>Recommended process for changing currency at renewal</td><td><span class="pill pill-blue">How-to</span></td></tr>
+        <tr><td>Exclude optional products from forecast (feature gap vs CPQ)</td><td><span class="pill pill-yellow">Feature Request</span></td></tr>
+        <tr><td>Agentforce Vibes — incorrect bundle product records</td><td><span class="pill pill-red">Bug</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Agentforce Signal Summary</div>
+    <div class="kpi alert" style="margin-bottom:10px">
+      <div class="kpi-label">Agentforce TM Cases (Aug+Sep)</div>
+      <div class="kpi-val">10</div>
+      <div class="kpi-sub">1.2% of TM Aug+Sep volume</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px">Early-stage signal — volume expected to grow</div>
+    </div>
+    <div class="insight orange">
+      <strong>5 of 10 are product bugs</strong>
+      <p>Field mapping to ASP (shared root cause with 264 regression), INVALID_API_INPUT on new QLIs, and bundle product handling via Agentforce Vibes are the top bug patterns.</p>
+    </div>
+    <div class="insight blue">
+      <strong>How-to demand mirrors broader TM training pattern</strong>
+      <p>2 how-to cases on renewal process and currency change. Agentforce documentation is sparse — customers are using support as the first line for procedural questions.</p>
+    </div>
+    <div class="insight yellow">
+      <strong>Feature gap: optional products excluded from forecast</strong>
+      <p>Specific ask to match CPQ behaviour. Relevant for product teams — customers migrating from CPQ expect parity.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Knowledge & Self-Serve ── -->
+<div class="section-title">Knowledge &amp; Self-Serve Coverage</div>
+<div class="grid-3" style="margin-bottom:20px">
+  <div class="kpi blue">
+    <div class="kpi-label">Total KAs Published</div>
+    <div class="kpi-val">199</div>
+    <div class="kpi-sub">Transaction Management · All time</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">Published This FY</div>
+    <div class="kpi-val">45</div>
+    <div class="kpi-sub">FY27 (Aug 2025 – Sep 2026)</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">~4 articles/month</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Training Cases vs KA Coverage</div>
+    <div class="kpi-val">453</div>
+    <div class="kpi-sub">Aug+Sep training cases</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">Top unresolved gaps below</div>
+  </div>
+</div>
+<div class="card" style="margin-bottom:20px">
+  <div class="card-title">Top Knowledge Gaps (from training case subjects)</div>
+  <table class="data-table">
+    <thead><tr><th>Topic Area</th><th>Representative Case Subjects</th><th class="center">Est. Cases</th><th>KA Coverage</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Amendment &amp; Renewal process</strong></td><td>Cannot stamp subscription term · renewal oppty not generated · initiateCancellation errors</td><td class="center">~95</td><td><span class="pill pill-yellow">Partial</span></td></tr>
+      <tr><td><strong>Context Definitions how-to</strong></td><td>Cross-context mapping setup · field mapping Order → ASP · context node limits</td><td class="center">~68</td><td><span class="pill pill-red">Gap</span></td></tr>
+      <tr><td><strong>Ramp deals configuration</strong></td><td>Edit Ramp Schedule disabled · ramp groups setup · start/end date not editable</td><td class="center">~42</td><td><span class="pill pill-yellow">Partial</span></td></tr>
+      <tr><td><strong>Transaction Line Editor</strong></td><td>TLE not auto-refreshing · picklist changes not saving · drag-drop · spinner stuck</td><td class="center">~35</td><td><span class="pill pill-yellow">Partial</span></td></tr>
+      <tr><td><strong>Agentforce RM how-to</strong></td><td>Renewal oppty re-trigger · currency change process · bundle handling</td><td class="center">~8</td><td><span class="pill pill-red">Gap</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── Top Accounts ── -->
+<div class="section-title">Top Accounts — Transaction Management (Aug+Sep 2026)</div>
+<div class="card" style="margin-bottom:20px">
+  <table class="data-table">
+    <thead><tr><th>Account</th><th class="center">Cases</th><th>Primary Pattern</th><th>Signal</th></tr></thead>
+    <tbody>
+      <tr class="highlight-row"><td><strong>Cloudity</strong></td><td class="center">17</td><td>Context def / field mapping</td><td><span class="pill pill-orange">Context Definition bugs</span></td></tr>
+      <tr class="highlight-row"><td><strong>TOP Informatie Systemen B.V.</strong></td><td class="center">16</td><td>Order management / TLE</td><td><span class="pill pill-blue">Quote stuck in processing</span></td></tr>
+      <tr class="highlight-row"><td><strong>SHIFTLOGIC.IO LIMITED</strong></td><td class="center">16</td><td>Order amendment / ramp</td><td><span class="pill pill-orange">All 3 topics</span></td></tr>
+      <tr><td><strong>TDC Net A/S</strong></td><td class="center">15</td><td>GUS W-24471821</td><td><span class="pill pill-blue">GUS investigation open</span></td></tr>
+      <tr><td><strong>Rockwell Automation (Fiix)</strong></td><td class="center">13</td><td>Winter '27 sandbox prep</td><td><span class="pill pill-yellow">Winter '27 cluster</span></td></tr>
+      <tr><td><strong>Neocol</strong></td><td class="center">12</td><td>Context node limit / ramp</td><td><span class="pill pill-blue">GUS W-24103464</span></td></tr>
+      <tr><td><strong>Quentic GmbH</strong></td><td class="center">12</td><td>Winter '27 readiness</td><td><span class="pill pill-yellow">Winter '27 cluster</span></td></tr>
+      <tr><td><strong>Bluvium Inc</strong></td><td class="center">12</td><td>Winter '27 sandbox</td><td><span class="pill pill-yellow">Winter '27 cluster</span></td></tr>
+      <tr><td><strong>Acxiom LLC</strong></td><td class="center">11</td><td>264 upgrade regression</td><td><span class="pill pill-red">264 RC Upgrade IR</span></td></tr>
+      <tr><td><strong>Optimizely North America</strong></td><td class="center">11</td><td>Amendment / renewal</td><td></td></tr>
+      <tr><td><strong>RevCycle Limited</strong></td><td class="center">11</td><td>Quote line start dates</td><td><span class="pill pill-blue">GUS W-23902414</span></td></tr>
+      <tr><td><strong>LiveRamp, Inc</strong></td><td class="center">10</td><td>Renewal pricing</td><td><span class="pill pill-orange">All 3 topics</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>Transaction Management Deep-Dive · Source: OrgCS live query (2026-10-19) · Jan–Sep 2026 · All Regions · Excl. Accelerator Delivery Request · Prepared by Eshant Sharma</footer>
+</div><!-- /wrap -->
+</div><!-- /tab-tm -->
 
 <!-- ══════════════════════════════════════════════════════════ CHARTS JS -->
 <script>
@@ -1187,6 +1552,122 @@ new Chart(document.getElementById('volShareTrend').getContext('2d'), {
     }
   }
 });
+
+// ── TM Monthly Bar ──────────────────────────────────────────────────────────
+new Chart(document.getElementById('tmMonthlyBar'), {
+  type: 'bar',
+  plugins: [ChartDataLabels],
+  data: {
+    labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep'],
+    datasets: [{
+      label: 'TM Cases',
+      data: [307, 286, 413, 357, 292, 341, 310, 351, 466],
+      backgroundColor: [
+        'rgba(27,79,168,.55)','rgba(27,79,168,.55)','rgba(27,79,168,.55)',
+        'rgba(27,79,168,.55)','rgba(27,79,168,.55)','rgba(27,79,168,.55)',
+        'rgba(27,79,168,.55)','rgba(27,79,168,.75)','rgba(27,79,168,1)'
+      ],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    layout: { padding: { top: 28 } },
+    plugins: {
+      legend: { display: false },
+      datalabels: {
+        color: ctx => ctx.dataIndex === 8 ? '#fff' : '#1b4fa8',
+        anchor: 'end', align: ctx => ctx.dataIndex === 8 ? 'center' : 'top',
+        font: { weight: 'bold', size: 11 },
+        formatter: v => v
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, max: 520, ticks: { color: COLORS.muted, font: { size: 10 } }, grid: { color: COLORS.grid } },
+      x: { ticks: { color: COLORS.muted, font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// ── TM RCAT Bar ─────────────────────────────────────────────────────────────
+new Chart(document.getElementById('tmRcatBar'), {
+  type: 'bar',
+  plugins: [ChartDataLabels],
+  data: {
+    labels: ['Training','Bug','Docs','Error Msg','Feature Limit','Feature Req','Incident'],
+    datasets: [{
+      label: 'Cases',
+      data: [453, 40, 32, 26, 17, 16, 13],
+      backgroundColor: [
+        'rgba(27,79,168,.75)',
+        'rgba(220,53,69,.75)',
+        'rgba(90,110,140,.6)',
+        'rgba(90,110,140,.5)',
+        'rgba(90,110,140,.4)',
+        'rgba(90,110,140,.35)',
+        'rgba(225,111,66,.65)'
+      ],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    layout: { padding: { right: 52 } },
+    plugins: {
+      legend: { display: false },
+      datalabels: {
+        color: '#fff', anchor: 'end', align: 'left',
+        font: { weight: 'bold', size: 11 },
+        formatter: v => v
+      }
+    },
+    scales: {
+      x: { beginAtZero: true, max: 520, ticks: { color: COLORS.muted, font: { size: 10 } }, grid: { color: COLORS.grid } },
+      y: { ticks: { color: COLORS.text, font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// ── TM Bug Pattern Bar ───────────────────────────────────────────────────────
+new Chart(document.getElementById('tmBugBar'), {
+  type: 'bar',
+  plugins: [ChartDataLabels],
+  data: {
+    labels: ['Context Def / Field Mapping','264 Upgrade Regression','Amendment / PST failure','STLE Behavior','Order / ASP lifecycle','Other / Unclassified'],
+    datasets: [{
+      label: 'Bug Cases',
+      data: [7, 6, 6, 4, 5, 12],
+      backgroundColor: 'rgba(27,79,168,.75)',
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    layout: { padding: { right: 40 } },
+    plugins: {
+      legend: { display: false },
+      datalabels: {
+        color: '#fff', anchor: 'end', align: 'left',
+        font: { weight: 'bold', size: 11 },
+        formatter: v => v
+      }
+    },
+    scales: {
+      x: { beginAtZero: true, max: 16, ticks: { color: COLORS.muted, font: { size: 10 } }, grid: { color: COLORS.grid } },
+      y: { ticks: { color: COLORS.text, font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// ── Tab switching ────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
 </script>
 </body>
 </html>
