@@ -875,36 +875,40 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <div id="tab-tm" class="tab-panel">
 <div class="wrap">
 
-<div style="font-size:18px;font-weight:800;color:#1b4fa8;margin-bottom:16px;padding-bottom:10px;border-bottom:3px solid #1b4fa8;letter-spacing:-.3px">
+<div style="font-size:18px;font-weight:800;color:#1b4fa8;margin-bottom:10px;padding-bottom:10px;border-bottom:3px solid #1b4fa8;letter-spacing:-.3px">
   Transaction Management — Deep Dive
   <span style="font-size:13px;font-weight:500;color:var(--muted)">Jan–Sep 2026 · All Regions</span>
+</div>
+<div class="insight green" style="margin-bottom:16px">
+  <strong>Thank you, Pushpa, Arijit, and the TM engineering team</strong>
+  <p>This analysis is built on the partnership between Support and Engineering — from upgrade response collaboration to case triage and self-serve investment. The signals below are shared as a resource for the product and engineering team to strengthen self-serve coverage and prioritise what customers need most.</p>
 </div>
 
 <!-- ── KPI tiles ── -->
 <div class="tm-kpi-row" style="margin-bottom:20px">
-  <div class="kpi alert">
+  <div class="kpi blue">
     <div class="kpi-label">Sep Inflow</div>
     <div class="kpi-val" style="font-size:22px">466</div>
-    <div class="kpi-sub"><span class="pill pill-red">+32% vs Aug</span></div>
-    <div style="font-size:10px;color:var(--muted);margin-top:4px">Highest month YTD</div>
+    <div class="kpi-sub"><span class="pill pill-blue">+32% vs Aug</span></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">Adoption growing — highest month YTD</div>
   </div>
-  <div class="kpi warn">
+  <div class="kpi blue">
     <div class="kpi-label">YTD Total</div>
     <div class="kpi-val" style="font-size:22px">2,823</div>
     <div class="kpi-sub">Jan–Sep 2026</div>
     <div style="font-size:10px;color:var(--muted);margin-top:4px">Avg 314/month</div>
   </div>
-  <div class="kpi alert">
-    <div class="kpi-label">Bug Cases (Aug+Sep)</div>
-    <div class="kpi-val" style="font-size:22px">40</div>
-    <div class="kpi-sub"><span class="pill pill-red">10.5% Bug Rate (Sep)</span></div>
-    <div style="font-size:10px;color:var(--muted);margin-top:4px">16 Aug · 24 Sep</div>
-  </div>
   <div class="kpi blue">
     <div class="kpi-label">Customer Education</div>
     <div class="kpi-val" style="font-size:22px">453</div>
-    <div class="kpi-sub">Aug+Sep enablement cases</div>
-    <div style="font-size:10px;color:var(--muted);margin-top:4px">55% of classified cases</div>
+    <div class="kpi-sub">55% of Aug+Sep cases</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">Enablement-driven, not product issues</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">Avg TTR (Aug+Sep)</div>
+    <div class="kpi-val" style="font-size:22px">7.4d</div>
+    <div class="kpi-sub"><span class="pill pill-green">Under target</span></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">Best TTR across TM · PC · PM</div>
   </div>
   <div class="kpi good">
     <div class="kpi-label">Knowledge Articles (TM)</div>
@@ -923,36 +927,32 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   </div>
   <div class="card">
     <div class="card-title">What is Driving Volume?</div>
-    <div class="reason-card">
-      <div class="rc-title">Winter '27 Readiness Activity (+20 cases in Sep)</div>
-      <div class="rc-body">18 Sep + 2 Aug cases mention "winter", "264", or "upgrade". Accounts include Bluvium, PostNL, Quentic, Rockwell Automation. Sandbox testing surfacing gaps before GA.</div>
+    <div class="reason-card" style="border-left-color:#1a7f37">
+      <div class="rc-title" style="color:#1a7f37">Customer Adoption Growing — volume reflects product success</div>
+      <div class="rc-body">TM is seeing the highest inflow month (466 in Sep) because more customers are actively using the product. 55% of cases are customers learning to use TM features — not reporting failures. This is a healthy signal.</div>
     </div>
-    <div class="reason-card">
-      <div class="rc-title">Customer Education &amp; Enablement (453 cases)</div>
-      <div class="rc-body">55% of Aug+Sep cases classified as needing instructions or training — Aug 184, Sep 269. Single largest driver. Reflects growing customer adoption without sufficient self-serve coverage.</div>
+    <div class="reason-card" style="border-left-color:#1b4fa8">
+      <div class="rc-title" style="color:#1b4fa8">Winter '27 Readiness Activity (Sep surge)</div>
+      <div class="rc-body">18 Sep + 2 Aug cases mention "winter", "264", or "upgrade". Accounts include Bluvium, PostNL, Quentic, Rockwell Automation. Sandbox testing surfacing how-to gaps before GA — an opportunity for proactive enablement.</div>
     </div>
-    <div class="reason-card">
-      <div class="rc-title">Context Definition Adoption (new feature complexity)</div>
-      <div class="rc-body">7 of 40 bug cases involve context definitions / field mapping — a feature that saw increased adoption post-264. Customers are implementing it without clear documentation, creating both bug reports and training cases.</div>
+    <div class="reason-card" style="border-left-color:#1b4fa8">
+      <div class="rc-title" style="color:#1b4fa8">Context Definitions — new feature, growing adoption</div>
+      <div class="rc-body">68 cases (8.2% of volume) are Context Definition / field mapping questions. Customers are actively implementing this feature — documentation coverage is the gap, not the feature itself.</div>
     </div>
-    <div class="reason-card">
-      <div class="rc-title">264 RC Upgrade Regression (26 IR-linked cases)</div>
-      <div class="rc-body">Field mapping regressions to Asset/ASP after 264 upgrade. GUS W-24001055 covers the primary regression. Cluster peaked in Sep.</div>
-    </div>
-    <div class="reason-card">
-      <div class="rc-title">Account Concentration (top 5 = 78 cases)</div>
-      <div class="rc-body">Cloudity (17), TOP Informatie (16), SHIFTLOGIC (16), TDC Net (15), Rockwell (13) — 17% of Aug+Sep volume from 5 accounts.</div>
+    <div class="reason-card" style="border-left-color:#bc4c00">
+      <div class="rc-title" style="color:#bc4c00">264 RC Upgrade — 26 cases, W-24001055 Closed</div>
+      <div class="rc-body">Field mapping regression to ASP post-264. Engineering resolved quickly (GUS W-24001055 closed). Cluster peaked and receded — no ongoing impact.</div>
     </div>
   </div>
 </div>
 
 <!-- ── Issue Patterns ── -->
-<div class="section-title">Top Issue Patterns — Aug+Sep 2026 <span style="font-size:11px;font-weight:400;color:var(--muted)">(from case Subject analysis · 817 cases)</span></div>
+<div class="section-title">Signals from Support — What Customers Are Asking <span style="font-size:11px;font-weight:400;color:var(--muted)">(Aug+Sep 2026 · 823 cases)</span></div>
 <div class="grid-2" style="margin-bottom:20px">
 
   <!-- Pattern bars -->
   <div class="card border-blue">
-    <div class="card-title" style="color:#1b4fa8">Issue Categories by Volume</div>
+    <div class="card-title" style="color:#1b4fa8">Customer Touchpoints by Category</div>
 
     <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Amendment &amp; Renewal</div>
     <div class="pattern-bar"><div class="bar-label">Amendment / Renewal Failures</div><div class="bar-track"><div class="bar-fill-tm" style="width:95%"></div></div><div class="bar-count">96 · 11.6%</div></div>
@@ -968,57 +968,60 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 
   <!-- Issue detail cards -->
   <div class="card">
-    <div class="card-title">Pattern Detail — Common Errors &amp; Root Causes</div>
+    <div class="card-title">Common Customer Questions — Signals for Engineering &amp; Self-Serve</div>
     <table class="data-table" style="font-size:11px">
-      <thead><tr><th>Pattern</th><th>Common Error / Symptom</th><th class="center">Cases</th></tr></thead>
+      <thead><tr><th>What Customers Ask</th><th>Common Error / Question</th><th class="center">Cases</th><th>Self-Serve / Eng Opportunity</th></tr></thead>
       <tbody>
-        <tr><td><strong>Amendment failures</strong></td><td>PST transaction failed · initiateCancellation error · Renewal Oppty not generated · wrong net total</td><td class="center">96</td></tr>
-        <tr><td><strong>Asset creation / ASP</strong></td><td>Fields not mapping from Order Item → ASP after assetization · ASP missing after activation · custom field not propagating</td><td class="center">72</td></tr>
-        <tr><td><strong>Context definitions</strong></td><td>Cross-context mapping not working · field not copying to renewal lines · context node limit not resetting</td><td class="center">68</td></tr>
-        <tr><td><strong>Order creation</strong></td><td>Order activation not creating Assets · INVALID_API_INPUT · validation error on Closed/Won stage · Order stuck in processing</td><td class="center">52</td></tr>
-        <tr><td><strong>Ramp schedule</strong></td><td>Edit Ramp Schedule button disabled on amendment · cloned segment attributes change · start/end dates not editable</td><td class="center">42</td></tr>
-        <tr><td><strong>264 Upgrade (IR)</strong></td><td>Context mapping → ASP broken post-264 · Boolean field mapping regression · GUS W-24001055</td><td class="center">26</td></tr>
-        <tr><td><strong>Transaction Line Editor</strong></td><td>TLE not auto-refreshing after product add · drag-drop issue · picklist changes not saving · spinner stuck</td><td class="center">~22</td></tr>
-        <tr><td><strong>How-to / Enablement</strong></td><td>How to lock TLE at quote stage · how to set child quantity · best practice for CSV import · clone limitations</td><td class="center">453</td></tr>
+        <tr><td><strong>Amendment &amp; Renewal</strong></td><td>PST transaction failed · initiateCancellation error · Renewal Oppty not generated</td><td class="center">96</td><td><span class="pill pill-yellow">KA gap — partial coverage</span></td></tr>
+        <tr><td><strong>Asset creation / ASP</strong></td><td>Fields not mapping Order → ASP · ASP missing after activation · custom field not propagating</td><td class="center">72</td><td><span class="pill pill-yellow">Error message clarity opportunity</span></td></tr>
+        <tr><td><strong>Context Definitions</strong></td><td>Cross-context mapping setup · field not copying to renewal · context node limit</td><td class="center">68</td><td><span class="pill pill-red">KA gap — no article exists</span></td></tr>
+        <tr><td><strong>Order creation</strong></td><td>Order activation not creating Assets · INVALID_API_INPUT · Order stuck in processing</td><td class="center">52</td><td><span class="pill pill-yellow">Error message clarity opportunity</span></td></tr>
+        <tr><td><strong>Ramp schedule</strong></td><td>Edit Ramp Schedule button disabled · start/end dates not editable on amendment</td><td class="center">42</td><td><span class="pill pill-yellow">KA gap — partial coverage</span></td></tr>
+        <tr><td><strong>Transaction Line Editor</strong></td><td>TLE not refreshing after add · picklist changes not saving · spinner stuck</td><td class="center">~22</td><td><span class="pill pill-yellow">UX / error message opportunity</span></td></tr>
+        <tr><td><strong>How-to &amp; Enablement</strong></td><td>Lock TLE at quote stage · set child quantity · CSV import · clone limitations</td><td class="center">453</td><td><span class="pill pill-red">Highest self-serve ROI</span></td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
 <!-- ── RCAT breakdown ── -->
-<div class="section-title">RCAT Sub-Cause Breakdown — Aug+Sep 2026</div>
+<div class="section-title">What Support Cases Tell Us — Sub-Cause Breakdown</div>
 <div class="grid-2" style="margin-bottom:20px">
   <div class="card border-blue">
-    <div class="card-title" style="color:#1b4fa8">Sub-Cause Distribution</div>
+    <div class="card-title" style="color:#1b4fa8">Sub-Cause Distribution (Aug+Sep 2026)</div>
     <div style="height:260px;position:relative"><canvas id="tmRcatBar"></canvas></div>
   </div>
   <div class="card">
-    <div class="card-title">Signal Summary</div>
-    <div class="insight blue">
-      <strong>55% Customer Education — adoption outpacing self-serve coverage</strong>
-      <p>453 of 817 classified cases need enablement. Sep alone: 269 vs 184 in Aug. Primary volume driver — not product degradation.</p>
+    <div class="card-title">Where Engineering &amp; Self-Serve Can Make the Most Impact</div>
+    <div class="insight green">
+      <strong>55% Customer Education — volume growth is adoption, not degradation</strong>
+      <p>453 cases need enablement: Sep 269 vs Aug 184. Customers are actively using TM features and reaching support when self-serve falls short. Every KA published reduces this volume directly.</p>
     </div>
-    <div class="insight orange">
-      <strong>5% Bug Rate — 264 upgrade regression is the key cluster</strong>
-      <p>40 product bug cases. 6 are 264 RC Upgrade IR-linked (GUS W-24001055). Context definition field mapping to ASP is the dominant bug pattern.</p>
+    <div class="insight blue">
+      <strong>TTR under target — engineering quality reflected in resolution speed</strong>
+      <p>Avg 7.4d TTR in Aug+Sep — best across TM · PC · PM. A direct result of engineering's investment in clear root causes, quick triage, and well-documented workarounds.</p>
     </div>
     <div class="insight yellow">
-      <strong>4% Documentation gap (32 cases)</strong>
-      <p>Customers explicitly asking for better documentation on amendments, ramp deals, and context definitions. 45 new articles published this FY — continued investment needed.</p>
+      <strong>4% Documentation gap (32 cases) — customers asking for written guidance</strong>
+      <p>Amendments, ramp deals, context definitions. 45 TM articles published this FY — these 32 cases point to the next highest-priority topics.</p>
     </div>
-    <div class="insight green">
-      <strong>3% Error message quality (26 cases)</strong>
-      <p>26 cases where the error message itself was insufficient or misleading. Opportunity to improve error strings in TLE, assetization, and order activation flows.</p>
+    <div class="insight yellow">
+      <strong>3% Error message quality (26 cases) — small investment, high self-serve deflection</strong>
+      <p>26 cases where the error itself was unclear. Improving error strings in TLE, assetization, and order activation flows would deflect these cases without a KA.</p>
+    </div>
+    <div class="insight blue" style="border-left-color:#6e7781;background:#f6f8fa">
+      <strong>5% Product bugs (40 cases) — context noted, IR clusters resolved</strong>
+      <p>264 RC Upgrade cluster (26 cases) closed via W-24001055. Remaining 14 cases are across isolated patterns. No active incident impact.</p>
     </div>
   </div>
 </div>
 
 <!-- ── Bug & IR deep dive ── -->
-<div class="section-title">Bug-Linked Cases &amp; Incident Impact — Aug+Sep 2026</div>
+<div class="section-title">IR / Outage Reference — Aug+Sep 2026 <span style="font-size:11px;font-weight:400;color:var(--muted)">(context only — all clusters resolved)</span></div>
 <div class="grid-2" style="margin-bottom:20px">
 
   <div class="card border-blue">
-    <div class="card-title" style="color:#1b4fa8">Bug Cases by Pattern (40 total)</div>
+    <div class="card-title" style="color:#5a6e8c">Product Bug Distribution (40 cases · 5% of volume)</div>
     <div style="height:240px;position:relative"><canvas id="tmBugBar"></canvas></div>
   </div>
 
@@ -1038,13 +1041,13 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <div style="font-size:10px;color:var(--muted);margin-top:4px">90.9% no GUS filed</div>
       </div>
     </div>
-    <div class="insight orange">
-      <strong>Bug case coverage gap — 29 of 40 bug cases (72%) have no GUS link</strong>
-      <p>Of the 75 GUS-linked cases, the majority are non-bug (customer education, config). Engineers are not consistently linking GUS investigations to product bug cases. Focus area: context definition mapping, STLE behaviour, asset lifecycle.</p>
-    </div>
     <div class="insight blue">
-      <strong>GUS link rate at 9.1% is consistent with broader RCA baseline</strong>
-      <p>75 cases across Aug+Sep have a GUS work item. W-24001055 (264 regression, 6 cases) is the highest-volume single investigation.</p>
+      <strong>75 cases GUS-linked — 9.1% link rate, consistent with RCA baseline</strong>
+      <p>W-24001055 (264 regression) is the highest-volume single investigation and is now closed. The majority of GUS-linked cases are enablement and config — not open bugs.</p>
+    </div>
+    <div class="insight green">
+      <strong>Outage clusters resolved — no active incident pressure on TM</strong>
+      <p>264 RC Upgrade cluster peaked and closed. ICC-95079032 and IRC-94329705 had minimal TM exposure (4 and 2 cases respectively). Engineering's fast response kept TTR under target through both incidents.</p>
     </div>
   </div>
 </div>
@@ -1106,7 +1109,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 </div>
 
 <!-- ── Agentforce ── -->
-<div class="section-title">Agentforce Revenue Management — Case Signal</div>
+<div class="section-title">Agentforce Revenue Management — Early Adoption Signal</div>
 <div class="grid-2" style="margin-bottom:20px">
   <div class="card border-blue">
     <div class="card-title" style="color:#1b4fa8">Agentforce TM Cases — Aug+Sep 2026</div>
@@ -1128,29 +1131,29 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   </div>
   <div class="card">
     <div class="card-title">Agentforce Signal Summary</div>
-    <div class="kpi alert" style="margin-bottom:10px">
+    <div class="kpi blue" style="margin-bottom:10px">
       <div class="kpi-label">Agentforce TM Cases (Aug+Sep)</div>
       <div class="kpi-val">10</div>
-      <div class="kpi-sub">1.2% of TM Aug+Sep volume</div>
-      <div style="font-size:10px;color:var(--muted);margin-top:4px">Early-stage signal — volume expected to grow</div>
+      <div class="kpi-sub">Customers actively adopting</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px">Volume expected to grow as GA expands</div>
     </div>
-    <div class="insight orange">
-      <strong>5 of 10 are product bugs</strong>
-      <p>Field mapping to ASP (shared root cause with 264 regression), INVALID_API_INPUT on new QLIs, and bundle product handling via Agentforce Vibes are the top bug patterns.</p>
+    <div class="insight green">
+      <strong>Early adopters are live — real-world usage surfacing product signals</strong>
+      <p>10 cases in first 2 months is a positive adoption indicator. Customers are pushing Agentforce RM into active workflows, which means support cases are product-shaping signals, not failure reports.</p>
     </div>
     <div class="insight blue">
-      <strong>How-to demand mirrors broader TM enablement pattern</strong>
-      <p>2 how-to cases on renewal process and currency change. Agentforce documentation is sparse — customers are using support as the first line for procedural questions.</p>
+      <strong>Documentation is the #1 gap — customers use support as first resource</strong>
+      <p>2 how-to cases on renewal re-trigger and currency change. Agentforce RM docs are sparse — a small KA investment now will reduce support volume as adoption scales.</p>
     </div>
     <div class="insight yellow">
-      <strong>Feature gap: optional products excluded from forecast</strong>
-      <p>Specific ask to match CPQ behaviour. Relevant for product teams — customers migrating from CPQ expect parity.</p>
+      <strong>CPQ parity ask: optional products in forecast</strong>
+      <p>Customers migrating from CPQ expect optional products to appear in forecast. Direct product signal for the roadmap.</p>
     </div>
   </div>
 </div>
 
 <!-- ── Knowledge & Self-Serve ── -->
-<div class="section-title">Knowledge &amp; Self-Serve Coverage</div>
+<div class="section-title">Self-Serve Investment — Where Engineering &amp; Support Can Partner</div>
 <div class="grid-3" style="margin-bottom:20px">
   <div class="kpi good">
     <div class="kpi-label">TM Articles This FY</div>
@@ -1172,9 +1175,10 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   </div>
 </div>
 <div class="card" style="margin-bottom:20px">
-  <div class="card-title">Top Knowledge Gaps (from enablement case subjects)</div>
+  <div class="card-title">Highest-ROI Self-Serve Topics — Engineer-informed KA opportunities</div>
+  <div class="insight green" style="margin-bottom:10px"><strong>Ask for Engineering</strong> — for each topic below, a 30-min knowledge-transfer session from the engineering team to support would enable KA creation. These topics have the highest case volume and weakest self-serve coverage.</div>
   <table class="data-table">
-    <thead><tr><th>Topic Area</th><th>Representative Case Subjects</th><th class="center">Est. Cases</th><th>KA Coverage</th></tr></thead>
+    <thead><tr><th>Topic Area</th><th>What Customers Ask</th><th class="center">Cases</th><th>Coverage</th></tr></thead>
     <tbody>
       <tr><td><strong>Amendment &amp; Renewal process</strong></td><td>Cannot stamp subscription term · renewal oppty not generated · initiateCancellation errors</td><td class="center">~95</td><td><span class="pill pill-yellow">Partial</span></td></tr>
       <tr><td><strong>Context Definitions how-to</strong></td><td>Cross-context mapping setup · field mapping Order → ASP · context node limits</td><td class="center">~68</td><td><span class="pill pill-red">Gap</span></td></tr>
