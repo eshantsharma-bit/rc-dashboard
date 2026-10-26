@@ -901,16 +901,16 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
     <div style="font-size:10px;color:var(--muted);margin-top:4px">16 Aug · 24 Sep</div>
   </div>
   <div class="kpi blue">
-    <div class="kpi-label">Training Demand</div>
+    <div class="kpi-label">Customer Education</div>
     <div class="kpi-val" style="font-size:22px">453</div>
-    <div class="kpi-sub">Aug+Sep "needs training"</div>
+    <div class="kpi-sub">Aug+Sep enablement cases</div>
     <div style="font-size:10px;color:var(--muted);margin-top:4px">55% of classified cases</div>
   </div>
   <div class="kpi good">
-    <div class="kpi-label">Knowledge Articles</div>
-    <div class="kpi-val" style="font-size:22px">199</div>
-    <div class="kpi-sub">Total published</div>
-    <div style="font-size:10px;color:var(--muted);margin-top:4px">45 published this FY</div>
+    <div class="kpi-label">Knowledge Articles (TM)</div>
+    <div class="kpi-val" style="font-size:22px">45</div>
+    <div class="kpi-sub">Published this FY · TM only</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">199 total across all RCA topics</div>
   </div>
 </div>
 
@@ -928,8 +928,8 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
       <div class="rc-body">18 Sep + 2 Aug cases mention "winter", "264", or "upgrade". Accounts include Bluvium, PostNL, Quentic, Rockwell Automation. Sandbox testing surfacing gaps before GA.</div>
     </div>
     <div class="reason-card">
-      <div class="rc-title">Training & Enablement Demand (453 cases)</div>
-      <div class="rc-body">55% of Aug+Sep cases are classified "User needs instructions or training" — Aug 184, Sep 269. This is the single largest driver. Reflects growing customer adoption without sufficient self-serve answers.</div>
+      <div class="rc-title">Customer Education &amp; Enablement (453 cases)</div>
+      <div class="rc-body">55% of Aug+Sep cases classified as needing instructions or training — Aug 184, Sep 269. Single largest driver. Reflects growing customer adoption without sufficient self-serve coverage.</div>
     </div>
     <div class="reason-card">
       <div class="rc-title">Context Definition Adoption (new feature complexity)</div>
@@ -979,7 +979,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <tr><td><strong>Ramp schedule</strong></td><td>Edit Ramp Schedule button disabled on amendment · cloned segment attributes change · start/end dates not editable</td><td class="center">42</td></tr>
         <tr><td><strong>264 Upgrade (IR)</strong></td><td>Context mapping → ASP broken post-264 · Boolean field mapping regression · GUS W-24001055</td><td class="center">26</td></tr>
         <tr><td><strong>Transaction Line Editor</strong></td><td>TLE not auto-refreshing after product add · drag-drop issue · picklist changes not saving · spinner stuck</td><td class="center">~22</td></tr>
-        <tr><td><strong>How-to / Training</strong></td><td>How to lock TLE at quote stage · how to set child quantity · best practice for CSV import · clone limitations</td><td class="center">453</td></tr>
+        <tr><td><strong>How-to / Enablement</strong></td><td>How to lock TLE at quote stage · how to set child quantity · best practice for CSV import · clone limitations</td><td class="center">453</td></tr>
       </tbody>
     </table>
   </div>
@@ -995,8 +995,8 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   <div class="card">
     <div class="card-title">Signal Summary</div>
     <div class="insight blue">
-      <strong>55% Training-driven — adoption is outpacing enablement</strong>
-      <p>453 of 817 classified cases are "User needs instructions or training". Sep alone: 269 training cases vs 184 in Aug. This is the primary volume driver, not product degradation.</p>
+      <strong>55% Customer Education — adoption outpacing self-serve coverage</strong>
+      <p>453 of 817 classified cases need enablement. Sep alone: 269 vs 184 in Aug. Primary volume driver — not product degradation.</p>
     </div>
     <div class="insight orange">
       <strong>5% Bug Rate — 264 upgrade regression is the key cluster</strong>
@@ -1023,26 +1023,28 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   </div>
 
   <div class="card">
-    <div class="card-title">Active GUS Investigations — TM Aug+Sep</div>
-    <table class="data-table" style="font-size:11px">
-      <thead><tr><th>GUS Work</th><th>Subject / Pattern</th><th class="center">Cases</th><th>Status</th></tr></thead>
-      <tbody>
-        <tr><td><strong>W-24001055</strong></td><td>264 Upgrade: Context mapping → ASP regression</td><td class="center">6</td><td><span class="pill pill-green">Closed</span></td></tr>
-        <tr><td><strong>W-24103464</strong></td><td>Context node limit not resetting on renewal (Neocol)</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
-        <tr><td><strong>W-24309792</strong></td><td>OrderItemAdjustmentLineItem not created for promotions</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
-        <tr><td><strong>W-24262537</strong></td><td>Asset related list actions broken in French (CA)</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
-        <tr><td><strong>W-24193919</strong></td><td>Logitech — ongoing field propagation issue</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
-        <tr><td><strong>W-24277178</strong></td><td>STLE text overflow inconsistency</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
-        <tr><td><strong>W-24247843</strong></td><td>STLE picklist filter not working</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
-        <tr><td><strong>W-24423020</strong></td><td>Context def access from Product Classification (PostNL)</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
-        <tr><td><strong>W-23931132</strong></td><td>Cancelling child products in bundle on renewal (JFrog)</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
-        <tr><td><strong>W-23902414</strong></td><td>Quote lines get different start dates (RevCycle)</td><td class="center">1</td><td><span class="pill pill-yellow">Filed</span></td></tr>
-        <tr><td>No GUS filed</td><td>29 bug cases have no GUS investigation linked</td><td class="center">29</td><td><span class="pill pill-red">Gap</span></td></tr>
-      </tbody>
-    </table>
-    <div class="insight orange" style="margin-top:10px">
-      <strong>29 of 40 bug cases (72%) have no GUS link — action needed</strong>
-      <p>Engineers are not consistently filing or linking GUS investigations to bug cases. Pattern focus: context definition mapping, STLE behaviour, asset lifecycle.</p>
+    <div class="card-title">GUS Link Coverage — TM Aug+Sep</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="kpi good">
+        <div class="kpi-label">Cases with GUS Link</div>
+        <div class="kpi-val">75</div>
+        <div class="kpi-sub">of 823 TM cases</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px">9.1% GUS link rate</div>
+      </div>
+      <div class="kpi alert">
+        <div class="kpi-label">Cases without GUS Link</div>
+        <div class="kpi-val">748</div>
+        <div class="kpi-sub">of 823 TM cases</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px">90.9% no GUS filed</div>
+      </div>
+    </div>
+    <div class="insight orange">
+      <strong>Bug case coverage gap — 29 of 40 bug cases (72%) have no GUS link</strong>
+      <p>Of the 75 GUS-linked cases, the majority are non-bug (customer education, config). Engineers are not consistently linking GUS investigations to product bug cases. Focus area: context definition mapping, STLE behaviour, asset lifecycle.</p>
+    </div>
+    <div class="insight blue">
+      <strong>GUS link rate at 9.1% is consistent with broader RCA baseline</strong>
+      <p>75 cases across Aug+Sep have a GUS work item. W-24001055 (264 regression, 6 cases) is the highest-volume single investigation.</p>
     </div>
   </div>
 </div>
@@ -1137,7 +1139,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
       <p>Field mapping to ASP (shared root cause with 264 regression), INVALID_API_INPUT on new QLIs, and bundle product handling via Agentforce Vibes are the top bug patterns.</p>
     </div>
     <div class="insight blue">
-      <strong>How-to demand mirrors broader TM training pattern</strong>
+      <strong>How-to demand mirrors broader TM enablement pattern</strong>
       <p>2 how-to cases on renewal process and currency change. Agentforce documentation is sparse — customers are using support as the first line for procedural questions.</p>
     </div>
     <div class="insight yellow">
@@ -1150,26 +1152,27 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <!-- ── Knowledge & Self-Serve ── -->
 <div class="section-title">Knowledge &amp; Self-Serve Coverage</div>
 <div class="grid-3" style="margin-bottom:20px">
-  <div class="kpi blue">
-    <div class="kpi-label">Total KAs Published</div>
-    <div class="kpi-val">199</div>
-    <div class="kpi-sub">Transaction Management · All time</div>
-  </div>
   <div class="kpi good">
-    <div class="kpi-label">Published This FY</div>
+    <div class="kpi-label">TM Articles This FY</div>
     <div class="kpi-val">45</div>
-    <div class="kpi-sub">FY27 (Aug 2025 – Sep 2026)</div>
+    <div class="kpi-sub">FY27 · TM-specific articles</div>
     <div style="font-size:10px;color:var(--muted);margin-top:4px">~4 articles/month</div>
   </div>
+  <div class="kpi blue">
+    <div class="kpi-label">Total RCA Articles This FY</div>
+    <div class="kpi-val">199</div>
+    <div class="kpi-sub">All RCA topics · FY27</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:4px">TM = 23% of total</div>
+  </div>
   <div class="kpi warn">
-    <div class="kpi-label">Training Cases vs KA Coverage</div>
+    <div class="kpi-label">Enablement Cases</div>
     <div class="kpi-val">453</div>
-    <div class="kpi-sub">Aug+Sep training cases</div>
+    <div class="kpi-sub">Aug+Sep customer education</div>
     <div style="font-size:10px;color:var(--muted);margin-top:4px">Top unresolved gaps below</div>
   </div>
 </div>
 <div class="card" style="margin-bottom:20px">
-  <div class="card-title">Top Knowledge Gaps (from training case subjects)</div>
+  <div class="card-title">Top Knowledge Gaps (from enablement case subjects)</div>
   <table class="data-table">
     <thead><tr><th>Topic Area</th><th>Representative Case Subjects</th><th class="center">Est. Cases</th><th>KA Coverage</th></tr></thead>
     <tbody>
@@ -1594,7 +1597,7 @@ new Chart(document.getElementById('tmRcatBar'), {
   type: 'bar',
   plugins: [ChartDataLabels],
   data: {
-    labels: ['Training','Bug','Docs','Error Msg','Feature Limit','Feature Req','Incident'],
+    labels: ['Customer Education','Bug','Docs','Error Msg','Feature Limit','Feature Req','Incident'],
     datasets: [{
       label: 'Cases',
       data: [453, 40, 32, 26, 17, 16, 13],
