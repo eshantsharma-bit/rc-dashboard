@@ -1007,11 +1007,19 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
     </div>
     <div class="insight yellow">
       <strong>3% Error message quality (26 cases) — small investment, high self-serve deflection</strong>
-      <p>26 cases where the error itself was unclear. Improving error strings in TLE, assetization, and order activation flows would deflect these cases without a KA.</p>
+      <p>26 cases where the error itself was the blocker. Clustered into 5 patterns — each fixable with a better error string or a KA pointing to the cause:</p>
+      <ul style="margin:8px 0 0 16px;font-size:11px;line-height:1.9;color:var(--text)">
+        <li><strong>Generic / opaque exceptions (8)</strong> — "UNKNOWN_EXCEPTION", "We couldn't process the amendment request", "500 error adding products" — customer has no next step. Adding cause + remediation to the exception message would deflect directly.</li>
+        <li><strong>Silent asset failures (3)</strong> — "Asset not generating after Order activation", "Original Asset not updated", "Asset Actions/Sources not created" — no error shown at all; failure discovered downstream. A visible post-activation status message would surface this earlier.</li>
+        <li><strong>Timezone mismatch (3)</strong> — "EndTime/StartTime errors", "Timezone mismatch between Amended Order Item and Source Asset" — error fires but gives no remediation. Adding "check org timezone vs. asset start date" to the message would make it self-serve.</li>
+        <li><strong>Amendment state confusion (4)</strong> — "New product on Amendment locked for editing", "Negative values on amendment with no quantity change" — error implies a bug but is actually a state constraint. Clearer message + doc link would resolve.</li>
+        <li><strong>"Already renewed / already processed" (3)</strong> — terminal errors with no next-step guidance. A link to the existing asset/renewal record in the error would let customers self-resolve.</li>
+        <li><strong>Context definition reference failures (3)</strong> — "SalesTransactionToAssetMapping not available", "ExtSalesTransactionContext not fetched" — highly technical, no customer action. A plain-language description of what to check first would cut escalation time.</li>
+      </ul>
     </div>
     <div class="insight blue" style="border-left-color:#6e7781;background:#f6f8fa">
-      <strong>5% Product bugs (40 cases) — context noted, IR clusters resolved</strong>
-      <p>264 RC Upgrade cluster (26 cases) closed via W-24001055. Remaining 14 cases are across isolated patterns. No active incident impact.</p>
+      <strong>9% Cases with bug attached (74 cases) — IR clusters resolved, no active pressure</strong>
+      <p>264 RC Upgrade cluster (26 cases) closed via W-24001055. Remaining 48 cases are distributed across isolated patterns. No active incident impact on TM.</p>
     </div>
   </div>
 </div>
