@@ -1002,10 +1002,19 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 
 <!-- ── 3. Volume Story ── -->
 <div class="section-title">Volume Growth — Jan to Sep 2026</div>
-<div class="grid-2" style="margin-bottom:20px">
+<div style="display:grid;grid-template-columns:1fr auto 1fr;gap:16px;margin-bottom:20px">
   <div class="card border-blue">
     <div class="card-title" style="color:#1b4fa8">Monthly Inflow — Transaction Management</div>
     <div style="height:240px;position:relative"><canvas id="tmMonthlyBar"></canvas></div>
+  </div>
+  <div class="card" style="min-width:220px;max-width:240px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+    <div class="card-title" style="color:#1b4fa8;text-align:center">TM Share of RC Core<br><span style="font-size:10px;font-weight:400;color:var(--muted)">Aug+Sep 2026 · TM vs PC vs PM</span></div>
+    <div style="height:180px;width:180px;position:relative"><canvas id="tmShareDoughnut"></canvas></div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted);text-align:center;line-height:1.7">
+      <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1b4fa8;margin-right:4px"></span>TM 38.8% · 823<br>
+      <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:rgba(188,76,0,.75);margin-right:4px"></span>PC 36.2% · 769<br>
+      <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:rgba(45,138,78,.75);margin-right:4px"></span>PM 25.0% · 530
+    </div>
   </div>
   <div class="card">
     <div class="card-title">What is Driving Volume?</div>
@@ -1564,6 +1573,35 @@ new Chart(document.getElementById('tmTTRDeepDive'), {
     scales: {
       x: { ticks: { color: COLORS.muted, font: { size: 11 } }, grid: { display: false } },
       y: { min: 6, max: 11, ticks: { color: COLORS.muted, font: { size: 10 }, callback: v => v + 'd' }, grid: { color: COLORS.grid } }
+    }
+  }
+});
+
+new Chart(document.getElementById('tmShareDoughnut'), {
+  type: 'doughnut',
+  plugins: [ChartDataLabels],
+  data: {
+    labels: ['TM', 'PC', 'PM'],
+    datasets: [{
+      data: [823, 769, 530],
+      backgroundColor: ['rgba(27,79,168,.85)', 'rgba(188,76,0,.75)', 'rgba(45,138,78,.75)'],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '62%',
+    plugins: {
+      legend: { display: false },
+      datalabels: {
+        color: '#fff',
+        font: { weight: 'bold', size: 11 },
+        formatter: (v, ctx) => {
+          const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+          return (v / total * 100).toFixed(1) + '%';
+        }
+      }
     }
   }
 });
