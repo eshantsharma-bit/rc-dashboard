@@ -1018,7 +1018,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
       <div class="rc-body">18 Sep + 2 Aug cases mention "winter", "264", or "upgrade". Accounts include Bluvium, PostNL, Quentic, Rockwell Automation. Sandbox testing surfacing how-to gaps before GA — an opportunity for proactive enablement.</div>
     </div>
     <div class="reason-card" style="border-left-color:#1b4fa8">
-      <div class="rc-title" style="color:#1b4fa8">Context Definitions — new feature, growing adoption</div>
+      <div class="rc-title" style="color:#1b4fa8">Context Definitions — growing adoption</div>
       <div class="rc-body">68 cases (8.2% of volume) are Context Definition / field mapping questions. Customers are actively implementing this feature — documentation coverage is the gap, not the feature itself.</div>
     </div>
   </div>
@@ -1044,22 +1044,6 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
     <div class="pattern-bar"><div class="bar-label">264 RC Upgrade (IR__c exact)</div><div class="bar-track"><div class="bar-fill-tm" style="width:25%"></div></div><div class="bar-count">24 · 2.9%</div></div>
   </div>
 
-  <!-- Issue detail cards -->
-  <div class="card">
-    <div class="card-title">Common Customer Questions — Signals for Engineering &amp; Self-Serve</div>
-    <table class="data-table" style="font-size:11px">
-      <thead><tr><th>What Customers Ask</th><th>Common Error / Question</th><th class="center">Cases</th><th>Self-Serve / Eng Opportunity</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Amendment &amp; Renewal</strong></td><td>PST transaction failed · initiateCancellation error · Renewal Oppty not generated</td><td class="center">96</td><td><span class="pill pill-yellow">KA gap — partial coverage</span></td></tr>
-        <tr><td><strong>Asset creation / ASP</strong></td><td>Fields not mapping Order → ASP · ASP missing after activation · custom field not propagating</td><td class="center">72</td><td><span class="pill pill-yellow">Error message clarity opportunity</span></td></tr>
-        <tr><td><strong>Context Definitions</strong></td><td>Cross-context mapping setup · field not copying to renewal · context node limit</td><td class="center">68</td><td><span class="pill pill-red">KA gap — no article exists</span></td></tr>
-        <tr><td><strong>Order creation</strong></td><td>Order activation not creating Assets · INVALID_API_INPUT · Order stuck in processing</td><td class="center">52</td><td><span class="pill pill-yellow">Error message clarity opportunity</span></td></tr>
-        <tr><td><strong>Ramp schedule</strong></td><td>Edit Ramp Schedule button disabled · start/end dates not editable on amendment</td><td class="center">42</td><td><span class="pill pill-yellow">KA gap — partial coverage</span></td></tr>
-        <tr><td><strong>Transaction Line Editor</strong></td><td>TLE not refreshing after add · picklist changes not saving · spinner stuck</td><td class="center">~22</td><td><span class="pill pill-yellow">UX / error message opportunity</span></td></tr>
-        <tr><td><strong>How-to &amp; Enablement</strong></td><td>Lock TLE at quote stage · set child quantity · CSV import · clone limitations</td><td class="center">453</td><td><span class="pill pill-red">Highest self-serve ROI</span></td></tr>
-      </tbody>
-    </table>
-  </div>
 </div>
 
 <!-- ── RCAT breakdown ── -->
@@ -1070,18 +1054,18 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
     <div style="height:260px;position:relative"><canvas id="tmRcatBar"></canvas></div>
   </div>
   <div class="card">
-    <div class="card-title">Where Engineering &amp; Self-Serve Can Make the Most Impact</div>
+    <div class="card-title">Support Cases Insights</div>
     <div class="insight green">
       <strong>55% Customer Education — volume growth is adoption, not degradation</strong>
-      <p>453 cases need enablement: Sep 269 vs Aug 184. Customers are actively using TM features and reaching support when self-serve falls short. Every KA published reduces this volume directly.</p>
+      <p>453 cases: Sep 269 vs Aug 184. Customers are actively using TM features.</p>
     </div>
     <div class="insight blue">
-      <strong>TTR under target — engineering quality reflected in resolution speed</strong>
-      <p>Avg 7.4d TTR in Aug+Sep — best across TM · PC · PM. A direct result of engineering's investment in clear root causes, quick triage, and well-documented workarounds.</p>
+      <strong>TTR under target — best across TM · PC · PM</strong>
+      <p>Avg 7.4d TTR in Aug+Sep — 2d below the 10d target.</p>
     </div>
     <div class="insight yellow">
       <strong>4% Documentation gap (32 cases) — customers asking for written guidance</strong>
-      <p>Amendments, ramp deals, context definitions. 45 TM articles published this FY — these 32 cases point to the next highest-priority topics.</p>
+      <p>Amendments, ramp deals, context definitions. 45 TM articles published this FY.</p>
     </div>
     <div class="insight yellow">
       <strong>3% Error message quality (26 cases) — small investment, high self-serve deflection</strong>
@@ -1104,8 +1088,8 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 
 
 <!-- ── Knowledge & Self-Serve ── -->
-<div class="section-title">Self-Serve Investment — Where Engineering &amp; Support Can Partner</div>
-<div class="grid-3" style="margin-bottom:20px">
+<div class="section-title">Knowledge Articles</div>
+<div class="grid-2" style="margin-bottom:20px;max-width:600px">
   <div class="kpi good">
     <div class="kpi-label">TM Articles This FY</div>
     <div class="kpi-val">45</div>
@@ -1118,25 +1102,6 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
     <div class="kpi-sub">All RCA topics · FY27</div>
     <div style="font-size:10px;color:var(--muted);margin-top:4px">TM = 23% of total</div>
   </div>
-  <div class="kpi warn">
-    <div class="kpi-label">Enablement Cases</div>
-    <div class="kpi-val">453</div>
-    <div class="kpi-sub">Aug+Sep customer education</div>
-    <div style="font-size:10px;color:var(--muted);margin-top:4px">Top unresolved gaps below</div>
-  </div>
-</div>
-<div class="card" style="margin-bottom:20px">
-  <div class="card-title">Highest-ROI Self-Serve Topics — Engineer-informed KA opportunities</div>
-  <div class="insight green" style="margin-bottom:10px"><strong>Ask for Engineering</strong> — for each topic below, a 30-min knowledge-transfer session from the engineering team to support would enable KA creation. These topics have the highest case volume and weakest self-serve coverage.</div>
-  <table class="data-table">
-    <thead><tr><th>Topic Area</th><th>What Customers Ask</th><th class="center">Cases</th><th>Coverage</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Amendment &amp; Renewal process</strong></td><td>Cannot stamp subscription term · renewal oppty not generated · initiateCancellation errors</td><td class="center">~95</td><td><span class="pill pill-yellow">Partial</span></td></tr>
-      <tr><td><strong>Context Definitions how-to</strong></td><td>Cross-context mapping setup · field mapping Order → ASP · context node limits</td><td class="center">~68</td><td><span class="pill pill-red">Gap</span></td></tr>
-      <tr><td><strong>Ramp deals configuration</strong></td><td>Edit Ramp Schedule disabled · ramp groups setup · start/end date not editable</td><td class="center">~42</td><td><span class="pill pill-yellow">Partial</span></td></tr>
-      <tr><td><strong>Transaction Line Editor</strong></td><td>TLE not auto-refreshing · picklist changes not saving · drag-drop · spinner stuck</td><td class="center">~35</td><td><span class="pill pill-yellow">Partial</span></td></tr>
-    </tbody>
-  </table>
 </div>
 
 <!-- ── Top Accounts ── -->
