@@ -884,6 +884,88 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   <p>This analysis is built on the partnership between Support and Engineering — from upgrade response collaboration to case triage and self-serve investment. The signals below are shared as a resource for the product and engineering team to strengthen self-serve coverage and prioritise what customers need most.</p>
 </div>
 
+<!-- ── Key Metrics & Trends Jun–Sep ── -->
+<div class="section-title" style="margin-top:0">Key Metrics &amp; Trends — Jun–Sep 2026</div>
+<div class="grid-2" style="margin-bottom:20px">
+
+  <div class="card border-blue">
+    <div class="card-title" style="color:#1b4fa8">Transaction Management — KPI Summary</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>KPI</th>
+          <th class="center">Jun'26</th>
+          <th class="center">Jul'26</th>
+          <th class="center" style="background:rgba(88,166,255,.07)">Aug'26</th>
+          <th class="center" style="background:rgba(88,166,255,.07)">Sep'26</th>
+          <th class="center">Aug→Sep Δ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Inflow</strong></td>
+          <td class="center">341</td><td class="center">310</td>
+          <td class="center" style="background:rgba(88,166,255,.07)"><strong>352</strong></td>
+          <td class="center" style="background:rgba(88,166,255,.07)"><strong>471</strong></td>
+          <td class="center"><span class="pill pill-red">+119 ↑34%</span></td>
+        </tr>
+        <tr>
+          <td><strong>TTR (days)</strong></td>
+          <td class="center" style="color:#1a7f37">8.0</td>
+          <td class="center" style="color:#9a6700">8.9</td>
+          <td class="center" style="background:rgba(88,166,255,.07);color:#1a7f37"><strong>7.5</strong></td>
+          <td class="center" style="background:rgba(88,166,255,.07);color:#1a7f37"><strong>8.0</strong></td>
+          <td class="center"><span class="pill pill-yellow">+0.5</span></td>
+        </tr>
+        <tr>
+          <td><strong>GUS-linked Cases</strong></td>
+          <td class="center">28</td><td class="center">29</td>
+          <td class="center" style="background:rgba(88,166,255,.07)"><strong>27</strong></td>
+          <td class="center" style="background:rgba(88,166,255,.07)"><strong>48</strong></td>
+          <td class="center"><span class="pill pill-green">+21 ↑78%</span></td>
+        </tr>
+        <tr>
+          <td><strong>GUS%</strong></td>
+          <td class="center">8.2%</td><td class="center">9.4%</td>
+          <td class="center" style="background:rgba(88,166,255,.07)"><strong>7.7%</strong></td>
+          <td class="center" style="background:rgba(88,166,255,.07)"><strong>10.2%</strong></td>
+          <td class="center"><span class="pill pill-green">+2.5pp</span></td>
+        </tr>
+        <tr>
+          <td><strong>Cases with Bug Attached</strong></td>
+          <td class="center">20</td><td class="center">21</td>
+          <td class="center" style="background:rgba(88,166,255,.07)"><strong>20</strong></td>
+          <td class="center" style="background:rgba(88,166,255,.07)"><strong>54</strong></td>
+          <td class="center"><span class="pill pill-red">+34 ↑170%</span></td>
+        </tr>
+        <tr>
+          <td><strong>Bug%</strong></td>
+          <td class="center">5.9%</td><td class="center">6.8%</td>
+          <td class="center" style="background:rgba(88,166,255,.07)"><strong>5.7%</strong></td>
+          <td class="center" style="background:rgba(88,166,255,.07)"><strong>11.5%</strong></td>
+          <td class="center"><span class="pill pill-red">+5.8pp</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card border-blue">
+    <div class="card-title" style="color:#1b4fa8">TTR Trend — Jun to Sep 2026 (days)</div>
+    <div style="height:200px;position:relative"><canvas id="tmTTRDeepDive"></canvas></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <span class="pill pill-green">8.0d Jun</span>
+      <span class="pill pill-yellow">8.9d Jul</span>
+      <span class="pill pill-green">7.5d Aug</span>
+      <span class="pill pill-green">8.0d Sep</span>
+    </div>
+    <div class="insight green" style="margin-top:10px">
+      <strong>TTR stable &amp; below target across all 4 months</strong>
+      <p>Jul peak (8.9d) coincided with post-264 upgrade cases. Aug–Sep settled at 7.5–8.0d — 2d under the 10d target. Best TTR performance across TM, PC, and PM.</p>
+    </div>
+  </div>
+
+</div>
+
 <!-- ── KPI tiles ── -->
 <div class="tm-kpi-row" style="margin-bottom:20px">
   <div class="kpi blue">
@@ -940,7 +1022,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
       <div class="rc-body">68 cases (8.2% of volume) are Context Definition / field mapping questions. Customers are actively implementing this feature — documentation coverage is the gap, not the feature itself.</div>
     </div>
     <div class="reason-card" style="border-left-color:#bc4c00">
-      <div class="rc-title" style="color:#bc4c00">264 RC Upgrade — 26 cases, W-24001055 Closed</div>
+      <div class="rc-title" style="color:#bc4c00">264 RC Upgrade — 24 cases (IR__c-linked), W-24001055 Closed</div>
       <div class="rc-body">Field mapping regression to ASP post-264. Engineering resolved quickly (GUS W-24001055 closed). Cluster peaked and receded — no ongoing impact.</div>
     </div>
   </div>
@@ -963,7 +1045,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
     <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 8px">Configuration &amp; Setup</div>
     <div class="pattern-bar"><div class="bar-label">Context Definitions / Field Mapping</div><div class="bar-track"><div class="bar-fill-tm" style="width:67%"></div></div><div class="bar-count">68 · 8.2%</div></div>
     <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 8px">Release Impact</div>
-    <div class="pattern-bar"><div class="bar-label">264 RC Upgrade (IR__c exact)</div><div class="bar-track"><div class="bar-fill-tm" style="width:27%"></div></div><div class="bar-count">26 · 3.2%</div></div>
+    <div class="pattern-bar"><div class="bar-label">264 RC Upgrade (IR__c exact)</div><div class="bar-track"><div class="bar-fill-tm" style="width:25%"></div></div><div class="bar-count">24 · 2.9%</div></div>
   </div>
 
   <!-- Issue detail cards -->
@@ -1019,7 +1101,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
     </div>
     <div class="insight blue" style="border-left-color:#6e7781;background:#f6f8fa">
       <strong>9% Cases with bug attached (74 cases) — IR clusters resolved, no active pressure</strong>
-      <p>264 RC Upgrade cluster (26 cases) closed via W-24001055. Remaining 48 cases are distributed across isolated patterns. No active incident impact on TM.</p>
+      <p>264 RC Upgrade cluster (24 cases, IR__c-linked) closed via W-24001055. ICC-95079032 contributed 3 TM cases. Remaining 47 cases are across isolated patterns with no IR linkage. No active incident impact on TM.</p>
     </div>
   </div>
 </div>
@@ -1069,7 +1151,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <div style="font-size:14px;font-weight:700;color:#bc4c00">264 RC Upgrade</div>
         <div style="font-size:11px;color:var(--muted)">IR__c = '264 RC Upgrade' · Sep peak</div>
       </div>
-      <span class="pill pill-red">26 cases</span>
+      <span class="pill pill-red">24 cases</span>
     </div>
     <div class="insight orange"><strong>Context mapping to ASP broken post-264</strong></div>
     <table class="data-table" style="font-size:11px;margin-top:8px">
@@ -1672,6 +1754,39 @@ new Chart(document.getElementById('tmBugBar'), {
     scales: {
       x: { beginAtZero: true, max: 28, ticks: { color: COLORS.muted, font: { size: 10 } }, grid: { color: COLORS.grid } },
       y: { ticks: { color: COLORS.text, font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// TM deep-dive TTR trend
+new Chart(document.getElementById('tmTTRDeepDive'), {
+  type: 'line',
+  plugins: [ChartDataLabels],
+  data: {
+    labels: ["Jun'26","Jul'26","Aug'26","Sep'26"],
+    datasets: [{
+      data: [8.0, 8.9, 7.5, 8.0],
+      borderColor: '#1b4fa8',
+      backgroundColor: 'rgba(27,79,168,.1)',
+      tension: .3, pointRadius: 6, pointBackgroundColor: '#1b4fa8',
+      borderWidth: 2, fill: true
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    layout: { padding: { top: 24 } },
+    plugins: {
+      legend: { display: false },
+      datalabels: {
+        anchor: 'end', align: 'top', offset: 4,
+        font: { weight: 'bold', size: 12 },
+        color: '#1b4fa8',
+        formatter: v => v + 'd'
+      }
+    },
+    scales: {
+      x: { ticks: { color: COLORS.muted, font: { size: 11 } }, grid: { display: false } },
+      y: { min: 6, max: 11, ticks: { color: COLORS.muted, font: { size: 10 }, callback: v => v + 'd' }, grid: { color: COLORS.grid } }
     }
   }
 });
