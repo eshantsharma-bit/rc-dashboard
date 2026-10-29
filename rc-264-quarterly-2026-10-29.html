@@ -277,6 +277,23 @@ footer{margin-top:24px;font-size:10px;color:var(--muted);text-align:center;paddi
   </table>
 </div>
 
+<!-- ── CASES WITH BUG# BY P&T TOPIC ── -->
+<div class="card" style="margin-top:16px">
+  <div class="card-title">Cases with Bug# by P&amp;T Topic — Q2 vs Q3 FY27</div>
+  <div style="font-size:10px;color:var(--muted);margin-bottom:10px">Bar width proportional to volume within quarter. Topics sorted by Q3 volume. Source: GUS_Investigation__c linked cases.</div>
+  <table class="pt-table" id="bugPtTable">
+    <thead>
+      <tr>
+        <th style="width:260px">P&amp;T Topic</th>
+        <th class="th-q2" style="width:200px">Q2 · 262 (May–Jul)</th>
+        <th class="th-q3" style="width:200px">Q3 · 264 (Aug–Oct)</th>
+        <th>Change</th>
+      </tr>
+    </thead>
+    <tbody id="bugPtRows"></tbody>
+  </table>
+</div>
+
 <!-- ── SEV1 BREAKDOWN ── -->
 <div class="two-col" style="margin-top:16px">
 
@@ -451,6 +468,45 @@ new Chart(document.getElementById('sev1Chart').getContext('2d'),{
         suggestedMin:8,suggestedMax:14}
     }
   }
+});
+
+// ── BUG# P&T TABLE ──
+const BUG_PT_DATA=[
+  // [label, q2, q3]  sorted by Q3 desc
+  ['Product Configurator',              134, 166],
+  ['Transaction Management',             91,  96],
+  ['Price Management',                   46,  52],
+  ['Dynamic Revenue Orchestration',      25,  27],
+  ['Billing & Invoicing',                21,  26],
+  ['Product Catalog Management',         19,  22],
+  ['Dev Support — P2O',                  11,  18],
+  ['Advanced Approvals',                  6,  10],
+  ['Usage & Ratings',                    13,   9],
+  ['Contract Lifecycle Mgmt',            19,  12],
+  ['Business Rules Engine',               4,   2],
+  ['Document Generation',                 0,   2],
+  ['Revenue Cloud Analytics',             2,   1],
+  ['Salesforce Contracts',                8,   2],
+  ['Sub Management',                      0,   6],
+  ['OmniStudio',                          0,   1],
+];
+const maxBugQ2=Math.max(...BUG_PT_DATA.map(r=>r[1]));
+const maxBugQ3=Math.max(...BUG_PT_DATA.map(r=>r[2]));
+const bugTbody=document.getElementById('bugPtRows');
+BUG_PT_DATA.forEach(([label,q2,q3])=>{
+  const tr=document.createElement('tr');
+  const w2=q2>0?Math.max(4,Math.round((q2/maxBugQ2)*130)):0;
+  const w3=q3>0?Math.max(4,Math.round((q3/maxBugQ3)*130)):0;
+  const diff=q3-q2;
+  const diffStr=diff>0?`<span class="badge badge-red">+${diff}</span>`
+               :diff<0?`<span class="badge badge-green">${diff}</span>`
+               :`<span class="badge badge-blue">0</span>`;
+  tr.innerHTML=`
+    <td style="font-size:11px">${label}</td>
+    <td><div class="bar-cell">${q2>0?`<div class="bar" style="width:${w2}px;background:${Q2_COL};opacity:.75"></div><span style="font-size:11px;font-weight:700;color:${Q2_COL}">${q2}</span>`:'<span style="color:var(--muted);font-size:11px">—</span>'}</div></td>
+    <td><div class="bar-cell">${q3>0?`<div class="bar" style="width:${w3}px;background:${Q3_COL};opacity:.75"></div><span style="font-size:11px;font-weight:700;color:${Q3_COL}">${q3}</span>`:'<span style="color:var(--muted);font-size:11px">—</span>'}</div></td>
+    <td>${q2>0||q3>0?diffStr:'<span class="v-muted">—</span>'}</td>`;
+  bugTbody.appendChild(tr);
 });
 
 // ── P&T TABLE ──
