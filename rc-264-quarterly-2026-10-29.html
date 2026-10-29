@@ -377,28 +377,40 @@ new Chart(document.getElementById('inflowChart').getContext('2d'),{
 new Chart(document.getElementById('upgradeChart').getContext('2d'),{
   type:'bar',
   data:{
-    labels:["Q2 · 262\nMay–Jul","Q3 · 264\nAug–Oct"],
+    labels:['Q2 · 262\n(May–Jul)','Q3 · 264\n(Aug–Oct)'],
     datasets:[
       {label:'Total Inflow',data:[4552,4738],
-       backgroundColor:[hexRgba(Q2_COL,.3),hexRgba(Q3_COL,.3)],
+       yAxisID:'yInflow',
+       backgroundColor:[hexRgba(Q2_COL,.25),hexRgba(Q3_COL,.25)],
        borderColor:[Q2_COL,Q3_COL],borderWidth:1.5,borderRadius:3,
        datalabels:{anchor:'end',align:'end',font:{size:10,weight:'700'},
-         color:(_,ctx)=>ctx.dataIndex===0?Q2_COL:Q3_COL,formatter:v=>v.toLocaleString()}},
+         color:(v,ctx)=>ctx.dataIndex===0?Q2_COL:Q3_COL,
+         formatter:v=>v.toLocaleString()}},
       {label:'Upgrade Cases',data:[16,77],
-       backgroundColor:[hexRgba(Q2_COL,.8),hexRgba(Q3_COL,.8)],
+       yAxisID:'yUpgrade',
+       backgroundColor:[hexRgba(Q2_COL,.85),hexRgba(Q3_COL,.85)],
        borderColor:[Q2_COL,Q3_COL],borderWidth:1.5,borderRadius:3,
-       datalabels:{anchor:'end',align:'end',font:{size:10,weight:'700'},
-         color:(_,ctx)=>ctx.dataIndex===0?Q2_COL:Q3_COL,formatter:v=>v}}
+       datalabels:{anchor:'end',align:'end',font:{size:11,weight:'800'},
+         color:(v,ctx)=>ctx.dataIndex===0?Q2_COL:Q3_COL,
+         formatter:v=>v}}
     ]
   },
   options:{
     responsive:true,maintainAspectRatio:false,
     layout:{padding:{top:30,right:10,bottom:4,left:4}},
-    plugins:{legend:{display:false},datalabels:{display:true},
-      tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': '+ctx.parsed.y.toLocaleString()}}},
+    plugins:{
+      legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:12,padding:12}},
+      datalabels:{display:true},
+      tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': '+ctx.parsed.y.toLocaleString()}}
+    },
     scales:{
       x:{grid:{color:gc},ticks:{color:tc,font:{size:11}}},
-      y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},suggestedMin:0}
+      yInflow:{position:'left',grid:{color:gc},ticks:{color:tc,font:{size:10}},
+        title:{display:true,text:'Total Inflow',font:{size:9},color:tc},
+        suggestedMin:0,suggestedMax:5500},
+      yUpgrade:{position:'right',grid:{display:false},ticks:{color:'#8250df',font:{size:10}},
+        title:{display:true,text:'Upgrade Cases',font:{size:9},color:'#8250df'},
+        suggestedMin:0,suggestedMax:100}
     }
   }
 });
