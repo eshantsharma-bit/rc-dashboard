@@ -401,14 +401,14 @@ new Chart(document.getElementById('upgradeChart').getContext('2d'),{
        backgroundColor:[hexRgba(Q2_COL,.25),hexRgba(Q3_COL,.25)],
        borderColor:[Q2_COL,Q3_COL],borderWidth:1.5,borderRadius:3,
        datalabels:{anchor:'end',align:'end',font:{size:10,weight:'700'},
-         color:(v,ctx)=>ctx.dataIndex===0?Q2_COL:Q3_COL,
+         color:ctx=>ctx.dataIndex===0?Q2_COL:Q3_COL,
          formatter:v=>v.toLocaleString()}},
       {label:'Upgrade Cases',data:[16,77],
        yAxisID:'yUpgrade',
        backgroundColor:[hexRgba(Q2_COL,.85),hexRgba(Q3_COL,.85)],
        borderColor:[Q2_COL,Q3_COL],borderWidth:1.5,borderRadius:3,
        datalabels:{anchor:'end',align:'end',font:{size:11,weight:'800'},
-         color:(v,ctx)=>ctx.dataIndex===0?Q2_COL:Q3_COL,
+         color:ctx=>ctx.dataIndex===0?Q2_COL:Q3_COL,
          formatter:v=>v}}
     ]
   },
