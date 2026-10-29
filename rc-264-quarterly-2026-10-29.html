@@ -260,38 +260,41 @@ footer{margin-top:24px;font-size:10px;color:var(--muted);text-align:center;paddi
 
 </div>
 
-<!-- ── P&T BREAKDOWN ── -->
-<div class="card" style="margin-top:16px">
-  <div class="card-title">RCA Inflow by P&amp;T Topic — Q2 vs Q3 FY27</div>
-  <div style="font-size:10px;color:var(--muted);margin-bottom:10px">Bar width proportional to volume within quarter. Topics sorted by Q3 volume.</div>
-  <table class="pt-table" id="ptTable">
-    <thead>
-      <tr>
-        <th style="width:260px">P&amp;T Topic</th>
-        <th class="th-q2" style="width:180px">Q2 · 262 (May–Jul)</th>
-        <th class="th-q3" style="width:180px">Q3 · 264 (Aug–Oct)</th>
-        <th>Change</th>
-      </tr>
-    </thead>
-    <tbody id="ptRows"></tbody>
-  </table>
-</div>
+<!-- ── P&T SIDE-BY-SIDE ── -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
 
-<!-- ── CASES WITH BUG# BY P&T TOPIC ── -->
-<div class="card" style="margin-top:16px">
-  <div class="card-title">Cases with Bug# by P&amp;T Topic — Q2 vs Q3 FY27</div>
-  <div style="font-size:10px;color:var(--muted);margin-bottom:10px">Bar width proportional to volume within quarter. Topics sorted by Q3 volume. Source: GUS_Investigation__c linked cases.</div>
-  <table class="pt-table" id="bugPtTable">
-    <thead>
-      <tr>
-        <th style="width:260px">P&amp;T Topic</th>
-        <th class="th-q2" style="width:200px">Q2 · 262 (May–Jul)</th>
-        <th class="th-q3" style="width:200px">Q3 · 264 (Aug–Oct)</th>
-        <th>Change</th>
-      </tr>
-    </thead>
-    <tbody id="bugPtRows"></tbody>
-  </table>
+  <div class="card" style="margin-bottom:0">
+    <div class="card-title">RCA Inflow by P&amp;T Topic — Q2 vs Q3 FY27</div>
+    <div style="font-size:10px;color:var(--muted);margin-bottom:10px">Bar width proportional to volume within quarter. Sorted by Q3 volume.</div>
+    <table class="pt-table" id="ptTable">
+      <thead>
+        <tr>
+          <th style="width:160px">P&amp;T Topic</th>
+          <th class="th-q2">Q2 · 262</th>
+          <th class="th-q3">Q3 · 264</th>
+          <th>Δ</th>
+        </tr>
+      </thead>
+      <tbody id="ptRows"></tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-bottom:0">
+    <div class="card-title">Cases with Bug# by P&amp;T Topic — Q2 vs Q3 FY27</div>
+    <div style="font-size:10px;color:var(--muted);margin-bottom:10px">Bar width proportional to volume within quarter. Sorted by Q3 volume. Source: Bug__c field.</div>
+    <table class="pt-table" id="bugPtTable">
+      <thead>
+        <tr>
+          <th style="width:160px">P&amp;T Topic</th>
+          <th class="th-q2">Q2 · 262</th>
+          <th class="th-q3">Q3 · 264</th>
+          <th>Δ</th>
+        </tr>
+      </thead>
+      <tbody id="bugPtRows"></tbody>
+    </table>
+  </div>
+
 </div>
 
 <!-- ── SEV1 BREAKDOWN ── -->
@@ -473,7 +476,7 @@ new Chart(document.getElementById('sev1Chart').getContext('2d'),{
 // ── BUG# P&T TABLE ──
 const BUG_PT_DATA=[
   // [label, q2, q3]  sorted by Q3 desc — source: Bug__c != null
-  ['Product Configurator',               93, 129],
+  ['Configurator (incl. legacy)',         93, 129],
   ['Transaction Management',             68,  89],
   ['Price Management',                   31,  52],
   ['Billing & Invoicing',                20,  29],
@@ -511,24 +514,23 @@ BUG_PT_DATA.forEach(([label,q2,q3])=>{
 
 // ── P&T TABLE ──
 const PT_DATA=[
-  // [label, q2, q3]  — sorted by Q3 desc
-  ['Transaction Management',  943, 1112],
-  ['Product Configurator',      3, 1079],
-  ['Price Management',        635,  927],
-  ['Product Catalog Mgmt',    232,  357],
-  ['Billing & Invoicing',     322,  340],
-  ['Dev Support — P2O',       214,  269],
-  ['Advanced Approvals',      101,  108],
-  ['Contract Lifecycle',      222,  154],
-  ['Usage & Ratings',         111,  105],
-  ['Dynamic Revenue Orch.',   118,   86],
-  ['OmniStudio',               33,   33],
-  ['Business Rules Engine',    16,   44],
-  ['Document Generation',       1,   62],
-  ['Salesforce Contracts',     43,   39],
-  ['Revenue Cloud Analytics',  13,    6],
-  ['Sub Management',            5,   12],
-  ['Configurator (legacy)',  1530,    0],
+  // [label, q2, q3]  — sorted by Q3 desc; Configurator (legacy CPQ) merged with Product Configurator
+  ['Configurator (incl. legacy)', 1533, 1079],
+  ['Transaction Management',       943, 1112],
+  ['Price Management',             635,  927],
+  ['Product Catalog Mgmt',         232,  357],
+  ['Billing & Invoicing',          322,  340],
+  ['Dev Support — P2O',            214,  269],
+  ['Advanced Approvals',           101,  108],
+  ['Contract Lifecycle',           222,  154],
+  ['Usage & Ratings',              111,  105],
+  ['Dynamic Revenue Orch.',        118,   86],
+  ['Business Rules Engine',         16,   44],
+  ['Document Generation',            1,   62],
+  ['Salesforce Contracts',          43,   39],
+  ['Sub Management',                 5,   12],
+  ['OmniStudio',                    33,   33],
+  ['Revenue Cloud Analytics',       13,    6],
 ];
 const maxQ2=Math.max(...PT_DATA.map(r=>r[1]));
 const maxQ3=Math.max(...PT_DATA.map(r=>r[2]));
