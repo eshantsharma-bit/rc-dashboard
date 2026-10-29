@@ -115,15 +115,15 @@ footer{margin-top:24px;font-size:10px;color:var(--muted);text-align:center;paddi
     <div class="kpi-label">Cases with Bug#</div>
     <div class="kpi-row">
       <div>
-        <div class="kpi-val q2">402</div>
+        <div class="kpi-val q2">285</div>
         <div class="kpi-sub">Q2</div>
       </div>
       <div>
-        <div class="kpi-val q3">452</div>
+        <div class="kpi-val q3">404</div>
         <div class="kpi-sub">Q3</div>
       </div>
     </div>
-    <div style="margin-top:6px"><span class="delta-up">▲ +50 (+12.4%)</span></div>
+    <div style="margin-top:6px"><span class="delta-up">▲ +119 (+41.8%)</span></div>
   </div>
 
   <div class="kpi">
@@ -203,15 +203,15 @@ footer{margin-top:24px;font-size:10px;color:var(--muted);text-align:center;paddi
       </tr>
       <tr>
         <td><strong>Cases with Bug#</strong></td>
-        <td class="v-q2">402</td>
-        <td class="v-q3">452</td>
-        <td><span class="badge badge-red">+50 (+12.4%)</span></td>
+        <td class="v-q2">285</td>
+        <td class="v-q3">404</td>
+        <td><span class="badge badge-red">+119 (+41.8%)</span></td>
       </tr>
       <tr>
         <td><span class="v-muted" style="padding-left:12px">Bug# Rate</span></td>
-        <td>8.8%</td>
-        <td>9.5%</td>
-        <td><span class="badge badge-red">+0.7pp</span></td>
+        <td>6.3%</td>
+        <td>8.5%</td>
+        <td><span class="badge badge-red">+2.2pp</span></td>
       </tr>
       <tr style="background:#f6f8fa">
         <td><strong>Sev1 Overall</strong></td>
@@ -335,8 +335,8 @@ footer{margin-top:24px;font-size:10px;color:var(--muted);text-align:center;paddi
         </tr>
         <tr>
           <td>Bug# Rate</td>
-          <td class="v-q2">8.8%</td>
-          <td class="v-q3">9.5%</td>
+          <td class="v-q2">6.3%</td>
+          <td class="v-q3">8.5%</td>
         </tr>
         <tr>
           <td>Overall Sev1 Rate</td>
@@ -472,23 +472,23 @@ new Chart(document.getElementById('sev1Chart').getContext('2d'),{
 
 // ── BUG# P&T TABLE ──
 const BUG_PT_DATA=[
-  // [label, q2, q3]  sorted by Q3 desc
-  ['Product Configurator',              134, 166],
-  ['Transaction Management',             91,  96],
-  ['Price Management',                   46,  52],
-  ['Dynamic Revenue Orchestration',      25,  27],
-  ['Billing & Invoicing',                21,  26],
-  ['Product Catalog Management',         19,  22],
-  ['Dev Support — P2O',                  11,  18],
-  ['Advanced Approvals',                  6,  10],
-  ['Usage & Ratings',                    13,   9],
-  ['Contract Lifecycle Mgmt',            19,  12],
-  ['Business Rules Engine',               4,   2],
-  ['Document Generation',                 0,   2],
-  ['Revenue Cloud Analytics',             2,   1],
-  ['Salesforce Contracts',                8,   2],
-  ['Sub Management',                      0,   6],
-  ['OmniStudio',                          0,   1],
+  // [label, q2, q3]  sorted by Q3 desc — source: Bug__c != null
+  ['Product Configurator',               93, 129],
+  ['Transaction Management',             68,  89],
+  ['Price Management',                   31,  52],
+  ['Billing & Invoicing',                20,  29],
+  ['Product Catalog Management',         13,  22],
+  ['Dev Support — P2O',                   7,  19],
+  ['Dynamic Revenue Orchestration',      23,  18],
+  ['Usage & Ratings',                     2,  10],
+  ['Contract Lifecycle Mgmt',            12,  16],
+  ['Advanced Approvals',                  4,   8],
+  ['Business Rules Engine',               3,   5],
+  ['Document Generation',                 0,   4],
+  ['OmniStudio',                          2,   1],
+  ['Salesforce Contracts',                4,   2],
+  ['Dev Support — I2C',                   2,   0],
+  ['Revenue Cloud Analytics',             1,   0],
 ];
 const maxBugQ2=Math.max(...BUG_PT_DATA.map(r=>r[1]));
 const maxBugQ3=Math.max(...BUG_PT_DATA.map(r=>r[2]));
