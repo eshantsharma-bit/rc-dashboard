@@ -201,7 +201,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td class="center"><span class="pill pill-yellow">+0.5</span></td>
       </tr>
       <tr>
-        <td><strong>GUS-linked Cases</strong></td>
+        <td><strong>Cases with Investigation</strong></td>
         <td class="center">28</td><td class="center">29</td>
         <td class="center" style="background:rgba(88,166,255,.07)"><strong>27</strong></td>
         <td class="center" style="background:rgba(88,166,255,.07)"><strong>48</strong></td>
@@ -215,7 +215,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td class="center"><span class="pill pill-green">+2.5pp</span></td>
       </tr>
       <tr>
-        <td><strong>Cases with Bug Attached</strong></td>
+        <td><strong>Cases with Bug</strong></td>
         <td class="center">20</td><td class="center">21</td>
         <td class="center" style="background:rgba(88,166,255,.07)"><strong>20</strong></td>
         <td class="center" style="background:rgba(88,166,255,.07)"><strong>54</strong></td>
@@ -263,7 +263,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td class="center"><span class="pill pill-yellow">+1.1</span></td>
       </tr>
       <tr>
-        <td><strong>GUS-linked Cases</strong></td>
+        <td><strong>Cases with Investigation</strong></td>
         <td class="center">52</td><td class="center">43</td>
         <td class="center" style="background:rgba(88,166,255,.07)"><strong>66</strong></td>
         <td class="center" style="background:rgba(88,166,255,.07)"><strong>70</strong></td>
@@ -277,7 +277,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td class="center"><span class="pill pill-green">+1.1pp</span></td>
       </tr>
       <tr>
-        <td><strong>Cases with Bug Attached</strong></td>
+        <td><strong>Cases with Bug</strong></td>
         <td class="center">28</td><td class="center">34</td>
         <td class="center" style="background:rgba(88,166,255,.07)"><strong>21</strong></td>
         <td class="center" style="background:rgba(88,166,255,.07)"><strong>67</strong></td>
@@ -294,7 +294,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   </table>
   <div class="insight orange" style="margin-top:10px">
     <strong>PC Sep Bug% at 17.4% — 67 cases with bug attached · driven by CML incidents</strong>
-    <p>Cases with Bug attached: Jun 28 → Jul 34 → Aug 21 → Sep 67. IRC-94329705 and ICC-95079032 are the primary drivers — see Incident Deep-Dive below.</p>
+    <p>Cases with Bug: Jun 28 → Jul 34 → Aug 21 → Sep 67. IRC-94329705 and ICC-95079032 are the primary drivers — see Incident Deep-Dive below.</p>
   </div>
 </div>
 
@@ -329,7 +329,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td class="center"><span class="pill pill-yellow">+0.6</span></td>
       </tr>
       <tr>
-        <td><strong>GUS-linked Cases</strong></td>
+        <td><strong>Cases with Investigation</strong></td>
         <td class="center">17</td><td class="center">12</td>
         <td class="center" style="background:rgba(88,166,255,.07)"><strong>11</strong></td>
         <td class="center" style="background:rgba(88,166,255,.07)"><strong>17</strong></td>
@@ -343,7 +343,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td class="center"><span class="pill pill-green">+2.2pp</span></td>
       </tr>
       <tr>
-        <td><strong>Cases with Bug Attached</strong></td>
+        <td><strong>Cases with Bug</strong></td>
         <td class="center">12</td><td class="center">10</td>
         <td class="center" style="background:rgba(88,166,255,.07)"><strong>5</strong></td>
         <td class="center" style="background:rgba(88,166,255,.07)"><strong>15</strong></td>
@@ -947,7 +947,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
           <td class="center"><span class="pill pill-yellow">+0.5</span></td>
         </tr>
         <tr>
-          <td><strong>GUS-linked Cases</strong></td>
+          <td><strong>Cases with Investigation</strong></td>
           <td class="center">28</td><td class="center">29</td>
           <td class="center" style="background:rgba(88,166,255,.07)"><strong>27</strong></td>
           <td class="center" style="background:rgba(88,166,255,.07)"><strong>48</strong></td>
@@ -961,7 +961,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
           <td class="center"><span class="pill pill-green">+2.5pp</span></td>
         </tr>
         <tr>
-          <td><strong>Cases with Bug Attached</strong></td>
+          <td><strong>Cases with Bug</strong></td>
           <td class="center">20</td><td class="center">21</td>
           <td class="center" style="background:rgba(88,166,255,.07)"><strong>20</strong></td>
           <td class="center" style="background:rgba(88,166,255,.07)"><strong>54</strong></td>
@@ -1561,8 +1561,8 @@ new Chart(document.getElementById('gusBar').getContext('2d'), {
   data: {
     labels: ['Transaction Mgmt', 'Product Configurator', 'Price Management'],
     datasets: [
-      { label: 'Cases with Bug Attached', data: [9.0, 11.4, 3.8], backgroundColor:'rgba(27,79,168,.75)', borderRadius:4 },
-      { label: 'No Bug Attached', data: [91.0, 88.6, 96.2], backgroundColor:'rgba(200,210,220,.4)', borderRadius:4 }
+      { label: 'Cases with Bug', data: [9.0, 11.4, 3.8], backgroundColor:'rgba(27,79,168,.75)', borderRadius:4 },
+      { label: 'No Bug', data: [91.0, 88.6, 96.2], backgroundColor:'rgba(200,210,220,.4)', borderRadius:4 }
     ]
   },
   options: {
