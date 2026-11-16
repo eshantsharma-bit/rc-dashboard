@@ -76,14 +76,19 @@
 
 <div class="soql-banner">
   <strong>SOQL used for each weekly window</strong>
-  <code>SELECT CaseNumber, CreatedDate, cssf_Product_Topic_Name__c, Severity_Level__c,
-       Open_Red_Account__c, Case_Owner__r.Support_Region__c
+  <code>SELECT CaseNumber, Status, Case_Support_level__c, Severity_Level__c, Owner.Name,
+       Age_days__c, Subject, CreatedDate, cssf_Product_Topic_Name__c, FunctionalArea__c,
+       Open_Red_Account__c, GUS_Investigation_Number__c, Bug__c, IR__c,
+       Account.Name, Case_Owner_s_Manager__c, Case_Owner__r.Support_Region__c
 FROM Case
 WHERE CreatedDate >= [WEEK_START]T18:30:00Z AND CreatedDate &lt;= [WEEK_END]T18:29:59Z
   AND Case_Owner__r.Support_Region__c IN ('EMEA', 'India', 'APAC')
   AND (cssf_Product_Topic_Name__c LIKE 'Revenue%' OR cssf_Product_Topic_Name__c LIKE 'Industry%')
-LIMIT 2000
--- Week boundary: Sun 00:00 IST → Sat 23:59 IST  |  IST = UTC+5:30</code>
+  AND RecordType.Name != 'Accelerator Delivery Request'
+ORDER BY CreatedDate DESC LIMIT 2000
+-- Week boundary: Sun 00:00 IST → Sat 23:59 IST  |  IST = UTC+5:30
+-- Case_Support_level__c for tier (not Success_Program__c — returns raw IDs)
+-- GUS_Investigation_Number__c / Bug__c / IR__c are string fields, checked != null AND != ''</code>
 </div>
 
 <div class="diwali-note">
@@ -94,8 +99,8 @@ LIMIT 2000
 <div class="kpi-row">
   <div class="kpi">
     <div class="label">Total Inflow (TW)</div>
-    <div class="value">751</div>
-    <div class="delta down">↓ 122 vs PW (873)</div>
+    <div class="value">740</div>
+    <div class="delta down">↓ 129 vs PW (869)</div>
   </div>
   <div class="kpi">
     <div class="label">Sev1 (TW)</div>
@@ -108,14 +113,14 @@ LIMIT 2000
     <div class="delta down">↓ 27 vs PW (140)</div>
   </div>
   <div class="kpi">
-    <div class="label">India Drop (Diwali)</div>
-    <div class="value">255</div>
-    <div class="delta down">↓ 84 vs PW (339) · -25%</div>
+    <div class="label">Bug-Confirmed Cases (TW)</div>
+    <div class="value" style="color:var(--danger)">22</div>
+    <div class="delta up">↑ vs PW 51 · 3.0% of total</div>
   </div>
   <div class="kpi">
-    <div class="label">APAC (counter-trend)</div>
-    <div class="value" style="color:var(--success)">129</div>
-    <div class="delta up">↑ 8 vs PW (121)</div>
+    <div class="label">GUS Escalations (TW)</div>
+    <div class="value" style="color:var(--warning)">27</div>
+    <div class="delta down">↓ vs PW 74 · 3.6% of total</div>
   </div>
 </div>
 
@@ -177,6 +182,34 @@ LIMIT 2000
     <h2>Life Sciences — Weekly Volume by Region</h2>
     <canvas id="chartLS"></canvas>
     <div class="sub">Life Sciences is India-dominant; Diwali clearly visible in Nov 8</div>
+  </div>
+</div>
+
+<!-- Row 5: Support Tier + Tier by Region -->
+<div class="grid-2" style="margin:20px 32px 0;">
+  <div class="card">
+    <h2>Support Tier Distribution (TW) — Case_Support_level__c</h2>
+    <canvas id="chartTierTotal" style="max-height:220px;"></canvas>
+    <div class="sub">Premier & Premier+ combined into Premier+. Total: 740 cases (excl. Accelerator Delivery Requests).</div>
+  </div>
+  <div class="card">
+    <h2>Support Tier by Region (TW) — Stacked Count</h2>
+    <canvas id="chartTierRegion" style="max-height:220px;"></canvas>
+    <div class="sub">India is Signature-dominant (59%). EMEA is Premier+-heavy (40%). APAC balanced.</div>
+  </div>
+</div>
+
+<!-- Row 6: GUS/Bug/IR Engineering Signals -->
+<div class="grid-2" style="margin:20px 32px 0;">
+  <div class="card">
+    <h2>Engineering Signal — GUS &amp; Bug% by Product (TW)</h2>
+    <canvas id="chartEngSignal" style="max-height:260px;"></canvas>
+    <div class="sub">GUS = engineer raised investigation with Product Engineering · Bug = confirmed defect · Sorted by Eng% (GUS+Bug / Total)</div>
+  </div>
+  <div class="card">
+    <h2>Bug-Confirmed Cases by Cloud Group (TW) — Total: 22</h2>
+    <canvas id="chartBugCloud" style="max-height:260px;"></canvas>
+    <div class="sub">Industries: 16 bug cases (LSC=5, Loyalty=3, Omni=2, IndCPQ=1, Others=5) · RCB: 4 · RCA: 2 · IR: 1 (Health Cloud, IR# 97644042)</div>
   </div>
 </div>
 
@@ -437,6 +470,117 @@ new Chart(document.getElementById('chartRCB'), {
   options:{
     plugins:{ legend:{position:'top',labels:{font:{size:10}}}, datalabels:{} },
     scales:{ x:{stacked:true}, y:{stacked:true, grid:{color:'#eaecef'}} }
+  }
+});
+
+// ── CHART 10: Support Tier (donut/horizontal bar) ──
+const tierLabels  = ['Signature Success','Premier+','Standard','Partner Premier'];
+const tierCounts  = [301, 253, 124, 62];
+const tierS1      = [16, 20, 4, 8];
+const tierColors  = ['#0969da','#8250df','#d0d7de','#1a7f37'];
+
+new Chart(document.getElementById('chartTierTotal'), {
+  type: 'bar',
+  data: {
+    labels: tierLabels,
+    datasets: [
+      { label: 'Total Cases', data: tierCounts, backgroundColor: tierColors,
+        datalabels: { display:true, anchor:'end', align:'end',
+          font:{size:10,weight:'600'}, color:'#1f2328',
+          formatter: (v,ctx) => `${v} (${(v/740*100).toFixed(1)}%)` }
+      },
+      { label: 'Sev1', data: tierS1, backgroundColor: tierColors.map(c=>c+'66'),
+        datalabels: { display:true, anchor:'end', align:'end',
+          font:{size:9}, color:'#cf222e', formatter: v => `S1:${v}` }
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: { legend:{position:'top',labels:{font:{size:11}}}, datalabels:{} },
+    scales: { x:{ grid:{color:'#eaecef'}, title:{display:true,text:'Cases'} } }
+  }
+});
+
+// ── CHART 11: Tier by Region stacked bar ──
+new Chart(document.getElementById('chartTierRegion'), {
+  type: 'bar',
+  data: {
+    labels: ['EMEA','India','APAC'],
+    datasets: [
+      { label:'Signature Success', data:[113,151,37], backgroundColor:'#0969da', datalabels: dlInside },
+      { label:'Premier+',          data:[143,51,59],  backgroundColor:'#8250df', datalabels: dlInside },
+      { label:'Standard',          data:[75,24,25],   backgroundColor:'#d0d7de',
+        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 10,
+          anchor:'center', align:'center', font:{size:9,weight:'600'}, color:'#1f2328', formatter:v=>v }
+      },
+      { label:'Partner Premier',   data:[26,29,7],    backgroundColor:'#1a7f37', datalabels: dlInside }
+    ]
+  },
+  options: {
+    plugins: { legend:{position:'top',labels:{font:{size:11}}}, datalabels:{} },
+    scales: {
+      x:{stacked:true},
+      y:{stacked:true, title:{display:true,text:'Cases'}, grid:{color:'#eaecef'}}
+    }
+  }
+});
+
+// ── CHART 12: GUS + Bug % by product (horizontal bar) ──
+const engProds   = ['Industry-Life Sciences','RC Billing & Invoicing','Industry-Loyalty Mgmt',
+                    'Revenue-Salesforce CPQ','Industry-Retail & CG','Ind-CPQ/OM/DC',
+                    'Industry-Omnistudio','RC Txn Mgmt','Industry-Developer Supp','Industry-FinServ'];
+const engTotal   = [140,18,18,56,50,57,53,37,21,15];
+const engGUS     = [14,3,2,1,2,2,0,0,0,0];
+const engBug     = [5,1,3,3,0,1,2,1,1,1];
+const engPct     = engTotal.map((t,i) => +((engGUS[i]+engBug[i])/t*100).toFixed(1));
+
+new Chart(document.getElementById('chartEngSignal'), {
+  type: 'bar',
+  data: {
+    labels: engProds,
+    datasets: [
+      { label:'GUS%', data: engGUS.map((g,i)=>+(g/engTotal[i]*100).toFixed(1)),
+        backgroundColor:'#0969da',
+        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
+          anchor:'center', align:'center', font:{size:8,weight:'600'}, color:'#fff',
+          formatter: v => v+'%' }
+      },
+      { label:'Bug%', data: engBug.map((b,i)=>+(b/engTotal[i]*100).toFixed(1)),
+        backgroundColor:'#cf222e',
+        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
+          anchor:'center', align:'center', font:{size:8,weight:'600'}, color:'#fff',
+          formatter: v => v+'%' }
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: { legend:{position:'top',labels:{font:{size:11}}}, datalabels:{} },
+    scales: {
+      x:{ stacked:true, max:30, title:{display:true,text:'% of product total'},
+          grid:{color:'#eaecef'} },
+      y:{ stacked:true }
+    }
+  }
+});
+
+// ── CHART 13: Bug-confirmed by cloud group ──
+new Chart(document.getElementById('chartBugCloud'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Industries (16)','RCB — Legacy Rev (4)','RCA — RC Core (2)'],
+    datasets: [{
+      data: [16, 4, 2],
+      backgroundColor: ['#0969da','#bf8700','#8250df'],
+      borderWidth: 2, borderColor: '#ffffff',
+      datalabels: { display:true, color:'#fff', font:{size:12,weight:'700'},
+        formatter: (v,ctx) => `${v}\n(${(v/22*100).toFixed(0)}%)` }
+    }]
+  },
+  options: {
+    cutout: '55%',
+    plugins: { legend:{position:'bottom',labels:{font:{size:11}}}, datalabels:{} }
   }
 });
 
