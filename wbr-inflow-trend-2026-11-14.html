@@ -141,9 +141,9 @@ ORDER BY CreatedDate DESC LIMIT 2000
 <!-- Row 2: Cloud share stacked bar + geo share -->
 <div class="grid-2">
   <div class="card">
-    <h2>Volume Share: Industries vs RCA vs RCB (% of weekly total)</h2>
+    <h2>Volume Share: Industries vs Revenue Cloud (% of weekly total)</h2>
     <canvas id="chartCloudShare"></canvas>
-    <div class="sub">RCA = Revenue Cloud (Core) · RCB = Legacy Revenue (CPQ, Billing, etc.)</div>
+    <div class="sub">Revenue Cloud = RCA (RC Core) + RCB (Legacy CPQ, Billing, etc.)</div>
   </div>
   <div class="card">
     <h2>Geo Split — EMEA / India / APAC (% share)</h2>
@@ -157,12 +157,12 @@ ORDER BY CreatedDate DESC LIMIT 2000
   <div class="card">
     <h2>Top Case Driver Volume — 6-Week Trend</h2>
     <canvas id="chartDriverVol"></canvas>
-    <div class="sub">Life Sciences · RCA · Ind CPQ/OM · Ind Omni · Ind Retail · Revenue CPQ (Legacy)</div>
+    <div class="sub">Life Sciences · Revenue Cloud (RCA+RCB) · Ind CPQ/OM · Ind Omni · Ind Retail</div>
   </div>
   <div class="card">
     <h2>Top Case Driver Share — % of Weekly Total</h2>
     <canvas id="chartDriverShare"></canvas>
-    <div class="sub">Revenue CPQ flat at ~11.7%. Life Sciences Diwali dip clearly visible.</div>
+    <div class="sub">Revenue Cloud = RCA (RC Core) + RCB (Legacy CPQ/Billing). Life Sciences Diwali dip clearly visible.</div>
   </div>
 </div>
 
@@ -195,16 +195,15 @@ ORDER BY CreatedDate DESC LIMIT 2000
 
 <script>
 (function(){
-  const TCD = ['Life Sciences','RCA','Ind CPQ/OM','Ind Omni','Ind Retail','Revenue CPQ'];
+  const TCD = ['Life Sciences','Revenue Cloud (RCA+RCB)','Ind CPQ/OM','Ind Omni','Ind Retail'];
   const data = [
-    { w:[157,164,128,197,214,140], emea:40, india:89, apac:11, s1:3  },
-    { w:[196,315,187,165,190,167], emea:105,india:45, apac:17, s1:11 },
-    { w:[109, 88, 65, 81, 75, 57], emea:28, india:23, apac:6,  s1:2  },
-    { w:[111, 84, 84, 97, 72, 53], emea:25, india:11, apac:17, s1:6  },
-    { w:[ 48, 53, 48, 51, 66, 50], emea:21, india:23, apac:6,  s1:5  },
-    { w:[ 89, 84, 58, 74, 86, 86], emea:41, india:17, apac:28, s1:8  },
+    { w:[157,164,128,197,214,140], emea:40,  india:89, apac:11, s1:3  },
+    { w:[285,399,245,239,276,253], emea:146, india:62, apac:45, s1:19 },
+    { w:[109, 88, 65, 81, 75, 57], emea:28,  india:23, apac:6,  s1:2  },
+    { w:[111, 84, 84, 97, 72, 53], emea:25,  india:11, apac:17, s1:6  },
+    { w:[ 48, 53, 48, 51, 66, 50], emea:21,  india:23, apac:6,  s1:5  },
   ];
-  const colors = ['#0969da','#8250df','#1a7f37','#cf222e','#e36209','#bf8700'];
+  const colors = ['#0969da','#8250df','#1a7f37','#cf222e','#e36209'];
   const TOTAL_TW = 733;
   const tbody = document.getElementById('tcdTableBody');
   data.forEach((d,i) => {
@@ -313,9 +312,8 @@ const totals       = [955, 1018, 753, 849, 869, 733];
 const s1s          = [111,   90,  61,  66,  78,  48];
 const reds         = [163,  124,  90, 142, 140, 113];
 
-// 6-week cloud share
-const rca_pct  = [20.5, 30.9, 24.8, 19.4, 21.9, 22.8];
-const rcb_pct  = [ 9.3,  8.3,  7.7,  8.7,  9.9, 11.7];
+// 6-week cloud share (RCA+RCB combined as Revenue Cloud)
+const rc_pct   = [29.8, 39.2, 32.5, 28.1, 31.8, 34.5];  // RCA+RCB
 const ind_pct  = [70.2, 60.8, 67.5, 71.9, 68.2, 65.5];
 
 // actual geo counts (6w)
@@ -327,20 +325,18 @@ const emeaPct  = emea_counts.map((v,i) => +(v/totals[i]*100).toFixed(1));
 const indiaPct = india_counts.map((v,i) => +(v/totals[i]*100).toFixed(1));
 const apacPct  = apac_counts.map((v,i) => +(v/totals[i]*100).toFixed(1));
 
-// 6 TCD group counts (from SOQL, 6 weeks)
+// 5 TCD group counts — RCA+RCB merged as "Revenue Cloud"
 const dLS    = [157, 164, 128, 197, 214, 140];
-const dRCA   = [196, 315, 187, 165, 190, 167];
+const dRC    = [285, 399, 245, 239, 276, 253];  // RCA + RCB combined
 const dIndCPQ= [109,  88,  65,  81,  75,  57];
 const dOmni  = [111,  84,  84,  97,  72,  53];
 const dRetail= [ 48,  53,  48,  51,  66,  50];
-const dRevCPQ= [ 89,  84,  58,  74,  86,  86];
 
 const dLSPct    = dLS.map((v,i)    => +(v/totals[i]*100).toFixed(1));
-const dRCAPct   = dRCA.map((v,i)   => +(v/totals[i]*100).toFixed(1));
+const dRCPct    = dRC.map((v,i)    => +(v/totals[i]*100).toFixed(1));
 const dIndCPQPct= dIndCPQ.map((v,i)=> +(v/totals[i]*100).toFixed(1));
 const dOmniPct  = dOmni.map((v,i)  => +(v/totals[i]*100).toFixed(1));
 const dRetailPct= dRetail.map((v,i)=> +(v/totals[i]*100).toFixed(1));
-const dRevCPQPct= dRevCPQ.map((v,i)=> +(v/totals[i]*100).toFixed(1));
 
 // RCA sub-products (6w)
 const rcaTxn   = [57,  55, 35, 47, 56, 37];
@@ -428,12 +424,8 @@ new Chart(document.getElementById('chartCloudShare'), {
   data: {
     labels: WEEKS,
     datasets: [
-      { label:'Industries', data: ind_pct, backgroundColor:'#0969da',
-        datalabels: dlInside },
-      { label:'RCA',        data: rca_pct, backgroundColor:'#8250df',
-        datalabels: dlInside },
-      { label:'RCB',        data: rcb_pct, backgroundColor:'#bf8700',
-        datalabels: dlInside }
+      { label:'Industries',              data: ind_pct, backgroundColor:'#0969da', datalabels: dlInside },
+      { label:'Revenue Cloud (RCA+RCB)', data: rc_pct,  backgroundColor:'#8250df', datalabels: dlInside }
     ]
   },
   options: {
@@ -477,12 +469,11 @@ new Chart(document.getElementById('chartDriverVol'), {
   data: {
     labels: WEEKS,
     datasets: [
-      { label:'Life Sciences', data:dLS,    borderColor:'#0969da', backgroundColor:'#0969da22', borderWidth:2.5, pointRadius:4, tension:0.3, datalabels: TCD_DL('#0969da') },
-      { label:'RCA',           data:dRCA,   borderColor:'#8250df', backgroundColor:'#8250df22', borderWidth:2.5, pointRadius:4, tension:0.3, datalabels: TCD_DL('#8250df') },
-      { label:'Ind CPQ/OM',   data:dIndCPQ, borderColor:'#1a7f37', backgroundColor:'#1a7f3722', borderWidth:2,   pointRadius:3, tension:0.3, datalabels:{ display:false } },
-      { label:'Ind Omni',      data:dOmni,  borderColor:'#cf222e', backgroundColor:'#cf222e22', borderWidth:2,   pointRadius:3, tension:0.3, datalabels:{ display:false } },
-      { label:'Ind Retail',    data:dRetail,borderColor:'#e36209', backgroundColor:'#e3620922', borderWidth:2,   pointRadius:3, tension:0.3, datalabels:{ display:false } },
-      { label:'Revenue CPQ',   data:dRevCPQ,borderColor:'#bf8700', backgroundColor:'#bf870022', borderWidth:2,   pointRadius:3, tension:0.3, datalabels:{ display:false } }
+      { label:'Life Sciences',         data:dLS,     borderColor:'#0969da', backgroundColor:'#0969da22', borderWidth:2.5, pointRadius:4, tension:0.3, datalabels: TCD_DL('#0969da') },
+      { label:'Revenue Cloud (RCA+RCB)',data:dRC,    borderColor:'#8250df', backgroundColor:'#8250df22', borderWidth:2.5, pointRadius:4, tension:0.3, datalabels: TCD_DL('#8250df') },
+      { label:'Ind CPQ/OM',            data:dIndCPQ, borderColor:'#1a7f37', backgroundColor:'#1a7f3722', borderWidth:2,   pointRadius:3, tension:0.3, datalabels:{ display:false } },
+      { label:'Ind Omni',              data:dOmni,   borderColor:'#cf222e', backgroundColor:'#cf222e22', borderWidth:2,   pointRadius:3, tension:0.3, datalabels:{ display:false } },
+      { label:'Ind Retail',            data:dRetail, borderColor:'#e36209', backgroundColor:'#e3620922', borderWidth:2,   pointRadius:3, tension:0.3, datalabels:{ display:false } }
     ]
   },
   options:{
@@ -497,12 +488,11 @@ new Chart(document.getElementById('chartDriverShare'), {
   data: {
     labels: WEEKS,
     datasets: [
-      { label:'Life Sciences', data:dLSPct,    backgroundColor:'#0969da', datalabels: dlInside },
-      { label:'RCA',           data:dRCAPct,   backgroundColor:'#8250df', datalabels: dlInside },
-      { label:'Ind CPQ/OM',   data:dIndCPQPct, backgroundColor:'#1a7f37', datalabels: dlInside },
-      { label:'Ind Omni',      data:dOmniPct,  backgroundColor:'#cf222e', datalabels: dlInside },
-      { label:'Ind Retail',    data:dRetailPct,backgroundColor:'#e36209', datalabels: dlInside },
-      { label:'Revenue CPQ',   data:dRevCPQPct,backgroundColor:'#bf8700', datalabels: dlInside }
+      { label:'Life Sciences',          data:dLSPct,     backgroundColor:'#0969da', datalabels: dlInside },
+      { label:'Revenue Cloud (RCA+RCB)',data:dRCPct,     backgroundColor:'#8250df', datalabels: dlInside },
+      { label:'Ind CPQ/OM',            data:dIndCPQPct,  backgroundColor:'#1a7f37', datalabels: dlInside },
+      { label:'Ind Omni',              data:dOmniPct,    backgroundColor:'#cf222e', datalabels: dlInside },
+      { label:'Ind Retail',            data:dRetailPct,  backgroundColor:'#e36209', datalabels: dlInside }
     ]
   },
   options:{
