@@ -215,8 +215,8 @@ ORDER BY CreatedDate DESC LIMIT 2000
     const tr = document.createElement('tr');
     tr.style.borderBottom = '1px solid #eaecef';
     tr.innerHTML = `
-      <td style="padding:7px 10px;font-weight:600;color:${colors[i]};display:flex;align-items:center;gap:6px;">
-        <span style="width:10px;height:10px;border-radius:50%;background:${colors[i]};display:inline-block;flex-shrink:0;"></span>${TCD[i]}</td>
+      <td style="padding:7px 10px;font-weight:600;color:${colors[i]};white-space:nowrap;">
+        <span style="width:9px;height:9px;border-radius:50%;background:${colors[i]};display:inline-block;margin-right:6px;vertical-align:middle;"></span>${TCD[i]}</td>
       <td style="text-align:right;padding:7px 10px;color:#57606a;">${d.w[0]}</td>
       <td style="text-align:right;padding:7px 10px;color:#57606a;">${d.w[1]}</td>
       <td style="text-align:right;padding:7px 10px;color:#57606a;">${d.w[2]}</td>
