@@ -39,7 +39,7 @@
   .soql-banner strong { color: var(--text-primary); display: block; margin-bottom: 4px; }
   .soql-banner code { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 11px; white-space: pre-wrap; display: block; margin-top: 6px; line-height: 1.5; color: #0550ae; }
 
-  .kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 20px 32px 0; }
+  .kpi-row { display: grid; gap: 12px; margin: 20px 32px 0; }
   .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
   .kpi .label { font-size: 11px; color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: .4px; }
   .kpi .value { font-size: 28px; font-weight: 700; margin: 4px 0 2px; }
@@ -95,39 +95,44 @@ ORDER BY CreatedDate DESC LIMIT 2000
   ⚠️ <strong>Nov 8 week (Diwali):</strong> India -25% WoW (339→255). Total inflow -14%. Volume suppression — not a demand reduction. Expect recovery next week.
 </div>
 
-<!-- KPI tiles: TW vs PW -->
-<div class="kpi-row">
+<!-- KPI tiles -->
+<div class="kpi-row" style="grid-template-columns:repeat(6,1fr);">
   <div class="kpi">
-    <div class="label">Total Inflow (TW)</div>
-    <div class="value">740</div>
-    <div class="delta down">↓ 129 vs PW (869)</div>
+    <div class="label">Inflow (TW)</div>
+    <div class="value">733</div>
+    <div class="delta down">↓ 136 vs PW (869)</div>
   </div>
   <div class="kpi">
-    <div class="label">Sev1 (TW)</div>
-    <div class="value" style="color:var(--danger)">48</div>
-    <div class="delta down">↓ 30 vs PW (78)</div>
+    <div class="label">Closures (TW)</div>
+    <div class="value" style="color:var(--success)">849</div>
+    <div class="delta down">+116 vs inflow ✅</div>
   </div>
   <div class="kpi">
-    <div class="label">Red Accounts (TW)</div>
-    <div class="value" style="color:var(--warning)">113</div>
-    <div class="delta down">↓ 27 vs PW (140)</div>
+    <div class="label">CSAT (avg)</div>
+    <div class="value" style="color:var(--success)">4.90</div>
+    <div class="delta note">E:4.93 · I:5.00 · A:4.50</div>
   </div>
   <div class="kpi">
-    <div class="label">Bug-Confirmed Cases (TW)</div>
-    <div class="value" style="color:var(--danger)">22</div>
-    <div class="delta up">↑ vs PW 51 · 3.0% of total</div>
+    <div class="label">TTR (avg days)</div>
+    <div class="value" style="color:var(--warning)">9.1</div>
+    <div class="delta up">🔴 India 11.00 · APAC 9.68</div>
   </div>
   <div class="kpi">
-    <div class="label">GUS Escalations (TW)</div>
-    <div class="value" style="color:var(--warning)">27</div>
-    <div class="delta down">↓ vs PW 74 · 3.6% of total</div>
+    <div class="label">Escalation %</div>
+    <div class="value">0.55%</div>
+    <div class="delta note">E:0.29% · I:0.39% · A:1.56%</div>
+  </div>
+  <div class="kpi">
+    <div class="label">SLO Miss %</div>
+    <div class="value" style="color:var(--success)">0.00%</div>
+    <div class="delta down">All geos clean ✅</div>
   </div>
 </div>
 
 <!-- Row 1: Total volume + Sev1 trend -->
 <div class="grid-2" style="margin-top:20px;">
   <div class="card">
-    <h2>Total Weekly Inflow + Sev1 Trend (10 weeks)</h2>
+    <h2>Total Weekly Inflow + Sev1 Trend (6 weeks)</h2>
     <canvas id="chartVolume"></canvas>
     <div class="sub">Bar = total inflow · Line = Sev1 count · Right axis</div>
   </div>
@@ -332,6 +337,10 @@ const dIndCPQ= [109,  88,  65,  81,  75,  57];
 const dOmni  = [111,  84,  84,  97,  72,  53];
 const dRetail= [ 48,  53,  48,  51,  66,  50];
 
+// kept separate for sub-product breakdown charts
+const dRCA     = [196, 315, 187, 165, 190, 167];  // RC Core only
+const dRevCPQ  = [ 89,  84,  58,  74,  86,  86];  // Legacy Revenue CPQ/Billing
+
 const dLSPct    = dLS.map((v,i)    => +(v/totals[i]*100).toFixed(1));
 const dRCPct    = dRC.map((v,i)    => +(v/totals[i]*100).toFixed(1));
 const dIndCPQPct= dIndCPQ.map((v,i)=> +(v/totals[i]*100).toFixed(1));
@@ -379,8 +388,8 @@ new Chart(document.getElementById('chartVolume'), {
     labels: WEEKS,
     datasets: [
       { type:'bar', label:'Total Inflow', data: totals,
-        backgroundColor: WEEKS.map((_,i) => i===9 ? '#cce5ff' : '#0969da22'),
-        borderColor:     WEEKS.map((_,i) => i===9 ? '#0550ae' : '#0969da'),
+        backgroundColor: WEEKS.map((_,i) => i===5 ? '#cce5ff' : '#0969da22'),
+        borderColor:     WEEKS.map((_,i) => i===5 ? '#0550ae' : '#0969da'),
         borderWidth: 1.5, yAxisID:'y',
         datalabels: dlAbove },
       { type:'line', label:'Sev1', data: s1s,
@@ -407,8 +416,8 @@ new Chart(document.getElementById('chartRed'), {
     labels: WEEKS,
     datasets: [{
       label:'Red Account Cases', data: reds,
-      backgroundColor: WEEKS.map((_,i) => i===9 ? '#ffd7d9' : '#cf222e33'),
-      borderColor:     WEEKS.map((_,i) => i===9 ? '#a40e26' : '#cf222e'),
+      backgroundColor: WEEKS.map((_,i) => i===5 ? '#ffd7d9' : '#cf222e33'),
+      borderColor:     WEEKS.map((_,i) => i===5 ? '#a40e26' : '#cf222e'),
       borderWidth:1.5, datalabels: dlAbove
     }]
   },
