@@ -314,27 +314,27 @@
 <!-- 6-Month Tab -->
 <div id="tab-monthly" class="tab-panel">
 
-  <div style="margin:16px 32px 0;background:#fff8c5;border:1px solid #d4a72c;border-radius:6px;padding:8px 14px;font-size:12px;color:var(--warning);">
-    ⚠️ <strong>Sampling note:</strong> Each month is capped at 2,000 records by OrgCS query limit. Absolute counts reflect sampled proportions — use for trend direction, not exact totals.
+  <div style="margin:16px 32px 0;background:#ddf4ff;border:1px solid #0969da;border-radius:6px;padding:8px 14px;font-size:12px;color:#0550ae;">
+    ℹ️ <strong>Exact counts</strong> — all figures from live COUNT() queries against OrgCS. No sampling. Scope: EMEA + India + APAC, Revenue% + Industry%, excl. ADR.
   </div>
 
   <!-- Monthly TCD Volume chart -->
   <div class="card" style="margin:20px 32px 0;">
     <h2>Top Case Driver Volume — 6-Month Trend (May–Oct 2026)</h2>
     <canvas id="chartMonthlyTCD" style="max-height:420px !important;"></canvas>
-    <div class="sub">Life Sciences surging +89% (May→Oct) · Revenue Cloud (RC Core + Legacy) holding majority share · Ind Retail up 37%</div>
+    <div class="sub">Life Sciences surging +94% May→Oct (350→680) · Revenue Cloud largest group, dipped Jul–Aug, recovering Sep–Oct · Ind Omni peaked Jun, compressing in Oct</div>
   </div>
 
   <!-- Monthly Regional Inflow chart -->
   <div class="card" style="margin:20px 32px;">
     <h2>Regional Inflow Trend — 6-Month (May–Oct 2026)</h2>
     <canvas id="chartMonthlyGeo" style="max-height:400px !important;"></canvas>
-    <div class="sub">EMEA consistently largest region · India and APAC both growing since Aug · Oct sees EMEA dip with India/APAC counter-rise</div>
+    <div class="sub">EMEA largest region, peaking Jun (2,073) with Oct softening (1,817) · India steady 1,269–1,508 · APAC stable 548–652, mild growth trend</div>
   </div>
 
   <!-- Monthly summary table -->
   <div class="card" style="margin:0 32px 0;">
-    <h2>Monthly Breakdown Table (sampled counts, 2,000 records/month)</h2>
+    <h2>Monthly Breakdown Table — Exact Counts</h2>
     <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;">
       <thead>
         <tr style="background:var(--surface);">
@@ -350,12 +350,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td style="padding:7px 10px;border:1px solid var(--border);font-weight:500;">May</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">211</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">739</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">210</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">237</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">91</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">967</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">734</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">299</td></tr>
-        <tr style="background:var(--surface);"><td style="padding:7px 10px;border:1px solid var(--border);font-weight:500;">Jun</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">244</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">717</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">216</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">221</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">91</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">999</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">711</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">290</td></tr>
-        <tr><td style="padding:7px 10px;border:1px solid var(--border);font-weight:500;">Jul</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">317</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">674</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">182</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">232</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">95</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">970</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">726</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">304</td></tr>
-        <tr style="background:var(--surface);"><td style="padding:7px 10px;border:1px solid var(--border);font-weight:500;">Aug</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">317</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">667</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">205</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">265</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">122</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">998</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">683</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">319</td></tr>
-        <tr><td style="padding:7px 10px;border:1px solid var(--border);font-weight:500;">Sep</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">320</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">684</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">213</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">196</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">110</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">997</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">708</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">295</td></tr>
-        <tr style="background:var(--surface);"><td style="padding:7px 10px;border:1px solid var(--border);font-weight:500;color:var(--accent);">Oct ▲</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;font-weight:600;color:#0969da;">398</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">627</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">185</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">228</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;font-weight:600;color:#e36209;">125</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">914</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;font-weight:600;">747</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;font-weight:600;">339</td></tr>
+        <tr><td style="padding:7px 10px;border:1px solid var(--border);font-weight:500;">May</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">350</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,294</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">453</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">460</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">172</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,718</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,269</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">548</td></tr>
+        <tr style="background:var(--surface);"><td style="padding:7px 10px;border:1px solid var(--border);font-weight:500;">Jun</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">466</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,537</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">579</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">454</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">216</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">2,073</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,474</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">624</td></tr>
+        <tr><td style="padding:7px 10px;border:1px solid var(--border);font-weight:500;">Jul</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">652</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,347</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">510</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">438</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">214</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,961</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,508</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">641</td></tr>
+        <tr style="background:var(--surface);"><td style="padding:7px 10px;border:1px solid var(--border);font-weight:500;">Aug</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">618</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,251</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">453</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">462</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">204</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,787</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,325</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">617</td></tr>
+        <tr><td style="padding:7px 10px;border:1px solid var(--border);font-weight:500;">Sep</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">601</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,440</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">580</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">524</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">209</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">2,079</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,492</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">643</td></tr>
+        <tr style="background:var(--surface);"><td style="padding:7px 10px;border:1px solid var(--border);font-weight:500;color:var(--accent);">Oct</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;font-weight:600;color:#0969da;">680</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,275</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">475</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">405</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;font-weight:600;color:#e36209;">220</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;">1,817</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;font-weight:600;">1,376</td><td style="padding:7px 10px;border:1px solid var(--border);text-align:right;font-weight:600;">652</td></tr>
       </tbody>
     </table>
   </div>
@@ -757,15 +757,15 @@ function switchTab(id) {
 function buildMonthlyCharts() {
   const MONTHS = ['May','Jun','Jul','Aug','Sep','Oct'];
 
-  const mLS    = [211, 244, 317, 317, 320, 398];
-  const mRC    = [739, 717, 674, 667, 684, 627];
-  const mCPQ   = [210, 216, 182, 205, 213, 185];
-  const mOmni  = [237, 221, 232, 265, 196, 228];
-  const mRetail= [ 91,  91,  95, 122, 110, 125];
+  const mLS    = [350,  466,  652,  618,  601,  680];
+  const mRC    = [1294, 1537, 1347, 1251, 1440, 1275];
+  const mCPQ   = [453,  579,  510,  453,  580,  475];
+  const mOmni  = [460,  454,  438,  462,  524,  405];
+  const mRetail= [172,  216,  214,  204,  209,  220];
 
-  const mEMEA  = [967, 999, 970, 998, 997, 914];
-  const mIndia = [734, 711, 726, 683, 708, 747];
-  const mAPAC  = [299, 290, 304, 319, 295, 339];
+  const mEMEA  = [1718, 2073, 1961, 1787, 2079, 1817];
+  const mIndia = [1269, 1474, 1508, 1325, 1492, 1376];
+  const mAPAC  = [548,  624,  641,  617,  643,  652];
 
   const dlCfg = (color, anchor, align) => ({
     anchor: anchor || 'end',
