@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RC Aged Backlog Trend · Nov 17, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root{
+  --bg:#eef2f7;--surface:#ffffff;--border:#c5d3e8;
+  --text:#1a2744;--muted:#5a6e8c;--accent:#1b4fa8;
+  --green:#1a7f37;--yellow:#9a6700;--orange:#bc4c00;
+  --navy:#1a2744;--navy-light:#eef2f7;--navy-mid:#c5d3e8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;line-height:1.5}
+.header{background:var(--navy);color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.header h1{font-size:18px;font-weight:700;letter-spacing:-.3px}
+.header .meta{font-size:12px;color:#c5d0e0;line-height:1.8;margin-top:3px}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge-red{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
+.badge-blue{background:#ddf4ff;color:#0969da;border:1px solid #80ccff}
+.badge-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845}
+.badge-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb}
+.badge-orange{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
+.wrap{max-width:1400px;margin:0 auto;padding:20px 20px 40px}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.kpi-row-5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:12px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;border-top:3px solid var(--border)}
+.kpi.alert{background:#fff1e5;border-color:#ffc896;border-top-color:#bc4c00}
+.kpi.warn{background:#fff8c5;border-color:#f5d845;border-top-color:#9a6700}
+.kpi.good{background:#dafbe1;border-color:#aceebb;border-top-color:#1a7f37}
+.kpi.blue{background:#ddf4ff;border-color:#80ccff;border-top-color:#0969da}
+.kpi.neutral{background:#f6f8fa;border-color:#d0d7de;border-top-color:#57606a}
+.kpi-label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.kpi-val{font-size:26px;font-weight:700;margin:4px 0 2px;line-height:1}
+.kpi-sub{font-size:11px;color:var(--muted)}
+.kpi-delta{font-size:11px;font-weight:700;margin-top:4px}
+.delta-up{color:#bc4c00}
+.delta-down{color:#1a7f37}
+.delta-flat{color:#57606a}
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{background:#f6f8fa;color:var(--muted);font-weight:600;text-align:left;padding:7px 10px;border-bottom:2px solid #d0d7de;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.data-table td{padding:7px 10px;border-bottom:1px solid #eaeef2}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:#f6f8fa}
+.data-table th.right,.data-table td.right{text-align:right}
+.data-table th.center,.data-table td.center{text-align:center}
+.highlight-row td{background:rgba(88,166,255,.07);font-weight:600}
+.pill{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;white-space:nowrap}
+.pill-red{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
+.pill-blue{background:#ddf4ff;color:#0969da;border:1px solid #80ccff}
+.pill-green{background:#dafbe1;color:#1a7f37;border:1px solid #aceebb}
+.pill-orange{background:#fff1e5;color:#bc4c00;border:1px solid #ffc896}
+.pill-purple{background:#fbefff;color:#8250df;border:1px solid #d8b4fe}
+.pill-yellow{background:#fff8c5;color:#9a6700;border:1px solid #f5d845}
+.insight{padding:10px 12px;border-radius:6px;margin-bottom:8px;border-left:3px solid}
+.insight.red{background:#fff1e5;border-color:#bc4c00}
+.insight.yellow{background:#fff8c5;border-color:#f5d845}
+.insight.green{background:#dafbe1;border-color:#1a7f37}
+.insight.blue{background:#ddf4ff;border-color:#0969da}
+.insight strong{display:block;font-size:12px;margin-bottom:2px}
+.insight p{font-size:11px;color:var(--muted)}
+.card.border-red{border-top:3px solid #bc4c00}
+.card.border-orange{border-top:3px solid #bc4c00}
+.card.border-blue{border-top:3px solid #1b4fa8}
+.card.border-green{border-top:3px solid #1a7f37}
+.card.border-purple{border-top:3px solid #8250df}
+.bar-wrap{height:8px;background:#d0d7de;border-radius:4px;overflow:hidden;margin-top:4px}
+.bar-fill{height:100%;border-radius:4px}
+footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-top:1px solid var(--border);margin-top:20px}
+.section-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--navy-mid)}
+.chart-wrap{position:relative;height:220px}
+.chart-wrap-lg{position:relative;height:280px}
+.chart-wrap-xl{position:relative;height:320px}
+.region-emea{color:#1b4fa8;font-weight:700}
+.region-ist{color:#2d8a4e;font-weight:700}
+.region-apac{color:#bc4c00;font-weight:700}
+.mgr-row-emea td:first-child{border-left:3px solid #1b4fa8}
+.mgr-row-ist td:first-child{border-left:3px solid #2d8a4e}
+.mgr-row-apac td:first-child{border-left:3px solid #bc4c00}
+.hotspot-band{background:#fff8c5;border:1px solid #f5d845;border-radius:6px;padding:8px 12px;font-size:11px;color:#9a6700;font-weight:600;margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>RC Aged Backlog Trend — Weekly Snapshot</h1>
+    <div class="meta">Industry &amp; Revenue Cloud &nbsp;·&nbsp; EMEA · India · APAC &nbsp;·&nbsp; Non-SP Backlog &nbsp;|&nbsp; As of Nov 17, 2026</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+    <div class="badges">
+      <span class="badge badge-blue">Non-SP BL: 871</span>
+      <span class="badge badge-yellow">Aged >15d: 180 (20.7%)</span>
+      <span class="badge badge-red">APAC: 31.7% ↑ RISING</span>
+    </div>
+    <div style="font-size:11px;color:#8b99b5;text-align:right">Prepared by <strong style="color:#c5d0e0">Eshant Sharma</strong> &nbsp;·&nbsp; Source: OrgCS Live</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- KPI TILES -->
+<div class="kpi-row-5" style="margin-bottom:20px">
+  <div class="kpi neutral">
+    <div class="kpi-label">Non-SP BL</div>
+    <div class="kpi-val">871</div>
+    <div class="kpi-sub">↓ 41 vs Oct 26 (912)</div>
+  </div>
+  <div class="kpi warn">
+    <div class="kpi-label">Aged >15d</div>
+    <div class="kpi-val">180</div>
+    <div class="kpi-sub">↓ 21 vs Oct 26 (201)</div>
+  </div>
+  <div class="kpi neutral">
+    <div class="kpi-label">Org Aged %</div>
+    <div class="kpi-val" style="color:#9a6700">20.7%</div>
+    <div class="kpi-sub">↓ 1.3pp vs Oct 26 (22.0%)</div>
+  </div>
+  <div class="kpi good">
+    <div class="kpi-label">EMEA Aged %</div>
+    <div class="kpi-val" style="color:#1a7f37">17.6%</div>
+    <div class="kpi-sub">↓ 3.8pp vs Oct 26 (21.4%)</div>
+  </div>
+  <div class="kpi alert">
+    <div class="kpi-label">APAC Aged %</div>
+    <div class="kpi-val" style="color:#bc4c00">31.7%</div>
+    <div class="kpi-sub">↑ 4.4pp vs Oct 26 (27.3%)</div>
+  </div>
+</div>
+
+<!-- CHART 1: Non-SP BL + Aged Trend -->
+<div class="section-title">Non-SP Backlog &amp; Aged Count — Weekly Trend (Jul–Nov 2026)</div>
+<div class="card border-blue" style="margin-bottom:20px">
+  <div class="card-title">Total Non-SP Backlog (bars) vs Aged >15d Count (line) — All managers, Industry+Revenue</div>
+  <div class="chart-wrap-xl">
+    <canvas id="blTrendChart"></canvas>
+  </div>
+</div>
+
+<!-- CHART 2: Aged % by Region -->
+<div class="section-title">Aged % by Region — Weekly Trend</div>
+<div class="card border-orange" style="margin-bottom:20px">
+  <div class="card-title">Aged % (cases >15d / Non-SP BL) — Org-wide, EMEA, IST, APAC</div>
+  <div class="chart-wrap-xl">
+    <canvas id="agedPctChart"></canvas>
+  </div>
+</div>
+
+<!-- CHART 3: P&T Aged % Trend -->
+<div class="section-title">Top P&amp;T Aged % Trend</div>
+<div class="card border-purple" style="margin-bottom:20px">
+  <div class="card-title">Aged % by Product &amp; Topic — Top 5 P&amp;Ts (Jul–Nov 2026)</div>
+  <div class="chart-wrap-xl">
+    <canvas id="ptAgedChart"></canvas>
+  </div>
+</div>
+
+<!-- MANAGER SNAPSHOT TABLE -->
+<div class="section-title">Manager View — Nov 17, 2026 Snapshot</div>
+<div class="card border-blue" style="margin-bottom:20px">
+  <div class="card-title">Manager BL, Aged Count, Aged % — with WoW Delta vs Oct 26</div>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Region</th>
+        <th>Manager</th>
+        <th class="right">Non-SP BL</th>
+        <th class="right">Aged >15d</th>
+        <th class="right">Aged %</th>
+        <th class="right">WoW Δ vs Oct 26</th>
+        <th>Signal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="mgr-row-emea">
+        <td><span class="region-emea">EMEA</span></td>
+        <td>Sridhar Dwadasi</td>
+        <td class="right">132</td><td class="right">32</td>
+        <td class="right"><strong>24.2%</strong></td>
+        <td class="right"><span class="pill pill-red">+1.6pp ↑</span></td>
+        <td><span class="pill pill-yellow">Watch</span></td>
+      </tr>
+      <tr class="mgr-row-emea">
+        <td><span class="region-emea">EMEA</span></td>
+        <td>Darshan Jahagirdar</td>
+        <td class="right">80</td><td class="right">12</td>
+        <td class="right">15.0%</td>
+        <td class="right"><span class="pill pill-green">−11.7pp ↓</span></td>
+        <td><span class="pill pill-green">Improving</span></td>
+      </tr>
+      <tr class="mgr-row-emea">
+        <td><span class="region-emea">EMEA</span></td>
+        <td>Apurva Ajit</td>
+        <td class="right">74</td><td class="right">11</td>
+        <td class="right">14.9%</td>
+        <td class="right"><span class="pill pill-green">−9.2pp ↓</span></td>
+        <td><span class="pill pill-green">Improving</span></td>
+      </tr>
+      <tr class="mgr-row-emea">
+        <td><span class="region-emea">EMEA</span></td>
+        <td>Eshant Sharma</td>
+        <td class="right">60</td><td class="right">6</td>
+        <td class="right">10.0%</td>
+        <td class="right"><span class="pill pill-blue">+2.2pp ↑</span></td>
+        <td><span class="pill pill-blue">Stable</span></td>
+      </tr>
+      <tr class="mgr-row-emea">
+        <td><span class="region-emea">EMEA</span></td>
+        <td>Seamus Redmond</td>
+        <td class="right">—</td><td class="right">—</td>
+        <td class="right">—</td>
+        <td class="right">—</td>
+        <td>—</td>
+      </tr>
+      <tr class="mgr-row-emea">
+        <td><span class="region-emea">EMEA</span></td>
+        <td>Saheb Virdi</td>
+        <td class="right">—</td><td class="right">—</td>
+        <td class="right">—</td>
+        <td class="right">—</td>
+        <td>—</td>
+      </tr>
+      <tr class="mgr-row-ist">
+        <td><span class="region-ist">India</span></td>
+        <td>Bhagat M</td>
+        <td class="right">177</td><td class="right">38</td>
+        <td class="right"><strong>21.5%</strong></td>
+        <td class="right"><span class="pill pill-green">−3.0pp ↓</span></td>
+        <td><span class="pill pill-blue">Stable</span></td>
+      </tr>
+      <tr class="mgr-row-ist">
+        <td><span class="region-ist">India</span></td>
+        <td>Naren Rajendran</td>
+        <td class="right">76</td><td class="right">20</td>
+        <td class="right"><strong>26.3%</strong></td>
+        <td class="right"><span class="pill pill-red">+7.4pp ↑</span></td>
+        <td><span class="pill pill-red">Rising ⚠</span></td>
+      </tr>
+      <tr class="mgr-row-ist">
+        <td><span class="region-ist">India</span></td>
+        <td>Manu Ramamurthy</td>
+        <td class="right">127</td><td class="right">15</td>
+        <td class="right">11.8%</td>
+        <td class="right"><span class="pill pill-green">−5.0pp ↓</span></td>
+        <td><span class="pill pill-green">Improving</span></td>
+      </tr>
+      <tr class="mgr-row-apac highlight-row">
+        <td><span class="region-apac">APAC</span></td>
+        <td>Rafik Shaikh</td>
+        <td class="right">54</td><td class="right">23</td>
+        <td class="right"><strong style="color:#bc4c00">42.6%</strong></td>
+        <td class="right"><span class="pill pill-red">+11.7pp ↑</span></td>
+        <td><span class="pill pill-red">🔴 Hotspot</span></td>
+      </tr>
+      <tr class="mgr-row-apac">
+        <td><span class="region-apac">APAC</span></td>
+        <td>Mahima Prathaban</td>
+        <td class="right">45</td><td class="right">15</td>
+        <td class="right"><strong style="color:#bc4c00">33.3%</strong></td>
+        <td class="right"><span class="pill pill-red">+6.9pp ↑</span></td>
+        <td><span class="pill pill-red">Rising ⚠</span></td>
+      </tr>
+      <tr class="mgr-row-apac">
+        <td><span class="region-apac">APAC</span></td>
+        <td>Swetha B</td>
+        <td class="right">46</td><td class="right">8</td>
+        <td class="right">17.4%</td>
+        <td class="right"><span class="pill pill-green">−6.5pp ↓</span></td>
+        <td><span class="pill pill-blue">Stable</span></td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr style="background:#f6f8fa;font-weight:700">
+        <td colspan="2">TOTAL</td>
+        <td class="right">871</td>
+        <td class="right">180</td>
+        <td class="right">20.7%</td>
+        <td class="right"><span class="pill pill-green">−1.3pp ↓</span></td>
+        <td><span class="pill pill-blue">Stable org-wide</span></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<!-- P&T SNAPSHOT TABLE -->
+<div class="section-title">P&amp;T View — Nov 17, 2026 Snapshot (Top 7 by Aged Count)</div>
+<div class="card border-purple" style="margin-bottom:20px">
+  <div class="card-title">Product &amp; Topic Breakdown — Non-SP BL, Aged, % — Nov 17</div>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Product &amp; Topic</th>
+        <th class="right">Non-SP BL</th>
+        <th class="right">Aged >15d</th>
+        <th class="right">Aged %</th>
+        <th class="right">WoW Δ</th>
+        <th>Signal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><strong>Life Sciences</strong></td>
+        <td class="right">235</td><td class="right">50</td>
+        <td class="right"><strong>21.3%</strong></td>
+        <td class="right"><span class="pill pill-red">+1.2pp ↑</span></td>
+        <td><span class="pill pill-blue">Watch (vol 235)</span></td>
+      </tr>
+      <tr class="highlight-row">
+        <td>2</td>
+        <td><strong>Financial Services</strong></td>
+        <td class="right">22</td><td class="right">7</td>
+        <td class="right"><strong style="color:#bc4c00">31.8%</strong></td>
+        <td class="right"><span class="pill pill-red">+8.0pp ↑</span></td>
+        <td><span class="pill pill-red">🔴 Hotspot</span></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>CPQ / OMS / DC</strong></td>
+        <td class="right">87</td><td class="right">24</td>
+        <td class="right">27.6%</td>
+        <td class="right"><span class="pill pill-green">−4.1pp ↓</span></td>
+        <td><span class="pill pill-blue">Improving</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>Retail &amp; CG</strong></td>
+        <td class="right">86</td><td class="right">24</td>
+        <td class="right">27.9%</td>
+        <td class="right"><span class="pill pill-green">+0.5pp →</span></td>
+        <td><span class="pill pill-blue">Stable</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>Omnistudio</strong></td>
+        <td class="right">65</td><td class="right">16</td>
+        <td class="right">24.6%</td>
+        <td class="right"><span class="pill pill-green">−1.5pp →</span></td>
+        <td><span class="pill pill-blue">Stable</span></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>Health Cloud</strong></td>
+        <td class="right">14</td><td class="right">6</td>
+        <td class="right"><strong style="color:#bc4c00">42.9%</strong></td>
+        <td class="right">—</td>
+        <td><span class="pill pill-red">Watch (small vol)</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- HOTSPOT CALLOUT -->
+<div class="section-title">Top 3 Aged % Hotspots — Nov 17 vs Oct 26</div>
+<div class="grid-3" style="margin-bottom:20px">
+  <div class="card border-red">
+    <div class="hotspot-band">🔴 #1 Hotspot</div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:6px">Rafik Shaikh (APAC)</div>
+    <div style="font-size:28px;font-weight:800;color:#bc4c00">42.6%</div>
+    <div class="kpi-sub">+11.7pp vs Oct 26 (30.9%)</div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted)">BL: 54 &nbsp;|&nbsp; Aged: 23 cases</div>
+    <div class="insight red" style="margin-top:10px">
+      <strong>Action needed</strong>
+      <p>23 of 54 cases aged. Manager review — push No Path cases to GUS/swarm. Prioritise Sev1/Red accounts first.</p>
+    </div>
+  </div>
+  <div class="card border-orange">
+    <div class="hotspot-band">🟠 #2 Hotspot</div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:6px">Financial Services (P&amp;T)</div>
+    <div style="font-size:28px;font-weight:800;color:#bc4c00">31.8%</div>
+    <div class="kpi-sub">+8.0pp vs Oct 26 (23.8%)</div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted)">BL: 22 &nbsp;|&nbsp; Aged: 7 cases</div>
+    <div class="insight yellow" style="margin-top:10px">
+      <strong>Rising on small base</strong>
+      <p>Low volume (22 BL) means each additional aged case = large % swing. 7 aged cases — investigate bucket split.</p>
+    </div>
+  </div>
+  <div class="card border-orange">
+    <div class="hotspot-band">🟡 #3 Hotspot</div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:6px">Naren Rajendran (India)</div>
+    <div style="font-size:28px;font-weight:800;color:#bc4c00">26.3%</div>
+    <div class="kpi-sub">+7.4pp vs Oct 26 (18.9%)</div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted)">BL: 76 &nbsp;|&nbsp; Aged: 20 cases</div>
+    <div class="insight yellow" style="margin-top:10px">
+      <strong>Notable increase</strong>
+      <p>20 aged cases — 7.4pp jump. Check No Path and Swarm-no-GUS for cases stalling post-triage.</p>
+    </div>
+  </div>
+</div>
+
+<!-- INSIGHTS -->
+<div class="section-title">Key Insights — Nov 17, 2026</div>
+<div class="grid-2" style="margin-bottom:20px">
+  <div>
+    <div class="insight green">
+      <strong>Org aged % improving: 22.0% → 20.7% (↓1.3pp)</strong>
+      <p>Non-SP BL dropped 41 cases (912→871) and aged count fell 21 (201→180). EMEA improvement (-3.8pp) is the primary driver.</p>
+    </div>
+    <div class="insight red">
+      <strong>APAC is the outlier: 27.3% → 31.7% (+4.4pp)</strong>
+      <p>Rafik Shaikh (+11.7pp, 42.6%) and Mahima Prathaban (+6.9pp, 33.3%) both rising. Requires direct manager intervention this week.</p>
+    </div>
+    <div class="insight yellow">
+      <strong>Financial Services aged % at 31.8% (+8.0pp)</strong>
+      <p>Small BL (22) amplifies swings, but 7 aged cases on a 22-case base is structurally high. Worth a targeted case-by-case review.</p>
+    </div>
+  </div>
+  <div>
+    <div class="insight blue">
+      <strong>Life Sciences remains highest absolute aged count: 50 cases</strong>
+      <p>21.3% aged% — above org average but broadly stable. Volume (235 BL) means absolute aged count stays high even at modest %.</p>
+    </div>
+    <div class="insight green">
+      <strong>IST broadly stable: 20.6% → 19.2% (↓1.4pp)</strong>
+      <p>Bhagat M improving (-3pp), Manu improving (-5pp). Naren rising (+7.4pp) — net still a slight improvement for the region.</p>
+    </div>
+    <div class="insight blue">
+      <strong>Non-SP BL trend: 1,124 peak (Oct 15) → 871 today</strong>
+      <p>-253 cases since peak six weeks ago. Sustained reduction across EMEA + India, offset partially by APAC growth.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  RC Aged Backlog Trend &nbsp;·&nbsp; Industry &amp; Revenue Cloud &nbsp;·&nbsp; EMEA · India · APAC &nbsp;·&nbsp; <strong>Nov 17, 2026</strong> &nbsp;·&nbsp; Non-SP BL (excludes Solution Provided) &nbsp;·&nbsp; Aged threshold: >15 days<br>
+  Source: OrgCS Live &nbsp;·&nbsp; <a href="https://eshantsharma-bit.github.io/rc-dashboard/" style="color:var(--accent)">eshantsharma-bit.github.io/rc-dashboard/</a> &nbsp;·&nbsp; Prepared by Eshant Sharma
+</footer>
+
+<script>
+Chart.register(ChartDataLabels);
+
+// ─── 1. BL + Aged Count trend ───
+const weeks = ['Jul 24','Jul 30','Aug 13','Aug 19','Sep 14','Sep 22','Oct 5','Oct 15','Oct 26','Nov 17'];
+const blData  = [887, 837, 781, 798, 1095, 1038, 975, 1124, 912, 871];
+const agedCnt = [205, 190, 161, 149, 224, 231, 231, 204, 201, 180];
+
+new Chart(document.getElementById('blTrendChart'), {
+  type: 'bar',
+  data: {
+    labels: weeks,
+    datasets: [
+      {
+        type: 'bar',
+        label: 'Non-SP BL',
+        data: blData,
+        backgroundColor: weeks.map((w,i) => i === weeks.length-1 ? '#1b4fa8' : '#90aed4'),
+        borderRadius: 4,
+        yAxisID: 'yLeft',
+        datalabels: {
+          anchor: 'end', align: 'end', offset: 2,
+          font: {size:10, weight:'700'},
+          color: weeks.map((w,i) => i === weeks.length-1 ? '#1b4fa8' : '#5a6e8c')
+        }
+      },
+      {
+        type: 'line',
+        label: 'Aged >15d Count',
+        data: agedCnt,
+        borderColor: '#bc4c00',
+        backgroundColor: 'rgba(188,76,0,.12)',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointBackgroundColor: weeks.map((w,i) => i === weeks.length-1 ? '#bc4c00' : '#fff'),
+        pointBorderColor: '#bc4c00',
+        pointBorderWidth: 2.5,
+        tension: 0.3,
+        yAxisID: 'yRight',
+        fill: false,
+        datalabels: {
+          anchor: 'end', align: 'top', offset: 4,
+          font: {size:10, weight:'700'},
+          color: '#bc4c00',
+          formatter: v => v
+        }
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: {mode:'index', intersect:false},
+    plugins: {
+      legend: {position:'top', labels:{font:{size:11}}},
+      datalabels: {}
+    },
+    scales: {
+      yLeft: {
+        type:'linear', position:'left',
+        title:{display:true, text:'Non-SP BL', font:{size:11}},
+        min: 600, max: 1300,
+        grid:{color:'rgba(197,211,232,.4)'}
+      },
+      yRight: {
+        type:'linear', position:'right',
+        title:{display:true, text:'Aged >15d Count', font:{size:11}},
+        min: 100, max: 280,
+        grid:{display:false}
+      },
+      x: {grid:{display:false}, ticks:{font:{size:11}}}
+    }
+  }
+});
+
+// ─── 2. Aged % by region ───
+const orgPct  = [23.1, 22.7, 20.6, 18.7, 20.5, 22.3, 23.7, 18.1, 22.0, 20.7];
+const emeaPct = [22.1, 24.8, 25.5, 21.5, 17.6, 20.7, 22.2, 16.5, 21.4, 17.6];
+const istPct  = [23.9, 21.7, 16.1, 16.3, 17.6, 18.9, 21.0, 16.9, 20.6, 19.2];
+const apacPct = [null, null, null, null, 33.0, 33.7, 33.3, 24.4, 27.3, 31.7];
+
+new Chart(document.getElementById('agedPctChart'), {
+  type: 'line',
+  data: {
+    labels: weeks,
+    datasets: [
+      {
+        label: 'Org-wide',
+        data: orgPct,
+        borderColor: '#57606a',
+        backgroundColor: 'transparent',
+        borderWidth: 2,
+        borderDash: [5,3],
+        pointRadius: 4,
+        pointBackgroundColor: '#57606a',
+        tension: 0.3,
+        datalabels: {
+          anchor: 'end', align: 'top', offset: 4,
+          font: {size:9, weight:'600'},
+          color: '#57606a',
+          formatter: v => v ? v.toFixed(1)+'%' : ''
+        }
+      },
+      {
+        label: 'EMEA',
+        data: emeaPct,
+        borderColor: '#1b4fa8',
+        backgroundColor: 'rgba(27,79,168,.08)',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointBackgroundColor: weeks.map((w,i) => i === weeks.length-1 ? '#1b4fa8' : '#fff'),
+        pointBorderColor: '#1b4fa8',
+        pointBorderWidth: 2.5,
+        tension: 0.3,
+        fill: false,
+        datalabels: {
+          anchor: 'end', align: 'bottom', offset: 4,
+          font: {size:9, weight:'600'},
+          color: '#1b4fa8',
+          formatter: v => v ? v.toFixed(1)+'%' : ''
+        }
+      },
+      {
+        label: 'IST (India)',
+        data: istPct,
+        borderColor: '#2d8a4e',
+        backgroundColor: 'transparent',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointBackgroundColor: weeks.map((w,i) => i === weeks.length-1 ? '#2d8a4e' : '#fff'),
+        pointBorderColor: '#2d8a4e',
+        pointBorderWidth: 2.5,
+        tension: 0.3,
+        fill: false,
+        datalabels: {
+          anchor: 'end', align: 'top', offset: 4,
+          font: {size:9, weight:'600'},
+          color: '#2d8a4e',
+          formatter: v => v ? v.toFixed(1)+'%' : ''
+        }
+      },
+      {
+        label: 'APAC',
+        data: apacPct,
+        borderColor: '#bc4c00',
+        backgroundColor: 'rgba(188,76,0,.08)',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointBackgroundColor: weeks.map((w,i) => i === weeks.length-1 ? '#bc4c00' : '#fff'),
+        pointBorderColor: '#bc4c00',
+        pointBorderWidth: 2.5,
+        tension: 0.3,
+        fill: false,
+        datalabels: {
+          anchor: 'end', align: 'top', offset: 4,
+          font: {size:9, weight:'600'},
+          color: '#bc4c00',
+          formatter: v => v ? v.toFixed(1)+'%' : ''
+        }
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: {mode:'index', intersect:false},
+    plugins: {
+      legend: {position:'top', labels:{font:{size:11}}},
+      datalabels: {}
+    },
+    scales: {
+      y: {
+        min: 10, max: 42,
+        title: {display:true, text:'Aged % (cases >15d / Non-SP BL)', font:{size:11}},
+        ticks: {callback: v => v+'%'},
+        grid: {color:'rgba(197,211,232,.4)'}
+      },
+      x: {grid:{display:false}, ticks:{font:{size:11}}}
+    }
+  }
+});
+
+// ─── 3. P&T Aged % trend ───
+// Use sparse arrays (null for missing weeks)
+// weeks index: 0=Jul24, 1=Jul30, 2=Aug13, 3=Aug19, 4=Sep14, 5=Sep22, 6=Oct5, 7=Oct15, 8=Oct26, 9=Nov17
+const ptData = {
+  'Life Sciences':     [null, 19.9, 17.9, 15.4, null, null, null, null, 20.1, 21.3],
+  'Retail & CG':       [null, 42.5, 39.2, 38.4, null, null, null, null, 27.4, 27.9],
+  'CPQ / OMS / DC':    [null, 29.7, 30.7, 23.4, null, null, null, null, 31.7, 27.6],
+  'Omnistudio':        [null, 18.5, 24.2, 16.7, null, null, null, null, 26.1, 24.6],
+  'Financial Services':[null, null, 29.4, 31.3, null, null, null, null, 23.8, 31.8],
+};
+const ptColors = ['#1b4fa8','#e16f42','#2d8a4e','#8b6abf','#bc4c00'];
+const ptLabels = Object.keys(ptData);
+
+new Chart(document.getElementById('ptAgedChart'), {
+  type: 'line',
+  data: {
+    labels: weeks,
+    datasets: ptLabels.map((name, i) => ({
+      label: name,
+      data: ptData[name],
+      borderColor: ptColors[i],
+      backgroundColor: 'transparent',
+      borderWidth: 2.5,
+      pointRadius: 5,
+      pointBackgroundColor: ptData[name].map((v,wi) => (wi === weeks.length-1 && v !== null) ? ptColors[i] : (v !== null ? '#fff' : 'transparent')),
+      pointBorderColor: ptData[name].map(v => v !== null ? ptColors[i] : 'transparent'),
+      pointBorderWidth: 2,
+      tension: 0.3,
+      spanGaps: false,
+      datalabels: {
+        anchor: 'end', align: 'top', offset: 4,
+        font: {size:9, weight:'600'},
+        color: ptColors[i],
+        formatter: v => v !== null ? v.toFixed(1)+'%' : ''
+      }
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: {mode:'index', intersect:false},
+    plugins: {
+      legend: {position:'top', labels:{font:{size:11}}},
+      datalabels: {}
+    },
+    scales: {
+      y: {
+        min: 10, max: 50,
+        title: {display:true, text:'Aged % (>15d / Non-SP BL)', font:{size:11}},
+        ticks: {callback: v => v+'%'},
+        grid: {color:'rgba(197,211,232,.4)'}
+      },
+      x: {grid:{display:false}, ticks:{font:{size:11}}}
+    }
+  }
+});
+</script>
+</body>
+</html>
