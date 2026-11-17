@@ -156,9 +156,9 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 </div>
 
 <!-- CHART 3: P&T Aged % Trend -->
-<div class="section-title">Top P&amp;T Aged % Trend</div>
+<div class="section-title">Top P&amp;T Aged % Trend — Confirmed Runs Only</div>
 <div class="card border-purple" style="margin-bottom:20px">
-  <div class="card-title">Aged % by Product &amp; Topic — Top P&amp;Ts (Oct 26 → Nov 17, 2026)</div>
+  <div class="card-title">Aged % by Product &amp; Topic — Oct 26 → Nov 17 (2 confirmed data points; more weeks accumulate with each run)</div>
   <div class="chart-wrap-xl">
     <canvas id="ptAgedChart"></canvas>
   </div>
@@ -618,38 +618,39 @@ new Chart(document.getElementById('agedPctChart'), {
   }
 });
 
-// ─── 3. P&T Aged % trend — last 5 runs ───
-// weeks: Sep 22, Oct 5, Oct 15, Oct 26, Nov 17
+// ─── 3. P&T Aged % trend — confirmed runs only ───
+// Only include weeks where P&T data was captured in the actual post
+const ptWeeks = ['Oct 26','Nov 17'];
 const ptData = {
-  'Life Sciences':              [null, null, null, 20.0, 21.3],
-  'CPQ / OMS / DC':             [null, null, null, 32.3, 27.6],
-  'Retail & CG':                [null, null, null, 27.4, 27.9],
-  'Omnistudio':                 [null, null, null, 26.1, 24.6],
-  'Financial Services':         [null, null, null, null, 31.8],
-  'TM (RC Core)':               [null, null, null, 28.6, 22.9],
+  'Life Sciences':        [20.0, 21.3],
+  'CPQ / OMS / DC':       [32.3, 27.6],
+  'Retail & CG':          [27.4, 27.9],
+  'Omnistudio':           [26.1, 24.6],
+  'TM (RC Core)':         [28.6, 22.9],
+  'Financial Services':   [null, 31.8],
 };
-const ptColors = ['#1b4fa8','#e16f42','#2d8a4e','#8b6abf','#bc4c00','#0a7d7d'];
+const ptColors = ['#1b4fa8','#e16f42','#2d8a4e','#8b6abf','#0a7d7d','#bc4c00'];
 const ptLabels = Object.keys(ptData);
 
 new Chart(document.getElementById('ptAgedChart'), {
   type: 'line',
   data: {
-    labels: weeks,
+    labels: ptWeeks,
     datasets: ptLabels.map((name, i) => ({
       label: name,
       data: ptData[name],
       borderColor: ptColors[i],
       backgroundColor: 'transparent',
       borderWidth: 2.5,
-      pointRadius: 5,
-      pointBackgroundColor: ptData[name].map((v,wi) => (wi === weeks.length-1 && v !== null) ? ptColors[i] : (v !== null ? '#fff' : 'transparent')),
+      pointRadius: 6,
+      pointBackgroundColor: ptData[name].map((v,wi) => (wi === ptWeeks.length-1 && v !== null) ? ptColors[i] : (v !== null ? '#fff' : 'transparent')),
       pointBorderColor: ptData[name].map(v => v !== null ? ptColors[i] : 'transparent'),
       pointBorderWidth: 2,
-      tension: 0.3,
+      tension: 0,
       spanGaps: false,
       datalabels: {
         anchor: 'end', align: 'top', offset: 4,
-        font: {size:9, weight:'600'},
+        font: {size:10, weight:'700'},
         color: ptColors[i],
         formatter: v => v !== null ? v.toFixed(1)+'%' : ''
       }
