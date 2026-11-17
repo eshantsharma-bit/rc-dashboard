@@ -76,9 +76,10 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .bar-fill{height:100%;border-radius:4px}
 footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-top:1px solid var(--border);margin-top:20px}
 .section-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--navy-mid)}
-.chart-wrap{position:relative;height:220px}
-.chart-wrap-lg{position:relative;height:280px}
-.chart-wrap-xl{position:relative;height:320px}
+.chart-wrap{position:relative;height:260px}
+.chart-wrap-lg{position:relative;height:320px}
+.chart-wrap-xl{position:relative;height:380px}
+.chart-wrap-xxl{position:relative;height:420px}
 .region-emea{color:#1b4fa8;font-weight:700}
 .region-ist{color:#2d8a4e;font-weight:700}
 .region-apac{color:#bc4c00;font-weight:700}
@@ -150,16 +151,16 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <div class="section-title">Aged % by Region — Weekly Trend</div>
 <div class="card border-orange" style="margin-bottom:20px">
   <div class="card-title">Aged % (cases >15d / Non-SP BL) — Org-wide, EMEA, IST, APAC — Sep 22 → Nov 17, 2026</div>
-  <div class="chart-wrap-xl">
+  <div class="chart-wrap-xxl">
     <canvas id="agedPctChart"></canvas>
   </div>
 </div>
 
 <!-- CHART 3: P&T Aged % Trend -->
-<div class="section-title">Top P&amp;T Aged % Trend — Confirmed Runs Only</div>
+<div class="section-title">Top P&amp;T Aged % — Oct 26 vs Nov 17</div>
 <div class="card border-purple" style="margin-bottom:20px">
-  <div class="card-title">Aged % by Product &amp; Topic — Oct 26 → Nov 17 (2 confirmed data points; more weeks accumulate with each run)</div>
-  <div class="chart-wrap-xl">
+  <div class="card-title">Aged % by Product &amp; Topic — Oct 26 vs Nov 17 (confirmed data only; grows each run)</div>
+  <div class="chart-wrap-xxl">
     <canvas id="ptAgedChart"></canvas>
   </div>
 </div>
@@ -441,8 +442,13 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <script>
 Chart.register(ChartDataLabels);
 
-// ─── 1. BL + Aged Count trend — last 5 runs ───
-const weeks = ['Sep 22','Oct 5','Oct 15','Oct 26','Nov 17'];
+// ─────────────────────────────────────────────────
+// CHART 1 — Non-SP BL (bars) + Aged Count (line)
+// Fix: BL labels inside bars (white, bottom-aligned)
+//      Aged labels above points with generous offset
+//      Wide yRight headroom so line labels never hit bar tops
+// ─────────────────────────────────────────────────
+const weeks   = ['Sep 22','Oct 5','Oct 15','Oct 26','Nov 17'];
 const blData  = [1038, 975, 1124, 933, 871];
 const agedCnt = [231, 231, 204, 211, 180];
 
@@ -455,13 +461,14 @@ new Chart(document.getElementById('blTrendChart'), {
         type: 'bar',
         label: 'Non-SP BL',
         data: blData,
-        backgroundColor: weeks.map((w,i) => i === weeks.length-1 ? '#1b4fa8' : '#90aed4'),
-        borderRadius: 4,
+        backgroundColor: weeks.map((_,i) => i === weeks.length-1 ? '#1b4fa8' : '#90aed4'),
+        borderRadius: 6,
         yAxisID: 'yLeft',
         datalabels: {
-          anchor: 'end', align: 'end', offset: 2,
-          font: {size:10, weight:'700'},
-          color: weeks.map((w,i) => i === weeks.length-1 ? '#1b4fa8' : '#5a6e8c')
+          // Inside bar, near top — no collision with line labels
+          anchor: 'end', align: 'start', offset: 6,
+          font: {size:12, weight:'700'},
+          color: '#fff'
         }
       },
       {
@@ -469,19 +476,23 @@ new Chart(document.getElementById('blTrendChart'), {
         label: 'Aged >15d Count',
         data: agedCnt,
         borderColor: '#bc4c00',
-        backgroundColor: 'rgba(188,76,0,.12)',
-        borderWidth: 2.5,
-        pointRadius: 5,
-        pointBackgroundColor: weeks.map((w,i) => i === weeks.length-1 ? '#bc4c00' : '#fff'),
-        pointBorderColor: '#bc4c00',
-        pointBorderWidth: 2.5,
+        backgroundColor: 'transparent',
+        borderWidth: 3,
+        pointRadius: 6,
+        pointBackgroundColor: '#bc4c00',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
         tension: 0.3,
         yAxisID: 'yRight',
         fill: false,
         datalabels: {
-          anchor: 'end', align: 'top', offset: 4,
-          font: {size:10, weight:'700'},
+          // Above the point, well clear of bar tops
+          anchor: 'end', align: 'top', offset: 10,
+          font: {size:12, weight:'700'},
           color: '#bc4c00',
+          backgroundColor: 'rgba(255,255,255,0.85)',
+          borderRadius: 4,
+          padding: {top:2,bottom:2,left:4,right:4},
           formatter: v => v
         }
       }
@@ -489,34 +500,54 @@ new Chart(document.getElementById('blTrendChart'), {
   },
   options: {
     responsive: true, maintainAspectRatio: false,
+    layout: {padding: {top: 36}},
     interaction: {mode:'index', intersect:false},
     plugins: {
-      legend: {position:'top', labels:{font:{size:11}}},
+      legend: {position:'top', labels:{font:{size:12}, padding:16}},
       datalabels: {}
     },
     scales: {
       yLeft: {
         type:'linear', position:'left',
-        title:{display:true, text:'Non-SP BL', font:{size:11}},
-        min: 600, max: 1300,
-        grid:{color:'rgba(197,211,232,.4)'}
+        title:{display:true, text:'Non-SP Backlog', font:{size:12}},
+        min: 500, max: 1400,
+        grid:{color:'rgba(197,211,232,.4)'},
+        ticks:{font:{size:11}}
       },
       yRight: {
         type:'linear', position:'right',
-        title:{display:true, text:'Aged >15d Count', font:{size:11}},
-        min: 100, max: 280,
-        grid:{display:false}
+        title:{display:true, text:'Aged >15d', font:{size:12}},
+        min: 100, max: 320,
+        grid:{display:false},
+        ticks:{font:{size:11}}
       },
-      x: {grid:{display:false}, ticks:{font:{size:11}}}
+      x: {grid:{display:false}, ticks:{font:{size:12}}}
     }
   }
 });
 
-// ─── 2. Aged % by region — last 5 runs ───
+// ─────────────────────────────────────────────────
+// CHART 2 — Aged % by Region
+// Fix: separate each series to its own label position
+//      APAC always top (highest, 24–34%), IST left,
+//      Org dashed, EMEA right — no two share same align
+//      Clamp y-axis to separate bands visually
+//      Pill-style label backgrounds for readability
+// ─────────────────────────────────────────────────
 const orgPct  = [22.3, 23.7, 18.1, 22.6, 20.7];
 const emeaPct = [20.7, 22.2, 16.5, 22.7, 17.6];
 const istPct  = [18.9, 21.0, 16.9, 20.6, 19.2];
 const apacPct = [33.7, 33.3, 24.4, 27.3, 31.7];
+
+function labelStyle(color) {
+  return {
+    font: {size:11, weight:'700'},
+    color: color,
+    backgroundColor: 'rgba(255,255,255,0.88)',
+    borderRadius: 4,
+    padding: {top:2,bottom:2,left:4,right:4}
+  };
+}
 
 new Chart(document.getElementById('agedPctChart'), {
   type: 'line',
@@ -524,39 +555,57 @@ new Chart(document.getElementById('agedPctChart'), {
     labels: weeks,
     datasets: [
       {
+        label: 'APAC',
+        data: apacPct,
+        borderColor: '#bc4c00',
+        backgroundColor: 'rgba(188,76,0,.06)',
+        borderWidth: 3,
+        pointRadius: 6,
+        pointBackgroundColor: '#bc4c00',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        tension: 0.3,
+        fill: false,
+        datalabels: {
+          ...labelStyle('#bc4c00'),
+          anchor: 'end', align: 'top', offset: 8,
+          formatter: v => v.toFixed(1)+'%'
+        }
+      },
+      {
         label: 'Org-wide',
         data: orgPct,
         borderColor: '#57606a',
         backgroundColor: 'transparent',
         borderWidth: 2,
-        borderDash: [5,3],
-        pointRadius: 4,
+        borderDash: [6,3],
+        pointRadius: 5,
         pointBackgroundColor: '#57606a',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
         tension: 0.3,
         datalabels: {
-          anchor: 'end', align: 'top', offset: 4,
-          font: {size:9, weight:'600'},
-          color: '#57606a',
-          formatter: v => v ? v.toFixed(1)+'%' : ''
+          ...labelStyle('#57606a'),
+          anchor: 'end', align: 'bottom', offset: 8,
+          formatter: v => v.toFixed(1)+'%'
         }
       },
       {
         label: 'EMEA',
         data: emeaPct,
         borderColor: '#1b4fa8',
-        backgroundColor: 'rgba(27,79,168,.08)',
-        borderWidth: 2.5,
-        pointRadius: 5,
-        pointBackgroundColor: weeks.map((w,i) => i === weeks.length-1 ? '#1b4fa8' : '#fff'),
-        pointBorderColor: '#1b4fa8',
-        pointBorderWidth: 2.5,
+        backgroundColor: 'transparent',
+        borderWidth: 3,
+        pointRadius: 6,
+        pointBackgroundColor: '#1b4fa8',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
         tension: 0.3,
         fill: false,
         datalabels: {
-          anchor: 'end', align: 'bottom', offset: 4,
-          font: {size:9, weight:'600'},
-          color: '#1b4fa8',
-          formatter: v => v ? v.toFixed(1)+'%' : ''
+          ...labelStyle('#1b4fa8'),
+          anchor: 'center', align: 'left', offset: 12,
+          formatter: v => v.toFixed(1)+'%'
         }
       },
       {
@@ -564,113 +613,117 @@ new Chart(document.getElementById('agedPctChart'), {
         data: istPct,
         borderColor: '#2d8a4e',
         backgroundColor: 'transparent',
-        borderWidth: 2.5,
-        pointRadius: 5,
-        pointBackgroundColor: weeks.map((w,i) => i === weeks.length-1 ? '#2d8a4e' : '#fff'),
-        pointBorderColor: '#2d8a4e',
-        pointBorderWidth: 2.5,
+        borderWidth: 3,
+        pointRadius: 6,
+        pointBackgroundColor: '#2d8a4e',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
         tension: 0.3,
         fill: false,
         datalabels: {
-          anchor: 'end', align: 'top', offset: 4,
-          font: {size:9, weight:'600'},
-          color: '#2d8a4e',
-          formatter: v => v ? v.toFixed(1)+'%' : ''
-        }
-      },
-      {
-        label: 'APAC',
-        data: apacPct,
-        borderColor: '#bc4c00',
-        backgroundColor: 'rgba(188,76,0,.08)',
-        borderWidth: 2.5,
-        pointRadius: 5,
-        pointBackgroundColor: weeks.map((w,i) => i === weeks.length-1 ? '#bc4c00' : '#fff'),
-        pointBorderColor: '#bc4c00',
-        pointBorderWidth: 2.5,
-        tension: 0.3,
-        fill: false,
-        datalabels: {
-          anchor: 'end', align: 'top', offset: 4,
-          font: {size:9, weight:'600'},
-          color: '#bc4c00',
-          formatter: v => v ? v.toFixed(1)+'%' : ''
+          ...labelStyle('#2d8a4e'),
+          anchor: 'center', align: 'right', offset: 12,
+          formatter: v => v.toFixed(1)+'%'
         }
       }
     ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
+    layout: {padding: {top:36, bottom:16, left:40, right:40}},
     interaction: {mode:'index', intersect:false},
     plugins: {
-      legend: {position:'top', labels:{font:{size:11}}},
+      legend: {
+        position:'top',
+        labels:{font:{size:12}, padding:20,
+          usePointStyle:true, pointStyle:'circle'}
+      },
       datalabels: {}
     },
     scales: {
       y: {
-        min: 10, max: 42,
-        title: {display:true, text:'Aged % (cases >15d / Non-SP BL)', font:{size:11}},
-        ticks: {callback: v => v+'%'},
+        min: 12, max: 40,
+        title: {display:true, text:'Aged % (>15d / Non-SP BL)', font:{size:12}},
+        ticks:{callback: v => v+'%', font:{size:11}, stepSize:4},
         grid: {color:'rgba(197,211,232,.4)'}
       },
-      x: {grid:{display:false}, ticks:{font:{size:11}}}
+      x: {grid:{display:false}, ticks:{font:{size:12}}}
     }
   }
 });
 
-// ─── 3. P&T Aged % trend — confirmed runs only ───
-// Only include weeks where P&T data was captured in the actual post
-const ptWeeks = ['Oct 26','Nov 17'];
-const ptData = {
-  'Life Sciences':        [20.0, 21.3],
-  'CPQ / OMS / DC':       [32.3, 27.6],
-  'Retail & CG':          [27.4, 27.9],
-  'Omnistudio':           [26.1, 24.6],
-  'TM (RC Core)':         [28.6, 22.9],
-  'Financial Services':   [null, 31.8],
-};
-const ptColors = ['#1b4fa8','#e16f42','#2d8a4e','#8b6abf','#0a7d7d','#bc4c00'];
-const ptLabels = Object.keys(ptData);
+// ─────────────────────────────────────────────────
+// CHART 3 — P&T Aged % — grouped bar chart
+// Replacing line chart entirely: with only 2 data
+// points and 6 series, grouped bars are far cleaner.
+// Oct 26 = light shade, Nov 17 = strong shade.
+// Data labels inside bars (white), threshold line at 20%.
+// ─────────────────────────────────────────────────
+const ptLabels = ['Life Sciences','CPQ / OMS / DC','Retail & CG','Omnistudio','TM (RC Core)','Financial Services'];
+const ptOct26  = [20.0, 32.3, 27.4, 26.1, 28.6, null];
+const ptNov17  = [21.3, 27.6, 27.9, 24.6, 22.9, 31.8];
+const ptBaseColors = ['#1b4fa8','#e16f42','#2d8a4e','#8b6abf','#0a7d7d','#bc4c00'];
 
 new Chart(document.getElementById('ptAgedChart'), {
-  type: 'line',
+  type: 'bar',
   data: {
-    labels: ptWeeks,
-    datasets: ptLabels.map((name, i) => ({
-      label: name,
-      data: ptData[name],
-      borderColor: ptColors[i],
-      backgroundColor: 'transparent',
-      borderWidth: 2.5,
-      pointRadius: 6,
-      pointBackgroundColor: ptData[name].map((v,wi) => (wi === ptWeeks.length-1 && v !== null) ? ptColors[i] : (v !== null ? '#fff' : 'transparent')),
-      pointBorderColor: ptData[name].map(v => v !== null ? ptColors[i] : 'transparent'),
-      pointBorderWidth: 2,
-      tension: 0,
-      spanGaps: false,
-      datalabels: {
-        anchor: 'end', align: 'top', offset: 4,
-        font: {size:10, weight:'700'},
-        color: ptColors[i],
-        formatter: v => v !== null ? v.toFixed(1)+'%' : ''
+    labels: ptLabels,
+    datasets: [
+      {
+        label: 'Oct 26',
+        data: ptOct26,
+        backgroundColor: ptBaseColors.map(c => c + '55'),
+        borderColor: ptBaseColors.map(c => c + 'aa'),
+        borderWidth: 1,
+        borderRadius: 4,
+        datalabels: {
+          anchor: 'end', align: 'start', offset: 4,
+          font: {size:11, weight:'700'},
+          color: '#fff',
+          formatter: v => v !== null ? v.toFixed(1)+'%' : ''
+        }
+      },
+      {
+        label: 'Nov 17',
+        data: ptNov17,
+        backgroundColor: ptBaseColors,
+        borderColor: ptBaseColors,
+        borderWidth: 1,
+        borderRadius: 4,
+        datalabels: {
+          anchor: 'end', align: 'start', offset: 4,
+          font: {size:11, weight:'700'},
+          color: '#fff',
+          formatter: v => v.toFixed(1)+'%'
+        }
       }
-    }))
+    ]
   },
   options: {
+    indexAxis: 'y',
     responsive: true, maintainAspectRatio: false,
+    layout: {padding: {right: 20}},
     interaction: {mode:'index', intersect:false},
     plugins: {
-      legend: {position:'top', labels:{font:{size:11}}},
-      datalabels: {}
+      legend: {
+        position:'top',
+        labels:{font:{size:12}, padding:20,
+          usePointStyle:true, pointStyle:'rect'}
+      },
+      datalabels: {},
+      annotation: {}
     },
     scales: {
-      y: {
-        min: 10, max: 50,
-        title: {display:true, text:'Aged % (>15d / Non-SP BL)', font:{size:11}},
-        ticks: {callback: v => v+'%'},
-        grid: {color:'rgba(197,211,232,.4)'}
+      x: {
+        min: 0, max: 42,
+        title:{display:true, text:'Aged % (>15d / Non-SP BL)', font:{size:12}},
+        ticks:{callback: v => v+'%', font:{size:11}},
+        grid:{color:'rgba(197,211,232,.4)'}
       },
-      x: {grid:{display:false}, ticks:{font:{size:11}}}
+      y: {
+        grid:{display:false},
+        ticks:{font:{size:12}, padding:4}
+      }
     }
   }
 });
