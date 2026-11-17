@@ -262,24 +262,6 @@
 })();
 </script>
 
-<!-- Row 4: RCA breakdown + RCB breakdown -->
-<div class="grid-3">
-  <div class="card">
-    <h2>RCA Sub-products — Weekly Volume</h2>
-    <canvas id="chartRCA"></canvas>
-    <div class="sub">Revenue Cloud (Core) sub-lines only</div>
-  </div>
-  <div class="card">
-    <h2>RCB — Weekly Volume</h2>
-    <canvas id="chartRCB"></canvas>
-    <div class="sub">Legacy Revenue: CPQ, Billing, CPQ Dev Support</div>
-  </div>
-  <div class="card">
-    <h2>Life Sciences — Weekly Volume by Region</h2>
-    <canvas id="chartLS"></canvas>
-    <div class="sub">Life Sciences is India-dominant; Diwali clearly visible in Nov 8</div>
-  </div>
-</div>
 
 <!-- Row 5: Support Tier + Tier by Region -->
 <div class="grid-2" style="margin:20px 32px 0;">
@@ -577,42 +559,6 @@ new Chart(document.getElementById('chartDriverShare'), {
   }
 });
 
-// ── CHART 7: RCA sub-products stacked bar ──
-new Chart(document.getElementById('chartRCA'), {
-  type:'bar',
-  data:{
-    labels: WEEKS,
-    datasets:[
-      { label:'Txn Mgmt',   data:rcaTxn,   backgroundColor:'#cf222e', datalabels: dlInside },
-      { label:'Price Mgmt', data:rcaPrice, backgroundColor:'#8250df', datalabels: dlInside },
-      { label:'Prod Config',data:rcaConf,  backgroundColor:'#0969da', datalabels: dlInside },
-      { label:'Billing',    data:rcaBill,  backgroundColor:'#1a7f37', datalabels: dlInside },
-      { label:'Other RCA',  data:rcaOther, backgroundColor:'#d0d7de', datalabels: dlInside }
-    ]
-  },
-  options:{
-    plugins:{ legend:{position:'top',labels:{font:{size:10}}}, datalabels:{} },
-    scales:{ x:{stacked:true}, y:{stacked:true, grid:{color:'#eaecef'}} }
-  }
-});
-
-// ── CHART 8: RCB sub-products stacked bar ──
-new Chart(document.getElementById('chartRCB'), {
-  type:'bar',
-  data:{
-    labels: WEEKS,
-    datasets:[
-      { label:'Legacy CPQ',   data:rcbCPQ,    backgroundColor:'#e36209', datalabels: dlInside },
-      { label:'CPQ Dev Supp', data:rcbCPQDev, backgroundColor:'#bf8700', datalabels: dlInside },
-      { label:'Billing',      data:rcbBill,   backgroundColor:'#8250df', datalabels: dlInside },
-      { label:'Other RCB',    data:rcbOther,  backgroundColor:'#d0d7de', datalabels: dlInside }
-    ]
-  },
-  options:{
-    plugins:{ legend:{position:'top',labels:{font:{size:10}}}, datalabels:{} },
-    scales:{ x:{stacked:true}, y:{stacked:true, grid:{color:'#eaecef'}} }
-  }
-});
 
 // ── CHART 10: Support Tier (donut/horizontal bar) ──
 const tierLabels  = ['Signature Success','Premier+','Standard','Partner Premier'];
@@ -725,22 +671,6 @@ new Chart(document.getElementById('chartBugCloud'), {
   }
 });
 
-// ── CHART 9: Life Sciences by region ──
-new Chart(document.getElementById('chartLS'), {
-  type:'bar',
-  data:{
-    labels: WEEKS,
-    datasets:[
-      { label:'EMEA',  data:lsEmea,  backgroundColor:'#0969da', datalabels: dlInside },
-      { label:'India', data:lsIndia, backgroundColor:'#8250df', datalabels: dlInside },
-      { label:'APAC',  data:lsApac,  backgroundColor:'#1a7f37', datalabels: dlInside }
-    ]
-  },
-  options:{
-    plugins:{ legend:{position:'top',labels:{font:{size:10}}}, datalabels:{} },
-    scales:{ x:{stacked:true}, y:{stacked:true, grid:{color:'#eaecef'}} }
-  }
-});
 
 // ---- Tab switching ----
 function switchTab(id) {
