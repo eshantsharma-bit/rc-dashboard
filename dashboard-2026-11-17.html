@@ -113,22 +113,22 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
   <div class="kpi neutral">
     <div class="kpi-label">Non-SP BL</div>
     <div class="kpi-val">871</div>
-    <div class="kpi-sub">↓ 41 vs Oct 26 (912)</div>
+    <div class="kpi-sub">↓ 62 vs Oct 26 (933)</div>
   </div>
   <div class="kpi warn">
     <div class="kpi-label">Aged >15d</div>
     <div class="kpi-val">180</div>
-    <div class="kpi-sub">↓ 21 vs Oct 26 (201)</div>
+    <div class="kpi-sub">↓ 31 vs Oct 26 (211)</div>
   </div>
   <div class="kpi neutral">
     <div class="kpi-label">Org Aged %</div>
     <div class="kpi-val" style="color:#9a6700">20.7%</div>
-    <div class="kpi-sub">↓ 1.3pp vs Oct 26 (22.0%)</div>
+    <div class="kpi-sub">↓ 1.9pp vs Oct 26 (22.6%)</div>
   </div>
   <div class="kpi good">
     <div class="kpi-label">EMEA Aged %</div>
     <div class="kpi-val" style="color:#1a7f37">17.6%</div>
-    <div class="kpi-sub">↓ 3.8pp vs Oct 26 (21.4%)</div>
+    <div class="kpi-sub">↓ 5.1pp vs Oct 26 (22.7%)</div>
   </div>
   <div class="kpi alert">
     <div class="kpi-label">APAC Aged %</div>
@@ -138,9 +138,9 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 </div>
 
 <!-- CHART 1: Non-SP BL + Aged Trend -->
-<div class="section-title">Non-SP Backlog &amp; Aged Count — Weekly Trend (Jul–Nov 2026)</div>
+<div class="section-title">Non-SP Backlog &amp; Aged Count — Weekly Trend (last 5 runs)</div>
 <div class="card border-blue" style="margin-bottom:20px">
-  <div class="card-title">Total Non-SP Backlog (bars) vs Aged >15d Count (line) — All managers, Industry+Revenue</div>
+  <div class="card-title">Total Non-SP Backlog (bars) vs Aged >15d Count (line) — Sep 22 → Nov 17, 2026</div>
   <div class="chart-wrap-xl">
     <canvas id="blTrendChart"></canvas>
   </div>
@@ -149,7 +149,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <!-- CHART 2: Aged % by Region -->
 <div class="section-title">Aged % by Region — Weekly Trend</div>
 <div class="card border-orange" style="margin-bottom:20px">
-  <div class="card-title">Aged % (cases >15d / Non-SP BL) — Org-wide, EMEA, IST, APAC</div>
+  <div class="card-title">Aged % (cases >15d / Non-SP BL) — Org-wide, EMEA, IST, APAC — Sep 22 → Nov 17, 2026</div>
   <div class="chart-wrap-xl">
     <canvas id="agedPctChart"></canvas>
   </div>
@@ -158,7 +158,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <!-- CHART 3: P&T Aged % Trend -->
 <div class="section-title">Top P&amp;T Aged % Trend</div>
 <div class="card border-purple" style="margin-bottom:20px">
-  <div class="card-title">Aged % by Product &amp; Topic — Top 5 P&amp;Ts (Jul–Nov 2026)</div>
+  <div class="card-title">Aged % by Product &amp; Topic — Top P&amp;Ts (Oct 26 → Nov 17, 2026)</div>
   <div class="chart-wrap-xl">
     <canvas id="ptAgedChart"></canvas>
   </div>
@@ -186,7 +186,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td>Sridhar Dwadasi</td>
         <td class="right">132</td><td class="right">32</td>
         <td class="right"><strong>24.2%</strong></td>
-        <td class="right"><span class="pill pill-red">+1.6pp ↑</span></td>
+        <td class="right"><span class="pill pill-red">+1.8pp ↑</span></td>
         <td><span class="pill pill-yellow">Watch</span></td>
       </tr>
       <tr class="mgr-row-emea">
@@ -194,7 +194,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td>Darshan Jahagirdar</td>
         <td class="right">80</td><td class="right">12</td>
         <td class="right">15.0%</td>
-        <td class="right"><span class="pill pill-green">−11.7pp ↓</span></td>
+        <td class="right"><span class="pill pill-green">−12.2pp ↓</span></td>
         <td><span class="pill pill-green">Improving</span></td>
       </tr>
       <tr class="mgr-row-emea">
@@ -202,7 +202,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td>Apurva Ajit</td>
         <td class="right">74</td><td class="right">11</td>
         <td class="right">14.9%</td>
-        <td class="right"><span class="pill pill-green">−9.2pp ↓</span></td>
+        <td class="right"><span class="pill pill-green">−10.1pp ↓</span></td>
         <td><span class="pill pill-green">Improving</span></td>
       </tr>
       <tr class="mgr-row-emea">
@@ -210,7 +210,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td>Eshant Sharma</td>
         <td class="right">60</td><td class="right">6</td>
         <td class="right">10.0%</td>
-        <td class="right"><span class="pill pill-blue">+2.2pp ↑</span></td>
+        <td class="right"><span class="pill pill-blue">+2.5pp ↑</span></td>
         <td><span class="pill pill-blue">Stable</span></td>
       </tr>
       <tr class="mgr-row-emea">
@@ -250,7 +250,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td>Manu Ramamurthy</td>
         <td class="right">127</td><td class="right">15</td>
         <td class="right">11.8%</td>
-        <td class="right"><span class="pill pill-green">−5.0pp ↓</span></td>
+        <td class="right"><span class="pill pill-green">−5.1pp ↓</span></td>
         <td><span class="pill pill-green">Improving</span></td>
       </tr>
       <tr class="mgr-row-apac highlight-row">
@@ -284,7 +284,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
         <td class="right">871</td>
         <td class="right">180</td>
         <td class="right">20.7%</td>
-        <td class="right"><span class="pill pill-green">−1.3pp ↓</span></td>
+        <td class="right"><span class="pill pill-green">−1.9pp ↓</span></td>
         <td><span class="pill pill-blue">Stable org-wide</span></td>
       </tr>
     </tfoot>
@@ -403,8 +403,8 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <div class="grid-2" style="margin-bottom:20px">
   <div>
     <div class="insight green">
-      <strong>Org aged % improving: 22.0% → 20.7% (↓1.3pp)</strong>
-      <p>Non-SP BL dropped 41 cases (912→871) and aged count fell 21 (201→180). EMEA improvement (-3.8pp) is the primary driver.</p>
+      <strong>Org aged % improving: 22.6% → 20.7% (↓1.9pp)</strong>
+      <p>Non-SP BL down 62 cases (933→871) and aged count down 31 (211→180). EMEA improvement (-5.1pp) is the primary driver.</p>
     </div>
     <div class="insight red">
       <strong>APAC is the outlier: 27.3% → 31.7% (+4.4pp)</strong>
@@ -425,8 +425,8 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
       <p>Bhagat M improving (-3pp), Manu improving (-5pp). Naren rising (+7.4pp) — net still a slight improvement for the region.</p>
     </div>
     <div class="insight blue">
-      <strong>Non-SP BL trend: 1,124 peak (Oct 15) → 871 today</strong>
-      <p>-253 cases since peak six weeks ago. Sustained reduction across EMEA + India, offset partially by APAC growth.</p>
+      <strong>Non-SP BL trend: 1,124 peak (Oct 15) → 871 today (−253)</strong>
+      <p>Sustained reduction since the Oct 15 peak. Oct 26 saw a partial rebound to 933 before resuming the downward trend to 871 this week.</p>
     </div>
   </div>
 </div>
@@ -441,10 +441,10 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:20px;border-t
 <script>
 Chart.register(ChartDataLabels);
 
-// ─── 1. BL + Aged Count trend ───
-const weeks = ['Jul 24','Jul 30','Aug 13','Aug 19','Sep 14','Sep 22','Oct 5','Oct 15','Oct 26','Nov 17'];
-const blData  = [887, 837, 781, 798, 1095, 1038, 975, 1124, 912, 871];
-const agedCnt = [205, 190, 161, 149, 224, 231, 231, 204, 201, 180];
+// ─── 1. BL + Aged Count trend — last 5 runs ───
+const weeks = ['Sep 22','Oct 5','Oct 15','Oct 26','Nov 17'];
+const blData  = [1038, 975, 1124, 933, 871];
+const agedCnt = [231, 231, 204, 211, 180];
 
 new Chart(document.getElementById('blTrendChart'), {
   type: 'bar',
@@ -512,11 +512,11 @@ new Chart(document.getElementById('blTrendChart'), {
   }
 });
 
-// ─── 2. Aged % by region ───
-const orgPct  = [23.1, 22.7, 20.6, 18.7, 20.5, 22.3, 23.7, 18.1, 22.0, 20.7];
-const emeaPct = [22.1, 24.8, 25.5, 21.5, 17.6, 20.7, 22.2, 16.5, 21.4, 17.6];
-const istPct  = [23.9, 21.7, 16.1, 16.3, 17.6, 18.9, 21.0, 16.9, 20.6, 19.2];
-const apacPct = [null, null, null, null, 33.0, 33.7, 33.3, 24.4, 27.3, 31.7];
+// ─── 2. Aged % by region — last 5 runs ───
+const orgPct  = [22.3, 23.7, 18.1, 22.6, 20.7];
+const emeaPct = [20.7, 22.2, 16.5, 22.7, 17.6];
+const istPct  = [18.9, 21.0, 16.9, 20.6, 19.2];
+const apacPct = [33.7, 33.3, 24.4, 27.3, 31.7];
 
 new Chart(document.getElementById('agedPctChart'), {
   type: 'line',
@@ -618,17 +618,17 @@ new Chart(document.getElementById('agedPctChart'), {
   }
 });
 
-// ─── 3. P&T Aged % trend ───
-// Use sparse arrays (null for missing weeks)
-// weeks index: 0=Jul24, 1=Jul30, 2=Aug13, 3=Aug19, 4=Sep14, 5=Sep22, 6=Oct5, 7=Oct15, 8=Oct26, 9=Nov17
+// ─── 3. P&T Aged % trend — last 5 runs ───
+// weeks: Sep 22, Oct 5, Oct 15, Oct 26, Nov 17
 const ptData = {
-  'Life Sciences':     [null, 19.9, 17.9, 15.4, null, null, null, null, 20.1, 21.3],
-  'Retail & CG':       [null, 42.5, 39.2, 38.4, null, null, null, null, 27.4, 27.9],
-  'CPQ / OMS / DC':    [null, 29.7, 30.7, 23.4, null, null, null, null, 31.7, 27.6],
-  'Omnistudio':        [null, 18.5, 24.2, 16.7, null, null, null, null, 26.1, 24.6],
-  'Financial Services':[null, null, 29.4, 31.3, null, null, null, null, 23.8, 31.8],
+  'Life Sciences':              [null, null, null, 20.0, 21.3],
+  'CPQ / OMS / DC':             [null, null, null, 32.3, 27.6],
+  'Retail & CG':                [null, null, null, 27.4, 27.9],
+  'Omnistudio':                 [null, null, null, 26.1, 24.6],
+  'Financial Services':         [null, null, null, null, 31.8],
+  'TM (RC Core)':               [null, null, null, 28.6, 22.9],
 };
-const ptColors = ['#1b4fa8','#e16f42','#2d8a4e','#8b6abf','#bc4c00'];
+const ptColors = ['#1b4fa8','#e16f42','#2d8a4e','#8b6abf','#bc4c00','#0a7d7d'];
 const ptLabels = Object.keys(ptData);
 
 new Chart(document.getElementById('ptAgedChart'), {
