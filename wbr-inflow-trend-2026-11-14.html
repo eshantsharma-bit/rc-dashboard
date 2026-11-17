@@ -263,6 +263,21 @@
 </script>
 
 
+<!-- TCD by Region small multiples -->
+<div style="margin:20px 32px 0;">
+  <div class="card">
+    <h2>Top Case Driver Volume by Region — 6-Week Trend</h2>
+    <div style="font-size:11px;color:var(--text-secondary);margin-bottom:14px;">Each panel = one TCD group · Lines = EMEA / India / APAC · Data labels on each point</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;">
+      <div><div style="font-size:11px;font-weight:600;color:#0969da;margin-bottom:6px;">Life Sciences</div><canvas id="cTcdR0" style="max-height:180px !important;"></canvas></div>
+      <div><div style="font-size:11px;font-weight:600;color:#8250df;margin-bottom:6px;">Revenue Cloud</div><canvas id="cTcdR1" style="max-height:180px !important;"></canvas></div>
+      <div><div style="font-size:11px;font-weight:600;color:#1a7f37;margin-bottom:6px;">Ind CPQ/OM</div><canvas id="cTcdR2" style="max-height:180px !important;"></canvas></div>
+      <div><div style="font-size:11px;font-weight:600;color:#cf222e;margin-bottom:6px;">Ind Omni</div><canvas id="cTcdR3" style="max-height:180px !important;"></canvas></div>
+      <div><div style="font-size:11px;font-weight:600;color:#e36209;margin-bottom:6px;">Ind Retail</div><canvas id="cTcdR4" style="max-height:180px !important;"></canvas></div>
+    </div>
+  </div>
+</div>
+
 <!-- Row 5: Support Tier + Tier by Region -->
 <div class="grid-2" style="margin:20px 32px 0;">
   <div class="card">
@@ -671,6 +686,56 @@ new Chart(document.getElementById('chartBugCloud'), {
   }
 });
 
+
+// ── TCD by Region small multiples ──
+(function() {
+  const W = ['Oct 4','Oct 11','Oct 18','Oct 25','Nov 1','Nov 8'];
+
+  const tcdRegion = [
+    { emea:[41,39,55,45,60,40],   india:[106,113,63,125,129,90],  apac:[10,12,10,27,25,11]  }, // Life Sciences
+    { emea:[172,213,135,130,174,148], india:[81,96,77,81,85,62],  apac:[32,90,33,30,20,45]  }, // Revenue Cloud
+    { emea:[62,64,45,48,46,32],   india:[48,38,36,36,33,22],      apac:[18,16,14,17,15,7]   }, // Ind CPQ/OM
+    { emea:[56,36,31,25,25,22],   india:[31,25,22,23,20,24],      apac:[24,23,25,40,30,6]   }, // Ind Omni
+    { emea:[22,25,25,28,31,22],   india:[23,5,20,22,34,24],       apac:[3,3,3,1,1,6]        }  // Ind Retail
+  ];
+
+  const GEO = { emea:'#0969da', india:'#8250df', apac:'#1a7f37' };
+  const ids = ['cTcdR0','cTcdR1','cTcdR2','cTcdR3','cTcdR4'];
+
+  ids.forEach(function(id, i) {
+    var d = tcdRegion[i];
+    new Chart(document.getElementById(id), {
+      type: 'line',
+      data: {
+        labels: W,
+        datasets: [
+          { label:'EMEA',  data:d.emea,  borderColor:GEO.emea,  backgroundColor:'transparent', borderWidth:2, pointRadius:3, tension:0.3,
+            datalabels:{ anchor:'end', align:'top',    font:{size:8,weight:'600'}, color:GEO.emea,  formatter:function(v){return v;} } },
+          { label:'India', data:d.india, borderColor:GEO.india, backgroundColor:'transparent', borderWidth:2, pointRadius:3, tension:0.3,
+            datalabels:{ anchor:'end', align:'bottom', font:{size:8,weight:'600'}, color:GEO.india, formatter:function(v){return v;} } },
+          { label:'APAC',  data:d.apac,  borderColor:GEO.apac,  backgroundColor:'transparent', borderWidth:2, pointRadius:3, tension:0.3,
+            datalabels:{ anchor:'start', align:'top',  font:{size:8,weight:'600'}, color:GEO.apac,  formatter:function(v){return v;} } }
+        ]
+      },
+      options: {
+        responsive:true,
+        plugins:{ legend:{display:false}, datalabels:{} },
+        scales:{
+          x:{ ticks:{font:{size:8},maxRotation:45}, grid:{display:false} },
+          y:{ beginAtZero:true, ticks:{font:{size:8}}, grid:{color:'#eaecef'} }
+        }
+      }
+    });
+  });
+
+  var leg = document.createElement('div');
+  leg.style.cssText = 'display:flex;gap:16px;justify-content:center;margin-top:10px;font-size:11px;';
+  var s1 = document.createElement('span'); s1.textContent = '— EMEA';  s1.style.cssText='color:#0969da;font-weight:600;';
+  var s2 = document.createElement('span'); s2.textContent = '— India'; s2.style.cssText='color:#8250df;font-weight:600;';
+  var s3 = document.createElement('span'); s3.textContent = '— APAC';  s3.style.cssText='color:#1a7f37;font-weight:600;';
+  leg.appendChild(s1); leg.appendChild(s2); leg.appendChild(s3);
+  document.getElementById('cTcdR4').closest('.card').appendChild(leg);
+})();
 
 // ---- Tab switching ----
 function switchTab(id) {
