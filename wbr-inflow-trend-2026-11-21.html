@@ -99,8 +99,8 @@
 <div id="tab-weekly" class="tab-panel active">
 
 <!-- Alert: Omnistudio S1 surge -->
-<div class="alert-note alert-danger">
-  🔴 <strong>Omnistudio S1 surge:</strong> Volume 53→72→94 (+78% over 3 weeks), S1 count 5→5→11 (+120% WoW). Spring 27 upgrade compatibility + migration blockers driving open S1 backlog. Accenture = top risk account (5 open S1, Partner Premier, India).
+<div class="alert-note alert-warn">
+  ⚠️ <strong>Omnistudio S1 surge:</strong> Volume 53→72→94 (+78% over 3 weeks), S1 count 5→5→11 (+120% WoW). Spring 27 upgrade compatibility + migration blockers driving open S1 backlog. Accenture = top risk account (5 open S1, Partner Premier, India).
 </div>
 
 <!-- KPI tiles -->
@@ -108,17 +108,17 @@
   <div class="kpi">
     <div class="label">Inflow (TW)</div>
     <div class="value">826</div>
-    <div class="delta up">↑ 93 vs PW (733)</div>
+    <div class="delta note">↑ 93 vs PW (733)</div>
   </div>
   <div class="kpi">
     <div class="label">Closures (TW)</div>
     <div class="value" style="color:var(--success)">792</div>
-    <div class="delta up">↓ 38 vs PW (830)</div>
+    <div class="delta note">↓ 38 vs PW (830)</div>
   </div>
   <div class="kpi">
     <div class="label">CSAT (avg)</div>
-    <div class="value" style="color:var(--danger)">4.69</div>
-    <div class="delta up">↓ −0.23 vs PW (4.92) ⚠️</div>
+    <div class="value" style="color:var(--warning)">4.69</div>
+    <div class="delta warn">↓ −0.23 vs PW (4.92) ⚠️</div>
   </div>
   <div class="kpi">
     <div class="label">TTR (avg days)</div>
@@ -127,8 +127,8 @@
   </div>
   <div class="kpi">
     <div class="label">Escalation %</div>
-    <div class="value">0.4%</div>
-    <div class="delta down">↓ −0.1 vs PW (0.5%)</div>
+    <div class="value" style="color:var(--success)">0.4%</div>
+    <div class="delta down">↓ −0.1 vs PW (0.5%) ✅</div>
   </div>
   <div class="kpi">
     <div class="label">SLO Miss %</div>
@@ -136,6 +136,92 @@
     <div class="delta down">All geos clean ✅</div>
   </div>
 </div>
+
+<!-- Key Metrics and Trends table -->
+<div style="margin:16px 32px 0;">
+  <div style="border:1px solid #d0d7de;border-radius:8px;overflow:hidden;">
+    <div style="background:#1e3a5f;color:#ffffff;text-align:center;padding:13px 20px;font-size:14px;font-weight:700;letter-spacing:.3px;">Key Metrics and Trends</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+      <thead>
+        <tr style="background:#1e3a5f;color:#ffffff;">
+          <th style="padding:9px 16px;text-align:left;font-weight:600;font-size:12px;border-right:1px solid #2d4f7a;">KPIs</th>
+          <th style="padding:9px 14px;text-align:center;font-weight:600;font-size:12px;border-right:1px solid #2d4f7a;">Target</th>
+          <th style="padding:9px 20px;text-align:center;font-weight:600;font-size:12px;border-right:1px solid #2d4f7a;">2026-11-15</th>
+          <th style="padding:9px 20px;text-align:center;font-weight:600;font-size:12px;border-right:1px solid #2d4f7a;">2026-11-08</th>
+          <th style="padding:9px 20px;text-align:center;font-weight:600;font-size:12px;border-right:1px solid #2d4f7a;">2026-11-01</th>
+          <th style="padding:9px 20px;text-align:center;font-weight:600;font-size:12px;">2026-10-25</th>
+        </tr>
+      </thead>
+      <tbody id="kpiTrendBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+(function(){
+  var GREEN  = '#1a7f37';
+  var AMBER  = '#9a6700';
+  var DARK   = '#1f2328';
+  var DGRAY  = '#57606a';
+  var STRIPE = '#f6f8fa';
+
+  // [label, target, [v0,d0, v1,d1, v2,d2, lastVal], valueColor, deltaIsGoodDown]
+  // valueColor: 'green' | 'amber' | 'neutral'
+  // dColor: green if delta indicates improvement (down for bad metrics, up for good metrics)
+  var ROWS = [
+    { label:'Support Inflow',    target:'—',       color:'neutral', data:[
+        {v:'826', d:'+93'},  {v:'733', d:'−136'}, {v:'869', d:'+20'}, {v:'849', d:''}
+      ]},
+    { label:'Closures',          target:'—',       color:'neutral', data:[
+        {v:'792', d:'−38'},  {v:'830', d:'−45'},  {v:'875', d:'+73'}, {v:'802', d:''}
+      ]},
+    { label:'SLO Miss %',        target:'< 2 %',   color:'green',   data:[
+        {v:'0.0 %', d:'0'},  {v:'0.0 %', d:'0'},  {v:'0.0 %', d:'0'}, {v:'0.0 %', d:''}
+      ]},
+    { label:'Escalation %',      target:'< 2 %',   color:'green',   data:[
+        {v:'0.4 %', d:'−0.1'},{v:'0.5 %', d:'+0.2'},{v:'0.3 %', d:'−0.2'},{v:'0.5 %', d:''}
+      ]},
+    { label:'TTR',               target:'10 days', color:'green',   data:[
+        {v:'8.4', d:'+0.1'}, {v:'8.3', d:'−0.3'}, {v:'8.6', d:'+0.7'}, {v:'7.9', d:''}
+      ]},
+    { label:'CSAT',              target:'4.5',     color:'amber',   data:[
+        {v:'4.69', d:'−0.23'},{v:'4.92', d:'+0.05'},{v:'4.87', d:'+0.1'},{v:'4.77', d:''}
+      ]},
+    { label:'Reopen Rate',       target:'20 %',    color:'green',   data:[
+        {v:'5.9 %', d:'−1.1'},{v:'7.0 %', d:'+0.5'},{v:'6.5 %', d:'−1.5'},{v:'8.0 %', d:''}
+      ]},
+    { label:'Investigations',    target:'—',       color:'neutral', data:[
+        {v:'28', d:'−20'},   {v:'48', d:'−38'},   {v:'86', d:'+4'},  {v:'82', d:''}
+      ]},
+    { label:'Investigation Rate',target:'—',       color:'amber',   data:[
+        {v:'3.5 %', d:'−3.0'},{v:'6.5 %', d:'−3.4'},{v:'9.9 %', d:'+0.3'},{v:'9.6 %', d:''}
+      ]},
+    { label:'Bugs',              target:'—',       color:'neutral', data:[
+        {v:'38', d:'+3'},    {v:'35', d:'−18'},   {v:'53', d:'−30'}, {v:'83', d:''}
+      ]},
+    { label:'Bug Rate',          target:'—',       color:'neutral', data:[
+        {v:'4.7 %', d:'0'},  {v:'4.7 %', d:'−1.4'},{v:'6.1 %', d:'−3.7'},{v:'9.8 %', d:''}
+      ]}
+  ];
+
+  var tbody = document.getElementById('kpiTrendBody');
+  ROWS.forEach(function(row, ri) {
+    var bg = ri % 2 === 0 ? '#ffffff' : STRIPE;
+    var vc = row.color === 'green' ? GREEN : (row.color === 'amber' ? AMBER : DARK);
+    var tr = document.createElement('tr');
+    tr.style.background = bg;
+    var cells = '<td style="padding:9px 16px;font-weight:700;color:' + DARK + ';border-right:1px solid #eaecef;">' + row.label + '</td>';
+    cells += '<td style="padding:9px 14px;text-align:center;background:#2d4f7a;color:#ffffff;font-size:12px;font-weight:600;border-right:1px solid #3a6080;">' + row.target + '</td>';
+    row.data.forEach(function(cell, ci) {
+      var border = ci < 3 ? 'border-right:1px solid #eaecef;' : '';
+      var delta = cell.d ? ' <span style="font-size:11px;font-weight:400;color:' + DGRAY + ';">(' + cell.d + ')</span>' : '';
+      cells += '<td style="padding:9px 20px;text-align:center;font-weight:700;color:' + vc + ';font-size:14px;' + border + '">' + cell.v + delta + '</td>';
+    });
+    tr.innerHTML = cells;
+    tbody.appendChild(tr);
+  });
+})();
+</script>
 
 <!-- Row 1: Total volume full-width -->
 <div style="margin:20px 32px 0;">
@@ -385,8 +471,8 @@
           <td style="padding:7px 10px;font-weight:600;color:#e36209;">RC Billing</td>
           <td style="text-align:right;padding:7px 10px;">5</td>
           <td style="text-align:right;padding:7px 10px;">0</td>
-          <td style="text-align:right;padding:7px 10px;font-weight:700;color:#82071e;">0.0%</td>
-          <td style="padding:7px 10px;color:#82071e;font-size:11px;">🚨 Zero FTR — all cases staying open 2+ days</td>
+          <td style="text-align:right;padding:7px 10px;font-weight:700;color:#9a6700;">0.0%</td>
+          <td style="padding:7px 10px;color:#9a6700;font-size:11px;">🚨 Zero FTR — all cases staying open 2+ days</td>
         </tr>
         <tr style="background:#f6f8fa;border-top:2px solid #d0d7de;font-weight:600;">
           <td style="padding:7px 10px;">Overall</td>
