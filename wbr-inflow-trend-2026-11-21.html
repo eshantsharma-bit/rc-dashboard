@@ -302,7 +302,7 @@
 <div class="page-header">
   <div>
     <h1>WBR Inflow Trend — Industries &amp; Revenue Cloud</h1>
-    <div class="sub-title">6-week view · Oct 11 → Nov 15, 2026 · EMEA + India + APAC</div>
+    <div class="sub-title">5-week view · Oct 18 → Nov 15, 2026 · EMEA + India + APAC</div>
   </div>
   <div class="meta">
     Generated: Nov 21, 2026<br>
@@ -323,15 +323,25 @@
     <div class="value" style="color:var(--sf-green);">792</div>
     <div class="delta note">↓ 38 vs PW (830)</div>
   </div>
-  <div class="kpi kpi-warn">
-    <div class="label">CSAT (avg)</div>
-    <div class="value" style="color:var(--sf-orange);">4.69</div>
-    <div class="delta warn">↓ −0.23 vs PW (4.92) ⚠</div>
+  <div class="kpi kpi-success">
+    <div class="label">CSAT (avg) <span style="font-size:10px;font-weight:700;color:var(--sf-green);background:var(--sf-green-lt);padding:1px 6px;border-radius:10px;margin-left:4px;">Target 4.55 ✓</span></div>
+    <div class="value" style="color:var(--sf-green);">4.69</div>
+    <div class="delta down">↓ −0.23 vs PW (4.92)</div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:11px;color:var(--text-secondary);line-height:1.8;">
+      <span style="color:var(--sf-blue);font-weight:600;">EMEA</span> 4.74 &nbsp;·&nbsp;
+      <span style="color:var(--sf-purple);font-weight:600;">India</span> 4.65 &nbsp;·&nbsp;
+      <span style="color:var(--sf-green);font-weight:600;">APAC</span> 4.71
+    </div>
   </div>
-  <div class="kpi kpi-warn">
-    <div class="label">TTR (avg days)</div>
-    <div class="value" style="color:var(--sf-orange);">8.4</div>
-    <div class="delta note">Sig 10.70 · Prem 6.97 · Std 6.01</div>
+  <div class="kpi kpi-success">
+    <div class="label">TTR (avg days) <span style="font-size:10px;font-weight:700;color:var(--sf-green);background:var(--sf-green-lt);padding:1px 6px;border-radius:10px;margin-left:4px;">Target 10d ✓</span></div>
+    <div class="value" style="color:var(--sf-green);">8.4</div>
+    <div class="delta down">↑ +0.1 vs PW (8.3) — still under target</div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:11px;color:var(--text-secondary);line-height:1.8;">
+      <span style="color:var(--sf-blue);font-weight:600;">EMEA</span> 7.0d &nbsp;·&nbsp;
+      <span style="color:var(--sf-purple);font-weight:600;">India</span> 12.0d &nbsp;·&nbsp;
+      <span style="color:var(--sf-green);font-weight:600;">APAC</span> 9.7d
+    </div>
   </div>
   <div class="kpi kpi-success">
     <div class="label">Escalation %</div>
@@ -352,10 +362,11 @@
     <thead>
       <tr>
         <th style="text-align:left;padding-left:20px;border-right:1px solid rgba(255,255,255,.15);">KPI</th>
-        <th style="border-right:1px solid rgba(255,255,255,.15);">Nov 15</th>
+        <th style="border-right:1px solid rgba(255,255,255,.15);background:#0a5aa8;">Nov 15 (TW)</th>
         <th style="border-right:1px solid rgba(255,255,255,.15);">Nov 8</th>
         <th style="border-right:1px solid rgba(255,255,255,.15);">Nov 1</th>
-        <th>Oct 25</th>
+        <th style="border-right:1px solid rgba(255,255,255,.15);">Oct 25</th>
+        <th>Oct 18</th>
       </tr>
     </thead>
     <tbody id="kpiTrendBody"></tbody>
@@ -371,18 +382,20 @@
   var STRIPE = '#f3f3f3';
   var BLT    = '#e8f4fd';
 
+  // 5-week table: Nov 15 (TW), Nov 8, Nov 1, Oct 25, Oct 18
+  // CSAT target 4.55 → green when above; TTR target 10d → green when below
   var ROWS = [
-    { label:'Support Inflow',     color:'navy',   data:[{v:'826',d:'+93'},{v:'733',d:'−136'},{v:'869',d:'+20'},{v:'849',d:''}] },
-    { label:'Closures',           color:'navy',   data:[{v:'792',d:'−38'},{v:'830',d:'−45'},{v:'875',d:'+73'},{v:'802',d:''}] },
-    { label:'SLO Miss %',         color:'green',  data:[{v:'0.0 %',d:'0'},{v:'0.0 %',d:'0'},{v:'0.0 %',d:'0'},{v:'0.0 %',d:''}] },
-    { label:'Escalation %',       color:'green',  data:[{v:'0.4 %',d:'−0.1'},{v:'0.5 %',d:'+0.2'},{v:'0.3 %',d:'−0.2'},{v:'0.5 %',d:''}] },
-    { label:'TTR (avg days)',      color:'orange', data:[{v:'8.4',d:'+0.1'},{v:'8.3',d:'−0.3'},{v:'8.6',d:'+0.7'},{v:'7.9',d:''}] },
-    { label:'CSAT',               color:'orange', data:[{v:'4.69',d:'−0.23'},{v:'4.92',d:'+0.05'},{v:'4.87',d:'+0.1'},{v:'4.77',d:''}] },
-    { label:'Reopen Rate',        color:'green',  data:[{v:'5.9 %',d:'−1.1'},{v:'7.0 %',d:'+0.5'},{v:'6.5 %',d:'−1.5'},{v:'8.0 %',d:''}] },
-    { label:'Investigations',     color:'navy',   data:[{v:'28',d:'−20'},{v:'48',d:'−38'},{v:'86',d:'+4'},{v:'82',d:''}] },
-    { label:'Investigation Rate', color:'orange', data:[{v:'3.5 %',d:'−3.0'},{v:'6.5 %',d:'−3.4'},{v:'9.9 %',d:'+0.3'},{v:'9.6 %',d:''}] },
-    { label:'Bugs',               color:'navy',   data:[{v:'38',d:'+3'},{v:'35',d:'−18'},{v:'53',d:'−30'},{v:'83',d:''}] },
-    { label:'Bug Rate',           color:'navy',   data:[{v:'4.7 %',d:'0'},{v:'4.7 %',d:'−1.4'},{v:'6.1 %',d:'−3.7'},{v:'9.8 %',d:''}] }
+    { label:'Support Inflow',     color:'navy',   data:[{v:'826',d:'+93'},{v:'733',d:'−136'},{v:'869',d:'+20'},{v:'849',d:'+96'},{v:'753',d:''}] },
+    { label:'Closures',           color:'navy',   data:[{v:'792',d:'−38'},{v:'830',d:'−45'},{v:'875',d:'+73'},{v:'802',d:'+99'},{v:'703',d:''}] },
+    { label:'SLO Miss %',         color:'green',  data:[{v:'0.0 %',d:'—'},{v:'0.0 %',d:'—'},{v:'0.0 %',d:'—'},{v:'0.0 %',d:'—'},{v:'0.0 %',d:''}] },
+    { label:'Escalation %',       color:'green',  data:[{v:'0.4 %',d:'−0.1'},{v:'0.5 %',d:'+0.2'},{v:'0.3 %',d:'−0.2'},{v:'0.5 %',d:'+0.1'},{v:'0.4 %',d:''}] },
+    { label:'TTR (avg days) ◎10', color:'green',  data:[{v:'8.4',d:'+0.1'},{v:'8.3',d:'−0.3'},{v:'8.6',d:'+0.7'},{v:'7.9',d:'−0.4'},{v:'8.3',d:''}] },
+    { label:'CSAT ◎4.55',         color:'green',  data:[{v:'4.69',d:'−0.23'},{v:'4.92',d:'+0.05'},{v:'4.87',d:'+0.1'},{v:'4.77',d:'+0.05'},{v:'4.72',d:''}] },
+    { label:'Reopen Rate',        color:'green',  data:[{v:'5.9 %',d:'−1.1'},{v:'7.0 %',d:'+0.5'},{v:'6.5 %',d:'−1.5'},{v:'8.0 %',d:'+0.5'},{v:'7.5 %',d:''}] },
+    { label:'Investigations',     color:'navy',   data:[{v:'28',d:'−20'},{v:'48',d:'−38'},{v:'86',d:'+4'},{v:'82',d:'+15'},{v:'67',d:''}] },
+    { label:'Investigation Rate', color:'orange', data:[{v:'3.5 %',d:'−3.0'},{v:'6.5 %',d:'−3.4'},{v:'9.9 %',d:'+0.3'},{v:'9.6 %',d:'+0.7'},{v:'8.9 %',d:''}] },
+    { label:'Bugs',               color:'navy',   data:[{v:'38',d:'+3'},{v:'35',d:'−18'},{v:'53',d:'−30'},{v:'83',d:'+16'},{v:'67',d:''}] },
+    { label:'Bug Rate',           color:'navy',   data:[{v:'4.7 %',d:'0'},{v:'4.7 %',d:'−1.4'},{v:'6.1 %',d:'−3.7'},{v:'9.8 %',d:'+0.9'},{v:'8.9 %',d:''}] }
   ];
 
   var tbody = document.getElementById('kpiTrendBody');
@@ -397,10 +410,11 @@
     row.data.forEach(function(cell, ci) {
       var isTW = ci === 0;
       var cellBg = isTW ? BLT : bg;
-      var border = ci < 3 ? 'border-right:1px solid #e5e5e4;' : '';
+      var border = ci < 4 ? 'border-right:1px solid #e5e5e4;' : '';
       var valSize = isTW ? '15px' : '14px';
-      var delta = cell.d ? ' <span style="font-size:11px;font-weight:500;color:' + DGRAY + ';">(' + cell.d + ')</span>' : '';
-      cells += '<td style="padding:11px 20px;text-align:center;font-weight:800;color:' + vc + ';font-size:' + valSize + ';background:' + cellBg + ';' + border + '">' + cell.v + delta + '</td>';
+      var fwt = isTW ? '900' : '700';
+      var delta = cell.d && cell.d !== '—' ? ' <span style="font-size:11px;font-weight:500;color:' + DGRAY + ';">(' + cell.d + ')</span>' : '';
+      cells += '<td style="padding:11px 20px;text-align:center;font-weight:' + fwt + ';color:' + vc + ';font-size:' + valSize + ';background:' + cellBg + ';' + border + '">' + cell.v + delta + '</td>';
     });
 
     tr.innerHTML = cells;
@@ -417,7 +431,7 @@
   <div class="card">
     <h2>Total Weekly Inflow + Sev1 Trend (6 Weeks)</h2>
     <canvas id="chartVolume" class="canvas-tall"></canvas>
-    <div class="sub">Bar = total inflow · Line = Sev1 count (right axis) · Nov 8 = Diwali recovery week · Nov 15 = post-Diwali rebound</div>
+    <div class="sub">Bar = total inflow · Line = Sev1 count (right axis) · 5-week window Oct 18→Nov 15 · Nov 8 = Diwali recovery week · Nov 15 = post-Diwali rebound</div>
   </div>
 </div>
 
@@ -452,7 +466,6 @@
     <thead>
       <tr>
         <th style="text-align:left;padding-left:16px;">TCD Group</th>
-        <th>Oct 11</th>
         <th>Oct 18</th>
         <th>Oct 25</th>
         <th>Nov 1</th>
@@ -612,18 +625,19 @@
 <script>
 Chart.register(ChartDataLabels);
 
-const WEEKS = ['Oct 11','Oct 18','Oct 25','Nov 1','Nov 8','Nov 15'];
+// 5-week window: Oct 18 → Nov 15 (Oct 11 dropped for cleaner trend visibility)
+const WEEKS = ['Oct 18','Oct 25','Nov 1','Nov 8','Nov 15'];
 
-const totals       = [1018, 753, 849, 869, 733, 826];
-const s1s          = [  90,  61,  66,  78,  48,  68];
-const emea_counts  = [467, 367, 367, 409, 348, 402];
-const india_counts = [346, 250, 336, 339, 257, 308];
-const apac_counts  = [205, 136, 146, 121, 128, 116];
-const dLS    = [164, 128, 197, 214, 140, 184];
-const dRC    = [399, 245, 241, 279, 256, 270];
-const dIndCPQ= [ 88,  65,  81,  75,  57,  65];
-const dOmni  = [ 84,  84,  97,  72,  53,  94];
-const dRetail= [ 53,  48,  51,  66,  50,  35];
+const totals       = [753, 849, 869, 733, 826];
+const s1s          = [ 61,  66,  78,  48,  68];
+const emea_counts  = [367, 367, 409, 348, 402];
+const india_counts = [250, 336, 339, 257, 308];
+const apac_counts  = [136, 146, 121, 128, 116];
+const dLS    = [128, 197, 214, 140, 184];
+const dRC    = [245, 241, 279, 256, 270];
+const dIndCPQ= [ 65,  81,  75,  57,  65];
+const dOmni  = [ 84,  97,  72,  53,  94];
+const dRetail= [ 48,  51,  66,  50,  35];
 
 // Salesforce theme colors
 const SF_BLUE   = '#0070d2';
@@ -738,12 +752,13 @@ new Chart(document.getElementById('chartDriverVol'), {
 // ── TCD Table ──
 (function(){
   const TCD = ['Life Sciences','Revenue Cloud (RCA+Legacy)','Ind CPQ/OM','Ind Omni','Ind Retail'];
+  // 5-week window: Oct 18 → Nov 15
   const data = [
-    { w:[164,128,197,214,140,184], emea:70,  india:96, apac:18, s1:7  },
-    { w:[399,245,241,279,256,270], emea:148, india:96, apac:26, s1:35 },
-    { w:[ 88, 65, 81, 75, 57, 65], emea:28,  india:29, apac:8,  s1:5  },
-    { w:[ 84, 84, 97, 72, 53, 94], emea:46,  india:29, apac:19, s1:11 },
-    { w:[ 53, 48, 51, 66, 50, 35], emea:16,  india:17, apac:2,  s1:2  },
+    { w:[128,197,214,140,184], emea:70,  india:96, apac:18, s1:7  },
+    { w:[245,241,279,256,270], emea:148, india:96, apac:26, s1:35 },
+    { w:[ 65, 81, 75, 57, 65], emea:28,  india:29, apac:8,  s1:5  },
+    { w:[ 84, 97, 72, 53, 94], emea:46,  india:29, apac:19, s1:11 },
+    { w:[ 48, 51, 66, 50, 35], emea:16,  india:17, apac:2,  s1:2  },
   ];
   const TOTAL_TW = 826;
   const tbody = document.getElementById('tcdTableBody');
@@ -900,13 +915,14 @@ new Chart(document.getElementById('chartBugCloud'), {
 
 // ── TCD by Region small multiples ──
 (function() {
-  const W = ['Oct 11','Oct 18','Oct 25','Nov 1','Nov 8','Nov 15'];
+  // 5-week window: Oct 18 → Nov 15
+  const W = ['Oct 18','Oct 25','Nov 1','Nov 8','Nov 15'];
   const tcdRegion = [
-    { emea:[39, 55, 45, 60, 40, 70],     india:[113, 63,125,129, 90, 96],  apac:[12, 10, 27, 25, 11, 18]  },
-    { emea:[213,135,130,174,148,148],     india:[ 96, 77, 81, 85, 62, 96],  apac:[90, 33, 30, 20, 45, 26]  },
-    { emea:[ 64, 45, 48, 46, 32, 28],    india:[ 38, 36, 36, 33, 22, 29],  apac:[16, 14, 17, 15,  7,  8]  },
-    { emea:[ 36, 31, 25, 25, 22, 46],    india:[ 25, 22, 23, 20, 24, 29],  apac:[23, 25, 40, 30,  6, 19]  },
-    { emea:[ 25, 25, 28, 31, 22, 16],    india:[  5, 20, 22, 34, 24, 17],  apac:[ 3,  3,  1,  1,  6,  2]  }
+    { emea:[ 55, 45, 60, 40, 70],  india:[ 63,125,129, 90, 96],  apac:[10, 27, 25, 11, 18] },
+    { emea:[135,130,174,148,148],  india:[ 77, 81, 85, 62, 96],  apac:[33, 30, 20, 45, 26] },
+    { emea:[ 45, 48, 46, 32, 28],  india:[ 36, 36, 33, 22, 29],  apac:[14, 17, 15,  7,  8] },
+    { emea:[ 31, 25, 25, 22, 46],  india:[ 22, 23, 20, 24, 29],  apac:[25, 40, 30,  6, 19] },
+    { emea:[ 25, 28, 31, 22, 16],  india:[ 20, 22, 34, 24, 17],  apac:[ 3,  1,  1,  6,  2] }
   ];
 
   const GEO = { emea: SF_BLUE, india: SF_PURPLE, apac: SF_GREEN };
