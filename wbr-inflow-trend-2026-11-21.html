@@ -318,10 +318,10 @@
   <div class="kpi" style="border-top-color:var(--sf-navy);grid-column:span 1;">
     <div class="label">Inflow (TW)</div>
     <div style="display:flex;align-items:baseline;gap:8px;margin:6px 0 2px;">
-      <div class="value" style="color:var(--sf-navy);margin:0;">826</div>
-      <span style="font-size:12px;font-weight:700;color:var(--sf-orange);background:var(--sf-orange-lt);padding:2px 8px;border-radius:12px;white-space:nowrap;">↑ +12.7%</span>
+      <div class="value" style="color:var(--sf-navy);margin:0;">823</div>
+      <span style="font-size:12px;font-weight:700;color:var(--sf-orange);background:var(--sf-orange-lt);padding:2px 8px;border-radius:12px;white-space:nowrap;">↑ +10.6%</span>
     </div>
-    <div class="delta note" style="margin-bottom:10px;">vs PW 733 &nbsp;·&nbsp; +93 cases</div>
+    <div class="delta note" style="margin-bottom:10px;">vs PW 744 &nbsp;·&nbsp; +79 cases</div>
     <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:6px;">
       <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
         <span style="color:var(--sf-blue);font-weight:700;">EMEA</span>
@@ -342,13 +342,13 @@
   </div>
   <div class="kpi kpi-success">
     <div class="label">Closures (TW)</div>
-    <div class="value" style="color:var(--sf-green);">792</div>
-    <div class="delta note">↓ 38 vs PW (830)</div>
+    <div class="value" style="color:var(--sf-green);">783</div>
+    <div class="delta note">↓ −46 vs PW (829)</div>
   </div>
   <div class="kpi kpi-success">
     <div class="label">CSAT (avg) <span style="font-size:10px;font-weight:700;color:var(--sf-green);background:var(--sf-green-lt);padding:1px 6px;border-radius:10px;margin-left:4px;">Target 4.55 ✓</span></div>
     <div class="value" style="color:var(--sf-green);">4.78</div>
-    <div class="delta down">↑ +0.06 vs PW (4.72) · 41 responses</div>
+    <div class="delta down">↓ −0.14 vs PW (4.92) · 41 responses</div>
     <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:11px;color:var(--text-secondary);line-height:1.8;">
       <span style="color:var(--sf-blue);font-weight:600;">EMEA</span> 5.00 &nbsp;·&nbsp;
       <span style="color:var(--sf-purple);font-weight:600;">IST</span> 4.80 &nbsp;·&nbsp;
@@ -357,8 +357,8 @@
   </div>
   <div class="kpi kpi-success">
     <div class="label">TTR (avg days) <span style="font-size:10px;font-weight:700;color:var(--sf-green);background:var(--sf-green-lt);padding:1px 6px;border-radius:10px;margin-left:4px;">Target 10d ✓</span></div>
-    <div class="value" style="color:var(--sf-green);">8.4</div>
-    <div class="delta down">↑ +0.1 vs PW (8.3) — still under target</div>
+    <div class="value" style="color:var(--sf-green);">8.3</div>
+    <div class="delta down">— flat vs PW (8.3) — still under target</div>
     <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:11px;color:var(--text-secondary);line-height:1.8;">
       <span style="color:var(--sf-blue);font-weight:600;">EMEA</span> 6.19d &nbsp;·&nbsp;
       <span style="color:var(--sf-orange);font-weight:600;">India</span> 11.25d ⚠️ &nbsp;·&nbsp;
@@ -383,12 +383,12 @@
   <table>
     <thead>
       <tr>
-        <th style="text-align:left;padding-left:20px;border-right:1px solid rgba(255,255,255,.15);">KPI</th>
-        <th style="border-right:1px solid rgba(255,255,255,.15);">Oct 18</th>
-        <th style="border-right:1px solid rgba(255,255,255,.15);">Oct 25</th>
-        <th style="border-right:1px solid rgba(255,255,255,.15);">Nov 1</th>
-        <th style="border-right:1px solid rgba(255,255,255,.15);">Nov 8</th>
-        <th style="background:#0a5aa8;">Nov 15 (TW)</th>
+        <th style="text-align:left;padding-left:20px;border-right:1px solid rgba(255,255,255,.15);">KPIs</th>
+        <th style="border-right:1px solid rgba(255,255,255,.15);">Target</th>
+        <th style="background:#0a5aa8;border-right:1px solid rgba(255,255,255,.15);">2026-11-15</th>
+        <th style="border-right:1px solid rgba(255,255,255,.15);">2026-11-08</th>
+        <th style="border-right:1px solid rgba(255,255,255,.15);">2026-11-01</th>
+        <th style="border-right:1px solid rgba(255,255,255,.15);">2026-10-25</th>
       </tr>
     </thead>
     <tbody id="kpiTrendBody"></tbody>
@@ -404,21 +404,24 @@
   var STRIPE = '#f3f3f3';
   var BLT    = '#e8f4fd';
 
-  // 5-week table: Oct 18 → Nov 15 (oldest left, TW rightmost — matches chart direction)
-  // CSAT target 4.55 → green when above; TTR target 10d → green when below
+  // Columns rendered: Target | 2026-11-15 (TW) | 2026-11-08 (PW) | 2026-11-01 (PPW) | 2026-10-25 (PPPW)
+  // data array order: [Oct25(0), Oct25-dup, Nov1(2), Nov8(3), Nov15-TW(4)]
   var ROWS = [
-    { label:'Support Inflow',     color:'navy',   data:[{v:'753',d:''},{v:'849',d:'+96'},{v:'869',d:'+20'},{v:'733',d:'−136'},{v:'826',d:'+93'}] },
-    { label:'Closures',           color:'navy',   data:[{v:'703',d:''},{v:'802',d:'+99'},{v:'875',d:'+73'},{v:'830',d:'−45'},{v:'792',d:'−38'}] },
-    { label:'SLO Miss %',         color:'green',  data:[{v:'0.0 %',d:''},{v:'0.0 %',d:'—'},{v:'0.0 %',d:'—'},{v:'0.0 %',d:'—'},{v:'0.0 %',d:'—'}] },
-    { label:'Escalation %',       color:'green',  data:[{v:'0.4 %',d:''},{v:'0.5 %',d:'+0.1'},{v:'0.3 %',d:'−0.2'},{v:'0.5 %',d:'+0.2'},{v:'0.4 %',d:'−0.1'}] },
-    { label:'TTR (avg days) ◎10', color:'green',  data:[{v:'8.3',d:''},{v:'7.9',d:'−0.4'},{v:'8.6',d:'+0.7'},{v:'8.3',d:'−0.3'},{v:'8.4',d:'+0.1'}] },
-    { label:'CSAT ◎4.55',         color:'green',  data:[{v:'4.72',d:''},{v:'4.77',d:'+0.05'},{v:'4.87',d:'+0.1'},{v:'4.72',d:'−0.15'},{v:'4.78',d:'+0.06'}] },
-    { label:'Reopen Rate',        color:'green',  data:[{v:'7.5 %',d:''},{v:'8.0 %',d:'+0.5'},{v:'6.5 %',d:'−1.5'},{v:'7.0 %',d:'+0.5'},{v:'5.9 %',d:'−1.1'}] },
-    { label:'Investigations',     color:'navy',   data:[{v:'67',d:''},{v:'82',d:'+15'},{v:'86',d:'+4'},{v:'48',d:'−38'},{v:'28',d:'−20'}] },
-    { label:'Investigation Rate', color:'orange', data:[{v:'8.9 %',d:''},{v:'9.6 %',d:'+0.7'},{v:'9.9 %',d:'+0.3'},{v:'6.5 %',d:'−3.4'},{v:'3.5 %',d:'−3.0'}] },
-    { label:'Bugs',               color:'navy',   data:[{v:'67',d:''},{v:'83',d:'+16'},{v:'53',d:'−30'},{v:'35',d:'−18'},{v:'38',d:'+3'}] },
-    { label:'Bug Rate',           color:'navy',   data:[{v:'8.9 %',d:''},{v:'9.8 %',d:'+0.9'},{v:'6.1 %',d:'−3.7'},{v:'4.7 %',d:'−1.4'},{v:'4.7 %',d:'0'}] }
+    { label:'Support Inflow',     color:'navy',   target:'−',      data:[{v:'850',d:''},{v:'850',d:''},{v:'867',d:'+17'},{v:'744',d:'−123'},{v:'823',d:'+79'}] },
+    { label:'Closures',           color:'navy',   target:'−',      data:[{v:'802',d:''},{v:'802',d:''},{v:'875',d:'+73'},{v:'829',d:'−46'}, {v:'783',d:'−46'}] },
+    { label:'SLO Miss %',         color:'green',  target:'< 2 %',  data:[{v:'0.0 %',d:''},{v:'0.0 %',d:''},{v:'0.0 %',d:''},{v:'0.0 %',d:''},{v:'0.0 %',d:''}] },
+    { label:'Escalation %',       color:'green',  target:'< 2 %',  data:[{v:'0.5 %',d:''},{v:'0.5 %',d:''},{v:'0.3 %',d:'−0.2'},{v:'0.5 %',d:'+0.2'},{v:'0.4 %',d:'−0.1'}] },
+    { label:'TTR',                color:'green',  target:'10 days',data:[{v:'7.9',d:''},{v:'7.9',d:''},{v:'8.6',d:'+0.7'},{v:'8.3',d:'−0.3'},{v:'8.3',d:'0'}] },
+    { label:'CSAT',               color:'green',  target:'4.5',    data:[{v:'4.77',d:''},{v:'4.77',d:''},{v:'4.87',d:'+0.1'},{v:'4.92',d:'+0.05'},{v:'4.78',d:'−0.14'}] },
+    { label:'Reopen Rate',        color:'green',  target:'20 %',   data:[{v:'8.0 %',d:''},{v:'8.0 %',d:''},{v:'6.5 %',d:'−1.5'},{v:'7.0 %',d:'+0.5'},{v:'6.0 %',d:'−1.0'}] },
+    { label:'Investigations',     color:'navy',   target:'−',      data:[{v:'83',d:''},{v:'83',d:''},{v:'88',d:'+5'},{v:'52',d:'−36'},{v:'33',d:'−19'}] },
+    { label:'Investigation Rate', color:'orange', target:'−',      data:[{v:'9.8 %',d:''},{v:'9.8 %',d:''},{v:'10.1 %',d:'+0.3'},{v:'7.0 %',d:'−3.1'},{v:'4.0 %',d:'−3.0'}] },
+    { label:'Bugs',               color:'navy',   target:'−',      data:[{v:'85',d:''},{v:'85',d:''},{v:'54',d:'−31'},{v:'40',d:'−14'},{v:'42',d:'+2'}] },
+    { label:'Bug Rate',           color:'navy',   target:'−',      data:[{v:'10.0 %',d:''},{v:'10.0 %',d:''},{v:'6.2 %',d:'−3.8'},{v:'5.4 %',d:'−0.8'},{v:'5.1 %',d:'−0.3'}] }
   ];
+
+  // Render order: Target, TW(4), PW(3), PPW(2), PPPW(1)
+  var COL_IDX = [null, 4, 3, 2, 1]; // null = Target column
 
   var tbody = document.getElementById('kpiTrendBody');
   ROWS.forEach(function(row, ri) {
@@ -429,14 +432,20 @@
 
     var cells = '<td style="padding:11px 20px;font-weight:700;font-size:14px;color:' + NAVY + ';border-right:1px solid #e5e5e4;">' + row.label + '</td>';
 
-    row.data.forEach(function(cell, ci) {
-      var isTW = ci === 4;
-      var cellBg = isTW ? BLT : bg;
-      var border = ci < 4 ? 'border-right:1px solid #e5e5e4;' : '';
-      var valSize = isTW ? '15px' : '14px';
-      var fwt = isTW ? '900' : '700';
-      var delta = cell.d && cell.d !== '—' ? ' <span style="font-size:11px;font-weight:500;color:' + DGRAY + ';">(' + cell.d + ')</span>' : '';
-      cells += '<td style="padding:11px 20px;text-align:center;font-weight:' + fwt + ';color:' + vc + ';font-size:' + valSize + ';background:' + cellBg + ';' + border + '">' + cell.v + delta + '</td>';
+    COL_IDX.forEach(function(ci, pos) {
+      var isTW  = pos === 1; // second column = TW
+      var border = 'border-right:1px solid #e5e5e4;';
+      if (ci === null) {
+        // Target column
+        cells += '<td style="padding:11px 20px;text-align:center;font-weight:600;font-size:13px;color:' + DGRAY + ';background:' + bg + ';' + border + '">' + row.target + '</td>';
+      } else {
+        var cell = row.data[ci];
+        var cellBg = isTW ? BLT : bg;
+        var valSize = isTW ? '15px' : '14px';
+        var fwt = isTW ? '900' : '700';
+        var delta = cell.d && cell.d !== '' ? ' <span style="font-size:11px;font-weight:500;color:' + DGRAY + ';">(' + cell.d + ')</span>' : '';
+        cells += '<td style="padding:11px 20px;text-align:center;font-weight:' + fwt + ';color:' + vc + ';font-size:' + valSize + ';background:' + cellBg + ';' + border + '">' + cell.v + delta + '</td>';
+      }
     });
 
     tr.innerHTML = cells;
