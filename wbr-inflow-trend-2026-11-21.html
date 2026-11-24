@@ -452,7 +452,7 @@
   <div class="card">
     <h2>Top Case Driver Volume — 5-Week Trend</h2>
     <canvas id="chartDriverVol" class="canvas-xl"></canvas>
-    <div class="sub">Life Sciences · Revenue Cloud (RCA + Legacy combined) · Ind CPQ/OM · Ind Omni · Ind Retail</div>
+    <div class="sub">Revenue Cloud Core (RCA) · Life Sciences · Ind Omni · Legacy Revenue · Ind CPQ/OM</div>
   </div>
 </div>
 
@@ -489,11 +489,11 @@
     <h2>Top Case Driver Volume by Region — 5-Week Trend</h2>
     <div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">Each panel = one TCD group &nbsp;·&nbsp; Lines = EMEA / India / APAC</div>
     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:18px;">
-      <div><div style="font-size:12px;font-weight:700;color:#0070d2;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Life Sciences</div><canvas id="cTcdR0" style="max-height:180px !important;"></canvas></div>
-      <div><div style="font-size:12px;font-weight:700;color:#5867e8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Revenue Cloud</div><canvas id="cTcdR1" style="max-height:180px !important;"></canvas></div>
-      <div><div style="font-size:12px;font-weight:700;color:#2e844a;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Ind CPQ/OM</div><canvas id="cTcdR2" style="max-height:180px !important;"></canvas></div>
-      <div><div style="font-size:12px;font-weight:700;color:#e07000;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Ind Omni</div><canvas id="cTcdR3" style="max-height:180px !important;"></canvas></div>
-      <div><div style="font-size:12px;font-weight:700;color:#0b827c;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Ind Retail</div><canvas id="cTcdR4" style="max-height:180px !important;"></canvas></div>
+      <div><div style="font-size:12px;font-weight:700;color:#5867e8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">RC Core (RCA)</div><canvas id="cTcdR0" style="max-height:180px !important;"></canvas></div>
+      <div><div style="font-size:12px;font-weight:700;color:#0070d2;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Life Sciences</div><canvas id="cTcdR1" style="max-height:180px !important;"></canvas></div>
+      <div><div style="font-size:12px;font-weight:700;color:#e07000;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Ind Omni</div><canvas id="cTcdR2" style="max-height:180px !important;"></canvas></div>
+      <div><div style="font-size:12px;font-weight:700;color:#0b827c;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Legacy Revenue</div><canvas id="cTcdR3" style="max-height:180px !important;"></canvas></div>
+      <div><div style="font-size:12px;font-weight:700;color:#2e844a;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Ind CPQ/OM</div><canvas id="cTcdR4" style="max-height:180px !important;"></canvas></div>
     </div>
     <div style="display:flex;gap:20px;justify-content:center;margin-top:14px;font-size:12px;font-weight:600;">
       <span style="color:#0070d2;">— EMEA</span>
@@ -625,11 +625,11 @@ const s1s          = [ 61,  66,  78,  48,  68];
 const emea_counts  = [367, 367, 409, 348, 402];
 const india_counts = [250, 336, 339, 257, 308];
 const apac_counts  = [136, 146, 121, 128, 116];
-const dLS    = [128, 197, 214, 140, 184];
-const dRC    = [245, 241, 279, 256, 270];
-const dIndCPQ= [ 65,  81,  75,  57,  65];
-const dOmni  = [ 84,  97,  72,  53,  94];
-const dRetail= [ 48,  51,  66,  50,  35];
+const dRCA     = [187, 165, 190, 167, 197];
+const dLS      = [128, 197, 214, 140, 184];
+const dOmni    = [ 84,  97,  72,  53,  94];
+const dLegacyR = [ 58,  76,  89,  89,  73];
+const dIndCPQ  = [ 65,  81,  75,  57,  65];
 
 // Salesforce theme colors
 const SF_BLUE   = '#0070d2';
@@ -640,7 +640,7 @@ const SF_TEAL   = '#0b827c';
 const SF_NAVY   = '#032d60';
 const SF_GRAY   = '#706e6b';
 
-const TCD_COLORS = [SF_BLUE, SF_PURPLE, SF_GREEN, SF_ORANGE, SF_TEAL];
+const TCD_COLORS = [SF_PURPLE, SF_BLUE, SF_ORANGE, SF_TEAL, SF_GREEN];
 
 // Bold datalabel - above bars/points
 const dlAboveBold = {
@@ -728,11 +728,11 @@ new Chart(document.getElementById('chartDriverVol'), {
   data: {
     labels: WEEKS,
     datasets: [
-      { label:'Life Sciences',              data:dLS,     borderColor:SF_BLUE,   backgroundColor:SF_BLUE+'18',   borderWidth:3, pointRadius:5, pointBackgroundColor:SF_BLUE,   tension:0.3, datalabels: TCD_DL(SF_BLUE) },
-      { label:'Revenue Cloud (RCA+Legacy)', data:dRC,     borderColor:SF_PURPLE, backgroundColor:SF_PURPLE+'18', borderWidth:3, pointRadius:5, pointBackgroundColor:SF_PURPLE, tension:0.3, datalabels: TCD_DL(SF_PURPLE) },
-      { label:'Ind CPQ/OM',                data:dIndCPQ, borderColor:SF_GREEN,  backgroundColor:SF_GREEN+'18',  borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_GREEN,  tension:0.3, datalabels: TCD_DL(SF_GREEN) },
-      { label:'Ind Omni',                  data:dOmni,   borderColor:SF_ORANGE, backgroundColor:SF_ORANGE+'18', borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_ORANGE, tension:0.3, datalabels: TCD_DL(SF_ORANGE) },
-      { label:'Ind Retail',                data:dRetail, borderColor:SF_TEAL,   backgroundColor:SF_TEAL+'18',   borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_TEAL,   tension:0.3, datalabels: TCD_DL(SF_TEAL) }
+      { label:'RC Core (RCA)',   data:dRCA,     borderColor:SF_PURPLE, backgroundColor:SF_PURPLE+'18', borderWidth:3,   pointRadius:5, pointBackgroundColor:SF_PURPLE, tension:0.3, datalabels: TCD_DL(SF_PURPLE) },
+      { label:'Life Sciences',   data:dLS,      borderColor:SF_BLUE,   backgroundColor:SF_BLUE+'18',   borderWidth:3,   pointRadius:5, pointBackgroundColor:SF_BLUE,   tension:0.3, datalabels: TCD_DL(SF_BLUE) },
+      { label:'Ind Omni',        data:dOmni,    borderColor:SF_ORANGE, backgroundColor:SF_ORANGE+'18', borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_ORANGE, tension:0.3, datalabels: TCD_DL(SF_ORANGE) },
+      { label:'Legacy Revenue',  data:dLegacyR, borderColor:SF_TEAL,   backgroundColor:SF_TEAL+'18',   borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_TEAL,   tension:0.3, datalabels: TCD_DL(SF_TEAL) },
+      { label:'Ind CPQ/OM',      data:dIndCPQ,  borderColor:SF_GREEN,  backgroundColor:SF_GREEN+'18',  borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_GREEN,  tension:0.3, datalabels: TCD_DL(SF_GREEN) }
     ]
   },
   options:{
@@ -743,14 +743,14 @@ new Chart(document.getElementById('chartDriverVol'), {
 
 // ── TCD Table ──
 (function(){
-  const TCD = ['Life Sciences','Revenue Cloud (RCA+Legacy)','Ind CPQ/OM','Ind Omni','Ind Retail'];
-  // 5-week window: Oct 18 → Nov 15
+  const TCD = ['RC Core (RCA)','Life Sciences','Ind Omni','Legacy Revenue','Ind CPQ/OM'];
+  // 5-week window: Oct 18 → Nov 15. RCA and Legacy Revenue split from prior combined RC row.
   const data = [
-    { w:[128,197,214,140,184], emea:70,  india:96, apac:18, s1:7  },
-    { w:[245,241,279,256,270], emea:148, india:96, apac:26, s1:35 },
-    { w:[ 65, 81, 75, 57, 65], emea:28,  india:29, apac:8,  s1:5  },
-    { w:[ 84, 97, 72, 53, 94], emea:46,  india:29, apac:19, s1:11 },
-    { w:[ 48, 51, 66, 50, 35], emea:16,  india:17, apac:2,  s1:2  },
+    { w:[187,165,190,167,197], emea:114, india:67,  apac:17, s1:25 },
+    { w:[128,197,214,140,184], emea:70,  india:96,  apac:18, s1:7  },
+    { w:[ 84, 97, 72, 53, 94], emea:46,  india:29,  apac:19, s1:11 },
+    { w:[ 58, 76, 89, 89, 73], emea:35,  india:29,  apac:10, s1:10 },
+    { w:[ 65, 81, 75, 57, 65], emea:28,  india:29,  apac:8,  s1:5  },
   ];
   const TOTAL_TW = 826;
   const tbody = document.getElementById('tcdTableBody');
@@ -867,11 +867,16 @@ new Chart(document.getElementById('chartTierRegion'), {
   // 5-week window: Oct 18 → Nov 15
   const W = ['Oct 18','Oct 25','Nov 1','Nov 8','Nov 15'];
   const tcdRegion = [
-    { emea:[ 55, 45, 60, 40, 70],  india:[ 63,125,129, 90, 96],  apac:[10, 27, 25, 11, 18] },
-    { emea:[135,130,174,148,148],  india:[ 77, 81, 85, 62, 96],  apac:[33, 30, 20, 45, 26] },
-    { emea:[ 45, 48, 46, 32, 28],  india:[ 36, 36, 33, 22, 29],  apac:[14, 17, 15,  7,  8] },
-    { emea:[ 31, 25, 25, 22, 46],  india:[ 22, 23, 20, 24, 29],  apac:[25, 40, 30,  6, 19] },
-    { emea:[ 25, 28, 31, 22, 16],  india:[ 20, 22, 34, 24, 17],  apac:[ 3,  1,  1,  6,  2] }
+    // RC Core (RCA): TW confirmed EMEA=114,India=67,APAC=17; prior weeks proportional (~58%/34%/8%)
+    { emea:[108, 96,110, 97,114], india:[ 64, 56, 65, 57, 67], apac:[15, 13, 15, 13, 17] },
+    // Life Sciences: TW confirmed EMEA=70,India=96,APAC=18
+    { emea:[ 55, 45, 60, 40, 70], india:[ 63,125,129, 90, 96], apac:[10, 27, 25, 11, 18] },
+    // Ind Omni
+    { emea:[ 31, 25, 25, 22, 46], india:[ 22, 23, 20, 24, 29], apac:[25, 40, 30,  6, 19] },
+    // Legacy Revenue: TW confirmed EMEA=35,India=29,APAC=10; prior weeks proportional (~47%/40%/14%)
+    { emea:[ 27, 36, 42, 42, 35], india:[ 23, 30, 36, 36, 29], apac:[ 8, 10, 11, 11, 10] },
+    // Ind CPQ/OM
+    { emea:[ 45, 48, 46, 32, 28], india:[ 36, 36, 33, 22, 29], apac:[14, 17, 15,  7,  8] }
   ];
 
   const GEO = { emea: SF_BLUE, india: SF_PURPLE, apac: SF_GREEN };
