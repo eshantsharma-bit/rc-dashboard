@@ -464,7 +464,7 @@
 <div class="tcd-table-wrap">
   <div class="tcd-table-title">
     Top Case Drivers — 5-Week Volume Table
-    <span>Geo columns = % of that region's total inflow (TW) &nbsp;|&nbsp; Case_Owner__r.Support_Region__c</span>
+    <span>5wk Avg = average of Oct 18 – Nov 15 · ▲/▼ vs avg accounts for Diwali low in Nov 8 &nbsp;|&nbsp; Geo % = share of region's TW inflow</span>
   </div>
   <table>
     <thead>
@@ -475,8 +475,11 @@
         <th>Nov 1</th>
         <th>Nov 8</th>
         <th class="tw-col">Nov 15 (TW)</th>
-        <th>WoW Δ</th>
+        <th>5wk Avg</th>
+        <th>vs Avg</th>
         <th>TW Share</th>
+        <th>5wk Avg Share</th>
+        <th>Share Δ</th>
         <th>EMEA %</th>
         <th>IST %</th>
         <th>APAC %</th>
@@ -719,25 +722,46 @@ const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
   const TCD = ['RC Core (RCA)','Life Sciences','Ind Omni','Legacy Revenue','Ind CPQ/OM'];
   // TW geo totals (for % calculation)
   const GEO_TW = { emea: 402, india: 308, apac: 116 };
-  // 5-week window: Oct 18 → Nov 15. RCA and Legacy Revenue split from prior combined RC row.
+  // 5-week window: Oct 18 → Nov 15. Weekly totals: [744, 848, 868, 745, 823]
+  const WEEK_TOTALS = [744, 848, 868, 745, 823];
+  const TOTAL_TW = 823;
+  // Live OrgCS data — 5wk avg and share avg derived inline
   const data = [
-    { w:[187,165,190,167,197], emea:114, india:67,  apac:17, s1:25 },
-    { w:[128,197,214,140,184], emea:70,  india:96,  apac:18, s1:7  },
-    { w:[ 84, 97, 72, 53, 94], emea:46,  india:29,  apac:19, s1:11 },
-    { w:[ 58, 76, 89, 89, 73], emea:35,  india:29,  apac:10, s1:10 },
-    { w:[ 65, 81, 75, 57, 65], emea:28,  india:29,  apac:8,  s1:5  },
+    { w:[186,165,191,167,195], emea:114, india:67,  apac:17, s1:25 },  // RCA
+    { w:[128,197,214,141,185], emea:70,  india:96,  apac:18, s1:7  },  // Life Sciences
+    { w:[ 85, 97, 72, 53, 95], emea:46,  india:29,  apac:19, s1:11 },  // Ind Omni
+    { w:[ 59, 75, 88, 88, 72], emea:35,  india:29,  apac:10, s1:10 },  // Legacy Revenue
+    { w:[ 65, 81, 75, 59, 66], emea:28,  india:29,  apac:8,  s1:5  },  // Ind CPQ/OM
   ];
-  const TOTAL_TW = 826;
   const tbody = document.getElementById('tcdTableBody');
 
+  function avgColor(diff) {
+    if (diff > 2)  return '#1a7f37';  // green — above avg
+    if (diff < -2) return '#cf222e';  // red — below avg
+    return '#706e6b';                  // neutral
+  }
+  function avgArrow(diff) {
+    if (diff > 0.5)  return '▲';
+    if (diff < -0.5) return '▼';
+    return '—';
+  }
+
   data.forEach((d,i) => {
-    const n = d.w.length;
-    const tw = d.w[n-1], pw = d.w[n-2];   // last = TW, second-to-last = PW
-    const delta = tw - pw;
-    const arrow = delta > 0 ? '▲' : (delta < 0 ? '▼' : '—');
-    const pct = (tw/TOTAL_TW*100).toFixed(1);
+    const tw = d.w[4];
+    // 5-week avg volume
+    const avg5 = d.w.reduce((a,v)=>a+v,0)/5;
+    const avgDiff = tw - avg5;
+    const avgArrow_ = avgArrow(avgDiff);
+    const avgColor_ = avgColor(avgDiff);
+    // TW share
+    const twShare = (tw/TOTAL_TW*100).toFixed(1);
+    // 5-week avg share
+    const shares5 = d.w.map((v,wi) => v/WEEK_TOTALS[wi]*100);
+    const avgShare = (shares5.reduce((a,v)=>a+v,0)/5).toFixed(1);
+    const shareDiff = (parseFloat(twShare) - parseFloat(avgShare)).toFixed(1);
+    const shareArrow = avgArrow(parseFloat(shareDiff));
+    const shareColor = avgColor(parseFloat(shareDiff));
     const tr = document.createElement('tr');
-    const wowClass = delta > 0 ? 'wow-up' : (delta < 0 ? 'wow-dn' : '');
     tr.innerHTML = `
       <td><span class="dot" style="background:${TCD_COLORS[i]};"></span>${TCD[i]}</td>
       <td>${d.w[0]}</td>
@@ -745,8 +769,11 @@ const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
       <td>${d.w[2]}</td>
       <td>${d.w[3]}</td>
       <td class="tw-val">${tw}</td>
-      <td class="${wowClass}">${arrow} ${Math.abs(delta)}</td>
-      <td style="font-weight:600;color:${SF_NAVY};">${pct}%</td>
+      <td style="font-weight:700;color:${SF_NAVY};">${avg5.toFixed(1)}</td>
+      <td style="font-weight:700;color:${avgColor_};">${avgArrow_} ${Math.abs(avgDiff).toFixed(1)}</td>
+      <td style="font-weight:700;color:${SF_NAVY};">${twShare}%</td>
+      <td style="font-weight:600;color:${SF_NAVY};">${avgShare}%</td>
+      <td style="font-weight:700;color:${shareColor};">${shareArrow} ${Math.abs(shareDiff)}pp</td>
       <td style="font-weight:600;color:${SF_NAVY};">${(d.emea/GEO_TW.emea*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.emea})</span></td>
       <td style="font-weight:600;color:${SF_NAVY};">${(d.india/GEO_TW.india*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.india})</span></td>
       <td style="font-weight:600;color:${SF_NAVY};">${(d.apac/GEO_TW.apac*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.apac})</span></td>
@@ -754,22 +781,30 @@ const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
     tbody.appendChild(tr);
   });
 
-  // Totals row — 5-element arrays
+  // Totals row
   const sumW = Array(5).fill(0);
   data.forEach(d => d.w.forEach((v,i) => sumW[i] += v));
   const sumE = data.reduce((a,d)=>a+d.emea,0);
   const sumI = data.reduce((a,d)=>a+d.india,0);
   const sumA = data.reduce((a,d)=>a+d.apac,0);
   const sumS = data.reduce((a,d)=>a+d.s1,0);
-  const twTot = sumW[4], pwTot = sumW[3];
-  const twD = twTot - pwTot;
+  const twTot = sumW[4];
+  const avg5Tot = sumW.reduce((a,v)=>a+v,0)/5;
+  const avgDiffTot = twTot - avg5Tot;
+  const twShareTot = (twTot/TOTAL_TW*100).toFixed(1);
+  const avgShares = sumW.map((v,wi)=>v/WEEK_TOTALS[wi]*100);
+  const avgShareTot = (avgShares.reduce((a,v)=>a+v,0)/5).toFixed(1);
+  const shareD = (parseFloat(twShareTot)-parseFloat(avgShareTot)).toFixed(1);
   const totRow = document.createElement('tr');
   totRow.innerHTML = `
     <td style="color:${SF_NAVY};font-size:14px;">Total (5 TCD groups)</td>
     ${sumW.slice(0,4).map(v=>`<td>${v}</td>`).join('')}
     <td class="tw-val">${twTot}</td>
-    <td class="${twD>=0?'wow-up':'wow-dn'}">${twD>=0?'▲':'▼'} ${Math.abs(twD)}</td>
-    <td style="font-weight:700;color:${SF_NAVY};">${(twTot/TOTAL_TW*100).toFixed(1)}%</td>
+    <td style="font-weight:700;color:${SF_NAVY};">${avg5Tot.toFixed(1)}</td>
+    <td style="font-weight:700;color:${avgColor(avgDiffTot)};">${avgArrow(avgDiffTot)} ${Math.abs(avgDiffTot).toFixed(1)}</td>
+    <td style="font-weight:700;color:${SF_NAVY};">${twShareTot}%</td>
+    <td style="font-weight:700;color:${SF_NAVY};">${avgShareTot}%</td>
+    <td style="font-weight:700;color:${avgColor(parseFloat(shareD))};">${avgArrow(parseFloat(shareD))} ${Math.abs(parseFloat(shareD)).toFixed(1)}pp</td>
     <td style="font-weight:700;">${(sumE/GEO_TW.emea*100).toFixed(1)}%</td>
     <td style="font-weight:700;">${(sumI/GEO_TW.india*100).toFixed(1)}%</td>
     <td style="font-weight:700;">${(sumA/GEO_TW.apac*100).toFixed(1)}%</td>
@@ -925,10 +960,10 @@ const tierWk = {
 </script>
 
 <!-- ── SECTION: Top 10 Accounts (TW) — All P&T ── -->
-<div class="section-label">Top 10 Case-Creating Accounts — All Products (TW: Nov 15–21 vs PW: Nov 8–14)</div>
+<div class="section-label">Top 10 Case-Creating Accounts — All Products (TW: Nov 15–21)</div>
 <div style="margin:20px 36px 32px;">
   <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;">
-    Ranked by TW inflow · EMEA + India + APAC · All products · Source P&T shows dominant product driving volume
+    Ranked by TW inflow · EMEA + India + APAC · All products · 5wk Avg = Oct 18 – Nov 15 average (removes Diwali distortion) · Source P&T = dominant product
   </p>
   <div style="overflow-x:auto;">
   <table style="width:100%;border-collapse:collapse;font-size:13px;">
@@ -937,7 +972,8 @@ const tierWk = {
         <th style="padding:10px 14px;text-align:left;font-weight:700;white-space:nowrap;min-width:190px;">#&nbsp; Account</th>
         <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;">TW</th>
         <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;">PW</th>
-        <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;">WoW</th>
+        <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;">5wk Avg</th>
+        <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;">vs Avg</th>
         <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;">S1</th>
         <th style="padding:10px 12px;text-align:left;font-weight:700;white-space:nowrap;min-width:160px;">Source P&T</th>
         <th style="padding:10px 10px;text-align:left;font-weight:700;white-space:nowrap;">Plan</th>
@@ -952,7 +988,8 @@ const tierWk = {
         <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">1</span>Pfizer – Commercial LSC EMEA</td>
         <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">29</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">20</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:var(--sf-orange);">↑ +45%</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">18.8</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +10.2</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
         <td style="padding:9px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
@@ -970,7 +1007,8 @@ const tierWk = {
         <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">2</span>Novartis Pharma AG <span style="font-weight:400;font-size:11px;color:var(--text-secondary);">(2 orgs)</span></td>
         <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">20</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">9</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:var(--sf-orange);">↑ +122%</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">13.8</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +6.2</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
         <td style="padding:9px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
@@ -986,7 +1024,8 @@ const tierWk = {
         <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">3</span>Alfasigma Global CRM</td>
         <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">19</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">12</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:var(--sf-orange);">↑ +58%</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">17.2</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +1.8</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
         <td style="padding:9px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
@@ -1002,7 +1041,8 @@ const tierWk = {
         <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">4</span>Mylan Inc. <span style="font-weight:400;font-size:11px;color:var(--text-secondary);">(Viatris)</span></td>
         <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">18</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">20</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:var(--sf-green);">↓ −10%</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">20.4</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#cf222e;">▼ −2.4</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
         <td style="padding:9px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
@@ -1018,7 +1058,8 @@ const tierWk = {
         <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">5</span>Takeda Pharmaceuticals</td>
         <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">16</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">7</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:var(--sf-orange);">↑ +129%</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">17.0</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#706e6b;">— −1.0</td>
         <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-red);font-size:14px;">2</td>
         <td style="padding:9px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
@@ -1034,7 +1075,8 @@ const tierWk = {
         <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">6</span>AstraZeneca</td>
         <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">15</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">13</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:var(--sf-orange);">↑ +15%</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">12.4</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +2.6</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
         <td style="padding:9px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
@@ -1050,7 +1092,8 @@ const tierWk = {
         <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">7</span>British Telecommunications <span style="font-weight:400;font-size:11px;color:var(--text-secondary);">(Digico)</span></td>
         <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">10</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">4</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:var(--sf-orange);">↑ +150%</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">7.6</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +2.4</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
         <td style="padding:9px 12px;">
           <span style="display:inline-block;background:#f0e8ff;color:#6e3db8;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Ind-CPQ/OM</span>
@@ -1068,7 +1111,8 @@ const tierWk = {
         <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">8</span>GIE LA MONDIALE GROUPE</td>
         <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">9</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">3</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:var(--sf-orange);">↑ +200%</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">2.4</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +6.6</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
         <td style="padding:9px 12px;">
           <span style="display:inline-block;background:#fdf0e8;color:#b25000;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Health &amp; Ins.</span>
@@ -1084,7 +1128,8 @@ const tierWk = {
         <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">9</span>Beiersdorf Shared Services</td>
         <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">8</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">10</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:var(--sf-green);">↓ −20%</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">9.4</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#cf222e;">▼ −1.4</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
         <td style="padding:9px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
@@ -1102,7 +1147,8 @@ const tierWk = {
         <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">10</span>Cloudity</td>
         <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">8</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">7</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:var(--sf-orange);">↑ +14%</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">5.6</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +2.4</td>
         <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
         <td style="padding:9px 12px;">
           <span style="display:inline-block;background:#e6f4ea;color:#1a7f37;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">RCA</span>
