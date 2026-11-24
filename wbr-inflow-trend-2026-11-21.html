@@ -303,27 +303,6 @@
   <div>
     <h1>WBR Inflow Trend — Industries &amp; Revenue Cloud</h1>
     <div class="sub-title">5-week view · Oct 18 → Nov 15, 2026 · EMEA + India + APAC</div>
-    <!-- TW volume headline + regional splits -->
-    <div style="margin-top:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-      <div style="display:flex;align-items:baseline;gap:8px;">
-        <span style="font-size:40px;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1;">826</span>
-        <span style="font-size:13px;font-weight:700;color:#ffc72c;background:rgba(255,255,255,.15);padding:4px 12px;border-radius:20px;white-space:nowrap;">↑ +12.7% vs PW</span>
-      </div>
-      <div style="display:flex;gap:0;border:1px solid rgba(255,255,255,.25);border-radius:8px;overflow:hidden;">
-        <div style="padding:8px 18px;border-right:1px solid rgba(255,255,255,.2);">
-          <div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;">EMEA</div>
-          <div style="font-size:18px;font-weight:800;color:#fff;line-height:1;">402 <span style="font-size:11px;font-weight:600;color:#66cc99;">↑ +15.5%</span></div>
-        </div>
-        <div style="padding:8px 18px;border-right:1px solid rgba(255,255,255,.2);">
-          <div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;">IST</div>
-          <div style="font-size:18px;font-weight:800;color:#fff;line-height:1;">308 <span style="font-size:11px;font-weight:600;color:#66cc99;">↑ +19.8%</span></div>
-        </div>
-        <div style="padding:8px 18px;">
-          <div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;">APAC</div>
-          <div style="font-size:18px;font-weight:800;color:#fff;line-height:1;">116 <span style="font-size:11px;font-weight:600;color:#ff9980;">↓ −9.4%</span></div>
-        </div>
-      </div>
-    </div>
   </div>
   <div class="meta">
     Generated: Nov 21, 2026<br>
@@ -334,10 +313,31 @@
 
 <!-- ── KPI Tiles ── -->
 <div class="kpi-row" style="grid-template-columns:repeat(6,1fr);">
-  <div class="kpi">
+  <!-- Inflow tile — expanded with % and geo breakdown -->
+  <div class="kpi" style="border-top-color:var(--sf-navy);grid-column:span 1;">
     <div class="label">Inflow (TW)</div>
-    <div class="value" style="color:var(--sf-navy);">826</div>
-    <div class="delta note">↑ 93 vs PW (733)</div>
+    <div style="display:flex;align-items:baseline;gap:8px;margin:6px 0 2px;">
+      <div class="value" style="color:var(--sf-navy);margin:0;">826</div>
+      <span style="font-size:12px;font-weight:700;color:var(--sf-orange);background:var(--sf-orange-lt);padding:2px 8px;border-radius:12px;white-space:nowrap;">↑ +12.7%</span>
+    </div>
+    <div class="delta note" style="margin-bottom:10px;">vs PW 733 &nbsp;·&nbsp; +93 cases</div>
+    <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:6px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
+        <span style="color:var(--sf-blue);font-weight:700;">EMEA</span>
+        <span style="font-weight:800;color:var(--sf-navy);">402</span>
+        <span style="color:var(--sf-green);font-weight:600;font-size:11px;">↑ +15.5%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
+        <span style="color:var(--sf-purple);font-weight:700;">IST</span>
+        <span style="font-weight:800;color:var(--sf-navy);">308</span>
+        <span style="color:var(--sf-green);font-weight:600;font-size:11px;">↑ +19.8%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
+        <span style="color:var(--text-secondary);font-weight:700;">APAC</span>
+        <span style="font-weight:800;color:var(--sf-navy);">116</span>
+        <span style="color:var(--sf-orange);font-weight:600;font-size:11px;">↓ −9.4%</span>
+      </div>
+    </div>
   </div>
   <div class="kpi kpi-success">
     <div class="label">Closures (TW)</div>
