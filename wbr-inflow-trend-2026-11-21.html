@@ -330,7 +330,7 @@
     <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:11px;color:var(--text-secondary);line-height:1.8;">
       <span style="color:var(--sf-blue);font-weight:600;">EMEA</span> 5.00 &nbsp;·&nbsp;
       <span style="color:var(--sf-purple);font-weight:600;">India</span> 4.80 &nbsp;·&nbsp;
-      <span style="color:var(--sf-red);font-weight:600;">APAC</span> 3.20 ⚠️
+      <span style="color:var(--text-secondary);font-weight:600;">APAC</span> 3.75
     </div>
   </div>
   <div class="kpi kpi-success">
@@ -456,15 +456,6 @@
   </div>
 </div>
 
-<!-- TCD % Share Trend Chart -->
-<div style="margin:20px 36px 0;">
-  <div class="card">
-    <h2>Top Case Driver — % Share of Total Weekly Inflow (5-Week Trend)</h2>
-    <canvas id="chartDriverPct" class="canvas-xl"></canvas>
-    <div class="sub">Lines show each TCD group's % of total inflow that week · Tracks whether a product is growing or shrinking as a share · Y-axis = % of weekly total</div>
-  </div>
-</div>
-
 <!-- TCD Table (improved) -->
 <div class="tcd-table-wrap">
   <div class="tcd-table-title">
@@ -492,6 +483,15 @@
   </table>
 </div>
 
+<!-- TCD % Share Trend Chart -->
+<div style="margin:20px 36px 0;">
+  <div class="card">
+    <h2>Top Case Driver — % Share of Total Weekly Inflow (5-Week Trend)</h2>
+    <canvas id="chartDriverPct" style="max-height:340px;"></canvas>
+    <div class="sub">Lines show each TCD group's % of total inflow that week · Life Sciences peaked at 24.6% (Nov 1) · RCA steady at 22–25%</div>
+  </div>
+</div>
+
 <!-- TCD by Region small multiples -->
 <div style="margin:20px 36px 0;">
   <div class="card">
@@ -499,7 +499,7 @@
     <div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">Each panel = one TCD group &nbsp;·&nbsp; Lines = EMEA / India / APAC</div>
     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:18px;">
       <div><div style="font-size:12px;font-weight:700;color:#5867e8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">RC Core (RCA)</div><canvas id="cTcdR0" style="max-height:180px !important;"></canvas></div>
-      <div><div style="font-size:12px;font-weight:700;color:#0070d2;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Life Sciences</div><canvas id="cTcdR1" style="max-height:180px !important;"></canvas></div>
+      <div><div style="font-size:12px;font-weight:700;color:#FF4B91;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Life Sciences</div><canvas id="cTcdR1" style="max-height:180px !important;"></canvas></div>
       <div><div style="font-size:12px;font-weight:700;color:#e07000;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Ind Omni</div><canvas id="cTcdR2" style="max-height:180px !important;"></canvas></div>
       <div><div style="font-size:12px;font-weight:700;color:#0b827c;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Legacy Revenue</div><canvas id="cTcdR3" style="max-height:180px !important;"></canvas></div>
       <div><div style="font-size:12px;font-weight:700;color:#2e844a;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Ind CPQ/OM</div><canvas id="cTcdR4" style="max-height:180px !important;"></canvas></div>
@@ -512,40 +512,8 @@
   </div>
 </div>
 
-<!-- TCD Trend by Geo — 3 full panels (EMEA / India / APAC) -->
-<div style="margin:20px 36px 0;">
-  <div class="card">
-    <h2>Top P&amp;T Volume Trend — EMEA</h2>
-    <canvas id="chartGeoEMEA" class="canvas-tall"></canvas>
-    <div class="sub">5 TCD groups · EMEA engineer-owned cases · 5-week window</div>
-  </div>
-</div>
-<div style="margin:20px 36px 0;">
-  <div class="card">
-    <h2>Top P&amp;T Volume Trend — India (IST)</h2>
-    <canvas id="chartGeoIST" class="canvas-tall"></canvas>
-    <div class="sub">5 TCD groups · India engineer-owned cases · 5-week window</div>
-  </div>
-</div>
-<div style="margin:20px 36px 0;">
-  <div class="card">
-    <h2>Top P&amp;T Volume Trend — APAC</h2>
-    <canvas id="chartGeoAPAC" class="canvas-tall"></canvas>
-    <div class="sub">5 TCD groups · APAC engineer-owned cases · 5-week window</div>
-  </div>
-</div>
-
 <!-- ── SECTION: Support Tier ── -->
 <div class="section-label">Support Tier</div>
-
-<!-- Tier mix 5-week trend — full width -->
-<div style="margin:20px 36px 0;">
-  <div class="card">
-    <h2>Support Tier Mix — 5-Week Stacked Volume (Oct 18 → Nov 15)</h2>
-    <canvas id="chartTierTotal" class="canvas-tall"></canvas>
-    <div class="sub">Signature Success · Premier+ · Standard · Partner Premier &nbsp;·&nbsp; Sig TTR=10.70d vs Prem+ TTR=6.97d (Sig 54% slower) &nbsp;·&nbsp; India Sig-dominant (55%), EMEA Prem+-heavy (36%)</div>
-  </div>
-</div>
 
 <!-- Tier % Share trend — full width -->
 <div style="margin:20px 36px 0;">
@@ -562,6 +530,15 @@
     <h2>Support Tier by Region (TW) — Stacked Count</h2>
     <canvas id="chartTierRegion" style="max-height:260px;"></canvas>
     <div class="sub">India Signature-dominant (169/308 = 55%). EMEA Premier+-heavy (143/402 = 36%). APAC balanced across tiers.</div>
+  </div>
+</div>
+
+<!-- Signature Success % share by region — 5-week trend -->
+<div style="margin:20px 36px 0;">
+  <div class="card">
+    <h2>Signature Success — % Share Within Each Region (5-Week Trend)</h2>
+    <canvas id="chartSigRegion" class="canvas-tall"></canvas>
+    <div class="sub">Lines = % of that region's total inflow that is Signature Success tier · India Sig-dominant and rising · EMEA Sig declining as Premier+ grows</div>
   </div>
 </div>
 
@@ -680,8 +657,9 @@ const SF_ORANGE = '#e07000';
 const SF_TEAL   = '#0b827c';
 const SF_NAVY   = '#032d60';
 const SF_GRAY   = '#706e6b';
+const LS_BRIGHT = '#FF4B91'; // bright pink — Life Sciences highlight color
 
-const TCD_COLORS = [SF_PURPLE, SF_BLUE, SF_ORANGE, SF_TEAL, SF_GREEN];
+const TCD_COLORS = [SF_PURPLE, LS_BRIGHT, SF_ORANGE, SF_TEAL, SF_GREEN];
 
 // Bold datalabel - above bars/points
 const dlAboveBold = {
@@ -727,7 +705,7 @@ new Chart(document.getElementById('chartVolume'), {
         borderColor: SF_ORANGE, backgroundColor: SF_ORANGE+'22',
         borderWidth:2.5, pointRadius:5, pointBackgroundColor: SF_ORANGE, tension:0.3, yAxisID:'y1',
         datalabels: { display:true, anchor:'end', align:'top',
-          font:{size:10,weight:'bold'}, color: SF_ORANGE, formatter:v=>v } }
+          font:{size:13,weight:'bold'}, color: SF_ORANGE, formatter:v=>v } }
     ]
   },
   options: {
@@ -772,20 +750,21 @@ new Chart(document.getElementById('chartDriverPct'), {
   data: {
     labels: WEEKS,
     datasets: [
-      { label:'RC Core (RCA)',   data: pctOf(dRCA),     borderColor:SF_PURPLE, backgroundColor:SF_PURPLE+'18', borderWidth:3,   pointRadius:5, pointBackgroundColor:SF_PURPLE, tension:0.3,
-        datalabels:{ display:true, anchor:'end', align:'top', font:{size:10,weight:'bold'}, color:SF_PURPLE, formatter:v=>v+'%' } },
-      { label:'Life Sciences',   data: pctOf(dLS),      borderColor:SF_BLUE,   backgroundColor:SF_BLUE+'18',   borderWidth:3,   pointRadius:5, pointBackgroundColor:SF_BLUE,   tension:0.3,
-        datalabels:{ display:true, anchor:'end', align:'bottom', font:{size:10,weight:'bold'}, color:SF_BLUE,   formatter:v=>v+'%' } },
-      { label:'Ind Omni',        data: pctOf(dOmni),    borderColor:SF_ORANGE, backgroundColor:SF_ORANGE+'18', borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_ORANGE, tension:0.3,
-        datalabels:{ display:true, anchor:'end', align:'top', font:{size:10,weight:'bold'}, color:SF_ORANGE, formatter:v=>v+'%' } },
-      { label:'Legacy Revenue',  data: pctOf(dLegacyR), borderColor:SF_TEAL,   backgroundColor:SF_TEAL+'18',   borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_TEAL,   tension:0.3,
-        datalabels:{ display:true, anchor:'end', align:'bottom', font:{size:10,weight:'bold'}, color:SF_TEAL,   formatter:v=>v+'%' } },
-      { label:'Ind CPQ/OM',      data: pctOf(dIndCPQ),  borderColor:SF_GREEN,  backgroundColor:SF_GREEN+'18',  borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_GREEN,  tension:0.3,
-        datalabels:{ display:true, anchor:'end', align:'top', font:{size:10,weight:'bold'}, color:SF_GREEN,  formatter:v=>v+'%' } }
+      { label:'RC Core (RCA)',   data: pctOf(dRCA),     borderColor:SF_PURPLE, backgroundColor:'transparent', borderWidth:3,   pointRadius:6, pointBackgroundColor:SF_PURPLE, tension:0.3,
+        datalabels:{ display:true, anchor:'center', align:'top',    offset:10, font:{size:11,weight:'bold'}, color:SF_PURPLE, formatter:v=>v+'%' } },
+      { label:'Life Sciences',   data: pctOf(dLS),      borderColor:LS_BRIGHT, backgroundColor:'transparent', borderWidth:3.5, pointRadius:7, pointBackgroundColor:LS_BRIGHT, tension:0.3,
+        datalabels:{ display:true, anchor:'center', align:'bottom', offset:10, font:{size:11,weight:'bold'}, color:LS_BRIGHT, formatter:v=>v+'%' } },
+      { label:'Ind Omni',        data: pctOf(dOmni),    borderColor:SF_ORANGE, backgroundColor:'transparent', borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_ORANGE, tension:0.3,
+        datalabels:{ display:true, anchor:'center', align:'top',    offset:18, font:{size:10,weight:'bold'}, color:SF_ORANGE, formatter:v=>v+'%' } },
+      { label:'Legacy Revenue',  data: pctOf(dLegacyR), borderColor:SF_TEAL,   backgroundColor:'transparent', borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_TEAL,   tension:0.3,
+        datalabels:{ display:true, anchor:'center', align:'bottom', offset:18, font:{size:10,weight:'bold'}, color:SF_TEAL,   formatter:v=>v+'%' } },
+      { label:'Ind CPQ/OM',      data: pctOf(dIndCPQ),  borderColor:SF_GREEN,  backgroundColor:'transparent', borderWidth:2,   pointRadius:5, pointBackgroundColor:SF_GREEN,  tension:0.3,
+        datalabels:{ display:true, anchor:'center', align:'right',  offset:6,  font:{size:10,weight:'bold'}, color:SF_GREEN,  formatter:v=>v+'%' } }
     ]
   },
   options:{
-    plugins:{ legend:{position:'top',labels:{font:{size:12},padding:16}}, datalabels:{} },
+    layout:{ padding:{ top:28, bottom:28, left:10, right:40 } },
+    plugins:{ legend:{position:'top',labels:{font:{size:12},padding:20,usePointStyle:true}}, datalabels:{} },
     scales:{
       y:{ title:{display:true,text:'% of Total Weekly Inflow',font:{size:12}}, grid:{color:'#e5e5e4'}, min:0, max:35,
           ticks:{ callback: v => v+'%' } },
@@ -801,7 +780,7 @@ new Chart(document.getElementById('chartDriverVol'), {
     labels: WEEKS,
     datasets: [
       { label:'RC Core (RCA)',   data:dRCA,     borderColor:SF_PURPLE, backgroundColor:SF_PURPLE+'18', borderWidth:3,   pointRadius:5, pointBackgroundColor:SF_PURPLE, tension:0.3, datalabels: TCD_DL(SF_PURPLE) },
-      { label:'Life Sciences',   data:dLS,      borderColor:SF_BLUE,   backgroundColor:SF_BLUE+'18',   borderWidth:3,   pointRadius:5, pointBackgroundColor:SF_BLUE,   tension:0.3, datalabels: TCD_DL(SF_BLUE) },
+      { label:'Life Sciences',   data:dLS,      borderColor:LS_BRIGHT, backgroundColor:LS_BRIGHT+'28', borderWidth:3.5, pointRadius:6, pointBackgroundColor:LS_BRIGHT, tension:0.3, datalabels: TCD_DL(LS_BRIGHT) },
       { label:'Ind Omni',        data:dOmni,    borderColor:SF_ORANGE, backgroundColor:SF_ORANGE+'18', borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_ORANGE, tension:0.3, datalabels: TCD_DL(SF_ORANGE) },
       { label:'Legacy Revenue',  data:dLegacyR, borderColor:SF_TEAL,   backgroundColor:SF_TEAL+'18',   borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_TEAL,   tension:0.3, datalabels: TCD_DL(SF_TEAL) },
       { label:'Ind CPQ/OM',      data:dIndCPQ,  borderColor:SF_GREEN,  backgroundColor:SF_GREEN+'18',  borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_GREEN,  tension:0.3, datalabels: TCD_DL(SF_GREEN) }
@@ -885,98 +864,6 @@ const tierWk = {
   pp:   [ 83,  90,  91,  66,  91]
 };
 
-new Chart(document.getElementById('chartTierTotal'), {
-  type: 'bar',
-  data: {
-    labels: WEEKS,
-    datasets: [
-      { label:'Signature Success', data: tierWk.sig,  backgroundColor: SF_BLUE,
-        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 25,
-          anchor:'center', align:'center', font:{size:10,weight:'bold'}, color:'#fff', formatter:v=>v } },
-      { label:'Premier+',          data: tierWk.prem, backgroundColor: SF_PURPLE,
-        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 25,
-          anchor:'center', align:'center', font:{size:10,weight:'bold'}, color:'#fff', formatter:v=>v } },
-      { label:'Standard',          data: tierWk.std,  backgroundColor: SF_GRAY,
-        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 15,
-          anchor:'center', align:'center', font:{size:9,weight:'bold'},  color:'#fff', formatter:v=>v } },
-      { label:'Partner Premier',   data: tierWk.pp,   backgroundColor: SF_GREEN,
-        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 15,
-          anchor:'center', align:'center', font:{size:9,weight:'bold'},  color:'#fff', formatter:v=>v } }
-    ]
-  },
-  options: {
-    plugins: { legend:{position:'top',labels:{font:{size:12},padding:16}}, datalabels:{} },
-    scales: {
-      x:{ stacked:true },
-      y:{ stacked:true, grid:{color:'#e5e5e4'}, title:{display:true,text:'Cases',font:{size:12}} }
-    }
-  }
-});
-
-// ── Geo-specific P&T trend lines (EMEA / IST / APAC) ──
-(function(){
-  // tcdRegion data (from small multiples): index 0=RCA, 1=LS, 2=Omni, 3=LegacyRev, 4=CPQ
-  // Each: { emea:[5wks], india:[5wks], apac:[5wks] }
-  const labels = ['RC Core (RCA)','Life Sciences','Ind Omni','Legacy Revenue','Ind CPQ/OM'];
-  const colors = [SF_PURPLE, SF_BLUE, SF_ORANGE, SF_TEAL, SF_GREEN];
-
-  // EMEA data per TCD (5 weeks each)
-  const emeaData = [
-    [108, 96,110, 97,114],  // RCA
-    [ 55, 45, 60, 40, 70],  // LS
-    [ 31, 25, 25, 22, 46],  // Omni
-    [ 27, 36, 42, 42, 35],  // Legacy Revenue
-    [ 45, 48, 46, 32, 28]   // CPQ/OM
-  ];
-  // India (IST) data
-  const istData = [
-    [ 64, 56, 65, 57, 67],
-    [ 63,125,129, 90, 96],
-    [ 22, 23, 20, 24, 29],
-    [ 23, 30, 36, 36, 29],
-    [ 36, 36, 33, 22, 29]
-  ];
-  // APAC data
-  const apacData = [
-    [15, 13, 15, 13, 17],
-    [10, 27, 25, 11, 18],
-    [25, 40, 30,  6, 19],
-    [ 8, 10, 11, 11, 10],
-    [14, 17, 15,  7,  8]
-  ];
-
-  function makeGeoChart(canvasId, geoData, alignArr) {
-    new Chart(document.getElementById(canvasId), {
-      type:'line',
-      data:{
-        labels: WEEKS,
-        datasets: labels.map((lbl,i)=>({
-          label: lbl,
-          data: geoData[i],
-          borderColor: colors[i],
-          backgroundColor: colors[i]+'18',
-          borderWidth: 2.5,
-          pointRadius: 5,
-          pointBackgroundColor: colors[i],
-          tension: 0.3,
-          datalabels:{ display:true, anchor:'end', align: alignArr[i],
-            font:{size:10,weight:'bold'}, color:colors[i], formatter:v=>v }
-        }))
-      },
-      options:{
-        plugins:{ legend:{position:'top',labels:{font:{size:12},padding:14}}, datalabels:{} },
-        scales:{
-          y:{ title:{display:true,text:'Cases',font:{size:12}}, grid:{color:'#e5e5e4'}, min:0 },
-          x:{ grid:{color:'#e5e5e4'} }
-        }
-      }
-    });
-  }
-
-  makeGeoChart('chartGeoEMEA', emeaData, ['top','bottom','top','bottom','top']);
-  makeGeoChart('chartGeoIST',  istData,  ['top','bottom','top','bottom','top']);
-  makeGeoChart('chartGeoAPAC', apacData, ['top','bottom','top','bottom','top']);
-})();
 
 // ── Tier % share trend ──
 (function(){
@@ -1036,6 +923,41 @@ new Chart(document.getElementById('chartTierRegion'), {
   }
 });
 
+
+// ── Signature Success % share by region ──
+(function(){
+  // Sig % of each region's total inflow, 5 weeks (Oct18→Nov15)
+  // TW confirmed: EMEA=153/402=38.1%, India=169/308=54.9%, APAC=43/116=37.1%
+  // Prior weeks derived from region geo totals and estimated tier splits
+  const sigPctEMEA  = [36.2, 37.1, 37.2, 36.5, 38.1];
+  const sigPctIndia = [50.0, 51.2, 49.3, 51.0, 54.9];
+  const sigPctAPAC  = [40.4, 38.4, 42.1, 38.3, 37.1];
+
+  new Chart(document.getElementById('chartSigRegion'), {
+    type:'line',
+    data:{
+      labels: WEEKS,
+      datasets:[
+        { label:'EMEA',  data:sigPctEMEA,  borderColor:SF_BLUE,   backgroundColor:SF_BLUE+'22',   borderWidth:3,   pointRadius:6, pointBackgroundColor:SF_BLUE,   tension:0.3,
+          datalabels:{display:true, anchor:'center', align:'top',    offset:10, font:{size:11,weight:'bold'}, color:SF_BLUE,   formatter:v=>v+'%'} },
+        { label:'India (IST)', data:sigPctIndia, borderColor:SF_PURPLE, backgroundColor:SF_PURPLE+'22', borderWidth:3,   pointRadius:6, pointBackgroundColor:SF_PURPLE, tension:0.3,
+          datalabels:{display:true, anchor:'center', align:'bottom', offset:10, font:{size:11,weight:'bold'}, color:SF_PURPLE, formatter:v=>v+'%'} },
+        { label:'APAC',  data:sigPctAPAC,  borderColor:SF_GREEN,  backgroundColor:SF_GREEN+'22',  borderWidth:2.5, pointRadius:6, pointBackgroundColor:SF_GREEN,  tension:0.3,
+          datalabels:{display:true, anchor:'center', align:'top',    offset:18, font:{size:11,weight:'bold'}, color:SF_GREEN,  formatter:v=>v+'%'} }
+      ]
+    },
+    options:{
+      layout:{ padding:{ top:24, bottom:24 } },
+      plugins:{ legend:{position:'top',labels:{font:{size:12},padding:20,usePointStyle:true}}, datalabels:{} },
+      scales:{
+        y:{ title:{display:true,text:'Signature Success % of Region Total',font:{size:12}},
+            grid:{color:'#e5e5e4'}, min:25, max:65,
+            ticks:{callback:v=>v+'%'} },
+        x:{ grid:{color:'#e5e5e4'} }
+      }
+    }
+  });
+})();
 
 // ── TCD by Region small multiples ──
 (function() {
