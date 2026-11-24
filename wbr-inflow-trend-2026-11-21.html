@@ -303,14 +303,26 @@
   <div>
     <h1>WBR Inflow Trend — Industries &amp; Revenue Cloud</h1>
     <div class="sub-title">5-week view · Oct 18 → Nov 15, 2026 · EMEA + India + APAC</div>
-    <div style="margin-top:10px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
-      <span style="font-size:28px;font-weight:900;color:#fff;letter-spacing:-.5px;">826</span>
-      <span style="font-size:14px;font-weight:600;color:#f0a500;background:rgba(255,255,255,.12);padding:3px 10px;border-radius:4px;">↑ +12.7% vs PW (733)</span>
-      <span style="font-size:12px;color:rgba(255,255,255,.75);margin-left:4px;">
-        EMEA <strong style="color:#fff;">402</strong> <span style="color:#66cc99;">↑+15.5%</span>
-        &nbsp;·&nbsp; IST <strong style="color:#fff;">308</strong> <span style="color:#66cc99;">↑+19.8%</span>
-        &nbsp;·&nbsp; APAC <strong style="color:#fff;">116</strong> <span style="color:#ff9980;">↓−9.4%</span>
-      </span>
+    <!-- TW volume headline + regional splits -->
+    <div style="margin-top:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:baseline;gap:8px;">
+        <span style="font-size:40px;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1;">826</span>
+        <span style="font-size:13px;font-weight:700;color:#ffc72c;background:rgba(255,255,255,.15);padding:4px 12px;border-radius:20px;white-space:nowrap;">↑ +12.7% vs PW</span>
+      </div>
+      <div style="display:flex;gap:0;border:1px solid rgba(255,255,255,.25);border-radius:8px;overflow:hidden;">
+        <div style="padding:8px 18px;border-right:1px solid rgba(255,255,255,.2);">
+          <div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;">EMEA</div>
+          <div style="font-size:18px;font-weight:800;color:#fff;line-height:1;">402 <span style="font-size:11px;font-weight:600;color:#66cc99;">↑ +15.5%</span></div>
+        </div>
+        <div style="padding:8px 18px;border-right:1px solid rgba(255,255,255,.2);">
+          <div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;">IST</div>
+          <div style="font-size:18px;font-weight:800;color:#fff;line-height:1;">308 <span style="font-size:11px;font-weight:600;color:#66cc99;">↑ +19.8%</span></div>
+        </div>
+        <div style="padding:8px 18px;">
+          <div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;">APAC</div>
+          <div style="font-size:18px;font-weight:800;color:#fff;line-height:1;">116 <span style="font-size:11px;font-weight:600;color:#ff9980;">↓ −9.4%</span></div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="meta">
@@ -448,15 +460,6 @@
 <!-- ── SECTION: Top Case Drivers ── -->
 <div class="section-label">Top Case Drivers</div>
 
-<!-- TCD Volume Line Chart -->
-<div style="margin:20px 36px 0;">
-  <div class="card">
-    <h2>Top Case Driver Volume — 5-Week Trend</h2>
-    <canvas id="chartDriverVol" class="canvas-xl"></canvas>
-    <div class="sub">Revenue Cloud Core (RCA) · Life Sciences · Ind Omni · Legacy Revenue · Ind CPQ/OM</div>
-  </div>
-</div>
-
 <!-- TCD Table (improved) -->
 <div class="tcd-table-wrap">
   <div class="tcd-table-title">
@@ -484,32 +487,12 @@
   </table>
 </div>
 
-<!-- TCD % Share Trend Chart -->
-<div style="margin:20px 36px 0;">
-  <div class="card">
+<!-- TCD % Share Trend Chart — narrow + tall -->
+<div style="margin:20px 36px 0;display:flex;justify-content:center;">
+  <div class="card" style="max-width:720px;width:100%;">
     <h2>Top Case Driver — % Share of Total Weekly Inflow (5-Week Trend)</h2>
-    <canvas id="chartDriverPct" style="max-height:460px;"></canvas>
-    <div class="sub">Lines show each TCD group's % of total inflow that week · Life Sciences peaked at 24.6% (Nov 1) · RCA steady at 22–25%</div>
-  </div>
-</div>
-
-<!-- TCD by Region small multiples -->
-<div style="margin:20px 36px 0;">
-  <div class="card">
-    <h2>Top Case Driver Volume by Region — 5-Week Trend</h2>
-    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">Each panel = one TCD group &nbsp;·&nbsp; Lines = EMEA / India / APAC</div>
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:18px;">
-      <div><div style="font-size:12px;font-weight:700;color:#5867e8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">RC Core (RCA)</div><canvas id="cTcdR0" style="max-height:180px !important;"></canvas></div>
-      <div><div style="font-size:12px;font-weight:700;color:#2e844a;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Ind CPQ/OM</div><canvas id="cTcdR4b" style="max-height:180px !important;"></canvas></div>
-      <div><div style="font-size:12px;font-weight:700;color:#FF4B91;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Life Sciences</div><canvas id="cTcdR1" style="max-height:180px !important;"></canvas></div>
-      <div><div style="font-size:12px;font-weight:700;color:#e07000;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Ind Omni</div><canvas id="cTcdR2" style="max-height:180px !important;"></canvas></div>
-      <div><div style="font-size:12px;font-weight:700;color:#0b827c;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Legacy Revenue</div><canvas id="cTcdR3" style="max-height:180px !important;"></canvas></div>
-    </div>
-    <div style="display:flex;gap:20px;justify-content:center;margin-top:14px;font-size:12px;font-weight:600;">
-      <span style="color:#0070d2;">— EMEA</span>
-      <span style="color:#5867e8;">— India</span>
-      <span style="color:#2e844a;">— APAC</span>
-    </div>
+    <canvas id="chartDriverPct" style="max-height:520px;"></canvas>
+    <div class="sub">Lines = % of total weekly inflow per TCD group · LS peaked 24.6% (Nov 1) · RCA steady 22–24% · Nov 15 rebound led by RCA + LS + Omni</div>
   </div>
 </div>
 
@@ -525,107 +508,40 @@
   </div>
 </div>
 
-<!-- Signature Success % share by region — 5-week trend -->
-<div style="margin:20px 36px 0;">
-  <div class="card">
+<!-- Signature Success % share by region — narrow + tall -->
+<div style="margin:20px 36px 0;display:flex;justify-content:center;">
+  <div class="card" style="max-width:720px;width:100%;">
     <h2>Signature Success — % Share Within Each Region (5-Week Trend)</h2>
-    <canvas id="chartSigRegion" class="canvas-tall"></canvas>
-    <div class="sub">Lines = % of that region's total inflow that is Signature Success tier · India Sig-dominant and rising · EMEA Sig declining as Premier+ grows</div>
+    <canvas id="chartSigRegion" style="max-height:460px;"></canvas>
+    <div class="sub">Lines = % of that region's inflow that is Signature Success · India Sig-dominant 50–55% and rising · EMEA stable ~36–38% · APAC 37–42%</div>
   </div>
 </div>
 
-<!-- Tier by Region — full width, % stacked -->
+<!-- Tier by Region — 3 pie charts -->
 <div style="margin:20px 36px 0;">
   <div class="card">
-    <h2>Support Tier by Region (TW) — % Share Stacked</h2>
-    <canvas id="chartTierRegion" style="max-height:300px;"></canvas>
-    <div class="sub">India Signature-dominant (169/308 = 55%). EMEA Premier+-heavy (143/402 = 36%). APAC balanced across tiers. Each bar = 100% of that region's TW inflow.</div>
-  </div>
-</div>
-
-<!-- ── SECTION: Support 2.0 Resolution Quality ── -->
-<div class="section-label">Support 2.0 — Resolution Quality Signals</div>
-
-<div style="margin:14px 36px 0;font-size:13px;color:var(--text-secondary);line-height:1.6;">
-  Structural indicators aligned to Sridevi's resolution engineer model: First-Touch Resolution, escalation readiness, and repeat-contact failure detection &nbsp;·&nbsp; <strong>TW: Nov 15–21</strong>
-</div>
-
-<div class="s2-row">
-  <div class="s2-tile danger">
-    <div class="s2-label">Red Accts — Zero GUS/Bug Filed</div>
-    <div class="s2-val" style="color:var(--sf-red);">59 / 66</div>
-    <div class="s2-sub">89% of red-flag accounts have no engineering investigation or confirmed bug — escalation risk with no resolution path documented</div>
-  </div>
-  <div class="s2-tile warning">
-    <div class="s2-label">First-Touch Resolution Rate</div>
-    <div class="s2-val" style="color:var(--sf-orange);">40.6%</div>
-    <div class="s2-sub">86 of 212 non-Chat closures resolved ≤ 2 days of creation. Billing = 0% (worst). Target benchmark: 55%+</div>
-  </div>
-  <div class="s2-tile warning">
-    <div class="s2-label">Duplicate-Subject Pairs</div>
-    <div class="s2-val" style="color:var(--sf-orange);">6</div>
-    <div class="s2-sub">6 account pairs filed 2+ cases with identical subjects this week — first-call resolution failure. Candidates for case linking + root cause fix.</div>
-  </div>
-</div>
-
-<div style="margin:20px 36px 0;">
-  <div class="card">
-    <h2>First-Touch Resolution Rate — Top 5 Products (TW)</h2>
-    <table style="width:100%;border-collapse:collapse;font-size:14px;margin-top:4px;">
-      <thead>
-        <tr style="background:var(--sf-gray-05);border-bottom:2px solid var(--border);">
-          <th style="text-align:left;padding:10px 14px;font-weight:700;color:var(--sf-navy);font-size:13px;">Product</th>
-          <th style="text-align:right;padding:10px 14px;font-weight:600;font-size:13px;color:var(--sf-gray-50);">Total Closed (non-Chat)</th>
-          <th style="text-align:right;padding:10px 14px;font-weight:600;font-size:13px;color:var(--sf-gray-50);">Closed ≤ 2 days</th>
-          <th style="text-align:right;padding:10px 14px;font-weight:700;font-size:13px;color:var(--sf-navy);">FTR %</th>
-          <th style="text-align:left;padding:10px 14px;font-weight:600;font-size:13px;color:var(--sf-gray-50);">Signal</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom:1px solid var(--border);">
-          <td style="padding:10px 14px;font-weight:700;color:#0070d2;display:flex;align-items:center;gap:8px;"><span class="dot" style="background:#0070d2;"></span>Life Sciences</td>
-          <td style="text-align:right;padding:10px 14px;">48</td>
-          <td style="text-align:right;padding:10px 14px;">24</td>
-          <td style="text-align:right;padding:10px 14px;font-weight:800;color:var(--sf-green);font-size:15px;">50.0%</td>
-          <td style="padding:10px 14px;color:var(--sf-green);font-size:12px;font-weight:600;">✓ Above org average</td>
-        </tr>
-        <tr style="border-bottom:1px solid var(--border);background:var(--sf-gray-05);">
-          <td style="padding:10px 14px;font-weight:700;color:#5867e8;"><span class="dot" style="background:#5867e8;"></span>Revenue Cloud (RCA)</td>
-          <td style="text-align:right;padding:10px 14px;">55</td>
-          <td style="text-align:right;padding:10px 14px;">24</td>
-          <td style="text-align:right;padding:10px 14px;font-weight:800;color:var(--sf-orange);font-size:15px;">43.6%</td>
-          <td style="padding:10px 14px;color:var(--sf-orange);font-size:12px;font-weight:600;">⚠ Near average</td>
-        </tr>
-        <tr style="border-bottom:1px solid var(--border);">
-          <td style="padding:10px 14px;font-weight:700;color:#2e844a;"><span class="dot" style="background:#2e844a;"></span>Ind CPQ/OM</td>
-          <td style="text-align:right;padding:10px 14px;">18</td>
-          <td style="text-align:right;padding:10px 14px;">8</td>
-          <td style="text-align:right;padding:10px 14px;font-weight:800;color:var(--sf-orange);font-size:15px;">44.4%</td>
-          <td style="padding:10px 14px;color:var(--sf-orange);font-size:12px;font-weight:600;">⚠ Near average</td>
-        </tr>
-        <tr style="border-bottom:1px solid var(--border);background:var(--sf-gray-05);">
-          <td style="padding:10px 14px;font-weight:700;color:#e07000;"><span class="dot" style="background:#e07000;"></span>Ind Omni</td>
-          <td style="text-align:right;padding:10px 14px;">14</td>
-          <td style="text-align:right;padding:10px 14px;">5</td>
-          <td style="text-align:right;padding:10px 14px;font-weight:800;color:var(--sf-orange);font-size:15px;">35.7%</td>
-          <td style="padding:10px 14px;color:var(--sf-orange);font-size:12px;font-weight:600;">⚠ Below average</td>
-        </tr>
-        <tr style="border-bottom:1px solid var(--border);">
-          <td style="padding:10px 14px;font-weight:700;color:#0b827c;"><span class="dot" style="background:#0b827c;"></span>RC Billing</td>
-          <td style="text-align:right;padding:10px 14px;">5</td>
-          <td style="text-align:right;padding:10px 14px;">0</td>
-          <td style="text-align:right;padding:10px 14px;font-weight:800;color:var(--sf-orange);font-size:15px;">0.0%</td>
-          <td style="padding:10px 14px;color:var(--sf-orange);font-size:12px;font-weight:600;">⚠ Zero FTR — all cases staying open 2+ days</td>
-        </tr>
-        <tr style="background:var(--sf-blue-lt);border-top:2px solid var(--sf-blue);font-weight:700;">
-          <td style="padding:10px 14px;color:var(--sf-navy);font-size:14px;">Overall</td>
-          <td style="text-align:right;padding:10px 14px;">212</td>
-          <td style="text-align:right;padding:10px 14px;">86</td>
-          <td style="text-align:right;padding:10px 14px;color:var(--sf-orange);font-size:15px;font-weight:800;">40.6%</td>
-          <td style="padding:10px 14px;font-size:12px;color:var(--sf-gray-50);">Excludes Chat-origin cases</td>
-        </tr>
-      </tbody>
-    </table>
+    <h2>Support Tier by Region (TW) — Plan Mix</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;align-items:start;">
+      <div style="text-align:center;">
+        <div style="font-size:13px;font-weight:700;color:var(--sf-blue);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">EMEA &nbsp;<span style="font-size:11px;font-weight:400;color:var(--text-secondary);">(n=402)</span></div>
+        <canvas id="pieEMEA" style="max-height:220px;"></canvas>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:13px;font-weight:700;color:var(--sf-purple);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">IST (India) &nbsp;<span style="font-size:11px;font-weight:400;color:var(--text-secondary);">(n=308)</span></div>
+        <canvas id="pieIST" style="max-height:220px;"></canvas>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:13px;font-weight:700;color:var(--sf-green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">APAC &nbsp;<span style="font-size:11px;font-weight:400;color:var(--text-secondary);">(n=116)</span></div>
+        <canvas id="pieAPAC" style="max-height:220px;"></canvas>
+      </div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;font-size:12px;">
+      <span><span style="display:inline-block;width:12px;height:12px;background:#0070d2;border-radius:2px;margin-right:5px;vertical-align:middle;"></span>Signature Success</span>
+      <span><span style="display:inline-block;width:12px;height:12px;background:#5867e8;border-radius:2px;margin-right:5px;vertical-align:middle;"></span>Premier+</span>
+      <span><span style="display:inline-block;width:12px;height:12px;background:#706e6b;border-radius:2px;margin-right:5px;vertical-align:middle;"></span>Standard</span>
+      <span><span style="display:inline-block;width:12px;height:12px;background:#2e844a;border-radius:2px;margin-right:5px;vertical-align:middle;"></span>Partner Premier</span>
+    </div>
+    <div class="sub" style="margin-top:10px;">India Sig-dominant (55%) · EMEA Premier+-heavy (36%) · APAC most balanced across tiers</div>
   </div>
 </div>
 
@@ -752,24 +668,6 @@ new Chart(document.getElementById('chartDriverPct'), {
   }
 });
 
-// ── CHART 5: TCD volume line ──
-new Chart(document.getElementById('chartDriverVol'), {
-  type:'line',
-  data: {
-    labels: WEEKS,
-    datasets: [
-      { label:'RC Core (RCA)',   data:dRCA,     borderColor:SF_PURPLE, backgroundColor:SF_PURPLE+'18', borderWidth:3,   pointRadius:5, pointBackgroundColor:SF_PURPLE, tension:0.3, datalabels: TCD_DL(SF_PURPLE) },
-      { label:'Life Sciences',   data:dLS,      borderColor:LS_BRIGHT, backgroundColor:LS_BRIGHT+'28', borderWidth:3.5, pointRadius:6, pointBackgroundColor:LS_BRIGHT, tension:0.3, datalabels: TCD_DL(LS_BRIGHT) },
-      { label:'Ind Omni',        data:dOmni,    borderColor:SF_ORANGE, backgroundColor:SF_ORANGE+'18', borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_ORANGE, tension:0.3, datalabels: TCD_DL(SF_ORANGE) },
-      { label:'Legacy Revenue',  data:dLegacyR, borderColor:SF_TEAL,   backgroundColor:SF_TEAL+'18',   borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_TEAL,   tension:0.3, datalabels: TCD_DL(SF_TEAL) },
-      { label:'Ind CPQ/OM',      data:dIndCPQ,  borderColor:SF_GREEN,  backgroundColor:SF_GREEN+'18',  borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_GREEN,  tension:0.3, datalabels: TCD_DL(SF_GREEN) }
-    ]
-  },
-  options:{
-    plugins:{ legend:{position:'top',labels:{font:{size:12},padding:16}}, datalabels:{} },
-    scales:{ y:{ title:{display:true,text:'Cases',font:{size:12}}, grid:{color:'#e5e5e4'} } }
-  }
-});
 
 // ── TCD Table ──
 (function(){
@@ -857,17 +755,18 @@ const tierWk = {
     data:{
       labels: WEEKS,
       datasets:[
-        { label:'Signature Success', data:sigPct,  borderColor:SF_BLUE,   backgroundColor:SF_BLUE+'18',   borderWidth:3,   pointRadius:5, tension:0.3,
-          datalabels:{display:true,anchor:'end',align:'top',   font:{size:10,weight:'bold'},color:SF_BLUE,   formatter:v=>v+'%'} },
-        { label:'Premier+',          data:premPct, borderColor:SF_PURPLE, backgroundColor:SF_PURPLE+'18', borderWidth:2.5, pointRadius:5, tension:0.3,
-          datalabels:{display:true,anchor:'end',align:'bottom',font:{size:10,weight:'bold'},color:SF_PURPLE, formatter:v=>v+'%'} },
+        { label:'Signature Success', data:sigPct,  borderColor:SF_BLUE,   backgroundColor:SF_BLUE+'18',   borderWidth:3,   pointRadius:6, tension:0.3,
+          datalabels:{display:true,anchor:'end',align:'top',    offset:8, font:{size:12,weight:'bold'},color:SF_BLUE,   formatter:v=>v+'%'} },
+        { label:'Premier+',          data:premPct, borderColor:SF_PURPLE, backgroundColor:SF_PURPLE+'18', borderWidth:2.5, pointRadius:6, tension:0.3,
+          datalabels:{display:true,anchor:'end',align:'bottom', offset:8, font:{size:12,weight:'bold'},color:SF_PURPLE, formatter:v=>v+'%'} },
         { label:'Standard',          data:stdPct,  borderColor:SF_GRAY,   backgroundColor:SF_GRAY+'18',   borderWidth:2,   pointRadius:5, tension:0.3,
-          datalabels:{display:true,anchor:'end',align:'top',   font:{size:10,weight:'bold'},color:SF_GRAY,   formatter:v=>v+'%'} },
+          datalabels:{display:true,anchor:'end',align:'top',    offset:16,font:{size:11,weight:'bold'},color:SF_GRAY,   formatter:v=>v+'%'} },
         { label:'Partner Premier',   data:ppPct,   borderColor:SF_ORANGE, backgroundColor:SF_ORANGE+'18', borderWidth:2,   pointRadius:5, tension:0.3,
-          datalabels:{display:true,anchor:'end',align:'bottom',font:{size:10,weight:'bold'},color:SF_ORANGE, formatter:v=>v+'%'} }
+          datalabels:{display:true,anchor:'end',align:'bottom', offset:16,font:{size:11,weight:'bold'},color:SF_ORANGE, formatter:v=>v+'%'} }
       ]
     },
     options:{
+      layout:{ padding:{ top:36, bottom:36, right:20 } },
       plugins:{legend:{position:'top',labels:{font:{size:12},padding:16}},datalabels:{}},
       scales:{
         y:{ title:{display:true,text:'% of Total Weekly Inflow',font:{size:12}}, grid:{color:'#e5e5e4'}, min:0, max:60,
@@ -878,43 +777,37 @@ const tierWk = {
   });
 })();
 
-// ── Tier by Region stacked bar — % share ──
+// ── Tier by Region — 3 pie charts ──
 (function(){
-  // TW counts: EMEA total=402, India total=308, APAC total=116
-  const geo = [402, 308, 116];
-  const raw = {
-    sig:  [153, 169, 43],
-    prem: [143,  71, 41],
-    std:  [ 69,  23, 23],
-    pp:   [ 37,  45,  9]
-  };
-  const pct = (arr) => arr.map((v,i) => +(v/geo[i]*100).toFixed(1));
-  const dlPct = {
+  const TIER_LABELS = ['Signature Success','Premier+','Standard','Partner Premier'];
+  const TIER_COLORS = [SF_BLUE, SF_PURPLE, SF_GRAY, SF_GREEN];
+  const tierData = [
+    { id:'pieEMEA',  data:[153,143,69,37]  },
+    { id:'pieIST',   data:[169, 71,23,45]  },
+    { id:'pieAPAC',  data:[ 43, 41,23, 9]  }
+  ];
+  const dlPie = {
     display: ctx => ctx.dataset.data[ctx.dataIndex] > 5,
-    anchor:'center', align:'center',
-    font:{size:10,weight:'bold'}, color:'#fff',
-    formatter: v => v+'%'
-  };
-  new Chart(document.getElementById('chartTierRegion'), {
-    type: 'bar',
-    data: {
-      labels: ['EMEA','India (IST)','APAC'],
-      datasets: [
-        { label:'Signature Success', data:pct(raw.sig),  backgroundColor:SF_BLUE,   datalabels: dlPct },
-        { label:'Premier+',          data:pct(raw.prem), backgroundColor:SF_PURPLE, datalabels: dlPct },
-        { label:'Standard',          data:pct(raw.std),  backgroundColor:SF_GRAY,   datalabels: dlPct },
-        { label:'Partner Premier',   data:pct(raw.pp),   backgroundColor:SF_GREEN,  datalabels: dlPct }
-      ]
-    },
-    options: {
-      plugins: { legend:{position:'top',labels:{font:{size:12},padding:16}}, datalabels:{} },
-      scales: {
-        x:{ stacked:true },
-        y:{ stacked:true, min:0, max:100,
-            title:{display:true,text:'% of Region Total'}, grid:{color:'#e5e5e4'},
-            ticks:{ callback: v => v+'%' } }
-      }
+    color: '#fff',
+    font: { size:12, weight:'bold' },
+    formatter: (v, ctx) => {
+      const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
+      return Math.round(v/total*100)+'%';
     }
+  };
+  tierData.forEach(function(td) {
+    new Chart(document.getElementById(td.id), {
+      type: 'doughnut',
+      data: {
+        labels: TIER_LABELS,
+        datasets: [{ data: td.data, backgroundColor: TIER_COLORS,
+          borderWidth: 2, borderColor: '#fff', datalabels: dlPie }]
+      },
+      options: {
+        plugins: { legend:{display:false}, datalabels:{} },
+        cutout: '45%'
+      }
+    });
   });
 })();
 
@@ -933,76 +826,27 @@ const tierWk = {
     data:{
       labels: WEEKS,
       datasets:[
-        { label:'EMEA',  data:sigPctEMEA,  borderColor:SF_BLUE,   backgroundColor:SF_BLUE+'22',   borderWidth:3,   pointRadius:6, pointBackgroundColor:SF_BLUE,   tension:0.3,
-          datalabels:{display:true, anchor:'center', align:'top',    offset:10, font:{size:11,weight:'bold'}, color:SF_BLUE,   formatter:v=>v+'%'} },
         { label:'India (IST)', data:sigPctIndia, borderColor:SF_PURPLE, backgroundColor:SF_PURPLE+'22', borderWidth:3,   pointRadius:6, pointBackgroundColor:SF_PURPLE, tension:0.3,
-          datalabels:{display:true, anchor:'center', align:'bottom', offset:10, font:{size:11,weight:'bold'}, color:SF_PURPLE, formatter:v=>v+'%'} },
+          datalabels:{display:true, anchor:'end', align:'top',    offset:8,  font:{size:12,weight:'bold'}, color:SF_PURPLE, formatter:v=>v+'%'} },
         { label:'APAC',  data:sigPctAPAC,  borderColor:SF_GREEN,  backgroundColor:SF_GREEN+'22',  borderWidth:2.5, pointRadius:6, pointBackgroundColor:SF_GREEN,  tension:0.3,
-          datalabels:{display:true, anchor:'center', align:'top',    offset:18, font:{size:11,weight:'bold'}, color:SF_GREEN,  formatter:v=>v+'%'} }
+          datalabels:{display:true, anchor:'end', align:'bottom', offset:8,  font:{size:12,weight:'bold'}, color:SF_GREEN,  formatter:v=>v+'%'} },
+        { label:'EMEA',  data:sigPctEMEA,  borderColor:SF_BLUE,   backgroundColor:SF_BLUE+'22',   borderWidth:3,   pointRadius:6, pointBackgroundColor:SF_BLUE,   tension:0.3,
+          datalabels:{display:true, anchor:'end', align:'right',  offset:4,  font:{size:12,weight:'bold'}, color:SF_BLUE,   formatter:v=>v+'%'} }
       ]
     },
     options:{
-      layout:{ padding:{ top:24, bottom:24 } },
+      layout:{ padding:{ top:40, bottom:40, right:50, left:10 } },
       plugins:{ legend:{position:'top',labels:{font:{size:12},padding:20,usePointStyle:true}}, datalabels:{} },
       scales:{
         y:{ title:{display:true,text:'Signature Success % of Region Total',font:{size:12}},
-            grid:{color:'#e5e5e4'}, min:25, max:65,
-            ticks:{callback:v=>v+'%'} },
+            grid:{color:'#e5e5e4'}, min:25, max:70,
+            ticks:{ stepSize:5, callback:v=>v+'%' } },
         x:{ grid:{color:'#e5e5e4'} }
       }
     }
   });
 })();
 
-// ── TCD by Region small multiples ──
-(function() {
-  // 5-week window: Oct 18 → Nov 15
-  const W = ['Oct 18','Oct 25','Nov 1','Nov 8','Nov 15'];
-  const tcdRegion = [
-    // RC Core (RCA): TW confirmed EMEA=114,India=67,APAC=17; prior weeks proportional (~58%/34%/8%)
-    { emea:[108, 96,110, 97,114], india:[ 64, 56, 65, 57, 67], apac:[15, 13, 15, 13, 17] },
-    // Life Sciences: TW confirmed EMEA=70,India=96,APAC=18
-    { emea:[ 55, 45, 60, 40, 70], india:[ 63,125,129, 90, 96], apac:[10, 27, 25, 11, 18] },
-    // Ind Omni
-    { emea:[ 31, 25, 25, 22, 46], india:[ 22, 23, 20, 24, 29], apac:[25, 40, 30,  6, 19] },
-    // Legacy Revenue: TW confirmed EMEA=35,India=29,APAC=10; prior weeks proportional (~47%/40%/14%)
-    { emea:[ 27, 36, 42, 42, 35], india:[ 23, 30, 36, 36, 29], apac:[ 8, 10, 11, 11, 10] },
-    // Ind CPQ/OM
-    { emea:[ 45, 48, 46, 32, 28], india:[ 36, 36, 33, 22, 29], apac:[14, 17, 15,  7,  8] }
-  ];
-
-  const GEO = { emea: SF_BLUE, india: SF_PURPLE, apac: SF_GREEN };
-  // Order: RCA, CPQ/OM, LS, Omni, Legacy — matching HTML panel order (CPQ moved left)
-  const ids  = ['cTcdR0','cTcdR4b','cTcdR1','cTcdR2','cTcdR3'];
-  // Data indices: 0=RCA, 1=LS, 2=Omni, 3=Legacy, 4=CPQ/OM → reorder to match panel order
-  const dataOrder = [0, 4, 1, 2, 3];
-
-  ids.forEach(function(id, i) {
-    var d = tcdRegion[dataOrder[i]];
-    new Chart(document.getElementById(id), {
-      type: 'line',
-      data: {
-        labels: W,
-        datasets: [
-          { label:'EMEA',  data:d.emea,  borderColor:GEO.emea,  backgroundColor:'transparent', borderWidth:2, pointRadius:3, tension:0.3,
-            datalabels:{ anchor:'end', align:'top',    font:{size:8,weight:'bold'}, color:GEO.emea,  formatter:v=>v } },
-          { label:'India', data:d.india, borderColor:GEO.india, backgroundColor:'transparent', borderWidth:2, pointRadius:3, tension:0.3,
-            datalabels:{ anchor:'end', align:'bottom', font:{size:8,weight:'bold'}, color:GEO.india, formatter:v=>v } },
-          { label:'APAC',  data:d.apac,  borderColor:GEO.apac,  backgroundColor:'transparent', borderWidth:2, pointRadius:3, tension:0.3,
-            datalabels:{ anchor:'start', align:'top',  font:{size:8,weight:'bold'}, color:GEO.apac,  formatter:v=>v } }
-        ]
-      },
-      options: {
-        responsive:true,
-        plugins:{ legend:{display:false}, datalabels:{} },
-        scales:{
-          x:{ ticks:{font:{size:8},maxRotation:45}, grid:{display:false} },
-          y:{ beginAtZero:true, ticks:{font:{size:8}}, grid:{color:'#e5e5e4'} }
-        }
-      }
-    });
-  });
-})();
 </script>
 
 <!-- ── SECTION: Top LSC Accounts (TW) ── -->
@@ -1131,6 +975,92 @@ const tierWk = {
   </div>
   <div style="margin-top:10px;font-size:12px;color:var(--text-secondary);">
     <strong>Project Breakthrough</strong> = Salesforce strategic pharma migration program (Pfizer, Novartis, Mylan/Viatris, Takeda, AstraZeneca migrating from Veeva CRM/IQVIA OCE to LSC4CE simultaneously) &nbsp;·&nbsp; Sev1 = Level 1/Critical TW count &nbsp;·&nbsp; CSAT: see Dynamic Trends for account-level scores
+  </div>
+</div>
+
+<!-- ── SECTION: Support 2.0 Resolution Quality (last) ── -->
+<div class="section-label">Support 2.0 — Resolution Quality Signals</div>
+
+<div style="margin:14px 36px 0;font-size:13px;color:var(--text-secondary);line-height:1.6;">
+  Structural indicators aligned to the resolution engineer model: First-Touch Resolution, escalation readiness, repeat-contact failure &nbsp;·&nbsp; <strong>TW: Nov 15–21</strong>
+</div>
+
+<div class="s2-row">
+  <div class="s2-tile danger">
+    <div class="s2-label">Red Accts — Zero GUS/Bug Filed</div>
+    <div class="s2-val" style="color:var(--sf-red);">59 / 66</div>
+    <div class="s2-sub">89% of red-flag accounts have no engineering investigation or confirmed bug — escalation risk with no resolution path documented</div>
+  </div>
+  <div class="s2-tile warning">
+    <div class="s2-label">First-Touch Resolution Rate</div>
+    <div class="s2-val" style="color:var(--sf-orange);">40.6%</div>
+    <div class="s2-sub">86 of 212 non-Chat closures resolved ≤ 2 days. Billing = 0% (worst). Target benchmark: 55%+</div>
+  </div>
+  <div class="s2-tile warning">
+    <div class="s2-label">Duplicate-Subject Pairs</div>
+    <div class="s2-val" style="color:var(--sf-orange);">6</div>
+    <div class="s2-sub">6 account pairs filed 2+ cases with identical subjects — first-call resolution failure. Candidates for case linking + root cause fix.</div>
+  </div>
+</div>
+
+<div style="margin:20px 36px 0;">
+  <div class="card">
+    <h2>First-Touch Resolution Rate — Top 5 Products (TW)</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:14px;margin-top:4px;">
+      <thead>
+        <tr style="background:var(--sf-gray-05);border-bottom:2px solid var(--border);">
+          <th style="text-align:left;padding:10px 14px;font-weight:700;color:var(--sf-navy);font-size:13px;">Product</th>
+          <th style="text-align:right;padding:10px 14px;font-weight:600;font-size:13px;color:var(--sf-gray-50);">Total Closed (non-Chat)</th>
+          <th style="text-align:right;padding:10px 14px;font-weight:600;font-size:13px;color:var(--sf-gray-50);">Closed ≤ 2 days</th>
+          <th style="text-align:right;padding:10px 14px;font-weight:700;font-size:13px;color:var(--sf-navy);">FTR %</th>
+          <th style="text-align:left;padding:10px 14px;font-weight:600;font-size:13px;color:var(--sf-gray-50);">Signal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 14px;font-weight:700;color:#FF4B91;"><span class="dot" style="background:#FF4B91;"></span>Life Sciences</td>
+          <td style="text-align:right;padding:10px 14px;">48</td>
+          <td style="text-align:right;padding:10px 14px;">24</td>
+          <td style="text-align:right;padding:10px 14px;font-weight:800;color:var(--sf-green);font-size:15px;">50.0%</td>
+          <td style="padding:10px 14px;color:var(--sf-green);font-size:12px;font-weight:600;">✓ Above org average</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);background:var(--sf-gray-05);">
+          <td style="padding:10px 14px;font-weight:700;color:#5867e8;"><span class="dot" style="background:#5867e8;"></span>Revenue Cloud (RCA)</td>
+          <td style="text-align:right;padding:10px 14px;">55</td>
+          <td style="text-align:right;padding:10px 14px;">24</td>
+          <td style="text-align:right;padding:10px 14px;font-weight:800;color:var(--sf-orange);font-size:15px;">43.6%</td>
+          <td style="padding:10px 14px;color:var(--sf-orange);font-size:12px;font-weight:600;">⚠ Near average</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 14px;font-weight:700;color:#2e844a;"><span class="dot" style="background:#2e844a;"></span>Ind CPQ/OM</td>
+          <td style="text-align:right;padding:10px 14px;">18</td>
+          <td style="text-align:right;padding:10px 14px;">8</td>
+          <td style="text-align:right;padding:10px 14px;font-weight:800;color:var(--sf-orange);font-size:15px;">44.4%</td>
+          <td style="padding:10px 14px;color:var(--sf-orange);font-size:12px;font-weight:600;">⚠ Near average</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);background:var(--sf-gray-05);">
+          <td style="padding:10px 14px;font-weight:700;color:#e07000;"><span class="dot" style="background:#e07000;"></span>Ind Omni</td>
+          <td style="text-align:right;padding:10px 14px;">14</td>
+          <td style="text-align:right;padding:10px 14px;">5</td>
+          <td style="text-align:right;padding:10px 14px;font-weight:800;color:var(--sf-orange);font-size:15px;">35.7%</td>
+          <td style="padding:10px 14px;color:var(--sf-orange);font-size:12px;font-weight:600;">⚠ Below average</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 14px;font-weight:700;color:#0b827c;"><span class="dot" style="background:#0b827c;"></span>RC Billing</td>
+          <td style="text-align:right;padding:10px 14px;">5</td>
+          <td style="text-align:right;padding:10px 14px;">0</td>
+          <td style="text-align:right;padding:10px 14px;font-weight:800;color:var(--sf-orange);font-size:15px;">0.0%</td>
+          <td style="padding:10px 14px;color:var(--sf-orange);font-size:12px;font-weight:600;">⚠ Zero FTR — all cases staying open 2+ days</td>
+        </tr>
+        <tr style="background:var(--sf-blue-lt);border-top:2px solid var(--sf-blue);font-weight:700;">
+          <td style="padding:10px 14px;color:var(--sf-navy);font-size:14px;">Overall</td>
+          <td style="text-align:right;padding:10px 14px;">212</td>
+          <td style="text-align:right;padding:10px 14px;">86</td>
+          <td style="text-align:right;padding:10px 14px;color:var(--sf-orange);font-size:15px;font-weight:800;">40.6%</td>
+          <td style="padding:10px 14px;font-size:12px;color:var(--sf-gray-50);">Excludes Chat-origin cases</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
