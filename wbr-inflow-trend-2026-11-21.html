@@ -258,13 +258,14 @@
     background: var(--sf-blue);
     font-size: 13px;
   }
-  .tcd-table-wrap tbody tr { border-bottom: 1px solid #d0e8f7; background: #f0f8ff; }
-  .tcd-table-wrap tbody tr:nth-child(even) { background: #daeef9; }
+  .tcd-table-wrap tbody tr { border-bottom: 1px solid var(--border); background: #fff; }
+  .tcd-table-wrap tbody tr:nth-child(even) { background: var(--sf-gray-05); }
   .tcd-table-wrap tbody tr:last-child {
-    background: #e8f4fd;
+    background: var(--sf-blue-lt);
     border-top: 2px solid var(--sf-blue);
     font-weight: 700;
   }
+  .tcd-table-wrap tbody td.geo-col { background: #e8f4fd; }
   .tcd-table-wrap tbody td {
     padding: 10px 12px;
     text-align: right;
@@ -480,10 +481,10 @@
         <th>TW Share</th>
         <th>5wk Avg Share</th>
         <th>Share vs 5wk Avg</th>
-        <th>EMEA %</th>
-        <th>IST %</th>
-        <th>APAC %</th>
-        <th>Sev1</th>
+        <th style="background:#1a4f7a;">EMEA %</th>
+        <th style="background:#1a4f7a;">IST %</th>
+        <th style="background:#1a4f7a;">APAC %</th>
+        <th style="background:#1a4f7a;">Sev1</th>
       </tr>
     </thead>
     <tbody id="tcdTableBody"></tbody>
@@ -774,10 +775,10 @@ const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
       <td style="font-weight:700;color:${SF_NAVY};">${twShare}%</td>
       <td style="font-weight:600;color:${SF_NAVY};">${avgShare}%</td>
       <td style="font-weight:700;color:${shareColor};">${shareArrow} ${Math.abs(shareDiff)}pp</td>
-      <td style="font-weight:600;color:${SF_NAVY};">${(d.emea/GEO_TW.emea*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.emea})</span></td>
-      <td style="font-weight:600;color:${SF_NAVY};">${(d.india/GEO_TW.india*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.india})</span></td>
-      <td style="font-weight:600;color:${SF_NAVY};">${(d.apac/GEO_TW.apac*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.apac})</span></td>
-      <td class="s1-cell">${d.s1}</td>`;
+      <td class="geo-col" style="font-weight:600;color:${SF_NAVY};">${(d.emea/GEO_TW.emea*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.emea})</span></td>
+      <td class="geo-col" style="font-weight:600;color:${SF_NAVY};">${(d.india/GEO_TW.india*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.india})</span></td>
+      <td class="geo-col" style="font-weight:600;color:${SF_NAVY};">${(d.apac/GEO_TW.apac*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.apac})</span></td>
+      <td class="geo-col s1-cell">${d.s1}</td>`;
     tbody.appendChild(tr);
   });
 
@@ -805,10 +806,10 @@ const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
     <td style="font-weight:700;color:${SF_NAVY};">${twShareTot}%</td>
     <td style="font-weight:700;color:${SF_NAVY};">${avgShareTot}%</td>
     <td style="font-weight:700;color:${avgColor(parseFloat(shareD))};">${avgArrow(parseFloat(shareD))} ${Math.abs(parseFloat(shareD)).toFixed(1)}pp</td>
-    <td style="font-weight:700;">${(sumE/GEO_TW.emea*100).toFixed(1)}%</td>
-    <td style="font-weight:700;">${(sumI/GEO_TW.india*100).toFixed(1)}%</td>
-    <td style="font-weight:700;">${(sumA/GEO_TW.apac*100).toFixed(1)}%</td>
-    <td class="s1-cell">${sumS}</td>`;
+    <td class="geo-col" style="font-weight:700;">${(sumE/GEO_TW.emea*100).toFixed(1)}%</td>
+    <td class="geo-col" style="font-weight:700;">${(sumI/GEO_TW.india*100).toFixed(1)}%</td>
+    <td class="geo-col" style="font-weight:700;">${(sumA/GEO_TW.apac*100).toFixed(1)}%</td>
+    <td class="geo-col s1-cell">${sumS}</td>`;
   tbody.appendChild(totRow);
 })();
 
