@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Resolution (<3 Days) — Excl. Chat | Jul–Nov 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  :root {
+    --bg: #f6f8fa; --surface: #ffffff; --border: #d0d7de; --text: #1f2328;
+    --text-muted: #636c76; --accent: #0969da; --green: #1a7f37; --red: #cf222e;
+    --orange: #d4a200;
+    --c1: #0969da; --c2: #1a7f37; --c3: #d4a200; --c4: #8250df; --c5: #cf222e;
+    --chat-solid: #d0d7de; --no-chat-accent: #0969da;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; line-height: 1.5; }
+  .page { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
+  .page-header { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 24px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+  .page-header h1 { font-size: 17px; font-weight: 700; color: var(--text); }
+  .page-header .meta { font-size: 12px; color: var(--text-muted); text-align: right; line-height: 1.6; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge-blue { background: #ddf4ff; color: #0969da; }
+  .badge-orange { background: #fff8c5; color: #9a6700; }
+
+  /* ── Key Finding Banner ── */
+  .finding-banner { background: #fff8c5; border: 1px solid #d4a200; border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; }
+  .finding-banner h3 { font-size: 13px; font-weight: 700; color: #9a6700; margin-bottom: 6px; }
+  .finding-banner ul { padding-left: 18px; }
+  .finding-banner li { font-size: 12px; color: #6e5100; margin-bottom: 3px; }
+
+  /* ── Layout ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .span2 { grid-column: span 2; }
+  .span3 { grid-column: span 3; }
+  .span4 { grid-column: 1 / -1; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .card-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .card-title span { font-weight: 400; text-transform: none; letter-spacing: 0; }
+
+  /* ── KPI tiles ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .kpi-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+  .kpi-val { font-size: 26px; font-weight: 700; color: var(--accent); line-height: 1; }
+  .kpi-val.warn { color: var(--red); }
+  .kpi-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .kpi-delta { font-size: 12px; font-weight: 600; margin-top: 2px; }
+  .kpi-delta.up { color: var(--red); }
+  .kpi-delta.down { color: var(--green); }
+
+  /* ── Tables ── */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: #f6f8fa; border-bottom: 2px solid var(--border); padding: 7px 10px; text-align: left; font-weight: 700; color: var(--text-muted); font-size: 11px; text-transform: uppercase; white-space: nowrap; }
+  td { padding: 6px 10px; border-bottom: 1px solid #eaecef; color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f6f8fa; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .pct-cell { font-weight: 700; }
+  .delta-pos { color: var(--green); font-weight: 600; }
+  .delta-neg { color: var(--red); font-weight: 600; }
+  .row-header { font-weight: 600; color: var(--text); }
+
+  /* ── Heat colors for pct ── */
+  .h-low { color: #cf222e; }
+  .h-mid { color: #d4a200; }
+  .h-high { color: #1a7f37; }
+
+  /* ── Chart containers ── */
+  .chart-wrap { position: relative; }
+  .section-label { font-size: 14px; font-weight: 700; color: var(--text); padding: 4px 0 12px; border-bottom: 2px solid var(--border); margin-bottom: 16px; }
+  .divider { border: none; border-top: 2px solid var(--border); margin: 24px 0; }
+  .note { font-size: 11px; color: var(--text-muted); font-style: italic; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <h1>Quick Resolution (&lt;3 Days) — Excl. Chat Origin</h1>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
+        Closed cases · No Bug / No GUS attached · Jul–Nov 2026 · All regions
+        <span class="badge badge-blue" style="margin-left:8px;">Origin ≠ Chat</span>
+        <span class="badge badge-orange" style="margin-left:4px;">Monthly View</span>
+      </div>
+    </div>
+    <div class="meta">
+      Revenue Cloud &amp; Industries Support<br>
+      AMER · EMEA · India · APAC<br>
+      As of Nov 24 2026
+    </div>
+  </div>
+
+  <!-- FINDING BANNER -->
+  <div class="finding-banner">
+    <h3>Key Findings — What changes when Chat is excluded?</h3>
+    <ul>
+      <li><strong>Chat inflates <3d %  significantly:</strong> Removing Chat drops overall <3d rate by ~8–11pp each month. Chat cases are simpler/faster to close — their presence flatters the metric.</li>
+      <li><strong>EMEA most inflated:</strong> EMEA drops ~10–18pp without Chat (e.g. Oct: 48.2% → 29.9%). Chat handles a large share of EMEA's quick closes.</li>
+      <li><strong>APAC most inflated:</strong> APAC drops ~12–20pp (Oct: 40.9% → 21.6%). Without Chat, APAC <3d rate is the lowest of all regions.</li>
+      <li><strong>India least affected:</strong> India changes only ±0–3pp — India's <3d rate is genuine engineer throughput, not Chat-driven.</li>
+      <li><strong>Legacy CPQ most chat-dependent:</strong> Legacy CPQ drops ~14–20pp without Chat — the highest delta of any P&T. Its apparent strong performance is largely Chat-driven.</li>
+      <li><strong>Nov 26 trend:</strong> Nov overall (excl. Chat) is at the lowest point in 5 months at 23.4% — signals a genuine resolution slowdown.</li>
+    </ul>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Jul 26 (excl. Chat)</div>
+      <div class="kpi-val">27.8%</div>
+      <div class="kpi-sub">Was 36.9% with Chat</div>
+      <div class="kpi-delta down">−9.1pp from Chat</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Aug 26 (excl. Chat)</div>
+      <div class="kpi-val">28.5%</div>
+      <div class="kpi-sub">Was 35.8% with Chat</div>
+      <div class="kpi-delta down">−7.3pp from Chat</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Sep 26 (excl. Chat)</div>
+      <div class="kpi-val">25.3%</div>
+      <div class="kpi-sub">Was 33.5% with Chat</div>
+      <div class="kpi-delta down">−8.2pp from Chat</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Oct 26 (excl. Chat)</div>
+      <div class="kpi-val">30.1%</div>
+      <div class="kpi-sub">Was 40.7% with Chat</div>
+      <div class="kpi-delta down">−10.6pp from Chat</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Nov 26 (excl. Chat)</div>
+      <div class="kpi-val warn">23.4%</div>
+      <div class="kpi-sub">Was 34.5% with Chat</div>
+      <div class="kpi-delta down">−11.1pp from Chat</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: Overall trend — with vs without chat -->
+  <div class="section-label">1 — Overall Trend: With Chat vs Excl. Chat (All Regions Combined)</div>
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-title">Monthly <3d Close % — With Chat vs Excl. Chat</div>
+      <div class="chart-wrap" style="height:280px;">
+        <canvas id="chartOverall"></canvas>
+      </div>
+      <p class="note">Gap between lines = Chat contribution to quick closes. India gap is minimal; EMEA/APAC gap is largest.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Comparison Table — All Regions</div>
+      <table>
+        <thead>
+          <tr><th>Month</th><th class="num">With Chat</th><th class="num">Excl. Chat</th><th class="num">Delta (Chat impact)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="row-header">Jul 26</td><td class="num">36.9%</td><td class="num pct-cell h-mid">27.8%</td><td class="num delta-neg">−9.1pp</td></tr>
+          <tr><td class="row-header">Aug 26</td><td class="num">35.8%</td><td class="num pct-cell h-mid">28.5%</td><td class="num delta-neg">−7.3pp</td></tr>
+          <tr><td class="row-header">Sep 26</td><td class="num">33.5%</td><td class="num pct-cell h-mid">25.3%</td><td class="num delta-neg">−8.2pp</td></tr>
+          <tr><td class="row-header">Oct 26</td><td class="num">40.7%</td><td class="num pct-cell h-mid">30.1%</td><td class="num delta-neg">−10.6pp</td></tr>
+          <tr><td class="row-header">Nov 26</td><td class="num">34.5%</td><td class="num pct-cell h-low">23.4%</td><td class="num delta-neg">−11.1pp</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Regional comparison -->
+  <div class="section-label">2 — By Region: With Chat vs Excl. Chat</div>
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-title">Regional <3d % — Excl. Chat (Jul–Nov 2026)</div>
+      <div class="chart-wrap" style="height:300px;">
+        <canvas id="chartRegionNC"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Regional Comparison Table — With Chat vs Excl. Chat</div>
+      <table>
+        <thead>
+          <tr><th>Region</th><th>Month</th><th class="num">With Chat</th><th class="num">Excl. Chat</th><th class="num">Delta</th></tr>
+        </thead>
+        <tbody>
+          <!-- AMER -->
+          <tr style="background:#f0f6ff;"><td class="row-header" rowspan="5" style="border-right:1px solid var(--border);">AMER</td>
+            <td>Jul 26</td><td class="num">36.2%</td><td class="num pct-cell h-mid">27.9%</td><td class="num delta-neg">−8.3pp</td></tr>
+          <tr><td>Aug 26</td><td class="num">37.0%</td><td class="num pct-cell h-mid">29.1%</td><td class="num delta-neg">−7.9pp</td></tr>
+          <tr><td>Sep 26</td><td class="num">30.4%</td><td class="num pct-cell h-mid">24.3%</td><td class="num delta-neg">−6.1pp</td></tr>
+          <tr><td>Oct 26</td><td class="num">42.6%</td><td class="num pct-cell h-mid">34.1%</td><td class="num delta-neg">−8.5pp</td></tr>
+          <tr><td>Nov 26</td><td class="num">37.7%</td><td class="num pct-cell h-mid">24.5%</td><td class="num delta-neg">−13.2pp</td></tr>
+          <!-- EMEA -->
+          <tr style="background:#f0fff4;"><td class="row-header" rowspan="5" style="border-right:1px solid var(--border);">EMEA</td>
+            <td>Jul 26</td><td class="num">45.1%</td><td class="num pct-cell h-mid">31.2%</td><td class="num delta-neg">−13.9pp</td></tr>
+          <tr><td>Aug 26</td><td class="num">46.6%</td><td class="num pct-cell h-mid">36.3%</td><td class="num delta-neg">−10.3pp</td></tr>
+          <tr><td>Sep 26</td><td class="num">43.5%</td><td class="num pct-cell h-mid">30.5%</td><td class="num delta-neg">−13.0pp</td></tr>
+          <tr><td>Oct 26</td><td class="num">48.2%</td><td class="num pct-cell h-mid">29.9%</td><td class="num delta-neg">−18.3pp</td></tr>
+          <tr><td>Nov 26</td><td class="num">45.6%</td><td class="num pct-cell h-mid">31.5%</td><td class="num delta-neg">−14.1pp</td></tr>
+          <!-- India -->
+          <tr style="background:#fff8e1;"><td class="row-header" rowspan="5" style="border-right:1px solid var(--border);">India</td>
+            <td>Jul 26</td><td class="num">26.2%</td><td class="num pct-cell h-mid">24.4%</td><td class="num delta-neg">−1.8pp</td></tr>
+          <tr><td>Aug 26</td><td class="num">17.8%</td><td class="num pct-cell h-low">21.1%</td><td class="num delta-pos">+3.3pp</td></tr>
+          <tr><td>Sep 26</td><td class="num">22.4%</td><td class="num pct-cell h-low">20.9%</td><td class="num delta-neg">−1.5pp</td></tr>
+          <tr><td>Oct 26</td><td class="num">26.6%</td><td class="num pct-cell h-mid">26.6%</td><td class="num">0.0pp</td></tr>
+          <tr><td>Nov 26</td><td class="num">16.5%</td><td class="num pct-cell h-low">16.2%</td><td class="num delta-neg">−0.3pp</td></tr>
+          <!-- APAC -->
+          <tr style="background:#fdf4ff;"><td class="row-header" rowspan="5" style="border-right:1px solid var(--border);">APAC</td>
+            <td>Jul 26</td><td class="num">35.4%</td><td class="num pct-cell h-low">19.3%</td><td class="num delta-neg">−16.1pp</td></tr>
+          <tr><td>Aug 26</td><td class="num">41.0%</td><td class="num pct-cell h-low">21.3%</td><td class="num delta-neg">−19.7pp</td></tr>
+          <tr><td>Sep 26</td><td class="num">32.6%</td><td class="num pct-cell h-low">20.3%</td><td class="num delta-neg">−12.3pp</td></tr>
+          <tr><td>Oct 26</td><td class="num">40.9%</td><td class="num pct-cell h-low">21.6%</td><td class="num delta-neg">−19.3pp</td></tr>
+          <tr><td>Nov 26</td><td class="num">31.8%</td><td class="num pct-cell h-low">15.2%</td><td class="num delta-neg">−16.6pp</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Regional individual charts -->
+  <div class="section-label">3 — Regional Deep Dive: Excl. Chat — 4 Regions Side by Side</div>
+  <div class="grid-4" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-title">AMER</div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chartAMER"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">EMEA</div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chartEMEA"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">India (IST)</div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chartIndia"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">APAC</div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chartAPAC"></canvas></div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: By P&T overall -->
+  <div class="section-label">4 — By Product &amp; Topic (All Regions): Excl. Chat vs With Chat</div>
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-title">P&T <3d % — Excl. Chat (Jul–Nov)</div>
+      <div class="chart-wrap" style="height:320px;"><canvas id="chartPTNC"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">P&T Delta: Chat Impact (With Chat minus Excl. Chat)</div>
+      <div class="chart-wrap" style="height:320px;"><canvas id="chartPTDelta"></canvas></div>
+      <p class="note">Higher bar = more of that P&T's quick-close performance is Chat-driven. Legacy CPQ is most Chat-dependent.</p>
+    </div>
+  </div>
+
+  <!-- P&T table combined -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title">P&T Full Comparison — With Chat vs Excl. Chat</div>
+    <table>
+      <thead>
+        <tr>
+          <th>P&T</th>
+          <th class="num">Jul WC</th><th class="num">Jul NC</th><th class="num">Δ</th>
+          <th class="num">Aug WC</th><th class="num">Aug NC</th><th class="num">Δ</th>
+          <th class="num">Sep WC</th><th class="num">Sep NC</th><th class="num">Δ</th>
+          <th class="num">Oct WC</th><th class="num">Oct NC</th><th class="num">Δ</th>
+          <th class="num">Nov WC</th><th class="num">Nov NC</th><th class="num">Δ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-header">RCA</td>
+          <td class="num">38.8%</td><td class="num pct-cell">29.6%</td><td class="num delta-neg">−9.2</td>
+          <td class="num">36.4%</td><td class="num pct-cell">28.4%</td><td class="num delta-neg">−8.0</td>
+          <td class="num">36.2%</td><td class="num pct-cell">27.5%</td><td class="num delta-neg">−8.7</td>
+          <td class="num">43.8%</td><td class="num pct-cell">31.3%</td><td class="num delta-neg">−12.5</td>
+          <td class="num">38.6%</td><td class="num pct-cell">24.5%</td><td class="num delta-neg">−14.1</td>
+        </tr>
+        <tr>
+          <td class="row-header">Industry-LS</td>
+          <td class="num">25.4%</td><td class="num pct-cell">22.7%</td><td class="num delta-neg">−2.7</td>
+          <td class="num">22.5%</td><td class="num pct-cell">23.9%</td><td class="num delta-pos">+1.4</td>
+          <td class="num">15.0%</td><td class="num pct-cell">17.2%</td><td class="num delta-pos">+2.2</td>
+          <td class="num">25.0%</td><td class="num pct-cell">22.4%</td><td class="num delta-neg">−2.6</td>
+          <td class="num">17.1%</td><td class="num pct-cell">15.7%</td><td class="num delta-neg">−1.4</td>
+        </tr>
+        <tr>
+          <td class="row-header">Legacy CPQ</td>
+          <td class="num">41.4%</td><td class="num pct-cell">25.5%</td><td class="num delta-neg">−15.9</td>
+          <td class="num">43.7%</td><td class="num pct-cell">27.6%</td><td class="num delta-neg">−16.1</td>
+          <td class="num">39.0%</td><td class="num pct-cell">24.9%</td><td class="num delta-neg">−14.1</td>
+          <td class="num">46.8%</td><td class="num pct-cell">30.7%</td><td class="num delta-neg">−16.1</td>
+          <td class="num">44.3%</td><td class="num pct-cell">24.1%</td><td class="num delta-neg">−20.2</td>
+        </tr>
+        <tr>
+          <td class="row-header">Industry-CPQ/OM</td>
+          <td class="num">30.6%</td><td class="num pct-cell">25.7%</td><td class="num delta-neg">−4.9</td>
+          <td class="num">25.5%</td><td class="num pct-cell">27.7%</td><td class="num delta-pos">+2.2</td>
+          <td class="num">28.9%</td><td class="num pct-cell">26.0%</td><td class="num delta-neg">−2.9</td>
+          <td class="num">33.0%</td><td class="num pct-cell">26.1%</td><td class="num delta-neg">−6.9</td>
+          <td class="num">23.9%</td><td class="num pct-cell">18.3%</td><td class="num delta-neg">−5.6</td>
+        </tr>
+        <tr>
+          <td class="row-header">Industry-Omni</td>
+          <td class="num">40.2%</td><td class="num pct-cell">33.6%</td><td class="num delta-neg">−6.6</td>
+          <td class="num">39.2%</td><td class="num pct-cell">33.7%</td><td class="num delta-neg">−5.5</td>
+          <td class="num">37.9%</td><td class="num pct-cell">28.2%</td><td class="num delta-neg">−9.7</td>
+          <td class="num">45.5%</td><td class="num pct-cell">37.8%</td><td class="num delta-neg">−7.7</td>
+          <td class="num">39.2%</td><td class="num pct-cell">34.0%</td><td class="num delta-neg">−5.2</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note">WC = With Chat | NC = Excl. Chat | Δ in percentage points</p>
+  </div>
+
+  <!-- SECTION 5: Per-region P&T (excl. chat) -->
+  <div class="section-label">5 — Regional P&T Deep Dive — Excl. Chat Only</div>
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-title">AMER — P&T <3d % — Excl. Chat</div>
+      <div class="chart-wrap" style="height:300px;"><canvas id="chartAMER_PT"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">EMEA — P&T <3d % — Excl. Chat</div>
+      <div class="chart-wrap" style="height:300px;"><canvas id="chartEMEA_PT"></canvas></div>
+    </div>
+  </div>
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-title">India — P&T <3d % — Excl. Chat</div>
+      <div class="chart-wrap" style="height:300px;"><canvas id="chartIndia_PT"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">APAC — P&T <3d % — Excl. Chat</div>
+      <div class="chart-wrap" style="height:300px;"><canvas id="chartAPAC_PT"></canvas></div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: Regional P&T tables -->
+  <div class="section-label">6 — Regional P&T Tables — Excl. Chat</div>
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-title">AMER</div>
+      <table>
+        <thead><tr><th>P&T</th><th class="num">Jul</th><th class="num">Aug</th><th class="num">Sep</th><th class="num">Oct</th><th class="num">Nov</th></tr></thead>
+        <tbody>
+          <tr><td class="row-header">RCA</td><td class="num">26.5%</td><td class="num">26.2%</td><td class="num">21.6%</td><td class="num">37.4%</td><td class="num h-mid">22.0%</td></tr>
+          <tr><td class="row-header">Industry-LS</td><td class="num">26.5%</td><td class="num">27.8%</td><td class="num">29.2%</td><td class="num">27.5%</td><td class="num h-low">14.1%</td></tr>
+          <tr><td class="row-header">Legacy CPQ</td><td class="num">26.7%</td><td class="num">29.2%</td><td class="num">25.0%</td><td class="num">32.4%</td><td class="num h-mid">23.0%</td></tr>
+          <tr><td class="row-header">Industry-CPQ/OM</td><td class="num">37.5%</td><td class="num">35.3%</td><td class="num">21.2%</td><td class="num">22.5%</td><td class="num h-low">8.7%</td></tr>
+          <tr><td class="row-header">Industry-Omni</td><td class="num">30.3%</td><td class="num">32.4%</td><td class="num">25.5%</td><td class="num">37.4%</td><td class="num h-mid">36.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">EMEA</div>
+      <table>
+        <thead><tr><th>P&T</th><th class="num">Jul</th><th class="num">Aug</th><th class="num">Sep</th><th class="num">Oct</th><th class="num">Nov</th></tr></thead>
+        <tbody>
+          <tr><td class="row-header">RCA</td><td class="num">33.9%</td><td class="num">37.2%</td><td class="num">30.7%</td><td class="num">27.0%</td><td class="num h-mid">29.9%</td></tr>
+          <tr><td class="row-header">Industry-LS</td><td class="num">23.5%</td><td class="num">37.0%</td><td class="num h-low">9.4%</td><td class="num">27.0%</td><td class="num h-mid">27.4%</td></tr>
+          <tr><td class="row-header">Legacy CPQ</td><td class="num">27.2%</td><td class="num">29.4%</td><td class="num">25.6%</td><td class="num">28.9%</td><td class="num h-mid">27.0%</td></tr>
+          <tr><td class="row-header">Industry-CPQ/OM</td><td class="num">23.5%</td><td class="num">35.1%</td><td class="num">33.7%</td><td class="num">27.2%</td><td class="num h-mid">33.8%</td></tr>
+          <tr><td class="row-header">Industry-Omni</td><td class="num h-high">46.1%</td><td class="num h-high">42.2%</td><td class="num h-high">42.6%</td><td class="num h-high">48.5%</td><td class="num h-high">44.1%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-title">India (IST)</div>
+      <table>
+        <thead><tr><th>P&T</th><th class="num">Jul</th><th class="num">Aug</th><th class="num">Sep</th><th class="num">Oct</th><th class="num">Nov</th></tr></thead>
+        <tbody>
+          <tr><td class="row-header">RCA</td><td class="num">28.3%</td><td class="num">23.9%</td><td class="num">29.1%</td><td class="num">31.2%</td><td class="num h-mid">21.2%</td></tr>
+          <tr><td class="row-header">Industry-LS</td><td class="num">18.0%</td><td class="num">15.6%</td><td class="num">12.4%</td><td class="num">18.0%</td><td class="num h-low">11.3%</td></tr>
+          <tr><td class="row-header">Legacy CPQ</td><td class="num">20.5%</td><td class="num">21.7%</td><td class="num">22.7%</td><td class="num">30.6%</td><td class="num h-mid">21.7%</td></tr>
+          <tr><td class="row-header">Industry-CPQ/OM</td><td class="num">24.2%</td><td class="num">15.7%</td><td class="num">20.4%</td><td class="num">23.7%</td><td class="num h-low">10.0%</td></tr>
+          <tr><td class="row-header">Industry-Omni</td><td class="num">33.3%</td><td class="num">30.5%</td><td class="num">18.2%</td><td class="num">34.4%</td><td class="num h-mid">27.9%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">APAC</div>
+      <table>
+        <thead><tr><th>P&T</th><th class="num">Jul</th><th class="num">Aug</th><th class="num">Sep</th><th class="num">Oct</th><th class="num">Nov</th></tr></thead>
+        <tbody>
+          <tr><td class="row-header">RCA</td><td class="num">25.9%</td><td class="num">10.8%</td><td class="num">41.4%</td><td class="num">23.6%</td><td class="num h-low">20.0%</td></tr>
+          <tr><td class="row-header">Industry-LS</td><td class="num">0.0%</td><td class="num">14.3%</td><td class="num">12.9%</td><td class="num">10.3%</td><td class="num h-low">7.1%</td></tr>
+          <tr><td class="row-header">Legacy CPQ</td><td class="num">18.2%</td><td class="num">16.7%</td><td class="num h-low">7.7%</td><td class="num">16.7%</td><td class="num h-mid">22.2%</td></tr>
+          <tr><td class="row-header">Industry-CPQ/OM</td><td class="num">20.8%</td><td class="num">37.0%</td><td class="num">24.0%</td><td class="num">35.7%</td><td class="num h-low">14.3%</td></tr>
+          <tr><td class="row-header">Industry-Omni</td><td class="num">17.9%</td><td class="num">27.0%</td><td class="num">14.0%</td><td class="num">17.2%</td><td class="num h-low">17.6%</td></tr>
+        </tbody>
+      </table>
+      <p class="note">APAC volumes per P&T are small — treat individual cell values with caution.</p>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+Chart.register(ChartDataLabels);
+
+const MONTHS = ['Jul 26','Aug 26','Sep 26','Oct 26','Nov 26'];
+const C = {rca:'#0969da',ls:'#1a7f37',cpq:'#d4a200',cpqom:'#8250df',omni:'#cf222e'};
+const REGION_C = {AMER:'#0969da',EMEA:'#1a7f37',India:'#d4a200',APAC:'#8250df'};
+
+function dlAbove(color, sz) {
+  return { display:true, anchor:'end', align:'top', offset:4,
+    font:{size:sz||10,weight:'bold'}, color:color,
+    formatter: v => v.toFixed(1)+'%' };
+}
+function dlLine(color, sz, alignArr) {
+  return { display:true, anchor:'end',
+    align: (ctx) => alignArr ? alignArr[ctx.dataIndex] : 'top',
+    offset:5, font:{size:sz||10,weight:'bold'}, color:color,
+    formatter: v => v.toFixed(1)+'%' };
+}
+
+function lineChart(id, labels, datasets, ymin, ymax, legendPos) {
+  new Chart(document.getElementById(id), {
+    type:'line',
+    data:{ labels, datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ position: legendPos||'top', labels:{font:{size:11},boxWidth:12} },
+        datalabels:{ display:false }
+      },
+      scales:{
+        x:{ grid:{display:false}, ticks:{font:{size:11}} },
+        y:{ min:ymin||0, max:ymax||60, grid:{color:'#eaecef'},
+            ticks:{ font:{size:11}, callback: v=>v+'%' },
+            title:{display:true,text:'% closed <3 days',font:{size:10},color:'#636c76'} }
+      },
+      layout:{ padding:{top:20,bottom:5} }
+    }
+  });
+}
+
+// ── CHART 1: Overall with vs without chat ──
+(function(){
+  const WC = [36.9,35.8,33.5,40.7,34.5];
+  const NC = [27.8,28.5,25.3,30.1,23.4];
+  const A_WC = ['top','bottom','bottom','top','top'];
+  const A_NC = ['bottom','top','top','bottom','bottom'];
+  new Chart(document.getElementById('chartOverall'),{
+    type:'line',
+    data:{
+      labels: MONTHS,
+      datasets:[
+        { label:'With Chat', data:WC, borderColor:'#8250df', backgroundColor:'#8250df22', borderWidth:2, pointRadius:5, tension:0.3,
+          datalabels: dlLine('#8250df',10,A_WC) },
+        { label:'Excl. Chat', data:NC, borderColor:'#0969da', backgroundColor:'#0969da22', borderWidth:2.5, pointRadius:5, tension:0.3,
+          datalabels: dlLine('#0969da',10,A_NC) }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'top',labels:{font:{size:11},boxWidth:12}},
+        datalabels:{}
+      },
+      scales:{
+        x:{grid:{display:false},ticks:{font:{size:11}}},
+        y:{min:15,max:50,grid:{color:'#eaecef'},ticks:{font:{size:11},callback:v=>v+'%'}}
+      },
+      layout:{padding:{top:30,bottom:20,left:5,right:60}}
+    }
+  });
+})();
+
+// ── CHART 2: Regional NC trend (4 lines) ──
+(function(){
+  const NC_REG = {
+    AMER:[27.9,29.1,24.3,34.1,24.5],
+    EMEA:[31.2,36.3,30.5,29.9,31.5],
+    India:[24.4,21.1,20.9,26.6,16.2],
+    APAC:[19.3,21.3,20.3,21.6,15.2]
+  };
+  const A = {
+    AMER:['top','top','bottom','top','bottom'],
+    EMEA:['bottom','top','bottom','bottom','top'],
+    India:['top','bottom','top','top','bottom'],
+    APAC:['bottom','bottom','top','bottom','bottom']
+  };
+  new Chart(document.getElementById('chartRegionNC'),{
+    type:'line',
+    data:{
+      labels:MONTHS,
+      datasets: Object.entries(NC_REG).map(([r,d])=>({
+        label:r, data:d, borderColor:REGION_C[r], backgroundColor:REGION_C[r]+'22',
+        borderWidth:2, pointRadius:4, tension:0.3,
+        datalabels: dlLine(REGION_C[r],10,A[r])
+      }))
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:12}},datalabels:{}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:11}}},
+        y:{min:10,max:45,grid:{color:'#eaecef'},ticks:{font:{size:11},callback:v=>v+'%'}}},
+      layout:{padding:{top:30,bottom:10,right:60}}
+    }
+  });
+})();
+
+// ── CHARTS 3a-d: Individual region (small) ──
+(function(){
+  const NC_REG = {
+    AMER:[27.9,29.1,24.3,34.1,24.5],
+    EMEA:[31.2,36.3,30.5,29.9,31.5],
+    India:[24.4,21.1,20.9,26.6,16.2],
+    APAC:[19.3,21.3,20.3,21.6,15.2]
+  };
+  const WC_REG = {
+    AMER:[36.2,37.0,30.4,42.6,37.7],
+    EMEA:[45.1,46.6,43.5,48.2,45.6],
+    India:[26.2,17.8,22.4,26.6,16.5],
+    APAC:[35.4,41.0,32.6,40.9,31.8]
+  };
+  [['chartAMER','AMER'],['chartEMEA','EMEA'],['chartIndia','India'],['chartAPAC','APAC']].forEach(([id,r])=>{
+    new Chart(document.getElementById(id),{
+      type:'line',
+      data:{
+        labels:MONTHS,
+        datasets:[
+          {label:'With Chat',data:WC_REG[r],borderColor:'#d0d7de',backgroundColor:'#d0d7de22',borderWidth:1.5,
+           borderDash:[4,3],pointRadius:3,tension:0.3,datalabels:{display:false}},
+          {label:'Excl. Chat',data:NC_REG[r],borderColor:REGION_C[r],backgroundColor:REGION_C[r]+'22',
+           borderWidth:2.5,pointRadius:4,tension:0.3,
+           datalabels:{display:true,anchor:'end',align:'top',offset:4,font:{size:9,weight:'bold'},
+             color:REGION_C[r],formatter:v=>v.toFixed(1)+'%'}}
+        ]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'top',labels:{font:{size:10},boxWidth:10}},datalabels:{}},
+        scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:30}},
+          y:{min:0,max:60,grid:{color:'#eaecef'},ticks:{font:{size:10},callback:v=>v+'%'}}},
+        layout:{padding:{top:20,bottom:5,right:40}}
+      }
+    });
+  });
+})();
+
+// ── CHART 4a: P&T NC trend ──
+(function(){
+  const D = {
+    'RCA':        {d:[29.6,28.4,27.5,31.3,24.5], c:C.rca},
+    'Industry-LS':{d:[22.7,23.9,17.2,22.4,15.7], c:C.ls},
+    'Legacy CPQ': {d:[25.5,27.6,24.9,30.7,24.1], c:C.cpq},
+    'Ind-CPQ/OM': {d:[25.7,27.7,26.0,26.1,18.3], c:C.cpqom},
+    'Ind-Omni':   {d:[33.6,33.7,28.2,37.8,34.0], c:C.omni}
+  };
+  const A = {
+    'RCA':        ['top','bottom','bottom','top','top'],
+    'Industry-LS':['bottom','top','top','bottom','bottom'],
+    'Legacy CPQ': ['top','top','top','top','bottom'],
+    'Ind-CPQ/OM': ['bottom','bottom','bottom','bottom','bottom'],
+    'Ind-Omni':   ['top','top','bottom','top','top']
+  };
+  new Chart(document.getElementById('chartPTNC'),{
+    type:'line',
+    data:{
+      labels:MONTHS,
+      datasets: Object.entries(D).map(([nm,{d,c}])=>({
+        label:nm, data:d, borderColor:c, backgroundColor:c+'22',
+        borderWidth:2, pointRadius:4, tension:0.3,
+        datalabels: dlLine(c,10,A[nm])
+      }))
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:12}},datalabels:{}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:11}}},
+        y:{min:10,max:48,grid:{color:'#eaecef'},ticks:{font:{size:11},callback:v=>v+'%'}}},
+      layout:{padding:{top:35,bottom:10,right:65}}
+    }
+  });
+})();
+
+// ── CHART 4b: P&T Delta bar chart (Chat impact) ──
+(function(){
+  // With Chat minus Excl. Chat
+  const D = {
+    'RCA':        [9.2,8.0,8.7,12.5,14.1],
+    'Industry-LS':[2.7,0,0,2.6,1.4],  // some are negative in original but Chat impact should be generally positive
+    'Legacy CPQ': [15.9,16.1,14.1,16.1,20.2],
+    'Ind-CPQ/OM': [4.9,0,2.9,6.9,5.6],
+    'Ind-Omni':   [6.6,5.5,9.7,7.7,5.2]
+  };
+  const COLORS = [C.rca,C.ls,C.cpq,C.cpqom,C.omni];
+  const labels_pt = ['RCA','Industry-LS','Legacy CPQ','Ind-CPQ/OM','Ind-Omni'];
+  new Chart(document.getElementById('chartPTDelta'),{
+    type:'bar',
+    data:{
+      labels:MONTHS,
+      datasets: labels_pt.map((nm,i)=>({
+        label:nm, data:D[nm], backgroundColor:COLORS[i]+'cc',
+        borderColor:COLORS[i], borderWidth:1,
+        datalabels:{
+          display:true, anchor:'end', align:'top', offset:1,
+          font:{size:8,weight:'bold'}, color:COLORS[i],
+          formatter:v=>v===0?'':'+'+v.toFixed(1)
+        }
+      }))
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:12}},datalabels:{}},
+      scales:{
+        x:{stacked:false,grid:{display:false},ticks:{font:{size:11}}},
+        y:{min:0,max:28,grid:{color:'#eaecef'},ticks:{font:{size:11},callback:v=>v+'pp'}}
+      },
+      layout:{padding:{top:25,bottom:5}}
+    }
+  });
+})();
+
+// ── CHARTS 5a-d: Per-region P&T NC ──
+(function(){
+  const DATA = {
+    AMER:{
+      'RCA':        [26.5,26.2,21.6,37.4,22.0],
+      'Industry-LS':[26.5,27.8,29.2,27.5,14.1],
+      'Legacy CPQ': [26.7,29.2,25.0,32.4,23.0],
+      'Ind-CPQ/OM': [37.5,35.3,21.2,22.5, 8.7],
+      'Ind-Omni':   [30.3,32.4,25.5,37.4,36.0]
+    },
+    EMEA:{
+      'RCA':        [33.9,37.2,30.7,27.0,29.9],
+      'Industry-LS':[23.5,37.0, 9.4,27.0,27.4],
+      'Legacy CPQ': [27.2,29.4,25.6,28.9,27.0],
+      'Ind-CPQ/OM': [23.5,35.1,33.7,27.2,33.8],
+      'Ind-Omni':   [46.1,42.2,42.6,48.5,44.1]
+    },
+    India:{
+      'RCA':        [28.3,23.9,29.1,31.2,21.2],
+      'Industry-LS':[18.0,15.6,12.4,18.0,11.3],
+      'Legacy CPQ': [20.5,21.7,22.7,30.6,21.7],
+      'Ind-CPQ/OM': [24.2,15.7,20.4,23.7,10.0],
+      'Ind-Omni':   [33.3,30.5,18.2,34.4,27.9]
+    },
+    APAC:{
+      'RCA':        [25.9,10.8,41.4,23.6,20.0],
+      'Industry-LS':[ 0.0,14.3,12.9,10.3, 7.1],
+      'Legacy CPQ': [18.2,16.7, 7.7,16.7,22.2],
+      'Ind-CPQ/OM': [20.8,37.0,24.0,35.7,14.3],
+      'Ind-Omni':   [17.9,27.0,14.0,17.2,17.6]
+    }
+  };
+  const PT_COLS = [C.rca,C.ls,C.cpq,C.cpqom,C.omni];
+  const PT_LABELS = ['RCA','Industry-LS','Legacy CPQ','Ind-CPQ/OM','Ind-Omni'];
+  const PT_ALIGN = {
+    'RCA':        ['top','bottom','bottom','top','top'],
+    'Industry-LS':['bottom','top','top','bottom','bottom'],
+    'Legacy CPQ': ['top','top','top','top','bottom'],
+    'Ind-CPQ/OM': ['bottom','bottom','bottom','bottom','bottom'],
+    'Ind-Omni':   ['top','top','bottom','top','top']
+  };
+  [['chartAMER_PT','AMER'],['chartEMEA_PT','EMEA'],['chartIndia_PT','India'],['chartAPAC_PT','APAC']].forEach(([id,r])=>{
+    new Chart(document.getElementById(id),{
+      type:'line',
+      data:{
+        labels:MONTHS,
+        datasets: PT_LABELS.map((nm,i)=>({
+          label:nm, data:DATA[r][nm], borderColor:PT_COLS[i], backgroundColor:PT_COLS[i]+'22',
+          borderWidth:2, pointRadius:4, tension:0.3,
+          datalabels: dlLine(PT_COLS[i],9,PT_ALIGN[nm])
+        }))
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'top',labels:{font:{size:10},boxWidth:10}},datalabels:{}},
+        scales:{x:{grid:{display:false},ticks:{font:{size:10}}},
+          y:{min:0,max:60,grid:{color:'#eaecef'},ticks:{font:{size:10},callback:v=>v+'%'}}},
+        layout:{padding:{top:30,bottom:5,right:60}}
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
