@@ -489,9 +489,9 @@
 
 <!-- TCD % Share Trend Chart — narrow + tall -->
 <div style="margin:20px 36px 0;display:flex;justify-content:center;">
-  <div class="card" style="max-width:720px;width:100%;">
+  <div class="card" style="max-width:760px;width:100%;">
     <h2>Top Case Driver — % Share of Total Weekly Inflow (5-Week Trend)</h2>
-    <canvas id="chartDriverPct" style="max-height:520px;"></canvas>
+    <canvas id="chartDriverPct" style="max-height:560px;"></canvas>
     <div class="sub">Lines = % of total weekly inflow per TCD group · LS peaked 24.6% (Nov 1) · RCA steady 22–24% · Nov 15 rebound led by RCA + LS + Omni</div>
   </div>
 </div>
@@ -510,9 +510,9 @@
 
 <!-- Signature Success % share by region — narrow + tall -->
 <div style="margin:20px 36px 0;display:flex;justify-content:center;">
-  <div class="card" style="max-width:720px;width:100%;">
+  <div class="card" style="max-width:760px;width:100%;">
     <h2>Signature Success — % Share Within Each Region (5-Week Trend)</h2>
-    <canvas id="chartSigRegion" style="max-height:460px;"></canvas>
+    <canvas id="chartSigRegion" style="max-height:500px;"></canvas>
     <div class="sub">Lines = % of that region's inflow that is Signature Success · India Sig-dominant 50–55% and rising · EMEA stable ~36–38% · APAC 37–42%</div>
   </div>
 </div>
@@ -640,33 +640,71 @@ new Chart(document.getElementById('chartVolume'), {
 const TCD_TOTALS = [753, 849, 869, 733, 826];
 const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
 
-new Chart(document.getElementById('chartDriverPct'), {
-  type:'line',
-  data: {
-    labels: WEEKS,
-    datasets: [
-      { label:'RC Core (RCA)',   data: pctOf(dRCA),     borderColor:SF_PURPLE, backgroundColor:'transparent', borderWidth:3,   pointRadius:6, pointBackgroundColor:SF_PURPLE, tension:0.3,
-        datalabels:{ display:true, anchor:'end', align:'top',    offset:6, font:{size:11,weight:'bold'}, color:SF_PURPLE, formatter:v=>v+'%' } },
-      { label:'Life Sciences',   data: pctOf(dLS),      borderColor:LS_BRIGHT, backgroundColor:'transparent', borderWidth:3.5, pointRadius:7, pointBackgroundColor:LS_BRIGHT, tension:0.3,
-        datalabels:{ display:true, anchor:'end', align:'bottom', offset:6, font:{size:11,weight:'bold'}, color:LS_BRIGHT, formatter:v=>v+'%' } },
-      { label:'Ind Omni',        data: pctOf(dOmni),    borderColor:SF_ORANGE, backgroundColor:'transparent', borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_ORANGE, tension:0.3,
-        datalabels:{ display:true, anchor:'end', align:'top',    offset:14, font:{size:10,weight:'bold'}, color:SF_ORANGE, formatter:v=>v+'%' } },
-      { label:'Legacy Revenue',  data: pctOf(dLegacyR), borderColor:SF_TEAL,   backgroundColor:'transparent', borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_TEAL,   tension:0.3,
-        datalabels:{ display:true, anchor:'end', align:'bottom', offset:14, font:{size:10,weight:'bold'}, color:SF_TEAL,   formatter:v=>v+'%' } },
-      { label:'Ind CPQ/OM',      data: pctOf(dIndCPQ),  borderColor:SF_GREEN,  backgroundColor:'transparent', borderWidth:2,   pointRadius:5, pointBackgroundColor:SF_GREEN,  tension:0.3,
-        datalabels:{ display:true, anchor:'center', align:'right', offset:8, font:{size:10,weight:'bold'}, color:SF_GREEN,  formatter:v=>v+'%' } }
-    ]
-  },
-  options:{
-    layout:{ padding:{ top:40, bottom:40, left:10, right:50 } },
-    plugins:{ legend:{position:'top',labels:{font:{size:12},padding:20,usePointStyle:true}}, datalabels:{} },
-    scales:{
-      y:{ title:{display:true,text:'% of Total Weekly Inflow',font:{size:12}}, grid:{color:'#e5e5e4'}, min:0, max:35,
-          ticks:{ stepSize:5, callback: v => v+'%' } },
-      x:{ grid:{color:'#e5e5e4'} }
-    }
+// Per-dataset, per-point align strategy for TCD to avoid label collisions.
+// At each x-index the datasets are sorted by value; labels alternate above/below
+// their own value band, with RCA always above, LS always below, and the lower 3
+// each nudged to whichever side keeps them away from each other.
+(function(){
+  const rcaD = pctOf(dRCA);
+  const lsD  = pctOf(dLS);
+  const omD  = pctOf(dOmni);
+  const lgD  = pctOf(dLegacyR);
+  const cpD  = pctOf(dIndCPQ);
+
+  // For each dataset build per-point align/offset by ranking datasets at each x
+  function dlForDataset(vals, allVals, baseColor, fontSize) {
+    return {
+      display: true,
+      anchor: 'end',
+      align: function(ctx) {
+        const i = ctx.dataIndex;
+        const v = vals[i];
+        const others = allVals.filter(a => a !== vals).map(a => a[i]);
+        // Count how many others are within 3% above this value
+        const crowdedAbove = others.filter(o => o > v && o - v < 3.5).length;
+        // Count how many are within 3% below
+        const crowdedBelow = others.filter(o => o < v && v - o < 3.5).length;
+        if (crowdedAbove > crowdedBelow) return 'bottom';
+        return 'top';
+      },
+      offset: function(ctx) {
+        const i = ctx.dataIndex;
+        const v = vals[i];
+        const others = allVals.filter(a => a !== vals).map(a => a[i]);
+        const nearby = others.filter(o => Math.abs(o - v) < 3.5).length;
+        return 6 + nearby * 6;
+      },
+      font: { size: fontSize, weight: 'bold' },
+      color: baseColor,
+      formatter: v => v + '%'
+    };
   }
-});
+
+  const allVals = [rcaD, lsD, omD, lgD, cpD];
+
+  new Chart(document.getElementById('chartDriverPct'), {
+    type:'line',
+    data: {
+      labels: WEEKS,
+      datasets: [
+        { label:'RC Core (RCA)',   data: rcaD, borderColor:SF_PURPLE, backgroundColor:'transparent', borderWidth:3,   pointRadius:6, pointBackgroundColor:SF_PURPLE, tension:0.3, datalabels: dlForDataset(rcaD, allVals, SF_PURPLE, 11) },
+        { label:'Life Sciences',   data: lsD,  borderColor:LS_BRIGHT, backgroundColor:'transparent', borderWidth:3.5, pointRadius:7, pointBackgroundColor:LS_BRIGHT, tension:0.3, datalabels: dlForDataset(lsD,  allVals, LS_BRIGHT, 11) },
+        { label:'Ind Omni',        data: omD,  borderColor:SF_ORANGE, backgroundColor:'transparent', borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_ORANGE, tension:0.3, datalabels: dlForDataset(omD,  allVals, SF_ORANGE, 10) },
+        { label:'Legacy Revenue',  data: lgD,  borderColor:SF_TEAL,   backgroundColor:'transparent', borderWidth:2.5, pointRadius:5, pointBackgroundColor:SF_TEAL,   tension:0.3, datalabels: dlForDataset(lgD,  allVals, SF_TEAL,   10) },
+        { label:'Ind CPQ/OM',      data: cpD,  borderColor:SF_GREEN,  backgroundColor:'transparent', borderWidth:2,   pointRadius:5, pointBackgroundColor:SF_GREEN,  tension:0.3, datalabels: dlForDataset(cpD,  allVals, SF_GREEN,  10) }
+      ]
+    },
+    options:{
+      layout:{ padding:{ top:50, bottom:50, left:10, right:60 } },
+      plugins:{ legend:{position:'top',labels:{font:{size:12},padding:20,usePointStyle:true}}, datalabels:{} },
+      scales:{
+        y:{ title:{display:true,text:'% of Total Weekly Inflow',font:{size:12}}, grid:{color:'#e5e5e4'}, min:0, max:38,
+            ticks:{ stepSize:5, callback: v => v+'%' } },
+        x:{ grid:{color:'#e5e5e4'} }
+      }
+    }
+  });
+})();
 
 
 // ── TCD Table ──
@@ -816,26 +854,61 @@ const tierWk = {
 (function(){
   // Sig % of each region's total inflow, 5 weeks (Oct18→Nov15)
   // TW confirmed: EMEA=153/402=38.1%, India=169/308=54.9%, APAC=43/116=37.1%
-  // Prior weeks derived from region geo totals and estimated tier splits
   const sigPctEMEA  = [36.2, 37.1, 37.2, 36.5, 38.1];
   const sigPctIndia = [50.0, 51.2, 49.3, 51.0, 54.9];
   const sigPctAPAC  = [40.4, 38.4, 42.1, 38.3, 37.1];
+
+  // India is well separated (~50%) so simple 'top' works throughout.
+  // EMEA and APAC are within 2–5% of each other — use per-point logic:
+  //   whichever is higher at that x → label goes 'top'
+  //   whichever is lower  at that x → label goes 'bottom'
+  // This guarantees the two labels always diverge rather than stack.
+  const emeaDL = {
+    display: true,
+    anchor: 'end',
+    align: function(ctx) {
+      const i = ctx.dataIndex;
+      return sigPctEMEA[i] >= sigPctAPAC[i] ? 'top' : 'bottom';
+    },
+    offset: 8,
+    font: { size:12, weight:'bold' },
+    color: SF_BLUE,
+    formatter: v => v + '%'
+  };
+  const apacDL = {
+    display: true,
+    anchor: 'end',
+    align: function(ctx) {
+      const i = ctx.dataIndex;
+      return sigPctAPAC[i] >= sigPctEMEA[i] ? 'top' : 'bottom';
+    },
+    offset: 8,
+    font: { size:12, weight:'bold' },
+    color: SF_GREEN,
+    formatter: v => v + '%'
+  };
+  const indiaDL = {
+    display: true,
+    anchor: 'end',
+    align: 'top',
+    offset: 8,
+    font: { size:12, weight:'bold' },
+    color: SF_PURPLE,
+    formatter: v => v + '%'
+  };
 
   new Chart(document.getElementById('chartSigRegion'), {
     type:'line',
     data:{
       labels: WEEKS,
       datasets:[
-        { label:'India (IST)', data:sigPctIndia, borderColor:SF_PURPLE, backgroundColor:SF_PURPLE+'22', borderWidth:3,   pointRadius:6, pointBackgroundColor:SF_PURPLE, tension:0.3,
-          datalabels:{display:true, anchor:'end', align:'top',    offset:8,  font:{size:12,weight:'bold'}, color:SF_PURPLE, formatter:v=>v+'%'} },
-        { label:'APAC',  data:sigPctAPAC,  borderColor:SF_GREEN,  backgroundColor:SF_GREEN+'22',  borderWidth:2.5, pointRadius:6, pointBackgroundColor:SF_GREEN,  tension:0.3,
-          datalabels:{display:true, anchor:'end', align:'bottom', offset:8,  font:{size:12,weight:'bold'}, color:SF_GREEN,  formatter:v=>v+'%'} },
-        { label:'EMEA',  data:sigPctEMEA,  borderColor:SF_BLUE,   backgroundColor:SF_BLUE+'22',   borderWidth:3,   pointRadius:6, pointBackgroundColor:SF_BLUE,   tension:0.3,
-          datalabels:{display:true, anchor:'end', align:'right',  offset:4,  font:{size:12,weight:'bold'}, color:SF_BLUE,   formatter:v=>v+'%'} }
+        { label:'India (IST)', data:sigPctIndia, borderColor:SF_PURPLE, backgroundColor:SF_PURPLE+'22', borderWidth:3,   pointRadius:7, pointBackgroundColor:SF_PURPLE, tension:0.3, datalabels: indiaDL },
+        { label:'APAC',        data:sigPctAPAC,  borderColor:SF_GREEN,  backgroundColor:SF_GREEN+'22',  borderWidth:2.5, pointRadius:6, pointBackgroundColor:SF_GREEN,  tension:0.3, datalabels: apacDL  },
+        { label:'EMEA',        data:sigPctEMEA,  borderColor:SF_BLUE,   backgroundColor:SF_BLUE+'22',   borderWidth:3,   pointRadius:6, pointBackgroundColor:SF_BLUE,   tension:0.3, datalabels: emeaDL  }
       ]
     },
     options:{
-      layout:{ padding:{ top:40, bottom:40, right:50, left:10 } },
+      layout:{ padding:{ top:50, bottom:50, right:60, left:10 } },
       plugins:{ legend:{position:'top',labels:{font:{size:12},padding:20,usePointStyle:true}}, datalabels:{} },
       scales:{
         y:{ title:{display:true,text:'Signature Success % of Region Total',font:{size:12}},
