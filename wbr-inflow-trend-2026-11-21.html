@@ -383,11 +383,11 @@
     <thead>
       <tr>
         <th style="text-align:left;padding-left:20px;border-right:1px solid rgba(255,255,255,.15);">KPI</th>
-        <th style="border-right:1px solid rgba(255,255,255,.15);background:#0a5aa8;">Nov 15 (TW)</th>
-        <th style="border-right:1px solid rgba(255,255,255,.15);">Nov 8</th>
-        <th style="border-right:1px solid rgba(255,255,255,.15);">Nov 1</th>
+        <th style="border-right:1px solid rgba(255,255,255,.15);">Oct 18</th>
         <th style="border-right:1px solid rgba(255,255,255,.15);">Oct 25</th>
-        <th>Oct 18</th>
+        <th style="border-right:1px solid rgba(255,255,255,.15);">Nov 1</th>
+        <th style="border-right:1px solid rgba(255,255,255,.15);">Nov 8</th>
+        <th style="background:#0a5aa8;">Nov 15 (TW)</th>
       </tr>
     </thead>
     <tbody id="kpiTrendBody"></tbody>
@@ -403,20 +403,20 @@
   var STRIPE = '#f3f3f3';
   var BLT    = '#e8f4fd';
 
-  // 5-week table: Nov 15 (TW), Nov 8, Nov 1, Oct 25, Oct 18
+  // 5-week table: Oct 18 → Nov 15 (oldest left, TW rightmost — matches chart direction)
   // CSAT target 4.55 → green when above; TTR target 10d → green when below
   var ROWS = [
-    { label:'Support Inflow',     color:'navy',   data:[{v:'826',d:'+93'},{v:'733',d:'−136'},{v:'869',d:'+20'},{v:'849',d:'+96'},{v:'753',d:''}] },
-    { label:'Closures',           color:'navy',   data:[{v:'792',d:'−38'},{v:'830',d:'−45'},{v:'875',d:'+73'},{v:'802',d:'+99'},{v:'703',d:''}] },
-    { label:'SLO Miss %',         color:'green',  data:[{v:'0.0 %',d:'—'},{v:'0.0 %',d:'—'},{v:'0.0 %',d:'—'},{v:'0.0 %',d:'—'},{v:'0.0 %',d:''}] },
-    { label:'Escalation %',       color:'green',  data:[{v:'0.4 %',d:'−0.1'},{v:'0.5 %',d:'+0.2'},{v:'0.3 %',d:'−0.2'},{v:'0.5 %',d:'+0.1'},{v:'0.4 %',d:''}] },
-    { label:'TTR (avg days) ◎10', color:'green',  data:[{v:'8.4',d:'+0.1'},{v:'8.3',d:'−0.3'},{v:'8.6',d:'+0.7'},{v:'7.9',d:'−0.4'},{v:'8.3',d:''}] },
-    { label:'CSAT ◎4.55',         color:'green',  data:[{v:'4.78',d:'+0.06'},{v:'4.72',d:'−0.15'},{v:'4.87',d:'+0.1'},{v:'4.77',d:'+0.05'},{v:'4.72',d:''}] },
-    { label:'Reopen Rate',        color:'green',  data:[{v:'5.9 %',d:'−1.1'},{v:'7.0 %',d:'+0.5'},{v:'6.5 %',d:'−1.5'},{v:'8.0 %',d:'+0.5'},{v:'7.5 %',d:''}] },
-    { label:'Investigations',     color:'navy',   data:[{v:'28',d:'−20'},{v:'48',d:'−38'},{v:'86',d:'+4'},{v:'82',d:'+15'},{v:'67',d:''}] },
-    { label:'Investigation Rate', color:'orange', data:[{v:'3.5 %',d:'−3.0'},{v:'6.5 %',d:'−3.4'},{v:'9.9 %',d:'+0.3'},{v:'9.6 %',d:'+0.7'},{v:'8.9 %',d:''}] },
-    { label:'Bugs',               color:'navy',   data:[{v:'38',d:'+3'},{v:'35',d:'−18'},{v:'53',d:'−30'},{v:'83',d:'+16'},{v:'67',d:''}] },
-    { label:'Bug Rate',           color:'navy',   data:[{v:'4.7 %',d:'0'},{v:'4.7 %',d:'−1.4'},{v:'6.1 %',d:'−3.7'},{v:'9.8 %',d:'+0.9'},{v:'8.9 %',d:''}] }
+    { label:'Support Inflow',     color:'navy',   data:[{v:'753',d:''},{v:'849',d:'+96'},{v:'869',d:'+20'},{v:'733',d:'−136'},{v:'826',d:'+93'}] },
+    { label:'Closures',           color:'navy',   data:[{v:'703',d:''},{v:'802',d:'+99'},{v:'875',d:'+73'},{v:'830',d:'−45'},{v:'792',d:'−38'}] },
+    { label:'SLO Miss %',         color:'green',  data:[{v:'0.0 %',d:''},{v:'0.0 %',d:'—'},{v:'0.0 %',d:'—'},{v:'0.0 %',d:'—'},{v:'0.0 %',d:'—'}] },
+    { label:'Escalation %',       color:'green',  data:[{v:'0.4 %',d:''},{v:'0.5 %',d:'+0.1'},{v:'0.3 %',d:'−0.2'},{v:'0.5 %',d:'+0.2'},{v:'0.4 %',d:'−0.1'}] },
+    { label:'TTR (avg days) ◎10', color:'green',  data:[{v:'8.3',d:''},{v:'7.9',d:'−0.4'},{v:'8.6',d:'+0.7'},{v:'8.3',d:'−0.3'},{v:'8.4',d:'+0.1'}] },
+    { label:'CSAT ◎4.55',         color:'green',  data:[{v:'4.72',d:''},{v:'4.77',d:'+0.05'},{v:'4.87',d:'+0.1'},{v:'4.72',d:'−0.15'},{v:'4.78',d:'+0.06'}] },
+    { label:'Reopen Rate',        color:'green',  data:[{v:'7.5 %',d:''},{v:'8.0 %',d:'+0.5'},{v:'6.5 %',d:'−1.5'},{v:'7.0 %',d:'+0.5'},{v:'5.9 %',d:'−1.1'}] },
+    { label:'Investigations',     color:'navy',   data:[{v:'67',d:''},{v:'82',d:'+15'},{v:'86',d:'+4'},{v:'48',d:'−38'},{v:'28',d:'−20'}] },
+    { label:'Investigation Rate', color:'orange', data:[{v:'8.9 %',d:''},{v:'9.6 %',d:'+0.7'},{v:'9.9 %',d:'+0.3'},{v:'6.5 %',d:'−3.4'},{v:'3.5 %',d:'−3.0'}] },
+    { label:'Bugs',               color:'navy',   data:[{v:'67',d:''},{v:'83',d:'+16'},{v:'53',d:'−30'},{v:'35',d:'−18'},{v:'38',d:'+3'}] },
+    { label:'Bug Rate',           color:'navy',   data:[{v:'8.9 %',d:''},{v:'9.8 %',d:'+0.9'},{v:'6.1 %',d:'−3.7'},{v:'4.7 %',d:'−1.4'},{v:'4.7 %',d:'0'}] }
   ];
 
   var tbody = document.getElementById('kpiTrendBody');
@@ -429,7 +429,7 @@
     var cells = '<td style="padding:11px 20px;font-weight:700;font-size:14px;color:' + NAVY + ';border-right:1px solid #e5e5e4;">' + row.label + '</td>';
 
     row.data.forEach(function(cell, ci) {
-      var isTW = ci === 0;
+      var isTW = ci === 4;
       var cellBg = isTW ? BLT : bg;
       var border = ci < 4 ? 'border-right:1px solid #e5e5e4;' : '';
       var valSize = isTW ? '15px' : '14px';
