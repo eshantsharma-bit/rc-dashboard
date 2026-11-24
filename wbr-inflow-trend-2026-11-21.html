@@ -709,7 +709,7 @@ const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
       plugins: { legend:{position:'top',labels:{font:{size:12},padding:24,usePointStyle:true,boxWidth:10}}, datalabels:{} },
       scales: {
         y: { title:{display:true,text:'% of Total Weekly Inflow',font:{size:12}}, grid:{color:'#e5e5e4'},
-             min:0, max:40, ticks:{ stepSize:5, callback: v => v+'%' } },
+             min:0, max:45, ticks:{ stepSize:5, callback: v => v+'%' } },
         x: { grid:{color:'#e5e5e4'}, ticks:{font:{size:12}} }
       }
     }
@@ -962,9 +962,6 @@ const tierWk = {
 <!-- ── SECTION: Top 10 Accounts (TW) — All P&T ── -->
 <div class="section-label">Top 10 Case-Creating Accounts — All Products (TW: Nov 15–21)</div>
 <div style="margin:20px 36px 32px;">
-  <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;">
-    Ranked by TW inflow · EMEA + India + APAC · All products · 5wk Avg = Oct 18 – Nov 15 average (removes Diwali distortion) · Source P&T = dominant product
-  </p>
   <div style="overflow-x:auto;">
   <table style="width:100%;border-collapse:collapse;font-size:13px;">
     <thead>
@@ -1183,7 +1180,7 @@ const tierWk = {
   <!-- Account commentary block -->
   <div style="margin-top:20px;border-top:2px solid var(--border);padding-top:16px;">
     <div style="font-size:13px;font-weight:700;color:var(--sf-navy);margin-bottom:10px;">What this list is telling us</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
 
       <div style="background:#f8f9fa;border-radius:8px;padding:14px 16px;border-left:4px solid #0969da;">
         <div style="font-size:12px;font-weight:700;color:#0969da;margin-bottom:6px;">COMPOSITION</div>
@@ -1196,7 +1193,7 @@ const tierWk = {
       </div>
 
       <div style="background:#f8f9fa;border-radius:8px;padding:14px 16px;border-left:4px solid #cf222e;">
-        <div style="font-size:12px;font-weight:700;color:#cf222e;margin-bottom:6px;">RISK SIGNALS</div>
+        <div style="font-size:12px;font-weight:700;color:#cf222e;margin-bottom:6px;">Signals</div>
         <ul style="font-size:12px;color:var(--text-secondary);margin:0;padding-left:16px;line-height:1.7;">
           <li><strong>Takeda</strong>: active go-live with 2 Sev1s, $10M SELA renewal on the line — highest single-account risk</li>
           <li><strong>Beiersdorf</strong>: Dec 1 go-live in 1 week, pre-launch bug in Product Ratings Tab — expect volume spike weeks 1–2 post go-live</li>
@@ -1211,15 +1208,6 @@ const tierWk = {
           <li><strong>India (IST)</strong> is heaviest for 6 of 10 accounts — LSC migration support is concentrated in India team</li>
           <li><strong>EMEA</strong> is heaviest for 4 of 10 — Pfizer (EMEA-led), BT/Digico, GIE LA MONDIALE, Cloudity are all EMEA-primary</li>
           <li>No APAC-primary account in top 10; APAC carries minority share on Alfasigma, Mylan, AstraZeneca</li>
-        </ul>
-      </div>
-
-      <div style="background:#f8f9fa;border-radius:8px;padding:14px 16px;border-left:4px solid #b25000;">
-        <div style="font-size:12px;font-weight:700;color:#b25000;margin-bottom:6px;">CAPACITY WATCH</div>
-        <ul style="font-size:12px;color:var(--text-secondary);margin:0;padding-left:16px;line-height:1.7;">
-          <li>8 of 10 accounts are above their 5wk average — this is a broad-based surge, not isolated to one account</li>
-          <li>Project Breakthrough POD engineers are carrying Pfizer + Novartis + Takeda + AstraZeneca simultaneously — bandwidth risk heading into Beiersdorf go-live</li>
-          <li>Mylan (−2.4 vs 5wk avg) and Beiersdorf (−1.4) are the only accounts below baseline this week — Mylan SIT cleared, volume expected to ease further</li>
         </ul>
       </div>
 
