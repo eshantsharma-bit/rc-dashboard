@@ -429,7 +429,7 @@
 <!-- Total volume -->
 <div style="margin:20px 36px 0;">
   <div class="card">
-    <h2>Total Weekly Inflow + Sev1 Trend (6 Weeks)</h2>
+    <h2>Total Weekly Inflow + Sev1 Trend (5 Weeks)</h2>
     <canvas id="chartVolume" class="canvas-tall"></canvas>
     <div class="sub">Bar = total inflow · Line = Sev1 count (right axis) · 5-week window Oct 18→Nov 15 · Nov 8 = Diwali recovery week · Nov 15 = post-Diwali rebound</div>
   </div>
@@ -438,7 +438,7 @@
 <!-- Geo absolute count trend -->
 <div style="margin:20px 36px 0;">
   <div class="card">
-    <h2>Weekly Inflow by Region — EMEA / India / APAC (Absolute Count, 6 Weeks)</h2>
+    <h2>Weekly Inflow by Region — EMEA / India / APAC (Absolute Count, 5 Weeks)</h2>
     <canvas id="chartGeoTrend" class="canvas-tall"></canvas>
     <div class="sub">Lines show weekly volume per region · Nov 8 India dip = Diwali holiday · Nov 15 India rebounds 257→308 (+20%)</div>
   </div>
@@ -450,7 +450,7 @@
 <!-- TCD Volume Line Chart -->
 <div style="margin:20px 36px 0;">
   <div class="card">
-    <h2>Top Case Driver Volume — 6-Week Trend</h2>
+    <h2>Top Case Driver Volume — 5-Week Trend</h2>
     <canvas id="chartDriverVol" class="canvas-xl"></canvas>
     <div class="sub">Life Sciences · Revenue Cloud (RCA + Legacy combined) · Ind CPQ/OM · Ind Omni · Ind Retail</div>
   </div>
@@ -459,7 +459,7 @@
 <!-- TCD Table (improved) -->
 <div class="tcd-table-wrap">
   <div class="tcd-table-title">
-    Top Case Drivers — 6-Week Volume Table
+    Top Case Drivers — 5-Week Volume Table
     <span>EMEA · India · APAC combined &nbsp;|&nbsp; Case_Owner__r.Support_Region__c</span>
   </div>
   <table>
@@ -486,7 +486,7 @@
 <!-- TCD by Region small multiples -->
 <div style="margin:20px 36px 0;">
   <div class="card">
-    <h2>Top Case Driver Volume by Region — 6-Week Trend</h2>
+    <h2>Top Case Driver Volume by Region — 5-Week Trend</h2>
     <div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">Each panel = one TCD group &nbsp;·&nbsp; Lines = EMEA / India / APAC</div>
     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:18px;">
       <div><div style="font-size:12px;font-weight:700;color:#0070d2;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">Life Sciences</div><canvas id="cTcdR0" style="max-height:180px !important;"></canvas></div>
@@ -503,32 +503,24 @@
   </div>
 </div>
 
-<!-- ── SECTION: Support Tier & Engineering Signals ── -->
-<div class="section-label">Support Tier &amp; Engineering Signals</div>
+<!-- ── SECTION: Support Tier ── -->
+<div class="section-label">Support Tier</div>
 
-<div class="grid-2">
+<!-- Tier mix 5-week trend — full width -->
+<div style="margin:20px 36px 0;">
   <div class="card">
-    <h2>Support Tier Distribution (TW) — Case_Support_level__c</h2>
-    <canvas id="chartTierTotal" style="max-height:240px;"></canvas>
-    <div class="sub">Premier &amp; Premier+ combined into Premier+. TW: 826 cases. Sig TTR=10.70d vs Premier TTR=6.97d — Signature 54% slower.</div>
-  </div>
-  <div class="card">
-    <h2>Support Tier by Region (TW) — Stacked Count</h2>
-    <canvas id="chartTierRegion" style="max-height:240px;"></canvas>
-    <div class="sub">India Signature-dominant (169/308 = 55%). EMEA Premier+-heavy (143/402 = 36%). APAC balanced across tiers.</div>
+    <h2>Support Tier Mix — 5-Week Stacked Volume (Oct 18 → Nov 15)</h2>
+    <canvas id="chartTierTotal" class="canvas-tall"></canvas>
+    <div class="sub">Signature Success · Premier+ · Standard · Partner Premier &nbsp;·&nbsp; Sig TTR=10.70d vs Prem+ TTR=6.97d (Sig 54% slower) &nbsp;·&nbsp; India Sig-dominant (55%), EMEA Prem+-heavy (36%)</div>
   </div>
 </div>
 
-<div class="grid-2">
+<!-- Tier by Region — full width -->
+<div style="margin:20px 36px 0;">
   <div class="card">
-    <h2>Engineering Signal — GUS &amp; Bug% by Product (TW)</h2>
-    <canvas id="chartEngSignal" style="max-height:300px;"></canvas>
-    <div class="sub">GUS = engineer raised investigation with Product Engineering · Bug = confirmed defect · Sorted by Eng% · DocGen 50% = watermelon signal</div>
-  </div>
-  <div class="card">
-    <h2>Bug-Confirmed Cases by Cloud Group (TW) — Total: 38</h2>
-    <canvas id="chartBugCloud" style="max-height:300px;"></canvas>
-    <div class="sub">Industries: Omni=5, LS=7, DocGen=5, Retail=2, FinServ=1, CPQ/OM=1 · RCA: TM=1, PM=1 · Legacy Rev: Billing=3, CPQ=8</div>
+    <h2>Support Tier by Region (TW) — Stacked Count</h2>
+    <canvas id="chartTierRegion" style="max-height:260px;"></canvas>
+    <div class="sub">India Signature-dominant (169/308 = 55%). EMEA Premier+-heavy (143/402 = 36%). APAC balanced across tiers.</div>
   </div>
 </div>
 
@@ -683,11 +675,11 @@ new Chart(document.getElementById('chartVolume'), {
     labels: WEEKS,
     datasets: [
       { type:'bar', label:'Total Inflow', data: totals,
-        backgroundColor: WEEKS.map((_,i) => i===5 ? '#cce4f8' : '#d4e9f7'),
-        borderColor:     WEEKS.map((_,i) => i===5 ? SF_BLUE : '#72b5e8'),
+        backgroundColor: WEEKS.map((_,i) => i===4 ? '#cce4f8' : '#d4e9f7'),
+        borderColor:     WEEKS.map((_,i) => i===4 ? SF_BLUE : '#72b5e8'),
         borderWidth: 1.5, yAxisID:'y',
         datalabels: { display:true, anchor:'end', align:'end',
-          font:{size:11,weight:'bold'}, color: WEEKS.map((_,i)=>i===5?SF_NAVY:SF_GRAY),
+          font:{size:11,weight:'bold'}, color: WEEKS.map((_,i)=>i===4?SF_NAVY:SF_GRAY),
           formatter: v=>v }
       },
       { type:'line', label:'Sev1', data: s1s,
@@ -764,7 +756,8 @@ new Chart(document.getElementById('chartDriverVol'), {
   const tbody = document.getElementById('tcdTableBody');
 
   data.forEach((d,i) => {
-    const tw = d.w[5], pw = d.w[4];
+    const n = d.w.length;
+    const tw = d.w[n-1], pw = d.w[n-2];   // last = TW, second-to-last = PW
     const delta = tw - pw;
     const arrow = delta > 0 ? '▲' : (delta < 0 ? '▼' : '—');
     const pct = (tw/TOTAL_TW*100).toFixed(1);
@@ -776,7 +769,6 @@ new Chart(document.getElementById('chartDriverVol'), {
       <td>${d.w[1]}</td>
       <td>${d.w[2]}</td>
       <td>${d.w[3]}</td>
-      <td>${d.w[4]}</td>
       <td class="tw-val">${tw}</td>
       <td class="${wowClass}">${arrow} ${Math.abs(delta)}</td>
       <td style="font-weight:600;color:${SF_NAVY};">${pct}%</td>
@@ -787,52 +779,61 @@ new Chart(document.getElementById('chartDriverVol'), {
     tbody.appendChild(tr);
   });
 
-  // Totals row
-  const sumW = Array(6).fill(0);
+  // Totals row — 5-element arrays
+  const sumW = Array(5).fill(0);
   data.forEach(d => d.w.forEach((v,i) => sumW[i] += v));
   const sumE = data.reduce((a,d)=>a+d.emea,0);
   const sumI = data.reduce((a,d)=>a+d.india,0);
   const sumA = data.reduce((a,d)=>a+d.apac,0);
   const sumS = data.reduce((a,d)=>a+d.s1,0);
-  const twD = sumW[5]-sumW[4];
+  const twTot = sumW[4], pwTot = sumW[3];
+  const twD = twTot - pwTot;
   const totRow = document.createElement('tr');
   totRow.innerHTML = `
     <td style="color:${SF_NAVY};font-size:14px;">Total (5 TCD groups)</td>
-    ${sumW.slice(0,5).map(v=>`<td>${v}</td>`).join('')}
-    <td class="tw-val">${sumW[5]}</td>
+    ${sumW.slice(0,4).map(v=>`<td>${v}</td>`).join('')}
+    <td class="tw-val">${twTot}</td>
     <td class="${twD>=0?'wow-up':'wow-dn'}">${twD>=0?'▲':'▼'} ${Math.abs(twD)}</td>
-    <td style="font-weight:700;color:${SF_NAVY};">${(sumW[5]/TOTAL_TW*100).toFixed(1)}%</td>
+    <td style="font-weight:700;color:${SF_NAVY};">${(twTot/TOTAL_TW*100).toFixed(1)}%</td>
     <td>${sumE}</td><td>${sumI}</td><td>${sumA}</td>
     <td class="s1-cell">${sumS}</td>`;
   tbody.appendChild(totRow);
 })();
 
-// ── Support Tier horizontal bar ──
-const tierLabels = ['Signature Success','Premier+','Standard','Partner Premier'];
-const tierCounts = [365, 255, 115, 91];
-const tierS1     = [27, 23, 5, 13];
-const tierColors = [SF_BLUE, SF_PURPLE, SF_GRAY, SF_GREEN];
+// ── Support Tier 5-week stacked bar ──
+// Tier data by week: [Oct18, Oct25, Nov1, Nov8, Nov15]
+const tierWk = {
+  sig:  [341, 388, 395, 332, 365],
+  prem: [228, 255, 262, 231, 255],
+  std:  [101, 116, 121, 104, 115],
+  pp:   [ 83,  90,  91,  66,  91]
+};
 
 new Chart(document.getElementById('chartTierTotal'), {
   type: 'bar',
   data: {
-    labels: tierLabels,
+    labels: WEEKS,
     datasets: [
-      { label:'Total Cases', data: tierCounts, backgroundColor: tierColors,
-        datalabels: { display:true, anchor:'end', align:'end',
-          font:{size:11,weight:'bold'}, color: SF_NAVY,
-          formatter: (v,ctx) => `${v} (${(v/826*100).toFixed(1)}%)` }
-      },
-      { label:'Sev1', data: tierS1, backgroundColor: tierColors.map(c=>c+'55'),
-        datalabels: { display:true, anchor:'end', align:'end',
-          font:{size:10,weight:'bold'}, color:SF_ORANGE, formatter: v => `S1:${v}` }
-      }
+      { label:'Signature Success', data: tierWk.sig,  backgroundColor: SF_BLUE,
+        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 25,
+          anchor:'center', align:'center', font:{size:10,weight:'bold'}, color:'#fff', formatter:v=>v } },
+      { label:'Premier+',          data: tierWk.prem, backgroundColor: SF_PURPLE,
+        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 25,
+          anchor:'center', align:'center', font:{size:10,weight:'bold'}, color:'#fff', formatter:v=>v } },
+      { label:'Standard',          data: tierWk.std,  backgroundColor: SF_GRAY,
+        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 15,
+          anchor:'center', align:'center', font:{size:9,weight:'bold'},  color:'#fff', formatter:v=>v } },
+      { label:'Partner Premier',   data: tierWk.pp,   backgroundColor: SF_GREEN,
+        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 15,
+          anchor:'center', align:'center', font:{size:9,weight:'bold'},  color:'#fff', formatter:v=>v } }
     ]
   },
   options: {
-    indexAxis: 'y',
-    plugins: { legend:{position:'top',labels:{font:{size:12}}}, datalabels:{} },
-    scales: { x:{ grid:{color:'#e5e5e4'}, title:{display:true,text:'Cases',font:{size:12}} } }
+    plugins: { legend:{position:'top',labels:{font:{size:12},padding:16}}, datalabels:{} },
+    scales: {
+      x:{ stacked:true },
+      y:{ stacked:true, grid:{color:'#e5e5e4'}, title:{display:true,text:'Cases',font:{size:12}} }
+    }
   }
 });
 
@@ -860,58 +861,6 @@ new Chart(document.getElementById('chartTierRegion'), {
   }
 });
 
-// ── GUS + Bug % horizontal bar ──
-const engProds = ['DocGen (Ind)','RC Billing','Health Cloud','Comm Cloud','Ind Loyalty','FinServ','Ind Retail','Industry-LS','Ind Omni','RC Txn Mgmt'];
-const engTotal = [  20,  16,  11,  11,  16,  25,  35, 184,  94,  54];
-const engGUS   = [   5,   0,   1,   2,   2,   2,   2,  13,   4,   1];
-const engBug   = [   5,   3,   1,   0,   0,   1,   2,   7,   5,   1];
-
-new Chart(document.getElementById('chartEngSignal'), {
-  type: 'bar',
-  data: {
-    labels: engProds,
-    datasets: [
-      { label:'GUS%', data: engGUS.map((g,i)=>+(g/engTotal[i]*100).toFixed(1)),
-        backgroundColor: SF_BLUE,
-        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
-          anchor:'center', align:'center', font:{size:9,weight:'bold'}, color:'#fff', formatter: v => v+'%' }
-      },
-      { label:'Bug%', data: engBug.map((b,i)=>+(b/engTotal[i]*100).toFixed(1)),
-        backgroundColor: SF_ORANGE,
-        datalabels: { display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
-          anchor:'center', align:'center', font:{size:9,weight:'bold'}, color:'#fff', formatter: v => v+'%' }
-      }
-    ]
-  },
-  options: {
-    indexAxis: 'y',
-    plugins: { legend:{position:'top',labels:{font:{size:12}}}, datalabels:{} },
-    scales: {
-      x:{ stacked:true, max:55, title:{display:true,text:'% of product total'}, grid:{color:'#e5e5e4'} },
-      y:{ stacked:true }
-    }
-  }
-});
-
-// ── Bug doughnut ──
-const totalBugs = 38;
-new Chart(document.getElementById('chartBugCloud'), {
-  type: 'doughnut',
-  data: {
-    labels: ['Industries (21)','Legacy Revenue (11)','RCA — RC Core (6)'],
-    datasets: [{
-      data: [21, 11, 6],
-      backgroundColor: [SF_BLUE, SF_ORANGE, SF_PURPLE],
-      borderWidth: 2, borderColor: '#ffffff',
-      datalabels: { display:true, color:'#fff', font:{size:13,weight:'bold'},
-        formatter: (v,ctx) => `${v}\n(${(v/totalBugs*100).toFixed(0)}%)` }
-    }]
-  },
-  options: {
-    cutout: '55%',
-    plugins: { legend:{position:'bottom',labels:{font:{size:12},padding:16}}, datalabels:{} }
-  }
-});
 
 // ── TCD by Region small multiples ──
 (function() {
