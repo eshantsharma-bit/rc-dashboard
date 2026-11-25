@@ -274,22 +274,22 @@
   .kpi-table-title {
     background: var(--sf-navy);
     color: #fff;
-    padding: 14px 20px;
-    font-size: 15px;
+    padding: 12px 20px;
+    font-size: 16px;
     font-weight: 700;
     letter-spacing: .2px;
   }
   .kpi-table-wrap table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
+    font-size: 15px;
   }
   .kpi-table-wrap thead th {
     background: #0a4a90;
     color: #fff;
-    padding: 10px 20px;
+    padding: 8px 16px;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 14px;
   }
   .kpi-table-wrap thead th:first-child {
     text-align: left;
@@ -319,8 +319,8 @@
   .tcd-table-title {
     background: var(--sf-navy);
     color: #fff;
-    padding: 14px 20px;
-    font-size: 15px;
+    padding: 12px 20px;
+    font-size: 16px;
     font-weight: 700;
     letter-spacing: .2px;
     display: flex;
@@ -341,7 +341,7 @@
     background: #0a4a90;
   }
   .tcd-table-wrap thead th {
-    padding: 10px 12px;
+    padding: 8px 12px;
     color: #fff;
     font-weight: 600;
     font-size: 12px;
@@ -367,7 +367,7 @@
   }
   .tcd-table-wrap tbody td.geo-col { background: #e8f4fd; }
   .tcd-table-wrap tbody td {
-    padding: 10px 12px;
+    padding: 8px 12px;
     text-align: right;
     color: var(--sf-gray-50);
     font-size: 14px;
@@ -535,21 +535,21 @@
     var tr = document.createElement('tr');
     tr.style.background = bg;
 
-    var cells = '<td style="padding:11px 20px;font-weight:700;font-size:14px;color:' + NAVY + ';border-right:1px solid #e5e5e4;">' + row.label + '</td>';
+    var cells = '<td style="padding:9px 16px;font-weight:700;font-size:15px;color:' + NAVY + ';border-right:1px solid #e5e5e4;">' + row.label + '</td>';
 
     COL_IDX.forEach(function(ci, pos) {
       var isTW  = pos === 1; // second column = TW
       var border = 'border-right:1px solid #e5e5e4;';
       if (ci === null) {
         // Target column
-        cells += '<td style="padding:11px 20px;text-align:center;font-weight:600;font-size:13px;color:' + DGRAY + ';background:' + bg + ';' + border + '">' + row.target + '</td>';
+        cells += '<td style="padding:9px 16px;text-align:center;font-weight:600;font-size:14px;color:' + DGRAY + ';background:' + bg + ';' + border + '">' + row.target + '</td>';
       } else {
         var cell = row.data[ci];
         var cellBg = isTW ? BLT : bg;
-        var valSize = isTW ? '15px' : '14px';
+        var valSize = isTW ? '16px' : '15px';
         var fwt = isTW ? '900' : '700';
-        var delta = cell.d && cell.d !== '' ? ' <span style="font-size:11px;font-weight:500;color:' + DGRAY + ';">(' + cell.d + ')</span>' : '';
-        cells += '<td style="padding:11px 20px;text-align:center;font-weight:' + fwt + ';color:' + vc + ';font-size:' + valSize + ';background:' + cellBg + ';' + border + '">' + cell.v + delta + '</td>';
+        var delta = cell.d && cell.d !== '' ? ' <span style="font-size:12px;font-weight:500;color:' + DGRAY + ';">(' + cell.d + ')</span>' : '';
+        cells += '<td style="padding:9px 16px;text-align:center;font-weight:' + fwt + ';color:' + vc + ';font-size:' + valSize + ';background:' + cellBg + ';' + border + '">' + cell.v + delta + '</td>';
       }
     });
 
@@ -1072,191 +1072,191 @@ const tierWk = {
 <div class="section-label">Top 10 Case-Creating Accounts — All Products (TW: Nov 15–21)</div>
 <div style="margin:20px 36px 32px;">
   <div style="overflow-x:auto;">
-  <table class="acct-table" style="width:100%;border-collapse:collapse;font-size:13px;">
+  <table class="acct-table" style="width:100%;border-collapse:collapse;font-size:14px;">
     <thead>
       <tr style="background:var(--sf-navy);color:#fff;">
-        <th style="padding:10px 14px;text-align:left;font-weight:700;white-space:nowrap;min-width:190px;">#&nbsp; Account</th>
-        <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;">TW</th>
-        <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;">PW</th>
-        <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;">5wk Avg</th>
-        <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;">vs 5wk Avg</th>
-        <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;">S1</th>
-        <th style="padding:10px 12px;text-align:left;font-weight:700;white-space:nowrap;min-width:160px;">Source P&T</th>
-        <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;min-width:110px;">% of P&T Vol</th>
-        <th style="padding:10px 10px;text-align:left;font-weight:700;white-space:nowrap;">Plan</th>
-        <th style="padding:10px 10px;text-align:center;font-weight:700;white-space:nowrap;">Region</th>
+        <th style="padding:8px 14px;text-align:left;font-weight:700;white-space:nowrap;min-width:190px;">#&nbsp; Account</th>
+        <th style="padding:8px 10px;text-align:center;font-weight:700;white-space:nowrap;">TW</th>
+        <th style="padding:8px 10px;text-align:center;font-weight:700;white-space:nowrap;">PW</th>
+        <th style="padding:8px 10px;text-align:center;font-weight:700;white-space:nowrap;">5wk Avg</th>
+        <th style="padding:8px 10px;text-align:center;font-weight:700;white-space:nowrap;">vs 5wk Avg</th>
+        <th style="padding:8px 10px;text-align:center;font-weight:700;white-space:nowrap;">S1</th>
+        <th style="padding:8px 12px;text-align:left;font-weight:700;white-space:nowrap;min-width:160px;">Source P&T</th>
+        <th style="padding:8px 10px;text-align:center;font-weight:700;white-space:nowrap;min-width:110px;">% of P&T Vol</th>
+        <th style="padding:8px 10px;text-align:left;font-weight:700;white-space:nowrap;">Plan</th>
+        <th style="padding:8px 10px;text-align:center;font-weight:700;white-space:nowrap;">Region</th>
       </tr>
     </thead>
     <tbody>
 
       <!-- 1 Pfizer -->
       <tr style="background:#fff;border-bottom:1px solid var(--border);">
-        <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">1</span>Pfizer – Commercial LSC EMEA</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">29</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">20</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">18.8</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +10.2</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
-        <td style="padding:9px 12px;">
+        <td style="padding:8px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">1</span>Pfizer – Commercial LSC EMEA</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">29</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">20</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">18.8</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +10.2</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">—</td>
+        <td style="padding:8px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">16%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
-        <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">EMEA</span></td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:14px;">16%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:8px 10px;white-space:nowrap;font-size:13px;">Sig Success</td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">EMEA</span></td>
       </tr>
 
       <!-- 2 Novartis -->
       <tr style="background:var(--sf-gray-05);border-bottom:1px solid var(--border);">
-        <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">2</span>Novartis Pharma AG <span style="font-weight:400;font-size:11px;color:var(--text-secondary);">(2 orgs)</span></td>
-        <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">20</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">9</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">13.8</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +6.2</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
-        <td style="padding:9px 12px;">
+        <td style="padding:8px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">2</span>Novartis Pharma AG <span style="font-weight:400;font-size:11px;color:var(--text-secondary);">(2 orgs)</span></td>
+        <td style="padding:8px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">20</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">9</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">13.8</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +6.2</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">—</td>
+        <td style="padding:8px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">11%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
-        <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:14px;">11%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:8px 10px;white-space:nowrap;font-size:13px;">Sig Success</td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
       </tr>
 
       <!-- 3 Alfasigma -->
       <tr style="background:#fff;border-bottom:1px solid var(--border);">
-        <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">3</span>Alfasigma Global CRM</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">19</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">12</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">17.2</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +1.8</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
-        <td style="padding:9px 12px;">
+        <td style="padding:8px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">3</span>Alfasigma Global CRM</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">19</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">12</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">17.2</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +1.8</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">—</td>
+        <td style="padding:8px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">10%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
-        <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:14px;">10%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:8px 10px;white-space:nowrap;font-size:13px;">Sig Success</td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
       </tr>
 
       <!-- 4 Mylan -->
       <tr style="background:var(--sf-gray-05);border-bottom:1px solid var(--border);">
-        <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">4</span>Mylan Inc. <span style="font-weight:400;font-size:11px;color:var(--text-secondary);">(Viatris)</span></td>
-        <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">18</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">20</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">20.4</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#cf222e;">▼ −2.4</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
-        <td style="padding:9px 12px;">
+        <td style="padding:8px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">4</span>Mylan Inc. <span style="font-weight:400;font-size:11px;color:var(--text-secondary);">(Viatris)</span></td>
+        <td style="padding:8px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">18</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">20</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">20.4</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:700;color:#cf222e;">▼ −2.4</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">—</td>
+        <td style="padding:8px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">10%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
-        <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:14px;">10%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:8px 10px;white-space:nowrap;font-size:13px;">Sig Success</td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
       </tr>
 
       <!-- 5 Takeda -->
       <tr style="background:#fff;border-bottom:1px solid var(--border);">
-        <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">5</span>Takeda Pharmaceuticals</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">16</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">7</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">17.0</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#706e6b;">— −1.0</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-red);font-size:14px;">2</td>
-        <td style="padding:9px 12px;">
+        <td style="padding:8px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">5</span>Takeda Pharmaceuticals</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">16</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">7</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">17.0</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:700;color:#706e6b;">— −1.0</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:800;color:var(--sf-red);font-size:14px;">2</td>
+        <td style="padding:8px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">9%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
-        <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:14px;">9%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:8px 10px;white-space:nowrap;font-size:13px;">Sig Success</td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
       </tr>
 
       <!-- 6 AstraZeneca -->
       <tr style="background:var(--sf-gray-05);border-bottom:1px solid var(--border);">
-        <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">6</span>AstraZeneca</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">15</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">13</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">12.4</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +2.6</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
-        <td style="padding:9px 12px;">
+        <td style="padding:8px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">6</span>AstraZeneca</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">15</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">13</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">12.4</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +2.6</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">—</td>
+        <td style="padding:8px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">8%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
-        <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:14px;">8%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:8px 10px;white-space:nowrap;font-size:13px;">Sig Success</td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
       </tr>
 
       <!-- 7 British Telecommunications (BT/Digico) -->
       <tr style="background:#fff;border-bottom:1px solid var(--border);">
-        <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">7</span>British Telecommunications <span style="font-weight:400;font-size:11px;color:var(--text-secondary);">(Digico)</span></td>
-        <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">10</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">4</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">7.6</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +2.4</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
-        <td style="padding:9px 12px;">
+        <td style="padding:8px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">7</span>British Telecommunications <span style="font-weight:400;font-size:11px;color:var(--text-secondary);">(Digico)</span></td>
+        <td style="padding:8px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">10</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">4</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">7.6</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +2.4</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">—</td>
+        <td style="padding:8px 12px;">
           <span style="display:inline-block;background:#f0e8ff;color:#6e3db8;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Ind-CPQ/OM</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">70% · also Comms Cloud, Omni</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">15%</span><br><span style="font-size:10px;color:var(--text-secondary);">of CPQ/OM 65</span></td>
-        <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">EMEA</span></td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:14px;">15%</span><br><span style="font-size:10px;color:var(--text-secondary);">of CPQ/OM 65</span></td>
+        <td style="padding:8px 10px;white-space:nowrap;font-size:13px;">Sig Success</td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">EMEA</span></td>
       </tr>
 
       <!-- 8 GIE LA MONDIALE -->
       <tr style="background:var(--sf-gray-05);border-bottom:1px solid var(--border);">
-        <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">8</span>GIE LA MONDIALE GROUPE</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">9</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">3</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">2.4</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +6.6</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
-        <td style="padding:9px 12px;">
+        <td style="padding:8px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">8</span>GIE LA MONDIALE GROUPE</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">9</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">3</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">2.4</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +6.6</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">—</td>
+        <td style="padding:8px 12px;">
           <span style="display:inline-block;background:#fdf0e8;color:#b25000;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Ind Omni</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">H&amp;I 78% · also Dev Supp</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">9%</span><br><span style="font-size:10px;color:var(--text-secondary);">of Ind Omni 95</span></td>
-        <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">EMEA</span></td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:14px;">9%</span><br><span style="font-size:10px;color:var(--text-secondary);">of Ind Omni 95</span></td>
+        <td style="padding:8px 10px;white-space:nowrap;font-size:13px;">Sig Success</td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">EMEA</span></td>
       </tr>
 
       <!-- 9 Beiersdorf -->
       <tr style="background:#fff;border-bottom:1px solid var(--border);">
-        <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">9</span>Beiersdorf Shared Services</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">8</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">10</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">9.4</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#cf222e;">▼ −1.4</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
-        <td style="padding:9px 12px;">
+        <td style="padding:8px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">9</span>Beiersdorf Shared Services</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">8</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">10</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">9.4</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:700;color:#cf222e;">▼ −1.4</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">—</td>
+        <td style="padding:8px 12px;">
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">4%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
-        <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:14px;">4%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:8px 10px;white-space:nowrap;font-size:13px;">Sig Success</td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
       </tr>
 
       <!-- 10 Cloudity -->
       <tr style="background:var(--sf-gray-05);border-bottom:1px solid var(--border);">
-        <td style="padding:9px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">10</span>Cloudity</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">8</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">7</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">5.6</td>
-        <td style="padding:9px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +2.4</td>
-        <td style="padding:9px 10px;text-align:center;color:var(--text-secondary);">—</td>
-        <td style="padding:9px 12px;">
+        <td style="padding:8px 14px;font-weight:700;color:var(--sf-navy);"><span style="color:var(--text-secondary);font-weight:400;margin-right:6px;">10</span>Cloudity</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:800;color:var(--sf-navy);font-size:16px;">8</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">7</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:600;color:var(--text-secondary);">5.6</td>
+        <td style="padding:8px 10px;text-align:center;font-weight:700;color:#1a7f37;">▲ +2.4</td>
+        <td style="padding:8px 10px;text-align:center;color:var(--text-secondary);">—</td>
+        <td style="padding:8px 12px;">
           <span style="display:inline-block;background:#e6f4ea;color:#1a7f37;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">RCA</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">4%</span><br><span style="font-size:10px;color:var(--text-secondary);">of RCA 197</span></td>
-        <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Partner Premier</td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">EMEA</span></td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:14px;">4%</span><br><span style="font-size:10px;color:var(--text-secondary);">of RCA 197</span></td>
+        <td style="padding:8px 10px;white-space:nowrap;font-size:12px;">Partner Premier</td>
+        <td style="padding:8px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">EMEA</span></td>
       </tr>
 
     </tbody>
