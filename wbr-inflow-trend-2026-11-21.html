@@ -419,24 +419,24 @@
     <div class="label">Inflow (TW)</div>
     <div style="display:flex;align-items:baseline;gap:8px;margin:6px 0 2px;">
       <div class="value" style="color:var(--sf-navy);margin:0;">826</div>
-      <span style="font-size:12px;font-weight:700;color:var(--sf-orange);background:var(--sf-orange-lt);padding:2px 8px;border-radius:12px;white-space:nowrap;">↑ +11.0%</span>
+      <span style="font-size:12px;font-weight:700;color:var(--sf-orange);background:var(--sf-orange-lt);padding:2px 8px;border-radius:12px;white-space:nowrap;">↑ +11%</span>
     </div>
     <div class="delta note" style="margin-bottom:10px;">vs PW 744 &nbsp;·&nbsp; +82 cases</div>
     <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:6px;">
       <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
         <span style="color:var(--sf-blue);font-weight:700;">EMEA</span>
         <span style="font-weight:800;color:var(--sf-navy);">402</span>
-        <span style="color:var(--sf-green);font-weight:600;font-size:11px;">↑ +15.5%</span>
+        <span style="color:var(--sf-green);font-weight:600;font-size:11px;">↑ +15%</span>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
         <span style="color:var(--sf-purple);font-weight:700;">IST</span>
         <span style="font-weight:800;color:var(--sf-navy);">308</span>
-        <span style="color:var(--sf-green);font-weight:600;font-size:11px;">↑ +19.8%</span>
+        <span style="color:var(--sf-green);font-weight:600;font-size:11px;">↑ +20%</span>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
         <span style="color:var(--text-secondary);font-weight:700;">APAC</span>
         <span style="font-weight:800;color:var(--sf-navy);">116</span>
-        <span style="color:var(--sf-orange);font-weight:600;font-size:11px;">↓ −9.4%</span>
+        <span style="color:var(--sf-orange);font-weight:600;font-size:11px;">↓ −9%</span>
       </div>
     </div>
   </div>
@@ -603,7 +603,7 @@
   <div class="card">
     <h2>Top Case Driver — % Share of Total Weekly Inflow (5-Week Trend)</h2>
     <canvas id="chartDriverPct" style="max-height:620px;"></canvas>
-    <div class="sub">Lines = % of total weekly inflow per TCD group · LS peaked 24.6% (Nov 1) · RCA steady 22–24% · Nov 15 rebound led by RCA + LS + Omni</div>
+    <div class="sub">Lines = % of total weekly inflow per TCD group · LS peaked 25% (Nov 1) · RCA steady 22–24% · Nov 15 rebound led by RCA + LS + Omni</div>
   </div>
 </div>
 
@@ -749,7 +749,7 @@ new Chart(document.getElementById('chartVolume'), {
 
 // ── CHART 5a: TCD % share trend ──
 const TCD_TOTALS = [753, 849, 869, 733, 826];
-const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
+const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(0));
 
 (function(){
   // Actual % values by dataset (Oct18, Oct25, Nov1, Nov8, Nov15):
@@ -862,11 +862,11 @@ const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
     const avgArrow_ = avgArrow(avgDiff);
     const avgColor_ = avgColor(avgDiff);
     // TW share
-    const twShare = (tw/TOTAL_TW*100).toFixed(1);
+    const twShare = (tw/TOTAL_TW*100).toFixed(0);
     // 5-week avg share
     const shares5 = d.w.map((v,wi) => v/WEEK_TOTALS[wi]*100);
-    const avgShare = (shares5.reduce((a,v)=>a+v,0)/5).toFixed(1);
-    const shareDiff = (parseFloat(twShare) - parseFloat(avgShare)).toFixed(1);
+    const avgShare = (shares5.reduce((a,v)=>a+v,0)/5).toFixed(0);
+    const shareDiff = (parseFloat(twShare) - parseFloat(avgShare)).toFixed(0);
     const shareArrow = avgArrow(parseFloat(shareDiff));
     const shareColor = avgColor(parseFloat(shareDiff));
     const tr = document.createElement('tr');
@@ -877,12 +877,12 @@ const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
       <td>${d.w[2]}</td>
       <td>${d.w[3]}</td>
       <td class="tw-val">${tw}</td>
-      <td style="font-weight:700;color:${SF_NAVY};">${avg5.toFixed(1)}</td>
-      <td style="font-weight:700;color:${avgColor_};">${avgArrow_} ${Math.abs(avgDiff).toFixed(1)}</td>
+      <td style="font-weight:700;color:${SF_NAVY};">${avg5.toFixed(0)}</td>
+      <td style="font-weight:700;color:${avgColor_};">${avgArrow_} ${Math.abs(avgDiff).toFixed(0)}</td>
       <td style="font-weight:700;color:${SF_NAVY};">${twShare}%</td>
-      <td class="geo-col" style="font-weight:600;color:${SF_NAVY};">${(d.emea/GEO_TW.emea*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.emea})</span></td>
-      <td class="geo-col" style="font-weight:600;color:${SF_NAVY};">${(d.india/GEO_TW.india*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.india})</span></td>
-      <td class="geo-col" style="font-weight:600;color:${SF_NAVY};">${(d.apac/GEO_TW.apac*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.apac})</span></td>
+      <td class="geo-col" style="font-weight:600;color:${SF_NAVY};">${(d.emea/GEO_TW.emea*100).toFixed(0)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.emea})</span></td>
+      <td class="geo-col" style="font-weight:600;color:${SF_NAVY};">${(d.india/GEO_TW.india*100).toFixed(0)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.india})</span></td>
+      <td class="geo-col" style="font-weight:600;color:${SF_NAVY};">${(d.apac/GEO_TW.apac*100).toFixed(0)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.apac})</span></td>
       <td class="geo-col s1-cell">${d.s1}</td>`;
     tbody.appendChild(tr);
   });
@@ -897,21 +897,21 @@ const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
   const twTot = sumW[4];
   const avg5Tot = sumW.reduce((a,v)=>a+v,0)/5;
   const avgDiffTot = twTot - avg5Tot;
-  const twShareTot = (twTot/TOTAL_TW*100).toFixed(1);
+  const twShareTot = (twTot/TOTAL_TW*100).toFixed(0);
   const avgShares = sumW.map((v,wi)=>v/WEEK_TOTALS[wi]*100);
-  const avgShareTot = (avgShares.reduce((a,v)=>a+v,0)/5).toFixed(1);
-  const shareD = (parseFloat(twShareTot)-parseFloat(avgShareTot)).toFixed(1);
+  const avgShareTot = (avgShares.reduce((a,v)=>a+v,0)/5).toFixed(0);
+  const shareD = (parseFloat(twShareTot)-parseFloat(avgShareTot)).toFixed(0);
   const totRow = document.createElement('tr');
   totRow.innerHTML = `
     <td style="color:${SF_NAVY};font-size:14px;">Total (5 TCD groups)</td>
     ${sumW.slice(0,4).map(v=>`<td>${v}</td>`).join('')}
     <td class="tw-val">${twTot}</td>
-    <td style="font-weight:700;color:${SF_NAVY};">${avg5Tot.toFixed(1)}</td>
-    <td style="font-weight:700;color:${avgColor(avgDiffTot)};">${avgArrow(avgDiffTot)} ${Math.abs(avgDiffTot).toFixed(1)}</td>
+    <td style="font-weight:700;color:${SF_NAVY};">${avg5Tot.toFixed(0)}</td>
+    <td style="font-weight:700;color:${avgColor(avgDiffTot)};">${avgArrow(avgDiffTot)} ${Math.abs(avgDiffTot).toFixed(0)}</td>
     <td style="font-weight:700;color:${SF_NAVY};">${twShareTot}%</td>
-    <td class="geo-col" style="font-weight:700;">${(sumE/GEO_TW.emea*100).toFixed(1)}%</td>
-    <td class="geo-col" style="font-weight:700;">${(sumI/GEO_TW.india*100).toFixed(1)}%</td>
-    <td class="geo-col" style="font-weight:700;">${(sumA/GEO_TW.apac*100).toFixed(1)}%</td>
+    <td class="geo-col" style="font-weight:700;">${(sumE/GEO_TW.emea*100).toFixed(0)}%</td>
+    <td class="geo-col" style="font-weight:700;">${(sumI/GEO_TW.india*100).toFixed(0)}%</td>
+    <td class="geo-col" style="font-weight:700;">${(sumA/GEO_TW.apac*100).toFixed(0)}%</td>
     <td class="geo-col s1-cell">${sumS}</td>`;
   tbody.appendChild(totRow);
 })();
@@ -929,10 +929,10 @@ const tierWk = {
 // ── Tier % share trend ──
 (function(){
   const T = TCD_TOTALS; // [753, 849, 869, 733, 826]
-  const sigPct  = tierWk.sig.map( (v,i)=>+(v/T[i]*100).toFixed(1));
-  const premPct = tierWk.prem.map((v,i)=>+(v/T[i]*100).toFixed(1));
-  const stdPct  = tierWk.std.map( (v,i)=>+(v/T[i]*100).toFixed(1));
-  const ppPct   = tierWk.pp.map(  (v,i)=>+(v/T[i]*100).toFixed(1));
+  const sigPct  = tierWk.sig.map( (v,i)=>+(v/T[i]*100).toFixed(0));
+  const premPct = tierWk.prem.map((v,i)=>+(v/T[i]*100).toFixed(0));
+  const stdPct  = tierWk.std.map( (v,i)=>+(v/T[i]*100).toFixed(0));
+  const ppPct   = tierWk.pp.map(  (v,i)=>+(v/T[i]*100).toFixed(0));
 
   new Chart(document.getElementById('chartTierPct'), {
     type:'line',
@@ -1096,7 +1096,7 @@ const tierWk = {
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">15.7%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">16%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
         <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
         <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">EMEA</span></td>
       </tr>
@@ -1113,7 +1113,7 @@ const tierWk = {
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">10.8%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">11%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
         <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
         <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
       </tr>
@@ -1130,7 +1130,7 @@ const tierWk = {
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">10.3%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">10%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
         <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
         <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
       </tr>
@@ -1147,7 +1147,7 @@ const tierWk = {
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">9.7%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">10%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
         <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
         <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
       </tr>
@@ -1164,7 +1164,7 @@ const tierWk = {
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">8.6%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">9%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
         <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
         <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
       </tr>
@@ -1181,7 +1181,7 @@ const tierWk = {
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">8.1%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">8%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
         <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
         <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
       </tr>
@@ -1198,7 +1198,7 @@ const tierWk = {
           <span style="display:inline-block;background:#f0e8ff;color:#6e3db8;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Ind-CPQ/OM</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">70% · also Comms Cloud, Omni</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">15.4%</span><br><span style="font-size:10px;color:var(--text-secondary);">of CPQ/OM 65</span></td>
+        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">15%</span><br><span style="font-size:10px;color:var(--text-secondary);">of CPQ/OM 65</span></td>
         <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
         <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">EMEA</span></td>
       </tr>
@@ -1215,7 +1215,7 @@ const tierWk = {
           <span style="display:inline-block;background:#fdf0e8;color:#b25000;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Ind Omni</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">H&amp;I 78% · also Dev Supp</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">9.6%</span><br><span style="font-size:10px;color:var(--text-secondary);">of Ind Omni 94</span></td>
+        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">9%</span><br><span style="font-size:10px;color:var(--text-secondary);">of Ind Omni 95</span></td>
         <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
         <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">EMEA</span></td>
       </tr>
@@ -1232,7 +1232,7 @@ const tierWk = {
           <span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">Industry-LS</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">4.3%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
+        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">4%</span><br><span style="font-size:10px;color:var(--text-secondary);">of LS 185</span></td>
         <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Sig Success</td>
         <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#f3e8ff;color:#6e3db8;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">India</span></td>
       </tr>
@@ -1249,7 +1249,7 @@ const tierWk = {
           <span style="display:inline-block;background:#e6f4ea;color:#1a7f37;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:700;">RCA</span>
           <span style="font-size:11px;color:var(--text-secondary);margin-left:4px;">100%</span>
         </td>
-        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">4.1%</span><br><span style="font-size:10px;color:var(--text-secondary);">of RCA 197</span></td>
+        <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="font-weight:700;color:var(--sf-navy);font-size:13px;">4%</span><br><span style="font-size:10px;color:var(--text-secondary);">of RCA 197</span></td>
         <td style="padding:9px 10px;white-space:nowrap;font-size:12px;">Partner Premier</td>
         <td style="padding:9px 10px;text-align:center;white-space:nowrap;"><span style="display:inline-block;background:#e8f4fd;color:#0969da;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:700;">EMEA</span></td>
       </tr>
@@ -1266,7 +1266,7 @@ const tierWk = {
       <div class="pres-card-sm" style="background:#f8f9fa;border-radius:8px;padding:14px 16px;border-left:4px solid #0969da;">
         <div style="font-size:12px;font-weight:700;color:#0969da;margin-bottom:6px;">COMPOSITION</div>
         <ul style="font-size:12px;color:var(--text-secondary);margin:0;padding-left:16px;line-height:1.7;">
-          <li><strong>7 of 10</strong> accounts are Life Sciences Cloud — combined 125 cases = <strong>67.6% of all LSC inflow (185 TW)</strong>; IST carries 96 of those 185 (52%), EMEA carries 70 (38%)</li>
+          <li><strong>7 of 10</strong> accounts are Life Sciences Cloud — combined 125 cases = <strong>68% of all LSC inflow (185 TW)</strong>; IST carries 96 of those 185 (52%), EMEA carries 70 (38%)</li>
           <li><strong>9 of 10</strong> are Signature Success tier — high-touch, renewal-sensitive accounts dominate the top 10</li>
           <li><strong>5 of 10</strong> are under <strong>Hyperfocus</strong> (Veeva CRM → LSC4CE migration) — Pfizer, Novartis, Mylan, Takeda, AstraZeneca — all in active implementation or UAT phases</li>
           <li>Only <strong>Cloudity</strong> is non-Sig (Partner Premier) and non-LSC (Revenue Cloud Core)</li>
@@ -1294,7 +1294,7 @@ const tierWk = {
   <div class="pres-card-sm" style="background:#f8f9fa;border-radius:8px;padding:18px 20px;border-left:5px solid var(--sf-navy);">
     <div style="font-size:11px;font-weight:700;color:var(--sf-navy);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Inflow Recovery</div>
     <div style="font-size:13px;color:var(--text-primary);line-height:1.7;">
-      Inflow increased by <strong>11%</strong> week-on-week, returning to normal run rate following the Diwali period. EMEA led the rebound at 402 cases (+15.5%), with IST close behind at 308 (+19.8%).
+      Inflow increased by <strong>11%</strong> week-on-week, returning to normal run rate following the Diwali period. EMEA led the rebound at 402 cases (+15%), with IST close behind at 308 (+20%).
     </div>
   </div>
 
