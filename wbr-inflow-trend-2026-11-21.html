@@ -238,16 +238,26 @@
     z-index: 2;
   }
 
-  /* Cursor spotlight overlay */
+  /* Cursor spotlight — magnifier style */
   #cursor-spotlight {
     pointer-events: none;
     position: fixed;
     top: 0; left: 0;
-    width: 320px; height: 320px;
+    width: 180px; height: 180px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(3,45,96,0.07) 0%, rgba(3,45,96,0.03) 40%, transparent 70%);
+    background: radial-gradient(circle,
+      rgba(255,255,255,0.22) 0%,
+      rgba(255,255,255,0.10) 35%,
+      rgba(3,45,96,0.04)    60%,
+      transparent           80%
+    );
+    border: 2.5px solid rgba(3,45,96,0.28);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.5),
+      0 4px 24px rgba(3,45,96,0.18),
+      inset 0 0 18px rgba(255,255,255,0.12);
     transform: translate(-50%, -50%);
-    transition: opacity 0.3s ease;
+    transition: opacity 0.25s ease;
     z-index: 9999;
     opacity: 0;
   }
