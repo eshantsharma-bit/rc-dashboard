@@ -115,6 +115,14 @@
     border-radius: 8px;
     padding: 20px 22px;
     box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    will-change: transform;
+  }
+  .card:hover {
+    transform: scale(1.025);
+    box-shadow: 0 10px 32px rgba(3,45,96,0.13);
+    z-index: 10;
+    position: relative;
   }
   .card h2 {
     font-size: 15px;
@@ -170,6 +178,78 @@
     padding: 28px 0 36px;
     margin-top: 32px;
     border-top: 1px solid var(--border);
+  }
+
+  /* ── Presentation hover zoom ── */
+  .kpi {
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    will-change: transform;
+  }
+  .kpi:hover {
+    transform: scale(1.07);
+    box-shadow: 0 12px 36px rgba(3,45,96,0.18);
+    z-index: 20;
+    position: relative;
+  }
+
+  .pres-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    will-change: transform;
+  }
+  .pres-card:hover {
+    transform: scale(1.025);
+    box-shadow: 0 10px 32px rgba(3,45,96,0.13);
+    z-index: 10;
+    position: relative;
+  }
+
+  .pres-card-sm {
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    will-change: transform;
+  }
+  .pres-card-sm:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 24px rgba(3,45,96,0.14);
+    z-index: 10;
+    position: relative;
+  }
+
+  .kpi-table-wrap {
+    transition: box-shadow 0.2s ease;
+  }
+  .kpi-table-wrap:hover {
+    box-shadow: 0 6px 24px rgba(3,45,96,0.10);
+  }
+
+  .tcd-table-wrap {
+    transition: box-shadow 0.2s ease;
+  }
+  .tcd-table-wrap:hover {
+    box-shadow: 0 6px 24px rgba(3,45,96,0.10);
+  }
+
+  .tcd-table-wrap tbody tr {
+    transition: background 0.12s ease, transform 0.12s ease;
+  }
+  .tcd-table-wrap tbody tr:not(:last-child):hover {
+    background: #dbeeff !important;
+    transform: scaleY(1.04);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Cursor spotlight overlay */
+  #cursor-spotlight {
+    pointer-events: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(3,45,96,0.07) 0%, rgba(3,45,96,0.03) 40%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+    opacity: 0;
   }
 
   /* ── KPI Trend table ── */
@@ -1169,7 +1249,7 @@ const tierWk = {
     <div style="font-size:15px;font-weight:700;color:var(--sf-navy);margin-bottom:12px;">What this list is telling us</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
 
-      <div style="background:#f8f9fa;border-radius:8px;padding:14px 16px;border-left:4px solid #0969da;">
+      <div class="pres-card-sm" style="background:#f8f9fa;border-radius:8px;padding:14px 16px;border-left:4px solid #0969da;">
         <div style="font-size:12px;font-weight:700;color:#0969da;margin-bottom:6px;">COMPOSITION</div>
         <ul style="font-size:12px;color:var(--text-secondary);margin:0;padding-left:16px;line-height:1.7;">
           <li><strong>7 of 10</strong> accounts are Life Sciences Cloud — combined 125 cases = <strong>67.6% of all LSC inflow (185 TW)</strong>; IST carries 96 of those 185 (52%), EMEA carries 70 (38%)</li>
@@ -1179,7 +1259,7 @@ const tierWk = {
         </ul>
       </div>
 
-      <div style="background:#fffef0;border-radius:8px;padding:14px 16px;border-left:4px solid #e8c930;">
+      <div class="pres-card-sm" style="background:#fffef0;border-radius:8px;padding:14px 16px;border-left:4px solid #e8c930;">
         <div style="font-size:12px;font-weight:700;color:#8a6d00;margin-bottom:6px;">Signals</div>
         <ul style="font-size:12px;color:var(--text-secondary);margin:0;padding-left:16px;line-height:1.7;">
           <li><strong>Takeda</strong>: active go-live with 2 Sev1s, renewal on the line — 90% of pending items are with engineering and actively being worked as we have good engineering coverage</li>
@@ -1193,5 +1273,21 @@ const tierWk = {
 </div>
 
 
+<!-- Cursor spotlight for presentation mode -->
+<div id="cursor-spotlight"></div>
+<script>
+(function() {
+  var spot = document.getElementById('cursor-spotlight');
+  var active = false;
+  document.addEventListener('mousemove', function(e) {
+    spot.style.left = e.clientX + 'px';
+    spot.style.top  = e.clientY + 'px';
+    if (!active) { spot.style.opacity = '1'; active = true; }
+  });
+  document.addEventListener('mouseleave', function() {
+    spot.style.opacity = '0'; active = false;
+  });
+})();
+</script>
 </body>
 </html>
