@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Resolution Brackets — Excl. Chat · No GUS · No Bug | May–Oct 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root {
+  --sf-navy:#032d60; --sf-blue:#0070d2; --sf-blue-lt:#e8f4fd;
+  --sf-teal:#0b827c; --sf-green:#2e844a; --sf-green-lt:#eef6f0;
+  --sf-orange:#e07000; --sf-red:#ba0517; --sf-purple:#5867e8;
+  --sf-gray-90:#1b1b1b; --sf-gray-70:#3e3e3c; --sf-gray-50:#706e6b;
+  --sf-gray-20:#dddbda; --sf-gray-05:#f3f3f3; --sf-white:#ffffff;
+  --bg:var(--sf-white); --surface:var(--sf-gray-05); --border:var(--sf-gray-20);
+  --text-primary:var(--sf-gray-90); --text-secondary:var(--sf-gray-50);
+  /* bracket colours */
+  --b0:#2e844a; --b3:#0070d2; --b10:#ba0517;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Salesforce Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+     background:var(--bg);color:var(--text-primary);font-size:14px;line-height:1.5;}
+.page-header{background:var(--sf-navy);padding:20px 36px 18px;display:flex;justify-content:space-between;align-items:flex-start;}
+.page-header h1{font-size:21px;font-weight:700;color:#fff;margin-bottom:4px;}
+.page-header .sub{font-size:12px;color:rgba(255,255,255,.65);}
+.page-header .meta{font-size:11px;color:rgba(255,255,255,.55);text-align:right;line-height:1.7;}
+.scope-bar{background:#0a4a7a;padding:8px 36px;display:flex;gap:24px;flex-wrap:wrap;}
+.scope-pill{font-size:11px;font-weight:600;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:5px;}
+.scope-pill span{background:rgba(255,255,255,.18);border-radius:12px;padding:2px 8px;}
+.section-label{margin:28px 36px 0;padding:9px 16px;background:var(--sf-navy);color:#fff;
+  font-size:12px;font-weight:700;letter-spacing:.5px;border-radius:6px;text-transform:uppercase;}
+.page-content{padding:0 36px 40px;}
+.legend-row{display:flex;gap:20px;align-items:center;margin:16px 0 8px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;}
+.legend-dot{width:12px;height:12px;border-radius:3px;}
+/* Grid layouts */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px;}
+.grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:14px;}
+.card{background:var(--sf-white);border:1px solid var(--border);border-radius:8px;padding:16px 18px;}
+.card-title{font-size:13px;font-weight:700;color:var(--sf-navy);margin-bottom:12px;letter-spacing:.2px;}
+.chart-wrap{position:relative;}
+/* KPI summary tiles */
+.kpi-summary{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:16px;}
+.kpi-tile{background:var(--sf-white);border:1px solid var(--border);border-radius:8px;padding:14px 16px;border-top:4px solid var(--sf-navy);}
+.kpi-tile .kt-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-secondary);margin-bottom:6px;}
+.kpi-tile .kt-pt{font-size:13px;font-weight:700;color:var(--sf-navy);margin-bottom:8px;}
+.kpi-tile .kt-brackets{display:flex;gap:6px;flex-wrap:wrap;}
+.bracket-badge{font-size:11px;font-weight:700;padding:3px 7px;border-radius:12px;}
+.b-green{background:#eef6f0;color:#1a5c30;}
+.b-blue{background:#e8f4fd;color:#004f9f;}
+.b-red{background:#fdf0f0;color:#8e0414;}
+/* stacked bar table */
+.stacked-table-wrap{overflow-x:auto;margin-top:14px;}
+.stacked-table{width:100%;border-collapse:collapse;font-size:13px;}
+.stacked-table thead th{background:#032d60;color:#fff;padding:7px 10px;text-align:left;font-size:12px;font-weight:600;white-space:nowrap;}
+.stacked-table thead th.num{text-align:right;}
+.stacked-table tbody tr:nth-child(odd){background:#fff;}
+.stacked-table tbody tr:nth-child(even){background:#f8f9fa;}
+.stacked-table tbody tr:hover{background:#dbeeff;}
+.stacked-table td{padding:7px 10px;vertical-align:middle;}
+.stacked-table td.num{text-align:right;font-weight:600;}
+.stacked-table td.pt-cell{font-weight:700;color:var(--sf-navy);min-width:110px;}
+.stacked-table td.month-cell{color:var(--sf-gray-50);font-size:12px;}
+.bar-cell{min-width:180px;}
+.mini-bar{display:flex;height:16px;border-radius:3px;overflow:hidden;width:100%;}
+.mini-seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;min-width:0;}
+.n-cell{font-size:11px;color:var(--text-secondary);text-align:right;}
+/* region tabs */
+.tab-row{display:flex;gap:0;margin-top:20px;border-bottom:2px solid var(--border);}
+.tab{padding:8px 20px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-secondary);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;}
+.tab.active{color:var(--sf-navy);border-bottom:3px solid var(--sf-navy);}
+.tab-panel{display:none;}.tab-panel.active{display:block;}
+.note{font-size:11px;color:var(--text-secondary);margin-top:8px;}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <h1>Resolution Brackets — Excl. Chat · No GUS · No Bug</h1>
+    <div class="sub">Top 5 P&amp;T · EMEA · India (IST) · APAC · Monthly view May–Oct 2026 · Closed cases only</div>
+  </div>
+  <div class="meta">Generated: Nov 25 2026<br>Source: OrgCS SOQL<br>Scope: Origin ≠ Chat, GUS = null, Bug = null</div>
+</div>
+
+<div class="scope-bar">
+  <div class="scope-pill">Bracket 1 <span style="background:#2e844a22;color:#2e844a;">0–3 days (Quick)</span></div>
+  <div class="scope-pill">Bracket 2 <span style="background:#0070d222;color:#0070d2;">3–10 days (Standard)</span></div>
+  <div class="scope-pill">Bracket 3 <span style="background:#ba051722;color:#ba0517;">&gt;10 days (Slow)</span></div>
+  <div class="scope-pill">P&amp;T <span>RCA · Legacy CPQ · Industry-LS · Ind-Omni · Ind-CPQ/OM</span></div>
+</div>
+
+<div style="padding:0 36px;">
+
+<!-- REGION TABS -->
+<div class="tab-row">
+  <div class="tab active" onclick="switchTab('EMEA')">EMEA</div>
+  <div class="tab" onclick="switchTab('India')">India (IST)</div>
+  <div class="tab" onclick="switchTab('APAC')">APAC</div>
+</div>
+
+<!-- ══════ EMEA ══════ -->
+<div id="tab-EMEA" class="tab-panel active">
+
+  <div style="margin-top:20px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-secondary);margin-bottom:14px;">
+      Stacked % · 0–3 days (green) / 3–10 days (blue) / &gt;10 days (red)
+    </div>
+
+    <!-- Charts 5×1 row -->
+    <div class="grid-5">
+      <div class="card">
+        <div class="card-title">RCA</div>
+        <div class="chart-wrap" style="height:260px;"><canvas id="e-rca"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Legacy CPQ</div>
+        <div class="chart-wrap" style="height:260px;"><canvas id="e-cpq"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Industry-LS</div>
+        <div class="chart-wrap" style="height:260px;"><canvas id="e-ls"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Ind-Omni</div>
+        <div class="chart-wrap" style="height:260px;"><canvas id="e-omni"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Ind-CPQ/OM</div>
+        <div class="chart-wrap" style="height:260px;"><canvas id="e-cpqom"></canvas></div>
+      </div>
+    </div>
+
+    <!-- EMEA Table -->
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title">EMEA — Full Data Table (Excl. Chat / No GUS / No Bug)</div>
+      <div class="stacked-table-wrap">
+        <table class="stacked-table" id="tbl-emea"></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ India ══════ -->
+<div id="tab-India" class="tab-panel">
+  <div style="margin-top:20px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-secondary);margin-bottom:14px;">
+      Stacked % · 0–3 days (green) / 3–10 days (blue) / &gt;10 days (red)
+    </div>
+    <div class="grid-5">
+      <div class="card"><div class="card-title">RCA</div><div class="chart-wrap" style="height:260px;"><canvas id="i-rca"></canvas></div></div>
+      <div class="card"><div class="card-title">Legacy CPQ</div><div class="chart-wrap" style="height:260px;"><canvas id="i-cpq"></canvas></div></div>
+      <div class="card"><div class="card-title">Industry-LS</div><div class="chart-wrap" style="height:260px;"><canvas id="i-ls"></canvas></div></div>
+      <div class="card"><div class="card-title">Ind-Omni</div><div class="chart-wrap" style="height:260px;"><canvas id="i-omni"></canvas></div></div>
+      <div class="card"><div class="card-title">Ind-CPQ/OM</div><div class="chart-wrap" style="height:260px;"><canvas id="i-cpqom"></canvas></div></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title">India (IST) — Full Data Table</div>
+      <div class="stacked-table-wrap"><table class="stacked-table" id="tbl-india"></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ APAC ══════ -->
+<div id="tab-APAC" class="tab-panel">
+  <div style="margin-top:20px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-secondary);margin-bottom:14px;">
+      Stacked % · 0–3 days (green) / 3–10 days (blue) / &gt;10 days (red) &nbsp;⚠️ Small volumes — treat cells with n&lt;20 with caution
+    </div>
+    <div class="grid-5">
+      <div class="card"><div class="card-title">RCA</div><div class="chart-wrap" style="height:260px;"><canvas id="a-rca"></canvas></div></div>
+      <div class="card"><div class="card-title">Legacy CPQ</div><div class="chart-wrap" style="height:260px;"><canvas id="a-cpq"></canvas></div></div>
+      <div class="card"><div class="card-title">Industry-LS</div><div class="chart-wrap" style="height:260px;"><canvas id="a-ls"></canvas></div></div>
+      <div class="card"><div class="card-title">Ind-Omni</div><div class="chart-wrap" style="height:260px;"><canvas id="a-omni"></canvas></div></div>
+      <div class="card"><div class="card-title">Ind-CPQ/OM</div><div class="chart-wrap" style="height:260px;"><canvas id="a-cpqom"></canvas></div></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title">APAC — Full Data Table</div>
+      <div class="stacked-table-wrap"><table class="stacked-table" id="tbl-apac"></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ ALL-REGION COMPARISON ══════ -->
+<div style="margin-top:28px;padding-top:4px;border-top:2px solid var(--border);">
+  <div style="font-size:14px;font-weight:700;color:var(--sf-navy);margin-bottom:16px;">All-Region Comparison — 0–3 Day Rate (Quick Close %)</div>
+  <div class="grid-5">
+    <div class="card"><div class="card-title">RCA — Quick Close % (0–3d)</div><div class="chart-wrap" style="height:220px;"><canvas id="cmp-rca"></canvas></div></div>
+    <div class="card"><div class="card-title">Legacy CPQ — Quick Close %</div><div class="chart-wrap" style="height:220px;"><canvas id="cmp-cpq"></canvas></div></div>
+    <div class="card"><div class="card-title">Industry-LS — Quick Close %</div><div class="chart-wrap" style="height:220px;"><canvas id="cmp-ls"></canvas></div></div>
+    <div class="card"><div class="card-title">Ind-Omni — Quick Close %</div><div class="chart-wrap" style="height:220px;"><canvas id="cmp-omni"></canvas></div></div>
+    <div class="card"><div class="card-title">Ind-CPQ/OM — Quick Close %</div><div class="chart-wrap" style="height:220px;"><canvas id="cmp-cpqom"></canvas></div></div>
+  </div>
+  <p class="note" style="margin-top:8px;">Quick Close = cases closed within 3 calendar days of creation. Excl. Chat origin, no GUS investigation, no Bug linked.</p>
+</div>
+
+</div><!-- /page-content -->
+
+<div id="cursor-spotlight"></div>
+<style>
+#cursor-spotlight{pointer-events:none;position:fixed;top:0;left:0;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.5) 0%,rgba(255,255,255,0.15) 35%,rgba(3,45,96,0.03) 60%,transparent 75%);
+  transform:translate(-50%,-50%);transition:opacity .3s ease;z-index:9999;opacity:0;}
+</style>
+<script>
+(function(){var s=document.getElementById('cursor-spotlight'),a=false;
+  document.addEventListener('mousemove',function(e){s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';if(!a){s.style.opacity='1';a=true;}});
+  document.addEventListener('mouseleave',function(){s.style.opacity='0';a=false;});
+})();
+</script>
+
+<script>
+Chart.register(ChartDataLabels);
+
+const MONTHS = ['May','Jun','Jul','Aug','Sep','Oct'];
+const G = '#2e844a', B = '#0070d2', R = '#ba0517';
+
+// ── RAW DATA ──────────────────────────────────────────────────────────────────
+// Format: [n, b0_3, b3_10, b10] per month in order May→Oct
+const DATA = {
+  EMEA: {
+    'RCA':       [[343,129,142,72],[354,145,140,69],[366,151,146,69],[308,133,119,56],[343,139,120,84],[346,118,156,72]],
+    'Legacy CPQ':[[168,46,70,52],[169,50,68,51],[158,48,65,45],[126,40,51,35],[126,37,58,31],[126,43,46,37]],
+    'Industry-LS':[[65,22,27,16],[99,32,47,20],[149,52,52,45],[90,33,33,24],[91,14,48,29],[130,44,52,34]],
+    'Ind-Omni':  [[137,54,51,32],[124,62,38,24],[120,63,30,27],[126,63,41,22],[155,78,50,27],[103,49,31,23]],
+    'Ind-CPQ/OM':[[128,39,53,36],[145,43,56,46],[150,52,54,44],[117,47,43,27],[138,45,49,44],[119,40,41,38]]
+  },
+  India: {
+    'RCA':       [[235,79,104,52],[317,111,118,88],[250,95,83,72],[217,67,104,46],[267,86,98,83],[243,87,89,67]],
+    'Legacy CPQ':[[149,36,57,56],[143,40,55,48],[117,31,46,40],[94,27,30,37],[95,26,40,29],[79,27,26,26]],
+    'Industry-LS':[[151,39,59,53],[170,35,69,66],[251,62,119,70],[233,54,107,72],[244,41,124,79],[228,46,98,84]],
+    'Ind-Omni':  [[150,38,81,31],[156,52,62,42],[137,57,52,28],[134,48,54,32],[125,30,56,39],[105,34,42,29]],
+    'Ind-CPQ/OM':[[136,36,50,50],[156,33,75,48],[145,33,57,55],[127,27,44,56],[137,32,57,48],[144,34,51,59]]
+  },
+  APAC: {
+    'RCA':       [[61,24,17,20],[42,13,17,12],[41,13,14,14],[49,13,22,14],[39,20,10,9],[82,19,50,13]],
+    'Legacy CPQ':[[33,16,10,7],[39,16,17,6],[30,6,16,8],[14,4,5,5],[18,2,13,3],[18,4,8,6]],
+    'Industry-LS':[[21,1,6,14],[5,2,1,2],[19,4,12,3],[34,8,10,16],[51,6,18,27],[39,5,12,22]],
+    'Ind-Omni':  [[58,16,24,18],[67,21,28,18],[60,16,25,19],[50,18,15,17],[68,19,26,23],[54,14,22,18]],
+    'Ind-CPQ/OM':[[46,14,23,9],[58,24,18,16],[41,9,13,19],[45,17,18,10],[40,9,15,16],[40,14,13,13]]
+  }
+};
+
+const PT_KEYS = ['RCA','Legacy CPQ','Industry-LS','Ind-Omni','Ind-CPQ/OM'];
+const PT_COLORS = ['#0070d2','#e07000','#2e844a','#5867e8','#0b827c'];
+
+function pct(v,t){ return t===0 ? 0 : Math.round(v/t*100); }
+
+// ── STACKED BAR CHART ────────────────────────────────────────────────────────
+function makeStacked(canvasId, regionKey, ptKey) {
+  const rows = DATA[regionKey][ptKey];
+  const p0 = rows.map(r => pct(r[1],r[0]));
+  const p3 = rows.map(r => pct(r[2],r[0]));
+  const p10 = rows.map(r => pct(r[3],r[0]));
+
+  new Chart(document.getElementById(canvasId), {
+    type: 'bar',
+    data: {
+      labels: MONTHS,
+      datasets: [
+        { label:'0–3d', data:p0,  backgroundColor:G, stack:'s',
+          datalabels:{ display: ctx=>p0[ctx.dataIndex]>=8,
+            color:'#fff', font:{size:9,weight:'bold'},
+            formatter: v => v+'%', anchor:'center', align:'center' }},
+        { label:'3–10d', data:p3, backgroundColor:B, stack:'s',
+          datalabels:{ display: ctx=>p3[ctx.dataIndex]>=8,
+            color:'#fff', font:{size:9,weight:'bold'},
+            formatter: v => v+'%', anchor:'center', align:'center' }},
+        { label:'>10d',  data:p10, backgroundColor:R, stack:'s',
+          datalabels:{ display: ctx=>p10[ctx.dataIndex]>=8,
+            color:'#fff', font:{size:9,weight:'bold'},
+            formatter: v => v+'%', anchor:'center', align:'center' }}
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ position:'bottom', labels:{font:{size:10},boxWidth:10,padding:6} },
+        datalabels:{}
+      },
+      scales:{
+        x:{ stacked:true, grid:{display:false}, ticks:{font:{size:10}} },
+        y:{ stacked:true, min:0, max:100, grid:{color:'#f0f0f0'},
+            ticks:{font:{size:10}, callback:v=>v+'%'},
+            title:{display:false} }
+      },
+      layout:{ padding:{top:4,bottom:0} }
+    }
+  });
+}
+
+// ── LINE CHART: 3-region 0–3d rate comparison ─────────────────────────────
+function makeCmp(canvasId, ptKey) {
+  const REG_C = {EMEA:'#0070d2', India:'#e07000', APAC:'#5867e8'};
+  const datasets = Object.entries(REG_C).map(([reg, col]) => {
+    const d = DATA[reg][ptKey].map(r => pct(r[1],r[0]));
+    return {
+      label:reg, data:d,
+      borderColor:col, backgroundColor:col+'22',
+      borderWidth:2, pointRadius:4, tension:0.3,
+      datalabels:{
+        display:true, anchor:'end', align:'top', offset:3,
+        font:{size:9,weight:'bold'}, color:col,
+        formatter: v => v+'%'
+      }
+    };
+  });
+  new Chart(document.getElementById(canvasId), {
+    type:'line',
+    data:{ labels:MONTHS, datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'top', labels:{font:{size:10},boxWidth:10,padding:4}},
+        datalabels:{}
+      },
+      scales:{
+        x:{ grid:{display:false}, ticks:{font:{size:10}} },
+        y:{ min:0, max:60, grid:{color:'#f0f0f0'},
+            ticks:{font:{size:10}, callback:v=>v+'%'} }
+      },
+      layout:{ padding:{top:20,bottom:4,right:30} }
+    }
+  });
+}
+
+// ── TABLE BUILDER ────────────────────────────────────────────────────────────
+function buildTable(tableId, regionKey) {
+  const tbl = document.getElementById(tableId);
+  tbl.innerHTML = `<thead><tr>
+    <th>P&amp;T</th><th>Month</th>
+    <th class="num">Total</th>
+    <th class="num">0–3d</th><th class="num">3–10d</th><th class="num">&gt;10d</th>
+    <th style="min-width:160px;">Distribution</th>
+    <th class="num">Quick %</th><th class="num">Slow %</th>
+  </tr></thead><tbody></tbody>`;
+  const tb = tbl.querySelector('tbody');
+
+  PT_KEYS.forEach((pt, pi) => {
+    const rows = DATA[regionKey][pt];
+    const ptColor = PT_COLORS[pi];
+    rows.forEach((r, mi) => {
+      const [n,b0,b3,b10] = r;
+      const p0 = pct(b0,n), p3 = pct(b3,n), p10 = pct(b10,n);
+      const tr = document.createElement('tr');
+      const dimLabel = mi===0
+        ? `<td class="pt-cell" rowspan="6" style="border-left:4px solid ${ptColor};padding-left:10px;">${pt}</td>`
+        : '';
+      const lowN = n < 20 ? ' style="color:#ba0517;"' : '';
+      tr.innerHTML = `
+        ${dimLabel}
+        <td class="month-cell">${MONTHS[mi]}</td>
+        <td class="num"${lowN}>${n}${n<20?' ⚠':''}</td>
+        <td class="num" style="color:#1a5c30;">${b0}</td>
+        <td class="num" style="color:#004f9f;">${b3}</td>
+        <td class="num" style="color:#8e0414;">${b10}</td>
+        <td class="bar-cell">
+          <div class="mini-bar">
+            <div class="mini-seg" style="background:#2e844a;width:${p0}%;${p0<10?'font-size:0;':''}">${p0}%</div>
+            <div class="mini-seg" style="background:#0070d2;width:${p3}%;${p3<10?'font-size:0;':''}">${p3}%</div>
+            <div class="mini-seg" style="background:#ba0517;width:${p10}%;${p10<10?'font-size:0;':''}">${p10}%</div>
+          </div>
+        </td>
+        <td class="num" style="font-weight:700;color:#1a5c30;">${p0}%</td>
+        <td class="num" style="font-weight:700;color:#8e0414;">${p10}%</td>
+      `;
+      tb.appendChild(tr);
+    });
+  });
+}
+
+// ── TAB SWITCH ───────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => { if(t.textContent.startsWith(name.slice(0,4))) t.classList.add('active'); });
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+const PREFIX = {EMEA:'e', India:'i', APAC:'a'};
+const PT_SUFFIX = {'RCA':'rca','Legacy CPQ':'cpq','Industry-LS':'ls','Ind-Omni':'omni','Ind-CPQ/OM':'cpqom'};
+
+Object.keys(DATA).forEach(reg => {
+  const pre = PREFIX[reg];
+  PT_KEYS.forEach(pt => {
+    makeStacked(pre+'-'+PT_SUFFIX[pt], reg, pt);
+  });
+  buildTable('tbl-'+reg.toLowerCase(), reg);
+});
+
+PT_KEYS.forEach(pt => {
+  makeCmp('cmp-'+PT_SUFFIX[pt], pt);
+});
+</script>
+</body>
+</html>
