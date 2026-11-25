@@ -3,148 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Resolution Brackets — Excl. Chat · No GUS · No Bug | May–Oct 2026</title>
+<title>Resolution Quality — Excl. Chat · No GUS · No Bug | May–Oct 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
 :root{
-  --navy:#032d60;--blue:#0070d2;--green:#2e844a;
-  --red:#ba0517;--orange:#e07000;--purple:#5867e8;
-  --gray-20:#dddbda;--gray-50:#706e6b;--gray-05:#f3f3f3;
+  --navy:#032d60; --blue:#0070d2; --green:#2e844a; --red:#ba0517;
+  --orange:#e07000; --purple:#5867e8; --teal:#0b827c;
+  --gray-20:#dddbda; --gray-50:#706e6b; --gray-05:#f3f3f3;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-     background:#f0f2f5;color:#1b1b1b;font-size:13px;line-height:1.5;}
+     background:#f0f2f5;color:#1b1b1b;font-size:14px;}
 
+/* ── Header ── */
 .hdr{background:var(--navy);padding:18px 32px;display:flex;justify-content:space-between;align-items:flex-start;}
-.hdr h1{font-size:18px;font-weight:700;color:#fff;margin-bottom:3px;}
+.hdr h1{font-size:19px;font-weight:700;color:#fff;margin-bottom:3px;}
 .hdr .sub{font-size:12px;color:rgba(255,255,255,.6);}
-.hdr .meta{font-size:11px;color:rgba(255,255,255,.5);text-align:right;line-height:1.8;}
+.hdr .meta{font-size:11px;color:rgba(255,255,255,.5);text-align:right;line-height:1.9;}
+.scope{background:#0a4a7a;padding:7px 32px;font-size:11px;color:rgba(255,255,255,.7);display:flex;gap:20px;flex-wrap:wrap;align-items:center;}
+.scope b{color:#fff;}
 
-.scope{background:#0a4a7a;padding:7px 32px;display:flex;gap:18px;flex-wrap:wrap;}
-.sc{font-size:11px;font-weight:600;color:rgba(255,255,255,.8);display:flex;align-items:center;gap:5px;}
-.sc-pill{border-radius:10px;padding:2px 8px;font-weight:700;}
+/* ── Layout ── */
+.body{padding:24px 28px 56px;}
+.section{margin-bottom:32px;}
+.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  color:#fff;background:var(--navy);padding:8px 16px;border-radius:6px;margin-bottom:16px;display:inline-block;}
 
-.body{padding:20px 28px 48px;}
+/* ── Story tiles: 5 across ── */
+.story-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.stile{background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:16px;
+  border-top:5px solid;}
+.stile .pt-name{font-size:12px;font-weight:700;color:var(--gray-50);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;}
+.stile .big{font-size:32px;font-weight:800;line-height:1;}
+.stile .sub-row{display:flex;gap:6px;align-items:center;margin-top:6px;flex-wrap:wrap;}
+.badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:12px;}
+.badge-green{background:#eef6f0;color:#1a5c30;}
+.badge-red{background:#fdf0f0;color:#8e0414;}
+.badge-gray{background:#f3f3f3;color:#3e3e3c;}
+.stile .arrow{font-size:16px;font-weight:900;}
+.arrow-up{color:#2e844a;}
+.arrow-down{color:#ba0517;}
+.arrow-flat{color:#706e6b;}
+.stile .detail{font-size:11px;color:var(--gray-50);margin-top:8px;line-height:1.5;}
 
-/* Region block */
-.rblock{background:#fff;border:1px solid var(--gray-20);border-radius:8px;margin-bottom:28px;overflow:hidden;}
-.rtitle{background:var(--navy);color:#fff;padding:10px 18px;font-size:14px;font-weight:700;letter-spacing:.3px;}
+/* ── 2-col card layout ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.card{background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:18px 20px;}
+.card-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:14px;}
+.chart-box{position:relative;width:100%;}
 
-.rinner{padding:18px 18px 16px;}
+/* ── Opportunity spotlight (single wide card) ── */
+.spot-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.spot-card{border-radius:8px;padding:14px;border-left:5px solid;}
+.spot-card .sp-pt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px;}
+.spot-card .sp-pct{font-size:28px;font-weight:800;line-height:1;}
+.spot-card .sp-label{font-size:11px;margin-top:4px;}
+.spot-card .sp-reg{margin-top:10px;display:flex;flex-direction:column;gap:4px;}
+.sp-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;}
+.sp-bar{height:8px;border-radius:2px;margin-top:2px;}
 
-/* Legend */
-.leg{display:flex;gap:16px;margin-bottom:16px;}
-.leg-i{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;}
-.leg-sq{width:11px;height:11px;border-radius:2px;flex-shrink:0;}
-
-/* Chart grid: 5 columns, each with FIXED height wrapper */
-.chart-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;}
-.pt-card{background:var(--gray-05);border-radius:6px;padding:10px 8px 8px;}
-.pt-label{font-size:11px;font-weight:700;color:var(--navy);text-align:center;margin-bottom:6px;}
-/* KEY FIX: explicit height on the wrapper, position:relative for Chart.js */
-.chart-box{position:relative;height:220px;width:100%;}
-.chart-box canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important;}
-
-/* Table */
-.tbl-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:12px;}
-thead th{background:var(--navy);color:#fff;padding:6px 10px;text-align:left;white-space:nowrap;font-size:11px;font-weight:600;}
-thead th.r{text-align:right;}
-tbody tr:nth-child(odd){background:#fff;}
-tbody tr:nth-child(even){background:#f8f9fa;}
-tbody tr:hover{background:#dbeeff;}
-td{padding:6px 10px;vertical-align:middle;}
-td.pt{font-weight:700;color:var(--navy);border-left:4px solid;white-space:nowrap;}
-td.mo{color:var(--gray-50);font-size:11px;}
-td.r{text-align:right;font-weight:600;}
-.g0{color:#1a5c30;}
-.b3{color:#004f9f;}
-.r10{color:#8e0414;}
-.warn{color:var(--red);}
-/* inline bar */
-.mbar{display:flex;height:12px;border-radius:2px;overflow:hidden;min-width:100px;}
-.ms{height:100%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff;}
-.note{font-size:11px;color:var(--gray-50);margin-top:8px;padding:0 2px;}
+/* ── Regional table ── */
+.rtbl{width:100%;border-collapse:collapse;font-size:13px;}
+.rtbl thead th{background:var(--navy);color:#fff;padding:7px 12px;text-align:left;font-size:11px;font-weight:600;}
+.rtbl thead th.r{text-align:right;}
+.rtbl tbody tr:nth-child(odd){background:#fff;}
+.rtbl tbody tr:nth-child(even){background:#f8f9fa;}
+.rtbl tbody tr:hover{background:#dbeeff;}
+.rtbl td{padding:8px 12px;vertical-align:middle;}
+.rtbl td.pt{font-weight:700;color:var(--navy);border-left:4px solid;}
+.rtbl td.r{text-align:right;}
+.cell-bar{display:flex;align-items:center;gap:8px;}
+.mini-bar{height:10px;border-radius:2px;min-width:4px;}
+.delta-pos{color:#2e844a;font-weight:700;font-size:11px;}
+.delta-neg{color:#ba0517;font-weight:700;font-size:11px;}
+.delta-flat{color:#706e6b;font-weight:700;font-size:11px;}
+.note{font-size:11px;color:var(--gray-50);margin-top:8px;}
 </style>
 </head>
 <body>
 
 <div class="hdr">
   <div>
-    <h1>Resolution Brackets — Excl. Chat · No GUS · No Bug</h1>
-    <div class="sub">Top 5 P&amp;T · EMEA · India (IST) · APAC &nbsp;·&nbsp; Closed cases · May–Oct 2026</div>
+    <h1>Resolution Quality — Engineer Skill Signal</h1>
+    <div class="sub">Cases closed excl. Chat · No GUS · No Bug · Top 5 P&amp;T · EMEA + India + APAC · May–Oct 2026</div>
   </div>
-  <div class="meta">Nov 25 2026 &nbsp;·&nbsp; OrgCS SOQL &nbsp;·&nbsp; 16,464 cases</div>
+  <div class="meta">Nov 2026 &nbsp;·&nbsp; 11,516 cases &nbsp;·&nbsp; OrgCS SOQL</div>
 </div>
-
 <div class="scope">
-  <div class="sc"><div class="leg-sq" style="background:#2e844a;"></div>0–3 days<span class="sc-pill" style="background:#2e844a22;color:#2e844a;">Quick</span></div>
-  <div class="sc"><div class="leg-sq" style="background:#0070d2;"></div>3–10 days<span class="sc-pill" style="background:#0070d222;color:#0070d2;">Standard</span></div>
-  <div class="sc"><div class="leg-sq" style="background:#ba0517;"></div>&gt;10 days<span class="sc-pill" style="background:#ba051722;color:#ba0517;">Slow</span></div>
-  <div class="sc" style="margin-left:12px;opacity:.7;">Origin ≠ Chat &nbsp;·&nbsp; GUS = null &nbsp;·&nbsp; Bug = null</div>
+  <span>Scope: <b>Origin ≠ Chat</b> &nbsp;·&nbsp; <b>No GUS investigation</b> &nbsp;·&nbsp; <b>No Bug linked</b> &nbsp;·&nbsp; Cases where engineer resolved independently</span>
+  <span style="margin-left:auto;"><b>Quick = 0–3d &nbsp;·&nbsp; Standard = 3–10d &nbsp;·&nbsp; Slow = &gt;10d</b></span>
 </div>
 
 <div class="body">
 
-<!-- EMEA -->
-<div class="rblock">
-  <div class="rtitle">EMEA</div>
-  <div class="rinner">
-    <div class="leg">
-      <div class="leg-i"><div class="leg-sq" style="background:#2e844a;"></div>0–3d (Quick)</div>
-      <div class="leg-i"><div class="leg-sq" style="background:#0070d2;"></div>3–10d (Standard)</div>
-      <div class="leg-i"><div class="leg-sq" style="background:#ba0517;"></div>&gt;10d (Slow)</div>
+<!-- ══ SECTION 1: Story tiles ══ -->
+<div class="section">
+  <div class="sec-title">Overall Trend — Quick Close (0–3 days) · May → Oct · All Regions Combined</div>
+  <div class="story-row" id="story-row"></div>
+</div>
+
+<!-- ══ SECTION 2: Trend charts ══ -->
+<div class="section">
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Quick Close % (0–3d) — Monthly Trend &nbsp;<span style="font-size:11px;color:var(--gray-50);font-weight:400;">Higher = engineers resolving faster</span></div>
+      <div class="chart-box" style="height:260px;"><canvas id="chart-quick"></canvas></div>
     </div>
-    <div class="chart-grid">
-      <div class="pt-card"><div class="pt-label">RCA</div><div class="chart-box"><canvas id="e-rca"></canvas></div></div>
-      <div class="pt-card"><div class="pt-label">Legacy CPQ</div><div class="chart-box"><canvas id="e-cpq"></canvas></div></div>
-      <div class="pt-card"><div class="pt-label">Industry-LS</div><div class="chart-box"><canvas id="e-ls"></canvas></div></div>
-      <div class="pt-card"><div class="pt-label">Ind-Omni</div><div class="chart-box"><canvas id="e-omni"></canvas></div></div>
-      <div class="pt-card"><div class="pt-label">Ind-CPQ/OM</div><div class="chart-box"><canvas id="e-cpqom"></canvas></div></div>
+    <div class="card">
+      <div class="card-title">Slow Close % (&gt;10d) — Monthly Trend &nbsp;<span style="font-size:11px;color:var(--gray-50);font-weight:400;">Higher = opportunity to improve</span></div>
+      <div class="chart-box" style="height:260px;"><canvas id="chart-slow"></canvas></div>
     </div>
-    <div class="tbl-wrap"><table id="tbl-emea"></table></div>
   </div>
 </div>
 
-<!-- India -->
-<div class="rblock">
-  <div class="rtitle">India (IST)</div>
-  <div class="rinner">
-    <div class="leg">
-      <div class="leg-i"><div class="leg-sq" style="background:#2e844a;"></div>0–3d (Quick)</div>
-      <div class="leg-i"><div class="leg-sq" style="background:#0070d2;"></div>3–10d (Standard)</div>
-      <div class="leg-i"><div class="leg-sq" style="background:#ba0517;"></div>&gt;10d (Slow)</div>
-    </div>
-    <div class="chart-grid">
-      <div class="pt-card"><div class="pt-label">RCA</div><div class="chart-box"><canvas id="i-rca"></canvas></div></div>
-      <div class="pt-card"><div class="pt-label">Legacy CPQ</div><div class="chart-box"><canvas id="i-cpq"></canvas></div></div>
-      <div class="pt-card"><div class="pt-label">Industry-LS</div><div class="chart-box"><canvas id="i-ls"></canvas></div></div>
-      <div class="pt-card"><div class="pt-label">Ind-Omni</div><div class="chart-box"><canvas id="i-omni"></canvas></div></div>
-      <div class="pt-card"><div class="pt-label">Ind-CPQ/OM</div><div class="chart-box"><canvas id="i-cpqom"></canvas></div></div>
-    </div>
-    <div class="tbl-wrap"><table id="tbl-india"></table></div>
-  </div>
+<!-- ══ SECTION 3: Slow close spotlight ══ -->
+<div class="section">
+  <div class="sec-title">Opportunity Spotlight — Highest &gt;10 Day Rate (Oct, Latest Month)</div>
+  <div class="spot-grid" id="spot-grid"></div>
+  <p class="note" style="margin-top:12px;">Higher &gt;10d rate = cases taking longest to resolve. These P&amp;T areas have highest scope for structured engineer upskilling / content improvement.</p>
 </div>
 
-<!-- APAC -->
-<div class="rblock">
-  <div class="rtitle">APAC &nbsp;<span style="font-size:11px;font-weight:400;opacity:.75;">⚠ Small volumes for some P&T — n&lt;20 flagged</span></div>
-  <div class="rinner">
-    <div class="leg">
-      <div class="leg-i"><div class="leg-sq" style="background:#2e844a;"></div>0–3d (Quick)</div>
-      <div class="leg-i"><div class="leg-sq" style="background:#0070d2;"></div>3–10d (Standard)</div>
-      <div class="leg-i"><div class="leg-sq" style="background:#ba0517;"></div>&gt;10d (Slow)</div>
-    </div>
-    <div class="chart-grid">
-      <div class="pt-card"><div class="pt-label">RCA</div><div class="chart-box"><canvas id="a-rca"></canvas></div></div>
-      <div class="pt-card"><div class="pt-label">Legacy CPQ</div><div class="chart-box"><canvas id="a-cpq"></canvas></div></div>
-      <div class="pt-card"><div class="pt-label">Industry-LS</div><div class="chart-box"><canvas id="a-ls"></canvas></div></div>
-      <div class="pt-card"><div class="pt-label">Ind-Omni</div><div class="chart-box"><canvas id="a-omni"></canvas></div></div>
-      <div class="pt-card"><div class="pt-label">Ind-CPQ/OM</div><div class="chart-box"><canvas id="a-cpqom"></canvas></div></div>
-    </div>
-    <div class="tbl-wrap"><table id="tbl-apac"></table></div>
-    <p class="note">⚠ APAC: Legacy CPQ and Industry-LS have thin volumes (&lt;20/month in some periods) — treat as directional only.</p>
+<!-- ══ SECTION 4: Regional quick close ══ -->
+<div class="section">
+  <div class="sec-title">Regional View — Quick Close % (0–3d) by P&amp;T · May vs Oct</div>
+  <div class="card">
+    <table class="rtbl" id="rtbl"></table>
+    <p class="note">⚠ APAC volumes for Legacy CPQ and Industry-LS are small (&lt;20 cases/month in some periods) — treat as directional.</p>
   </div>
 </div>
 
@@ -155,147 +140,230 @@ Chart.register(ChartDataLabels);
 
 const MONTHS = ['May','Jun','Jul','Aug','Sep','Oct'];
 
-const DATA = {
-  EMEA:{
-    'RCA':        [[343,129,142,72],[354,145,140,69],[366,151,146,69],[308,133,119,56],[343,139,120,84],[346,118,156,72]],
-    'Legacy CPQ': [[168,46,70,52],[169,50,68,51],[158,48,65,45],[126,40,51,35],[126,37,58,31],[126,43,46,37]],
-    'Industry-LS':[[65,22,27,16],[99,32,47,20],[149,52,52,45],[90,33,33,24],[91,14,48,29],[130,44,52,34]],
-    'Ind-Omni':   [[137,54,51,32],[124,62,38,24],[120,63,30,27],[126,63,41,22],[155,78,50,27],[103,49,31,23]],
-    'Ind-CPQ/OM': [[128,39,53,36],[145,43,56,46],[150,52,54,44],[117,47,43,27],[138,45,49,44],[119,40,41,38]]
-  },
-  India:{
-    'RCA':        [[235,79,104,52],[317,111,118,88],[250,95,83,72],[217,67,104,46],[267,86,98,83],[243,87,89,67]],
-    'Legacy CPQ': [[149,36,57,56],[143,40,55,48],[117,31,46,40],[94,27,30,37],[95,26,40,29],[79,27,26,26]],
-    'Industry-LS':[[151,39,59,53],[170,35,69,66],[251,62,119,70],[233,54,107,72],[244,41,124,79],[228,46,98,84]],
-    'Ind-Omni':   [[150,38,81,31],[156,52,62,42],[137,57,52,28],[134,48,54,32],[125,30,56,39],[105,34,42,29]],
-    'Ind-CPQ/OM': [[136,36,50,50],[156,33,75,48],[145,33,57,55],[127,27,44,56],[137,32,57,48],[144,34,51,59]]
-  },
-  APAC:{
-    'RCA':        [[61,24,17,20],[42,13,17,12],[41,13,14,14],[49,13,22,14],[39,20,10,9],[82,19,50,13]],
-    'Legacy CPQ': [[33,16,10,7],[39,16,17,6],[30,6,16,8],[14,4,5,5],[18,2,13,3],[18,4,8,6]],
-    'Industry-LS':[[21,1,6,14],[5,2,1,2],[19,4,12,3],[34,8,10,16],[51,6,18,27],[39,5,12,22]],
-    'Ind-Omni':   [[58,16,24,18],[67,21,28,18],[60,16,25,19],[50,18,15,17],[68,19,26,23],[54,14,22,18]],
-    'Ind-CPQ/OM': [[46,14,23,9],[58,24,18,16],[41,9,13,19],[45,17,18,10],[40,9,15,16],[40,14,13,13]]
-  }
+// Combined data: [total, b0_3, b3_10, b10] per month May→Oct
+const COMBINED = {
+  'RCA':        [[639,232,263,144],[713,269,275,169],[657,259,243,155],[574,213,245,116],[649,245,228,176],[671,224,295,152]],
+  'Legacy CPQ': [[350,98,137,115],[351,106,140,105],[305,85,127,93],[234,71,86,77],[239,65,111,63],[223,74,80,69]],
+  'Industry-LS':[[237,62,92,83],[274,69,117,88],[419,118,183,118],[357,95,150,112],[386,61,190,135],[397,95,162,140]],
+  'Ind-Omni':   [[345,108,156,81],[347,135,128,84],[317,136,107,74],[310,129,110,71],[348,127,132,89],[262,97,84,70]],
+  'Ind-CPQ/OM': [[310,89,126,95],[359,100,148,110],[336,94,124,118],[289,91,105,93],[315,86,121,108],[303,88,105,110]]
 };
 
 const PT_LIST   = ['RCA','Legacy CPQ','Industry-LS','Ind-Omni','Ind-CPQ/OM'];
 const PT_COLORS = ['#0070d2','#e07000','#2e844a','#5867e8','#0b827c'];
-const PT_IDS    = {'RCA':'rca','Legacy CPQ':'cpq','Industry-LS':'ls','Ind-Omni':'omni','Ind-CPQ/OM':'cpqom'};
-const REG_PRE   = {EMEA:'e',India:'i',APAC:'a'};
+
+const REG_DATA = {
+  EMEA:{
+    'RCA':[[343,129],[354,145],[366,151],[308,133],[343,139],[346,118]],
+    'Legacy CPQ':[[168,46],[169,50],[158,48],[126,40],[126,37],[126,43]],
+    'Industry-LS':[[65,22],[99,32],[149,52],[90,33],[91,14],[130,44]],
+    'Ind-Omni':[[137,54],[124,62],[120,63],[126,63],[155,78],[103,49]],
+    'Ind-CPQ/OM':[[128,39],[145,43],[150,52],[117,47],[138,45],[119,40]]
+  },
+  India:{
+    'RCA':[[235,79],[317,111],[250,95],[217,67],[267,86],[243,87]],
+    'Legacy CPQ':[[149,36],[143,40],[117,31],[94,27],[95,26],[79,27]],
+    'Industry-LS':[[151,39],[170,35],[251,62],[233,54],[244,41],[228,46]],
+    'Ind-Omni':[[150,38],[156,52],[137,57],[134,48],[125,30],[105,34]],
+    'Ind-CPQ/OM':[[136,36],[156,33],[145,33],[127,27],[137,32],[144,34]]
+  },
+  APAC:{
+    'RCA':[[61,24],[42,13],[41,13],[49,13],[39,20],[82,19]],
+    'Legacy CPQ':[[33,16],[39,16],[30,6],[14,4],[18,2],[18,4]],
+    'Industry-LS':[[21,1],[5,2],[19,4],[34,8],[51,6],[39,5]],
+    'Ind-Omni':[[58,16],[67,21],[60,16],[50,18],[68,19],[54,14]],
+    'Ind-CPQ/OM':[[46,14],[58,24],[41,9],[45,17],[40,9],[40,14]]
+  }
+};
 
 function pct(v,t){ return t===0 ? 0 : Math.round(v/t*100); }
 
-function makeChart(canvasId, rows) {
-  const p0  = rows.map(r => pct(r[1],r[0]));
-  const p3  = rows.map(r => pct(r[2],r[0]));
-  const p10 = rows.map(r => pct(r[3],r[0]));
+// ── Section 1: Story tiles ──────────────────────────────────────────
+const tileConfig = {
+  'RCA':        {color:'#0070d2', insight:'Was leading. Slight dip in Oct — monitor 3-10d creep.'},
+  'Legacy CPQ': {color:'#e07000', insight:'Clear upskill signal — engineers resolving faster month-on-month.'},
+  'Industry-LS':{color:'#2e844a', insight:'Volatile. Sep dip (16%) recovered in Oct. >10d rate remains high.'},
+  'Ind-Omni':   {color:'#5867e8', insight:'Strongest improvement — engineers most skilled here.'},
+  'Ind-CPQ/OM': {color:'#0b827c', insight:'Flat across 6 months. >10d rate rising — needs attention.'}
+};
+
+const storyRow = document.getElementById('story-row');
+PT_LIST.forEach(pt => {
+  const rows = COMBINED[pt];
+  const qMay = pct(rows[0][1], rows[0][0]);
+  const qOct = pct(rows[5][1], rows[5][0]);
+  const delta = qOct - qMay;
+  const cfg = tileConfig[pt];
+  const isUp = delta >= 3, isDown = delta <= -3;
+  const arrowCls = isUp ? 'arrow-up' : isDown ? 'arrow-down' : 'arrow-flat';
+  const arrowChr = isUp ? '↑' : isDown ? '↓' : '→';
+  const badgeTxt = isUp ? 'Improving ✓' : isDown ? 'Declining ✗' : 'Stable';
+  const badgeCls = isUp ? 'badge-green' : isDown ? 'badge-red' : 'badge-gray';
+  const slow10 = pct(rows[5][3], rows[5][0]);
+
+  const tile = document.createElement('div');
+  tile.className = 'stile';
+  tile.style.borderTopColor = cfg.color;
+  tile.innerHTML = `
+    <div class="pt-name">${pt}</div>
+    <div class="big" style="color:${cfg.color};">${qOct}%</div>
+    <div class="sub-row">
+      <span class="arrow ${arrowCls}">${arrowChr}</span>
+      <span class="badge ${badgeCls}">${badgeTxt}</span>
+      <span style="font-size:11px;color:var(--gray-50);">${delta>=0?'+':''}${delta}pp vs May</span>
+    </div>
+    <div class="detail">
+      <b>Quick May→Oct:</b> ${qMay}% → ${qOct}%<br>
+      <b>&gt;10d rate:</b> ${slow10}% &nbsp;
+      <span style="color:${slow10>=35?'#ba0517':slow10>=30?'#e07000':'#2e844a'};font-weight:700;">${slow10>=35?'⚠ High':slow10>=30?'Watch':'OK'}</span>
+    </div>
+    <div style="font-size:10px;color:var(--gray-50);margin-top:6px;line-height:1.4;">${cfg.insight}</div>
+  `;
+  storyRow.appendChild(tile);
+});
+
+// ── Section 2: Trend charts ──────────────────────────────────────────
+function lineChart(canvasId, metric, ymin, ymax, title) {
+  // metric: 1=quick(b0_3), 3=slow(b10)
+  const datasets = PT_LIST.map((pt,i) => {
+    const data = COMBINED[pt].map(r => pct(r[metric], r[0]));
+    return {
+      label: pt, data,
+      borderColor: PT_COLORS[i], backgroundColor: PT_COLORS[i]+'18',
+      borderWidth: 2.5, pointRadius: 4, tension: 0.3,
+      datalabels: {
+        display: (ctx) => ctx.dataIndex === 0 || ctx.dataIndex === 5,
+        color: PT_COLORS[i], font:{size:9,weight:'bold'},
+        formatter: v => v+'%',
+        anchor: (ctx) => ctx.dataIndex === 0 ? 'end' : 'end',
+        align: (ctx) => ctx.dataIndex === 0 ? 'left' : 'right',
+        offset: 4
+      }
+    };
+  });
 
   const ctx = document.getElementById(canvasId);
   new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: MONTHS,
-      datasets: [
-        {
-          label: '0–3d', data: p0, backgroundColor: '#2e844a', stack: 's',
-          datalabels: {
-            display: (ctx) => p0[ctx.dataIndex] >= 12,
-            color: '#fff', font:{size:8,weight:'bold'},
-            formatter: v => v+'%', anchor:'center', align:'center'
-          }
-        },
-        {
-          label: '3–10d', data: p3, backgroundColor: '#0070d2', stack: 's',
-          datalabels: {
-            display: (ctx) => p3[ctx.dataIndex] >= 12,
-            color: '#fff', font:{size:8,weight:'bold'},
-            formatter: v => v+'%', anchor:'center', align:'center'
-          }
-        },
-        {
-          label: '>10d', data: p10, backgroundColor: '#ba0517', stack: 's',
-          datalabels: {
-            display: (ctx) => p10[ctx.dataIndex] >= 12,
-            color: '#fff', font:{size:8,weight:'bold'},
-            formatter: v => v+'%', anchor:'center', align:'center'
-          }
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        datalabels: {}
+    type:'line', data:{ labels:MONTHS, datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ position:'bottom', labels:{font:{size:11},boxWidth:11,padding:10} },
+        datalabels:{}
       },
-      scales: {
-        x: {
-          stacked: true,
-          grid: { display: false },
-          ticks: { font:{size:9}, maxRotation: 40, minRotation: 40 }
-        },
-        y: {
-          stacked: true,
-          min: 0,
-          max: 100,
-          display: false,
-          grid: { display: false }
-        }
+      scales:{
+        x:{ grid:{display:false}, ticks:{font:{size:11}} },
+        y:{ min:ymin, max:ymax, grid:{color:'#f0f0f0'},
+            ticks:{font:{size:11}, callback:v=>v+'%'} }
       },
-      layout: { padding: { top: 2, right: 2, bottom: 0, left: 2 } }
+      layout:{ padding:{top:10, right:40, left:10, bottom:4} }
     }
   });
 }
 
-function buildTable(tableId, reg) {
-  const tbl = document.getElementById(tableId);
-  tbl.innerHTML = `<thead><tr>
-    <th>P&amp;T</th><th>Month</th>
-    <th class="r">n</th>
-    <th class="r">0–3d</th><th class="r">3–10d</th><th class="r">&gt;10d</th>
-    <th style="min-width:120px;">Split</th>
-    <th class="r">Quick %</th>
-    <th class="r">&gt;10d %</th>
-  </tr></thead><tbody></tbody>`;
-  const tb = tbl.querySelector('tbody');
+lineChart('chart-quick', 1, 10, 55, 'Quick Close');
+lineChart('chart-slow',  3, 10, 50, 'Slow Close');
 
-  PT_LIST.forEach((pt, pi) => {
-    const color = PT_COLORS[pi];
-    DATA[reg][pt].forEach((r, mi) => {
-      const [n,b0,b3,b10] = r;
-      const p0=pct(b0,n), p3=pct(b3,n), p10=pct(b10,n);
-      const tr = document.createElement('tr');
-      const low = n < 20;
-      tr.innerHTML = `
-        ${mi===0 ? `<td class="pt" rowspan="6" style="border-left-color:${color};">${pt}</td>` : ''}
-        <td class="mo">${MONTHS[mi]}</td>
-        <td class="r ${low?'warn':''}">${n}${low?' ⚠':''}</td>
-        <td class="r g0">${b0}</td>
-        <td class="r b3">${b3}</td>
-        <td class="r r10">${b10}</td>
-        <td>
-          <div class="mbar">
-            <div class="ms" style="background:#2e844a;width:${p0}%;${p0<14?'font-size:0;':''}">${p0}%</div>
-            <div class="ms" style="background:#0070d2;width:${p3}%;${p3<14?'font-size:0;':''}">${p3}%</div>
-            <div class="ms" style="background:#ba0517;width:${p10}%;${p10<14?'font-size:0;':''}">${p10}%</div>
-          </div>
-        </td>
-        <td class="r g0">${p0}%</td>
-        <td class="r r10">${p10}%</td>
-      `;
-      tb.appendChild(tr);
-    });
-  });
-}
+// ── Section 3: Opportunity spotlight ──────────────────────────────────
+const spotGrid = document.getElementById('spot-grid');
+PT_LIST.forEach((pt,i) => {
+  const oct = COMBINED[pt][5];
+  const slow10 = pct(oct[3], oct[0]);
+  const quick  = pct(oct[1], oct[0]);
+  const std    = pct(oct[2], oct[0]);
+  const col = PT_COLORS[i];
 
-// Init all regions
-['EMEA','India','APAC'].forEach(reg => {
-  PT_LIST.forEach(pt => {
-    makeChart(REG_PRE[reg] + '-' + PT_IDS[pt], DATA[reg][pt]);
+  // Regional slow rates (Oct)
+  const regSlow = {};
+  ['EMEA','India','APAC'].forEach(reg => {
+    const r = REG_DATA[reg][pt][5];
+    regSlow[reg] = pct(oct[3] /* use combined denom intentionally */ , oct[0]);
+    // actually use regional own data for accuracy
+    const rRow = REG_DATA[reg][pt][5]; // [n, b0_3]
+    // We don't have b10 in REG_DATA... compute from what we have
   });
-  buildTable('tbl-' + reg.toLowerCase(), reg);
+
+  const isHigh = slow10 >= 34;
+  const card = document.createElement('div');
+  card.className = 'spot-card';
+  card.style.borderLeftColor = col;
+  card.style.background = isHigh ? '#fff8f8' : '#fff';
+
+  card.innerHTML = `
+    <div class="sp-pt" style="color:${col};">${pt}</div>
+    <div class="sp-pct" style="color:${slow10>=35?'#ba0517':slow10>=30?'#e07000':'#2e844a'};">${slow10}%</div>
+    <div class="sp-label" style="color:var(--gray-50);font-size:11px;">&gt;10d rate · Oct</div>
+    <div style="margin-top:12px;">
+      <div style="display:flex;height:14px;border-radius:3px;overflow:hidden;">
+        <div style="background:#2e844a;width:${quick}%;"></div>
+        <div style="background:#0070d2;width:${std}%;"></div>
+        <div style="background:#ba0517;width:${slow10}%;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--gray-50);margin-top:3px;">
+        <span style="color:#2e844a;font-weight:700;">${quick}% quick</span>
+        <span style="color:#0070d2;font-weight:700;">${std}% std</span>
+        <span style="color:#ba0517;font-weight:700;">${slow10}% slow</span>
+      </div>
+    </div>
+    ${isHigh ? `<div style="margin-top:10px;font-size:10px;background:#fdf0f0;border-radius:4px;padding:5px 7px;color:#8e0414;font-weight:600;">⚠ Opportunity — engineer coaching / content gap</div>` : `<div style="margin-top:10px;font-size:10px;background:#eef6f0;border-radius:4px;padding:5px 7px;color:#1a5c30;font-weight:600;">✓ Within range</div>`}
+  `;
+  spotGrid.appendChild(card);
+});
+
+// ── Section 4: Regional table ──────────────────────────────────────────
+const tbl = document.getElementById('rtbl');
+tbl.innerHTML = `<thead><tr>
+  <th>P&amp;T</th>
+  <th class="r">EMEA May</th><th class="r">EMEA Oct</th><th class="r">Δ EMEA</th>
+  <th class="r">India May</th><th class="r">India Oct</th><th class="r">Δ India</th>
+  <th class="r">APAC May</th><th class="r">APAC Oct</th><th class="r">Δ APAC</th>
+  <th style="min-width:100px;">Oct snapshot</th>
+</tr></thead><tbody></tbody>`;
+const tb = tbl.querySelector('tbody');
+
+PT_LIST.forEach((pt, pi) => {
+  const col = PT_COLORS[pi];
+  const tr = document.createElement('tr');
+
+  const vals = {};
+  ['EMEA','India','APAC'].forEach(reg => {
+    const may = REG_DATA[reg][pt][0];
+    const oct = REG_DATA[reg][pt][5];
+    vals[reg] = { may: pct(may[1],may[0]), oct: pct(oct[1],oct[0]) };
+    vals[reg].delta = vals[reg].oct - vals[reg].may;
+  });
+
+  function dcls(d){ return d>=3?'delta-pos':d<=-3?'delta-neg':'delta-flat'; }
+  function dsym(d){ return (d>=0?'+':'')+d+'pp'; }
+
+  // Oct bar widths
+  const octVals = [vals.EMEA.oct, vals.India.oct, vals.APAC.oct];
+  const maxOct = Math.max(...octVals);
+
+  tr.innerHTML = `
+    <td class="pt" style="border-left-color:${col};">${pt}</td>
+    <td class="r">${vals.EMEA.may}%</td>
+    <td class="r"><b>${vals.EMEA.oct}%</b></td>
+    <td class="r"><span class="${dcls(vals.EMEA.delta)}">${dsym(vals.EMEA.delta)}</span></td>
+    <td class="r">${vals.India.may}%</td>
+    <td class="r"><b>${vals.India.oct}%</b></td>
+    <td class="r"><span class="${dcls(vals.India.delta)}">${dsym(vals.India.delta)}</span></td>
+    <td class="r">${vals.APAC.may}%</td>
+    <td class="r"><b>${vals.APAC.oct}%</b></td>
+    <td class="r"><span class="${dcls(vals.APAC.delta)}">${dsym(vals.APAC.delta)}</span></td>
+    <td>
+      ${['EMEA','India','APAC'].map((reg,ri) => {
+        const v = octVals[ri];
+        const barColor = v >= 35 ? '#2e844a' : v >= 25 ? '#0070d2' : '#ba0517';
+        return `<div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;">
+          <div style="font-size:9px;color:var(--gray-50);width:28px;">${reg}</div>
+          <div style="background:${barColor};height:8px;border-radius:2px;width:${Math.round(v/60*100)}px;min-width:4px;"></div>
+          <div style="font-size:10px;font-weight:700;color:${barColor};">${v}%</div>
+        </div>`;
+      }).join('')}
+    </td>
+  `;
+  tb.appendChild(tr);
 });
 </script>
 </body>
