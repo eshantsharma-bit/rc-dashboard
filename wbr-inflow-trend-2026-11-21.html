@@ -588,8 +588,6 @@
         <th>5wk Avg</th>
         <th>vs 5wk Avg</th>
         <th>TW Share</th>
-        <th>5wk Avg Share</th>
-        <th>Share vs 5wk Avg</th>
         <th style="background:#1a4f7a;">EMEA %</th>
         <th style="background:#1a4f7a;">IST %</th>
         <th style="background:#1a4f7a;">APAC %</th>
@@ -882,8 +880,6 @@ const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
       <td style="font-weight:700;color:${SF_NAVY};">${avg5.toFixed(1)}</td>
       <td style="font-weight:700;color:${avgColor_};">${avgArrow_} ${Math.abs(avgDiff).toFixed(1)}</td>
       <td style="font-weight:700;color:${SF_NAVY};">${twShare}%</td>
-      <td style="font-weight:600;color:${SF_NAVY};">${avgShare}%</td>
-      <td style="font-weight:700;color:${shareColor};">${shareArrow} ${Math.abs(shareDiff)}pp</td>
       <td class="geo-col" style="font-weight:600;color:${SF_NAVY};">${(d.emea/GEO_TW.emea*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.emea})</span></td>
       <td class="geo-col" style="font-weight:600;color:${SF_NAVY};">${(d.india/GEO_TW.india*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.india})</span></td>
       <td class="geo-col" style="font-weight:600;color:${SF_NAVY};">${(d.apac/GEO_TW.apac*100).toFixed(1)}%<span style="font-size:11px;font-weight:400;color:var(--sf-gray-50);"> (${d.apac})</span></td>
@@ -913,8 +909,6 @@ const pctOf = (arr) => arr.map((v,i) => +(v/TCD_TOTALS[i]*100).toFixed(1));
     <td style="font-weight:700;color:${SF_NAVY};">${avg5Tot.toFixed(1)}</td>
     <td style="font-weight:700;color:${avgColor(avgDiffTot)};">${avgArrow(avgDiffTot)} ${Math.abs(avgDiffTot).toFixed(1)}</td>
     <td style="font-weight:700;color:${SF_NAVY};">${twShareTot}%</td>
-    <td style="font-weight:700;color:${SF_NAVY};">${avgShareTot}%</td>
-    <td style="font-weight:700;color:${avgColor(parseFloat(shareD))};">${avgArrow(parseFloat(shareD))} ${Math.abs(parseFloat(shareD)).toFixed(1)}pp</td>
     <td class="geo-col" style="font-weight:700;">${(sumE/GEO_TW.emea*100).toFixed(1)}%</td>
     <td class="geo-col" style="font-weight:700;">${(sumI/GEO_TW.india*100).toFixed(1)}%</td>
     <td class="geo-col" style="font-weight:700;">${(sumA/GEO_TW.apac*100).toFixed(1)}%</td>
