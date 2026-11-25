@@ -238,6 +238,17 @@
     z-index: 2;
   }
 
+  .acct-table tbody tr {
+    transition: background 0.12s ease, transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .acct-table tbody tr:hover {
+    background: #dbeeff !important;
+    transform: scale(1.012);
+    box-shadow: 0 4px 16px rgba(3,45,96,0.12);
+    position: relative;
+    z-index: 2;
+  }
+
   /* Cursor spotlight — magnifier style */
   #cursor-spotlight {
     pointer-events: none;
@@ -296,6 +307,15 @@
   }
   .kpi-table-wrap thead th:not(:first-child) {
     text-align: center;
+  }
+  .kpi-table-wrap tbody tr {
+    transition: background 0.12s ease, transform 0.12s ease;
+  }
+  .kpi-table-wrap tbody tr:hover {
+    background: #dbeeff !important;
+    transform: scaleY(1.04);
+    position: relative;
+    z-index: 2;
   }
 
   /* ── TCD Table ── */
@@ -1063,7 +1083,7 @@ const tierWk = {
 <div class="section-label">Top 10 Case-Creating Accounts — All Products (TW: Nov 15–21)</div>
 <div style="margin:20px 36px 32px;">
   <div style="overflow-x:auto;">
-  <table style="width:100%;border-collapse:collapse;font-size:13px;">
+  <table class="acct-table" style="width:100%;border-collapse:collapse;font-size:13px;">
     <thead>
       <tr style="background:var(--sf-navy);color:#fff;">
         <th style="padding:10px 14px;text-align:left;font-weight:700;white-space:nowrap;min-width:190px;">#&nbsp; Account</th>
