@@ -209,6 +209,67 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;" id="dual-grid-2"></div>
 </div>
 
+<!-- ══ SECTION 7: Reopen Rate & TTR Impact ══ -->
+<div class="section">
+  <div class="sec-title">Reopen Rate &amp; TTR Impact — All 6 P&amp;T · EMEA · India · APAC</div>
+  <p class="note" style="margin-bottom:14px;">
+    Closed cases May–Oct 2026 (EMEA + India + APAC). <b>NR TTR</b> = average days to close for cases never reopened.
+    <b>Re TTR</b> = average days to close for cases reopened ≥1 time (creation → final close).
+    <b>Multiplier</b> = Re TTR ÷ NR TTR — how many times longer a reopened case takes.
+    <b>Reopen%</b> = share of closed cases that were reopened at least once.
+  </p>
+
+  <!-- Headline callout cards -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;">
+    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid var(--red);">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);">Worst Multiplier</div>
+      <div style="font-size:28px;font-weight:800;color:var(--red);line-height:1.1;margin-top:4px;">3.15×</div>
+      <div style="font-size:12px;color:var(--gray-50);margin-top:4px;">APAC · RCA<br>NR=7.4d → Re=23.3d</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid var(--orange);">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);">2nd Highest</div>
+      <div style="font-size:28px;font-weight:800;color:var(--orange);line-height:1.1;margin-top:4px;">2.93×</div>
+      <div style="font-size:12px;color:var(--gray-50);margin-top:4px;">India · Ind-Omni<br>NR=7.2d → Re=21.1d</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid var(--navy);">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);">Org-Wide Multiplier</div>
+      <div style="font-size:28px;font-weight:800;color:var(--navy);line-height:1.1;margin-top:4px;">2.08×</div>
+      <div style="font-size:12px;color:var(--gray-50);margin-top:4px;">NR=8.4d → Re=17.5d<br>All 5 original P&T</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid var(--green);">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);">Best-in-Class</div>
+      <div style="font-size:28px;font-weight:800;color:var(--green);line-height:1.1;margin-top:4px;">1.24×</div>
+      <div style="font-size:12px;color:var(--gray-50);margin-top:4px;">APAC · Ind-FinServ<br>NR=8.7d → Re=10.8d</div>
+    </div>
+  </div>
+
+  <!-- Combined P&T summary table -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">By P&amp;T — All Regions Combined
+      <span style="font-size:11px;color:var(--gray-50);font-weight:400;">&nbsp;Multiplier highlighted: ≥2.5× red · 2.0–2.49× orange · &lt;2.0× green</span>
+    </div>
+    <table class="stbl" id="tbl-reopen-pt"></table>
+  </div>
+
+  <!-- Region × P&T detail grid -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;">
+    <div class="card">
+      <span class="geo-emea">EMEA</span>
+      <div style="margin-top:10px;"><table class="stbl" id="tbl-reopen-emea"></table></div>
+    </div>
+    <div class="card">
+      <span class="geo-india">India (IST)</span>
+      <div style="margin-top:10px;"><table class="stbl" id="tbl-reopen-india"></table></div>
+    </div>
+    <div class="card">
+      <span class="geo-apac">APAC</span>
+      <div style="margin-top:10px;"><table class="stbl" id="tbl-reopen-apac"></table></div>
+    </div>
+  </div>
+
+  <p class="note">⚠ EMEA Legacy CPQ shows 0 cases — these cases were handled via India/APAC routing during the query window. APAC Ind-FinServ has only 82 cases (small sample). All other cells have ≥100 cases. Source: OrgCS closed cases with Age_days__c and Reopen_count__c fields, May–Oct 2026.</p>
+</div>
+
 </div><!-- /body -->
 
 <script>
@@ -661,6 +722,90 @@ PT_LIST.forEach((pt,i) => {
 
 // render after DOM appended
 PT_LIST.forEach((pt,i) => makeDualChart('dual-'+i, pt, i));
+
+// ── Reopen Rate & TTR section ─────────────────────────────────────────────
+(function buildReopenTables(){
+  const ALL_PT = ['RCA','Legacy CPQ','Industry-LS','Ind-Omni','Ind-CPQ/OM','Ind-FinServ'];
+  const ALL_PT_COLORS = ['#0070d2','#e07000','#2e844a','#5867e8','#0b827c','#b06000'];
+
+  // Reopen data: [nr_cases, nr_ttr, re_cases, re_ttr, multiplier, reopen_pct]
+  const REOPEN = {
+    combined:{
+      'RCA':          [868,  6.7,  68, 16.3, 2.43, 7.3],
+      'Legacy CPQ':   [291,  8.7,  27, 19.6, 2.25, 8.5],
+      'Industry-LS':  [1159, 8.8,  86, 16.8, 1.91, 6.9],
+      'Ind-Omni':     [652,  8.4,  50, 17.2, 2.05, 7.1],
+      'Ind-CPQ/OM':   [755,  9.8,  44, 19.6, 2.00, 5.5],
+      'Ind-FinServ':  [438,  9.0,  35, 15.0, 1.67, 7.4]
+    },
+    EMEA:{
+      'RCA':          [167,  4.2,  17, 10.3, 2.45, 9.2],
+      'Legacy CPQ':   [0,    null, 0,  null, null, 0.0],
+      'Industry-LS':  [321,  7.7,  25, 14.7, 1.91, 7.2],
+      'Ind-Omni':     [92,   8.6,  6,  20.9, 2.43, 6.1],
+      'Ind-CPQ/OM':   [139,  8.7,  4,  14.0, 1.61, 2.8],
+      'Ind-FinServ':  [203,  9.1,  14, 15.9, 1.75, 6.5]
+    },
+    India:{
+      'RCA':          [413,  7.3,  37, 16.3, 2.23, 8.2],
+      'Legacy CPQ':   [190,  8.9,  15, 22.7, 2.55, 7.3],
+      'Industry-LS':  [679,  8.5,  48, 15.8, 1.86, 6.6],
+      'Ind-Omni':     [226,  7.2,  15, 21.1, 2.93, 6.2],
+      'Ind-CPQ/OM':   [349, 10.6,  28, 19.4, 1.83, 7.4],
+      'Ind-FinServ':  [159,  9.1,  15, 15.9, 1.75, 8.6]
+    },
+    APAC:{
+      'RCA':          [288,  7.4,  14, 23.3, 3.15, 4.6],
+      'Legacy CPQ':   [101,  8.3,  12, 15.6, 1.88,10.6],
+      'Industry-LS':  [159, 12.3,  13, 24.5, 1.99, 7.6],
+      'Ind-Omni':     [334,  9.1,  29, 14.5, 1.59, 8.0],
+      'Ind-CPQ/OM':   [267,  9.2,  12, 22.0, 2.39, 4.3],
+      'Ind-FinServ':  [76,   8.7,  6,  10.8, 1.24, 7.3]
+    }
+  };
+
+  function multCell(m){
+    if(m===null) return '<td style="color:#aaa;">—</td>';
+    let bg='#eef6f0',col='#1a5c30';
+    if(m>=2.5){bg='#fdf0f0';col='#8e0414';}
+    else if(m>=2.0){bg='#fdf3e3';col='#7a4000';}
+    return `<td style="background:${bg};color:${col};font-weight:700;">${m.toFixed(2)}×</td>`;
+  }
+
+  function buildTable(elId, scope){
+    const el = document.getElementById(elId);
+    const data = REOPEN[scope];
+    let html = `<thead><tr>
+      <th class="l" style="font-size:10px;">P&T</th>
+      <th>NR Cases</th><th>NR TTR</th>
+      <th>Re Cases</th><th>Re TTR</th>
+      <th>Multiplier</th><th>Reopen%</th>
+    </tr></thead><tbody>`;
+    ALL_PT.forEach((pt,i)=>{
+      const d = data[pt];
+      const [nc,ntr,rc,rtr,m,rp] = d;
+      const nrStr  = ntr!==null ? ntr.toFixed(1)+'d' : '—';
+      const reStr  = rtr!==null ? rtr.toFixed(1)+'d' : '—';
+      const rpStr  = rp+'%';
+      html += `<tr>
+        <td class="pt" style="border-left-color:${ALL_PT_COLORS[i]};">${pt}</td>
+        <td>${nc>0?nc:'—'}</td>
+        <td style="font-weight:700;">${nrStr}</td>
+        <td>${rc>0?rc:'—'}</td>
+        <td style="font-weight:700;">${reStr}</td>
+        ${multCell(m)}
+        <td>${rpStr}</td>
+      </tr>`;
+    });
+    html += '</tbody>';
+    el.innerHTML = html;
+  }
+
+  buildTable('tbl-reopen-pt','combined');
+  buildTable('tbl-reopen-emea','EMEA');
+  buildTable('tbl-reopen-india','India');
+  buildTable('tbl-reopen-apac','APAC');
+})();
 
 </script>
 </body>
