@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P&T Inflow Volume — Monthly Trend · May–Oct 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root{
+  --navy:#032d60; --blue:#0070d2; --green:#2e844a; --red:#ba0517;
+  --orange:#e07000; --purple:#5867e8; --teal:#0b827c;
+  --gray-20:#dddbda; --gray-50:#706e6b; --gray-05:#f3f3f3;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+     background:#f0f2f5;color:#1b1b1b;font-size:14px;}
+
+.hdr{background:var(--navy);padding:18px 32px;display:flex;justify-content:space-between;align-items:flex-start;}
+.hdr h1{font-size:19px;font-weight:700;color:#fff;margin-bottom:3px;}
+.hdr .sub{font-size:12px;color:rgba(255,255,255,.6);}
+.hdr .meta{font-size:11px;color:rgba(255,255,255,.5);text-align:right;line-height:1.9;}
+.scope{background:#0a4a7a;padding:7px 32px;font-size:11px;color:rgba(255,255,255,.75);display:flex;gap:20px;flex-wrap:wrap;align-items:center;}
+.scope b{color:#fff;}
+
+.body{padding:24px 28px 56px;}
+.section{margin-bottom:36px;}
+.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  color:#fff;background:var(--navy);padding:8px 16px;border-radius:6px;margin-bottom:16px;display:inline-block;}
+
+/* ── KPI summary strip ── */
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;}
+.kpi-card{background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid;}
+.kpi-card .pt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);margin-bottom:6px;}
+.kpi-card .vol{font-size:26px;font-weight:800;line-height:1;}
+.kpi-card .row{display:flex;align-items:center;gap:6px;margin-top:5px;flex-wrap:wrap;}
+.badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;}
+.badge-green{background:#eef6f0;color:#1a5c30;}
+.badge-red{background:#fdf0f0;color:#8e0414;}
+.badge-gray{background:#f3f3f3;color:#3e3e3c;}
+.badge-orange{background:#fdf3e3;color:#7a4000;}
+.kpi-card .detail{font-size:11px;color:var(--gray-50);margin-top:6px;line-height:1.5;}
+
+/* ── Signal matrix ── */
+.matrix{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;}
+.mx-card{background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px;border-left:5px solid;}
+.mx-card .mx-pt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px;}
+.mx-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:4px 0;border-bottom:1px solid var(--gray-05);}
+.mx-row:last-child{border-bottom:none;}
+.mx-geo{font-weight:600;color:var(--gray-50);font-size:11px;}
+.signal{font-size:10px;font-weight:700;padding:2px 6px;border-radius:8px;}
+.sig-green{background:#eef6f0;color:#1a5c30;}
+.sig-red{background:#fdf0f0;color:#8e0414;}
+.sig-orange{background:#fdf3e3;color:#7a4000;}
+.sig-gray{background:#f3f3f3;color:#3e3e3c;}
+
+/* ── Chart cards ── */
+.chart-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.card{background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:18px 20px;}
+.card-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.card-sub{font-size:11px;color:var(--gray-50);margin-bottom:14px;}
+.chart-box{position:relative;width:100%;}
+.chart-box canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important;}
+
+/* ── Geo pill ── */
+.geo-emea{background:#e8f4fd;color:#032d60;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.geo-india{background:#f3e8ff;color:#3d2b7a;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.geo-apac{background:#f3f3f3;color:#3e3e3c;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;}
+
+/* ── Share table ── */
+.stbl{width:100%;border-collapse:collapse;font-size:12px;}
+.stbl thead th{background:var(--navy);color:#fff;padding:6px 10px;text-align:center;font-size:11px;font-weight:600;}
+.stbl thead th.l{text-align:left;}
+.stbl tbody tr:nth-child(odd){background:#fff;}
+.stbl tbody tr:nth-child(even){background:#f8f9fa;}
+.stbl tbody tr:hover{background:#dbeeff;}
+.stbl td{padding:7px 10px;text-align:center;vertical-align:middle;}
+.stbl td.pt{font-weight:700;color:var(--navy);text-align:left;border-left:4px solid;}
+.stbl td.hi{background:#e8f4fd;font-weight:700;}
+.note{font-size:11px;color:var(--gray-50);margin-top:8px;line-height:1.6;}
+
+/* ── Trend arrow ── */
+.up{color:#2e844a;font-weight:700;}
+.dn{color:#ba0517;font-weight:700;}
+.fl{color:#706e6b;font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <h1>P&amp;T Inflow Volume — Monthly Trend &amp; Resolution Mapping</h1>
+    <div class="sub">Top 5 P&amp;T · EMEA · India (IST) · APAC · May–Oct 2026 · Volume share + resolution signal</div>
+  </div>
+  <div class="meta">Nov 2026 &nbsp;·&nbsp; OrgCS SOQL &nbsp;·&nbsp; Excl. Chat · No GUS · No Bug</div>
+</div>
+<div class="scope">
+  <span>Rising volume + faster resolution = <b>✓ Initiatives working</b></span>
+  <span>Rising volume + slower resolution = <b>⚠ Demand outpacing skill</b></span>
+  <span>Declining volume + faster resolution = <b>↓ Deflection success</b></span>
+  <span>Declining volume + slower resolution = <b>⚑ Structural issue</b></span>
+</div>
+
+<div class="body">
+
+<!-- ══ SECTION 1: KPI Summary strip ══ -->
+<div class="section">
+  <div class="sec-title">Volume Trend — All Regions Combined · May → Oct</div>
+  <div class="kpi-strip" id="kpi-strip"></div>
+</div>
+
+<!-- ══ SECTION 2: Signal matrix per region ══ -->
+<div class="section">
+  <div class="sec-title">Volume × Resolution Signal Matrix — by Region &amp; P&T</div>
+  <p class="note" style="margin-bottom:12px;">Each cell shows whether volume trend and resolution trend are aligned. <b>Green = both moving in the right direction.</b></p>
+  <div class="matrix" id="signal-matrix"></div>
+</div>
+
+<!-- ══ SECTION 3: Stacked bar volume charts — absolute & share ══ -->
+<div class="section">
+  <div class="sec-title">Monthly Inflow Volume — All Regions Combined</div>
+  <div class="chart-grid-2">
+    <div class="card">
+      <div class="card-title">Absolute Volume — 5 P&T stacked</div>
+      <div class="card-sub">Total cases per month. Rising bar = more inflow pressure on engineers.</div>
+      <div class="chart-box" style="height:280px;"><canvas id="chart-abs-combined"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Volume Share % — 5 P&T stacked</div>
+      <div class="card-sub">P&T mix shift month-on-month. Widening band = growing share of total inflow.</div>
+      <div class="chart-box" style="height:280px;"><canvas id="chart-share-combined"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 4: Regional volume charts ══ -->
+<div class="section">
+  <div class="sec-title">Monthly Inflow Volume — By Region</div>
+  <div class="chart-grid-3">
+    <div class="card">
+      <div class="card-title">EMEA &nbsp;<span class="geo-emea">EMEA</span></div>
+      <div class="card-sub">Absolute volume per P&T, May–Oct</div>
+      <div class="chart-box" style="height:240px;"><canvas id="chart-emea"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">India (IST) &nbsp;<span class="geo-india">IST</span></div>
+      <div class="card-sub">Absolute volume per P&T, May–Oct</div>
+      <div class="chart-box" style="height:240px;"><canvas id="chart-india"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">APAC &nbsp;<span class="geo-apac">APAC</span></div>
+      <div class="card-sub">Absolute volume per P&T, May–Oct</div>
+      <div class="chart-box" style="height:240px;"><canvas id="chart-apac"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 5: Share % tables by region ══ -->
+<div class="section">
+  <div class="sec-title">Volume Share % — Monthly Detail by Region</div>
+  <div class="chart-grid-3">
+    <div class="card">
+      <span class="geo-emea">EMEA</span>
+      <div style="margin-top:12px;"><table class="stbl" id="tbl-emea"></table></div>
+    </div>
+    <div class="card">
+      <span class="geo-india">India (IST)</span>
+      <div style="margin-top:12px;"><table class="stbl" id="tbl-india"></table></div>
+    </div>
+    <div class="card">
+      <span class="geo-apac">APAC</span>
+      <div style="margin-top:12px;"><table class="stbl" id="tbl-apac"></table></div>
+    </div>
+  </div>
+  <p class="note">⚠ APAC volumes for Legacy CPQ and Industry-LS are small (&lt;20 cases/month in some periods) — treat as directional, not statistically significant.</p>
+</div>
+
+<!-- ══ SECTION 6: Volume × Resolution dual-axis trend ══ -->
+<div class="section">
+  <div class="sec-title">Volume vs Quick-Close % — Dual Axis · All Regions Combined</div>
+  <p class="note" style="margin-bottom:12px;">Bars = monthly volume (left axis). Line = quick-close % (right axis). <b>Bar rising + line rising = genuine skill improvement. Bar rising + line flat/falling = demand outpacing capacity.</b></p>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;" id="dual-grid"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;" id="dual-grid-2"></div>
+</div>
+
+</div><!-- /body -->
+
+<script>
+Chart.register(ChartDataLabels);
+
+const MONTHS = ['May','Jun','Jul','Aug','Sep','Oct'];
+
+// Combined [total, b0_3, b3_10, b10] per month May→Oct
+const COMBINED = {
+  'RCA':        [[639,232,263,144],[713,269,275,169],[657,259,243,155],[574,213,245,116],[649,245,228,176],[671,224,295,152]],
+  'Legacy CPQ': [[350,98,137,115],[351,106,140,105],[305,85,127,93],[234,71,86,77],[239,65,111,63],[223,74,80,69]],
+  'Industry-LS':[[237,62,92,83],[274,69,117,88],[419,118,183,118],[357,95,150,112],[386,61,190,135],[397,95,162,140]],
+  'Ind-Omni':   [[345,108,156,81],[347,135,128,84],[317,136,107,74],[310,129,110,71],[348,127,132,89],[262,97,84,70]],
+  'Ind-CPQ/OM': [[310,89,126,95],[359,100,148,110],[336,94,124,118],[289,91,105,93],[315,86,121,108],[303,88,105,110]]
+};
+
+// Regional [total, b0_3] per month May→Oct
+const REG_DATA = {
+  EMEA:{
+    'RCA':[[343,129],[354,145],[366,151],[308,133],[343,139],[346,118]],
+    'Legacy CPQ':[[168,46],[169,50],[158,48],[126,40],[126,37],[126,43]],
+    'Industry-LS':[[65,22],[99,32],[149,52],[90,33],[91,14],[130,44]],
+    'Ind-Omni':[[137,54],[124,62],[120,63],[126,63],[155,78],[103,49]],
+    'Ind-CPQ/OM':[[128,39],[145,43],[150,52],[117,47],[138,45],[119,40]]
+  },
+  India:{
+    'RCA':[[235,79],[317,111],[250,95],[217,67],[267,86],[243,87]],
+    'Legacy CPQ':[[149,36],[143,40],[117,31],[94,27],[95,26],[79,27]],
+    'Industry-LS':[[151,39],[170,35],[251,62],[233,54],[244,41],[228,46]],
+    'Ind-Omni':[[150,38],[156,52],[137,57],[134,48],[125,30],[105,34]],
+    'Ind-CPQ/OM':[[136,36],[156,33],[145,33],[127,27],[137,32],[144,34]]
+  },
+  APAC:{
+    'RCA':[[61,24],[42,13],[41,13],[49,13],[39,20],[82,19]],
+    'Legacy CPQ':[[33,16],[39,16],[30,6],[14,4],[18,2],[18,4]],
+    'Industry-LS':[[21,1],[5,2],[19,4],[34,8],[51,6],[39,5]],
+    'Ind-Omni':[[58,16],[67,21],[60,16],[50,18],[68,19],[54,14]],
+    'Ind-CPQ/OM':[[46,14],[58,24],[41,9],[45,17],[40,9],[40,14]]
+  }
+};
+
+const PT_LIST   = ['RCA','Legacy CPQ','Industry-LS','Ind-Omni','Ind-CPQ/OM'];
+const PT_COLORS = ['#0070d2','#e07000','#2e844a','#5867e8','#0b827c'];
+const PT_COLORS_A = ['#0070d233','#e0700033','#2e844a33','#5867e833','#0b827c33'];
+
+function pct(v,t){ return t===0?0:Math.round(v/t*100); }
+function trendDir(arr){ // arr of numbers, compare last vs first
+  const d = arr[arr.length-1] - arr[0];
+  if(d > arr[0]*0.08) return 'up';   // >8% growth
+  if(d < -arr[0]*0.08) return 'dn';  // >8% decline
+  return 'fl';
+}
+
+// ── SECTION 1: KPI strip ────────────────────────────────────────────
+const tileConfig = {
+  'RCA':        {color:'#0070d2'},
+  'Legacy CPQ': {color:'#e07000'},
+  'Industry-LS':{color:'#2e844a'},
+  'Ind-Omni':   {color:'#5867e8'},
+  'Ind-CPQ/OM': {color:'#0b827c'}
+};
+
+const kpiStrip = document.getElementById('kpi-strip');
+PT_LIST.forEach((pt,i) => {
+  const rows = COMBINED[pt];
+  const vols = rows.map(r=>r[0]);
+  const totMay = vols[0], totOct = vols[5];
+  const totalAll = rows.reduce((s,r)=>s+r[0],0);
+  const avgVol = Math.round(totalAll/6);
+  const delta = totOct - totMay;
+  const pctDelta = Math.round(delta/totMay*100);
+  const dir = trendDir(vols);
+  const qMay = pct(rows[0][1],rows[0][0]);
+  const qOct = pct(rows[5][1],rows[5][0]);
+  const qDelta = qOct - qMay;
+
+  // combined signal
+  let signal='', sigCls='';
+  if(dir==='up' && qDelta>=3)   { signal='↑ Vol + ↑ Res'; sigCls='badge-green'; }
+  else if(dir==='up' && qDelta<=-3)  { signal='↑ Vol + ↓ Res'; sigCls='badge-red'; }
+  else if(dir==='dn' && qDelta>=3)   { signal='↓ Vol + ↑ Res'; sigCls='badge-green'; }
+  else if(dir==='dn' && qDelta<=-3)  { signal='↓ Vol + ↓ Res'; sigCls='badge-orange'; }
+  else { signal='Stable Mix'; sigCls='badge-gray'; }
+
+  const arrowHtml = dir==='up'?'<span class="up">↑</span>':dir==='dn'?'<span class="dn">↓</span>':'<span class="fl">→</span>';
+  const cfg = tileConfig[pt];
+  const c = document.createElement('div');
+  c.className='kpi-card';
+  c.style.borderTopColor = cfg.color;
+  c.innerHTML=`
+    <div class="pt">${pt}</div>
+    <div class="vol" style="color:${cfg.color};">${totOct}</div>
+    <div class="row">
+      ${arrowHtml}
+      <span style="font-size:11px;color:var(--gray-50);">${pctDelta>=0?'+':''}${pctDelta}% May→Oct</span>
+    </div>
+    <div class="row" style="margin-top:4px;">
+      <span class="badge ${sigCls}">${signal}</span>
+    </div>
+    <div class="detail">
+      Avg/month: <b>${avgVol}</b><br>
+      Quick: ${qMay}% → ${qOct}% (<b>${qDelta>=0?'+':''}${qDelta}pp</b>)
+    </div>
+  `;
+  kpiStrip.appendChild(c);
+});
+
+// ── SECTION 2: Signal matrix per region ─────────────────────────────
+const matrixEl = document.getElementById('signal-matrix');
+
+PT_LIST.forEach((pt,i) => {
+  const c = document.createElement('div');
+  c.className = 'mx-card';
+  c.style.borderLeftColor = PT_COLORS[i];
+
+  const rows = ['EMEA','India','APAC'].map(geo => {
+    const d = REG_DATA[geo][pt];
+    const vols = d.map(r=>r[0]);
+    const qMay = pct(d[0][1],d[0][0]);
+    const qOct = pct(d[5][1],d[5][0]);
+    const qDelta = qOct - qMay;
+    const vdir = trendDir(vols);
+    const totOct = d[5][0];
+
+    let sig='', cls='';
+    const isSmall = totOct < 20;
+    if(isSmall){ sig='Low vol ⚠'; cls='sig-gray'; }
+    else if(vdir==='up' && qDelta>=3)  { sig='↑ Vol ✓ Res'; cls='sig-green'; }
+    else if(vdir==='up' && qDelta<=-3) { sig='↑ Vol ✗ Res'; cls='sig-red'; }
+    else if(vdir==='dn' && qDelta>=3)  { sig='↓ Vol ✓ Res'; cls='sig-green'; }
+    else if(vdir==='dn' && qDelta<=-3) { sig='↓ Vol ✗ Res'; cls='sig-orange'; }
+    else { sig='Stable'; cls='sig-gray'; }
+
+    const geoCls = geo==='EMEA'?'geo-emea':geo==='India'?'geo-india':'geo-apac';
+    return `<div class="mx-row">
+      <span class="${geoCls}">${geo==='India'?'IST':geo}</span>
+      <span style="font-size:11px;color:var(--gray-50);">${vols[5]}</span>
+      <span class="signal ${cls}">${sig}</span>
+    </div>`;
+  }).join('');
+
+  c.innerHTML=`<div class="mx-pt" style="color:${PT_COLORS[i]};">${pt}</div>${rows}`;
+  matrixEl.appendChild(c);
+});
+
+// ── Stacked bar helper (absolute) ──────────────────────────────────
+function makeStackedBar(canvasId, regionKey, showLabels=false) {
+  const regionData = regionKey ? REG_DATA[regionKey] : null;
+  const datasets = PT_LIST.map((pt,i) => {
+    const data = regionKey
+      ? MONTHS.map((_,mi) => REG_DATA[regionKey][pt][mi][0])
+      : MONTHS.map((_,mi) => COMBINED[pt][mi][0]);
+    return {
+      label: pt, data,
+      backgroundColor: PT_COLORS[i],
+      stack: 's',
+      datalabels: { display: false }
+    };
+  });
+
+  const ctx = document.getElementById(canvasId);
+  new Chart(ctx, {
+    type:'bar',
+    data:{ labels:MONTHS, datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ position:'bottom', labels:{font:{size:10},boxWidth:10,padding:8} },
+        datalabels:{ display:false }
+      },
+      scales:{
+        x:{ stacked:true, grid:{display:false}, ticks:{font:{size:10}} },
+        y:{ stacked:true, grid:{color:'#f0f0f0'}, ticks:{font:{size:10}} }
+      },
+      layout:{ padding:{top:4,right:4,bottom:4,left:4} }
+    }
+  });
+}
+
+// ── Stacked 100% share bar ─────────────────────────────────────────
+function makeShareBar(canvasId) {
+  // Compute monthly totals
+  const monthTotals = MONTHS.map((_,mi) =>
+    PT_LIST.reduce((s,pt) => s+COMBINED[pt][mi][0], 0)
+  );
+
+  const datasets = PT_LIST.map((pt,i) => {
+    const data = MONTHS.map((_,mi) => pct(COMBINED[pt][mi][0], monthTotals[mi]));
+    return {
+      label: pt, data,
+      backgroundColor: PT_COLORS[i],
+      stack: 's',
+      datalabels: {
+        display: true,
+        color:'#fff',
+        font:{size:9,weight:'bold'},
+        formatter: v => v>8?v+'%':'',
+        anchor:'center', align:'center'
+      }
+    };
+  });
+
+  const ctx = document.getElementById(canvasId);
+  new Chart(ctx, {
+    type:'bar',
+    data:{ labels:MONTHS, datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ position:'bottom', labels:{font:{size:10},boxWidth:10,padding:8} },
+        datalabels:{}
+      },
+      scales:{
+        x:{ stacked:true, grid:{display:false}, ticks:{font:{size:10}} },
+        y:{ stacked:true, min:0, max:100, display:false }
+      },
+      layout:{ padding:{top:4,right:4,bottom:4,left:4} }
+    }
+  });
+}
+
+makeStackedBar('chart-abs-combined', null);
+makeShareBar('chart-share-combined');
+makeStackedBar('chart-emea',  'EMEA');
+makeStackedBar('chart-india', 'India');
+makeStackedBar('chart-apac',  'APAC');
+
+// ── SECTION 5: Share tables by region ─────────────────────────────
+function buildShareTable(tableId, regionKey) {
+  const tbl = document.getElementById(tableId);
+  const monthTotals = MONTHS.map((_,mi) =>
+    PT_LIST.reduce((s,pt) => s + REG_DATA[regionKey][pt][mi][0], 0)
+  );
+
+  // header
+  let html = `<thead><tr><th class="l" style="font-size:10px;">P&T</th>${MONTHS.map(m=>`<th>${m}</th>`).join('')}<th>May→Oct</th></tr></thead><tbody>`;
+
+  PT_LIST.forEach((pt,i) => {
+    const d = REG_DATA[regionKey][pt];
+    const shares = MONTHS.map((_,mi) => pct(d[mi][0], monthTotals[mi]));
+    const delta = shares[5] - shares[0];
+    const dCls = delta>=3?'up':delta<=-3?'dn':'fl';
+    const dSign = delta>=0?'+':'';
+
+    html += `<tr>
+      <td class="pt" style="border-left-color:${PT_COLORS[i]};font-size:11px;">${pt}</td>
+      ${shares.map((s,mi) => {
+        const isMax = shares.indexOf(Math.max(...shares))===mi;
+        return `<td class="${isMax?'hi':''}" style="font-size:11px;">${s}%</td>`;
+      }).join('')}
+      <td style="font-size:11px;"><span class="${dCls}">${dSign}${delta}pp</span></td>
+    </tr>`;
+  });
+
+  // totals row
+  html += `<tr style="background:#f0f4f8;">
+    <td style="font-weight:700;font-size:11px;">Total</td>
+    ${monthTotals.map(t=>`<td style="font-weight:700;font-size:11px;">${t}</td>`).join('')}
+    <td></td>
+  </tr>`;
+  html += '</tbody>';
+  tbl.innerHTML = html;
+}
+
+buildShareTable('tbl-emea',  'EMEA');
+buildShareTable('tbl-india', 'India');
+buildShareTable('tbl-apac',  'APAC');
+
+// ── SECTION 6: Dual-axis charts (volume bar + quick% line) ─────────
+function makeDualChart(canvasId, pt, ptIdx) {
+  const rows = COMBINED[pt];
+  const vols  = rows.map(r=>r[0]);
+  const qPcts = rows.map(r=>pct(r[1],r[0]));
+
+  const ctx = document.getElementById(canvasId);
+  new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels: MONTHS,
+      datasets:[
+        {
+          type:'bar',
+          label:'Volume',
+          data: vols,
+          backgroundColor: PT_COLORS[ptIdx]+'55',
+          borderColor: PT_COLORS[ptIdx]+'88',
+          borderWidth:1,
+          yAxisID:'yVol',
+          datalabels:{ display:false }
+        },
+        {
+          type:'line',
+          label:'Quick Close %',
+          data: qPcts,
+          borderColor: PT_COLORS[ptIdx],
+          backgroundColor: 'transparent',
+          borderWidth: 2.5, pointRadius:4, tension:0.3,
+          yAxisID:'yPct',
+          datalabels:{
+            display:true,
+            color: PT_COLORS[ptIdx],
+            font:{size:9,weight:'bold'},
+            formatter: v=>v+'%',
+            anchor:'end', align:'top', offset:3
+          }
+        }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ position:'bottom', labels:{font:{size:10},boxWidth:10,padding:8} },
+        datalabels:{}
+      },
+      scales:{
+        x:{ grid:{display:false}, ticks:{font:{size:10}} },
+        yVol:{ position:'left', grid:{color:'#f0f0f0'}, ticks:{font:{size:9}}, title:{display:true,text:'Cases',font:{size:9}} },
+        yPct:{ position:'right', min:0, max:60, grid:{display:false}, ticks:{font:{size:9}, callback:v=>v+'%'}, title:{display:true,text:'Quick%',font:{size:9}} }
+      },
+      layout:{ padding:{top:16,right:8,bottom:4,left:4} }
+    }
+  });
+}
+
+// Build dual-axis grid (3 + 2)
+const dualGrid  = document.getElementById('dual-grid');
+const dualGrid2 = document.getElementById('dual-grid-2');
+
+PT_LIST.forEach((pt,i) => {
+  const container = i<3 ? dualGrid : dualGrid2;
+  const rows = COMBINED[pt];
+  const vols = rows.map(r=>r[0]);
+  const qPcts = rows.map(r=>pct(r[1],r[0]));
+  const vdir = trendDir(vols);
+  const qDelta = qPcts[5]-qPcts[0];
+  let sig='', sigCls='';
+  if(vdir==='up' && qDelta>=3)   { sig='✓ Rising demand + improving resolution'; sigCls='badge-green'; }
+  else if(vdir==='up' && qDelta<=-3)  { sig='⚠ Rising demand + declining resolution'; sigCls='badge-red'; }
+  else if(vdir==='dn' && qDelta>=3)   { sig='↓ Deflection working + engineers faster'; sigCls='badge-green'; }
+  else if(vdir==='dn' && qDelta<=-3)  { sig='⚑ Volume dropping + resolution worsening'; sigCls='badge-orange'; }
+  else { sig='→ Stable — no strong trend'; sigCls='badge-gray'; }
+
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.innerHTML=`
+    <div class="card-title" style="color:${PT_COLORS[i]};">${pt}</div>
+    <div style="margin-bottom:10px;"><span class="badge ${sigCls}">${sig}</span></div>
+    <div class="chart-box" style="height:200px;"><canvas id="dual-${i}"></canvas></div>
+  `;
+  container.appendChild(div);
+});
+
+// render after DOM appended
+PT_LIST.forEach((pt,i) => makeDualChart('dual-'+i, pt, i));
+
+</script>
+</body>
+</html>
