@@ -156,7 +156,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   </div>
 </div>
 
-<!-- ══ SECTION 5: Share % tables by region ══ -->
+<!-- ══ SECTION 5a: Combined summary tables ══ -->
+<div class="section">
+  <div class="sec-title">Combined View — All Regions · Absolute Volume · Volume Share % · 0–3 Day Resolution %</div>
+  <p class="note" style="margin-bottom:14px;">Three lenses on the same 5 P&T. Highest value per row highlighted. Delta = Oct minus May.</p>
+
+  <!-- Absolute volume table -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">Absolute Volume — Cases per Month &nbsp;<span style="font-size:11px;color:var(--gray-50);font-weight:400;">Total cases per P&T regardless of resolution time</span></div>
+    <table class="stbl" id="tbl-abs-combined"></table>
+  </div>
+
+  <!-- Volume share table -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">Volume Share % — P&T Mix &nbsp;<span style="font-size:11px;color:var(--gray-50);font-weight:400;">Each P&T as % of total monthly inflow</span></div>
+    <table class="stbl" id="tbl-share-combined"></table>
+  </div>
+
+  <!-- 0–3 day resolution table -->
+  <div class="card">
+    <div class="card-title">0–3 Day Resolution % — Quick Close &nbsp;<span style="font-size:11px;color:var(--gray-50);font-weight:400;">% of cases closed within 3 days. Higher = engineers resolving faster</span></div>
+    <table class="stbl" id="tbl-quick-combined"></table>
+    <p class="note" style="margin-top:8px;">Read rows together: when Volume Share % rises and Quick Close % also rises → demand absorbed with no quality loss. When Volume Share % rises but Quick Close % falls → demand outpacing engineer skill.</p>
+  </div>
+</div>
+
+<!-- ══ SECTION 5b: Share % tables by region ══ -->
 <div class="section">
   <div class="sec-title">Volume Share % — Monthly Detail by Region</div>
   <div class="chart-grid-3">
@@ -230,12 +255,110 @@ const PT_COLORS = ['#0070d2','#e07000','#2e844a','#5867e8','#0b827c'];
 const PT_COLORS_A = ['#0070d233','#e0700033','#2e844a33','#5867e833','#0b827c33'];
 
 function pct(v,t){ return t===0?0:Math.round(v/t*100); }
-function trendDir(arr){ // arr of numbers, compare last vs first
+function trendDir(arr){
   const d = arr[arr.length-1] - arr[0];
-  if(d > arr[0]*0.08) return 'up';   // >8% growth
-  if(d < -arr[0]*0.08) return 'dn';  // >8% decline
+  if(d > arr[0]*0.08) return 'up';
+  if(d < -arr[0]*0.08) return 'dn';
   return 'fl';
 }
+
+// ── Combined summary tables ─────────────────────────────────────────
+(function buildCombinedTables(){
+  const monthTotals = MONTHS.map((_,mi) =>
+    PT_LIST.reduce((s,pt) => s + COMBINED[pt][mi][0], 0)
+  );
+
+  function headerRow(){
+    return `<thead><tr>
+      <th class="l" style="font-size:10px;width:110px;">P&T</th>
+      ${MONTHS.map(m=>`<th>${m}</th>`).join('')}
+      <th>May→Oct</th>
+    </tr></thead>`;
+  }
+
+  // 1. Absolute volume
+  (function(){
+    const tbl = document.getElementById('tbl-abs-combined');
+    let html = headerRow() + '<tbody>';
+    PT_LIST.forEach((pt,i)=>{
+      const vals = MONTHS.map((_,mi)=>COMBINED[pt][mi][0]);
+      const mx   = Math.max(...vals);
+      const delta = vals[5]-vals[0];
+      const dCls = delta>=30?'up':delta<=-30?'dn':'fl';
+      html += `<tr>
+        <td class="pt" style="border-left-color:${PT_COLORS[i]};font-size:11px;">${pt}</td>
+        ${vals.map(v=>`<td class="${v===mx?'hi':''}" style="font-size:11px;">${v}</td>`).join('')}
+        <td style="font-size:11px;"><span class="${dCls}">${delta>=0?'+':''}${delta}</span></td>
+      </tr>`;
+    });
+    // totals
+    html += `<tr style="background:#f0f4f8;">
+      <td style="font-weight:700;font-size:11px;">Total</td>
+      ${monthTotals.map(t=>`<td style="font-weight:700;font-size:11px;">${t}</td>`).join('')}
+      <td style="font-weight:700;font-size:11px;"><span class="${monthTotals[5]>=monthTotals[0]?'up':'dn'}">${monthTotals[5]>=monthTotals[0]?'+':''}${monthTotals[5]-monthTotals[0]}</span></td>
+    </tr></tbody>`;
+    tbl.innerHTML = html;
+  })();
+
+  // 2. Volume share %
+  (function(){
+    const tbl = document.getElementById('tbl-share-combined');
+    let html = headerRow() + '<tbody>';
+    PT_LIST.forEach((pt,i)=>{
+      const shares = MONTHS.map((_,mi)=>pct(COMBINED[pt][mi][0],monthTotals[mi]));
+      const mx = Math.max(...shares);
+      const delta = shares[5]-shares[0];
+      const dCls = delta>=3?'up':delta<=-3?'dn':'fl';
+      html += `<tr>
+        <td class="pt" style="border-left-color:${PT_COLORS[i]};font-size:11px;">${pt}</td>
+        ${shares.map(s=>`<td class="${s===mx?'hi':''}" style="font-size:11px;">${s}%</td>`).join('')}
+        <td style="font-size:11px;"><span class="${dCls}">${delta>=0?'+':''}${delta}pp</span></td>
+      </tr>`;
+    });
+    html += `<tr style="background:#f0f4f8;">
+      <td style="font-weight:700;font-size:11px;">Total</td>
+      ${MONTHS.map(()=>`<td style="font-weight:700;font-size:11px;">100%</td>`).join('')}
+      <td></td>
+    </tr></tbody>`;
+    tbl.innerHTML = html;
+  })();
+
+  // 3. 0–3 day quick-close %
+  (function(){
+    const tbl = document.getElementById('tbl-quick-combined');
+    let html = headerRow() + '<tbody>';
+    PT_LIST.forEach((pt,i)=>{
+      const qPcts = MONTHS.map((_,mi)=>pct(COMBINED[pt][mi][1],COMBINED[pt][mi][0]));
+      const mx = Math.max(...qPcts);
+      const mn = Math.min(...qPcts);
+      const delta = qPcts[5]-qPcts[0];
+      const dCls = delta>=3?'up':delta<=-3?'dn':'fl';
+      html += `<tr>
+        <td class="pt" style="border-left-color:${PT_COLORS[i]};font-size:11px;">${pt}</td>
+        ${qPcts.map((v,mi)=>{
+          const isBest  = v===mx;
+          const isWorst = v===mn;
+          const bg = isBest?'background:#eef6f0;':isWorst?'background:#fdf0f0;':'';
+          const fc = isBest?'color:#1a5c30;font-weight:700;':isWorst?'color:#8e0414;font-weight:700;':'';
+          return `<td style="font-size:11px;${bg}${fc}">${v}%</td>`;
+        }).join('')}
+        <td style="font-size:11px;"><span class="${dCls}">${delta>=0?'+':''}${delta}pp</span></td>
+      </tr>`;
+    });
+    // org avg row
+    const orgAvg = MONTHS.map((_,mi)=>{
+      const totQ = PT_LIST.reduce((s,pt)=>s+COMBINED[pt][mi][1],0);
+      return pct(totQ, monthTotals[mi]);
+    });
+    const avgDelta = orgAvg[5]-orgAvg[0];
+    html += `<tr style="background:#f0f4f8;">
+      <td style="font-weight:700;font-size:11px;">Org Avg</td>
+      ${orgAvg.map(v=>`<td style="font-weight:700;font-size:11px;">${v}%</td>`).join('')}
+      <td style="font-weight:700;font-size:11px;"><span class="${avgDelta>=0?'up':'dn'}">${avgDelta>=0?'+':''}${avgDelta}pp</span></td>
+    </tr></tbody>`;
+    tbl.innerHTML = html;
+  })();
+})();
 
 // ── SECTION 1: KPI strip ────────────────────────────────────────────
 const tileConfig = {
