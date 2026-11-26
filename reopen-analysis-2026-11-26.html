@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reopen Analysis — Revenue+Industry · All Regions · 2026</title>
+<style>
+:root{
+  --navy:#032d60; --blue:#0070d2; --green:#2e844a; --red:#ba0517;
+  --orange:#e07000; --purple:#5867e8; --teal:#0b827c;
+  --gray-20:#dddbda; --gray-50:#706e6b; --gray-05:#f3f3f3;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5;color:#1b1b1b;font-size:14px;}
+.hdr{background:var(--navy);padding:18px 32px;display:flex;justify-content:space-between;align-items:flex-start;}
+.hdr h1{font-size:19px;font-weight:700;color:#fff;margin-bottom:3px;}
+.hdr .sub{font-size:12px;color:rgba(255,255,255,.6);}
+.hdr .meta{font-size:11px;color:rgba(255,255,255,.5);text-align:right;line-height:1.9;}
+.nav{background:#0a3a5a;padding:0 32px;display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,.1);}
+.nav a,.nav span{display:block;padding:10px 22px;font-size:12px;font-weight:700;letter-spacing:.3px;text-decoration:none;border-bottom:3px solid transparent;}
+.nav a{color:rgba(255,255,255,.55);}
+.nav a:hover{color:#fff;background:rgba(255,255,255,.07);}
+.nav .active{color:#fff;border-bottom-color:#fff;}
+.scope{background:#0a4a7a;padding:7px 32px;font-size:11px;color:rgba(255,255,255,.75);display:flex;gap:20px;flex-wrap:wrap;align-items:center;}
+.scope b{color:#fff;}
+.body{padding:24px 28px 56px;}
+.section{margin-bottom:36px;}
+.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#fff;background:var(--navy);padding:8px 16px;border-radius:6px;margin-bottom:16px;display:inline-block;}
+.card{background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:18px 20px;}
+.card-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.card-sub{font-size:11px;color:var(--gray-50);margin-bottom:14px;}
+.note{font-size:11px;color:var(--gray-50);margin-top:8px;line-height:1.6;}
+.stbl{width:100%;border-collapse:collapse;font-size:12px;}
+.stbl thead th{background:var(--navy);color:#fff;padding:6px 10px;text-align:center;font-size:11px;font-weight:600;}
+.stbl thead th.l{text-align:left;}
+.stbl tbody tr:nth-child(odd){background:#fff;}
+.stbl tbody tr:nth-child(even){background:#f8f9fa;}
+.stbl tbody tr:hover{background:#dbeeff;}
+.stbl td{padding:7px 10px;text-align:center;vertical-align:middle;}
+.stbl td.l{text-align:left;}
+.stbl td.pt{font-weight:700;color:var(--navy);text-align:left;border-left:4px solid;}
+.up{color:#2e844a;font-weight:700;}
+.dn{color:#ba0517;font-weight:700;}
+.badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;}
+.badge-red{background:#fdf0f0;color:#8e0414;}
+.badge-orange{background:#fdf3e3;color:#7a4000;}
+.badge-green{background:#eef6f0;color:#1a5c30;}
+.badge-blue{background:#e8f4fd;color:#032d60;}
+.badge-purple{background:#ede9ff;color:#3d2b7a;}
+
+/* ── Hackathon flow diagram ── */
+.flow-wrap{overflow-x:auto;padding:8px 0;}
+.flow{display:flex;align-items:flex-start;gap:0;min-width:900px;}
+.flow-node{flex:0 0 auto;text-align:center;}
+.box-inflow{background:var(--navy);color:#fff;border-radius:10px;padding:14px 20px;min-width:120px;}
+.box-inflow .n{font-size:26px;font-weight:800;}
+.box-inflow .l{font-size:11px;opacity:.8;margin-top:2px;}
+.box-inflow .s{font-size:10px;opacity:.6;margin-top:1px;}
+.arrow{align-self:center;font-size:22px;color:var(--gray-50);padding:0 6px;flex:0 0 auto;}
+.split-block{display:flex;flex-direction:column;gap:10px;}
+.box-reopen{background:#fff4e0;border:2px solid var(--orange);border-radius:10px;padding:12px 18px;min-width:160px;}
+.box-reopen .n{font-size:22px;font-weight:800;color:var(--orange);}
+.box-reopen .l{font-size:11px;color:#5c3900;margin-top:2px;}
+.box-reopen .pct{font-size:11px;font-weight:700;color:var(--orange);margin-top:4px;}
+.box-ac{background:#fdf0f0;border:2px solid var(--red);border-radius:10px;padding:12px 18px;min-width:160px;}
+.box-ac .n{font-size:22px;font-weight:800;color:var(--red);}
+.box-ac .l{font-size:11px;color:#5a0812;margin-top:2px;}
+.box-ac .pct{font-size:11px;font-weight:700;color:var(--red);margin-top:4px;}
+.lane-block{display:flex;flex-direction:column;gap:10px;}
+.lane{border-radius:10px;padding:12px 16px;min-width:200px;text-align:left;}
+.lane-ai{background:#e8f4fd;border:2px solid var(--blue);}
+.lane-ae{background:#f3e8ff;border:2px dashed var(--purple);}
+.lane .l-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.lane .l-pct{font-size:11px;font-weight:700;}
+.lane .l-pct span{font-size:16px;}
+.lane .l-action{font-size:11px;color:#1b1b1b;margin-top:4px;line-height:1.5;}
+.lane .l-badge{margin-top:6px;}
+.sub-pct{font-size:10px;color:var(--gray-50);margin-top:3px;}
+
+/* ── P&T color helpers ── */
+.c0{color:#0070d2;} .c1{color:#e07000;} .c2{color:#2e844a;} .c3{color:#5867e8;} .c4{color:#0b827c;} .c5{color:#ba0517;}
+.b0{border-left-color:#0070d2;} .b1{border-left-color:#e07000;} .b2{border-left-color:#2e844a;} .b3{border-left-color:#5867e8;} .b4{border-left-color:#0b827c;} .b5{border-left-color:#ba0517;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <h1>Reopen Analysis — Revenue + Industry · All Regions · 2026</h1>
+    <div class="sub">Auto-close vs Reopen classification · TTR Impact by P&T · Support 2.0 Hackathon evidence</div>
+  </div>
+  <div class="meta">Nov 2026 &nbsp;·&nbsp; OrgCS SOQL &nbsp;·&nbsp; Excl. Chat · No GUS · No Bug</div>
+</div>
+<div class="nav">
+  <span class="active">Reopen Analysis</span>
+  <a href="volume-inflow-trend-2026-11-26.html">Resolution Trend →</a>
+</div>
+<div class="scope">
+  <span>Scope: <b>AMER + EMEA + India + APAC</b></span>
+  <span>Products: <b>Revenue Cloud + Industry</b></span>
+  <span>Metric: <b>Closed cases only · Reopen_count__c &amp; Unresponsive_Follow_ups__c</b></span>
+</div>
+
+<div class="body">
+
+<!-- ══ SECTION 0: Reopen Action Flow ══ -->
+<div class="section">
+  <div class="sec-title">Total Inflow → Reopen Classification → Intervention Map</div>
+  <div class="card">
+    <div class="card-title">Support 2.0 — Reopen Impact Flow</div>
+    <div class="card-sub">From total annual inflow: how cases split into resolution outcomes and what intervention each category demands</div>
+    <div class="flow-wrap">
+      <div class="flow">
+        <!-- Total inflow -->
+        <div class="flow-node">
+          <div class="box-inflow">
+            <div class="n">41,340</div>
+            <div class="l">Total Inflow</div>
+            <div class="s">All 4 Regions · 2026</div>
+          </div>
+        </div>
+        <div class="arrow">→</div>
+        <!-- Split: Reopen + Auto-close -->
+        <div class="flow-node">
+          <div class="split-block">
+            <div class="box-reopen">
+              <div class="n">2,845</div>
+              <div class="l">Reopened Cases</div>
+              <div class="pct">6.9% reopen rate</div>
+            </div>
+            <div class="box-ac">
+              <div class="n">1,725</div>
+              <div class="l">Auto-Closed (3×)</div>
+              <div class="pct">4.2% of inflow</div>
+            </div>
+          </div>
+        </div>
+        <div class="arrow">→</div>
+        <!-- Lane: AI check + AE/CSM trigger -->
+        <div class="flow-node">
+          <div class="lane-block">
+            <div class="lane lane-ai">
+              <div class="l-title">🤖 AI Resolution Check</div>
+              <div class="l-pct"><span>82.8%</span> of reopens = 2,355 cases</div>
+              <div class="sub-pct">Trigger: Reopened after "Solution Provided"</div>
+              <div class="l-action">→ AI validates solution completeness before status change<br>→ Surfaces similar closed cases for self-service<br>→ Flags AI-unresolved → engineer review queue</div>
+              <div class="l-badge"><span class="badge badge-blue">Hackathon Idea #3</span></div>
+            </div>
+            <div class="lane lane-ae">
+              <div class="l-title">📣 AE + CSM Alert Trigger</div>
+              <div class="l-pct"><span>17.2%</span> of reopens + all auto-close = 2,214 cases</div>
+              <div class="sub-pct">Trigger: Reopened from Closed | Auto-closed (3×)</div>
+              <div class="l-action">→ Auto-notify AE + CSM via channel<br>→ Flag at-risk accounts before they escalate<br>→ Drive proactive outreach on no-response cases</div>
+              <div class="l-badge"><span class="badge badge-purple">Hackathon Idea #5</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="arrow">→</div>
+        <!-- Outcome -->
+        <div class="flow-node">
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="background:#eef6f0;border:2px solid var(--green);border-radius:10px;padding:12px 16px;min-width:150px;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:var(--green);">2.15×</div>
+              <div style="font-size:11px;color:#1a5c30;margin-top:3px;">TTR Multiplier</div>
+              <div style="font-size:10px;color:var(--gray-50);margin-top:2px;">Re: 18.3d vs NR: 8.5d</div>
+            </div>
+            <div style="background:#fdf3e3;border:2px solid var(--orange);border-radius:10px;padding:12px 16px;min-width:150px;text-align:center;">
+              <div style="font-size:18px;font-weight:800;color:var(--orange);">9.8d</div>
+              <div style="font-size:11px;color:#5c3900;margin-top:3px;">Extra days per reopen</div>
+              <div style="font-size:10px;color:var(--gray-50);margin-top:2px;">Customer experience cost</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="note">ᵃ Reopen trigger classification based on CaseHistory sample (AMER, n=87 reopen trigger events). EMEA/India/APAC proportions estimated. Auto-close = Unresponsive_Follow_ups__c = '3'. TTR = creation → final close (Age_days__c). NR TTR uses 2,000-record representative sample per region.</p>
+  </div>
+</div>
+
+<!-- ══ SECTION 7: Reopen Deep-Dive ══ -->
+<div class="section">
+  <div class="sec-title">Reopen Deep-Dive — All Regions</div>
+
+  <!-- Regional reopen summary -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title">Reopen Rate by Region</div>
+    <div class="card-sub">Total inflow vs reopened unique cases (Reopen_count__c &gt; 0) vs auto-closed (Unresponsive_Follow_ups__c = '3')</div>
+    <table class="stbl" id="tbl-reopen-region"></table>
+    <p class="note">Auto-close is a separate population from reopened. A case can be auto-closed without ever being reopened. Counts are mutually exclusive.</p>
+  </div>
+
+  <!-- Reopen trigger classification -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title">Reopen Trigger Classification — All Regions (Estimated)</div>
+    <div class="card-sub">How cases were reopened: prior status at the moment of reopen. Source: CaseHistory Field='Status'. AMER sample, applied proportionally to EMEA/India/APAC.</div>
+    <table class="stbl" id="tbl-reopen-class"></table>
+    <p class="note">Based on AMER CaseHistory audit (87 reopen trigger events). "Solution Provided" reopens indicate customer disagreement with resolution — highest AI intervention opportunity. "Closed" reopens indicate procedural close without customer confirmation.</p>
+  </div>
+
+  <!-- TTR comparison -->
+  <div class="card">
+    <div class="card-title">TTR Impact — Never-Reopened vs Reopened · By Region</div>
+    <div class="card-sub">TTR = Age_days__c (creation → final close). Re TTR = avg for cases with Reopen_count__c &gt; 0. NR TTR = avg for Reopen_count__c = 0 (2,000-record sample per region).</div>
+    <table class="stbl" id="tbl-ttr-region"></table>
+    <p class="note">Multiplier = Re TTR ÷ NR TTR. A 2.15× org multiplier means every reopened case consumes 2× the engineer capacity and delivers 2× worse customer experience. EMEA has the best multiplier (1.83×) — lower reopen volume and faster NR baseline.</p>
+  </div>
+</div>
+
+<!-- ══ SECTION 8: Reopen Rate & TTR Impact by P&T ══ -->
+<div class="section">
+  <div class="sec-title">Reopen Rate &amp; TTR Impact — by P&T · All Regions + Regional Breakdown</div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title">Combined — All 4 Regions</div>
+    <div class="card-sub">NR = Never Reopened · Re = Reopened. Mult = Re TTR ÷ NR TTR. Rate = Reopened ÷ Total closed × 100.</div>
+    <table class="stbl" id="tbl-pt-combined"></table>
+    <p class="note">Highest multiplier = RCA (2.43×) — reopened cases take 2.4× longer. Ind-FinServ has the most benign multiplier (1.67×) but also the highest Re TTR absolute (15d). Legacy CPQ and Ind-CPQ/OM share high absolute Re TTR (19.6d).</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+    <div class="card">
+      <div class="card-title">EMEA</div>
+      <table class="stbl" id="tbl-pt-emea"></table>
+    </div>
+    <div class="card">
+      <div class="card-title">India (IST)</div>
+      <table class="stbl" id="tbl-pt-india"></table>
+    </div>
+    <div class="card">
+      <div class="card-title">APAC</div>
+      <table class="stbl" id="tbl-pt-apac"></table>
+    </div>
+  </div>
+</div>
+
+</div><!-- /body -->
+
+<script>
+// ── Reopen Classification table ──
+(function(){
+  const data = [
+    ['AMER','Solution Provided',1217,0.828,'#0070d2',true],
+    ['AMER','Closed',1217,0.172,'#e07000',true],
+    ['EMEA','Solution Provided',761,0.828,'#0070d2',false],
+    ['EMEA','Closed',761,0.172,'#e07000',false],
+    ['India','Solution Provided',633,0.828,'#2e844a',false],
+    ['India','Closed',633,0.172,'#2e844a',false],
+    ['APAC','Solution Provided',234,0.828,'#5867e8',false],
+    ['APAC','Closed',234,0.172,'#5867e8',false],
+  ];
+  // Build region-level classification table
+  const regions = [
+    {r:'AMER',total:1217,sp:Math.round(1217*0.828),cl:Math.round(1217*0.172),c:'#0070d2',sample:true},
+    {r:'EMEA',total:761, sp:Math.round(761*0.828), cl:Math.round(761*0.172), c:'#032d60',sample:false},
+    {r:'India',total:633,sp:Math.round(633*0.828),cl:Math.round(633*0.172), c:'#2e844a',sample:false},
+    {r:'APAC',total:234, sp:Math.round(234*0.828), cl:Math.round(234*0.172), c:'#5867e8',sample:false},
+  ];
+  const tbl = document.getElementById('tbl-reopen-class');
+  let html = `<thead><tr><th class="l">Region</th><th>Total Reopens</th><th>From Solution Provided</th><th>SP %</th><th>From Closed</th><th>Closed %</th><th>Source</th></tr></thead><tbody>`;
+  regions.forEach(d=>{
+    html += `<tr><td class="l" style="font-weight:700;color:${d.c};">${d.r}</td><td>${d.total}</td><td style="background:#e8f4fd;font-weight:700;">${d.sp}</td><td style="background:#e8f4fd;font-weight:700;">82.8%</td><td style="background:#fff4e0;font-weight:700;">${d.cl}</td><td style="background:#fff4e0;font-weight:700;">17.2%</td><td><span style="font-size:10px;padding:2px 7px;border-radius:8px;font-weight:700;background:${d.sample?'#eef6f0':'#f3f3f3'};color:${d.sample?'#1a5c30':'#706e6b'};">${d.sample?'✓ Audited':'Estimated'}</span></td></tr>`;
+  });
+  const totSP = Math.round(2845*0.828); const totCl = Math.round(2845*0.172);
+  html += `<tr style="background:#f0f4f8;font-weight:700;"><td class="l">All Regions</td><td>2,845</td><td style="background:#e8f4fd;">${totSP}</td><td style="background:#e8f4fd;">82.8%</td><td style="background:#fff4e0;">${totCl}</td><td style="background:#fff4e0;">17.2%</td><td></td></tr></tbody>`;
+  tbl.innerHTML = html;
+})();
+
+// ── Regional reopen summary table ──
+(function(){
+  const INFLOW  = {AMER:17740, EMEA:11432, India:8444, APAC:3724};
+  const REOPEN  = {AMER:1217,  EMEA:761,   India:633,  APAC:234};
+  const AC3     = {AMER:880,   EMEA:340,   India:338,  APAC:167};
+  const COLORS  = {AMER:'#0070d2',EMEA:'#032d60',India:'#2e844a',APAC:'#5867e8'};
+  const tbl = document.getElementById('tbl-reopen-region');
+  let html = `<thead><tr><th class="l">Region</th><th>Total Inflow</th><th>Reopened Cases</th><th>Reopen Rate</th><th>Auto-Closed (3×)</th><th>Auto-Close Rate</th><th>Combined Risk</th></tr></thead><tbody>`;
+  let totI=0,totR=0,totA=0;
+  ['AMER','EMEA','India','APAC'].forEach(r=>{
+    const rRate = (REOPEN[r]/INFLOW[r]*100).toFixed(1);
+    const aRate = (AC3[r]/INFLOW[r]*100).toFixed(1);
+    const combined = REOPEN[r]+AC3[r];
+    const cRate = (combined/INFLOW[r]*100).toFixed(1);
+    totI+=INFLOW[r]; totR+=REOPEN[r]; totA+=AC3[r];
+    html += `<tr><td class="l" style="font-weight:700;color:${COLORS[r]};">${r}</td><td>${INFLOW[r].toLocaleString()}</td><td style="font-weight:700;">${REOPEN[r].toLocaleString()}</td><td style="background:#fff4e0;font-weight:700;">${rRate}%</td><td style="font-weight:700;">${AC3[r].toLocaleString()}</td><td style="background:#fdf0f0;font-weight:700;">${aRate}%</td><td style="font-weight:700;">${cRate}%</td></tr>`;
+  });
+  const totComb=totR+totA;
+  html += `<tr style="background:#f0f4f8;font-weight:700;"><td class="l">All Regions</td><td>${totI.toLocaleString()}</td><td>${totR.toLocaleString()}</td><td style="background:#fff4e0;">${(totR/totI*100).toFixed(1)}%</td><td>${totA.toLocaleString()}</td><td style="background:#fdf0f0;">${(totA/totI*100).toFixed(1)}%</td><td>${(totComb/totI*100).toFixed(1)}%</td></tr></tbody>`;
+  tbl.innerHTML = html;
+})();
+
+// ── TTR regional table ──
+(function(){
+  const INFLOW = {AMER:17740, EMEA:11432, India:8444, APAC:3724};
+  const REOPEN = {AMER:1217,  EMEA:761,   India:633,  APAC:234};
+  const RE_TTR = {AMER:19.9,  EMEA:14.3,  India:19.7, APAC:19.8};
+  const NR_TTR = {AMER:8.9,   EMEA:7.8,   India:9.3,  APAC:8.1};
+  const COLORS = {AMER:'#0070d2',EMEA:'#032d60',India:'#2e844a',APAC:'#5867e8'};
+  const tbl = document.getElementById('tbl-ttr-region');
+  let html = `<thead><tr><th class="l">Region</th><th>NR TTR (d)</th><th>Re TTR (d)</th><th>Multiplier</th><th>Extra Days</th><th>Reopened × Extra Days</th></tr></thead><tbody>`;
+  ['AMER','EMEA','India','APAC'].forEach(r=>{
+    const mult = (RE_TTR[r]/NR_TTR[r]).toFixed(2);
+    const extra = (RE_TTR[r]-NR_TTR[r]).toFixed(1);
+    const totalExtra = Math.round(REOPEN[r]*(RE_TTR[r]-NR_TTR[r]));
+    const multNum = parseFloat(mult);
+    const multBg = multNum >= 2.0 ? 'background:#fdf0f0;' : multNum >= 1.8 ? 'background:#fff4e0;' : 'background:#eef6f0;';
+    html += `<tr><td class="l" style="font-weight:700;color:${COLORS[r]};">${r}</td><td style="font-weight:700;">${NR_TTR[r]}d</td><td style="font-weight:700;">${RE_TTR[r]}d</td><td style="${multBg}font-weight:700;">${mult}×</td><td style="font-weight:700;">+${extra}d</td><td style="font-weight:700;">${totalExtra.toLocaleString()} days</td></tr>`;
+  });
+  html += `<tr style="background:#f0f4f8;font-weight:700;"><td class="l">Org Combined</td><td>8.5d</td><td>18.3d</td><td style="background:#fdf0f0;">2.15×</td><td>+9.8d</td><td>${Math.round(2845*9.8).toLocaleString()} days</td></tr></tbody>`;
+  tbl.innerHTML = html;
+})();
+
+// ── P&T TTR tables ──
+(function(){
+  const PT_LIST   = ['RCA','Legacy CPQ','Industry-LS','Ind-Omni','Ind-CPQ/OM','Ind-FinServ'];
+  const PT_COLORS = ['#0070d2','#e07000','#2e844a','#5867e8','#0b827c','#ba0517'];
+  const PT_CLS    = ['b0','b1','b2','b3','b4','b5'];
+
+  // [total_NR, NR_TTR, total_Re, Re_TTR, mult, rate]
+  const REOPEN_PT = {
+    combined: {
+      'RCA':         [868, 6.7,  68, 16.3, 2.43, 7.3],
+      'Legacy CPQ':  [291, 8.7,  27, 19.6, 2.25, 8.5],
+      'Industry-LS': [1159,8.8,  86, 16.8, 1.91, 6.9],
+      'Ind-Omni':    [652, 8.4,  50, 17.2, 2.05, 7.1],
+      'Ind-CPQ/OM':  [755, 9.8,  44, 19.6, 2.00, 5.5],
+      'Ind-FinServ': [438, 9.0,  35, 15.0, 1.67, 7.4]
+    },
+    EMEA: {
+      'RCA':         [317, 5.8,  26, 12.1, 2.09, 7.6],
+      'Legacy CPQ':  [114, 7.5,  12, 16.2, 2.16, 9.5],
+      'Industry-LS': [219, 7.4,  22, 13.5, 1.82, 9.1],
+      'Ind-Omni':    [280, 7.1,  21, 13.8, 1.94, 7.0],
+      'Ind-CPQ/OM':  [288, 8.5,  18, 16.0, 1.88, 5.9],
+      'Ind-FinServ': [158, 7.9,  14, 12.8, 1.62, 8.1]
+    },
+    India: {
+      'RCA':         [391, 7.2,  29, 17.8, 2.47, 6.9],
+      'Legacy CPQ':  [125, 9.1,  11, 21.4, 2.35, 8.1],
+      'Industry-LS': [742, 9.4,  55, 18.2, 1.94, 6.9],
+      'Ind-Omni':    [318, 8.9,  24, 19.1, 2.15, 7.0],
+      'Ind-CPQ/OM':  [381, 10.4, 21, 21.8, 2.10, 5.2],
+      'Ind-FinServ': [214, 9.7,  18, 16.4, 1.69, 7.8]
+    },
+    APAC: {
+      'RCA':         [160, 7.4,  13, 18.9, 2.55, 7.5],
+      'Legacy CPQ':  [52,  9.8,  4,  22.1, 2.26, 7.1],
+      'Industry-LS': [198, 10.1, 9,  18.8, 1.86, 4.3],
+      'Ind-Omni':    [54,  9.2,  5,  19.4, 2.11, 8.5],
+      'Ind-CPQ/OM':  [86,  11.0, 5,  22.9, 2.08, 5.5],
+      'Ind-FinServ': [66,  9.5,  3,  16.1, 1.69, 4.3]
+    }
+  };
+
+  function buildPTTable(tableId, regionKey) {
+    const tbl = document.getElementById(tableId);
+    const data = REOPEN_PT[regionKey];
+    const isCompact = regionKey !== 'combined';
+    let html;
+    if (isCompact) {
+      html = `<thead><tr><th class="l">P&T</th><th>NR TTR</th><th>Re TTR</th><th>Mult</th><th>Rate</th></tr></thead><tbody>`;
+    } else {
+      html = `<thead><tr><th class="l" style="width:110px;">P&T</th><th>NR Cases</th><th>NR TTR</th><th>Re Cases</th><th>Re TTR</th><th>Mult</th><th>Reopen Rate</th></tr></thead><tbody>`;
+    }
+    PT_LIST.forEach((pt,i) => {
+      const d = data[pt];
+      if (!d) return;
+      const [nr, nrTTR, re, reTTR, mult, rate] = d;
+      const multBg = mult >= 2.0 ? 'background:#fdf0f0;' : mult >= 1.8 ? 'background:#fff4e0;' : 'background:#eef6f0;';
+      if (isCompact) {
+        html += `<tr><td class="pt ${PT_CLS[i]}" style="font-size:11px;">${pt}</td><td style="font-size:11px;">${nrTTR}d</td><td style="font-size:11px;font-weight:700;">${reTTR}d</td><td style="font-size:11px;font-weight:700;${multBg}">${mult}×</td><td style="font-size:11px;">${rate}%</td></tr>`;
+      } else {
+        html += `<tr><td class="pt ${PT_CLS[i]}" style="font-size:11px;">${pt}</td><td style="font-size:11px;">${nr}</td><td style="font-size:11px;">${nrTTR}d</td><td style="font-size:11px;font-weight:700;">${re}</td><td style="font-size:11px;font-weight:700;">${reTTR}d</td><td style="font-size:11px;font-weight:700;${multBg}">${mult}×</td><td style="font-size:11px;">${rate}%</td></tr>`;
+      }
+    });
+    html += '</tbody>';
+    tbl.innerHTML = html;
+  }
+
+  buildPTTable('tbl-pt-combined', 'combined');
+  buildPTTable('tbl-pt-emea', 'EMEA');
+  buildPTTable('tbl-pt-india', 'India');
+  buildPTTable('tbl-pt-apac', 'APAC');
+})();
+</script>
+</body>
+</html>

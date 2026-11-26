@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>P&T Inflow Volume — Monthly Trend · May–Oct 2026</title>
+<title>Resolution Trend — P&T Monthly · May–Oct 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
@@ -13,22 +13,21 @@
   --gray-20:#dddbda; --gray-50:#706e6b; --gray-05:#f3f3f3;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-     background:#f0f2f5;color:#1b1b1b;font-size:14px;}
-
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5;color:#1b1b1b;font-size:14px;}
 .hdr{background:var(--navy);padding:18px 32px;display:flex;justify-content:space-between;align-items:flex-start;}
 .hdr h1{font-size:19px;font-weight:700;color:#fff;margin-bottom:3px;}
 .hdr .sub{font-size:12px;color:rgba(255,255,255,.6);}
 .hdr .meta{font-size:11px;color:rgba(255,255,255,.5);text-align:right;line-height:1.9;}
+.nav{background:#0a3a5a;padding:0 32px;display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,.1);}
+.nav a,.nav span{display:block;padding:10px 22px;font-size:12px;font-weight:700;letter-spacing:.3px;text-decoration:none;border-bottom:3px solid transparent;}
+.nav a{color:rgba(255,255,255,.55);}
+.nav a:hover{color:#fff;background:rgba(255,255,255,.07);}
+.nav .active{color:#fff;border-bottom-color:#fff;}
 .scope{background:#0a4a7a;padding:7px 32px;font-size:11px;color:rgba(255,255,255,.75);display:flex;gap:20px;flex-wrap:wrap;align-items:center;}
 .scope b{color:#fff;}
-
 .body{padding:24px 28px 56px;}
 .section{margin-bottom:36px;}
-.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
-  color:#fff;background:var(--navy);padding:8px 16px;border-radius:6px;margin-bottom:16px;display:inline-block;}
-
-/* ── KPI summary strip ── */
+.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#fff;background:var(--navy);padding:8px 16px;border-radius:6px;margin-bottom:16px;display:inline-block;}
 .kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;}
 .kpi-card{background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid;}
 .kpi-card .pt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);margin-bottom:6px;}
@@ -40,8 +39,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .badge-gray{background:#f3f3f3;color:#3e3e3c;}
 .badge-orange{background:#fdf3e3;color:#7a4000;}
 .kpi-card .detail{font-size:11px;color:var(--gray-50);margin-top:6px;line-height:1.5;}
-
-/* ── Signal matrix ── */
 .matrix{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;}
 .mx-card{background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px;border-left:5px solid;}
 .mx-card .mx-pt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px;}
@@ -53,8 +50,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .sig-red{background:#fdf0f0;color:#8e0414;}
 .sig-orange{background:#fdf3e3;color:#7a4000;}
 .sig-gray{background:#f3f3f3;color:#3e3e3c;}
-
-/* ── Chart cards ── */
 .chart-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
 .chart-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .card{background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:18px 20px;}
@@ -62,13 +57,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .card-sub{font-size:11px;color:var(--gray-50);margin-bottom:14px;}
 .chart-box{position:relative;width:100%;}
 .chart-box canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important;}
-
-/* ── Geo pill ── */
 .geo-emea{background:#e8f4fd;color:#032d60;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;}
 .geo-india{background:#f3e8ff;color:#3d2b7a;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;}
 .geo-apac{background:#f3f3f3;color:#3e3e3c;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;}
-
-/* ── Share table ── */
 .stbl{width:100%;border-collapse:collapse;font-size:12px;}
 .stbl thead th{background:var(--navy);color:#fff;padding:6px 10px;text-align:center;font-size:11px;font-weight:600;}
 .stbl thead th.l{text-align:left;}
@@ -79,8 +70,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 .stbl td.pt{font-weight:700;color:var(--navy);text-align:left;border-left:4px solid;}
 .stbl td.hi{background:#e8f4fd;font-weight:700;}
 .note{font-size:11px;color:var(--gray-50);margin-top:8px;line-height:1.6;}
-
-/* ── Trend arrow ── */
 .up{color:#2e844a;font-weight:700;}
 .dn{color:#ba0517;font-weight:700;}
 .fl{color:#706e6b;font-weight:700;}
@@ -90,10 +79,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 
 <div class="hdr">
   <div>
-    <h1>P&amp;T Inflow Volume — Monthly Trend &amp; Resolution Mapping</h1>
-    <div class="sub">Top 5 P&amp;T · EMEA · India (IST) · APAC · May–Oct 2026 · Volume share + resolution signal</div>
+    <h1>Resolution Trend — P&amp;T Monthly · May–Oct 2026</h1>
+    <div class="sub">Top 5 P&amp;T · EMEA · India (IST) · APAC · Volume share + 0–3 day resolution signal</div>
   </div>
   <div class="meta">Nov 2026 &nbsp;·&nbsp; OrgCS SOQL &nbsp;·&nbsp; Excl. Chat · No GUS · No Bug</div>
+</div>
+<div class="nav">
+  <a href="reopen-analysis-2026-11-26.html">Reopen Analysis</a>
+  <span class="active">Resolution Trend</span>
 </div>
 <div class="scope">
   <span>Rising volume + faster resolution = <b>✓ Initiatives working</b></span>
@@ -103,120 +96,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 </div>
 
 <div class="body">
-
-<!-- ══ SECTION 0: Reopen Action Flow ══ -->
-<div class="section">
-  <div class="sec-title">Reopen &amp; Unresponsive — What Happened &amp; What to Do · All Regions · May–Oct 2026</div>
-
-  <!-- Flow: Inflow → two risk paths -->
-  <div style="display:grid;grid-template-columns:200px 48px 1fr;gap:0;align-items:start;margin-bottom:20px;">
-
-    <!-- LEFT: Inflow box -->
-    <div style="background:var(--navy);border-radius:10px;padding:20px 18px;text-align:center;color:#fff;align-self:center;">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-bottom:6px;">Total Inflow</div>
-      <div style="font-size:40px;font-weight:900;line-height:1;">41,340</div>
-      <div style="font-size:11px;opacity:.6;margin-top:4px;">Revenue + Industry<br>AMER · EMEA · India · APAC<br>May – Oct 2026</div>
-    </div>
-
-    <!-- Arrow -->
-    <div style="display:flex;align-items:center;justify-content:center;align-self:center;padding-top:0;">
-      <div style="font-size:28px;color:var(--gray-50);">→</div>
-    </div>
-
-    <!-- RIGHT: two stacked rows -->
-    <div style="display:flex;flex-direction:column;gap:12px;">
-
-      <!-- ROW 1: Reopened path -->
-      <div style="display:grid;grid-template-columns:180px 32px 1fr 32px 1fr 32px 1fr;gap:0;align-items:center;">
-        <!-- Reopened total -->
-        <div style="background:#fdf0f0;border:2px solid var(--red);border-radius:8px;padding:14px 16px;text-align:center;">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--red);margin-bottom:4px;">Reopened Cases</div>
-          <div style="font-size:30px;font-weight:900;color:var(--red);line-height:1;">2,845</div>
-          <div style="font-size:11px;color:#8e0414;margin-top:3px;">6.9% of inflow</div>
-          <div style="font-size:10px;color:#706e6b;margin-top:2px;">Reopen_count__c &gt; 0</div>
-        </div>
-        <div style="text-align:center;font-size:20px;color:var(--red);">→</div>
-        <!-- Split A: Solution Provided -->
-        <div style="background:#fff;border:2px solid var(--red);border-radius:8px;padding:14px 16px;">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--red);">From Solution Provided</div>
-            <span style="background:#fdf0f0;color:#8e0414;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">82.8%</span>
-          </div>
-          <div style="font-size:28px;font-weight:900;color:var(--red);line-height:1;">2,355</div>
-          <div style="font-size:11px;color:#706e6b;margin-top:4px;line-height:1.5;">Engineer marked it solved.<br>Customer said it wasn't.</div>
-        </div>
-        <div style="text-align:center;font-size:20px;color:var(--red);">→</div>
-        <!-- Intervention A -->
-        <div style="background:#e8f4fd;border:2px solid var(--blue);border-radius:8px;padding:14px 16px;">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--blue);margin-bottom:6px;">Intervention · AI Check</div>
-          <div style="font-size:12px;color:#032d60;font-weight:700;margin-bottom:6px;">AI Close Gate</div>
-          <div style="font-size:11px;color:#1b1b1b;line-height:1.6;">Score reopen risk at close time. Prompt engineer before Solution Provided is submitted on high-risk cases.</div>
-          <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
-            <span style="background:#0070d233;color:#032d60;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:700;">Agentforce Action</span>
-            <span style="background:#0070d233;color:#032d60;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:700;">Zero-Touch Resolution</span>
-          </div>
-        </div>
-        <div style="text-align:center;font-size:14px;color:var(--green);font-weight:700;">→</div>
-        <div style="background:#eef6f0;border:2px solid var(--green);border-radius:8px;padding:14px 16px;text-align:center;">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Target Saving</div>
-          <div style="font-size:24px;font-weight:900;color:var(--green);">~470–700</div>
-          <div style="font-size:11px;color:#1a5c30;margin-top:3px;">cases prevented/6mo<br>at 20–30% reduction</div>
-          <div style="font-size:10px;color:#706e6b;margin-top:4px;">~300 eng-months reclaimed</div>
-        </div>
-      </div>
-
-      <!-- Thin divider -->
-      <div style="border-top:1px dashed var(--gray-20);margin:0 4px;"></div>
-
-      <!-- ROW 2: Unresponsive path -->
-      <div style="display:grid;grid-template-columns:180px 32px 1fr 32px 1fr 32px 1fr;gap:0;align-items:center;">
-        <!-- Auto-closed total -->
-        <div style="background:#fdf3e3;border:2px solid var(--orange);border-radius:8px;padding:14px 16px;text-align:center;">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--orange);margin-bottom:4px;">Auto-Closed</div>
-          <div style="font-size:30px;font-weight:900;color:var(--orange);line-height:1;">1,725</div>
-          <div style="font-size:11px;color:#7a4000;margin-top:3px;">4.2% of inflow</div>
-          <div style="font-size:10px;color:#706e6b;margin-top:2px;">Unresponsive_Follow_ups = 3</div>
-        </div>
-        <div style="text-align:center;font-size:20px;color:var(--orange);">→</div>
-        <!-- Regional breakdown -->
-        <div style="background:#fff;border:2px solid var(--orange);border-radius:8px;padding:14px 16px;">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-            <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--orange);">By Region</div>
-            <span style="background:#fdf3e3;color:#7a4000;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">Silent customers</span>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px;">
-            <div style="background:#f8f9fa;border-radius:4px;padding:5px 8px;"><b>AMER</b> 880 <span style="color:#706e6b;">(5.0%)</span></div>
-            <div style="background:#f8f9fa;border-radius:4px;padding:5px 8px;"><b>EMEA</b> 340 <span style="color:#706e6b;">(3.0%)</span></div>
-            <div style="background:#f8f9fa;border-radius:4px;padding:5px 8px;"><b>India</b> 338 <span style="color:#706e6b;">(4.0%)</span></div>
-            <div style="background:#f8f9fa;border-radius:4px;padding:5px 8px;"><b>APAC</b> 167 <span style="color:#706e6b;">(4.5%)</span></div>
-          </div>
-        </div>
-        <div style="text-align:center;font-size:20px;color:var(--orange);">→</div>
-        <!-- Intervention B -->
-        <div style="background:#fdf3e3;border:2px solid var(--orange);border-radius:8px;padding:14px 16px;">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--orange);margin-bottom:6px;">Intervention · Account Team</div>
-          <div style="font-size:12px;color:#7a4000;font-weight:700;margin-bottom:6px;">AE + CSM Alert</div>
-          <div style="font-size:11px;color:#1b1b1b;line-height:1.6;">When a case auto-closes on 3× unresponsive, trigger a Slack notification to the AE and CSM. Customer going silent on a support case is a churn signal.</div>
-          <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
-            <span style="background:#e0700033;color:#7a4000;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:700;">Slack Notification</span>
-            <span style="background:#e0700033;color:#7a4000;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:700;">Trust &amp; Delight</span>
-          </div>
-        </div>
-        <div style="text-align:center;font-size:14px;color:var(--green);font-weight:700;">→</div>
-        <div style="background:#eef6f0;border:2px solid var(--green);border-radius:8px;padding:14px 16px;text-align:center;">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Target Outcome</div>
-          <div style="font-size:24px;font-weight:900;color:var(--green);">1,725</div>
-          <div style="font-size:11px;color:#1a5c30;margin-top:3px;">accounts get proactive<br>outreach before churning</div>
-          <div style="font-size:10px;color:#706e6b;margin-top:4px;">AMER highest risk: 880</div>
-        </div>
-      </div>
-
-    </div><!-- /right column -->
-  </div><!-- /grid -->
-
-  <!-- Bottom footnote -->
-  <p class="note">Reopen trigger split (82.8% Solution Provided / 17.2% Closed) derived from AMER CaseHistory sample — applied proportionally to all regions. Auto-close count exact from OrgCS aggregate (Unresponsive_Follow_ups__c = '3'). These are two separate populations — a case can be auto-closed and also have Reopen_count__c &gt; 0.</p>
-</div>
 
 <!-- ══ SECTION 1: KPI Summary strip ══ -->
 <div class="section">
@@ -274,20 +153,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 <div class="section">
   <div class="sec-title">Combined View — All Regions · Absolute Volume · Volume Share % · 0–3 Day Resolution %</div>
   <p class="note" style="margin-bottom:14px;">Three lenses on the same 5 P&T. Highest value per row highlighted. Delta = Oct minus May.</p>
-
-  <!-- Absolute volume table -->
   <div class="card" style="margin-bottom:14px;">
     <div class="card-title">Absolute Volume — Cases per Month &nbsp;<span style="font-size:11px;color:var(--gray-50);font-weight:400;">Total cases per P&T regardless of resolution time</span></div>
     <table class="stbl" id="tbl-abs-combined"></table>
   </div>
-
-  <!-- Volume share table -->
   <div class="card" style="margin-bottom:14px;">
     <div class="card-title">Volume Share % — P&T Mix &nbsp;<span style="font-size:11px;color:var(--gray-50);font-weight:400;">Each P&T as % of total monthly inflow</span></div>
     <table class="stbl" id="tbl-share-combined"></table>
   </div>
-
-  <!-- 0–3 day resolution table -->
   <div class="card">
     <div class="card-title">0–3 Day Resolution % — Quick Close &nbsp;<span style="font-size:11px;color:var(--gray-50);font-weight:400;">% of cases closed within 3 days. Higher = engineers resolving faster</span></div>
     <table class="stbl" id="tbl-quick-combined"></table>
@@ -323,189 +196,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;" id="dual-grid-2"></div>
 </div>
 
-<!-- ══ SECTION 7: Reopen Deep-Dive ══ -->
-<div class="section">
-  <div class="sec-title">Reopen Deep-Dive — Classification, Auto-Close &amp; TTR Impact · All 4 Regions · May–Oct 2026</div>
-  <p class="note" style="margin-bottom:14px;">
-    <b>41,340 cases opened May–Oct 2026 across AMER · EMEA · India · APAC.</b>
-    &nbsp;Of these, <b>2,845 (6.9%)</b> were reopened at least once.
-    Every reopened case takes <b>2.15× longer</b> to finally close — burning ~915 engineer-months in rework.
-    Separately, <b>1,725 cases (4.2%)</b> were auto-closed after 3 unresponsive follow-ups — these are customers who went silent and are a leading indicator of potential churn or unresolved issues.
-  </p>
-
-  <!-- 4 headline cards row 1 -->
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px;">
-    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid var(--navy);">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);">Total Inflow</div>
-      <div style="font-size:28px;font-weight:800;color:var(--navy);line-height:1.1;margin-top:4px;">41,340</div>
-      <div style="font-size:12px;color:var(--gray-50);margin-top:4px;">Revenue + Industry<br>AMER · EMEA · India · APAC</div>
-    </div>
-    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid var(--red);">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);">Reopened Cases</div>
-      <div style="font-size:28px;font-weight:800;color:var(--red);line-height:1.1;margin-top:4px;">2,845 <span style="font-size:16px;">6.9%</span></div>
-      <div style="font-size:12px;color:var(--gray-50);margin-top:4px;">Unique cases reopened ≥1×<br>Reopen_count__c &gt; 0</div>
-    </div>
-    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid var(--orange);">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);">Auto-Closed Cases</div>
-      <div style="font-size:28px;font-weight:800;color:var(--orange);line-height:1.1;margin-top:4px;">1,725 <span style="font-size:16px;">4.2%</span></div>
-      <div style="font-size:12px;color:var(--gray-50);margin-top:4px;">Unresponsive_Follow_ups = 3<br>No customer response after 3x</div>
-    </div>
-    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid var(--purple);">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);">TTR Multiplier</div>
-      <div style="font-size:28px;font-weight:800;color:var(--purple);line-height:1.1;margin-top:4px;">2.15×</div>
-      <div style="font-size:12px;color:var(--gray-50);margin-top:4px;">NR avg: 8.5d → Re avg: 18.3d<br>~915 engineer-months rework</div>
-    </div>
-  </div>
-
-  <!-- Reopen trigger classification cards -->
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;">
-    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:16px;border-left:5px solid var(--red);">
-      <div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:8px;">BROKEN PROMISE — Reopened from Solution Provided</div>
-      <div style="font-size:32px;font-weight:800;color:var(--navy);">2,355 <span style="font-size:14px;color:var(--gray-50);">82.8% of reopens</span></div>
-      <div style="font-size:12px;color:var(--gray-50);margin-top:8px;line-height:1.6;">
-        Engineer marked it solved. Customer said it wasn't.<br>
-        <b>This is the highest-value category to fix.</b> An AI close-gate that flags cases likely to be re-opened before the engineer submits Solution Provided would directly reduce this number.
-      </div>
-    </div>
-    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:16px;border-left:5px solid var(--orange);">
-      <div style="font-size:12px;font-weight:700;color:var(--orange);margin-bottom:8px;">PREMATURE CLOSE — Reopened from Closed</div>
-      <div style="font-size:32px;font-weight:800;color:var(--navy);">490 <span style="font-size:14px;color:var(--gray-50);">17.2% of reopens</span></div>
-      <div style="font-size:12px;color:var(--gray-50);margin-top:8px;line-height:1.6;">
-        Case closed without Solution Provided step — customer came back.<br>
-        Often indicates cases closed via auto-route or administrative close rather than genuine resolution confirmation.
-      </div>
-    </div>
-    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:16px;border-left:5px solid var(--teal);">
-      <div style="font-size:12px;font-weight:700;color:var(--teal);margin-bottom:8px;">SILENT CUSTOMER — Auto-Closed (Unresponsive × 3)</div>
-      <div style="font-size:32px;font-weight:800;color:var(--navy);">1,725 <span style="font-size:14px;color:var(--gray-50);">separate population</span></div>
-      <div style="font-size:12px;color:var(--gray-50);margin-top:8px;line-height:1.6;">
-        Not counted in reopens — these cases closed because the customer stopped responding after 3 follow-ups.<br>
-        Risk: unresolved issue = future Sev1 or churn. AMER highest at 880 (5.0% of inflow).
-      </div>
-    </div>
-  </div>
-
-  <!-- Regional classification table -->
-  <div class="card" style="margin-bottom:14px;">
-    <div class="card-title">Regional Breakdown — Inflow · Reopen · Auto-Close · TTR</div>
-    <table class="stbl" id="tbl-reopen-classification"></table>
-  </div>
-
-  <!-- How to build it section -->
-  <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:20px;margin-bottom:14px;border-top:4px solid var(--navy);">
-    <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:14px;">HOW TO BUILD IT — AI Close Gate (Hackathon Proposal)</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-      <div>
-        <div style="font-size:12px;font-weight:700;color:var(--gray-50);text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px;">The Problem</div>
-        <div style="font-size:12px;color:#1b1b1b;line-height:1.7;">
-          <b>82.8% of reopens</b> come from cases already marked "Solution Provided" — the engineer believed it was done, but the customer disagreed.<br><br>
-          These are not random. They cluster around specific products (RCA, Legacy CPQ), short close times on complex topics, and accounts with prior reopen history.<br><br>
-          The pattern is detectable <b>before</b> the case is closed.
-        </div>
-      </div>
-      <div>
-        <div style="font-size:12px;font-weight:700;color:var(--gray-50);text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px;">The Mechanism</div>
-        <div style="font-size:12px;color:#1b1b1b;line-height:1.7;">
-          <b>Step 1 — Score at close time.</b> When engineer moves to Solution Provided, an Agentforce action triggers and scores "reopen risk" using: product topic, case age at close, account reopen history, case subject similarity to known reopen patterns.<br><br>
-          <b>Step 2 — Friction for high-risk cases.</b> If score &gt; threshold: surface a prompt — <i>"3 similar cases on this account were reopened. Confirm resolution with customer before proceeding?"</i><br><br>
-          <b>Step 3 — Track outcome.</b> Cases that cleared the gate and still got reopened improve the model over time.
-        </div>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px;">
-      <div style="background:#f0f2f5;border-radius:6px;padding:12px;">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--gray-50);margin-bottom:4px;">Input Signals</div>
-        <div style="font-size:11px;color:#1b1b1b;line-height:1.6;">Product topic<br>Case age at close<br>Account reopen history<br>Case subject / FunctionalArea<br>Severity level</div>
-      </div>
-      <div style="background:#f0f2f5;border-radius:6px;padding:12px;">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--gray-50);margin-bottom:4px;">Fits Hackathon Idea</div>
-        <div style="font-size:11px;color:#1b1b1b;line-height:1.6;"><b>Zero-Touch Resolution</b> — detect before it breaks<br><br><b>Trust &amp; Delight</b> — stop the broken promise</div>
-      </div>
-      <div style="background:#f0f2f5;border-radius:6px;padding:12px;">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--gray-50);margin-bottom:4px;">Target Impact</div>
-        <div style="font-size:11px;color:#1b1b1b;line-height:1.6;">Reduce 2,355 SP-reopens by 25% = <b>589 cases saved/6 months</b><br>Reclaim ~300 engineer-months of rework capacity</div>
-      </div>
-      <div style="background:#f0f2f5;border-radius:6px;padding:12px;">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--gray-50);margin-bottom:4px;">EMEA Benchmark</div>
-        <div style="font-size:11px;color:#1b1b1b;line-height:1.6;">EMEA already performs at <b>1.83×</b> vs APAC 2.44×<br>Proof the behaviour works — tool makes it consistent</div>
-      </div>
-    </div>
-  </div>
-
-  <p class="note">* Reopen trigger classification (Solution Provided vs Closed) derived from AMER CaseHistory sample — AMER proportion applied to all regions. Auto-close count exact from aggregate query (Unresponsive_Follow_ups__c = '3'). Auto-close cases are a separate population from reopened cases — a case can be both auto-closed and later reopened.</p>
-</div>
-
-<!-- ══ SECTION 8: Reopen Rate & TTR Impact by P&T ══ -->
-<div class="section">
-  <div class="sec-title">Reopen Rate &amp; TTR Impact — By P&amp;T · EMEA · India · APAC</div>
-<div class="section">
-  <div class="sec-title">Reopen Rate &amp; TTR Impact — All 6 P&amp;T · EMEA · India · APAC</div>
-  <p class="note" style="margin-bottom:14px;">
-    Closed cases May–Oct 2026 (EMEA + India + APAC). <b>NR TTR</b> = average days to close for cases never reopened.
-    <b>Re TTR</b> = average days to close for cases reopened ≥1 time (creation → final close).
-    <b>Multiplier</b> = Re TTR ÷ NR TTR — how many times longer a reopened case takes.
-    <b>Reopen%</b> = share of closed cases that were reopened at least once.
-  </p>
-
-  <!-- Headline callout cards -->
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;">
-    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid var(--red);">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);">Worst Multiplier</div>
-      <div style="font-size:28px;font-weight:800;color:var(--red);line-height:1.1;margin-top:4px;">3.15×</div>
-      <div style="font-size:12px;color:var(--gray-50);margin-top:4px;">APAC · RCA<br>NR=7.4d → Re=23.3d</div>
-    </div>
-    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid var(--orange);">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);">2nd Highest</div>
-      <div style="font-size:28px;font-weight:800;color:var(--orange);line-height:1.1;margin-top:4px;">2.93×</div>
-      <div style="font-size:12px;color:var(--gray-50);margin-top:4px;">India · Ind-Omni<br>NR=7.2d → Re=21.1d</div>
-    </div>
-    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid var(--navy);">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);">Org-Wide Multiplier</div>
-      <div style="font-size:28px;font-weight:800;color:var(--navy);line-height:1.1;margin-top:4px;">2.08×</div>
-      <div style="font-size:12px;color:var(--gray-50);margin-top:4px;">NR=8.4d → Re=17.5d<br>All 5 original P&T</div>
-    </div>
-    <div style="background:#fff;border:1px solid var(--gray-20);border-radius:8px;padding:14px 16px;border-top:5px solid var(--green);">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--gray-50);">Best-in-Class</div>
-      <div style="font-size:28px;font-weight:800;color:var(--green);line-height:1.1;margin-top:4px;">1.24×</div>
-      <div style="font-size:12px;color:var(--gray-50);margin-top:4px;">APAC · Ind-FinServ<br>NR=8.7d → Re=10.8d</div>
-    </div>
-  </div>
-
-  <!-- Combined P&T summary table -->
-  <div class="card" style="margin-bottom:14px;">
-    <div class="card-title">By P&amp;T — All Regions Combined
-      <span style="font-size:11px;color:var(--gray-50);font-weight:400;">&nbsp;Multiplier highlighted: ≥2.5× red · 2.0–2.49× orange · &lt;2.0× green</span>
-    </div>
-    <table class="stbl" id="tbl-reopen-pt"></table>
-  </div>
-
-  <!-- Region × P&T detail grid -->
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;">
-    <div class="card">
-      <span class="geo-emea">EMEA</span>
-      <div style="margin-top:10px;"><table class="stbl" id="tbl-reopen-emea"></table></div>
-    </div>
-    <div class="card">
-      <span class="geo-india">India (IST)</span>
-      <div style="margin-top:10px;"><table class="stbl" id="tbl-reopen-india"></table></div>
-    </div>
-    <div class="card">
-      <span class="geo-apac">APAC</span>
-      <div style="margin-top:10px;"><table class="stbl" id="tbl-reopen-apac"></table></div>
-    </div>
-  </div>
-
-  <p class="note">⚠ EMEA Legacy CPQ shows 0 cases — these cases were handled via India/APAC routing during the query window. APAC Ind-FinServ has only 82 cases (small sample). All other cells have ≥100 cases. Source: OrgCS closed cases with Age_days__c and Reopen_count__c fields, May–Oct 2026.</p>
-</div>
-
 </div><!-- /body -->
 
 <script>
 Chart.register(ChartDataLabels);
-
 const MONTHS = ['May','Jun','Jul','Aug','Sep','Oct'];
-
-// Combined [total, b0_3, b3_10, b10] per month May→Oct
 const COMBINED = {
   'RCA':        [[639,232,263,144],[713,269,275,169],[657,259,243,155],[574,213,245,116],[649,245,228,176],[671,224,295,152]],
   'Legacy CPQ': [[350,98,137,115],[351,106,140,105],[305,85,127,93],[234,71,86,77],[239,65,111,63],[223,74,80,69]],
@@ -513,8 +208,6 @@ const COMBINED = {
   'Ind-Omni':   [[345,108,156,81],[347,135,128,84],[317,136,107,74],[310,129,110,71],[348,127,132,89],[262,97,84,70]],
   'Ind-CPQ/OM': [[310,89,126,95],[359,100,148,110],[336,94,124,118],[289,91,105,93],[315,86,121,108],[303,88,105,110]]
 };
-
-// Regional [total, b0_3] per month May→Oct
 const REG_DATA = {
   EMEA:{
     'RCA':[[343,129],[354,145],[366,151],[308,133],[343,139],[346,118]],
@@ -538,11 +231,9 @@ const REG_DATA = {
     'Ind-CPQ/OM':[[46,14],[58,24],[41,9],[45,17],[40,9],[40,14]]
   }
 };
-
 const PT_LIST   = ['RCA','Legacy CPQ','Industry-LS','Ind-Omni','Ind-CPQ/OM'];
 const PT_COLORS = ['#0070d2','#e07000','#2e844a','#5867e8','#0b827c'];
 const PT_COLORS_A = ['#0070d233','#e0700033','#2e844a33','#5867e833','#0b827c33'];
-
 function pct(v,t){ return t===0?0:Math.round(v/t*100); }
 function trendDir(arr){
   const d = arr[arr.length-1] - arr[0];
@@ -550,559 +241,139 @@ function trendDir(arr){
   if(d < -arr[0]*0.08) return 'dn';
   return 'fl';
 }
-
-// ── Combined summary tables ─────────────────────────────────────────
 (function buildCombinedTables(){
-  const monthTotals = MONTHS.map((_,mi) =>
-    PT_LIST.reduce((s,pt) => s + COMBINED[pt][mi][0], 0)
-  );
-
-  function headerRow(){
-    return `<thead><tr>
-      <th class="l" style="font-size:10px;width:110px;">P&T</th>
-      ${MONTHS.map(m=>`<th>${m}</th>`).join('')}
-      <th>May→Oct</th>
-    </tr></thead>`;
-  }
-
-  // 1. Absolute volume
+  const monthTotals = MONTHS.map((_,mi) => PT_LIST.reduce((s,pt) => s + COMBINED[pt][mi][0], 0));
+  function headerRow(){ return `<thead><tr><th class="l" style="font-size:10px;width:110px;">P&T</th>${MONTHS.map(m=>`<th>${m}</th>`).join('')}<th>May→Oct</th></tr></thead>`; }
   (function(){
     const tbl = document.getElementById('tbl-abs-combined');
     let html = headerRow() + '<tbody>';
     PT_LIST.forEach((pt,i)=>{
       const vals = MONTHS.map((_,mi)=>COMBINED[pt][mi][0]);
-      const mx   = Math.max(...vals);
-      const delta = vals[5]-vals[0];
+      const mx = Math.max(...vals); const delta = vals[5]-vals[0];
       const dCls = delta>=30?'up':delta<=-30?'dn':'fl';
-      html += `<tr>
-        <td class="pt" style="border-left-color:${PT_COLORS[i]};font-size:11px;">${pt}</td>
-        ${vals.map(v=>`<td class="${v===mx?'hi':''}" style="font-size:11px;">${v}</td>`).join('')}
-        <td style="font-size:11px;"><span class="${dCls}">${delta>=0?'+':''}${delta}</span></td>
-      </tr>`;
+      html += `<tr><td class="pt" style="border-left-color:${PT_COLORS[i]};font-size:11px;">${pt}</td>${vals.map(v=>`<td class="${v===mx?'hi':''}" style="font-size:11px;">${v}</td>`).join('')}<td style="font-size:11px;"><span class="${dCls}">${delta>=0?'+':''}${delta}</span></td></tr>`;
     });
-    // totals
-    html += `<tr style="background:#f0f4f8;">
-      <td style="font-weight:700;font-size:11px;">Total</td>
-      ${monthTotals.map(t=>`<td style="font-weight:700;font-size:11px;">${t}</td>`).join('')}
-      <td style="font-weight:700;font-size:11px;"><span class="${monthTotals[5]>=monthTotals[0]?'up':'dn'}">${monthTotals[5]>=monthTotals[0]?'+':''}${monthTotals[5]-monthTotals[0]}</span></td>
-    </tr></tbody>`;
+    html += `<tr style="background:#f0f4f8;"><td style="font-weight:700;font-size:11px;">Total</td>${monthTotals.map(t=>`<td style="font-weight:700;font-size:11px;">${t}</td>`).join('')}<td style="font-weight:700;font-size:11px;"><span class="${monthTotals[5]>=monthTotals[0]?'up':'dn'}">${monthTotals[5]>=monthTotals[0]?'+':''}${monthTotals[5]-monthTotals[0]}</span></td></tr></tbody>`;
     tbl.innerHTML = html;
   })();
-
-  // 2. Volume share %
   (function(){
     const tbl = document.getElementById('tbl-share-combined');
     let html = headerRow() + '<tbody>';
     PT_LIST.forEach((pt,i)=>{
       const shares = MONTHS.map((_,mi)=>pct(COMBINED[pt][mi][0],monthTotals[mi]));
-      const mx = Math.max(...shares);
-      const delta = shares[5]-shares[0];
+      const mx = Math.max(...shares); const delta = shares[5]-shares[0];
       const dCls = delta>=3?'up':delta<=-3?'dn':'fl';
-      html += `<tr>
-        <td class="pt" style="border-left-color:${PT_COLORS[i]};font-size:11px;">${pt}</td>
-        ${shares.map(s=>`<td class="${s===mx?'hi':''}" style="font-size:11px;">${s}%</td>`).join('')}
-        <td style="font-size:11px;"><span class="${dCls}">${delta>=0?'+':''}${delta}pp</span></td>
-      </tr>`;
+      html += `<tr><td class="pt" style="border-left-color:${PT_COLORS[i]};font-size:11px;">${pt}</td>${shares.map(s=>`<td class="${s===mx?'hi':''}" style="font-size:11px;">${s}%</td>`).join('')}<td style="font-size:11px;"><span class="${dCls}">${delta>=0?'+':''}${delta}pp</span></td></tr>`;
     });
-    html += `<tr style="background:#f0f4f8;">
-      <td style="font-weight:700;font-size:11px;">Total</td>
-      ${MONTHS.map(()=>`<td style="font-weight:700;font-size:11px;">100%</td>`).join('')}
-      <td></td>
-    </tr></tbody>`;
+    html += `<tr style="background:#f0f4f8;"><td style="font-weight:700;font-size:11px;">Total</td>${MONTHS.map(()=>`<td style="font-weight:700;font-size:11px;">100%</td>`).join('')}<td></td></tr></tbody>`;
     tbl.innerHTML = html;
   })();
-
-  // 3. 0–3 day quick-close %
   (function(){
     const tbl = document.getElementById('tbl-quick-combined');
     let html = headerRow() + '<tbody>';
     PT_LIST.forEach((pt,i)=>{
       const qPcts = MONTHS.map((_,mi)=>pct(COMBINED[pt][mi][1],COMBINED[pt][mi][0]));
-      const mx = Math.max(...qPcts);
-      const mn = Math.min(...qPcts);
-      const delta = qPcts[5]-qPcts[0];
+      const mx = Math.max(...qPcts); const mn = Math.min(...qPcts); const delta = qPcts[5]-qPcts[0];
       const dCls = delta>=3?'up':delta<=-3?'dn':'fl';
-      html += `<tr>
-        <td class="pt" style="border-left-color:${PT_COLORS[i]};font-size:11px;">${pt}</td>
-        ${qPcts.map((v,mi)=>{
-          const isBest  = v===mx;
-          const isWorst = v===mn;
-          const bg = isBest?'background:#eef6f0;':isWorst?'background:#fdf0f0;':'';
-          const fc = isBest?'color:#1a5c30;font-weight:700;':isWorst?'color:#8e0414;font-weight:700;':'';
-          return `<td style="font-size:11px;${bg}${fc}">${v}%</td>`;
-        }).join('')}
-        <td style="font-size:11px;"><span class="${dCls}">${delta>=0?'+':''}${delta}pp</span></td>
-      </tr>`;
+      html += `<tr><td class="pt" style="border-left-color:${PT_COLORS[i]};font-size:11px;">${pt}</td>${qPcts.map(v=>{const isBest=v===mx;const isWorst=v===mn;const bg=isBest?'background:#eef6f0;':isWorst?'background:#fdf0f0;':'';const fc=isBest?'color:#1a5c30;font-weight:700;':isWorst?'color:#8e0414;font-weight:700;':'';return `<td style="font-size:11px;${bg}${fc}">${v}%</td>`;}).join('')}<td style="font-size:11px;"><span class="${dCls}">${delta>=0?'+':''}${delta}pp</span></td></tr>`;
     });
-    // org avg row
-    const orgAvg = MONTHS.map((_,mi)=>{
-      const totQ = PT_LIST.reduce((s,pt)=>s+COMBINED[pt][mi][1],0);
-      return pct(totQ, monthTotals[mi]);
-    });
+    const orgAvg = MONTHS.map((_,mi)=>{ const totQ=PT_LIST.reduce((s,pt)=>s+COMBINED[pt][mi][1],0); return pct(totQ,monthTotals[mi]); });
     const avgDelta = orgAvg[5]-orgAvg[0];
-    html += `<tr style="background:#f0f4f8;">
-      <td style="font-weight:700;font-size:11px;">Org Avg</td>
-      ${orgAvg.map(v=>`<td style="font-weight:700;font-size:11px;">${v}%</td>`).join('')}
-      <td style="font-weight:700;font-size:11px;"><span class="${avgDelta>=0?'up':'dn'}">${avgDelta>=0?'+':''}${avgDelta}pp</span></td>
-    </tr></tbody>`;
+    html += `<tr style="background:#f0f4f8;"><td style="font-weight:700;font-size:11px;">Org Avg</td>${orgAvg.map(v=>`<td style="font-weight:700;font-size:11px;">${v}%</td>`).join('')}<td style="font-weight:700;font-size:11px;"><span class="${avgDelta>=0?'up':'dn'}">${avgDelta>=0?'+':''}${avgDelta}pp</span></td></tr></tbody>`;
     tbl.innerHTML = html;
   })();
 })();
 
-// ── SECTION 1: KPI strip ────────────────────────────────────────────
-const tileConfig = {
-  'RCA':        {color:'#0070d2'},
-  'Legacy CPQ': {color:'#e07000'},
-  'Industry-LS':{color:'#2e844a'},
-  'Ind-Omni':   {color:'#5867e8'},
-  'Ind-CPQ/OM': {color:'#0b827c'}
-};
-
+const tileConfig = {'RCA':{color:'#0070d2'},'Legacy CPQ':{color:'#e07000'},'Industry-LS':{color:'#2e844a'},'Ind-Omni':{color:'#5867e8'},'Ind-CPQ/OM':{color:'#0b827c'}};
 const kpiStrip = document.getElementById('kpi-strip');
 PT_LIST.forEach((pt,i) => {
-  const rows = COMBINED[pt];
-  const vols = rows.map(r=>r[0]);
-  const totMay = vols[0], totOct = vols[5];
-  const totalAll = rows.reduce((s,r)=>s+r[0],0);
-  const avgVol = Math.round(totalAll/6);
-  const delta = totOct - totMay;
-  const pctDelta = Math.round(delta/totMay*100);
-  const dir = trendDir(vols);
-  const qMay = pct(rows[0][1],rows[0][0]);
-  const qOct = pct(rows[5][1],rows[5][0]);
-  const qDelta = qOct - qMay;
-
-  // combined signal
-  let signal='', sigCls='';
-  if(dir==='up' && qDelta>=3)   { signal='↑ Vol + ↑ Res'; sigCls='badge-green'; }
-  else if(dir==='up' && qDelta<=-3)  { signal='↑ Vol + ↓ Res'; sigCls='badge-red'; }
-  else if(dir==='dn' && qDelta>=3)   { signal='↓ Vol + ↑ Res'; sigCls='badge-green'; }
-  else if(dir==='dn' && qDelta<=-3)  { signal='↓ Vol + ↓ Res'; sigCls='badge-orange'; }
-  else { signal='Stable Mix'; sigCls='badge-gray'; }
-
-  const arrowHtml = dir==='up'?'<span class="up">↑</span>':dir==='dn'?'<span class="dn">↓</span>':'<span class="fl">→</span>';
-  const cfg = tileConfig[pt];
-  const c = document.createElement('div');
-  c.className='kpi-card';
-  c.style.borderTopColor = cfg.color;
-  c.innerHTML=`
-    <div class="pt">${pt}</div>
-    <div class="vol" style="color:${cfg.color};">${totOct}</div>
-    <div class="row">
-      ${arrowHtml}
-      <span style="font-size:11px;color:var(--gray-50);">${pctDelta>=0?'+':''}${pctDelta}% May→Oct</span>
-    </div>
-    <div class="row" style="margin-top:4px;">
-      <span class="badge ${sigCls}">${signal}</span>
-    </div>
-    <div class="detail">
-      Avg/month: <b>${avgVol}</b><br>
-      Quick: ${qMay}% → ${qOct}% (<b>${qDelta>=0?'+':''}${qDelta}pp</b>)
-    </div>
-  `;
+  const rows=COMBINED[pt]; const vols=rows.map(r=>r[0]);
+  const totMay=vols[0],totOct=vols[5]; const totalAll=rows.reduce((s,r)=>s+r[0],0); const avgVol=Math.round(totalAll/6);
+  const delta=totOct-totMay; const pctDelta=Math.round(delta/totMay*100); const dir=trendDir(vols);
+  const qMay=pct(rows[0][1],rows[0][0]); const qOct=pct(rows[5][1],rows[5][0]); const qDelta=qOct-qMay;
+  let signal='',sigCls='';
+  if(dir==='up'&&qDelta>=3){signal='↑ Vol + ↑ Res';sigCls='badge-green';}
+  else if(dir==='up'&&qDelta<=-3){signal='↑ Vol + ↓ Res';sigCls='badge-red';}
+  else if(dir==='dn'&&qDelta>=3){signal='↓ Vol + ↑ Res';sigCls='badge-green';}
+  else if(dir==='dn'&&qDelta<=-3){signal='↓ Vol + ↓ Res';sigCls='badge-orange';}
+  else{signal='Stable Mix';sigCls='badge-gray';}
+  const arrowHtml=dir==='up'?'<span class="up">↑</span>':dir==='dn'?'<span class="dn">↓</span>':'<span class="fl">→</span>';
+  const cfg=tileConfig[pt]; const c=document.createElement('div'); c.className='kpi-card'; c.style.borderTopColor=cfg.color;
+  c.innerHTML=`<div class="pt">${pt}</div><div class="vol" style="color:${cfg.color};">${totOct}</div><div class="row">${arrowHtml}<span style="font-size:11px;color:var(--gray-50);">${pctDelta>=0?'+':''}${pctDelta}% May→Oct</span></div><div class="row" style="margin-top:4px;"><span class="badge ${sigCls}">${signal}</span></div><div class="detail">Avg/month: <b>${avgVol}</b><br>Quick: ${qMay}% → ${qOct}% (<b>${qDelta>=0?'+':''}${qDelta}pp</b>)</div>`;
   kpiStrip.appendChild(c);
 });
 
-// ── SECTION 2: Signal matrix per region ─────────────────────────────
 const matrixEl = document.getElementById('signal-matrix');
-
 PT_LIST.forEach((pt,i) => {
-  const c = document.createElement('div');
-  c.className = 'mx-card';
-  c.style.borderLeftColor = PT_COLORS[i];
-
-  const rows = ['EMEA','India','APAC'].map(geo => {
-    const d = REG_DATA[geo][pt];
-    const vols = d.map(r=>r[0]);
-    const qMay = pct(d[0][1],d[0][0]);
-    const qOct = pct(d[5][1],d[5][0]);
-    const qDelta = qOct - qMay;
-    const vdir = trendDir(vols);
-    const totOct = d[5][0];
-
-    let sig='', cls='';
-    const isSmall = totOct < 20;
-    if(isSmall){ sig='Low vol ⚠'; cls='sig-gray'; }
-    else if(vdir==='up' && qDelta>=3)  { sig='↑ Vol ✓ Res'; cls='sig-green'; }
-    else if(vdir==='up' && qDelta<=-3) { sig='↑ Vol ✗ Res'; cls='sig-red'; }
-    else if(vdir==='dn' && qDelta>=3)  { sig='↓ Vol ✓ Res'; cls='sig-green'; }
-    else if(vdir==='dn' && qDelta<=-3) { sig='↓ Vol ✗ Res'; cls='sig-orange'; }
-    else { sig='Stable'; cls='sig-gray'; }
-
-    const geoCls = geo==='EMEA'?'geo-emea':geo==='India'?'geo-india':'geo-apac';
-    return `<div class="mx-row">
-      <span class="${geoCls}">${geo==='India'?'IST':geo}</span>
-      <span style="font-size:11px;color:var(--gray-50);">${vols[5]}</span>
-      <span class="signal ${cls}">${sig}</span>
-    </div>`;
+  const c=document.createElement('div'); c.className='mx-card'; c.style.borderLeftColor=PT_COLORS[i];
+  const rows=['EMEA','India','APAC'].map(geo=>{
+    const d=REG_DATA[geo][pt]; const vols=d.map(r=>r[0]);
+    const qMay=pct(d[0][1],d[0][0]); const qOct=pct(d[5][1],d[5][0]); const qDelta=qOct-qMay;
+    const vdir=trendDir(vols); const totOct=d[5][0];
+    let sig='',cls=''; const isSmall=totOct<20;
+    if(isSmall){sig='Low vol ⚠';cls='sig-gray';}
+    else if(vdir==='up'&&qDelta>=3){sig='↑ Vol ✓ Res';cls='sig-green';}
+    else if(vdir==='up'&&qDelta<=-3){sig='↑ Vol ✗ Res';cls='sig-red';}
+    else if(vdir==='dn'&&qDelta>=3){sig='↓ Vol ✓ Res';cls='sig-green';}
+    else if(vdir==='dn'&&qDelta<=-3){sig='↓ Vol ✗ Res';cls='sig-orange';}
+    else{sig='Stable';cls='sig-gray';}
+    const geoCls=geo==='EMEA'?'geo-emea':geo==='India'?'geo-india':'geo-apac';
+    return `<div class="mx-row"><span class="${geoCls}">${geo==='India'?'IST':geo}</span><span style="font-size:11px;color:var(--gray-50);">${vols[5]}</span><span class="signal ${cls}">${sig}</span></div>`;
   }).join('');
-
   c.innerHTML=`<div class="mx-pt" style="color:${PT_COLORS[i]};">${pt}</div>${rows}`;
   matrixEl.appendChild(c);
 });
 
-// ── Stacked bar helper (absolute) ──────────────────────────────────
-function makeStackedBar(canvasId, regionKey, showLabels=false) {
-  const regionData = regionKey ? REG_DATA[regionKey] : null;
-  const datasets = PT_LIST.map((pt,i) => {
-    const data = regionKey
-      ? MONTHS.map((_,mi) => REG_DATA[regionKey][pt][mi][0])
-      : MONTHS.map((_,mi) => COMBINED[pt][mi][0]);
-    return {
-      label: pt, data,
-      backgroundColor: PT_COLORS[i],
-      stack: 's',
-      datalabels: { display: false }
-    };
-  });
-
-  const ctx = document.getElementById(canvasId);
-  new Chart(ctx, {
-    type:'bar',
-    data:{ labels:MONTHS, datasets },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{ position:'bottom', labels:{font:{size:10},boxWidth:10,padding:8} },
-        datalabels:{ display:false }
-      },
-      scales:{
-        x:{ stacked:true, grid:{display:false}, ticks:{font:{size:10}} },
-        y:{ stacked:true, grid:{color:'#f0f0f0'}, ticks:{font:{size:10}} }
-      },
-      layout:{ padding:{top:4,right:4,bottom:4,left:4} }
-    }
-  });
+function makeStackedBar(canvasId,regionKey){
+  const datasets=PT_LIST.map((pt,i)=>({label:pt,data:regionKey?MONTHS.map((_,mi)=>REG_DATA[regionKey][pt][mi][0]):MONTHS.map((_,mi)=>COMBINED[pt][mi][0]),backgroundColor:PT_COLORS[i],stack:'s',datalabels:{display:false}}));
+  new Chart(document.getElementById(canvasId),{type:'bar',data:{labels:MONTHS,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:8}},datalabels:{display:false}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,grid:{color:'#f0f0f0'},ticks:{font:{size:10}}}},layout:{padding:{top:4,right:4,bottom:4,left:4}}}});
 }
-
-// ── Stacked 100% share bar ─────────────────────────────────────────
-function makeShareBar(canvasId) {
-  // Compute monthly totals
-  const monthTotals = MONTHS.map((_,mi) =>
-    PT_LIST.reduce((s,pt) => s+COMBINED[pt][mi][0], 0)
-  );
-
-  const datasets = PT_LIST.map((pt,i) => {
-    const data = MONTHS.map((_,mi) => pct(COMBINED[pt][mi][0], monthTotals[mi]));
-    return {
-      label: pt, data,
-      backgroundColor: PT_COLORS[i],
-      stack: 's',
-      datalabels: {
-        display: true,
-        color:'#fff',
-        font:{size:9,weight:'bold'},
-        formatter: v => v>8?v+'%':'',
-        anchor:'center', align:'center'
-      }
-    };
-  });
-
-  const ctx = document.getElementById(canvasId);
-  new Chart(ctx, {
-    type:'bar',
-    data:{ labels:MONTHS, datasets },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{ position:'bottom', labels:{font:{size:10},boxWidth:10,padding:8} },
-        datalabels:{}
-      },
-      scales:{
-        x:{ stacked:true, grid:{display:false}, ticks:{font:{size:10}} },
-        y:{ stacked:true, min:0, max:100, display:false }
-      },
-      layout:{ padding:{top:4,right:4,bottom:4,left:4} }
-    }
-  });
+function makeShareBar(canvasId){
+  const monthTotals=MONTHS.map((_,mi)=>PT_LIST.reduce((s,pt)=>s+COMBINED[pt][mi][0],0));
+  const datasets=PT_LIST.map((pt,i)=>({label:pt,data:MONTHS.map((_,mi)=>pct(COMBINED[pt][mi][0],monthTotals[mi])),backgroundColor:PT_COLORS[i],stack:'s',datalabels:{display:true,color:'#fff',font:{size:9,weight:'bold'},formatter:v=>v>8?v+'%':'',anchor:'center',align:'center'}}));
+  new Chart(document.getElementById(canvasId),{type:'bar',data:{labels:MONTHS,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:8}},datalabels:{}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,min:0,max:100,display:false}},layout:{padding:{top:4,right:4,bottom:4,left:4}}}});
 }
-
-makeStackedBar('chart-abs-combined', null);
+makeStackedBar('chart-abs-combined',null);
 makeShareBar('chart-share-combined');
-makeStackedBar('chart-emea',  'EMEA');
-makeStackedBar('chart-india', 'India');
-makeStackedBar('chart-apac',  'APAC');
+makeStackedBar('chart-emea','EMEA');
+makeStackedBar('chart-india','India');
+makeStackedBar('chart-apac','APAC');
 
-// ── SECTION 5: Share tables by region ─────────────────────────────
-function buildShareTable(tableId, regionKey) {
-  const tbl = document.getElementById(tableId);
-  const monthTotals = MONTHS.map((_,mi) =>
-    PT_LIST.reduce((s,pt) => s + REG_DATA[regionKey][pt][mi][0], 0)
-  );
-
-  // header
-  let html = `<thead><tr><th class="l" style="font-size:10px;">P&T</th>${MONTHS.map(m=>`<th>${m}</th>`).join('')}<th>May→Oct</th></tr></thead><tbody>`;
-
-  PT_LIST.forEach((pt,i) => {
-    const d = REG_DATA[regionKey][pt];
-    const shares = MONTHS.map((_,mi) => pct(d[mi][0], monthTotals[mi]));
-    const delta = shares[5] - shares[0];
-    const dCls = delta>=3?'up':delta<=-3?'dn':'fl';
-    const dSign = delta>=0?'+':'';
-
-    html += `<tr>
-      <td class="pt" style="border-left-color:${PT_COLORS[i]};font-size:11px;">${pt}</td>
-      ${shares.map((s,mi) => {
-        const isMax = shares.indexOf(Math.max(...shares))===mi;
-        return `<td class="${isMax?'hi':''}" style="font-size:11px;">${s}%</td>`;
-      }).join('')}
-      <td style="font-size:11px;"><span class="${dCls}">${dSign}${delta}pp</span></td>
-    </tr>`;
+function buildShareTable(tableId,regionKey){
+  const tbl=document.getElementById(tableId);
+  const monthTotals=MONTHS.map((_,mi)=>PT_LIST.reduce((s,pt)=>s+REG_DATA[regionKey][pt][mi][0],0));
+  let html=`<thead><tr><th class="l" style="font-size:10px;">P&T</th>${MONTHS.map(m=>`<th>${m}</th>`).join('')}<th>May→Oct</th></tr></thead><tbody>`;
+  PT_LIST.forEach((pt,i)=>{
+    const d=REG_DATA[regionKey][pt]; const shares=MONTHS.map((_,mi)=>pct(d[mi][0],monthTotals[mi]));
+    const delta=shares[5]-shares[0]; const dCls=delta>=3?'up':delta<=-3?'dn':'fl'; const dSign=delta>=0?'+':'';
+    html+=`<tr><td class="pt" style="border-left-color:${PT_COLORS[i]};font-size:11px;">${pt}</td>${shares.map((s,mi)=>`<td class="${shares.indexOf(Math.max(...shares))===mi?'hi':''}" style="font-size:11px;">${s}%</td>`).join('')}<td style="font-size:11px;"><span class="${dCls}">${dSign}${delta}pp</span></td></tr>`;
   });
-
-  // totals row
-  html += `<tr style="background:#f0f4f8;">
-    <td style="font-weight:700;font-size:11px;">Total</td>
-    ${monthTotals.map(t=>`<td style="font-weight:700;font-size:11px;">${t}</td>`).join('')}
-    <td></td>
-  </tr>`;
-  html += '</tbody>';
-  tbl.innerHTML = html;
+  html+=`<tr style="background:#f0f4f8;"><td style="font-weight:700;font-size:11px;">Total</td>${monthTotals.map(t=>`<td style="font-weight:700;font-size:11px;">${t}</td>`).join('')}<td></td></tr></tbody>`;
+  tbl.innerHTML=html;
 }
+buildShareTable('tbl-emea','EMEA');
+buildShareTable('tbl-india','India');
+buildShareTable('tbl-apac','APAC');
 
-buildShareTable('tbl-emea',  'EMEA');
-buildShareTable('tbl-india', 'India');
-buildShareTable('tbl-apac',  'APAC');
-
-// ── SECTION 6: Dual-axis charts (volume bar + quick% line) ─────────
-function makeDualChart(canvasId, pt, ptIdx) {
-  const rows = COMBINED[pt];
-  const vols  = rows.map(r=>r[0]);
-  const qPcts = rows.map(r=>pct(r[1],r[0]));
-
-  const ctx = document.getElementById(canvasId);
-  new Chart(ctx, {
-    type:'bar',
-    data:{
-      labels: MONTHS,
-      datasets:[
-        {
-          type:'bar',
-          label:'Volume',
-          data: vols,
-          backgroundColor: PT_COLORS[ptIdx]+'55',
-          borderColor: PT_COLORS[ptIdx]+'88',
-          borderWidth:1,
-          yAxisID:'yVol',
-          datalabels:{ display:false }
-        },
-        {
-          type:'line',
-          label:'Quick Close %',
-          data: qPcts,
-          borderColor: PT_COLORS[ptIdx],
-          backgroundColor: 'transparent',
-          borderWidth: 2.5, pointRadius:4, tension:0.3,
-          yAxisID:'yPct',
-          datalabels:{
-            display:true,
-            color: PT_COLORS[ptIdx],
-            font:{size:9,weight:'bold'},
-            formatter: v=>v+'%',
-            anchor:'end', align:'top', offset:3
-          }
-        }
-      ]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{ position:'bottom', labels:{font:{size:10},boxWidth:10,padding:8} },
-        datalabels:{}
-      },
-      scales:{
-        x:{ grid:{display:false}, ticks:{font:{size:10}} },
-        yVol:{ position:'left', grid:{color:'#f0f0f0'}, ticks:{font:{size:9}}, title:{display:true,text:'Cases',font:{size:9}} },
-        yPct:{ position:'right', min:0, max:60, grid:{display:false}, ticks:{font:{size:9}, callback:v=>v+'%'}, title:{display:true,text:'Quick%',font:{size:9}} }
-      },
-      layout:{ padding:{top:16,right:8,bottom:4,left:4} }
-    }
-  });
+function makeDualChart(canvasId,pt,ptIdx){
+  const rows=COMBINED[pt]; const vols=rows.map(r=>r[0]); const qPcts=rows.map(r=>pct(r[1],r[0]));
+  new Chart(document.getElementById(canvasId),{type:'bar',data:{labels:MONTHS,datasets:[{type:'bar',label:'Volume',data:vols,backgroundColor:PT_COLORS[ptIdx]+'55',borderColor:PT_COLORS[ptIdx]+'88',borderWidth:1,yAxisID:'yVol',datalabels:{display:false}},{type:'line',label:'Quick Close %',data:qPcts,borderColor:PT_COLORS[ptIdx],backgroundColor:'transparent',borderWidth:2.5,pointRadius:4,tension:0.3,yAxisID:'yPct',datalabels:{display:true,color:PT_COLORS[ptIdx],font:{size:9,weight:'bold'},formatter:v=>v+'%',anchor:'end',align:'top',offset:3}}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:8}},datalabels:{}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},yVol:{position:'left',grid:{color:'#f0f0f0'},ticks:{font:{size:9}},title:{display:true,text:'Cases',font:{size:9}}},yPct:{position:'right',min:0,max:60,grid:{display:false},ticks:{font:{size:9},callback:v=>v+'%'},title:{display:true,text:'Quick%',font:{size:9}}}},layout:{padding:{top:16,right:8,bottom:4,left:4}}}});
 }
-
-// Build dual-axis grid (3 + 2)
-const dualGrid  = document.getElementById('dual-grid');
-const dualGrid2 = document.getElementById('dual-grid-2');
-
-PT_LIST.forEach((pt,i) => {
-  const container = i<3 ? dualGrid : dualGrid2;
-  const rows = COMBINED[pt];
-  const vols = rows.map(r=>r[0]);
-  const qPcts = rows.map(r=>pct(r[1],r[0]));
-  const vdir = trendDir(vols);
-  const qDelta = qPcts[5]-qPcts[0];
-  let sig='', sigCls='';
-  if(vdir==='up' && qDelta>=3)   { sig='✓ Rising demand + improving resolution'; sigCls='badge-green'; }
-  else if(vdir==='up' && qDelta<=-3)  { sig='⚠ Rising demand + declining resolution'; sigCls='badge-red'; }
-  else if(vdir==='dn' && qDelta>=3)   { sig='↓ Deflection working + engineers faster'; sigCls='badge-green'; }
-  else if(vdir==='dn' && qDelta<=-3)  { sig='⚑ Volume dropping + resolution worsening'; sigCls='badge-orange'; }
-  else { sig='→ Stable — no strong trend'; sigCls='badge-gray'; }
-
-  const div = document.createElement('div');
-  div.className = 'card';
-  div.innerHTML=`
-    <div class="card-title" style="color:${PT_COLORS[i]};">${pt}</div>
-    <div style="margin-bottom:10px;"><span class="badge ${sigCls}">${sig}</span></div>
-    <div class="chart-box" style="height:200px;"><canvas id="dual-${i}"></canvas></div>
-  `;
+const dualGrid=document.getElementById('dual-grid'); const dualGrid2=document.getElementById('dual-grid-2');
+PT_LIST.forEach((pt,i)=>{
+  const container=i<3?dualGrid:dualGrid2; const rows=COMBINED[pt]; const vols=rows.map(r=>r[0]); const qPcts=rows.map(r=>pct(r[1],r[0]));
+  const vdir=trendDir(vols); const qDelta=qPcts[5]-qPcts[0];
+  let sig='',sigCls='';
+  if(vdir==='up'&&qDelta>=3){sig='✓ Rising demand + improving resolution';sigCls='badge-green';}
+  else if(vdir==='up'&&qDelta<=-3){sig='⚠ Rising demand + declining resolution';sigCls='badge-red';}
+  else if(vdir==='dn'&&qDelta>=3){sig='↓ Deflection working + engineers faster';sigCls='badge-green';}
+  else if(vdir==='dn'&&qDelta<=-3){sig='⚑ Volume dropping + resolution worsening';sigCls='badge-orange';}
+  else{sig='→ Stable — no strong trend';sigCls='badge-gray';}
+  const div=document.createElement('div'); div.className='card';
+  div.innerHTML=`<div class="card-title" style="color:${PT_COLORS[i]};">${pt}</div><div style="margin-bottom:10px;"><span class="badge ${sigCls}">${sig}</span></div><div class="chart-box" style="height:200px;"><canvas id="dual-${i}"></canvas></div>`;
   container.appendChild(div);
 });
-
-// render after DOM appended
-PT_LIST.forEach((pt,i) => makeDualChart('dual-'+i, pt, i));
-
-// ── Reopen Classification table ──────────────────────────────────────────
-(function buildClassificationTable(){
-  const REGIONS = ['AMER','EMEA','India','APAC'];
-  const INFLOW  = {AMER:17740, EMEA:11432, India:8444, APAC:3724};
-  const REOPEN  = {AMER:1217,  EMEA:761,   India:633,  APAC:234};
-  const AC3     = {AMER:880,   EMEA:340,   India:338,  APAC:167};
-  const NR_TTR  = {AMER:8.9,   EMEA:7.8,   India:9.3,  APAC:8.1};
-  const RE_TTR  = {AMER:19.9,  EMEA:14.3,  India:19.7, APAC:19.8};
-  // 82.8% of reopens from Solution Provided, 17.2% from Closed (AMER CaseHistory sample)
-  const SP_SHARE = 0.828;
-
-  const el = document.getElementById('tbl-reopen-classification');
-
-  const totInflow  = REGIONS.reduce((s,r)=>s+INFLOW[r],0);
-  const totReopen  = REGIONS.reduce((s,r)=>s+REOPEN[r],0);
-  const totAC      = REGIONS.reduce((s,r)=>s+AC3[r],0);
-
-  function multStyle(m){
-    if(m>=2.4) return 'color:#8e0414;font-weight:700;';
-    if(m>=2.0) return 'color:#7a4000;font-weight:700;';
-    return 'color:#1a5c30;font-weight:700;';
-  }
-
-  let html = `<thead><tr>
-    <th class="l" style="font-size:10px;">Region</th>
-    <th>Inflow</th><th>Reopen Cases</th><th>Reopen%</th>
-    <th>From Sol.Provided*</th><th>From Closed*</th>
-    <th>Auto-Closed (3×)</th><th>NR TTR</th><th>Re TTR</th><th>Multiplier</th>
-  </tr></thead><tbody>`;
-
-  REGIONS.forEach(r => {
-    const sp  = Math.round(REOPEN[r]*SP_SHARE);
-    const cl  = REOPEN[r] - sp;
-    const m   = RE_TTR[r]/NR_TTR[r];
-    html += `<tr>
-      <td class="pt" style="border-left-color:${r==='AMER'?'#032d60':r==='EMEA'?'#0070d2':r==='India'?'#5867e8':'#0b827c'};">${r}</td>
-      <td>${INFLOW[r].toLocaleString()}</td>
-      <td style="font-weight:700;color:#ba0517;">${REOPEN[r].toLocaleString()}</td>
-      <td>${(REOPEN[r]/INFLOW[r]*100).toFixed(1)}%</td>
-      <td>${sp.toLocaleString()} <span style="font-size:10px;color:#8e0414;">(82.8%)</span></td>
-      <td>${cl.toLocaleString()} <span style="font-size:10px;color:#7a4000;">(17.2%)</span></td>
-      <td style="color:#e07000;font-weight:700;">${AC3[r].toLocaleString()} <span style="font-size:10px;color:#706e6b;">(${(AC3[r]/INFLOW[r]*100).toFixed(1)}%)</span></td>
-      <td>${NR_TTR[r]}d</td>
-      <td style="font-weight:700;">${RE_TTR[r]}d</td>
-      <td style="${multStyle(m)}">${m.toFixed(2)}×</td>
-    </tr>`;
-  });
-
-  // Totals row
-  const orgMult = (19.9*1202+14.3*754+19.7*624+19.8*224)/(1202+754+624+224);
-  const orgNR   = (8.9*3693+7.8*3739+9.3*3690+8.1*2799)/13921;
-  html += `<tr style="background:#f0f2f5;font-weight:700;">
-    <td class="pt" style="border-left-color:#032d60;">TOTAL</td>
-    <td>${totInflow.toLocaleString()}</td>
-    <td style="color:#ba0517;">${totReopen.toLocaleString()}</td>
-    <td>${(totReopen/totInflow*100).toFixed(1)}%</td>
-    <td>${Math.round(totReopen*SP_SHARE).toLocaleString()}</td>
-    <td>${Math.round(totReopen*(1-SP_SHARE)).toLocaleString()}</td>
-    <td style="color:#e07000;">${totAC.toLocaleString()}</td>
-    <td>${orgNR.toFixed(1)}d</td>
-    <td>${orgMult.toFixed(1)}d</td>
-    <td style="${multStyle(orgMult/orgNR)}">${(orgMult/orgNR).toFixed(2)}×</td>
-  </tr>`;
-
-  html += '</tbody>';
-  el.innerHTML = html;
-})();
-
-// ── Reopen Rate & TTR section ─────────────────────────────────────────────
-(function buildReopenTables(){
-  const ALL_PT = ['RCA','Legacy CPQ','Industry-LS','Ind-Omni','Ind-CPQ/OM','Ind-FinServ'];
-  const ALL_PT_COLORS = ['#0070d2','#e07000','#2e844a','#5867e8','#0b827c','#b06000'];
-
-  // Reopen data: [nr_cases, nr_ttr, re_cases, re_ttr, multiplier, reopen_pct]
-  const REOPEN = {
-    combined:{
-      'RCA':          [868,  6.7,  68, 16.3, 2.43, 7.3],
-      'Legacy CPQ':   [291,  8.7,  27, 19.6, 2.25, 8.5],
-      'Industry-LS':  [1159, 8.8,  86, 16.8, 1.91, 6.9],
-      'Ind-Omni':     [652,  8.4,  50, 17.2, 2.05, 7.1],
-      'Ind-CPQ/OM':   [755,  9.8,  44, 19.6, 2.00, 5.5],
-      'Ind-FinServ':  [438,  9.0,  35, 15.0, 1.67, 7.4]
-    },
-    EMEA:{
-      'RCA':          [167,  4.2,  17, 10.3, 2.45, 9.2],
-      'Legacy CPQ':   [0,    null, 0,  null, null, 0.0],
-      'Industry-LS':  [321,  7.7,  25, 14.7, 1.91, 7.2],
-      'Ind-Omni':     [92,   8.6,  6,  20.9, 2.43, 6.1],
-      'Ind-CPQ/OM':   [139,  8.7,  4,  14.0, 1.61, 2.8],
-      'Ind-FinServ':  [203,  9.1,  14, 15.9, 1.75, 6.5]
-    },
-    India:{
-      'RCA':          [413,  7.3,  37, 16.3, 2.23, 8.2],
-      'Legacy CPQ':   [190,  8.9,  15, 22.7, 2.55, 7.3],
-      'Industry-LS':  [679,  8.5,  48, 15.8, 1.86, 6.6],
-      'Ind-Omni':     [226,  7.2,  15, 21.1, 2.93, 6.2],
-      'Ind-CPQ/OM':   [349, 10.6,  28, 19.4, 1.83, 7.4],
-      'Ind-FinServ':  [159,  9.1,  15, 15.9, 1.75, 8.6]
-    },
-    APAC:{
-      'RCA':          [288,  7.4,  14, 23.3, 3.15, 4.6],
-      'Legacy CPQ':   [101,  8.3,  12, 15.6, 1.88,10.6],
-      'Industry-LS':  [159, 12.3,  13, 24.5, 1.99, 7.6],
-      'Ind-Omni':     [334,  9.1,  29, 14.5, 1.59, 8.0],
-      'Ind-CPQ/OM':   [267,  9.2,  12, 22.0, 2.39, 4.3],
-      'Ind-FinServ':  [76,   8.7,  6,  10.8, 1.24, 7.3]
-    }
-  };
-
-  function multCell(m){
-    if(m===null) return '<td style="color:#aaa;">—</td>';
-    let bg='#eef6f0',col='#1a5c30';
-    if(m>=2.5){bg='#fdf0f0';col='#8e0414';}
-    else if(m>=2.0){bg='#fdf3e3';col='#7a4000';}
-    return `<td style="background:${bg};color:${col};font-weight:700;">${m.toFixed(2)}×</td>`;
-  }
-
-  function buildTable(elId, scope){
-    const el = document.getElementById(elId);
-    const data = REOPEN[scope];
-    let html = `<thead><tr>
-      <th class="l" style="font-size:10px;">P&T</th>
-      <th>NR Cases</th><th>NR TTR</th>
-      <th>Re Cases</th><th>Re TTR</th>
-      <th>Multiplier</th><th>Reopen%</th>
-    </tr></thead><tbody>`;
-    ALL_PT.forEach((pt,i)=>{
-      const d = data[pt];
-      const [nc,ntr,rc,rtr,m,rp] = d;
-      const nrStr  = ntr!==null ? ntr.toFixed(1)+'d' : '—';
-      const reStr  = rtr!==null ? rtr.toFixed(1)+'d' : '—';
-      const rpStr  = rp+'%';
-      html += `<tr>
-        <td class="pt" style="border-left-color:${ALL_PT_COLORS[i]};">${pt}</td>
-        <td>${nc>0?nc:'—'}</td>
-        <td style="font-weight:700;">${nrStr}</td>
-        <td>${rc>0?rc:'—'}</td>
-        <td style="font-weight:700;">${reStr}</td>
-        ${multCell(m)}
-        <td>${rpStr}</td>
-      </tr>`;
-    });
-    html += '</tbody>';
-    el.innerHTML = html;
-  }
-
-  buildTable('tbl-reopen-pt','combined');
-  buildTable('tbl-reopen-emea','EMEA');
-  buildTable('tbl-reopen-india','India');
-  buildTable('tbl-reopen-apac','APAC');
-})();
-
+PT_LIST.forEach((pt,i) => makeDualChart('dual-'+i,pt,i));
 </script>
 </body>
 </html>
