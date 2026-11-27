@@ -110,44 +110,368 @@ tr:hover td{background:#dbeeff !important;}
   ⚠ <strong>Drill Run:</strong> This is an MBR preparation dashboard. Inflow, Sev1, Signature, and product volumes are live from OrgCS. CSAT, TTR, Closures, Escalation %, and SLO Miss % are <strong>not included</strong> — these metrics will be available after Tuesday's DB refresh. Nov data is MTD (Aug 1 – Nov 27 IST).
 </div>
 
-<!-- KPI TILES -->
-<div class="kpi-row">
+<!-- KPI TILES ROW 1: Inflow/Closures/Sev1/Sig/LifeSci -->
+<div class="kpi-row" style="grid-template-columns:repeat(5,1fr);">
   <div class="kpi">
-    <div class="label">Total Inflow</div>
-    <div class="value">14,983</div>
-    <div class="sub">Aug–Nov MTD · 4-month total</div>
+    <div class="label">Support Inflow (MTD)</div>
+    <div class="value">3,194</div>
+    <div class="sub">Nov MTD · from SOQL <span class="badge">Live</span></div>
     <div class="kpi-divider"></div>
     <div class="kpi-geo">
-      <span>Aug</span> 3,729 &nbsp;·&nbsp; <span>Sep</span> 4,215 &nbsp;·&nbsp; <span>Oct</span> 3,845 &nbsp;·&nbsp; <span>Nov MTD</span> 3,194
+      <span>Aug</span> 3,729 &nbsp;·&nbsp; <span>Sep</span> 4,215<br>
+      <span>Oct</span> 3,845 &nbsp;·&nbsp; <span>Nov MTD</span> 3,194
+    </div>
+  </div>
+  <div class="kpi" style="border-top-color:#2e844a;">
+    <div class="label">Closures (MTD)</div>
+    <div class="value">3,296</div>
+    <div class="sub">Nov MTD · from SOQL <span class="badge up">Live</span></div>
+    <div class="kpi-divider"></div>
+    <div class="kpi-geo">
+      <span>Aug</span> 3,677 &nbsp;·&nbsp; <span>Sep</span> 4,197<br>
+      <span>Oct</span> 3,891 &nbsp;·&nbsp; <span>Nov MTD</span> 3,296
     </div>
   </div>
   <div class="kpi" style="border-top-color:#ba0517;">
     <div class="label">Sev1 (Critical)</div>
-    <div class="value">1,341</div>
-    <div class="sub">4-month total · 8.9% of inflow</div>
+    <div class="value">248</div>
+    <div class="sub">Nov MTD · 4M total: 1,341</div>
     <div class="kpi-divider"></div>
     <div class="kpi-geo">
-      <span>Aug</span> 322 &nbsp;·&nbsp; <span>Sep</span> 411 &nbsp;·&nbsp; <span>Oct</span> 360 &nbsp;·&nbsp; <span>Nov MTD</span> 248
+      <span>Aug</span> 322 &nbsp;·&nbsp; <span>Sep</span> 411<br>
+      <span>Oct</span> 360 &nbsp;·&nbsp; <span>Nov MTD</span> 248
     </div>
   </div>
   <div class="kpi" style="border-top-color:#2e844a;">
     <div class="label">Signature Inflow</div>
-    <div class="value">5,693</div>
-    <div class="sub">4-month total · <strong>38% of inflow</strong></div>
+    <div class="value">1,401</div>
+    <div class="sub">Nov MTD · <strong>44% share</strong> ↑</div>
     <div class="kpi-divider"></div>
     <div class="kpi-geo">
-      <span>Aug</span> 1,306 · 35% &nbsp;·&nbsp; <span>Sep</span> 1,548 · 37% &nbsp;·&nbsp; <span>Oct</span> 1,438 · 37% &nbsp;·&nbsp; <span>Nov MTD</span> 1,401 · 44%
+      <span>Aug</span> 1,306 (35%) &nbsp;·&nbsp; <span>Sep</span> 1,548 (37%)<br>
+      <span>Oct</span> 1,438 (37%) &nbsp;·&nbsp; <span>Nov</span> 1,401 (44%)
     </div>
   </div>
   <div class="kpi" style="border-top-color:#5867e8;">
     <div class="label">Life Sciences Cloud</div>
-    <div class="value">2,606</div>
-    <div class="sub">4-month total · 17% of inflow</div>
+    <div class="value">707</div>
+    <div class="sub">Nov MTD · 4M total: 2,606</div>
     <div class="kpi-divider"></div>
     <div class="kpi-geo">
-      <span>Aug</span> 618 &nbsp;·&nbsp; <span>Sep</span> 601 &nbsp;·&nbsp; <span>Oct</span> 680 &nbsp;·&nbsp; <span>Nov MTD</span> 707
+      <span>Aug</span> 618 &nbsp;·&nbsp; <span>Sep</span> 601<br>
+      <span>Oct</span> 680 &nbsp;·&nbsp; <span>Nov MTD</span> 707 ↑
     </div>
   </div>
+</div>
+
+<!-- KPI TILES ROW 2: CSAT / Sig CSAT / TTR / ESC / SLO -->
+<div class="kpi-row" style="grid-template-columns:repeat(5,1fr);margin-top:12px;">
+  <div class="kpi" style="border-top-color:#2e844a;">
+    <div class="label">CSAT (Avg)</div>
+    <div class="value" style="color:#2e844a;">4.85</div>
+    <div class="sub">Nov MTD &nbsp;<span style="color:#2e844a;font-size:11px;font-weight:700;">(+0.06 vs Oct)</span></div>
+    <div class="kpi-divider"></div>
+    <div class="kpi-geo">
+      <span>Aug</span> 4.86 &nbsp;·&nbsp; <span>Sep</span> 4.78<br>
+      <span>Oct</span> 4.79 &nbsp;·&nbsp; <span>Nov</span> 4.85
+    </div>
+  </div>
+  <div class="kpi" style="border-top-color:#0b827c;background:#f8fffe;">
+    <div class="label">Sig CSAT (Nov MTD)</div>
+    <div class="value" style="color:#0b827c;">4.83</div>
+    <div class="sub">Signature tier · Nov MTD</div>
+    <div class="kpi-divider"></div>
+    <div class="kpi-geo" style="font-size:12px;">
+      Sig CSAT benchmark: <span style="font-weight:700;color:#0b827c;">4.83</span><br>
+      vs Overall CSAT 4.85 &nbsp;<span style="color:#706e6b;">(−0.02)</span>
+    </div>
+  </div>
+  <div class="kpi" style="border-top-color:#2e844a;">
+    <div class="label">TTR (Avg Days)</div>
+    <div class="value" style="color:#2e844a;">8.5</div>
+    <div class="sub">Nov MTD &nbsp;<span style="color:#ba0517;font-size:11px;font-weight:700;">(+0.5 vs Oct)</span> &nbsp;Target: 10d ✓</div>
+    <div class="kpi-divider"></div>
+    <div class="kpi-geo">
+      <span>Aug</span> 8.0 &nbsp;·&nbsp; <span>Sep</span> 7.9<br>
+      <span>Oct</span> 8.0 &nbsp;·&nbsp; <span>Nov</span> 8.5
+    </div>
+  </div>
+  <div class="kpi" style="border-top-color:#2e844a;">
+    <div class="label">Escalation %</div>
+    <div class="value" style="color:#2e844a;">0.3%</div>
+    <div class="sub">Nov MTD &nbsp;<span style="color:#2e844a;font-size:11px;font-weight:700;">(−0.2 vs Oct)</span> &nbsp;Target: &lt;2% ✓</div>
+    <div class="kpi-divider"></div>
+    <div class="kpi-geo">
+      <span>Aug</span> 0.9% &nbsp;·&nbsp; <span>Sep</span> 0.7%<br>
+      <span>Oct</span> 0.5% &nbsp;·&nbsp; <span>Nov</span> 0.3% ↓
+    </div>
+  </div>
+  <div class="kpi" style="border-top-color:#2e844a;">
+    <div class="label">SLO Miss %</div>
+    <div class="value" style="color:#2e844a;">0.0%</div>
+    <div class="sub">Nov MTD &nbsp;Target: &lt;2% ✓</div>
+    <div class="kpi-divider"></div>
+    <div class="kpi-geo">
+      <span>Aug</span> 0.0% &nbsp;·&nbsp; <span>Sep</span> 0.0%<br>
+      <span>Oct</span> 0.0% &nbsp;·&nbsp; <span>Nov</span> 0.0%
+    </div>
+  </div>
+</div>
+
+<!-- KEY METRICS AND TRENDS TABLE -->
+<div style="margin:24px 36px 0;">
+  <div style="background:#032d60;color:#fff;padding:10px 16px;border-radius:6px 6px 0 0;font-size:14px;font-weight:700;">Key Metrics and Trends</div>
+  <div style="overflow-x:auto;" class="kpi-table-wrap">
+  <table style="font-size:14px;border-radius:0 0 6px 6px;overflow:hidden;">
+    <thead>
+      <tr>
+        <th style="text-align:left;min-width:160px;">KPIs</th>
+        <th>Target</th>
+        <th style="background:#0a5aa8;color:#fff;font-size:14px;">Nov'26 (MTD)</th>
+        <th>Oct'26</th>
+        <th>Sep'26</th>
+        <th>Aug'26</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Support Inflow</td><td>—</td><td style="background:#e8f4fd;font-weight:900;font-size:15px;">3,194 <small style="color:#706e6b;font-size:11px;">(SOQL MTD)</small></td><td>3,845</td><td>4,215</td><td>3,729</td></tr>
+      <tr><td>Closures</td><td>—</td><td style="background:#e8f4fd;font-weight:900;font-size:15px;">3,296 <small style="color:#706e6b;font-size:11px;">(SOQL MTD)</small></td><td>3,891</td><td>4,197</td><td>3,677</td></tr>
+      <tr><td>SLO Miss %</td><td style="color:#2e844a;">&lt;2%</td><td style="background:#e8f4fd;font-weight:900;font-size:15px;color:#2e844a;">0.0%</td><td style="color:#2e844a;">0.0%</td><td style="color:#2e844a;">0.0%</td><td style="color:#2e844a;">0.0%</td></tr>
+      <tr><td>Escalation %</td><td style="color:#2e844a;">&lt;2%</td><td style="background:#e8f4fd;font-weight:900;font-size:15px;color:#2e844a;">0.3% <small style="color:#2e844a;font-size:11px;">(−0.2)</small></td><td style="color:#2e844a;">0.5% <small style="color:#2e844a;font-size:11px;">(−0.2)</small></td><td style="color:#2e844a;">0.7% <small style="color:#2e844a;font-size:11px;">(−0.2)</small></td><td style="color:#2e844a;">0.9%</td></tr>
+      <tr><td>TTR</td><td>10 days</td><td style="background:#e8f4fd;font-weight:900;font-size:15px;color:#2e844a;">8.5 <small style="color:#ba0517;font-size:11px;">(+0.5)</small></td><td style="color:#2e844a;">8.0 <small style="color:#2e844a;font-size:11px;">(+0.1)</small></td><td style="color:#2e844a;">7.9 <small style="color:#ba0517;font-size:11px;">(−0.1)</small></td><td style="color:#2e844a;">8.0</td></tr>
+      <tr><td>CSAT</td><td>4.5</td><td style="background:#e8f4fd;font-weight:900;font-size:15px;color:#2e844a;">4.85 <small style="color:#2e844a;font-size:11px;">(+0.06)</small></td><td style="color:#2e844a;">4.79 <small style="color:#2e844a;font-size:11px;">(+0.01)</small></td><td style="color:#2e844a;">4.78 <small style="color:#ba0517;font-size:11px;">(−0.08)</small></td><td style="color:#2e844a;">4.86</td></tr>
+      <tr><td>Sig CSAT</td><td>4.5</td><td style="background:#f0faf9;font-weight:900;font-size:15px;color:#0b827c;">4.83 <small style="color:#706e6b;font-size:11px;">(Nov MTD)</small></td><td style="color:#706e6b;">—</td><td style="color:#706e6b;">—</td><td style="color:#706e6b;">—</td></tr>
+      <tr><td>Reopen Rate</td><td>20%</td><td style="background:#e8f4fd;font-weight:900;font-size:15px;color:#2e844a;">6.4% <small style="color:#2e844a;font-size:11px;">(−0.5)</small></td><td style="color:#2e844a;">6.9% <small style="color:#2e844a;font-size:11px;">(−0.2)</small></td><td style="color:#2e844a;">7.1% <small style="color:#ba0517;font-size:11px;">(+0.1)</small></td><td style="color:#2e844a;">7.0%</td></tr>
+      <tr><td>Investigations</td><td>—</td><td style="background:#e8f4fd;font-weight:900;font-size:15px;">230 <small style="color:#ba0517;font-size:11px;">(−165)</small></td><td>395 <small style="color:#ba0517;font-size:11px;">(−137)</small></td><td>532 <small style="color:#2e844a;font-size:11px;">(+114)</small></td><td>418</td></tr>
+      <tr><td>Investigation Rate</td><td>—</td><td style="background:#e8f4fd;font-weight:900;font-size:15px;">7.5% <small style="color:#ba0517;font-size:11px;">(−2.8)</small></td><td>10.3% <small style="color:#ba0517;font-size:11px;">(−2.4)</small></td><td>12.7% <small style="color:#2e844a;font-size:11px;">(+1.4)</small></td><td>11.3%</td></tr>
+      <tr><td>Bugs</td><td>—</td><td style="background:#e8f4fd;font-weight:900;font-size:15px;">188 <small style="color:#ba0517;font-size:11px;">(−216)</small></td><td>404 <small style="color:#ba0517;font-size:11px;">(−97)</small></td><td>501 <small style="color:#2e844a;font-size:11px;">(+238)</small></td><td>263</td></tr>
+      <tr><td>Bug Rate</td><td>—</td><td style="background:#e8f4fd;font-weight:900;font-size:15px;">6.1% <small style="color:#ba0517;font-size:11px;">(−4.4)</small></td><td>10.5% <small style="color:#ba0517;font-size:11px;">(−1.4)</small></td><td>11.9% <small style="color:#2e844a;font-size:11px;">(+4.8)</small></td><td>7.1%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:12px;color:#706e6b;margin-top:6px;padding:0 2px;">TTR, Escalation %, SLO Miss %, CSAT, Reopen Rate, Investigations, Bugs — sourced from WBR snapshot. Inflow &amp; Closures from live OrgCS SOQL (MTD). Sig CSAT Nov MTD = 4.83 provided directly.</p>
+</div>
+
+<!-- TCD TABLE -->
+<div class="section-label">Top Case Drivers (TCD) — Monthly Volume Table</div>
+<div class="card">
+  <div class="card-title">TCD 4-Month Volume — Revenue Cloud (Core) · Life Sciences · Industry (excl. LS) · Legacy Revenue</div>
+  <div style="overflow-x:auto;" class="tcd-table-wrap">
+  <table style="font-size:14px;">
+    <thead><tr>
+      <th style="text-align:left;min-width:180px;">TCD Group</th>
+      <th>Aug 2026</th><th>Sep 2026</th><th>Oct 2026</th><th class="tw-col">Nov (MTD)</th>
+      <th>4M Total</th><th>4M Avg/mo</th>
+      <th>Aug %</th><th>Sep %</th><th>Oct %</th><th class="tw-col">Nov %</th>
+      <th>Trend</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td style="font-weight:700;color:#0070d2;">Revenue Cloud (Core)</td>
+        <td>876</td><td>1,054</td><td>938</td><td class="tw-col">708</td>
+        <td style="font-weight:700;">3,576</td><td>894</td>
+        <td>23%</td><td>25%</td><td>24%</td><td class="tw-col" style="font-weight:800;">22%</td>
+        <td style="font-size:12px;color:#706e6b;">→ Stable 22–25%</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:#2e844a;">Life Sciences Cloud</td>
+        <td>618</td><td>601</td><td>680</td><td class="tw-col" style="color:#2e844a;font-weight:900;">707</td>
+        <td style="font-weight:700;">2,606</td><td>652</td>
+        <td>17%</td><td>14%</td><td>18%</td><td class="tw-col" style="font-weight:800;color:#2e844a;">22%</td>
+        <td style="font-size:12px;color:#2e844a;font-weight:700;">↑ Rising — +5pp Nov</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:#5867e8;">Industry (excl. LS)</td>
+        <td>1,857</td><td>2,165</td><td>1,888</td><td class="tw-col">1,465</td>
+        <td style="font-weight:700;">7,375</td><td>1,844</td>
+        <td>50%</td><td>51%</td><td>49%</td><td class="tw-col" style="font-weight:800;">46%</td>
+        <td style="font-size:12px;color:#ba0517;">↓ Share declining to LS</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:#e07000;">Legacy Revenue</td>
+        <td>378</td><td>395</td><td>339</td><td class="tw-col">314</td>
+        <td style="font-weight:700;">1,426</td><td>357</td>
+        <td>10%</td><td>9%</td><td>9%</td><td class="tw-col" style="font-weight:800;">10%</td>
+        <td style="font-size:12px;color:#706e6b;">→ Stable ~10%</td>
+      </tr>
+      <tr style="background:#f3f3f3;font-weight:700;">
+        <td>TOTAL</td>
+        <td>3,729</td><td>4,215</td><td>3,845</td><td class="tw-col">3,194</td>
+        <td>14,983</td><td>3,746</td>
+        <td>100%</td><td>100%</td><td>100%</td><td class="tw-col">100%</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:12px;color:#706e6b;margin-top:8px;">Industry (excl. LS) includes Health &amp; Insurance, Public Sector, Manufacturing, CPQ/OM, and other Industry sub-products. cssf_Product_Topic_Name__c is not groupable in SOQL — LS and RCA are queried directly; Industry(excl.LS) = Industry total − LS; Legacy Revenue = Revenue total − RCA.</p>
+</div>
+
+<!-- TCD TREND CHARTS -->
+<div class="card-2col">
+  <div class="card">
+    <div class="card-title">TCD Monthly Volume (Stacked)</div>
+    <div class="canvas-wrap"><canvas id="chartTCDStacked"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">TCD % Share Trend</div>
+    <div class="canvas-wrap"><canvas id="chartTCDShare"></canvas></div>
+  </div>
+</div>
+
+<!-- TOP 10 ACCOUNTS -->
+<div class="section-label">Top 10 Accounts — 4-Month View (Aug–Nov 2026)</div>
+<div class="card">
+  <div class="card-title">Top 10 Accounts by Combined Volume — Monthly Trend</div>
+  <div style="overflow-x:auto;">
+  <table class="acct-table" style="font-size:14px;">
+    <thead><tr>
+      <th style="text-align:left;">#</th>
+      <th style="text-align:left;">Account</th>
+      <th>Aug</th><th>Sep</th><th>Oct</th><th class="tw-col">Nov (MTD)</th>
+      <th>4M Total</th>
+      <th>Trend</th>
+      <th>Sev1</th>
+      <th>Tier</th>
+      <th>Source P&amp;T</th>
+      <th>Region</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><strong>Takeda Pharma</strong></td>
+        <td>105</td><td>65</td><td>74</td><td class="tw-col">52</td>
+        <td><strong style="color:#032d60;font-size:15px;">296</strong></td>
+        <td><span class="dn">↓ Declining</span></td>
+        <td style="color:#ba0517;font-weight:700;">25</td>
+        <td><span class="badge-sig">Sig Success</span></td>
+        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Life Sciences</span></td>
+        <td><span class="badge-india">India</span></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>Pfizer (LSC - EMEA)</strong></td>
+        <td>66</td><td>59</td><td>51</td><td class="tw-col" style="color:#2e844a;font-weight:900;">93</td>
+        <td><strong style="color:#032d60;font-size:15px;">269</strong></td>
+        <td><span class="up">↑ Nov surge (+82%)</span></td>
+        <td>0</td>
+        <td><span class="badge-sig">Sig Success</span></td>
+        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Life Sciences</span></td>
+        <td><span class="badge-emea">EMEA</span></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>Mylan Inc.</strong></td>
+        <td>59</td><td>63</td><td>61</td><td class="tw-col" style="color:#2e844a;font-weight:900;">86</td>
+        <td><strong style="color:#032d60;font-size:15px;">269</strong></td>
+        <td><span class="up">↑ Rising Nov</span></td>
+        <td>2</td>
+        <td><span class="badge-sig">Sig Success</span></td>
+        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Life Sciences</span></td>
+        <td><span class="badge-india">India</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>AstraZeneca</strong></td>
+        <td>67</td><td>71</td><td>43</td><td class="tw-col">59</td>
+        <td><strong style="color:#032d60;font-size:15px;">240</strong></td>
+        <td><span class="flat">→ Volatile, no S1</span></td>
+        <td>0</td>
+        <td><span class="badge-sig">Sig Success</span></td>
+        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Life Sciences</span></td>
+        <td><span class="badge-india">India</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>Alfasigma Global CRM</strong></td>
+        <td style="color:#706e6b;">4</td><td>34</td><td>72</td><td class="tw-col">69</td>
+        <td><strong style="color:#032d60;font-size:15px;">179</strong></td>
+        <td><span class="up">↑ Strong ramp (Oct+)</span></td>
+        <td>0</td>
+        <td><span class="badge-sig">Sig Success</span></td>
+        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Life Sciences</span></td>
+        <td><span class="badge-india">India</span></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>Novartis Pharma AG</strong></td>
+        <td>18</td><td>41</td><td>53</td><td class="tw-col">58</td>
+        <td><strong style="color:#032d60;font-size:15px;">170</strong></td>
+        <td><span class="up">↑ Consistent ramp</span></td>
+        <td>4</td>
+        <td><span class="badge-sig">Sig / Premier</span></td>
+        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Life Sciences</span></td>
+        <td><span class="badge-india">India</span></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><strong>Deloitte Global Services</strong></td>
+        <td>32</td><td style="color:#ba0517;">64</td><td>45</td><td class="tw-col" style="color:#2e844a;">19</td>
+        <td><strong style="color:#032d60;font-size:15px;">160</strong></td>
+        <td><span class="dn">↓ Sep spike then decline</span></td>
+        <td style="color:#ba0517;font-weight:700;">37</td>
+        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Partner Premier</span></td>
+        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Industry / RC</span></td>
+        <td><span class="badge-india">India</span></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td><strong>Accenture LLP</strong></td>
+        <td>36</td><td>51</td><td>42</td><td class="tw-col">26</td>
+        <td><strong style="color:#032d60;font-size:15px;">155</strong></td>
+        <td><span class="dn">↓ Declining Oct+</span></td>
+        <td style="color:#ba0517;font-weight:700;">33</td>
+        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Partner Premier</span></td>
+        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Industry / RC</span></td>
+        <td><span class="badge-india">India</span></td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td><strong>Shiftlogic</strong></td>
+        <td>43</td><td>36</td><td>24</td><td class="tw-col">20</td>
+        <td><strong style="color:#032d60;font-size:15px;">123</strong></td>
+        <td><span class="dn">↓ Declining (Aug peak)</span></td>
+        <td style="color:#ba0517;font-weight:700;">14</td>
+        <td><span style="background:#f3f3f3;color:#3e3e3c;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Standard / PP</span></td>
+        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">RC / Industry</span></td>
+        <td><span class="badge-emea">EMEA</span></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td><strong>BT (Digico)</strong></td>
+        <td>30</td><td>30</td><td>31</td><td class="tw-col">29</td>
+        <td><strong style="color:#032d60;font-size:15px;">120</strong></td>
+        <td><span class="flat">→ Remarkably flat</span></td>
+        <td>6</td>
+        <td><span class="badge-sig">Sig Success</span></td>
+        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Industry Omni</span></td>
+        <td><span class="badge-india">India</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+    <div style="background:#f8f9fa;border-left:4px solid #0969da;padding:12px 14px;border-radius:4px;font-size:13px;line-height:1.7;">
+      <strong>COMPOSITION</strong><br>
+      · <strong>8 of top 10 accounts are Life Sciences</strong> — pharma-led (Takeda, Pfizer, Mylan, AstraZeneca, Alfasigma, Novartis) + BT/Deloitte<br>
+      · <strong>7 of 10 on Signature Success tier</strong> — high-commitment, high-expectation accounts<br>
+      · <strong>India is primary delivery geo</strong> for 8 of 10 accounts<br>
+      · Pfizer + Mylan + Alfasigma all ramping in Nov — LifeSci growth is account-led, not market-wide
+    </div>
+    <div style="background:#fffef0;border-left:4px solid #e8c930;padding:12px 14px;border-radius:4px;font-size:13px;line-height:1.7;">
+      <strong>SIGNALS</strong><br>
+      · <strong>Pfizer Nov surge (+82%)</strong> — went from 51 (Oct) to 93 (Nov MTD). Watch for go-live / expansion event.<br>
+      · <strong>Alfasigma ramp</strong> — essentially zero in Aug (4 cases), 72 in Oct, 69 in Nov. New deployment pattern.<br>
+      · <strong>Deloitte &amp; Accenture S1 concentration</strong> (37 and 33 S1 respectively) — Partner Premier SI activity flagged.<br>
+      · <strong>Shiftlogic</strong> — 14 S1s over 4M despite Standard/PP tier. Disproportionate S1 rate. Monitor.
+    </div>
+  </div>
+</div>
+
+<!-- TOP 10 ACCOUNTS TREND CHART -->
+<div class="card">
+  <div class="card-title">Top 5 Accounts — Monthly Volume Trend</div>
+  <div class="canvas-med"><canvas id="chartTop5Accts"></canvas></div>
 </div>
 
 <!-- SECTION: MONTHLY INFLOW TREND -->
@@ -830,6 +1154,65 @@ new Chart(document.getElementById('chartSigProdPct').getContext('2d'),{
   options:{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{position:'top'}},
     scales:{y:{min:0,max:50,title:{display:true,text:'% of Sig Total'}}}}
+});
+
+// === TCD CHARTS ===
+const TCD_GROUPS = ['Revenue Cloud (Core)','Life Sciences','Industry (excl. LS)','Legacy Revenue'];
+const TCD_COLORS = ['#0070d2','#2e844a','#5867e8','#e07000'];
+const MONTH_TOTALS = [3729,4215,3845,3194];
+const tcdData = [
+  {w:[876,1054,938,708]},
+  {w:[618,601,680,707]},
+  {w:[1857,2165,1888,1465]},
+  {w:[378,395,339,314]}
+];
+
+new Chart(document.getElementById('chartTCDStacked').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:MONTHS,
+    datasets:TCD_GROUPS.map(function(g,i){return{
+      label:g, data:tcdData[i].w, backgroundColor:TCD_COLORS[i]+'cc',
+      datalabels:{display:true,anchor:'center',align:'center',font:{weight:'700',size:11},color:'#fff',formatter:function(v){return v?v.toLocaleString():''}}
+    };})
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'}},
+    scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}
+});
+
+new Chart(document.getElementById('chartTCDShare').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:MONTHS,
+    datasets:TCD_GROUPS.map(function(g,i){return{
+      label:g, data:tcdData[i].w.map(function(v,j){return Math.round(v/MONTH_TOTALS[j]*100);}),
+      borderColor:TCD_COLORS[i], backgroundColor:TCD_COLORS[i]+'22',
+      pointRadius:5, borderWidth:2.5, tension:0.3,
+      datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:10},color:TCD_COLORS[i],formatter:function(v){return v+'%';}}
+    };})
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'}},
+    scales:{y:{min:0,max:60,title:{display:true,text:'% of Monthly Total'}}}}
+});
+
+// === TOP 5 ACCOUNTS TREND ===
+new Chart(document.getElementById('chartTop5Accts').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      {label:'Takeda Pharma',   data:[105,65,74,52],  borderColor:SF_NAVY,   pointRadius:5,borderWidth:2.5,tension:0.3,datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:10},color:SF_NAVY,  formatter:function(v){return v;}}},
+      {label:'Pfizer (LSC)',    data:[66,59,51,93],   borderColor:SF_GREEN,  pointRadius:5,borderWidth:2.5,tension:0.3,datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:10},color:SF_GREEN, formatter:function(v){return v;}}},
+      {label:'Mylan Inc.',      data:[59,63,61,86],   borderColor:SF_BLUE,   pointRadius:5,borderWidth:2.5,tension:0.3,datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:10},color:SF_BLUE,  formatter:function(v){return v;}}},
+      {label:'AstraZeneca',     data:[67,71,43,59],   borderColor:SF_PURPLE, pointRadius:5,borderWidth:2.5,tension:0.3,datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:10},color:SF_PURPLE,formatter:function(v){return v;}}},
+      {label:'Alfasigma',       data:[4,34,72,69],    borderColor:SF_ORANGE, pointRadius:5,borderWidth:2.5,tension:0.3,datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:10},color:SF_ORANGE,formatter:function(v){return v;}}}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'}},
+    scales:{y:{beginAtZero:true,title:{display:true,text:'Monthly Case Volume'}}}}
 });
 
 // CURSOR SPOTLIGHT
