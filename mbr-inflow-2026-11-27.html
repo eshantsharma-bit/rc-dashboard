@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MBR — Industries & Revenue Cloud | Aug–Nov 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root {
+  --sf-navy:#032d60; --sf-blue:#0070d2; --sf-blue-lt:#e8f4fd;
+  --sf-teal:#0b827c; --sf-green:#2e844a; --sf-green-lt:#eef6f0;
+  --sf-orange:#e07000; --sf-orange-lt:#fdf3e3; --sf-red:#ba0517;
+  --sf-purple:#5867e8; --sf-gray-90:#1b1b1b; --sf-gray-70:#3e3e3c;
+  --sf-gray-50:#706e6b; --sf-gray-20:#dddbda; --sf-gray-05:#f3f3f3;
+  --sf-white:#ffffff;
+  --bg:var(--sf-white); --surface:var(--sf-gray-05); --border:var(--sf-gray-20);
+  --text-primary:var(--sf-gray-90); --text-secondary:var(--sf-gray-50);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Salesforce Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+     background:var(--bg);color:var(--text-primary);font-size:15px;line-height:1.5;}
+.page-header{background:var(--sf-navy);padding:20px 36px 18px;display:flex;justify-content:space-between;align-items:flex-start;}
+.page-header h1{font-size:22px;font-weight:800;color:#fff;margin-bottom:4px;}
+.page-header .sub-title{font-size:13px;color:rgba(255,255,255,.65);}
+.page-header .meta{font-size:12px;color:rgba(255,255,255,.55);text-align:right;line-height:1.6;}
+/* NOTE BANNER */
+.drill-banner{background:#fff8e1;border-left:5px solid #e07000;margin:16px 36px 0;padding:10px 16px;font-size:13px;border-radius:4px;}
+/* KPI TILES */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 36px 0;}
+.kpi{background:var(--sf-white);border-radius:8px;padding:18px 20px;border-top:4px solid var(--sf-navy);
+     box-shadow:0 1px 4px rgba(3,45,96,.09);transition:transform .18s,box-shadow .18s;}
+.kpi:hover{transform:scale(1.07);box-shadow:0 12px 36px rgba(3,45,96,.18);z-index:20;position:relative;}
+.kpi .label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-secondary);}
+.kpi .value{font-size:32px;font-weight:800;color:var(--sf-navy);line-height:1.1;margin:4px 0 2px;}
+.kpi .sub{font-size:12px;color:var(--text-secondary);}
+.kpi .badge{display:inline-block;background:#fdf3e3;color:#b25000;font-size:11px;font-weight:700;
+            padding:1px 7px;border-radius:12px;margin-left:6px;}
+.kpi .badge.up{background:#eef6f0;color:#2e844a;}
+.kpi .badge.dn{background:#fcedef;color:#ba0517;}
+.kpi-divider{border-top:1px solid var(--sf-gray-20);margin:8px 0 6px;}
+.kpi-geo{font-size:11px;color:var(--text-secondary);line-height:1.8;}
+.kpi-geo span{font-weight:700;color:var(--text-primary);}
+/* SECTION LABEL */
+.section-label{margin:28px 36px 0;padding:10px 16px;background:var(--sf-navy);color:#fff;
+  font-size:13px;font-weight:700;letter-spacing:.4px;border-radius:6px;text-transform:uppercase;}
+/* CARDS */
+.card{background:var(--sf-white);border-radius:8px;padding:22px 24px;
+      box-shadow:0 1px 4px rgba(3,45,96,.09);margin:16px 36px 0;
+      transition:transform .18s,box-shadow .18s;}
+.card:hover{transform:scale(1.01);box-shadow:0 8px 28px rgba(3,45,96,.12);z-index:5;position:relative;}
+.card-title{font-size:14px;font-weight:700;color:var(--sf-navy);margin-bottom:14px;}
+.card-2col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 36px 0;}
+.card-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin:16px 36px 0;}
+/* CHART CONTAINERS */
+.canvas-wrap{position:relative;height:300px;}
+.canvas-tall{position:relative;height:380px;}
+.canvas-med{position:relative;height:280px;}
+/* TABLES */
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th{background:var(--sf-navy);color:#fff;padding:9px 14px;font-size:13px;font-weight:600;text-align:center;}
+th:first-child{text-align:left;}
+td{padding:9px 14px;border-bottom:1px solid var(--sf-gray-20);text-align:center;}
+td:first-child{text-align:left;font-weight:600;color:var(--sf-navy);}
+tr:nth-child(even) td{background:var(--sf-gray-05);}
+tr:hover td{background:#dbeeff !important;}
+.tw-col{background:#e8f4fd !important;font-weight:900;font-size:15px;}
+.month-label{font-size:11px;color:var(--text-secondary);font-weight:400;display:block;}
+/* BADGES */
+.badge-emea{background:#e8f4fd;color:#032d60;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;}
+.badge-india{background:#f3e8ff;color:#5867e8;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;}
+.badge-apac{background:#f3f3f3;color:#3e3e3c;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;}
+.badge-sig{background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;}
+/* TREND ARROWS */
+.up{color:#2e844a;font-weight:700;} .dn{color:#ba0517;font-weight:700;} .flat{color:#706e6b;}
+/* HIGHLIGHTS CARDS */
+.pres-card-sm{padding:16px 18px;border-radius:8px;font-size:13px;line-height:1.7;
+              box-shadow:0 1px 3px rgba(3,45,96,.08);transition:transform .18s,box-shadow .18s;}
+.pres-card-sm:hover{transform:scale(1.04);box-shadow:0 8px 24px rgba(3,45,96,.14);z-index:10;position:relative;}
+.pres-card-sm .card-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+/* SIG SECTION SPECIFIC */
+.sig-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 0;}
+.sig-kpi{background:#f8fffe;border-left:4px solid #0b827c;border-radius:6px;padding:12px 14px;}
+.sig-kpi .sk-val{font-size:22px;font-weight:800;color:#032d60;}
+.sig-kpi .sk-label{font-size:11px;color:#706e6b;text-transform:uppercase;letter-spacing:.5px;}
+.sig-kpi .sk-sub{font-size:11px;color:#0b827c;font-weight:600;}
+/* FOOTER */
+.footer{margin:32px 36px 24px;padding:12px 16px;background:var(--sf-gray-05);border-radius:6px;
+        font-size:12px;color:var(--text-secondary);display:flex;justify-content:space-between;}
+/* CURSOR SPOTLIGHT */
+#cursor-spotlight{pointer-events:none;position:fixed;top:0;left:0;width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.55) 0%,rgba(255,255,255,0.18) 35%,rgba(3,45,96,0.04) 60%,transparent 75%);
+  transform:translate(-50%,-50%);transition:opacity 0.3s ease;z-index:9999;opacity:0;}
+</style>
+</head>
+<body>
+<div id="cursor-spotlight"></div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div>
+    <h1>Monthly Business Review — Industries &amp; Revenue Cloud</h1>
+    <div class="sub-title">Aug – Nov 2026 (4-month view) &nbsp;·&nbsp; EMEA + India + APAC &nbsp;·&nbsp; <strong>Drill Run — MBR Preparation</strong> &nbsp;·&nbsp; Nov MTD through Nov 27</div>
+  </div>
+  <div class="meta">Generated: Nov 27, 2026<br>Source: OrgCS live SOQL<br>Region: EMEA · India · APAC<br>⚠ TTR/CSAT pending DB refresh (Tue)</div>
+</div>
+
+<!-- DRILL NOTE -->
+<div class="drill-banner">
+  ⚠ <strong>Drill Run:</strong> This is an MBR preparation dashboard. Inflow, Sev1, Signature, and product volumes are live from OrgCS. CSAT, TTR, Closures, Escalation %, and SLO Miss % are <strong>not included</strong> — these metrics will be available after Tuesday's DB refresh. Nov data is MTD (Aug 1 – Nov 27 IST).
+</div>
+
+<!-- KPI TILES -->
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="label">Total Inflow</div>
+    <div class="value">14,983</div>
+    <div class="sub">Aug–Nov MTD · 4-month total</div>
+    <div class="kpi-divider"></div>
+    <div class="kpi-geo">
+      <span>Aug</span> 3,729 &nbsp;·&nbsp; <span>Sep</span> 4,215 &nbsp;·&nbsp; <span>Oct</span> 3,845 &nbsp;·&nbsp; <span>Nov MTD</span> 3,194
+    </div>
+  </div>
+  <div class="kpi" style="border-top-color:#ba0517;">
+    <div class="label">Sev1 (Critical)</div>
+    <div class="value">1,341</div>
+    <div class="sub">4-month total · 8.9% of inflow</div>
+    <div class="kpi-divider"></div>
+    <div class="kpi-geo">
+      <span>Aug</span> 322 &nbsp;·&nbsp; <span>Sep</span> 411 &nbsp;·&nbsp; <span>Oct</span> 360 &nbsp;·&nbsp; <span>Nov MTD</span> 248
+    </div>
+  </div>
+  <div class="kpi" style="border-top-color:#2e844a;">
+    <div class="label">Signature Inflow</div>
+    <div class="value">5,693</div>
+    <div class="sub">4-month total · <strong>38% of inflow</strong></div>
+    <div class="kpi-divider"></div>
+    <div class="kpi-geo">
+      <span>Aug</span> 1,306 · 35% &nbsp;·&nbsp; <span>Sep</span> 1,548 · 37% &nbsp;·&nbsp; <span>Oct</span> 1,438 · 37% &nbsp;·&nbsp; <span>Nov MTD</span> 1,401 · 44%
+    </div>
+  </div>
+  <div class="kpi" style="border-top-color:#5867e8;">
+    <div class="label">Life Sciences Cloud</div>
+    <div class="value">2,606</div>
+    <div class="sub">4-month total · 17% of inflow</div>
+    <div class="kpi-divider"></div>
+    <div class="kpi-geo">
+      <span>Aug</span> 618 &nbsp;·&nbsp; <span>Sep</span> 601 &nbsp;·&nbsp; <span>Oct</span> 680 &nbsp;·&nbsp; <span>Nov MTD</span> 707
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: MONTHLY INFLOW TREND -->
+<div class="section-label">Monthly Inflow Trend — 4 Months</div>
+<div class="card">
+  <div class="card-title">Total Monthly Inflow + Sev1 (Aug–Nov 2026 MTD)</div>
+  <div class="canvas-tall"><canvas id="chartMonthlyTotal"></canvas></div>
+</div>
+
+<!-- GEO BREAKDOWN -->
+<div class="section-label">Regional Monthly Trend — EMEA / India / APAC</div>
+<div class="card-2col">
+  <div class="card">
+    <div class="card-title">Monthly Inflow by Geo (Stacked)</div>
+    <div class="canvas-wrap"><canvas id="chartGeoStacked"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Geo % Share by Month</div>
+    <div class="canvas-wrap"><canvas id="chartGeoShare"></canvas></div>
+  </div>
+</div>
+<div class="card" style="margin-top:16px;">
+  <div class="card-title">Geo Volume Summary</div>
+  <table>
+    <thead><tr>
+      <th>Geo</th>
+      <th>Aug 2026</th><th>Sep 2026</th><th>Oct 2026</th><th class="tw-col">Nov (MTD)</th>
+      <th>4M Total</th><th>Avg Share</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="badge-emea">EMEA</span></td>
+        <td>1,787</td><td>2,079</td><td>1,817</td><td class="tw-col">1,538</td>
+        <td>7,221</td><td>48%</td>
+      </tr>
+      <tr>
+        <td><span class="badge-india">India</span></td>
+        <td>1,325</td><td>1,493</td><td>1,376</td><td class="tw-col">1,163</td>
+        <td>5,357</td><td>36%</td>
+      </tr>
+      <tr>
+        <td><span class="badge-apac">APAC</span></td>
+        <td>617</td><td>643</td><td>652</td><td class="tw-col">493</td>
+        <td>2,405</td><td>16%</td>
+      </tr>
+      <tr style="font-weight:700;background:#e8f4fd;">
+        <td>TOTAL</td>
+        <td>3,729</td><td>4,215</td><td>3,845</td><td class="tw-col">3,194</td>
+        <td>14,983</td><td>100%</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SEV1 BY GEO -->
+<div class="section-label">Sev1 (Critical) Monthly Trend — by Geo</div>
+<div class="card-2col">
+  <div class="card">
+    <div class="card-title">Sev1 Monthly Volume (All Geos)</div>
+    <div class="canvas-wrap"><canvas id="chartSev1"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Sev1 Rate (% of monthly inflow)</div>
+    <div class="canvas-wrap"><canvas id="chartSev1Rate"></canvas></div>
+  </div>
+</div>
+<div class="card" style="margin-top:16px;">
+  <div class="card-title">Sev1 by Geo Detail</div>
+  <table>
+    <thead><tr>
+      <th>Geo</th>
+      <th>Aug 2026</th><th>Sep 2026</th><th>Oct 2026</th><th class="tw-col">Nov (MTD)</th>
+      <th>Sev1 Rate (avg)</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="badge-emea">EMEA</span></td>
+        <td>128 <span style="color:#706e6b;font-size:11px;">(7.2%)</span></td>
+        <td>202 <span style="color:#706e6b;font-size:11px;">(9.7%)</span></td>
+        <td>143 <span style="color:#706e6b;font-size:11px;">(7.9%)</span></td>
+        <td class="tw-col">115 <span style="color:#706e6b;font-size:11px;">(7.5%)</span></td>
+        <td>8.0%</td>
+      </tr>
+      <tr>
+        <td><span class="badge-india">India</span></td>
+        <td>149 <span style="color:#706e6b;font-size:11px;">(11.2%)</span></td>
+        <td>163 <span style="color:#706e6b;font-size:11px;">(10.9%)</span></td>
+        <td>167 <span style="color:#706e6b;font-size:11px;">(12.1%)</span></td>
+        <td class="tw-col">110 <span style="color:#706e6b;font-size:11px;">(9.5%)</span></td>
+        <td>10.9%</td>
+      </tr>
+      <tr>
+        <td><span class="badge-apac">APAC</span></td>
+        <td>45 <span style="color:#706e6b;font-size:11px;">(7.3%)</span></td>
+        <td>46 <span style="color:#706e6b;font-size:11px;">(7.2%)</span></td>
+        <td>50 <span style="color:#706e6b;font-size:11px;">(7.7%)</span></td>
+        <td class="tw-col">23 <span style="color:#706e6b;font-size:11px;">(4.7%)</span></td>
+        <td>6.7%</td>
+      </tr>
+      <tr style="font-weight:700;background:#fcedef;">
+        <td>TOTAL S1</td>
+        <td>322</td><td>411</td><td>360</td><td class="tw-col">248</td>
+        <td><strong>8.9% avg</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:#706e6b;margin-top:8px;">⚠ Sep 2026 Sev1 spike (411, +28% vs Aug) warrants MBR review — EMEA S1 jumped from 128→202. India S1 rate consistently higher than EMEA/APAC at ~11%.</p>
+</div>
+
+<!-- PRODUCT MIX -->
+<div class="section-label">Product Family Monthly Trend — RCA / Life Sciences / Legacy Rev</div>
+<div class="card-2col">
+  <div class="card">
+    <div class="card-title">RCA vs Life Sciences Monthly Volume</div>
+    <div class="canvas-wrap"><canvas id="chartProdVol"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">RCA + Life Sciences % Share of Total</div>
+    <div class="canvas-wrap"><canvas id="chartProdShare"></canvas></div>
+  </div>
+</div>
+<div class="card" style="margin-top:16px;">
+  <div class="card-title">Product Family Summary</div>
+  <table>
+    <thead><tr>
+      <th>Product Group</th>
+      <th>Aug 2026</th><th>Sep 2026</th><th>Oct 2026</th><th class="tw-col">Nov (MTD)</th>
+      <th>Trend</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>Revenue Cloud (Core) — RCA</td>
+        <td>876 (23%)</td><td>1,054 (25%)</td><td>938 (24%)</td><td class="tw-col">708 (22%)</td>
+        <td><span class="flat">→ Stable 22–25%</span></td>
+      </tr>
+      <tr>
+        <td>Life Sciences Cloud</td>
+        <td>618 (17%)</td><td>601 (14%)</td><td>680 (18%)</td><td class="tw-col">707 (22%)</td>
+        <td><span class="up">↑ Rising — +5pp Nov MTD</span></td>
+      </tr>
+      <tr>
+        <td>Industry (non-LS) + Legacy Rev</td>
+        <td>2,235 (60%)</td><td>2,560 (61%)</td><td>2,227 (58%)</td><td class="tw-col">1,779 (56%)</td>
+        <td><span class="dn">↓ Gradual share decline</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:#706e6b;margin-top:8px;">Life Sciences Cloud is gaining share month-on-month. RCA volume peaked in Sep (+20% vs Aug) then normalised. Nov MTD reflects ~27 days — full month will increase.</p>
+</div>
+
+<!-- SUPPORT TIER -->
+<div class="section-label">Support Tier Distribution — Monthly</div>
+<div class="card-2col">
+  <div class="card">
+    <div class="card-title">Tier Volume by Month (Stacked)</div>
+    <div class="canvas-wrap"><canvas id="chartTierStacked"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Signature % of Monthly Total</div>
+    <div class="canvas-wrap"><canvas id="chartSigPct"></canvas></div>
+  </div>
+</div>
+<div class="card" style="margin-top:16px;">
+  <div class="card-title">Tier Detail — Signature by Geo</div>
+  <table>
+    <thead><tr>
+      <th>Tier / Geo</th>
+      <th>Aug 2026</th><th>Sep 2026</th><th>Oct 2026</th><th class="tw-col">Nov (MTD)</th>
+      <th>Trend</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="badge-sig">Sig — EMEA</span></td>
+        <td>450</td><td>590</td><td>532</td><td class="tw-col">530</td>
+        <td><span class="up">↑ Rising vs Aug (+80)</span></td>
+      </tr>
+      <tr>
+        <td><span class="badge-sig">Sig — India</span></td>
+        <td>620</td><td>739</td><td>692</td><td class="tw-col">685</td>
+        <td><span class="flat">→ Elevated (Sep spike)</span></td>
+      </tr>
+      <tr>
+        <td><span class="badge-sig">Sig — APAC</span></td>
+        <td>236</td><td>219</td><td>214</td><td class="tw-col">186</td>
+        <td><span class="dn">↓ Declining</span></td>
+      </tr>
+      <tr style="font-weight:700;">
+        <td>Sig Total</td>
+        <td>1,306</td><td>1,548</td><td>1,438</td><td class="tw-col">1,401</td>
+        <td><span class="flat">→ Stabilising post-Sep</span></td>
+      </tr>
+      <tr>
+        <td><strong>Sig % of Total</strong></td>
+        <td>35%</td><td>37%</td><td>37%</td><td class="tw-col" style="color:#2e844a;font-weight:900;">44%</td>
+        <td><span class="up">↑ Nov MTD spike — watch</span></td>
+      </tr>
+      <tr>
+        <td>Premier+ (inc Premier)</td>
+        <td>1,683</td><td>1,841</td><td>1,737</td><td class="tw-col">1,323</td>
+        <td><span class="dn">↓ Declining share</span></td>
+      </tr>
+      <tr>
+        <td>Standard</td>
+        <td>658</td><td>625</td><td>599</td><td class="tw-col">464</td>
+        <td><span class="dn">↓ Declining</span></td>
+      </tr>
+      <tr>
+        <td>Partner Premier</td>
+        <td>528</td><td>540</td><td>445</td><td class="tw-col">291</td>
+        <td><span class="dn">↓ Notable decline Nov</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ========================================= -->
+<!-- SIGNATURE SECTION — NEW FOR MBR           -->
+<!-- ========================================= -->
+<div class="section-label" style="background:#0b827c;">✦ Signature Success — Monthly Deep Dive (Aug–Nov 2026)</div>
+
+<div class="card">
+  <div class="card-title">Signature Snapshot — 4-Month KPIs</div>
+  <div class="sig-kpi-row">
+    <div class="sig-kpi">
+      <div class="sk-label">Sig Total (4M)</div>
+      <div class="sk-val">5,693</div>
+      <div class="sk-sub">38% of all inflow avg</div>
+    </div>
+    <div class="sig-kpi">
+      <div class="sk-label">Sig Sev1 (4M)</div>
+      <div class="sk-val">399</div>
+      <div class="sk-sub">7.0% Sig S1 rate</div>
+    </div>
+    <div class="sig-kpi">
+      <div class="sk-label">Peak Sig Month</div>
+      <div class="sk-val">Sep 2026</div>
+      <div class="sk-sub">1,548 cases · 37% share</div>
+    </div>
+    <div class="sig-kpi">
+      <div class="sk-label">Nov MTD Sig Share</div>
+      <div class="sk-val">44%</div>
+      <div class="sk-sub">↑ Tracking above avg — 1,401</div>
+    </div>
+  </div>
+</div>
+
+<!-- SIG VOLUME TREND -->
+<div class="card-2col" style="margin-top:16px;">
+  <div class="card">
+    <div class="card-title">Signature Monthly Volume Trend</div>
+    <div class="canvas-wrap"><canvas id="chartSigVolume"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Signature Sev1 Monthly Trend</div>
+    <div class="canvas-wrap"><canvas id="chartSigSev1"></canvas></div>
+  </div>
+</div>
+
+<!-- SIG REGIONAL TREND -->
+<div class="section-label" style="background:#116b65;">Signature — Regional Trend</div>
+<div class="card-2col">
+  <div class="card">
+    <div class="card-title">Sig Monthly Volume by Geo</div>
+    <div class="canvas-wrap"><canvas id="chartSigGeo"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Sig Sev1 by Geo</div>
+    <div class="canvas-wrap"><canvas id="chartSigSev1Geo"></canvas></div>
+  </div>
+</div>
+<div class="card" style="margin-top:16px;">
+  <div class="card-title">Signature Regional Detail</div>
+  <table>
+    <thead><tr>
+      <th>Geo</th>
+      <th>Aug 2026</th><th>Sep 2026</th><th>Oct 2026</th><th class="tw-col">Nov (MTD)</th>
+      <th>S1 (Aug)</th><th>S1 (Sep)</th><th>S1 (Oct)</th><th class="tw-col">S1 (Nov MTD)</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="badge-emea">EMEA</span></td>
+        <td>450</td><td>590</td><td>532</td><td class="tw-col">530</td>
+        <td>35</td><td style="background:#fcedef;">68</td><td>52</td><td class="tw-col">48</td>
+      </tr>
+      <tr>
+        <td><span class="badge-india">India</span></td>
+        <td>620</td><td>739</td><td>692</td><td class="tw-col">685</td>
+        <td>22</td><td>32</td><td>33</td><td class="tw-col">26</td>
+      </tr>
+      <tr>
+        <td><span class="badge-apac">APAC</span></td>
+        <td>236</td><td>219</td><td>214</td><td class="tw-col">186</td>
+        <td>16</td><td>28</td><td>22</td><td class="tw-col">17</td>
+      </tr>
+      <tr style="font-weight:700;">
+        <td>Total Sig</td>
+        <td>1,306</td><td>1,548</td><td>1,438</td><td class="tw-col">1,401</td>
+        <td>73</td><td style="background:#fcedef;font-weight:700;">128</td><td>107</td><td class="tw-col">91</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px;">
+    <div style="background:#f8f4ff;border-left:3px solid #5867e8;padding:10px 12px;border-radius:4px;font-size:13px;">
+      <strong>India</strong> is the largest Sig geo every month (45–48% of Sig). Volume stable at 620–739; Sep was peak. S1 rate improving Nov MTD (3.8%).
+    </div>
+    <div style="background:#fcedef;border-left:3px solid #ba0517;padding:10px 12px;border-radius:4px;font-size:13px;">
+      <strong>EMEA Sig S1 spike in Sep</strong> (68 — 94% jump vs Aug 35). Returned to ~50 in Oct/Nov. Warrants root-cause discussion in MBR.
+    </div>
+    <div style="background:#f3f3f3;border-left:3px solid #706e6b;padding:10px 12px;border-radius:4px;font-size:13px;">
+      <strong>APAC Sig</strong> declining trend (236→186 over 4 months). S1 declining too. Volume relatively thin — flag for capacity context.
+    </div>
+  </div>
+</div>
+
+<!-- SIG PRODUCT VIEW -->
+<div class="section-label" style="background:#116b65;">Signature — Product View</div>
+<div class="card-2col">
+  <div class="card">
+    <div class="card-title">Sig: RCA vs Life Sciences Monthly</div>
+    <div class="canvas-wrap"><canvas id="chartSigProd"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Sig: Product % Mix (of Sig total)</div>
+    <div class="canvas-wrap"><canvas id="chartSigProdPct"></canvas></div>
+  </div>
+</div>
+<div class="card" style="margin-top:16px;">
+  <div class="card-title">Signature Product Detail — RCA &amp; Life Sciences</div>
+  <table>
+    <thead><tr>
+      <th>Product (Sig)</th>
+      <th>Aug 2026</th><th>Sep 2026</th><th>Oct 2026</th><th class="tw-col">Nov (MTD)</th>
+      <th>Trend</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>RCA (all geos)</td>
+        <td>150 (11%)</td><td>223 (14%)</td><td>193 (13%)</td><td class="tw-col">158 (11%)</td>
+        <td><span class="flat">→ Sep spike, normalised</span></td>
+      </tr>
+      <tr style="font-size:12px;color:#706e6b;">
+        <td style="padding-left:24px;">↳ EMEA</td>
+        <td>77</td><td>111</td><td>104</td><td class="tw-col">84</td><td>—</td>
+      </tr>
+      <tr style="font-size:12px;color:#706e6b;">
+        <td style="padding-left:24px;">↳ India</td>
+        <td>65</td><td>96</td><td>69</td><td class="tw-col">69</td><td>—</td>
+      </tr>
+      <tr style="font-size:12px;color:#706e6b;">
+        <td style="padding-left:24px;">↳ APAC</td>
+        <td>8</td><td>16</td><td>20</td><td class="tw-col">5</td><td>—</td>
+      </tr>
+      <tr>
+        <td>Life Sciences (Sig)</td>
+        <td>394 (30%)</td><td>417 (27%)</td><td>481 (33%)</td><td class="tw-col" style="color:#2e844a;font-weight:800;">587 (42%)</td>
+        <td><span class="up">↑↑ Strong growth — +49% Aug→Nov</span></td>
+      </tr>
+      <tr style="font-size:12px;color:#706e6b;">
+        <td style="padding-left:24px;">↳ EMEA</td>
+        <td>101</td><td>121</td><td>117</td><td class="tw-col" style="color:#2e844a;font-weight:700;">170</td><td>↑</td>
+      </tr>
+      <tr style="font-size:12px;color:#706e6b;">
+        <td style="padding-left:24px;">↳ India</td>
+        <td>252</td><td>249</td><td>324</td><td class="tw-col" style="color:#2e844a;font-weight:700;">366</td><td>↑</td>
+      </tr>
+      <tr style="font-size:12px;color:#706e6b;">
+        <td style="padding-left:24px;">↳ APAC</td>
+        <td>41</td><td>47</td><td>40</td><td class="tw-col">51</td><td>→</td>
+      </tr>
+      <tr>
+        <td>Sig Ind+LegacyRev (est.)</td>
+        <td>762 (58%)</td><td>908 (59%)</td><td>764 (53%)</td><td class="tw-col">656 (47%)</td>
+        <td><span class="dn">↓ Share declining to LifeSci growth</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top:14px;background:#eef9f6;border-left:4px solid #0b827c;padding:12px 14px;border-radius:4px;font-size:13px;line-height:1.7;">
+    <strong>Key Signal:</strong> Life Sciences Signature cases are growing rapidly — from 394 (Aug) to 587 (Nov MTD), a <strong>+49% increase</strong> in 4 months. Within Sig, LifeSci now accounts for <strong>42% of Sig volume</strong> (Nov MTD) vs 30% in Aug. India is the primary driver (252→366). This is likely correlated with active pharma/biotech go-lives. EMEA LifeSci Sig also accelerating (+68% Aug→Nov). MBR should discuss whether Signature capacity planning reflects this trajectory.
+  </div>
+</div>
+
+<!-- KEY OBSERVATIONS -->
+<div class="section-label">MBR Key Observations</div>
+<div class="card-3col">
+  <div class="pres-card-sm" style="border-left:5px solid #032d60;background:#f8f9fa;">
+    <div class="card-label" style="color:#032d60;">Inflow Pattern</div>
+    Sep 2026 was the peak month at 4,215 cases (+13% vs Aug). Oct and Nov MTD have normalised. EMEA carries ~48% of all inflow consistently. India at 36% and stable. Full Nov will likely land at 3,400–3,500 at current pace.
+  </div>
+  <div class="pres-card-sm" style="border-left:5px solid #ba0517;background:#fdf2f2;">
+    <div class="card-label" style="color:#ba0517;">Sev1 Watch</div>
+    Sep Sev1 spike (411 total, +28% vs Aug) driven primarily by EMEA (128→202). Oct/Nov have improved but India S1 rate (~10–12%) remains structurally higher than EMEA/APAC. Needs MBR triage on India S1 handling.
+  </div>
+  <div class="pres-card-sm" style="border-left:5px solid #0b827c;background:#f8fffe;">
+    <div class="card-label" style="color:#0b827c;">Signature Growth</div>
+    Signature share rising: 35% (Aug) → 44% (Nov MTD). Life Sciences Sig is the primary driver (+49% in 4 months). EMEA Sig S1 Sep spike (68) is the main risk signal. Capacity planning should track LifeSci Sig trend.
+  </div>
+</div>
+<div class="card-3col" style="margin-top:0;">
+  <div class="pres-card-sm" style="border-left:5px solid #2e844a;background:#eef6f0;">
+    <div class="card-label" style="color:#2e844a;">Life Sciences Cloud</div>
+    Strongest growth product across both total and Signature tiers. Total LS: 618→707 (+14% Aug→Nov MTD). Sig LS: 394→587 (+49%). India is the volume engine; EMEA accelerating sharply in Nov. LifeSci now matches RCA in total volume (both ~22% Nov MTD).
+  </div>
+  <div class="pres-card-sm" style="border-left:5px solid #e07000;background:#fdf3e3;">
+    <div class="card-label" style="color:#b25000;">Revenue Cloud (Core) — RCA</div>
+    Sep spike (1,054 cases, +20% vs Aug) normalised in Oct (938) and Nov (708 MTD). Share stable at 22–25%. RCA Sig volume follows similar pattern — Sep peak, then normalised. No structural growth concern for MBR.
+  </div>
+  <div class="pres-card-sm" style="border-left:5px solid #e8c930;background:#fffef0;">
+    <div class="card-label" style="color:#706e6b;">Data Limitations (Drill Run)</div>
+    Nov is MTD (Aug 1–Nov 27). CSAT, TTR, Closures, Escalation %, SLO Miss % pending Tuesday refresh. AMER inflow not in scope — cross-reference with AMER MBR for global comparison. All inflow counts live from OrgCS SOQL (aggregate GROUP BY — no row-cap risk).
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>MBR Drill — Industries & Revenue Cloud · Aug–Nov 2026 · EMEA + India + APAC</span>
+  <span>Source: OrgCS live SOQL · Generated: Nov 27, 2026 · Repo: eshantsharma-bit/rc-dashboard</span>
+</div>
+
+<script>
+Chart.register(ChartDataLabels);
+const SF_NAVY='#032d60',SF_BLUE='#0070d2',SF_GREEN='#2e844a',SF_ORANGE='#e07000',
+      SF_RED='#ba0517',SF_PURPLE='#5867e8',SF_TEAL='#0b827c',SF_GRAY='#706e6b';
+const MONTHS=['Aug 2026','Sep 2026','Oct 2026','Nov (MTD)'];
+
+// Shared datalabels defaults
+const DL_TOP = { display:true, anchor:'end', align:'top', font:{weight:'700',size:11}, color:SF_NAVY, formatter:v=>v?v.toLocaleString():'' };
+const DL_PCT = { display:true, anchor:'end', align:'top', font:{weight:'700',size:11}, color:SF_NAVY, formatter:v=>v+'%' };
+const DL_WHITE = { display:true, anchor:'center', align:'center', font:{weight:'700',size:11}, color:'#fff', formatter:v=>v?v.toLocaleString():'' };
+
+// 1. MONTHLY TOTAL + SEV1 (combo)
+new Chart(document.getElementById('chartMonthlyTotal').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      { type:'bar', label:'Total Inflow', data:[3729,4215,3845,3194], backgroundColor:SF_NAVY+'cc',
+        yAxisID:'y', datalabels:{display:true,anchor:'end',align:'top',font:{weight:'700',size:12},color:SF_NAVY,formatter:v=>v.toLocaleString()} },
+      { type:'line', label:'Sev1', data:[322,411,360,248], borderColor:SF_RED, backgroundColor:SF_RED+'33',
+        pointBackgroundColor:SF_RED, pointRadius:6, borderWidth:3, yAxisID:'y2', tension:0.3,
+        datalabels:{display:true,anchor:'top',align:'top',font:{weight:'800',size:12},color:SF_RED,formatter:v=>v} }
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'},tooltip:{mode:'index'},datalabels:{}},
+    scales:{
+      y:{beginAtZero:true,title:{display:true,text:'Total Cases'}},
+      y2:{position:'right',beginAtZero:true,title:{display:true,text:'Sev1 Count'},grid:{drawOnChartArea:false}}
+    }
+  }
+});
+
+// 2. GEO STACKED
+new Chart(document.getElementById('chartGeoStacked').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      { label:'EMEA', data:[1787,2079,1817,1538], backgroundColor:SF_BLUE+'cc', datalabels:DL_WHITE },
+      { label:'India', data:[1325,1493,1376,1163], backgroundColor:SF_PURPLE+'cc', datalabels:DL_WHITE },
+      { label:'APAC', data:[617,643,652,493], backgroundColor:SF_GRAY+'cc', datalabels:DL_WHITE },
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'},datalabels:DL_WHITE},
+    scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}
+});
+
+// 3. GEO SHARE %
+new Chart(document.getElementById('chartGeoShare').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      { label:'EMEA %', data:[48,49,47,48], borderColor:SF_BLUE, backgroundColor:SF_BLUE+'22',
+        pointRadius:5, borderWidth:2.5, tension:0.3, datalabels:DL_PCT },
+      { label:'India %', data:[36,35,36,36], borderColor:SF_PURPLE, backgroundColor:SF_PURPLE+'22',
+        pointRadius:5, borderWidth:2.5, tension:0.3, datalabels:DL_PCT },
+      { label:'APAC %', data:[17,15,17,15], borderColor:SF_GRAY, backgroundColor:SF_GRAY+'22',
+        pointRadius:5, borderWidth:2.5, tension:0.3, datalabels:DL_PCT },
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'},datalabels:DL_PCT},
+    scales:{y:{min:0,max:60,title:{display:true,text:'% of Monthly Total'}}}}
+});
+
+// 4. SEV1 BY GEO
+new Chart(document.getElementById('chartSev1').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      { label:'EMEA S1', data:[128,202,143,115], backgroundColor:SF_BLUE+'cc', datalabels:DL_WHITE },
+      { label:'India S1', data:[149,163,167,110], backgroundColor:SF_PURPLE+'cc', datalabels:DL_WHITE },
+      { label:'APAC S1', data:[45,46,50,23], backgroundColor:SF_GRAY+'cc', datalabels:DL_WHITE },
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'},datalabels:DL_WHITE},
+    scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}
+});
+
+// 5. SEV1 RATE %
+new Chart(document.getElementById('chartSev1Rate').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      { label:'EMEA S1%', data:[7.2,9.7,7.9,7.5], borderColor:SF_BLUE, pointRadius:5, borderWidth:2.5, tension:0.3, datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:11},color:SF_BLUE,formatter:v=>v+'%'} },
+      { label:'India S1%', data:[11.2,10.9,12.1,9.5], borderColor:SF_PURPLE, pointRadius:5, borderWidth:2.5, tension:0.3, datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:11},color:SF_PURPLE,formatter:v=>v+'%'} },
+      { label:'APAC S1%', data:[7.3,7.2,7.7,4.7], borderColor:SF_GRAY, pointRadius:5, borderWidth:2.5, tension:0.3, datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:11},color:SF_GRAY,formatter:v=>v+'%'} },
+      { label:'Overall S1%', data:[8.6,9.8,9.4,7.8], borderColor:SF_RED, borderDash:[5,3], pointRadius:5, borderWidth:2.5, tension:0.3, datalabels:{display:true,anchor:'bottom',align:'bottom',font:{weight:'700',size:10},color:SF_RED,formatter:v=>v+'%'} },
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'}},
+    scales:{y:{min:0,max:15,title:{display:true,text:'Sev1 Rate (%)'}}}}
+});
+
+// 6. PRODUCT VOLUME
+new Chart(document.getElementById('chartProdVol').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      { label:'RCA', data:[876,1054,938,708], backgroundColor:SF_BLUE+'cc', datalabels:DL_WHITE },
+      { label:'Life Sciences', data:[618,601,680,707], backgroundColor:SF_GREEN+'cc', datalabels:DL_WHITE },
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'},datalabels:DL_WHITE},
+    scales:{x:{stacked:false},y:{beginAtZero:true}}}
+});
+
+// 7. PRODUCT SHARE %
+new Chart(document.getElementById('chartProdShare').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      { label:'RCA %', data:[23,25,24,22], borderColor:SF_BLUE, pointRadius:5, borderWidth:2.5, tension:0.3, datalabels:DL_PCT },
+      { label:'Life Sciences %', data:[17,14,18,22], borderColor:SF_GREEN, pointRadius:5, borderWidth:2.5, tension:0.3, datalabels:DL_PCT },
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'}},
+    scales:{y:{min:0,max:35,title:{display:true,text:'% of Monthly Total'}}}}
+});
+
+// 8. TIER STACKED
+new Chart(document.getElementById('chartTierStacked').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      { label:'Signature', data:[1306,1548,1438,1401], backgroundColor:SF_TEAL+'cc', datalabels:DL_WHITE },
+      { label:'Premier+', data:[1683,1841,1737,1323], backgroundColor:SF_BLUE+'cc', datalabels:DL_WHITE },
+      { label:'Standard', data:[658,625,599,464], backgroundColor:SF_GRAY+'cc', datalabels:DL_WHITE },
+      { label:'Partner Premier', data:[528,540,445,291], backgroundColor:SF_ORANGE+'cc', datalabels:DL_WHITE },
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'},datalabels:DL_WHITE},
+    scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}
+});
+
+// 9. SIG % TREND
+new Chart(document.getElementById('chartSigPct').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:MONTHS,
+    datasets:[{
+      label:'Signature % of Total', data:[35,37,37,44],
+      borderColor:SF_TEAL, backgroundColor:SF_TEAL+'22',
+      pointBackgroundColor:SF_TEAL, pointRadius:7, borderWidth:3, tension:0.3,
+      datalabels:{display:true,anchor:'top',align:'top',font:{weight:'800',size:13},color:SF_TEAL,formatter:v=>v+'%'}
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'}},
+    scales:{y:{min:30,max:50,title:{display:true,text:'Signature % Share'}}}}
+});
+
+// --- SIGNATURE SECTION CHARTS ---
+
+// 10. SIG VOLUME TREND
+new Chart(document.getElementById('chartSigVolume').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:MONTHS,
+    datasets:[{
+      label:'Signature Cases', data:[1306,1548,1438,1401],
+      backgroundColor:[SF_TEAL+'99',SF_TEAL+'cc',SF_TEAL+'aa',SF_TEAL+'ee'],
+      datalabels:{display:true,anchor:'end',align:'top',font:{weight:'800',size:13},color:SF_TEAL,formatter:v=>v.toLocaleString()}
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{y:{beginAtZero:true,title:{display:true,text:'Sig Cases'}}}}
+});
+
+// 11. SIG SEV1 TREND
+new Chart(document.getElementById('chartSigSev1').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:MONTHS,
+    datasets:[{
+      label:'Sig Sev1', data:[73,128,107,91],
+      borderColor:SF_RED, backgroundColor:SF_RED+'22',
+      pointBackgroundColor:SF_RED, pointRadius:7, borderWidth:3, tension:0.3,
+      datalabels:{display:true,anchor:'top',align:'top',font:{weight:'800',size:13},color:SF_RED,formatter:v=>v}
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{y:{beginAtZero:true,title:{display:true,text:'Sig Sev1 Count'}}}}
+});
+
+// 12. SIG GEO VOLUME
+new Chart(document.getElementById('chartSigGeo').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      { label:'EMEA', data:[450,590,532,530], backgroundColor:SF_BLUE+'cc', datalabels:DL_WHITE },
+      { label:'India', data:[620,739,692,685], backgroundColor:SF_PURPLE+'cc', datalabels:DL_WHITE },
+      { label:'APAC', data:[236,219,214,186], backgroundColor:SF_GRAY+'cc', datalabels:DL_WHITE },
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'},datalabels:DL_WHITE},
+    scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}
+});
+
+// 13. SIG SEV1 BY GEO
+new Chart(document.getElementById('chartSigSev1Geo').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      { label:'EMEA S1', data:[35,68,52,48], borderColor:SF_BLUE, pointRadius:5, borderWidth:2.5, tension:0.3,
+        datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:11},color:SF_BLUE,formatter:v=>v} },
+      { label:'India S1', data:[22,32,33,26], borderColor:SF_PURPLE, pointRadius:5, borderWidth:2.5, tension:0.3,
+        datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:11},color:SF_PURPLE,formatter:v=>v} },
+      { label:'APAC S1', data:[16,28,22,17], borderColor:SF_GRAY, pointRadius:5, borderWidth:2.5, tension:0.3,
+        datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:11},color:SF_GRAY,formatter:v=>v} },
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'}},
+    scales:{y:{beginAtZero:true,title:{display:true,text:'Sig Sev1 Count'}}}}
+});
+
+// 14. SIG PRODUCT VOLUME (RCA + LifeSci)
+new Chart(document.getElementById('chartSigProd').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      { label:'Sig — RCA', data:[150,223,193,158], backgroundColor:SF_BLUE+'cc', datalabels:DL_WHITE },
+      { label:'Sig — Life Sciences', data:[394,417,481,587], backgroundColor:SF_GREEN+'cc', datalabels:DL_WHITE },
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'},datalabels:DL_WHITE},
+    scales:{y:{beginAtZero:true}}}
+});
+
+// 15. SIG PRODUCT % MIX
+new Chart(document.getElementById('chartSigProdPct').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:MONTHS,
+    datasets:[
+      { label:'RCA % of Sig', data:[11,14,13,11], borderColor:SF_BLUE, pointRadius:5, borderWidth:2.5, tension:0.3,
+        datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:11},color:SF_BLUE,formatter:v=>v+'%'} },
+      { label:'LifeSci % of Sig', data:[30,27,33,42], borderColor:SF_GREEN, pointRadius:5, borderWidth:2.5, tension:0.3,
+        datalabels:{display:true,anchor:'top',align:'top',font:{weight:'700',size:11},color:SF_GREEN,formatter:v=>v+'%'} },
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top'}},
+    scales:{y:{min:0,max:50,title:{display:true,text:'% of Sig Total'}}}}
+});
+
+// CURSOR SPOTLIGHT
+(function(){
+  var s=document.getElementById('cursor-spotlight'),a=false;
+  document.addEventListener('mousemove',function(e){
+    s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';
+    if(!a){s.style.opacity='1';a=true;}
+  });
+  document.addEventListener('mouseleave',function(){s.style.opacity='0';a=false;});
+})();
+</script>
+</body>
+</html>
