@@ -252,6 +252,15 @@ tr:hover td{background:#dbeeff !important;}
   <p style="font-size:12px;color:#706e6b;margin-top:6px;padding:0 2px;">TTR, Escalation %, SLO Miss %, CSAT, Reopen Rate, Investigations, Bugs — sourced from WBR snapshot. Inflow &amp; Closures from live OrgCS SOQL (MTD). Sig CSAT Nov MTD = 4.83 provided directly.</p>
 </div>
 
+<!-- INFLOW + SIG SHARE COMBO TREND — NEW -->
+<div style="margin:20px 36px 0;">
+  <div style="background:#032d60;color:#fff;padding:10px 16px;border-radius:6px 6px 0 0;font-size:14px;font-weight:700;">Monthly Inflow Trend vs Signature Share %</div>
+  <div style="background:#fff;border:1px solid #dddbda;border-top:none;border-radius:0 0 6px 6px;padding:16px 20px;">
+    <div style="position:relative;height:300px;"><canvas id="chartInflowSigCombo"></canvas></div>
+    <p style="font-size:12px;color:#706e6b;margin-top:8px;">Bars = monthly inflow volume (left axis). Line = Signature % of total inflow (right axis). % labels above each data point show month-over-month change. Nov is MTD (27 days).</p>
+  </div>
+</div>
+
 <!-- TCD TABLE -->
 <div class="section-label">Top Case Drivers (TCD) — Monthly Volume Table</div>
 <div class="card">
@@ -320,65 +329,98 @@ tr:hover td{background:#dbeeff !important;}
 </div>
 
 <!-- TOP 10 ACCOUNTS -->
-<div class="section-label">Top 10 Accounts — 4-Month View (Aug–Nov 2026)</div>
+<div class="section-label">Top 10 Accounts — Account Intelligence (Aug–Nov 2026)</div>
+<style>
+.hf-row td { background:#fff8e8 !important; }
+.hf-row:hover td { background:#fff0cc !important; }
+.hf-badge { display:inline-block;background:#ff9b1a;color:#fff;font-size:10px;font-weight:800;
+            padding:1px 6px;border-radius:8px;margin-left:5px;letter-spacing:.3px;vertical-align:middle; }
+.acct-intel { background:#fff;border:1px solid #dddbda;border-radius:6px;margin-top:12px;overflow:hidden; }
+.acct-intel-row { display:grid;grid-template-columns:200px 1fr 1fr 1fr;border-bottom:1px solid #f0f0f0;font-size:13px; }
+.acct-intel-row:last-child { border-bottom:none; }
+.acct-intel-row.hf-intel { background:#fff8e8; }
+.ai-name { padding:12px 14px;font-weight:700;color:#032d60;font-size:13px;border-right:1px solid #f0f0f0;
+           display:flex;flex-direction:column;justify-content:flex-start;gap:4px; }
+.ai-name .tier-badge { font-size:10px;font-weight:600;color:#706e6b; }
+.ai-col { padding:11px 14px;border-right:1px solid #f0f0f0;line-height:1.55; }
+.ai-col:last-child { border-right:none; }
+.ai-col-head { font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;
+               color:#706e6b;margin-bottom:5px; }
+.ai-col ul { margin:0;padding-left:14px; }
+.ai-col li { margin-bottom:3px; }
+.bug-pill { display:inline-block;background:#fcedef;color:#ba0517;font-size:10px;font-weight:700;
+            padding:1px 6px;border-radius:8px;margin-right:3px; }
+.voc-pill { display:inline-block;background:#e8f4fd;color:#032d60;font-size:10px;font-weight:700;
+            padding:1px 6px;border-radius:8px;margin-right:3px; }
+.blocker-pill { display:inline-block;background:#fdf3e3;color:#b25000;font-size:10px;font-weight:700;
+                padding:1px 6px;border-radius:8px;margin-right:3px; }
+.support-pill { display:inline-block;background:#eef6f0;color:#2e844a;font-size:10px;font-weight:700;
+                padding:1px 6px;border-radius:8px;margin-right:3px; }
+</style>
+
 <div class="card">
-  <div class="card-title">Top 10 Accounts by Combined Volume — Monthly Trend</div>
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;font-size:13px;color:#706e6b;">
+    <span><span style="display:inline-block;width:14px;height:14px;background:#fff8e8;border:1px solid #ff9b1a;border-radius:3px;vertical-align:middle;margin-right:4px;"></span>
+    <strong style="color:#ff9b1a;">HyperFocus</strong> accounts — dedicated engineering pod active</span>
+    <span style="color:#dddbda;">|</span>
+    <span>Volumes: Aug / Sep / Oct / Nov(MTD)</span>
+  </div>
   <div style="overflow-x:auto;">
-  <table class="acct-table" style="font-size:14px;">
+  <table class="acct-table" style="font-size:13px;">
     <thead><tr>
       <th style="text-align:left;">#</th>
       <th style="text-align:left;">Account</th>
       <th>Aug</th><th>Sep</th><th>Oct</th><th class="tw-col">Nov (MTD)</th>
       <th>4M Total</th>
-      <th>Trend</th>
+      <th>MoM Trend</th>
       <th>Sev1</th>
       <th>Tier</th>
-      <th>Source P&amp;T</th>
-      <th>Region</th>
+      <th>Product</th>
+      <th>Geo</th>
     </tr></thead>
     <tbody>
-      <tr>
+      <tr class="hf-row">
         <td>1</td>
-        <td><strong>Takeda Pharma</strong></td>
+        <td><strong>Takeda Pharma</strong><span class="hf-badge">HyperFocus</span></td>
         <td>105</td><td>65</td><td>74</td><td class="tw-col">52</td>
         <td><strong style="color:#032d60;font-size:15px;">296</strong></td>
-        <td><span class="dn">↓ Declining</span></td>
+        <td><span class="dn">↓ −50% Aug→Nov</span></td>
         <td style="color:#ba0517;font-weight:700;">25</td>
         <td><span class="badge-sig">Sig Success</span></td>
-        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Life Sciences</span></td>
+        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Life Sciences</span></td>
         <td><span class="badge-india">India</span></td>
       </tr>
-      <tr>
+      <tr class="hf-row">
         <td>2</td>
-        <td><strong>Pfizer (LSC - EMEA)</strong></td>
+        <td><strong>Pfizer (LSC EMEA)</strong><span class="hf-badge">HyperFocus</span></td>
         <td>66</td><td>59</td><td>51</td><td class="tw-col" style="color:#2e844a;font-weight:900;">93</td>
         <td><strong style="color:#032d60;font-size:15px;">269</strong></td>
-        <td><span class="up">↑ Nov surge (+82%)</span></td>
+        <td><span class="up">↑ +82% Oct→Nov</span></td>
         <td>0</td>
         <td><span class="badge-sig">Sig Success</span></td>
-        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Life Sciences</span></td>
+        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Life Sciences</span></td>
         <td><span class="badge-emea">EMEA</span></td>
       </tr>
-      <tr>
+      <tr class="hf-row">
         <td>3</td>
-        <td><strong>Mylan Inc.</strong></td>
+        <td><strong>Mylan / Viatris</strong><span class="hf-badge">HyperFocus</span></td>
         <td>59</td><td>63</td><td>61</td><td class="tw-col" style="color:#2e844a;font-weight:900;">86</td>
         <td><strong style="color:#032d60;font-size:15px;">269</strong></td>
-        <td><span class="up">↑ Rising Nov</span></td>
+        <td><span class="up">↑ +41% Oct→Nov</span></td>
         <td>2</td>
         <td><span class="badge-sig">Sig Success</span></td>
-        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Life Sciences</span></td>
+        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Life Sciences</span></td>
         <td><span class="badge-india">India</span></td>
       </tr>
-      <tr>
+      <tr class="hf-row">
         <td>4</td>
-        <td><strong>AstraZeneca</strong></td>
+        <td><strong>AstraZeneca</strong><span class="hf-badge">HyperFocus</span></td>
         <td>67</td><td>71</td><td>43</td><td class="tw-col">59</td>
         <td><strong style="color:#032d60;font-size:15px;">240</strong></td>
-        <td><span class="flat">→ Volatile, no S1</span></td>
+        <td><span class="up">↑ +37% Oct→Nov</span></td>
         <td>0</td>
         <td><span class="badge-sig">Sig Success</span></td>
-        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Life Sciences</span></td>
+        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Life Sciences</span></td>
         <td><span class="badge-india">India</span></td>
       </tr>
       <tr>
@@ -386,32 +428,32 @@ tr:hover td{background:#dbeeff !important;}
         <td><strong>Alfasigma Global CRM</strong></td>
         <td style="color:#706e6b;">4</td><td>34</td><td>72</td><td class="tw-col">69</td>
         <td><strong style="color:#032d60;font-size:15px;">179</strong></td>
-        <td><span class="up">↑ Strong ramp (Oct+)</span></td>
+        <td><span class="up">↑ New logo ramp</span></td>
         <td>0</td>
         <td><span class="badge-sig">Sig Success</span></td>
-        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Life Sciences</span></td>
+        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Life Sciences</span></td>
         <td><span class="badge-india">India</span></td>
       </tr>
-      <tr>
+      <tr class="hf-row">
         <td>6</td>
-        <td><strong>Novartis Pharma AG</strong></td>
+        <td><strong>Novartis Pharma AG</strong><span class="hf-badge">HyperFocus</span></td>
         <td>18</td><td>41</td><td>53</td><td class="tw-col">58</td>
         <td><strong style="color:#032d60;font-size:15px;">170</strong></td>
-        <td><span class="up">↑ Consistent ramp</span></td>
+        <td><span class="up">↑ +9% Oct→Nov</span></td>
         <td>4</td>
         <td><span class="badge-sig">Sig / Premier</span></td>
-        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Life Sciences</span></td>
+        <td><span style="background:#eef6f0;color:#2e844a;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Life Sciences</span></td>
         <td><span class="badge-india">India</span></td>
       </tr>
       <tr>
         <td>7</td>
-        <td><strong>Deloitte Global Services</strong></td>
-        <td>32</td><td style="color:#ba0517;">64</td><td>45</td><td class="tw-col" style="color:#2e844a;">19</td>
+        <td><strong>Deloitte Global Svcs</strong></td>
+        <td>32</td><td style="color:#ba0517;font-weight:700;">64</td><td>45</td><td class="tw-col">19</td>
         <td><strong style="color:#032d60;font-size:15px;">160</strong></td>
-        <td><span class="dn">↓ Sep spike then decline</span></td>
+        <td><span class="dn">↓ −58% Oct→Nov</span></td>
         <td style="color:#ba0517;font-weight:700;">37</td>
-        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Partner Premier</span></td>
-        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Industry / RC</span></td>
+        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Partner Premier</span></td>
+        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Industry / RC</span></td>
         <td><span class="badge-india">India</span></td>
       </tr>
       <tr>
@@ -419,10 +461,10 @@ tr:hover td{background:#dbeeff !important;}
         <td><strong>Accenture LLP</strong></td>
         <td>36</td><td>51</td><td>42</td><td class="tw-col">26</td>
         <td><strong style="color:#032d60;font-size:15px;">155</strong></td>
-        <td><span class="dn">↓ Declining Oct+</span></td>
+        <td><span class="dn">↓ −38% Oct→Nov</span></td>
         <td style="color:#ba0517;font-weight:700;">33</td>
-        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Partner Premier</span></td>
-        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Industry / RC</span></td>
+        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Partner Premier</span></td>
+        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Revenue Cloud</span></td>
         <td><span class="badge-india">India</span></td>
       </tr>
       <tr>
@@ -430,10 +472,10 @@ tr:hover td{background:#dbeeff !important;}
         <td><strong>Shiftlogic</strong></td>
         <td>43</td><td>36</td><td>24</td><td class="tw-col">20</td>
         <td><strong style="color:#032d60;font-size:15px;">123</strong></td>
-        <td><span class="dn">↓ Declining (Aug peak)</span></td>
+        <td><span class="dn">↓ −53% Aug→Nov</span></td>
         <td style="color:#ba0517;font-weight:700;">14</td>
-        <td><span style="background:#f3f3f3;color:#3e3e3c;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Standard / PP</span></td>
-        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">RC / Industry</span></td>
+        <td><span style="background:#f3f3f3;color:#3e3e3c;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Standard / PP</span></td>
+        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Revenue Cloud</span></td>
         <td><span class="badge-emea">EMEA</span></td>
       </tr>
       <tr>
@@ -441,31 +483,295 @@ tr:hover td{background:#dbeeff !important;}
         <td><strong>BT (Digico)</strong></td>
         <td>30</td><td>30</td><td>31</td><td class="tw-col">29</td>
         <td><strong style="color:#032d60;font-size:15px;">120</strong></td>
-        <td><span class="flat">→ Remarkably flat</span></td>
+        <td><span class="flat">→ Flat (30±1/mo)</span></td>
         <td>6</td>
         <td><span class="badge-sig">Sig Success</span></td>
-        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700;">Industry Omni</span></td>
+        <td><span style="background:#fdf0e8;color:#b25000;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:700;">Industry Omni</span></td>
         <td><span class="badge-india">India</span></td>
       </tr>
     </tbody>
   </table>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
-    <div style="background:#f8f9fa;border-left:4px solid #0969da;padding:12px 14px;border-radius:4px;font-size:13px;line-height:1.7;">
-      <strong>COMPOSITION</strong><br>
-      · <strong>8 of top 10 accounts are Life Sciences</strong> — pharma-led (Takeda, Pfizer, Mylan, AstraZeneca, Alfasigma, Novartis) + BT/Deloitte<br>
-      · <strong>7 of 10 on Signature Success tier</strong> — high-commitment, high-expectation accounts<br>
-      · <strong>India is primary delivery geo</strong> for 8 of 10 accounts<br>
-      · Pfizer + Mylan + Alfasigma all ramping in Nov — LifeSci growth is account-led, not market-wide
+</div>
+
+<!-- ACCOUNT INTELLIGENCE CARDS -->
+<div class="section-label" style="background:#3d3d3d;">Account Intelligence — Why Volume · Key Challenges · Bugs/VOC/Blockers · Support &amp; Engineering Response</div>
+<div class="acct-intel">
+  <!-- HEADER ROW -->
+  <div class="acct-intel-row" style="background:#032d60;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;">
+    <div class="ai-name" style="color:#fff;border-right-color:#1a4a7a;">Account</div>
+    <div class="ai-col" style="color:#fff;border-right-color:#1a4a7a;">Why the Volume</div>
+    <div class="ai-col" style="color:#fff;border-right-color:#1a4a7a;">Key Customer Challenges</div>
+    <div class="ai-col" style="color:#fff;">Support &amp; Engineering Response</div>
+  </div>
+
+  <!-- TAKEDA -->
+  <div class="acct-intel-row hf-intel">
+    <div class="ai-name">
+      Takeda Pharma<span class="hf-badge" style="margin-left:0;margin-top:3px;width:fit-content;">HyperFocus</span>
+      <span class="tier-badge">Sig Success · LSC · India</span>
+      <span style="font-size:12px;color:#2e844a;font-weight:700;">↓ Declining (SIT progress)</span>
     </div>
-    <div style="background:#fffef0;border-left:4px solid #e8c930;padding:12px 14px;border-radius:4px;font-size:13px;line-height:1.7;">
-      <strong>SIGNALS</strong><br>
-      · <strong>Pfizer Nov surge (+82%)</strong> — went from 51 (Oct) to 93 (Nov MTD). Watch for go-live / expansion event.<br>
-      · <strong>Alfasigma ramp</strong> — essentially zero in Aug (4 cases), 72 in Oct, 69 in Nov. New deployment pattern.<br>
-      · <strong>Deloitte &amp; Accenture S1 concentration</strong> (37 and 33 S1 respectively) — Partner Premier SI activity flagged.<br>
-      · <strong>Shiftlogic</strong> — 14 S1s over 4M despite Standard/PP tier. Disproportionate S1 rate. Monitor.
+    <div class="ai-col">
+      <div class="ai-col-head">Why Volume</div>
+      SIT-to-production go-live for Life Sciences Cloud iPad deployment. Volume peaked Aug (105) during heavy SIT testing; declining as blockers resolve. Remaining 27 open cases are go-live critical items — not routine support.
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Key Challenges</div>
+      <span class="blocker-pill">GO-LIVE BLOCKER</span> TAK949: CommSubConsentCmplSnpsht field char limit — blocks go-live<br>
+      <span class="bug-pill">BUG</span> TAK913: Up Next shows other users' visits (W-24922480)<br>
+      <span class="bug-pill">BUG</span> TAK911: Action Plan status bar (W-24886841 — 264-Patch-13)<br>
+      <span class="blocker-pill">PLATFORM</span> Agentforce failed on iPad during customer demo (Nov 12 Sev1)<br>
+      <span class="blocker-pill">RED ACCT</span> 3 Data Cloud Sev1s eroded trust; credit consumption cut
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Support &amp; Engineering</div>
+      <span class="support-pill">HyperFocus Pod</span> #lsc-hyperfocus-takeda — daily case updates, Saheb Virdi + Naren Rajendran<br>
+      <span class="support-pill">Engineering Lead</span> Preston Noe (PMTS) owns all TAK-series bugs with patch backport schedule<br>
+      <span class="support-pill">Go/No-Go</span> Christian Deckert (Dir. Tech. Consulting) — 54/67 blockers resolved<br>
+      <span class="support-pill">Data 360</span> Hypercare Program enrollment for Data Cloud pillar
     </div>
   </div>
+
+  <!-- PFIZER -->
+  <div class="acct-intel-row hf-intel">
+    <div class="ai-name">
+      Pfizer LSC EMEA<span class="hf-badge" style="margin-left:0;margin-top:3px;width:fit-content;">HyperFocus</span>
+      <span class="tier-badge">Sig Success · LSC · EMEA</span>
+      <span style="font-size:12px;color:#ba0517;font-weight:700;">↑ +82% Nov surge — RED</span>
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Why Volume</div>
+      Post-go-live hypercare surge. Pfizer LSC EMEA went live Oct/Nov. 62 cases open as of Nov 23. Cross-geo handoff issue: 12 Sev2 cases arrived from prior shift with no work done, driving apparent surge.
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Key Challenges</div>
+      <span class="bug-pill">BUG</span> W-24252586: Reasoner receives malformed OrgJWT — Agentforce Apr '27 go-live at risk; no build date<br>
+      <span class="bug-pill">BUG</span> iPad app hangs after Communication Consent (W-24969991)<br>
+      <span class="blocker-pill">PLATFORM</span> 264.13 patch cancelled — confirmed fix pushed to 264.14<br>
+      <span class="voc-pill">PLATFORM</span> Validation rules not firing on iPad (W-22156970 — WAD, no fix path)
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Support &amp; Engineering</div>
+      <span class="support-pill">HyperFocus Pod</span> #lsc-hyperfocus-pfizer — Farbeena Hussain daily case tracker<br>
+      <span class="support-pill">FDE Pod</span> 5 Field Deployment Engineers onboarded Nov 16 (Muralidhar Madireddy)<br>
+      <span class="support-pill">Engineering</span> Jay Kapadia (RC Eng) — Agentforce bug escalation DRI; Tim Walsh (CSM)<br>
+      <span class="support-pill">Watch</span> Cross-shift handoff quality flagged to Sridhar Dwadasi (Mgr)
+    </div>
+  </div>
+
+  <!-- MYLAN/VIATRIS -->
+  <div class="acct-intel-row hf-intel">
+    <div class="ai-name">
+      Mylan / Viatris<span class="hf-badge" style="margin-left:0;margin-top:3px;width:fit-content;">HyperFocus</span>
+      <span class="tier-badge">Sig Success · LSC · India</span>
+      <span style="font-size:12px;color:#ba0517;font-weight:700;">↑ +41% — Dec go-live UAT</span>
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Why Volume</div>
+      December 2026 US go-live UAT — PwC as SI, ProServe embedded. Veeva-to-LSC migration for ~500 field force users. UAT started Nov 17; active 24x7 weekend support coverage deployed. Volume will stay elevated through go-live.
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Key Challenges</div>
+      <span class="blocker-pill">UAT BLOCKER</span> DEF-250: Brand Indication not resolving on Visit — blocking UAT sign-off (Nov 25)<br>
+      <span class="bug-pill">BUG</span> W-25002646: Fragments not reflecting on iPad (PromoMats — PwC escalating)<br>
+      <span class="blocker-pill">PRODUCT GAP</span> Order Management (Transfer Orders, Discounts/Promo) needed Feb '27 for EU rollout — Veeva renewal risk if not delivered<br>
+      <span class="voc-pill">VOC</span> Agentforce: 6 UAT defects — 2 Salesforce limitations, 1 feature bug, 3 new requirements
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Support &amp; Engineering</div>
+      <span class="support-pill">HyperFocus Pod</span> #lsc-hyperfocus-viatris + #viatris-uat-golive-support-triage<br>
+      <span class="support-pill">Onsite</span> Sandeep Padhye (Prog. Exec) + Swati Chandna (CTO) onsite Pittsburgh UAT<br>
+      <span class="support-pill">CSM</span> Toni Eardley — single-threaded DRI across all escalations<br>
+      <span class="support-pill">Builder Program</span> Agentforce Builder request filed Nov 19 — SVP review in progress
+    </div>
+  </div>
+
+  <!-- ASTRAZENECA -->
+  <div class="acct-intel-row hf-intel">
+    <div class="ai-name">
+      AstraZeneca<span class="hf-badge" style="margin-left:0;margin-top:3px;width:fit-content;">HyperFocus</span>
+      <span class="tier-badge">Sig Success · LSC · India</span>
+      <span style="font-size:12px;color:#2e844a;font-weight:700;">→ Episodic · 0 Sev1s in dataset</span>
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Why Volume</div>
+      Episodic investigation bursts tied to Agentforce ASA (AstraZeneca Sales Agent) — first production Agentforce agent in LSC pharma globally, live since ~Sep 1 in Turkey, Philippines, Middle East/Africa. Volume volatility (67→71→43→59) reflects agent issue cycles.
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Key Challenges</div>
+      <span class="bug-pill">SCALING</span> Language inconsistencies in LATAM (Brazil/Mexico) for ASA agent<br>
+      <span class="bug-pill">SCALING</span> Inflated D360 credit consumption — blocking agent expansion to new markets<br>
+      <span class="voc-vil">PLATFORM</span> NavigationMixin incompatibility with LSC Mobile WebView on iPad (HCP360 LWC preview)<br>
+      <span class="voc-pill">VOC</span> Consent Subscription Expiry behavior — product team response pending
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Support &amp; Engineering</div>
+      <span class="support-pill">HyperFocus Pod</span> #lsc-hyperfocus-astrazeneca — James Denne (Lead CSM)<br>
+      <span class="support-pill">Builder Program</span> UKI Builder team active for Agentforce build (#builder-uki-astrazeneca-uk-limited)<br>
+      <span class="support-pill">Strategic</span> WEF Davos 2027 executive meeting scheduled (channel created Nov 23)<br>
+      <span class="support-pill">CIO QBR</span> Oct 30 QBR used production Agentforce demo as centrepiece — relationship positive
+    </div>
+  </div>
+
+  <!-- ALFASIGMA -->
+  <div class="acct-intel-row">
+    <div class="ai-name">
+      Alfasigma Global CRM
+      <span class="tier-badge">Sig Success · LSC · India</span>
+      <span style="font-size:12px;color:#2e844a;font-weight:700;">↑ New logo ramp — expected</span>
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Why Volume</div>
+      New global CRM win — MSA signed July 31, 2026. Volume follows a textbook new-logo deployment ramp: 4 (Aug) → 34 (Sep) → 72 (Oct). Veeva-to-LSC migration with Nov UAT sprint and planned go-live. Contract includes MuleSoft.
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Key Challenges</div>
+      <span class="bug-pill">BUG</span> Data Cloud CPA sync: CountryCode/SourceSystemIdentifier missing for 1.2 lakh records (W-24913300 — resolved Nov 14 via permission fix)<br>
+      <span class="blocker-pill">WAD</span> Visit records locked immediately on Veeva migration in Submitted status — expected behavior, best practices shared<br>
+      <span class="voc-pill">GUIDANCE</span> Implementation guidance requests (Signature Capture) — indicates potential SI coverage gap
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Support &amp; Engineering</div>
+      <span class="support-pill">CSM</span> Dario Lorizzo / Stefania Ruffini (AE, Italy) — actively engaged<br>
+      <span class="support-pill">CIC</span> Supported both Nov Sev1s within SLA — both resolved<br>
+      <span class="support-pill">Watch</span> Expansion in progress: Informatica, Databricks, MuleSoft Agentforce upsell — adds complexity<br>
+      <span class="support-pill">Forecast</span> Volume stable post-go-live; expect normalisation 2–3 months after launch
+    </div>
+  </div>
+
+  <!-- NOVARTIS -->
+  <div class="acct-intel-row hf-intel">
+    <div class="ai-name">
+      Novartis Pharma AG<span class="hf-badge" style="margin-left:0;margin-top:3px;width:fit-content;">HyperFocus</span>
+      <span class="tier-badge">Sig/Premier · LSC · India</span>
+      <span style="font-size:12px;color:#ba0517;font-weight:700;">↑ Escalating — HF7 active</span>
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Why Volume</div>
+      Expanding multi-geo LSC deployment (India, EMEA, US). HyperFocus engagement since Sep 24. Volume ramp (18→41→53→58) reflects new user cohorts onboarding. Nov 25–26: 3 Sev1 channels in 48 hours — HF7 engineering team spun up.
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Key Challenges</div>
+      <span class="bug-pill">ACTIVE S1</span> iPad: Medical Insights + Account Plan incorrect layouts (Sandbox, case 487392836 — open today)<br>
+      <span class="bug-pill">ACTIVE S1</span> Two further Sev1 channels opened Nov 25–26 on same org (content under investigation)<br>
+      <span class="voc-pill">VOC</span> iPad HCP bulk scheduling — no multi-day drag/apply available (Oct VOC filed)<br>
+      <span class="blocker-pill">PLATFORM</span> SPARK weekly executive alignment program active — high CIO visibility
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Support &amp; Engineering</div>
+      <span class="support-pill">HF7 Engineering</span> Tushar Jadhav (LSC Eng) — dedicated IST+US HyperFocus-7 team since Nov 25<br>
+      <span class="support-pill">HyperFocus Pod</span> #lsc-hyperfocus-novartis — William Pessoa (Support Lead), Sujan Mahajan (Mgr)<br>
+      <span class="support-pill">CSM</span> Sandra Mann + Mihaela Idorasi-Leinenbach (EMEA) + Akash Tripathi (TAM)<br>
+      <span class="support-pill">Strategic</span> WEF Davos 2027 executive meeting scheduled — path-to-green needed before Jan
+    </div>
+  </div>
+
+  <!-- DELOITTE -->
+  <div class="acct-intel-row">
+    <div class="ai-name">
+      Deloitte Global Svcs
+      <span class="tier-badge">Partner Premier · Industry/RC · India</span>
+      <span style="font-size:12px;color:#2e844a;font-weight:700;">↓ Sep spike normalising</span>
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Why Volume</div>
+      Deloitte operates across 4 Salesforce product stacks simultaneously (Agentforce/AI, Field Service/LSC, Tableau Server, CRM Analytics). Sep spike (64 cases) reflects concurrent new-product adoption across multiple practice areas — not a single product issue.
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Key Challenges</div>
+      <span class="bug-pill">BUG</span> Agentforce LLM: Tax Agent drops MOF slot values on confirmation turn (confirmed root cause, GUS investigation open)<br>
+      <span class="bug-pill">BUG</span> Performance Priming gate (custom list views): UX degradation for field users — gate disabled globally<br>
+      <span class="blocker-pill">PENDING</span> RCA for Case 475488903 (Performance Priming) still pending — Deloitte has asked twice<br>
+      <span class="blocker-pill">ACTIVE</span> 2 new Sev1 channels opened Nov 24–26 — account still escalating
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Support &amp; Engineering</div>
+      <span class="support-pill">Strategic flag</span> Explicitly named "Strategic Customer" for Performance Priming gate intervention<br>
+      <span class="support-pill">Engineering</span> Nigel Menger (Perf. Priming) — gate PR raised; global disable confirmed<br>
+      <span class="support-pill">CIC</span> Multiple CIC engagements resolved same-day across Tableau/CRM Analytics Sev1s<br>
+      <span class="support-pill">Action needed</span> Deliver overdue Performance Priming RCA — relationship risk
+    </div>
+  </div>
+
+  <!-- ACCENTURE -->
+  <div class="acct-intel-row">
+    <div class="ai-name">
+      Accenture LLP
+      <span class="tier-badge">Partner Premier · Revenue Cloud · India</span>
+      <span style="font-size:12px;color:#ba0517;font-weight:700;">↑ Nov Sev1 surge — RCA go-live</span>
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Why Volume</div>
+      Accenture is in an active Revenue Cloud Architecture (RCA) implementation go-live phase — #Accenture RCA Architecture Support channel created Nov 18. 12+ Sev1 channels opened in 12 days (Nov 12–24), consistent with pre-cutover critical path pressure. Accenture Australia (Sig tier) also generating separate Sev1s.
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Key Challenges</div>
+      <span class="bug-pill">PROCESS</span> Sev1 channels show 10–15 owner rotations per case with no technical discussion captured — no GUS links, no CAN posts<br>
+      <span class="blocker-pill">GO-LIVE</span> RCA implementation at critical path stage — elevated S1 rate expected during cutover<br>
+      <span class="bug-pill">ACTIVE</span> 12+ Sev1 channels opened Nov 12–24 — 33 Sev1s over 4 months (highest S1-to-volume ratio)
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Support &amp; Engineering</div>
+      <span class="support-pill">Architecture</span> Jenna Tan + Steven Deroy (Salesforce) — RCA Architecture Support channel (Nov 18)<br>
+      <span class="support-pill">Process gap</span> Case quality review needed — Sev1 channels lack CAN posts and GUS escalations<br>
+      <span class="support-pill">Tracking</span> #accenture-acis-support (May 2022) + legacy Apttus support channel active<br>
+      <span class="support-pill">Watch</span> Nov Sev1 surge likely peaks at go-live then normalises Q1 FY27
+    </div>
+  </div>
+
+  <!-- SHIFTLOGIC -->
+  <div class="acct-intel-row">
+    <div class="ai-name">
+      Shiftlogic
+      <span class="tier-badge">Std/PP · Revenue Cloud · EMEA</span>
+      <span style="font-size:12px;color:#2e844a;font-weight:700;">↓ Declining — post go-live</span>
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Why Volume</div>
+      Shiftlogic is a Revenue Cloud partner/SI (Ukraine-based) implementing RC for Collinson Group and other clients. All volume is partner-raised during their client go-live phases. Nov go-live for Collinson likely explains the declining volume (43→20).
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Key Challenges</div>
+      <span class="bug-pill">PRODUCT GAP</span> Negotiated pricing not carried to renewal quotes for usage-based pricing — on RC roadmap; sandbox enabled Nov 17, not GA<br>
+      <span class="blocker-pill">UPGRADE</span> 264 Winter '27 pricing step failed (Usage Sub-Type backfill) — Sync Pricing Data button broken; pending customer approval to fix<br>
+      <span class="blocker-pill">PATTERN</span> All 14 Sev1s = RC Core product gaps (Billing, TM, Configurator) — severity classification coaching needed
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Support &amp; Engineering</div>
+      <span class="support-pill">AE</span> Timothy O'Brien — Shiftlogic/Collinson account owner<br>
+      <span class="support-pill">RC Product PM</span> Akshay Ram Maheshwary (negotiated pricing roadmap); Spandana Manne (264 upgrade outreach)<br>
+      <span class="support-pill">Partner coaching</span> Severity classification guidance recommended — 14 Sev1s on product gaps overstates criticality<br>
+      <span class="support-pill">Forecast</span> Volume should continue declining as Collinson stabilises post-go-live
+    </div>
+  </div>
+
+  <!-- BT DIGICO -->
+  <div class="acct-intel-row">
+    <div class="ai-name">
+      BT (Digico)
+      <span class="tier-badge">Sig Success · Industry Omni · India</span>
+      <span style="font-size:12px;color:#706e6b;font-weight:700;">→ Remarkably flat (30±1/mo)</span>
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Why Volume</div>
+      Sustained multi-year implementation program: BT is consolidating its Digico and Enterprise orgs into a single Salesforce instance (Org Consolidation program). The flat 30/mo pattern reflects steady implementation work + ongoing configuration Q&amp;A, not a support incident pattern.
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Key Challenges</div>
+      <span class="bug-pill">ARCHITECTURAL</span> Record-locking under concurrent CPQ/Industry Omni operations — Salesforce CATT team confirmed heap size limits cannot be increased<br>
+      <span class="blocker-pill">ARCHITECTURAL</span> Org Consolidation (Digico + Enterprise merge) — multi-year, complex stakeholder alignment, ProServe engaged<br>
+      <span class="voc-pill">CAPACITY</span> Batch Apex processing limits at 300-site scale — fundamental architecture constraint
+    </div>
+    <div class="ai-col">
+      <div class="ai-col-head">Support &amp; Engineering</div>
+      <span class="support-pill">Sig Success</span> Dedicated AE/CSM routing — escalations via direct channels, not public Sev1 swarms<br>
+      <span class="support-pill">ProServe</span> Embedded for Org Consolidation program delivery<br>
+      <span class="support-pill">Architecture</span> Anil Satram (SF Architect) historical DRI on record-locking design decisions<br>
+      <span class="support-pill">Forecast</span> Volume expected stable until Org Consolidation phase completes
+    </div>
+  </div>
+
 </div>
 
 <!-- TOP 10 ACCOUNTS TREND CHART -->
@@ -921,6 +1227,104 @@ new Chart(document.getElementById('chartMonthlyTotal').getContext('2d'),{
     }
   }
 });
+
+// 1b. INFLOW + SIG SHARE COMBO TREND
+(function(){
+  var inflowData = [3729, 4215, 3845, 3194];
+  var sigPct    = [35, 37, 37, 44];
+  // MoM % change labels — first point is baseline (empty), rest show delta
+  function momLabels(arr) {
+    var out = [];
+    for (var i = 0; i < arr.length; i++) {
+      if (i === 0) { out.push('Base'); continue; }
+      var delta = Math.round((arr[i] - arr[i-1]) / arr[i-1] * 100);
+      out.push(delta >= 0 ? '+' + delta + '%' : delta + '%');
+    }
+    return out;
+  }
+  var inflowMom = momLabels(inflowData);
+  var sigMom    = momLabels(sigPct);
+
+  new Chart(document.getElementById('chartInflowSigCombo').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: MONTHS,
+      datasets: [
+        {
+          type: 'bar',
+          label: 'Monthly Inflow',
+          data: inflowData,
+          backgroundColor: SF_NAVY + 'bb',
+          borderRadius: 4,
+          yAxisID: 'yLeft',
+          datalabels: {
+            display: true,
+            anchor: 'end',
+            align: 'top',
+            font: { weight: '700', size: 11 },
+            color: SF_NAVY,
+            formatter: function(v, ctx) {
+              var lbl = inflowMom[ctx.dataIndex];
+              return v.toLocaleString() + '\n' + lbl;
+            }
+          }
+        },
+        {
+          type: 'line',
+          label: 'Sig Share %',
+          data: sigPct,
+          borderColor: SF_TEAL,
+          backgroundColor: SF_TEAL + '22',
+          pointBackgroundColor: SF_TEAL,
+          pointRadius: 7,
+          borderWidth: 3,
+          tension: 0.35,
+          yAxisID: 'yRight',
+          datalabels: {
+            display: true,
+            anchor: 'top',
+            align: 'top',
+            offset: 6,
+            font: { weight: '800', size: 11 },
+            color: SF_TEAL,
+            formatter: function(v, ctx) {
+              var lbl = sigMom[ctx.dataIndex];
+              return v + '% · ' + lbl;
+            }
+          }
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: { mode: 'index' },
+        datalabels: {}
+      },
+      scales: {
+        yLeft: {
+          type: 'linear',
+          position: 'left',
+          beginAtZero: false,
+          min: 2800,
+          title: { display: true, text: 'Total Inflow' },
+          grid: { color: '#f0f0f0' }
+        },
+        yRight: {
+          type: 'linear',
+          position: 'right',
+          beginAtZero: false,
+          min: 25,
+          max: 55,
+          title: { display: true, text: 'Sig Share %' },
+          grid: { drawOnChartArea: false }
+        }
+      }
+    }
+  });
+})();
 
 // 2. GEO STACKED
 new Chart(document.getElementById('chartGeoStacked').getContext('2d'),{
